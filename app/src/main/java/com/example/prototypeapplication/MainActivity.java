@@ -22,12 +22,11 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public void login(View view) {
+    public void switchFragment(View view) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-        EditText username_input = view.findViewById(R.id.editText_login_username);
-        EditText password_input = view.findViewById(R.id.editText_login_password);
-
-        String username = username_input.getText().toString();
-        String password = password_input.getText().toString();
+        fragmentTransaction.add(R.id.fragment_container, new PrototypeLoginFragment());
+        fragmentTransaction.addToBackStack("PrototypeLoginFragment");
+        fragmentTransaction.commit();
     }
 }
