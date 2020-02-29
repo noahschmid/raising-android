@@ -8,11 +8,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class PrototypeLoginFragment extends Fragment implements View.OnClickListener {
     private EditText username_input;
@@ -66,7 +77,44 @@ public class PrototypeLoginFragment extends Fragment implements View.OnClickList
         String username = username_input.getText().toString();
         String password = password_input.getText().toString();
 
-        // add backend request
+        try {
+            String endpoint = "http://33383.hostserv.eu:8080/account/login";
+            JSONObject params = new JSONObject();
+            params.put("username", username);
+            params.put("password", password);
+            JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST,
+                    endpoint,
+                    params,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                username_input.setText(response.getString("message"));
+                            } catch (JSONException e){
+                                Log.d("debugMessage", e.getMessage());
+                                return;
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if(error.networkResponse.statusCode == 403) {
+                        String body = new String(error.networkResponse.data);
+                        try {
+                            JSONObject response = new JSONObject(body);
+                            username_input.setText(response.getString("message"));
+                        } catch (JSONException e) {
+                            Log.d("debugMessage", e.toString());
+                        }
+                    }
+                    Log.d("debugMessage", error.toString());
+                }
+            });
+            ApiRequestHandler.getInstance(getContext()).addToRequestQueue(loginRequest);
+        } catch(Exception e) {
+            Log.d("debugMessage", e.getMessage());
+            return;
+        }
     }
 
     private void goToRegisterFragment() {

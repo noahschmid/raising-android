@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PrototypeApplication</string>
+    <string name="app_name">RaisingMVP</string>
 
     <!-- Strings used in LoginScreen -->
     <string name="login_username_input_placeholder"> Username..</string>
