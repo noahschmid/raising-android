@@ -1,10 +1,15 @@
 <resources>
     <string name="app_name">PrototypeApplication</string>
 
+    <!-- Strings used in multiple screens -->
+    <string name="username_input_placeholder"> Username..</string>
+    <string name="password_input_placeholder"> Password..</string>
+
     <!-- Strings used in LoginScreen -->
-    <string name="login_username_input_placeholder"> Username..</string>
-    <string name="login_password_input_placeholder"> Password..</string>
     <string name="login_button_text"> Login </string>
     <string name="login_welcome_text"> Welcome to Raising </string>
     <string name="login_register_text"> Register now</string>
+
+    <!-- Strings used in RegisterScreen -->
+    <string name="register_button_text"> Continue </string>
 </resources>

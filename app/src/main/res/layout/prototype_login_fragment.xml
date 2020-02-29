@@ -9,8 +9,8 @@
 
     <EditText
         android:id="@+id/editText_login_username"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginTop="8dp"
@@ -18,7 +18,7 @@
         android:layout_marginRight="32dp"
         android:background="@drawable/border_login_form"
         android:ems="10"
-        android:hint="@string/login_username_input_placeholder"
+        android:hint="@string/username_input_placeholder"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/editText_login_password"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +49,7 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/border_login_form"
         android:ems="10"
-        android:hint="@string/login_password_input_placeholder"
+        android:hint="@string/password_input_placeholder"
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/button_login"
         app:layout_constraintEnd_toEndOf="@+id/editText_login_username"
@@ -71,12 +71,11 @@
 
     <Button
         android:id="@+id/button_register"
-        android:layout_width="130dp"
-        android:layout_height="34dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/btn_register"
         android:hint="@string/login_register_text"
         app:layout_constraintStart_toStartOf="@+id/editText_login_username"
         app:layout_constraintTop_toBottomOf="@+id/editText_login_password" />
