@@ -12,24 +12,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class PrototypeMatchesFragment extends Fragment {
+public class MatchesFragment extends Fragment {
 
-    private PrototypeMatchesViewModel mViewModel;
+    private MatchesViewModel mViewModel;
 
-    public static PrototypeMatchesFragment newInstance() {
-        return new PrototypeMatchesFragment();
+    public static MatchesFragment newInstance() {
+        return new MatchesFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.prototype_matches_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_matches, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(PrototypeMatchesViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(MatchesViewModel.class);
         // TODO: Use the ViewModel
     }
 

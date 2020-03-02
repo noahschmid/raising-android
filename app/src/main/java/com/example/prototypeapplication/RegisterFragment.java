@@ -21,24 +21,24 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PrototypeRegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment {
 
-    private PrototypeRegisterViewModel mViewModel;
+    private RegisterViewModel mViewModel;
 
-    public static PrototypeRegisterFragment newInstance() {
-        return new PrototypeRegisterFragment();
+    public static RegisterFragment newInstance() {
+        return new RegisterFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.prototype_register_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(PrototypeRegisterViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(RegisterViewModel.class);
         // TODO: Use the ViewModel
     }
 

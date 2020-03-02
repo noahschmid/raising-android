@@ -42,7 +42,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.prototype_login_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         username_input = view.findViewById(R.id.editText_login_username);
         password_input = view.findViewById(R.id.editText_login_password);
@@ -92,12 +92,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            changeFragment(new PrototypeMatchesFragment(), "PrototypeMatchesFragment");
+                            changeFragment(new MatchesFragment(), "MatchesFragment");
                             /*
                             try {
-                                // username_input.setText(response.getString("message"));
+                                username_input.setText(response.getString("message"));
 
-                            } catch (JSONException e){
+                            } catch (JSONException e) {
                                 Log.d("debugMessage", e.getMessage());
                                 return;
                             }
@@ -107,6 +107,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     try {
+                        Log.d("debugMessage", error.networkResponse.toString());
                         if(error.networkResponse.statusCode == 403) {
                             String body = new String(error.networkResponse.data);
                             try {
@@ -130,7 +131,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     private void goToRegisterFragment() {
-        changeFragment(new PrototypeRegisterFragment(), "PrototypeRegisterFragment");
+        changeFragment(new RegisterFragment(), "RegisterFragment");
     }
 
     /**
@@ -156,7 +157,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      * @param dialogMessage The message that is to be displayed
      */
     private void showErrorDialog(String dialogMessage) {
-        DialogFragment loginErrorFragment = new PrototypeLoginDialogFragment();
+        DialogFragment loginErrorFragment = new LoginDialog();
         // TODO: define message for dialog to display
         loginErrorFragment.show(getActivitiesFragmentManager(), "errorDialog");
     }

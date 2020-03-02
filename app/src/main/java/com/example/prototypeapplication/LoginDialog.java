@@ -17,14 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class PrototypeLoginDialogFragment extends DialogFragment {
+public class LoginDialog extends DialogFragment {
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // LayoutInflater inflater = requireActivity().getLayoutInflater();
-        // builder.setView(inflater.inflate(R.layout.fragment_prototype_login_dialog, null))
+        // builder.setView(inflater.inflate(R.layout.dialog_login, null))
         builder.setTitle(R.string.login_error_dialog_title)
                 // default message, to be defined with specific message
                 .setMessage(R.string.login_error_dialog_text)
