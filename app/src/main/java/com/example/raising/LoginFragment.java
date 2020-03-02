@@ -1,6 +1,5 @@
 package com.example.raising;
 
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -10,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -29,7 +25,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
@@ -49,8 +44,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        username_input = view.findViewById(R.id.editText_login_username);
-        password_input = view.findViewById(R.id.editText_login_password);
+        username_input = view.findViewById(R.id.editText_register_username);
+        password_input = view.findViewById(R.id.editText_register_password);
 
         Button btn_login = view.findViewById(R.id.button_login);
         btn_login.setOnClickListener(this);
@@ -83,13 +78,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
     private void login() {
-        final String username = username_input.getText().toString();
-        final String password = password_input.getText().toString();
+        final String USERNAME = username_input.getText().toString();
+        final String PASSWORD = password_input.getText().toString();
 
         try {
             HashMap<String, String> params = new HashMap<>();
-            params.put("username", username);
-            params.put("password", password);
+            params.put("username", USERNAME);
+            params.put("password", PASSWORD);
             JsonObjectRequest loginRequest = new JsonObjectRequest(
                     LOGIN_ENDPOINT, new JSONObject(params),
                     new Response.Listener<JSONObject>() {
@@ -118,7 +113,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                             String body = new String(error.networkResponse.data);
                             try {
                                 JSONObject response = new JSONObject(body);
-                                showErrorDialog(response.getString("message"));
+                                showErrorDialog(
+                                        getString(R.string.login_error_dialog_title),
+                                        response.getString("message")
+                                );
                             } catch (JSONException e) {
                                 Log.d("debugMessage2", e.toString());
                             }
@@ -144,21 +142,24 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Change to the RegisterFragment, if user wants to register, not log in
+     */
     private void goToRegisterFragment() {
         changeFragment(new RegisterFragment(), "RegisterFragment");
     }
 
     /**
-     * Changes from the current fragment to the next
+     * Change from the current fragment to the next
      * @param fragment The fragment, that should be displayed next
-     * @param fragmentName The name of the fragment, that should be displayed.
+     * @param fragmentName The name of the next fragment.
      *                     Allows us to put the fragment on the BackStack
      */
     private void changeFragment(Fragment fragment, String fragmentName) {
         try {
             getActivitiesFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container, fragment)
+                    .replace(R.id.fragment_container, fragment)
                     .addToBackStack(fragmentName)
                     .commit();
         } catch (NullPointerException e) {
@@ -167,13 +168,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * Opens a dialog displaying an error message, mostly used, when someone used wrong credentials
+     * Opens a dialog displaying an error message
      * @param dialogMessage The message that is to be displayed
      */
-    private void showErrorDialog(String dialogMessage) {
-        DialogFragment loginErrorFragment = new LoginDialog();
-        // TODO: define message for dialog to display
-        loginErrorFragment.show(getActivitiesFragmentManager(), "errorDialog");
+    private void showErrorDialog(String dialogTitle, String dialogMessage) {
+        LoginDialog loginErrorFragment = new LoginDialog().newInstance(dialogTitle, dialogMessage);
+        loginErrorFragment.show(getActivitiesFragmentManager(), "loginErrorDialog");
     }
 
     /**

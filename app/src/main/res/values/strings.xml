@@ -11,11 +11,18 @@
     <string name="login_button_text"> Login </string>
     <string name="login_welcome_text"> Welcome to Raising </string>
     <string name="login_register_text"> Register now</string>
-    <string name="login_error_dialog_title"> Incorrect Password </string>
+    <string name="login_error_dialog_title"> Login failed </string>
     <string name="login_error_dialog_text"> Your password is incorrect.</string>
 
     <!-- Strings used in RegisterScreen -->
+    <string name="confirmPassword_input_placeholder"> Confirm password </string>
     <string name="register_button_text"> Continue </string>
+    <string name="text_register"> Register now </string>
+
+    <string name="register_error_dialog_title"> Registration failed</string>
+    <string name="register_error_dialog_title_password_match"> Please confirm your password </string>
+    <string name="register_error_dialog_text_password_match"> Your entered passwords do not match!</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
