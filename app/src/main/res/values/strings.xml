@@ -5,11 +5,18 @@
     <string name="username_input_placeholder"> Username..</string>
     <string name="password_input_placeholder"> Password..</string>
 
+    <string name="ok_text"> OK </string>
+
     <!-- Strings used in LoginScreen -->
     <string name="login_button_text"> Login </string>
     <string name="login_welcome_text"> Welcome to Raising </string>
     <string name="login_register_text"> Register now</string>
+    <string name="login_error_dialog_title"> Incorrect Password </string>
+    <string name="login_error_dialog_text"> Your password is incorrect.</string>
 
     <!-- Strings used in RegisterScreen -->
     <string name="register_button_text"> Continue </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -5,8 +5,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,16 +15,16 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-        fragmentTransaction.add(R.id.fragment_container, new PrototypeLoginFragment());
-        fragmentTransaction.addToBackStack("PrototypeLoginFragment");
+        fragmentTransaction.add(R.id.fragment_container, new LoginFragment());
+        fragmentTransaction.addToBackStack("LoginFragment");
         fragmentTransaction.commit();
     }
 
     public void switchFragment(View view) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-        fragmentTransaction.add(R.id.fragment_container, new PrototypeLoginFragment());
-        fragmentTransaction.addToBackStack("PrototypeLoginFragment");
+        fragmentTransaction.add(R.id.fragment_container, new LoginFragment());
+        fragmentTransaction.addToBackStack("LoginFragment");
         fragmentTransaction.commit();
     }
 }

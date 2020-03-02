@@ -1,5 +1,7 @@
 package com.example.prototypeapplication;
 
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -19,20 +21,22 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class PrototypeLoginFragment extends Fragment implements View.OnClickListener {
+public class LoginFragment extends Fragment implements View.OnClickListener {
     private EditText username_input;
     private EditText password_input;
 
-    private PrototypeLoginViewModel mViewModel;
+    // Declare backend endpoint for login
+    final private String LOGIN_ENDPOINT = "http://33383.hostserv.eu:8080/account/login";
 
-    public static PrototypeLoginFragment newInstance() {
-        return new PrototypeLoginFragment();
+    private LoginViewModel mViewModel;
+
+    public static LoginFragment newInstance() {
+        return new LoginFragment();
     }
 
     @Override
@@ -47,6 +51,7 @@ public class PrototypeLoginFragment extends Fragment implements View.OnClickList
         btn_login.setOnClickListener(this);
         Button btn_register = view.findViewById(R.id.button_register);
         btn_register.setOnClickListener(this);
+
         return view;
     }
 
@@ -67,7 +72,7 @@ public class PrototypeLoginFragment extends Fragment implements View.OnClickList
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(PrototypeLoginViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         // TODO: Use the ViewModel
     }
 
@@ -78,36 +83,43 @@ public class PrototypeLoginFragment extends Fragment implements View.OnClickList
         String password = password_input.getText().toString();
 
         try {
-            String endpoint = "http://33383.hostserv.eu:8080/account/login";
             JSONObject params = new JSONObject();
             params.put("username", username);
             params.put("password", password);
             JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST,
-                    endpoint,
+                    LOGIN_ENDPOINT,
                     params,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            changeFragment(new PrototypeMatchesFragment(), "PrototypeMatchesFragment");
+                            /*
                             try {
-                                username_input.setText(response.getString("message"));
+                                // username_input.setText(response.getString("message"));
+
                             } catch (JSONException e){
                                 Log.d("debugMessage", e.getMessage());
                                 return;
                             }
+                             */
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    if(error.networkResponse.statusCode == 403) {
-                        String body = new String(error.networkResponse.data);
-                        try {
-                            JSONObject response = new JSONObject(body);
-                            username_input.setText(response.getString("message"));
-                        } catch (JSONException e) {
-                            Log.d("debugMessage", e.toString());
+                    try {
+                        if(error.networkResponse.statusCode == 403) {
+                            String body = new String(error.networkResponse.data);
+                            try {
+                                JSONObject response = new JSONObject(body);
+                                showErrorDialog(response.getString("message"));
+                            } catch (JSONException e) {
+                                Log.d("debugMessage", e.toString());
+                            }
                         }
+                        Log.d("debugMessage", error.toString());
+                    } catch (NullPointerException e) {
+                        Log.d("debugMessage", e.toString());
                     }
-                    Log.d("debugMessage", error.toString());
                 }
             });
             ApiRequestHandler.getInstance(getContext()).addToRequestQueue(loginRequest);
@@ -118,15 +130,47 @@ public class PrototypeLoginFragment extends Fragment implements View.OnClickList
     }
 
     private void goToRegisterFragment() {
+        changeFragment(new PrototypeRegisterFragment(), "PrototypeRegisterFragment");
+    }
 
+    /**
+     * Changes from the current fragment to the next
+     * @param fragment The fragment, that should be displayed next
+     * @param fragmentName The name of the fragment, that should be displayed.
+     *                     Allows us to put the fragment on the BackStack
+     */
+    private void changeFragment(Fragment fragment, String fragmentName) {
         try {
-            getActivity().getSupportFragmentManager()
+            getActivitiesFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container, new PrototypeRegisterFragment())
-                    .addToBackStack("PrototypeRegisterFragment")
+                    .add(R.id.fragment_container, fragment)
+                    .addToBackStack(fragmentName)
                     .commit();
         } catch (NullPointerException e) {
-            e.printStackTrace();
+            Log.d("debugMessage", e.getMessage());
         }
+    }
+
+    /**
+     * Opens a dialog displaying an error message, mostly used, when someone used wrong credentials
+     * @param dialogMessage The message that is to be displayed
+     */
+    private void showErrorDialog(String dialogMessage) {
+        DialogFragment loginErrorFragment = new PrototypeLoginDialogFragment();
+        // TODO: define message for dialog to display
+        loginErrorFragment.show(getActivitiesFragmentManager(), "errorDialog");
+    }
+
+    /**
+     * This methods retrieves an instance the SupportFragmentManager of the used Activity
+     * @return Instance of SupportFragmentManager of used Activity
+     */
+    private FragmentManager getActivitiesFragmentManager() {
+        try {
+            return getActivity().getSupportFragmentManager();
+        } catch (NullPointerException e) {
+            Log.d("debugMessage", e.toString());
+        }
+        return null;
     }
 }
