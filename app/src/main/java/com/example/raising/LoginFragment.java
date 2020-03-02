@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -25,14 +28,16 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
     private EditText username_input;
     private EditText password_input;
 
-    // Declare backend endpoint for login
-    final private String LOGIN_ENDPOINT = "http://33383.hostserv.eu:8080/account/login";
-
+   // final private String LOGIN_ENDPOINT = "http://33383.hostserv.eu:8080/account/login";
+    final private String LOGIN_ENDPOINT = "http://192.168.1.120:8080/account/login";
     private LoginViewModel mViewModel;
 
     public static LoginFragment newInstance() {
@@ -78,20 +83,19 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
     private void login() {
-
-        String username = username_input.getText().toString();
-        String password = password_input.getText().toString();
+        final String username = username_input.getText().toString();
+        final String password = password_input.getText().toString();
 
         try {
-            JSONObject params = new JSONObject();
+            HashMap<String, String> params = new HashMap<>();
             params.put("username", username);
             params.put("password", password);
-            JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST,
-                    LOGIN_ENDPOINT,
-                    params,
+            JsonObjectRequest loginRequest = new JsonObjectRequest(
+                    LOGIN_ENDPOINT, new JSONObject(params),
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            Log.d("debugMessageSuccess", response.toString());
                             changeFragment(new MatchesFragment(), "MatchesFragment");
                             /*
                             try {
@@ -106,26 +110,36 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    Log.d("debugMessageErrResp", error.toString());
                     try {
-                        Log.d("debugMessage", error.networkResponse.toString());
+                        Log.d("debugMessage1", error.networkResponse.toString());
+                        Log.d("debugMessage1", error.networkResponse.data.toString());
                         if(error.networkResponse.statusCode == 403) {
                             String body = new String(error.networkResponse.data);
                             try {
                                 JSONObject response = new JSONObject(body);
                                 showErrorDialog(response.getString("message"));
                             } catch (JSONException e) {
-                                Log.d("debugMessage", e.toString());
+                                Log.d("debugMessage2", e.toString());
                             }
                         }
-                        Log.d("debugMessage", error.toString());
+                        Log.d("debugMessage3", error.toString());
                     } catch (NullPointerException e) {
-                        Log.d("debugMessage", e.toString());
+                        Log.d("debugMessage4", e.toString());
                     }
                 }
-            });
+            }){
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+            };
+            loginRequest.setRetryPolicy(new DefaultRetryPolicy(10000, 1, 1.0f));
+
             ApiRequestHandler.getInstance(getContext()).addToRequestQueue(loginRequest);
         } catch(Exception e) {
             Log.d("debugMessage", e.getMessage());
+            Log.d("debugMessage", e.toString());
             return;
         }
     }
