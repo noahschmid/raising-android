@@ -36,8 +36,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private EditText username_input;
     private EditText password_input;
 
-   // final private String LOGIN_ENDPOINT = "http://33383.hostserv.eu:8080/account/login";
-    final private String LOGIN_ENDPOINT = "http://192.168.1.120:8080/account/login";
+    final private String LOGIN_ENDPOINT = "http://33383.hostserv.eu:8080/account/login";
+    //final private String LOGIN_ENDPOINT = "http://192.168.1.120:8080/account/login";
     private LoginViewModel mViewModel;
 
     public static LoginFragment newInstance() {
