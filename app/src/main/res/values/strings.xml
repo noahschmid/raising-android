@@ -19,7 +19,8 @@
     <string name="register_button_text"> Continue </string>
     <string name="text_register"> Register now </string>
 
-    <string name="register_error_dialog_title"> Registration failed</string>
+    <string name="register_error_dialog_title_403"> Registration failed </string>
+    <string name="register_error_dialog_title_400"> Invalid inputs </string>
     <string name="register_error_dialog_title_password_match"> Please confirm your password </string>
     <string name="register_error_dialog_text_password_match"> Your entered passwords do not match!</string>
 

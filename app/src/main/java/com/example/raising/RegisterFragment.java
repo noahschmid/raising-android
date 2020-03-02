@@ -97,11 +97,22 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
                             try {
                                 JSONObject response = new JSONObject(body);
                                 showErrorDialog(
-                                        getString(R.string.register_error_dialog_title),
+                                        getString(R.string.register_error_dialog_title_403),
                                         response.getString("message")
                                 );
                             } catch (JSONException e) {
                                 Log.d("debugMessage", e.toString());
+                            }
+                        } else if(error.networkResponse.statusCode == 400) {
+                            String body = new String(error.networkResponse.data);
+                            try {
+                                JSONObject response = new JSONObject(body);
+                                showErrorDialog(
+                                        getString(R.string.register_error_dialog_title_400),
+                                        response.getString("message")
+                                );
+                            } catch (JSONException e) {
+                                Log.d("debugJsonMessage", e.toString());
                             }
                         }
                         Log.d("debugMessage", error.toString());
