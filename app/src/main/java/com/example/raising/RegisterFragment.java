@@ -29,6 +29,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
     private EditText password_input;
     private EditText confirm_password_input;
 
+    final private String REGISTER_ENDPOINT = "http://33383.hostserv.eu:8080/account/register";
+
     private RegisterViewModel mViewModel;
 
     public static RegisterFragment newInstance() {
@@ -69,20 +71,19 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
     }
 
     private void register() {
-        final String USERNAME = username_input.getText().toString();
-        final String PASSWORD = password_input.getText().toString();
-        final String CONFIRM_PASSWORD = confirm_password_input.getText().toString();
+        String username = username_input.getText().toString();
+        String password = password_input.getText().toString();
+        String confirm_password = confirm_password_input.getText().toString();
 
         // check if password and confirm password are equal
-        if(PASSWORD.contentEquals(CONFIRM_PASSWORD)) {
+        if(password.contentEquals(confirm_password)) {
 
             try {
-                String endpoint = "http://33383.hostserv.eu:8080/account/register";
                 JSONObject params = new JSONObject();
-                params.put("username", USERNAME);
-                params.put("password", PASSWORD);
+                params.put("username", username);
+                params.put("password", password);
                 JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST,
-                        endpoint,
+                        REGISTER_ENDPOINT,
                         params,
                         new Response.Listener<JSONObject>() {
                             @Override

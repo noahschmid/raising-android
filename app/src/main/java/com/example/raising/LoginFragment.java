@@ -35,6 +35,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     //final private String LOGIN_ENDPOINT = "http://192.168.1.120:8080/account/login";
     private LoginViewModel mViewModel;
 
+    /**
+     * Creates a new instance of the LoginFragment
+     * @return An instance of LoginFragment
+     */
     public static LoginFragment newInstance() {
         return new LoginFragment();
     }
@@ -78,13 +82,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
     private void login() {
-        final String USERNAME = username_input.getText().toString();
-        final String PASSWORD = password_input.getText().toString();
+        String username = username_input.getText().toString();
+        String password = password_input.getText().toString();
 
         try {
             HashMap<String, String> params = new HashMap<>();
-            params.put("username", USERNAME);
-            params.put("password", PASSWORD);
+            params.put("username", username);
+            params.put("password", password);
             JsonObjectRequest loginRequest = new JsonObjectRequest(
                     LOGIN_ENDPOINT, new JSONObject(params),
                     new Response.Listener<JSONObject>() {
