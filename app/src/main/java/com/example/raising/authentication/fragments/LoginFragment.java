@@ -1,4 +1,4 @@
-package com.example.raising;
+package com.example.raising.authentication.fragments;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
@@ -20,6 +20,11 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.raising.ApiRequestHandler;
+import com.example.raising.MatchesFragment;
+import com.example.raising.R;
+import com.example.raising.authentication.AuthenticationDialog;
+import com.example.raising.authentication.view_models.LoginViewModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
