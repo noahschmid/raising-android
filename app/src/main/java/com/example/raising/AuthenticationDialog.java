@@ -17,6 +17,9 @@ public class AuthenticationDialog extends DialogFragment {
      * @param dialogTitle The title of the dialog
      * @param dialogMessage The message, that should be displayed inside the dialog
      * @return Instance of AuthenticationDialog
+     *
+     * @author Lorenz Caliezi 03.03.2020
+     * @version 1.1
      */
     public AuthenticationDialog newInstance(String dialogTitle, String dialogMessage) {
         AuthenticationDialog authenticationDialog = new AuthenticationDialog();
@@ -33,6 +36,9 @@ public class AuthenticationDialog extends DialogFragment {
      * Build the AuthenticationDialog
      * @param savedInstanceState Certain parameters for the new dialog
      * @return Instance of the fully built AuthenticationDialog
+     *
+     * @author Lorenz Caliezi 02.03.2020
+     * @version 1.0
      */
     @NonNull
     @Override

@@ -135,6 +135,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
      * Opens a dialog displaying an error message
      * @param dialogMessage The message that is to be displayed
      * @param dialogTitle The title of the dialog
+     *
+     * @author Lorenz Caliezi 03.03.2020
+     * @version 1.1
      */
     private void showDialog(String dialogTitle, String dialogMessage) {
         try {
@@ -144,6 +147,5 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
         } catch (NullPointerException e) {
             Log.d("debugMessage", e.getMessage());
         }
-
     }
 }
