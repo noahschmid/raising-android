@@ -117,9 +117,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                             String body = new String(error.networkResponse.data);
                             try {
                                 JSONObject response = new JSONObject(body);
-                                showErrorDialog(
-                                        getString(R.string.login_error_dialog_title),
-                                        response.getString("message")
+                                showDialog(
+                                        getString(R.string.login_dialog_title_403),
+                                        getString(R.string.login_dialog_text_403)
                                 );
                             } catch (JSONException e) {
                                 Log.d("debugMessage2", e.toString());
@@ -175,9 +175,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      * Opens a dialog displaying an error message
      * @param dialogMessage The message that is to be displayed
      */
-    private void showErrorDialog(String dialogTitle, String dialogMessage) {
-        LoginDialog loginErrorFragment = new LoginDialog().newInstance(dialogTitle, dialogMessage);
-        loginErrorFragment.show(getActivitiesFragmentManager(), "loginErrorDialog");
+    private void showDialog(String dialogTitle, String dialogMessage) {
+        AuthenticationDialog loginDialog =
+                new AuthenticationDialog().newInstance(dialogTitle, dialogMessage);
+        loginDialog.show(getActivitiesFragmentManager(), "loginDialog");
     }
 
     /**
