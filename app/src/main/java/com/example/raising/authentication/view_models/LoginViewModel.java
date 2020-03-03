@@ -1,4 +1,4 @@
-package com.example.raising;
+package com.example.raising.authentication.view_models;
 
 import androidx.lifecycle.ViewModel;
 
