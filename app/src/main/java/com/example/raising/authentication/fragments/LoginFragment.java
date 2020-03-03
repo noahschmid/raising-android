@@ -84,7 +84,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     /**
      * Simple helper function that retrieves the users input from the layout
-     *      and then calls {@link: login()}.
+     *      and then calls {@link: login(String, String)}.
      * Enables easier testing, since you can give login() some parameters.
      *
      * @author Lorenz Caliezi 03.03.2020
@@ -103,7 +103,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      */
     private void login(String username, String password) {
         if(username.length() == 0 || password.length() == 0) {
-            showDialog(getString(R.string.login_dialog_title_empty_credentials),
+            showDialog(getString(R.string.login_dialog_title),
                     getString(R.string.login_dialog_text_empty_credentials));
             return;
         }
@@ -124,7 +124,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     try {
                         if(error.networkResponse.statusCode == 403) {
                             showDialog(
-                                    getString(R.string.login_dialog_title_403),
+                                    getString(R.string.login_dialog_title),
                                     getString(R.string.login_dialog_text_403)
                             );
                         }

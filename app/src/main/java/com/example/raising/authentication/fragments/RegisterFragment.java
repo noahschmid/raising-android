@@ -76,7 +76,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
 
     /**
      * Simple helper function that retrieves the users input from the layout
-     *      and then calls {@link: register()}.
+     *      and then calls {@link: register(String, String, String)}.
      * Enables easier testing, since you can give register() some parameters.
      */
     private void prepareRegistration() {
@@ -95,13 +95,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
      */
     private void register(String username, String password, String confirmPassword) {
         if(username.length() == 0 || password.length() == 0 || confirmPassword.length() == 0) {
-            showDialog(getString(R.string.register_dialog_title_empty_credentials),
+            showDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
         if(!(password.contentEquals(confirmPassword))) {
-            showDialog(getString(R.string.register_dialog_title_password_match),
+            showDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_password_match));
             return;
         }
@@ -125,7 +125,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     if(error.networkResponse.statusCode == 400) {
-                        showDialog(getString(R.string.register_dialog_title_400),
+                        showDialog(getString(R.string.register_dialog_title),
                                 getString(R.string.register_dialog_text_400)
                         );
                     }
