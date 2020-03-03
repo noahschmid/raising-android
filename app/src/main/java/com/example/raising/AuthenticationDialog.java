@@ -10,29 +10,35 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 
-public class LoginDialog extends DialogFragment {
+public class AuthenticationDialog extends DialogFragment {
 
     /**
-     * Create a new instance of a LoginDialog
-     * @param message The message, that should be displayed inside the dialog
-     * @param title The title of the dialog
-     * @return Instance of LoginDialog
+     * Create a new instance of a AuthenticationDialog
+     * @param dialogTitle The title of the dialog
+     * @param dialogMessage The message, that should be displayed inside the dialog
+     * @return Instance of AuthenticationDialog
+     *
+     * @author Lorenz Caliezi 03.03.2020
+     * @version 1.1
      */
-    public LoginDialog newInstance(String title, String message) {
-        LoginDialog loginDialog = new LoginDialog();
+    public AuthenticationDialog newInstance(String dialogTitle, String dialogMessage) {
+        AuthenticationDialog authenticationDialog = new AuthenticationDialog();
 
         Bundle bundle = new Bundle();
-        bundle.putString("message", message);
-        bundle.putString("title", title);
-        loginDialog.setArguments(bundle);
+        bundle.putString("title", dialogTitle);
+        bundle.putString("message", dialogMessage);
+        authenticationDialog.setArguments(bundle);
 
-        return loginDialog;
+        return authenticationDialog;
     }
 
     /**
-     * Build the LoginDialog
-     * @param savedInstanceState
-     * @return Instance of the fully built LoginDialog
+     * Build the AuthenticationDialog
+     * @param savedInstanceState Certain parameters for the new dialog
+     * @return Instance of the fully built AuthenticationDialog
+     *
+     * @author Lorenz Caliezi 02.03.2020
+     * @version 1.0
      */
     @NonNull
     @Override

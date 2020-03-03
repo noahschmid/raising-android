@@ -35,10 +35,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     //final private String LOGIN_ENDPOINT = "http://192.168.1.120:8080/account/login";
     private LoginViewModel mViewModel;
 
-    /**
-     * Creates a new instance of the LoginFragment
-     * @return An instance of LoginFragment
-     */
+
     public static LoginFragment newInstance() {
         return new LoginFragment();
     }
@@ -63,7 +60,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_login:
-                login();
+                prepareLogin();
                 break;
             case R.id.button_register:
                 goToRegisterFragment();
@@ -80,10 +77,22 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         // TODO: Use the ViewModel
     }
 
-
-    private void login() {
+    /**
+     * Simple helper function that retrieves the users input from the layout
+     *      and then calls {@link: login()}.
+     * Enables easier testing, since you can give login() some parameters.
+     *
+     * @author Lorenz Caliezi 03.03.2020
+     * @version 1.0
+     */
+    private void prepareLogin() {
         String username = username_input.getText().toString();
         String password = password_input.getText().toString();
+        login(username, password);
+    }
+
+
+    private void login(String username, String password) {
 
         try {
             HashMap<String, String> params = new HashMap<>();
@@ -117,9 +126,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                             String body = new String(error.networkResponse.data);
                             try {
                                 JSONObject response = new JSONObject(body);
-                                showErrorDialog(
-                                        getString(R.string.login_error_dialog_title),
-                                        response.getString("message")
+                                showDialog(
+                                        getString(R.string.login_dialog_title_403),
+                                        getString(R.string.login_dialog_text_403)
                                 );
                             } catch (JSONException e) {
                                 Log.d("debugMessage2", e.toString());
@@ -148,6 +157,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     /**
      * Change to the RegisterFragment, if user wants to register, not log in
+     *
+     * @author Lorenz Caliezi 02.03.2020
+     * @version 1.0
      */
     private void goToRegisterFragment() {
         changeFragment(new RegisterFragment(), "RegisterFragment");
@@ -158,6 +170,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      * @param fragment The fragment, that should be displayed next
      * @param fragmentName The name of the next fragment.
      *                     Allows us to put the fragment on the BackStack
+     *
+     * @author Lorenz Caliezi 02.03.2020
+     * @version 1.0
      */
     private void changeFragment(Fragment fragment, String fragmentName) {
         try {
@@ -174,15 +189,22 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     /**
      * Opens a dialog displaying an error message
      * @param dialogMessage The message that is to be displayed
+     *
+     * @author Lorenz Caliezi 03.03.2020
+     * @version 1.1
      */
-    private void showErrorDialog(String dialogTitle, String dialogMessage) {
-        LoginDialog loginErrorFragment = new LoginDialog().newInstance(dialogTitle, dialogMessage);
-        loginErrorFragment.show(getActivitiesFragmentManager(), "loginErrorDialog");
+    private void showDialog(String dialogTitle, String dialogMessage) {
+        AuthenticationDialog loginDialog =
+                new AuthenticationDialog().newInstance(dialogTitle, dialogMessage);
+        loginDialog.show(getActivitiesFragmentManager(), "loginDialog");
     }
 
     /**
      * This methods retrieves an instance the SupportFragmentManager of the used Activity
      * @return Instance of SupportFragmentManager of used Activity
+     *
+     * @author Lorenz Caliezi 02.03.2020
+     * @version 1.0
      */
     private FragmentManager getActivitiesFragmentManager() {
         try {
