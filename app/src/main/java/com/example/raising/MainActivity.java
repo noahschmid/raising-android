@@ -18,14 +18,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
         fragmentTransaction.add(R.id.fragment_container, new LoginFragment());
-        fragmentTransaction.addToBackStack("LoginFragment");
-        fragmentTransaction.commit();
-    }
-
-    public void switchFragment(View view) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
-        fragmentTransaction.add(R.id.fragment_container, new LoginFragment());
+        // later remove loginFragment from BackStack
         fragmentTransaction.addToBackStack("LoginFragment");
         fragmentTransaction.commit();
     }
