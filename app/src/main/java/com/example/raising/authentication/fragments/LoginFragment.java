@@ -96,9 +96,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         login(username, password);
     }
 
-
+    /**
+     * Send login request to backend and process response
+     * @param username
+     * @param password
+     */
     private void login(String username, String password) {
-
+        if(username.length() == 0 || password.length() == 0) {
+            showDialog(getString(R.string.login_dialog_title_empty_credentials),
+                    getString(R.string.login_dialog_text_empty_credentials));
+            return;
+        }
         try {
             HashMap<String, String> params = new HashMap<>();
             params.put("username", username);
@@ -108,40 +116,20 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.d("debugMessageSuccess", response.toString());
                             changeFragment(new MatchesFragment(), "MatchesFragment");
-                            /*
-                            try {
-                                username_input.setText(response.getString("message"));
-
-                            } catch (JSONException e) {
-                                Log.d("debugMessage", e.getMessage());
-                                return;
-                            }
-                             */
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.d("debugMessageErrResp", error.toString());
                     try {
-                        Log.d("debugMessage1", error.networkResponse.toString());
-                        Log.d("debugMessage1", error.networkResponse.data.toString());
                         if(error.networkResponse.statusCode == 403) {
-                            String body = new String(error.networkResponse.data);
-                            try {
-                                JSONObject response = new JSONObject(body);
-                                showDialog(
-                                        getString(R.string.login_dialog_title_403),
-                                        getString(R.string.login_dialog_text_403)
-                                );
-                            } catch (JSONException e) {
-                                Log.d("debugMessage2", e.toString());
-                            }
+                            showDialog(
+                                    getString(R.string.login_dialog_title_403),
+                                    getString(R.string.login_dialog_text_403)
+                            );
                         }
-                        Log.d("debugMessage3", error.toString());
                     } catch (NullPointerException e) {
-                        Log.d("debugMessage4", e.toString());
+                        Log.d("debugMessage", e.toString());
                     }
                 }
             }){

@@ -13,19 +13,22 @@
     <string name="login_register_text"> Register now</string>
     <string name="login_dialog_title_403"> Login failed </string>
     <string name="login_dialog_text_403"> Your password or username is incorrect.</string>
+    <string name="login_dialog_title_empty_credentials"> Login failed </string>
+    <string name="login_dialog_text_empty_credentials"> Please fill out all required fields.</string>
 
     <!-- Strings used in RegisterScreen -->
     <string name="confirmPassword_input_placeholder"> Confirm password </string>
     <string name="register_button_text"> Continue </string>
     <string name="text_register"> Register now </string>
 
-    <string name="register_dialog_title_403"> Registration failed </string>
-    <string name="register_dialog_text_403"> Your access was denied! </string>
     <string name="register_dialog_title_400"> Invalid inputs </string>
     <string name="register_dialog_text_400"> This username may already exist! </string>
+    <string name="register_dialog_title_empty_credentials"> Invalid inputs </string>
+    <string name="register_dialog_text_empty_credentials"> Please fill out all required fields! </string>
     <string name="register_dialog_title_password_match"> Please confirm your password </string>
     <string name="register_dialog_text_password_match"> Your entered passwords do not match!</string>
-
+    <string name="register_dialog_title_success"> Success </string>
+    <string name="register_dialog_text_success"> Successfully registered new account!</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -1,5 +1,6 @@
 package com.example.raising.authentication.fragments;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -60,7 +61,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_register_continue:
-                register();
+                prepareRegistration();
                 break;
             default:
                 break;
@@ -74,14 +75,33 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
         // TODO: Use the ViewModel
     }
 
-    private void register() {
+    /**
+     * Simple helper function that retrieves the users input from the layout
+     *      and then calls {@link: register()}.
+     * Enables easier testing, since you can give register() some parameters.
+     */
+    private void prepareRegistration() {
         String username = username_input.getText().toString();
         String password = password_input.getText().toString();
-        String confirm_password = confirm_password_input.getText().toString();
+        String confirmPassword = confirm_password_input.getText().toString();
 
-        // check if password and confirm password are equal
-        if(password.contentEquals(confirm_password)) {
+        register(username, password, confirmPassword);
+    }
 
+    /**
+     * Send registration request to backend and process response
+     * @param username the username to register
+     * @param password the password of the user
+     * @param confirmPassword the password confirmation input
+     */
+    private void register(String username, String password, String confirmPassword) {
+        if(username.length() == 0 || password.length() == 0 || confirmPassword.length() == 0) {
+            showDialog(getString(R.string.register_dialog_title_empty_credentials),
+                    getString(R.string.register_dialog_text_empty_credentials));
+            return;
+        }
+
+        if(password.contentEquals(confirmPassword)) {
             try {
                 JSONObject params = new JSONObject();
                 params.put("username", username);
@@ -92,35 +112,21 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                //TODO: display success
+                                showDialog(
+                                        getString(R.string.register_dialog_title_success),
+                                        getString(R.string.register_dialog_text_success)
+                                );
+                                changeFragment(new LoginFragment(), "LoginFragment");
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        if(error.networkResponse.statusCode == 403) {
-                            String body = new String(error.networkResponse.data);
-                            try {
-                                JSONObject response = new JSONObject(body);
-                                showDialog(
-                                        getString(R.string.register_dialog_title_403),
-                                        getString(R.string.register_dialog_text_403)
-                                );
-                            } catch (JSONException e) {
-                                Log.d("debugMessage", e.toString());
-                            }
-                        } else if(error.networkResponse.statusCode == 400) {
-                            String body = new String(error.networkResponse.data);
-                            try {
-                                JSONObject response = new JSONObject(body);
-                                showDialog(
-                                        getString(R.string.register_dialog_title_400),
-                                        getString(R.string.register_dialog_text_400)
-                                );
-                            } catch (JSONException e) {
-                                Log.d("debugJsonMessage", e.toString());
-                            }
+                        if(error.networkResponse.statusCode == 400) {
+                            showDialog(
+                                    getString(R.string.register_dialog_title_400),
+                                    getString(R.string.register_dialog_text_400)
+                            );
                         }
-                        Log.d("debugMessage", error.toString());
                     }
                 });
                 ApiRequestHandler.getInstance(getContext()).addToRequestQueue(loginRequest);
@@ -133,6 +139,43 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
                     getString(R.string.register_dialog_title_password_match),
                     getString(R.string.register_dialog_text_password_match));
         }
+    }
+
+    /**
+     * Change from the current fragment to the next
+     * @param fragment The fragment, that should be displayed next
+     * @param fragmentName The name of the next fragment.
+     *                     Allows us to put the fragment on the BackStack
+     *
+     * @author Lorenz Caliezi 02.03.2020
+     * @version 1.0
+     */
+    private void changeFragment(Fragment fragment, String fragmentName) {
+        try {
+            getActivitiesFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(fragmentName)
+                    .commit();
+        } catch (NullPointerException e) {
+            Log.d("debugMessage", e.getMessage());
+        }
+    }
+
+    /**
+     * This methods retrieves an instance the SupportFragmentManager of the used Activity
+     * @return Instance of SupportFragmentManager of used Activity
+     *
+     * @author Lorenz Caliezi 02.03.2020
+     * @version 1.0
+     */
+    private FragmentManager getActivitiesFragmentManager() {
+        try {
+            return getActivity().getSupportFragmentManager();
+        } catch (NullPointerException e) {
+            Log.d("debugMessage", e.toString());
+        }
+        return null;
     }
 
     /**
