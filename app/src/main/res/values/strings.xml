@@ -29,6 +29,10 @@
     <string name="register_dialog_text_password_match"> Your entered passwords do not match!</string>
     <string name="register_dialog_title_success"> Success </string>
     <string name="register_dialog_text_success"> Successfully registered new account!</string>
+    <string name="login_dialog_error_json_title">Login failed</string>
+    <string name="login_dialog_error_json_text">Could not log you in. Please try again.</string>
+    <string name="login_dialog_server_error_title">Login failed</string>
+    <string name="login_dialog_server_error_text">Could not connect to server. Please try again.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
