@@ -117,7 +117,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-                                AuthenticationHandler.saveToken(response.getString("token"));
+                                AuthenticationHandler.saveToken(response.getString("token"), getContext());
                                 changeFragment(new MatchesFragment(), "MatchesFragment");
                             } catch (JSONException e) {
                                 showDialog(getString(R.string.login_dialog_error_json_title), getString(R.string.login_dialog_error_json_text));
