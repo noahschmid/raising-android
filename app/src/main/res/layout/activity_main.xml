@@ -14,9 +14,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_navigation"
-        android:background="@color/raisingPrimary"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
+        android:background="?android:attr/windowBackground"
+        app:itemIconTint="@color/raisingPrimary"
+        app:itemTextColor="@color/raisingPrimary"
 
         />
 
