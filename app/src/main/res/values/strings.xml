@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">RaisingMVP</string>
 
+    <!-- Strings used in bottom navigation -->
+    <string name="navigation_home"> Home </string>
+    <string name="navigation_profile"> Profile </string>
+    <string name="navigation_settings"> Settings </string>
+
     <!-- Strings used in multiple screens -->
     <string name="username_input_placeholder"> Username..</string>
     <string name="password_input_placeholder"> Password..</string>
