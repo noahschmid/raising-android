@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.support.v4.app.INotificationSideChannel;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +22,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.raising.ApiRequestHandler;
+import com.example.raising.MainActivity;
 import com.example.raising.MatchesFragment;
 import com.example.raising.R;
 import com.example.raising.authentication.AuthenticationDialog;
 import com.example.raising.authentication.view_models.LoginViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +53,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
+        hideBottomNavigation(true);
+
         username_input = view.findViewById(R.id.editText_register_username);
         password_input = view.findViewById(R.id.editText_register_password);
 
@@ -59,6 +64,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         btn_register.setOnClickListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        hideBottomNavigation(false);
     }
 
     @Override
@@ -83,8 +95,23 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
+     * Call {@link com.example.raising.MainActivity#hideBottomNavigation(boolean)}
+     * @param isHidden if true, the bottomNavigation should be invisible,
+     *                 if false, the bottomNavigation should be visible
+     *
+     * @author Lorenz Caliezi 06.03.2020
+     */
+
+    private void hideBottomNavigation(boolean isHidden) {
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null)
+            activity.hideBottomNavigation(isHidden);
+    }
+
+
+    /**
      * Simple helper function that retrieves the users input from the layout
-     *      and then calls {@link: login()}.
+     *      and then calls {@link #login(String, String)}.
      * Enables easier testing, since you can give login() some parameters.
      *
      * @author Lorenz Caliezi 03.03.2020
@@ -148,6 +175,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /*
+    /**
+     * Clear the LoginFragment from the back stack
+     *
+     * @author Lorenz Caliezi 06.03.2020
+     *
+    private void clearBackStack() {
+        getActivitiesFragmentManager()
+                .popBackStackImmediate("LoginFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+     */
+
     /**
      * Change to the RegisterFragment, if user wants to register, not log in
      *
@@ -168,6 +207,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      * @version 1.0
      */
     private void changeFragment(Fragment fragment, String fragmentName) {
+        // clearBackStack();
         try {
             getActivitiesFragmentManager()
                     .beginTransaction()

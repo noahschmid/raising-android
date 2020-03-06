@@ -21,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.raising.ApiRequestHandler;
+import com.example.raising.MainActivity;
 import com.example.raising.R;
 import com.example.raising.authentication.AuthenticationDialog;
 import com.example.raising.authentication.view_models.RegisterViewModel;
@@ -47,6 +48,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
+        hideBottomNavigation(true);
+
         username_input = view.findViewById(R.id.editText_register_username);
         password_input = view.findViewById(R.id.editText_register_password);
         confirm_password_input = view.findViewById(R.id.editText_register_confirmPassword);
@@ -55,6 +58,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
         btn_continue.setOnClickListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        hideBottomNavigation(false);
     }
 
     @Override
@@ -73,6 +83,20 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(RegisterViewModel.class);
         // TODO: Use the ViewModel
+    }
+
+    /**
+     * Call {@link com.example.raising.MainActivity#hideBottomNavigation(boolean)}
+     * @param isHidden if true, the bottomNavigation should be invisible,
+     *                 if false, the bottomNavigation should be visible
+     *
+     * @author Lorenz Caliezi 06.03.2020
+     */
+
+    private void hideBottomNavigation(boolean isHidden) {
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null)
+            activity.hideBottomNavigation(isHidden);
     }
 
     /**
