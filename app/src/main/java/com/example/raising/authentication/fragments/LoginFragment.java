@@ -21,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.raising.ApiRequestHandler;
+import com.example.raising.AuthenticationHandler;
 import com.example.raising.MatchesFragment;
 import com.example.raising.R;
 import com.example.raising.authentication.AuthenticationDialog;
@@ -39,7 +40,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     final private String LOGIN_ENDPOINT = "http://33383.hostserv.eu:8080/account/login";
     //final private String LOGIN_ENDPOINT = "http://192.168.1.120:8080/account/login";
     private LoginViewModel mViewModel;
-
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -116,7 +116,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            changeFragment(new MatchesFragment(), "MatchesFragment");
+                            try {
+                                AuthenticationHandler.saveToken(response.getString("token"));
+                                changeFragment(new MatchesFragment(), "MatchesFragment");
+                            } catch (JSONException e) {
+                                showDialog(getString(R.string.login_dialog_error_json_title), getString(R.string.login_dialog_error_json_text));
+                            }
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -129,7 +134,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                             );
                         }
                     } catch (NullPointerException e) {
+                        showDialog(
+                                getString(R.string.login_dialog_server_error_title),
+                                getString(R.string.login_dialog_server_error_text)
+                        );
                         Log.d("debugMessage", e.toString());
+                        Log.d("debugMessage", error.toString());
                     }
                 }
             }){
