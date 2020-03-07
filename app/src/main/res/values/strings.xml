@@ -35,6 +35,9 @@
     <string name="register_dialog_title_success"> Success </string>
     <string name="register_dialog_text_success"> Successfully registered new account!</string>
 
+    <string name="generic_error_title">Action failed</string>
+    <string name="generic_error_text">Oops! Something went wrong.</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

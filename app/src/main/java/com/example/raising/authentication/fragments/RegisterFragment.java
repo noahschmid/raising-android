@@ -21,7 +21,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.raising.ApiRequestHandler;
+import com.example.raising.AuthenticationHandler;
 import com.example.raising.MainActivity;
+import com.example.raising.MatchesFragment;
 import com.example.raising.R;
 import com.example.raising.authentication.AuthenticationDialog;
 import com.example.raising.authentication.view_models.RegisterViewModel;
@@ -29,13 +31,15 @@ import com.example.raising.authentication.view_models.RegisterViewModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 public class RegisterFragment extends Fragment implements View.OnClickListener  {
 
     private EditText username_input;
     private EditText password_input;
     private EditText confirm_password_input;
 
-    final private String REGISTER_ENDPOINT = "http://33383.hostserv.eu:8080/account/register";
+    final private String REGISTER_ENDPOINT = "https://33383.hostserv.eu:8080/account/register";
 
     private RegisterViewModel mViewModel;
 
@@ -108,8 +112,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
         String username = username_input.getText().toString();
         String password = password_input.getText().toString();
         String confirmPassword = confirm_password_input.getText().toString();
+        String email = "testemail";
 
-        register(username, password, confirmPassword);
+        register(username, password, confirmPassword, email);
     }
 
     /**
@@ -118,7 +123,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
      * @param password the password of the user
      * @param confirmPassword the password confirmation input
      */
-    private void register(String username, String password, String confirmPassword) {
+    private void register(String username, String password, String confirmPassword, String email) {
         if(username.length() == 0 || password.length() == 0 || confirmPassword.length() == 0) {
             showDialog(getString(R.string.register_dialog_title_empty_credentials),
                     getString(R.string.register_dialog_text_empty_credentials));
@@ -127,12 +132,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
 
         if(password.contentEquals(confirmPassword)) {
             try {
-                JSONObject params = new JSONObject();
+                HashMap<String, String> params = new HashMap<>();
                 params.put("username", username);
                 params.put("password", password);
-                JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST,
+                params.put("email", email);
+                JsonObjectRequest loginRequest = new JsonObjectRequest(
                         REGISTER_ENDPOINT,
-                        params,
+                        new JSONObject(params),
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -140,7 +146,16 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
                                         getString(R.string.register_dialog_title_success),
                                         getString(R.string.register_dialog_text_success)
                                 );
-                                changeFragment(new LoginFragment(), "LoginFragment");
+
+                                try {
+                                    AuthenticationHandler.login(response.getString("token"),
+                                            response.getLong("id"), getContext());
+                                    changeFragment(new MatchesFragment(), "MatchesFragment");
+                                } catch(Exception e) {
+                                    Log.d("debugMessage", e.getMessage());
+                                    showDialog(getString(R.string.generic_error_title),
+                                            getString(R.string.generic_error_text));
+                                }
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -151,6 +166,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
                                     getString(R.string.register_dialog_text_400)
                             );
                         }
+
+                        showDialog(getString(R.string.generic_error_title), error.getLocalizedMessage());
                     }
                 });
                 ApiRequestHandler.getInstance(getContext()).addToRequestQueue(loginRequest);
