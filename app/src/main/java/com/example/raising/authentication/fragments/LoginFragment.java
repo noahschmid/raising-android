@@ -23,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.raising.ApiRequestHandler;
 import com.example.raising.AuthenticationHandler;
+
 import com.example.raising.MainActivity;
 import com.example.raising.MatchesFragment;
 import com.example.raising.R;
@@ -37,12 +38,11 @@ import java.util.HashMap;
 
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
-    private EditText username_input;
-    private EditText password_input;
+    private EditText usernameInput;
+    private EditText passwordInput;
 
     final private String LOGIN_ENDPOINT = "https://33383.hostserv.eu:8080/account/login";
     private LoginViewModel mViewModel;
-
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -55,13 +55,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         hideBottomNavigation(true);
 
-        username_input = view.findViewById(R.id.editText_register_username);
-        password_input = view.findViewById(R.id.editText_register_password);
+        usernameInput = view.findViewById(R.id.editText_register_username);
+        passwordInput = view.findViewById(R.id.editText_register_password);
 
-        Button btn_login = view.findViewById(R.id.button_login);
-        btn_login.setOnClickListener(this);
-        Button btn_register = view.findViewById(R.id.button_register);
-        btn_register.setOnClickListener(this);
+
+        Button btnLogin = view.findViewById(R.id.button_login);
+        btnLogin.setOnClickListener(this);
+        Button btnRegister = view.findViewById(R.id.button_register);
+        btnRegister.setOnClickListener(this);
 
         return view;
     }
@@ -118,8 +119,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      * @version 1.0
      */
     private void prepareLogin() {
-        String username = username_input.getText().toString();
-        String password = password_input.getText().toString();
+        String username = usernameInput.getText().toString();
+        String password = passwordInput.getText().toString();
         login(username, password);
     }
 
@@ -130,7 +131,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      */
     private void login(String username, String password) {
         if(username.length() == 0 || password.length() == 0) {
-            showDialog(getString(R.string.login_dialog_title_empty_credentials),
+            showDialog(getString(R.string.login_dialog_title),
                     getString(R.string.login_dialog_text_empty_credentials));
             return;
         }
@@ -158,12 +159,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     try {
                         if(error.networkResponse.statusCode == 403) {
                             showDialog(
-                                    getString(R.string.login_dialog_title_403),
+                                    getString(R.string.login_dialog_title),
                                     getString(R.string.login_dialog_text_403)
                             );
                         }
                     } catch (NullPointerException e) {
+                        showDialog(
+                                getString(R.string.login_dialog_server_error_title),
+                                getString(R.string.login_dialog_server_error_text)
+                        );
                         Log.d("debugMessage", e.toString());
+                        Log.d("debugMessage", error.toString());
                     }
                 }
             }){
@@ -227,7 +233,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * Opens a dialog displaying an error message
+     * Opens a simple dialog displaying a message
      * @param dialogMessage The message that is to be displayed
      *
      * @author Lorenz Caliezi 03.03.2020
@@ -240,7 +246,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * This methods retrieves an instance the SupportFragmentManager of the used Activity
+     * This methods retrieves an instance the SupportFragmentManager of the underlying activity
      * @return Instance of SupportFragmentManager of used Activity
      *
      * @author Lorenz Caliezi 02.03.2020

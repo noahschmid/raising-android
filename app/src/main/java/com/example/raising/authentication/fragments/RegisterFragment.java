@@ -34,10 +34,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 public class RegisterFragment extends Fragment implements View.OnClickListener  {
-
-    private EditText username_input;
-    private EditText password_input;
-    private EditText confirm_password_input;
+    private EditText usernameInput;
+    private EditText passwordInput;
+    private EditText confirmPasswordInput;
 
     final private String REGISTER_ENDPOINT = "https://33383.hostserv.eu:8080/account/register";
 
@@ -53,13 +52,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
         hideBottomNavigation(true);
+      
+        usernameInput = view.findViewById(R.id.editText_register_username);
+        passwordInput = view.findViewById(R.id.editText_register_password);
+        confirmPasswordInput = view.findViewById(R.id.editText_register_confirmPassword);
 
-        username_input = view.findViewById(R.id.editText_register_username);
-        password_input = view.findViewById(R.id.editText_register_password);
-        confirm_password_input = view.findViewById(R.id.editText_register_confirmPassword);
-
-        Button btn_continue = view.findViewById(R.id.button_register_continue);
-        btn_continue.setOnClickListener(this);
+        Button btnContinue = view.findViewById(R.id.button_register_continue);
+        btnContinue.setOnClickListener(this);
 
         return view;
     }
@@ -105,14 +104,14 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
 
     /**
      * Simple helper function that retrieves the users input from the layout
-     *      and then calls {@link: register()}.
+     *      and then calls {@link: register(String, String, String)}.
      * Enables easier testing, since you can give register() some parameters.
      */
     private void prepareRegistration() {
-        String username = username_input.getText().toString();
-        String password = password_input.getText().toString();
-        String confirmPassword = confirm_password_input.getText().toString();
         String email = "testemail";
+        String username = usernameInput.getText().toString();
+        String password = passwordInput.getText().toString();
+        String confirmPassword = confirmPasswordInput.getText().toString();
 
         register(username, password, confirmPassword, email);
     }
@@ -125,7 +124,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
      */
     private void register(String username, String password, String confirmPassword, String email) {
         if(username.length() == 0 || password.length() == 0 || confirmPassword.length() == 0) {
-            showDialog(getString(R.string.register_dialog_title_empty_credentials),
+            showDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
@@ -165,20 +164,16 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
                                     getString(R.string.register_dialog_title_400),
                                     getString(R.string.register_dialog_text_400)
                             );
+                            changeFragment(new LoginFragment(), "LoginFragment");
                         }
 
                         showDialog(getString(R.string.generic_error_title), error.getLocalizedMessage());
                     }
-                });
-                ApiRequestHandler.getInstance(getContext()).addToRequestQueue(loginRequest);
-            } catch(Exception e) {
-                Log.d("debugMessage", e.getMessage());
-            }
-        // if PASSWORD does not equal CONFIRM_PASSWORD
-        } else {
-            showDialog(
-                    getString(R.string.register_dialog_title_password_match),
-                    getString(R.string.register_dialog_text_password_match));
+                }
+            });
+            ApiRequestHandler.getInstance(getContext()).addToRequestQueue(loginRequest);
+        } catch(Exception e) {
+            Log.d("debugMessage", e.getMessage());
         }
     }
 
