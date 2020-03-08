@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">RaisingMVP</string>
 
+    <!-- Strings used in bottom navigation -->
+    <string name="navigation_home"> Home </string>
+    <string name="navigation_profile"> Profile </string>
+    <string name="navigation_settings"> Settings </string>
+
     <!-- Strings used in multiple screens -->
     <string name="username_input_placeholder"> Username..</string>
     <string name="password_input_placeholder"> Password..</string>
@@ -32,6 +37,9 @@
     <string name="login_dialog_error_json_text">Could not log you in. Please try again.</string>
     <string name="login_dialog_server_error_title">Login failed</string>
     <string name="login_dialog_server_error_text">Could not connect to server. Please try again.</string>
+
+    <string name="generic_error_title">Action failed</string>
+    <string name="generic_error_text">Oops! Something went wrong.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

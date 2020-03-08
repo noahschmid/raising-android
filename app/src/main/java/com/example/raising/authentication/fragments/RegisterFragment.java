@@ -21,6 +21,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.raising.ApiRequestHandler;
+import com.example.raising.AuthenticationHandler;
+import com.example.raising.MainActivity;
+import com.example.raising.MatchesFragment;
 import com.example.raising.R;
 import com.example.raising.authentication.AuthenticationDialog;
 import com.example.raising.authentication.view_models.RegisterViewModel;
@@ -28,12 +31,14 @@ import com.example.raising.authentication.view_models.RegisterViewModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 public class RegisterFragment extends Fragment implements View.OnClickListener  {
     private EditText usernameInput;
     private EditText passwordInput;
     private EditText confirmPasswordInput;
 
-    final private String REGISTER_ENDPOINT = "http://33383.hostserv.eu:8080/account/register";
+    final private String REGISTER_ENDPOINT = "https://33383.hostserv.eu:8080/account/register";
 
     private RegisterViewModel mViewModel;
 
@@ -46,6 +51,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
+        hideBottomNavigation(true);
+      
         usernameInput = view.findViewById(R.id.editText_register_username);
         passwordInput = view.findViewById(R.id.editText_register_password);
         confirmPasswordInput = view.findViewById(R.id.editText_register_confirmPassword);
@@ -54,6 +61,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
         btnContinue.setOnClickListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        hideBottomNavigation(false);
     }
 
     @Override
@@ -75,16 +89,31 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
     }
 
     /**
+     * Call {@link com.example.raising.MainActivity#hideBottomNavigation(boolean)}
+     * @param isHidden if true, the bottomNavigation should be invisible,
+     *                 if false, the bottomNavigation should be visible
+     *
+     * @author Lorenz Caliezi 06.03.2020
+     */
+
+    private void hideBottomNavigation(boolean isHidden) {
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null)
+            activity.hideBottomNavigation(isHidden);
+    }
+
+    /**
      * Simple helper function that retrieves the users input from the layout
      *      and then calls {@link: register(String, String, String)}.
      * Enables easier testing, since you can give register() some parameters.
      */
     private void prepareRegistration() {
+        String email = "testemail";
         String username = usernameInput.getText().toString();
         String password = passwordInput.getText().toString();
         String confirmPassword = confirmPasswordInput.getText().toString();
 
-        register(username, password, confirmPassword);
+        register(username, password, confirmPassword, email);
     }
 
     /**
@@ -93,41 +122,52 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
      * @param password the password of the user
      * @param confirmPassword the password confirmation input
      */
-    private void register(String username, String password, String confirmPassword) {
+    private void register(String username, String password, String confirmPassword, String email) {
         if(username.length() == 0 || password.length() == 0 || confirmPassword.length() == 0) {
             showDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
-        if(!(password.contentEquals(confirmPassword))) {
-            showDialog(getString(R.string.register_dialog_title),
-                    getString(R.string.register_dialog_text_password_match));
-            return;
-        }
+        if(password.contentEquals(confirmPassword)) {
+            try {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("username", username);
+                params.put("password", password);
+                params.put("email", email);
+                JsonObjectRequest loginRequest = new JsonObjectRequest(
+                        REGISTER_ENDPOINT,
+                        new JSONObject(params),
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                showDialog(
+                                        getString(R.string.register_dialog_title_success),
+                                        getString(R.string.register_dialog_text_success)
+                                );
 
-        try {
-            JSONObject params = new JSONObject();
-            params.put("username", username);
-            params.put("password", password);
-            JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST,
-                    REGISTER_ENDPOINT,
-                    params,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            showDialog(getString(R.string.register_dialog_title_success),
-                                    getString(R.string.register_dialog_text_success)
+                                try {
+                                    AuthenticationHandler.login(response.getString("token"),
+                                            response.getLong("id"), getContext());
+                                    changeFragment(new MatchesFragment(), "MatchesFragment");
+                                } catch(Exception e) {
+                                    Log.d("debugMessage", e.getMessage());
+                                    showDialog(getString(R.string.generic_error_title),
+                                            getString(R.string.generic_error_text));
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if(error.networkResponse.statusCode == 400) {
+                            showDialog(
+                                    getString(R.string.register_dialog_title_400),
+                                    getString(R.string.register_dialog_text_400)
                             );
                             changeFragment(new LoginFragment(), "LoginFragment");
                         }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    if(error.networkResponse.statusCode == 400) {
-                        showDialog(getString(R.string.register_dialog_title),
-                                getString(R.string.register_dialog_text_400)
-                        );
+
+                        showDialog(getString(R.string.generic_error_title), error.getLocalizedMessage());
                     }
                 }
             });
