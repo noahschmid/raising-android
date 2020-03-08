@@ -29,10 +29,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RegisterFragment extends Fragment implements View.OnClickListener  {
-
-    private EditText username_input;
-    private EditText password_input;
-    private EditText confirm_password_input;
+    private EditText usernameInput;
+    private EditText passwordInput;
+    private EditText confirmPasswordInput;
 
     final private String REGISTER_ENDPOINT = "http://33383.hostserv.eu:8080/account/register";
 
@@ -47,12 +46,12 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-        username_input = view.findViewById(R.id.editText_register_username);
-        password_input = view.findViewById(R.id.editText_register_password);
-        confirm_password_input = view.findViewById(R.id.editText_register_confirmPassword);
+        usernameInput = view.findViewById(R.id.editText_register_username);
+        passwordInput = view.findViewById(R.id.editText_register_password);
+        confirmPasswordInput = view.findViewById(R.id.editText_register_confirmPassword);
 
-        Button btn_continue = view.findViewById(R.id.button_register_continue);
-        btn_continue.setOnClickListener(this);
+        Button btnContinue = view.findViewById(R.id.button_register_continue);
+        btnContinue.setOnClickListener(this);
 
         return view;
     }
@@ -77,13 +76,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
 
     /**
      * Simple helper function that retrieves the users input from the layout
-     *      and then calls {@link: register()}.
+     *      and then calls {@link: register(String, String, String)}.
      * Enables easier testing, since you can give register() some parameters.
      */
     private void prepareRegistration() {
-        String username = username_input.getText().toString();
-        String password = password_input.getText().toString();
-        String confirmPassword = confirm_password_input.getText().toString();
+        String username = usernameInput.getText().toString();
+        String password = passwordInput.getText().toString();
+        String confirmPassword = confirmPasswordInput.getText().toString();
 
         register(username, password, confirmPassword);
     }
@@ -96,48 +95,45 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
      */
     private void register(String username, String password, String confirmPassword) {
         if(username.length() == 0 || password.length() == 0 || confirmPassword.length() == 0) {
-            showDialog(getString(R.string.register_dialog_title_empty_credentials),
+            showDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
-        if(password.contentEquals(confirmPassword)) {
-            try {
-                JSONObject params = new JSONObject();
-                params.put("username", username);
-                params.put("password", password);
-                JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST,
-                        REGISTER_ENDPOINT,
-                        params,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                showDialog(
-                                        getString(R.string.register_dialog_title_success),
-                                        getString(R.string.register_dialog_text_success)
-                                );
-                                changeFragment(new LoginFragment(), "LoginFragment");
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if(error.networkResponse.statusCode == 400) {
-                            showDialog(
-                                    getString(R.string.register_dialog_title_400),
-                                    getString(R.string.register_dialog_text_400)
-                            );
-                        }
-                    }
-                });
-                ApiRequestHandler.getInstance(getContext()).addToRequestQueue(loginRequest);
-            } catch(Exception e) {
-                Log.d("debugMessage", e.getMessage());
-            }
-        // if PASSWORD does not equal CONFIRM_PASSWORD
-        } else {
-            showDialog(
-                    getString(R.string.register_dialog_title_password_match),
+        if(!(password.contentEquals(confirmPassword))) {
+            showDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_password_match));
+            return;
+        }
+
+        try {
+            JSONObject params = new JSONObject();
+            params.put("username", username);
+            params.put("password", password);
+            JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST,
+                    REGISTER_ENDPOINT,
+                    params,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            showDialog(getString(R.string.register_dialog_title_success),
+                                    getString(R.string.register_dialog_text_success)
+                            );
+                            changeFragment(new LoginFragment(), "LoginFragment");
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if(error.networkResponse.statusCode == 400) {
+                        showDialog(getString(R.string.register_dialog_title),
+                                getString(R.string.register_dialog_text_400)
+                        );
+                    }
+                }
+            });
+            ApiRequestHandler.getInstance(getContext()).addToRequestQueue(loginRequest);
+        } catch(Exception e) {
+            Log.d("debugMessage", e.getMessage());
         }
     }
 
