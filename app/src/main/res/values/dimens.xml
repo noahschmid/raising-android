@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="inputFormHeight"> 60dp </dimen>
+    <dimen name="inputFormHorizontalMargin"> 32dp </dimen>
+    <dimen name="inputFormVerticalMargin"> 16dp </dimen>
+
+    <dimen name="fragmentTitleFontSize"> 20sp </dimen>
+</resources>

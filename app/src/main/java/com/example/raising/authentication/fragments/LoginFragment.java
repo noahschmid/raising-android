@@ -25,6 +25,8 @@ import com.example.raising.MatchesFragment;
 import com.example.raising.R;
 import com.example.raising.RaisingFragment;
 import com.example.raising.authentication.fragments.forgotPassword.ForgotPasswordEmailFragment;
+import com.example.raising.authentication.fragments.registration.RegisterFragment;
+import com.example.raising.authentication.fragments.registration.RegisterLoginInformationFragment;
 import com.example.raising.authentication.view_models.LoginViewModel;
 
 import org.json.JSONObject;

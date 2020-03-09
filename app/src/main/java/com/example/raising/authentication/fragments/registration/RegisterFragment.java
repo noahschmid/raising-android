@@ -1,4 +1,4 @@
-package com.example.raising.authentication.fragments;
+package com.example.raising.authentication.fragments.registration;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -22,6 +22,7 @@ import com.example.raising.AuthenticationHandler;
 import com.example.raising.MatchesFragment;
 import com.example.raising.R;
 import com.example.raising.RaisingFragment;
+import com.example.raising.authentication.fragments.LoginFragment;
 import com.example.raising.authentication.view_models.RegisterViewModel;
 
 import org.json.JSONObject;
