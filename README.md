@@ -8,7 +8,7 @@
 
 ### Initial Seutp <a name="initial"/>
 
-1. Install [Android Studio](https://developer.android.com/studio)
+1. Install the newest version of [Android Studio](https://developer.android.com/studio)
 1. Open this repository in Android Studio
 1. Wait for the initial gradle build to finish
 
@@ -19,7 +19,7 @@
 1. On your device, go to `Developer Options` and enable `USB-Debugging`
 1. Connect your chosen device to your laptop via USB-cable and select `Share data` on the Pop-Up-Window
 1. Open Android Studio and load this repository
-1. At the top you will see your connected device, click on the green arrow next to it to run the app
+1. At the top you will see your connected device, click on the green arrow next to it to run the app ![](docs-ressources/)
 1. After about 15 seconds the app automatically opens on your device
 
 ### Further development <a name="development"/>
