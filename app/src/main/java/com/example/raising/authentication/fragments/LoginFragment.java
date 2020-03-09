@@ -1,13 +1,11 @@
 package com.example.raising.authentication.fragments;
 
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +24,7 @@ import com.example.raising.AuthenticationHandler;
 import com.example.raising.MainActivity;
 import com.example.raising.MatchesFragment;
 import com.example.raising.R;
-import com.example.raising.authentication.AuthenticationDialog;
+import com.example.raising.RaisingFragment;
 import com.example.raising.authentication.fragments.forgotPassword.ForgotPasswordEmailFragment;
 import com.example.raising.authentication.view_models.LoginViewModel;
 
@@ -35,7 +33,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 
-public class LoginFragment extends Fragment implements View.OnClickListener {
+public class LoginFragment extends RaisingFragment implements View.OnClickListener {
     private EditText usernameInput;
     private EditText passwordInput;
 
@@ -98,20 +96,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * Call {@link com.example.raising.MainActivity#hideBottomNavigation(boolean)}
-     * @param isHidden if true, the bottomNavigation should be invisible,
-     *                 if false, the bottomNavigation should be visible
-     *
-     * @author Lorenz Caliezi 06.03.2020
-     */
-    private void hideBottomNavigation(boolean isHidden) {
-        MainActivity activity = (MainActivity) getActivity();
-        if (activity != null)
-            activity.hideBottomNavigation(isHidden);
-    }
-
-
-    /**
      * Simple helper function that retrieves the users input from the layout
      *      and then calls {@link #login(String, String)}.
      * Enables easier testing, since you can give login() some parameters.
@@ -132,7 +116,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      */
     private void login(String username, String password) {
         if(username.length() == 0 || password.length() == 0) {
-            showDialog(getString(R.string.login_dialog_title),
+            showSimpleDialog(getString(R.string.login_dialog_title),
                     getString(R.string.login_dialog_text_empty_credentials));
             return;
         }
@@ -150,7 +134,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                         response.getLong("id"), getContext());
                                 changeFragment(new MatchesFragment(), "MatchesFragment");
                             } catch(Exception e) {
-                                showDialog(getString(R.string.generic_error_title),
+                                showSimpleDialog(getString(R.string.generic_error_title),
                                         e.getMessage());
                             }
                         }
@@ -159,13 +143,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 public void onErrorResponse(VolleyError error) {
                     try {
                         if(error.networkResponse.statusCode == 403) {
-                            showDialog(
+                            showSimpleDialog(
                                     getString(R.string.login_dialog_title),
                                     getString(R.string.login_dialog_text_403)
                             );
                         }
                     } catch (NullPointerException e) {
-                        showDialog(
+                        showSimpleDialog(
                                 getString(R.string.login_dialog_server_error_title),
                                 getString(R.string.login_dialog_server_error_text)
                         );
@@ -217,56 +201,5 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      */
     private void goToForgotFragment() {
         changeFragment(new ForgotPasswordEmailFragment(), "ForgotPasswordEmailFragment");
-    }
-
-    /**
-     * Change from the current fragment to the next
-     * @param fragment The fragment, that should be displayed next
-     * @param fragmentName The name of the next fragment.
-     *                     Allows us to put the fragment on the BackStack
-     *
-     * @author Lorenz Caliezi 02.03.2020
-     * @version 1.0
-     */
-    private void changeFragment(Fragment fragment, String fragmentName) {
-        // clearBackStack();
-        try {
-            getActivitiesFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .addToBackStack(fragmentName)
-                    .commit();
-        } catch (NullPointerException e) {
-            Log.d("debugMessage", e.getMessage());
-        }
-    }
-
-    /**
-     * Opens a simple dialog displaying a message
-     * @param dialogMessage The message that is to be displayed
-     *
-     * @author Lorenz Caliezi 03.03.2020
-     * @version 1.1
-     */
-    private void showDialog(String dialogTitle, String dialogMessage) {
-        AuthenticationDialog loginDialog =
-                new AuthenticationDialog().newInstance(dialogTitle, dialogMessage);
-        loginDialog.show(getActivitiesFragmentManager(), "loginDialog");
-    }
-
-    /**
-     * This methods retrieves an instance the SupportFragmentManager of the underlying activity
-     * @return Instance of SupportFragmentManager of used Activity
-     *
-     * @author Lorenz Caliezi 02.03.2020
-     * @version 1.0
-     */
-    private FragmentManager getActivitiesFragmentManager() {
-        try {
-            return getActivity().getSupportFragmentManager();
-        } catch (NullPointerException e) {
-            Log.d("debugMessage", e.toString());
-        }
-        return null;
     }
 }

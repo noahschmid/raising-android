@@ -12,8 +12,9 @@ import android.widget.EditText;
 
 import com.example.raising.MainActivity;
 import com.example.raising.R;
+import com.example.raising.RaisingFragment;
 
-public class ForgotPasswordEmailFragment extends Fragment implements View.OnClickListener{
+public class ForgotPasswordEmailFragment extends RaisingFragment implements View.OnClickListener{
     private EditText emailInput;
 
     @Override
@@ -47,20 +48,6 @@ public class ForgotPasswordEmailFragment extends Fragment implements View.OnClic
             default:
                 break;
         }
-    }
-
-    /**
-     * Call {@link com.example.raising.MainActivity#hideBottomNavigation(boolean)}
-     * @param isHidden if true, the bottomNavigation should be invisible,
-     *                 if false, the bottomNavigation should be visible
-     *
-     * @author Lorenz Caliezi 06.03.2020
-     */
-
-    private void hideBottomNavigation(boolean isHidden) {
-        MainActivity activity = (MainActivity) getActivity();
-        if (activity != null)
-            activity.hideBottomNavigation(isHidden);
     }
 
     private void prepareResetEmail() {

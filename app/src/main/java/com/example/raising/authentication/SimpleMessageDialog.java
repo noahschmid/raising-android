@@ -12,7 +12,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.raising.R;
 
 
-public class AuthenticationDialog extends DialogFragment {
+public class SimpleMessageDialog extends DialogFragment {
 
     /**
      * Create a new instance of a AuthenticationDialog
@@ -23,15 +23,15 @@ public class AuthenticationDialog extends DialogFragment {
      * @author Lorenz Caliezi 03.03.2020
      * @version 1.1
      */
-    public AuthenticationDialog newInstance(String dialogTitle, String dialogMessage) {
-        AuthenticationDialog authenticationDialog = new AuthenticationDialog();
+    public SimpleMessageDialog newInstance(String dialogTitle, String dialogMessage) {
+        SimpleMessageDialog simpleMessageDialog = new SimpleMessageDialog();
 
         Bundle bundle = new Bundle();
         bundle.putString("title", dialogTitle);
         bundle.putString("message", dialogMessage);
-        authenticationDialog.setArguments(bundle);
+        simpleMessageDialog.setArguments(bundle);
 
-        return authenticationDialog;
+        return simpleMessageDialog;
     }
 
     /**

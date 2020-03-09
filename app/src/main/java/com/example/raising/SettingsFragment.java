@@ -17,7 +17,7 @@ import android.widget.Button;
 
 import com.example.raising.authentication.fragments.LoginFragment;
 
-public class SettingsFragment extends Fragment implements View.OnClickListener {
+public class SettingsFragment extends RaisingFragment implements View.OnClickListener {
 
     private SettingsViewModel mViewModel;
 
@@ -28,8 +28,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
+
         Button btnLogout = view.findViewById(R.id.button_logout);
         btnLogout.setOnClickListener(this);
 
@@ -59,42 +59,4 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         AuthenticationHandler.logout(getContext());
         changeFragment(new LoginFragment(), "LoginFragment");
     }
-
-    /**
-     * Change from the current fragment to the next
-     * @param fragment The fragment, that should be displayed next
-     * @param fragmentName The name of the next fragment.
-     *                     Allows us to put the fragment on the BackStack
-     *
-     * @author Lorenz Caliezi 02.03.2020
-     * @version 1.0
-     */
-    private void changeFragment(Fragment fragment, String fragmentName) {
-        try {
-            getActivitiesFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .addToBackStack(fragmentName)
-                    .commit();
-        } catch (NullPointerException e) {
-            Log.d("debugMessage", e.getMessage());
-        }
-    }
-
-    /**
-     * This methods retrieves an instance the SupportFragmentManager of the used Activity
-     * @return Instance of SupportFragmentManager of used Activity
-     *
-     * @author Lorenz Caliezi 02.03.2020
-     * @version 1.0
-     */
-    private FragmentManager getActivitiesFragmentManager() {
-        try {
-            return getActivity().getSupportFragmentManager();
-        } catch (NullPointerException e) {
-            Log.d("debugMessage", e.toString());
-        }
-        return null;
-    }
-
 }
