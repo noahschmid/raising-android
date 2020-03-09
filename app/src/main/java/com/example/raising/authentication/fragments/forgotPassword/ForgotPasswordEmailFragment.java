@@ -2,15 +2,12 @@ package com.example.raising.authentication.fragments.forgotPassword;
 
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.raising.MainActivity;
 import com.example.raising.R;
 import com.example.raising.RaisingFragment;
 
@@ -26,7 +23,7 @@ public class ForgotPasswordEmailFragment extends RaisingFragment implements View
 
         hideBottomNavigation(true);
 
-        Button btnSend = view.findViewById(R.id.button_forgot_send);
+        Button btnSend = view.findViewById(R.id.button_forgot_reset);
         btnSend.setOnClickListener(this);
 
         return view;
@@ -42,20 +39,32 @@ public class ForgotPasswordEmailFragment extends RaisingFragment implements View
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.button_forgot_send:
-                prepareResetEmail();
+            case R.id.button_forgot_reset:
+                prepareResetPassword();
                 break;
             default:
                 break;
         }
     }
 
-    private void prepareResetEmail() {
+    /**
+     * Simple helper method, that prepares {@link #resetPassword(String)}.
+     *
+     * @author Lorenz Caliezi 09.03.2020
+     */
+    private void prepareResetPassword() {
         String email = emailInput.getText().toString();
-        resetEmail(email);
+        resetPassword(email);
     }
 
-    private void resetEmail(String email) {
-
+    private void resetPassword(String email) {
+        // TODO: Implement logic to reset password
+        if(email.length() != 0) {
+            changeFragment(new ForgotPasswordTokenFragment(), "ForgotPasswordTokenFragment");
+        } else {
+            showSimpleDialog(
+                    getString(R.string.forgot_dialog_title_no_input),
+                    getString(R.string.forgot_dialog_text_no_input));
+        }
     }
 }

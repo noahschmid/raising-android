@@ -24,11 +24,14 @@
     <string name="login_dialog_text_empty_credentials"> Please fill out all required fields </string>
 
     <!-- Strings used in ForgotPasswordScreens -->
-    <string name="forgot_button_sendEmail"> Send Email </string>
+    <string name="forgot_button_sendEmail"> Reset password </string>
+    <string name="forgot_dialog_title_no_input"> No Input </string>
+    <string name="forgot_dialog_text_no_input"> You must enter a valid address </string>
+
+    <string name="forgot_dialog_title"> Password successfully reset </string>
+    <string name="forgot_dialog_text"> Check your email for further information </string>
+    <string name="forgot_token_text"> Enter the token, that you have received via email </string>
     <string name="forgot_token_input_placeholder"> Token.. </string>
-    <string name="forgot_dialog_title"> Email sent </string>
-    <string name="forgot_dialog_text">
-        You have received an email containing a token, with which you can now log in </string>
 
     <!-- Strings used in RegisterScreen -->
     <string name="confirmPassword_input_placeholder"> Confirm password </string>

@@ -45,19 +45,24 @@ public class ForgotPasswordTokenFragment extends RaisingFragment implements View
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_forgot_loginWithToken:
-                ;
+                prepareLoginWithToken();
                 break;
             default:
                 break;
         }
     }
 
+    /**
+     * Simple helper method, that prepares {@link #loginWithToken(String)}.
+     *
+     * @author Lorenz Caliezi 09.03.2020
+     */
     private void prepareLoginWithToken() {
         String token = tokenInput.getText().toString();
         loginWithToken(token);
     }
 
     private void loginWithToken(String token) {
-
+        // TODO: Implement logic to login with token
     }
 }
