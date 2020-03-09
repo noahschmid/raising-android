@@ -19,11 +19,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.raising.ApiRequestHandler;
 import com.example.raising.AuthenticationHandler;
-import com.example.raising.MainActivity;
 import com.example.raising.MatchesFragment;
 import com.example.raising.R;
 import com.example.raising.RaisingFragment;
-import com.example.raising.authentication.SimpleMessageDialog;
 import com.example.raising.authentication.view_models.RegisterViewModel;
 
 import org.json.JSONObject;

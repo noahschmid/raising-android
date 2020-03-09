@@ -21,7 +21,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.raising.ApiRequestHandler;
 import com.example.raising.AuthenticationHandler;
 
-import com.example.raising.MainActivity;
 import com.example.raising.MatchesFragment;
 import com.example.raising.R;
 import com.example.raising.RaisingFragment;
@@ -51,8 +50,8 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
 
         hideBottomNavigation(true);
 
-        usernameInput = view.findViewById(R.id.editText_register_username);
-        passwordInput = view.findViewById(R.id.editText_register_password);
+        usernameInput = view.findViewById(R.id.editText_login_username);
+        passwordInput = view.findViewById(R.id.editText_login_password);
 
         Button btnLogin = view.findViewById(R.id.button_login);
         btnLogin.setOnClickListener(this);

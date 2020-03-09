@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/prototypeLoginFrameLayout"
+    android:id="@+id/loginFrameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".authentication.fragments.LoginFragment">
 
     <EditText
-        android:id="@+id/editText_register_username"
+        android:id="@+id/editText_login_username"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginStart="32dp"
@@ -20,7 +20,7 @@
         android:ems="10"
         android:hint="@string/username_input_placeholder"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/editText_register_password"
+        app:layout_constraintBottom_toTopOf="@+id/editText_login_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -36,13 +36,13 @@
         android:hint="@string/login_welcome_text"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/editText_register_username"
+        app:layout_constraintBottom_toTopOf="@+id/editText_login_username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText_register_password"
+        android:id="@+id/editText_login_password"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="16dp"
@@ -52,9 +52,9 @@
         android:hint="@string/password_input_placeholder"
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/button_login"
-        app:layout_constraintEnd_toEndOf="@+id/editText_register_username"
-        app:layout_constraintStart_toStartOf="@+id/editText_register_username"
-        app:layout_constraintTop_toBottomOf="@+id/editText_register_username" />
+        app:layout_constraintEnd_toEndOf="@+id/editText_login_username"
+        app:layout_constraintStart_toStartOf="@+id/editText_login_username"
+        app:layout_constraintTop_toBottomOf="@+id/editText_login_username" />
 
     <Button
         android:id="@+id/button_login"
@@ -66,8 +66,8 @@
         android:background="@drawable/btn_login"
         android:hint="@string/login_button_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/editText_register_username"
-        app:layout_constraintTop_toBottomOf="@+id/editText_register_password" />
+        app:layout_constraintEnd_toEndOf="@+id/editText_login_username"
+        app:layout_constraintTop_toBottomOf="@+id/editText_login_password" />
 
     <Button
         android:id="@+id/button_login_goToRegister"
@@ -77,8 +77,8 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:hint="@string/register_now_text"
-        app:layout_constraintStart_toStartOf="@+id/editText_register_username"
-        app:layout_constraintTop_toBottomOf="@+id/editText_register_password" />
+        app:layout_constraintStart_toStartOf="@+id/editText_login_username"
+        app:layout_constraintTop_toBottomOf="@+id/editText_login_password" />
 
     <Button
         android:id="@+id/button_login_forgotPassword"
@@ -88,7 +88,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:hint="@string/login_forgot_button_text"
-        app:layout_constraintStart_toStartOf="@+id/editText_register_username"
+        app:layout_constraintStart_toStartOf="@+id/editText_login_username"
         app:layout_constraintTop_toBottomOf="@+id/button_login_goToRegister" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
