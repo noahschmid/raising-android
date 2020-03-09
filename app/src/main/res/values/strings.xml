@@ -8,7 +8,7 @@
 
     <!-- Strings used in multiple screens -->
     <string name="username_input_placeholder"> Username..</string>
-    <string name="email_input_placeholder"> E-Mail..</string>
+    <string name="email_input_placeholder"> E-Mail.. </string>
     <string name="password_input_placeholder"> Password..</string>
     <string name="register_now_text"> Register now </string>
 
