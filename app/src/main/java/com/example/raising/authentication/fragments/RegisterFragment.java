@@ -123,13 +123,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
      * @param confirmPassword the password confirmation input
      */
     private void register(String username, String password, String confirmPassword, String email) {
-        if(username.length() == 0 || password.length() == 0 || confirmPassword.length() == 0) {
+        if (username.length() == 0 || password.length() == 0 || confirmPassword.length() == 0) {
             showDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
-        if(password.contentEquals(confirmPassword)) {
+        if (password.contentEquals(confirmPassword)) {
             try {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("username", username);
@@ -150,7 +150,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
                                     AuthenticationHandler.login(response.getString("token"),
                                             response.getLong("id"), getContext());
                                     changeFragment(new MatchesFragment(), "MatchesFragment");
-                                } catch(Exception e) {
+                                } catch (Exception e) {
                                     Log.d("debugMessage", e.getMessage());
                                     showDialog(getString(R.string.generic_error_title),
                                             getString(R.string.generic_error_text));
@@ -159,9 +159,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        if(error.networkResponse.statusCode == 400) {
+                        if (error.networkResponse.statusCode == 400) {
                             showDialog(
-                                    getString(R.string.register_dialog_title_400),
+                                    getString(R.string.register_dialog_title),
                                     getString(R.string.register_dialog_text_400)
                             );
                             changeFragment(new LoginFragment(), "LoginFragment");
@@ -169,11 +169,11 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
 
                         showDialog(getString(R.string.generic_error_title), error.getLocalizedMessage());
                     }
-                }
-            });
-            ApiRequestHandler.getInstance(getContext()).addToRequestQueue(loginRequest);
-        } catch(Exception e) {
-            Log.d("debugMessage", e.getMessage());
+                });
+                ApiRequestHandler.getInstance(getContext()).addToRequestQueue(loginRequest);
+            } catch (Exception e) {
+                Log.d("debugMessage", e.getMessage());
+            }
         }
     }
 

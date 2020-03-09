@@ -70,14 +70,25 @@
         app:layout_constraintTop_toBottomOf="@+id/editText_register_password" />
 
     <Button
-        android:id="@+id/button_register"
+        android:id="@+id/button_login_goToRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:hint="@string/login_register_text"
+        android:hint="@string/register_now_text"
         app:layout_constraintStart_toStartOf="@+id/editText_register_username"
         app:layout_constraintTop_toBottomOf="@+id/editText_register_password" />
+
+    <Button
+        android:id="@+id/button_login_forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:hint="@string/login_forgot_button_text"
+        app:layout_constraintStart_toStartOf="@+id/editText_register_username"
+        app:layout_constraintTop_toBottomOf="@+id/button_login_goToRegister" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

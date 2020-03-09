@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.support.v4.app.INotificationSideChannel;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,10 +27,9 @@ import com.example.raising.MainActivity;
 import com.example.raising.MatchesFragment;
 import com.example.raising.R;
 import com.example.raising.authentication.AuthenticationDialog;
+import com.example.raising.authentication.fragments.forgotPassword.ForgotPasswordEmailFragment;
 import com.example.raising.authentication.view_models.LoginViewModel;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -58,11 +56,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         usernameInput = view.findViewById(R.id.editText_register_username);
         passwordInput = view.findViewById(R.id.editText_register_password);
 
-
         Button btnLogin = view.findViewById(R.id.button_login);
         btnLogin.setOnClickListener(this);
-        Button btnRegister = view.findViewById(R.id.button_register);
+        Button btnRegister = view.findViewById(R.id.button_login_goToRegister);
         btnRegister.setOnClickListener(this);
+        Button btnForgot = view.findViewById(R.id.button_login_forgotPassword);
+        btnForgot.setOnClickListener(this);
 
         return view;
     }
@@ -80,8 +79,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             case R.id.button_login:
                 prepareLogin();
                 break;
-            case R.id.button_register:
+            case R.id.button_login_goToRegister:
                 goToRegisterFragment();
+                break;
+            case R.id.button_login_forgotPassword:
+                goToForgotFragment();
                 break;
             default:
                 break;
@@ -102,7 +104,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      *
      * @author Lorenz Caliezi 06.03.2020
      */
-
     private void hideBottomNavigation(boolean isHidden) {
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null)
@@ -204,10 +205,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      * Change to the RegisterFragment, if user wants to register, not log in
      *
      * @author Lorenz Caliezi 02.03.2020
-     * @version 1.0
      */
     private void goToRegisterFragment() {
         changeFragment(new RegisterFragment(), "RegisterFragment");
+    }
+
+    /**
+     * Change to ForgotPasswordEmailFragment, if the user wants to get a new password
+     *
+     * @author Lorenz Caliezi 09.03.2020
+     */
+    private void goToForgotFragment() {
+        changeFragment(new ForgotPasswordEmailFragment(), "ForgotPasswordEmailFragment");
     }
 
     /**

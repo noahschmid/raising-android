@@ -46,7 +46,7 @@
         android:layout_width="246dp"
         android:layout_height="91dp"
         android:gravity="center"
-        android:hint="@string/login_register_text"
+        android:hint="@string/register_now_text"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/editText_register_username"
