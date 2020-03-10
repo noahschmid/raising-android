@@ -24,7 +24,7 @@ import com.example.raising.AuthenticationHandler;
 import com.example.raising.MatchesFragment;
 import com.example.raising.R;
 import com.example.raising.RaisingFragment;
-import com.example.raising.authentication.fragments.forgotPassword.ForgotPasswordEmailFragment;
+import com.example.raising.authentication.fragments.forgotPassword.ForgotPasswordFragment;
 import com.example.raising.authentication.view_models.LoginViewModel;
 
 import org.json.JSONObject;
@@ -36,7 +36,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
     private EditText usernameInput;
     private EditText passwordInput;
 
-    final private String LOGIN_ENDPOINT = "https://33383.hostserv.eu:8080/account/login";
+    final private String loginEndpoint = "https://33383.hostserv.eu:8080/account/login";
     private LoginViewModel mViewModel;
 
     public static LoginFragment newInstance() {
@@ -124,7 +124,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
             params.put("username", username);
             params.put("password", password);
             JsonObjectRequest loginRequest = new JsonObjectRequest(
-                    LOGIN_ENDPOINT, new JSONObject(params),
+                    loginEndpoint, new JSONObject(params),
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
@@ -199,6 +199,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
      * @author Lorenz Caliezi 09.03.2020
      */
     private void goToForgotFragment() {
-        changeFragment(new ForgotPasswordEmailFragment(), "ForgotPasswordEmailFragment");
+        changeFragment(new ForgotPasswordFragment(), "ForgotPasswordEmailFragment");
     }
 }

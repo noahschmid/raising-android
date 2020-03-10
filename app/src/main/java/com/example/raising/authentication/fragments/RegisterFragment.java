@@ -33,7 +33,7 @@ public class RegisterFragment extends RaisingFragment implements View.OnClickLis
     private EditText passwordInput;
     private EditText confirmPasswordInput;
 
-    final private String REGISTER_ENDPOINT = "https://33383.hostserv.eu:8080/account/register";
+    final private String registerEndpoint = "https://33383.hostserv.eu:8080/account/register";
 
     private RegisterViewModel mViewModel;
 
@@ -117,7 +117,7 @@ public class RegisterFragment extends RaisingFragment implements View.OnClickLis
                 params.put("password", password);
                 params.put("email", email);
                 JsonObjectRequest loginRequest = new JsonObjectRequest(
-                        REGISTER_ENDPOINT,
+                        registerEndpoint,
                         new JSONObject(params),
                         new Response.Listener<JSONObject>() {
                             @Override
