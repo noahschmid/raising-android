@@ -1,5 +1,6 @@
 package com.example.raising.authentication.fragments;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -133,6 +134,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                             try {
                                 AuthenticationHandler.login(response.getString("token"),
                                         response.getLong("id"), getContext());
+                                // getActivitiesFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                                 changeFragment(new MatchesFragment(), "MatchesFragment");
                             } catch(Exception e) {
                                 showSimpleDialog(getString(R.string.generic_error_title),
@@ -173,18 +175,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
             return;
         }
     }
-
-    /*
-    /**
-     * Clear the LoginFragment from the back stack
-     *
-     * @author Lorenz Caliezi 06.03.2020
-     *
-    private void clearBackStack() {
-        getActivitiesFragmentManager()
-                .popBackStackImmediate("LoginFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-    }
-     */
 
     /**
      * Change to the RegisterFragment, if user wants to register, not log in

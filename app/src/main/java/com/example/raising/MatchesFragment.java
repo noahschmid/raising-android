@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 
 public class MatchesFragment extends RaisingFragment {
 
-    private MatchesViewModel mViewModel;
-
     public static MatchesFragment newInstance() {
         return new MatchesFragment();
     }
@@ -29,8 +27,6 @@ public class MatchesFragment extends RaisingFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(MatchesViewModel.class);
-        // TODO: Use the ViewModel
     }
 
 }

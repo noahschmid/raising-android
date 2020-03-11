@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/register_address_information_frame_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".authentication.fragments.registration.RegisterAddressInformationFragment">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/register_address_country"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+        app:layout_constraintBottom_toTopOf="@+id/register_address_town"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_input_address_country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/register_address_town"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+        app:layout_constraintBottom_toTopOf="@+id/register_address_zip"
+        app:layout_constraintEnd_toEndOf="@+id/register_address_country"
+        app:layout_constraintStart_toStartOf="@+id/register_address_country"
+        app:layout_constraintTop_toBottomOf="@+id/register_address_country">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_input_address_town"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/register_address_zip"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+        app:layout_constraintBottom_toTopOf="@+id/register_address_street"
+        app:layout_constraintEnd_toEndOf="@+id/register_address_country"
+        app:layout_constraintStart_toStartOf="@+id/register_address_country"
+        app:layout_constraintTop_toBottomOf="@+id/register_address_town">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_input_address_zip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/register_address_street"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+        app:layout_constraintBottom_toTopOf="@+id/register_address_website"
+        app:layout_constraintEnd_toEndOf="@+id/register_address_country"
+        app:layout_constraintStart_toStartOf="@+id/register_address_country"
+        app:layout_constraintTop_toBottomOf="@+id/register_address_zip">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_input_address_street"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/register_address_website"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/register_address_country"
+        app:layout_constraintStart_toStartOf="@+id/register_address_country"
+        app:layout_constraintTop_toBottomOf="@+id/register_address_street">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_input_address_website"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

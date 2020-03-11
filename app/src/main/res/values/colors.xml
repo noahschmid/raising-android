@@ -6,6 +6,8 @@
 
     <color name="raisingPrimary">#f92a2a</color>
     <color name="white"> #ffffff </color>
+    <color name="primaryTextColor"> #000000 </color>
+    <color name="primaryButtonTextColor"> #ffffff </color>
 
     <!-- Colors used in LoginScreen -->
     <color name="borderLoginFormBorder">#000000</color>

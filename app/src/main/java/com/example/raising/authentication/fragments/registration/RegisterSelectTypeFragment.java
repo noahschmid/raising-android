@@ -10,18 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.example.raising.R;
 import com.example.raising.RaisingFragment;
 
-public class RegisterLoginInformationFragment extends RaisingFragment implements View.OnClickListener {
-    private EditText firstNameInput, lastNameInput, emailInput, passwordInput;
+public class RegisterSelectTypeFragment extends RaisingFragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_login_information, container, false);
+        View view = inflater.inflate(R.layout.fragment_register_select_type, container, false);
 
         hideBottomNavigation(true);
 
@@ -32,13 +30,10 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        firstNameInput = view.findViewById(R.id.register_input_first_name);
-        lastNameInput = view.findViewById(R.id.register_input_last_name);
-        emailInput = view.findViewById(R.id.register_input_email);
-        passwordInput = view.findViewById(R.id.register_input_password);
-
-        Button btnLoginInformation = view.findViewById(R.id.button_login_information);
-        btnLoginInformation.setOnClickListener(this);
+        Button btnSelectStartUp = view.findViewById(R.id.button_register_as_startup);
+        btnSelectStartUp.setOnClickListener(this);
+        Button btnSelectInvestor = view.findViewById(R.id.button_register_as_investor);
+        btnSelectInvestor.setOnClickListener(this);
     }
 
     @Override
@@ -49,10 +44,13 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View v) {
         switch(getId()) {
-            case R.id.button_login_information:
-                //TODO: insert function to be executed
+            case R.id.button_register_as_startup:
+                //TODO: implement further action
+                break;
+            case R.id.button_register_as_investor:
+                //TODO: implement further action
                 break;
             default:
                 break;

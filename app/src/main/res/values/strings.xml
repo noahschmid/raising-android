@@ -34,11 +34,24 @@
     <string name="forgot_token_input_placeholder"> Token.. </string>
 
     <!-- Strings used in Registration -->
+    <string name="register_select_type_text"> Select if you want to register an investor- or start-up-account</string>
+    <string name="register_select_investor_button"> Investor </string>
+    <string name="register_select_startup_button"> Start Up</string>
+
     <string name="register_login_information_text"> Login Information </string>
     <string name="register_first_name"> First Name </string>
     <string name="register_last_name"> Last Name </string>
     <string name="register_email"> Email </string>
     <string name="register_password"> Password </string>
+
+    <string name="register_company_information_text"> Company Information </string>
+    <string name="register_company_name"> Company Name </string>
+    <string name="register_company_uid"> UID </string>
+    <string name="register_company_revenue"> Revenue </string>
+    <string name="register_company_breakeven"> Break Even </string>
+    <string name="register_company_fte"> FTE </string>
+    <string name="register_company_markets"> Current Markets </string>
+
 
     <string name="register_button_text"> Continue </string>
     <string name="text_register"> Register now </string>

@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.example.raising.R;
 import com.example.raising.RaisingFragment;
 
@@ -19,14 +22,19 @@ public class ForgotPasswordEmailFragment extends RaisingFragment implements View
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_forgot_password_email, container, false);
 
-        emailInput = view.findViewById(R.id.editText_forgot_email);
-
         hideBottomNavigation(true);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        emailInput = view.findViewById(R.id.editText_forgot_email);
 
         Button btnSend = view.findViewById(R.id.button_forgot_reset);
         btnSend.setOnClickListener(this);
-
-        return view;
     }
 
     @Override
@@ -59,12 +67,5 @@ public class ForgotPasswordEmailFragment extends RaisingFragment implements View
 
     private void resetPassword(String email) {
         // TODO: Implement logic to reset password
-        if(email.length() != 0) {
-            changeFragment(new ForgotPasswordTokenFragment(), "ForgotPasswordTokenFragment");
-        } else {
-            showSimpleDialog(
-                    getString(R.string.forgot_dialog_title_no_input),
-                    getString(R.string.forgot_dialog_text_no_input));
-        }
     }
 }

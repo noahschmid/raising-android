@@ -50,7 +50,7 @@ public class RaisingFragment extends Fragment {
      */
     public FragmentManager getActivitiesFragmentManager() {
         try {
-            return getActivity().getSupportFragmentManager();
+            return getParentFragmentManager();
         } catch (NullPointerException e) {
             Log.d("debugMessage", e.toString());
         }

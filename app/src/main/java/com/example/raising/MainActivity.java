@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -22,16 +23,18 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        if(savedInstanceState == null) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-        if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
-            fragmentTransaction.add(R.id.fragment_container, new LoginFragment());
-            fragmentTransaction.addToBackStack("LoginFragment");
-        } else {
-            fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
-            fragmentTransaction.addToBackStack("MatchesFragment");
+            if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
+                fragmentTransaction.add(R.id.fragment_container, new LoginFragment());
+                fragmentTransaction.addToBackStack("LoginFragment");
+            } else {
+                fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
+                fragmentTransaction.addToBackStack("MatchesFragment");
+            }
+            fragmentTransaction.commit();
         }
-        fragmentTransaction.commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -56,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
                             .beginTransaction()
                             .replace(R.id.fragment_container, selected)
                             .commit();
-
                     return true;
                 }
             };

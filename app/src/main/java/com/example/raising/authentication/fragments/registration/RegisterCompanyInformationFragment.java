@@ -15,13 +15,14 @@ import android.widget.EditText;
 import com.example.raising.R;
 import com.example.raising.RaisingFragment;
 
-public class RegisterLoginInformationFragment extends RaisingFragment implements View.OnClickListener {
-    private EditText firstNameInput, lastNameInput, emailInput, passwordInput;
+public class RegisterCompanyInformationFragment extends RaisingFragment implements View.OnClickListener {
+    private EditText companyNameInput, companyUidInput, companyRevenueInput,
+            companyBreakevenInput, companyFteInput, companyMarketInput;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_login_information, container, false);
+        View view = inflater.inflate(R.layout.fragment_register_company_information, container, false);
 
         hideBottomNavigation(true);
 
@@ -32,13 +33,15 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        firstNameInput = view.findViewById(R.id.register_input_first_name);
-        lastNameInput = view.findViewById(R.id.register_input_last_name);
-        emailInput = view.findViewById(R.id.register_input_email);
-        passwordInput = view.findViewById(R.id.register_input_password);
+        companyNameInput = view.findViewById(R.id.register_input_company_name);
+        companyUidInput = view.findViewById(R.id.register_input_company_uid);
+        companyRevenueInput = view.findViewById(R.id.register_input_company_revenue);
+        companyBreakevenInput = view.findViewById(R.id.register_input_company_breakeven);
+        companyFteInput = view.findViewById(R.id.register_input_company_fte);
+        companyMarketInput = view.findViewById(R.id.register_input_company_markets);
 
-        Button btnLoginInformation = view.findViewById(R.id.button_login_information);
-        btnLoginInformation.setOnClickListener(this);
+        Button btnCompanyInformation = view.findViewById(R.id.button_company_information);
+        btnCompanyInformation.setOnClickListener(this);
     }
 
     @Override
@@ -51,7 +54,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     @Override
     public void onClick(View view) {
         switch(getId()) {
-            case R.id.button_login_information:
+            case R.id.button_company_information:
                 //TODO: insert function to be executed
                 break;
             default:

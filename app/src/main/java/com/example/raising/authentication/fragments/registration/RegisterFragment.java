@@ -60,6 +60,12 @@ public class RegisterFragment extends RaisingFragment implements View.OnClickLis
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
 
