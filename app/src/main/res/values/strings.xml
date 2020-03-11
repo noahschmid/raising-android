@@ -52,6 +52,12 @@
     <string name="register_company_fte"> FTE </string>
     <string name="register_company_markets"> Current Markets </string>
 
+    <string name="register_address_information_text"> Address Information</string>
+    <string name="register_address_country"> Country </string>
+    <string name="register_address_city"> City </string>
+    <string name="register_address_zip"> ZIP-Code </string>
+    <string name="register_address_street"> Street </string>
+    <string name="register_address_website"> Website </string>
 
     <string name="register_button_text"> Continue </string>
     <string name="text_register"> Register now </string>

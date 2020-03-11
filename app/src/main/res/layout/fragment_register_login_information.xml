@@ -107,6 +107,7 @@
         android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:hint="@string/register_button_text"
+        android:textSize="@dimen/buttonFontSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
