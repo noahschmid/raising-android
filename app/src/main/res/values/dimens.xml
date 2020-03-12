@@ -9,6 +9,7 @@
     <dimen name="inputFormHeight"> 60dp </dimen>
     <dimen name="inputFormHorizontalMargin"> 32dp </dimen>
     <dimen name="inputFormVerticalMargin"> 16dp </dimen>
+    <dimen name="inputFormInformationTextMargin"> 32dp </dimen>
 
     <dimen name="fragmentTitleFontSize"> 20sp </dimen>
 </resources>

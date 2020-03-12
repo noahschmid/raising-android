@@ -1,4 +1,4 @@
-package com.example.raising.authentication.fragments.registration;
+package com.example.raising.authentication.fragments.registration.startup;
 
 import android.os.Bundle;
 

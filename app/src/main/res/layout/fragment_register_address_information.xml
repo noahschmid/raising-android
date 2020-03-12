@@ -5,7 +5,7 @@
     android:id="@+id/register_address_information_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authentication.fragments.registration.RegisterAddressInformationFragment">
+    tools:context=".authentication.fragments.registration.startup.RegisterAddressInformationFragment">
 
     <TextView
         android:id="@+id/text_address_information"
@@ -37,7 +37,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_input_address_country"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="@dimen/inputFormHeight" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -55,7 +55,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_input_address_city"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="@dimen/inputFormHeight" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -73,7 +73,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_input_address_zip"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="@dimen/inputFormHeight" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -91,7 +91,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_input_address_street"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="@dimen/inputFormHeight" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -108,7 +108,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_input_address_website"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="@dimen/inputFormHeight" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -123,7 +123,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

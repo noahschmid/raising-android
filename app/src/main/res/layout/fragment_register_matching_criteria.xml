@@ -1,13 +1,45 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/register_matching_criteria_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.raising.authentication.fragments.registration.RegisterMatchingCriteriaFragment">
+    tools:context="com.example.raising.authentication.fragments.registration.RegisterMatchingCriteriaFragment" >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/scrollView2">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/register_company_name"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/register_company_name"
+                app:layout_constraintBottom_toTopOf="@+id/register_company_uid"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/register_input_company_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/inputFormHeight" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

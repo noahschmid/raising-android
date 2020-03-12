@@ -1,6 +1,5 @@
 package com.example.raising.authentication.fragments;
 
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -26,9 +25,8 @@ import com.example.raising.MatchesFragment;
 import com.example.raising.R;
 import com.example.raising.RaisingFragment;
 import com.example.raising.authentication.fragments.forgotPassword.ForgotPasswordEmailFragment;
-import com.example.raising.authentication.fragments.registration.RegisterCompanyInformationFragment;
-import com.example.raising.authentication.fragments.registration.RegisterFragment;
-import com.example.raising.authentication.fragments.registration.RegisterLoginInformationFragment;
+import com.example.raising.authentication.fragments.registration.investor.RegisterProfileInformationFragment;
+import com.example.raising.authentication.fragments.registration.startup.RegisterCompanyInformationFragment;
 import com.example.raising.authentication.view_models.LoginViewModel;
 
 import org.json.JSONObject;
@@ -183,7 +181,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
      * @author Lorenz Caliezi 02.03.2020
      */
     private void goToRegisterFragment() {
-        changeFragment(new RegisterCompanyInformationFragment(), "RegisterFragment");
+        changeFragment(new RegisterProfileInformationFragment(), "RegisterFragment");
     }
 
     /**

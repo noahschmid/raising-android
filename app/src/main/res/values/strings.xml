@@ -45,7 +45,7 @@
     <string name="register_password"> Password </string>
 
     <string name="register_company_information_text"> Company Information </string>
-    <string name="register_company_name"> Company Name </string>
+    <string name="register_company_name"> Company </string>
     <string name="register_company_uid"> UID </string>
     <string name="register_company_revenue"> Revenue </string>
     <string name="register_company_breakeven"> Break Even </string>
@@ -58,6 +58,14 @@
     <string name="register_address_zip"> ZIP-Code </string>
     <string name="register_address_street"> Street </string>
     <string name="register_address_website"> Website </string>
+
+    <string name="register_profile_information_text"> Profile Information</string>
+    <string name="register_profile_country"> Country </string>
+    <string name="register_profile_city"> City </string>
+    <string name="register_profile_zip"> ZIP-Code </string>
+    <string name="register_profile_street"> Street </string>
+    <string name="register_profile_website"> Website </string>
+    <string name="register_profile_company"> Company </string>
 
     <string name="register_button_text"> Continue </string>
     <string name="text_register"> Register now </string>
