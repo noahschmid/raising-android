@@ -28,10 +28,15 @@
     <string name="forgot_dialog_title_no_input"> No Input </string>
     <string name="forgot_dialog_text_no_input"> You must enter a valid address </string>
 
-    <string name="forgot_dialog_title"> Password successfully reset </string>
+    <string name="forgot_dialog_title"> Password reset code sent </string>
     <string name="forgot_dialog_text"> Check your email for further information </string>
-    <string name="forgot_token_text"> Enter the token, that you have received via email </string>
-    <string name="forgot_token_input_placeholder"> Token.. </string>
+    <string name="forgot_token_text"> Enter the code, that you have received via email </string>
+    <string name="reset_password_input_placeholder"> New Password.. </string>
+    <string name="reset_code_input_placeholder"> Reset Code..</string>
+    <string name="reset_button_text"> Reset Password </string>
+
+    <string name="reset_dialog_title_no_input">Invalid inputs</string>
+    <string name="reset_dialog_text_no_input">You have to enter a code and a new password!</string>
 
     <!-- Strings used in Registration -->
     <string name="register_select_type_text"> Select if you want to register an investor- or start-up-account</string>
@@ -93,6 +98,6 @@
     <string name="generic_error_title">Action failed</string>
     <string name="generic_error_text">Oops! Something went wrong.</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
-</resources>
+    </resources>
