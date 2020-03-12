@@ -47,7 +47,7 @@
     <string name="register_company_information_text"> Company Information </string>
     <string name="register_company_name"> Company </string>
     <string name="register_company_uid"> UID </string>
-    <string name="register_company_revenue"> Revenue </string>
+    <string name="register_company_revenue"> Revenue (CHF) </string>
     <string name="register_company_breakeven"> Break Even </string>
     <string name="register_company_fte"> FTE </string>
     <string name="register_company_markets"> Current Markets </string>
@@ -69,6 +69,11 @@
 
     <string name="register_startup_matching_information_text"> Matching Criteria </string>
     <string name="register_startup_matching_scope"> Scope </string>
+
+    <string name="register_financial_information_text"> Financial Requirements </string>
+    <string name="register_financial_type"> Type </string>
+    <string name="register_financial_valuation"> Valuation (CHF) </string>
+    <string name="register_financial_closing_time"> Closing Time </string>
 
     <string name="register_button_text"> Continue </string>
     <string name="text_register"> Register now </string>
