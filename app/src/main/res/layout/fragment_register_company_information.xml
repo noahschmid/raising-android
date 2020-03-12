@@ -5,19 +5,22 @@
     android:id="@+id/register_company_information_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authentication.fragments.registration.RegisterCompanyInformationFragment">
+    tools:context=".authentication.fragments.registration.startup.RegisterCompanyInformationFragment">
 
     <TextView
         android:id="@+id/text_company_information"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/inputFormInformationTextMargin"
+        android:layout_marginBottom="@dimen/inputFormInformationTextMargin"
         android:hint="@string/register_company_information_text"
         android:textSize="@dimen/fragmentTitleFontSize"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/register_company_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:layout_editor_absoluteX="106dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_company_name"
@@ -27,12 +30,11 @@
         android:layout_marginStart="@dimen/inputFormHorizontalMargin"
         android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-        android:hint="@string/register_company_name"
+        android:hint="@string/register_profile_company"
         app:layout_constraintBottom_toTopOf="@+id/register_company_uid"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed">
+        app:layout_constraintTop_toBottomOf="@+id/text_company_information">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_input_company_name"
@@ -118,6 +120,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:hint="@string/register_company_markets"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/register_company_name"
@@ -133,15 +136,12 @@
     <Button
         android:id="@+id/button_company_information"
         android:layout_width="0dp"
-        android:layout_height="@dimen/inputFormHeight"
-        android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+        android:layout_height="@dimen/authenticationButtonHeight"
         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:hint="@string/register_button_text"
         android:textSize="@dimen/buttonFontSize"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:layout_constraintEnd_toEndOf="@+id/register_company_name"
+        app:layout_constraintStart_toStartOf="@+id/register_company_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

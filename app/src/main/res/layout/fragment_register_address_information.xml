@@ -11,13 +11,16 @@
         android:id="@+id/text_address_information"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/inputFormInformationTextMargin"
+        android:layout_marginBottom="@dimen/inputFormInformationTextMargin"
         android:hint="@string/register_address_information_text"
         android:textSize="@dimen/fragmentTitleFontSize"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/register_address_country"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:layout_editor_absoluteX="111dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_address_country"
@@ -31,8 +34,7 @@
         app:layout_constraintBottom_toTopOf="@+id/register_address_city"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed">
+        app:layout_constraintTop_toBottomOf="@+id/text_address_information">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_input_address_country"
@@ -99,6 +101,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:hint="@string/register_address_website"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/register_address_country"
@@ -114,14 +117,12 @@
     <Button
         android:id="@+id/button_address_information"
         android:layout_width="0dp"
-        android:layout_height="@dimen/inputFormHeight"
-        android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+        android:layout_height="@dimen/authenticationButtonHeight"
         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:hint="@string/register_button_text"
         android:textSize="@dimen/buttonFontSize"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/register_address_country"
+        app:layout_constraintStart_toStartOf="@+id/register_address_country" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

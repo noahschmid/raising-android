@@ -67,6 +67,9 @@
     <string name="register_profile_website"> Website </string>
     <string name="register_profile_company"> Company </string>
 
+    <string name="register_startup_matching_information_text"> Matching Criteria </string>
+    <string name="register_startup_matching_scope"> Scope </string>
+
     <string name="register_button_text"> Continue </string>
     <string name="text_register"> Register now </string>
 

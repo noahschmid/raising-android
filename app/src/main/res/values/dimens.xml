@@ -2,14 +2,19 @@
 <resources>
 
     <dimen name="buttonFontSize"> 18sp </dimen>
-
     <dimen name="fragmentTextFontSize"> 14sp </dimen>
 
 
     <dimen name="inputFormHeight"> 60dp </dimen>
+    <dimen name="authenticationButtonHeight"> 60dp </dimen>
+
+    <dimen name="inputFormHorizontalMarginSmall"> 16dp </dimen>
     <dimen name="inputFormHorizontalMargin"> 32dp </dimen>
+    <dimen name="inputFormVerticalMarginSmall"> 8dp </dimen>
     <dimen name="inputFormVerticalMargin"> 16dp </dimen>
-    <dimen name="inputFormInformationTextMargin"> 32dp </dimen>
+
+    <dimen name="inputFormInformationTextMargin"> 16dp </dimen>
 
     <dimen name="fragmentTitleFontSize"> 20sp </dimen>
+    <dimen name="fragmentSubtitleFontSize"> 14sp </dimen>
 </resources>
