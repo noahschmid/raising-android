@@ -60,7 +60,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_company_revenue"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
@@ -70,10 +70,11 @@
         app:layout_constraintStart_toStartOf="@+id/register_company_name"
         app:layout_constraintTop_toBottomOf="@+id/register_company_uid">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <AutoCompleteTextView
             android:id="@+id/register_input_company_revenue"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/inputFormHeight" />
+            android:layout_height="wrap_content" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -114,7 +115,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_company_markets"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/register_company_markets"
@@ -123,10 +124,10 @@
         app:layout_constraintStart_toStartOf="@+id/register_company_name"
         app:layout_constraintTop_toBottomOf="@+id/register_company_fte">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <AutoCompleteTextView
             android:id="@+id/register_input_company_markets"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/inputFormHeight" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

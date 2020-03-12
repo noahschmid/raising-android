@@ -6,9 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -23,6 +26,24 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_company_information, container, false);
+
+        // TODO: fetch VALUES_REVENUE AND VALUES_MARKET from backend
+        String [] VALUES_REVENUE = new String[] {"CHF 1 - 100'000", "CHF 100'000 - 1'000'000",
+                "CHF 1'000'000 - 10'000'000", "CHF 10'000'000+"};
+        String [] VALUES_MARKETS = new String[] {"Asia", "Europe", "Africa", "Australia",
+                "North America", "South America"};
+
+        ArrayAdapter adapterRevenue = new ArrayAdapter<>( getContext(),
+                R.layout.dropdown_menu_items, VALUES_REVENUE);
+
+        ArrayAdapter adapterMarkets = new ArrayAdapter<>( getContext(),
+                R.layout.dropdown_menu_items, VALUES_MARKETS);
+
+        AutoCompleteTextView revenueExposedDropdown = view.findViewById(R.id.register_input_company_revenue);
+        revenueExposedDropdown.setAdapter(adapterRevenue);
+
+        AutoCompleteTextView marketsExposedDropdown = view.findViewById(R.id.register_input_company_markets);
+        marketsExposedDropdown.setAdapter(adapterMarkets);
 
         hideBottomNavigation(true);
 
