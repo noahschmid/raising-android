@@ -4,7 +4,7 @@
     android:id="@+id/register_matching_criteria_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.raising.authentication.fragments.registration.startup.RegisterStartupMatchingCriteriaFragment" >
+    tools:context="com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingCriteriaFragment" >
 
     <ScrollView
         android:id="@+id/scrollView2"
