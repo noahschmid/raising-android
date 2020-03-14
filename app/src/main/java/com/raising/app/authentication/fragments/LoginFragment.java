@@ -27,6 +27,7 @@ import com.raising.app.RaisingFragment;
 import com.raising.app.authentication.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.authentication.fragments.forgotPassword.ForgotPasswordFragment;
 
+import com.raising.app.authentication.fragments.registration.startup.RegisterFinancialRequirementsFragment;
 import com.raising.app.authentication.view_models.LoginViewModel;
 
 import org.json.JSONObject;
@@ -181,7 +182,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
      * @author Lorenz Caliezi 02.03.2020
      */
     private void goToRegisterFragment() {
-        changeFragment(new RegisterLoginInformationFragment(), "RegisterLoginInformationFragment");
+        changeFragment(new RegisterFinancialRequirementsFragment(), "RegisterLoginInformationFragment");
     }
 
     /**

@@ -76,7 +76,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_input_financial_closing_time"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/inputFormHeight" />
+            android:layout_height="@dimen/inputFormHeight"
+            android:focusableInTouchMode="false"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
