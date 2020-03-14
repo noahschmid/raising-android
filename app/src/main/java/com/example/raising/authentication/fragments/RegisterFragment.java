@@ -21,6 +21,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.raising.ApiRequestHandler;
+import com.example.raising.AuthenticationHandler;
+import com.example.raising.MainActivity;
+import com.example.raising.MatchesFragment;
 import com.example.raising.R;
 import com.example.raising.authentication.AuthenticationDialog;
 import com.example.raising.authentication.view_models.RegisterViewModel;
@@ -28,13 +31,15 @@ import com.example.raising.authentication.view_models.RegisterViewModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+import java.util.HashMap;
+
 public class RegisterFragment extends Fragment implements View.OnClickListener  {
+    private EditText usernameInput;
+    private EditText passwordInput;
+    private EditText confirmPasswordInput;
 
-    private EditText username_input;
-    private EditText password_input;
-    private EditText confirm_password_input;
-
-    final private String REGISTER_ENDPOINT = "http://33383.hostserv.eu:8080/account/register";
+    final private String REGISTER_ENDPOINT = "https://33383.hostserv.eu:8080/account/register";
 
     private RegisterViewModel mViewModel;
 
@@ -47,14 +52,23 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-        username_input = view.findViewById(R.id.editText_register_username);
-        password_input = view.findViewById(R.id.editText_register_password);
-        confirm_password_input = view.findViewById(R.id.editText_register_confirmPassword);
+        hideBottomNavigation(true);
+      
+        usernameInput = view.findViewById(R.id.editText_register_username);
+        passwordInput = view.findViewById(R.id.editText_register_password);
+        confirmPasswordInput = view.findViewById(R.id.editText_register_confirmPassword);
 
-        Button btn_continue = view.findViewById(R.id.button_register_continue);
-        btn_continue.setOnClickListener(this);
+        Button btnContinue = view.findViewById(R.id.button_register_continue);
+        btnContinue.setOnClickListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        hideBottomNavigation(false);
     }
 
     @Override
@@ -76,16 +90,31 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
     }
 
     /**
+     * Call {@link com.example.raising.MainActivity#hideBottomNavigation(boolean)}
+     * @param isHidden if true, the bottomNavigation should be invisible,
+     *                 if false, the bottomNavigation should be visible
+     *
+     * @author Lorenz Caliezi 06.03.2020
+     */
+
+    private void hideBottomNavigation(boolean isHidden) {
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null)
+            activity.hideBottomNavigation(isHidden);
+    }
+
+    /**
      * Simple helper function that retrieves the users input from the layout
-     *      and then calls {@link: register()}.
+     *      and then calls {@link: register(String, String, String)}.
      * Enables easier testing, since you can give register() some parameters.
      */
     private void prepareRegistration() {
-        String username = username_input.getText().toString();
-        String password = password_input.getText().toString();
-        String confirmPassword = confirm_password_input.getText().toString();
+        String email = "testemail" + new Date().getTime();
+        String username = usernameInput.getText().toString();
+        String password = passwordInput.getText().toString();
+        String confirmPassword = confirmPasswordInput.getText().toString();
 
-        register(username, password, confirmPassword);
+        register(username, password, confirmPassword, email);
     }
 
     /**
@@ -94,21 +123,22 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
      * @param password the password of the user
      * @param confirmPassword the password confirmation input
      */
-    private void register(String username, String password, String confirmPassword) {
-        if(username.length() == 0 || password.length() == 0 || confirmPassword.length() == 0) {
-            showDialog(getString(R.string.register_dialog_title_empty_credentials),
+    private void register(String username, String password, String confirmPassword, String email) {
+        if (username.length() == 0 || password.length() == 0 || confirmPassword.length() == 0) {
+            showDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
-        if(password.contentEquals(confirmPassword)) {
+        if (password.contentEquals(confirmPassword)) {
             try {
-                JSONObject params = new JSONObject();
+                HashMap<String, String> params = new HashMap<>();
                 params.put("username", username);
                 params.put("password", password);
-                JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST,
+                params.put("email", email);
+                JsonObjectRequest loginRequest = new JsonObjectRequest(
                         REGISTER_ENDPOINT,
-                        params,
+                        new JSONObject(params),
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -116,28 +146,34 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
                                         getString(R.string.register_dialog_title_success),
                                         getString(R.string.register_dialog_text_success)
                                 );
-                                changeFragment(new LoginFragment(), "LoginFragment");
+
+                                try {
+                                    AuthenticationHandler.login(response.getString("token"),
+                                            response.getLong("id"), getContext());
+                                    changeFragment(new MatchesFragment(), "MatchesFragment");
+                                } catch (Exception e) {
+                                    Log.d("debugMessage", e.getMessage());
+                                    showDialog(getString(R.string.generic_error_title),
+                                            getString(R.string.generic_error_text));
+                                }
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        if(error.networkResponse.statusCode == 400) {
+                        if (error.networkResponse.statusCode == 400) {
                             showDialog(
                                     getString(R.string.register_dialog_title_400),
                                     getString(R.string.register_dialog_text_400)
                             );
+                        } else {
+                            showDialog(getString(R.string.generic_error_title), error.getLocalizedMessage());
                         }
                     }
                 });
                 ApiRequestHandler.getInstance(getContext()).addToRequestQueue(loginRequest);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 Log.d("debugMessage", e.getMessage());
             }
-        // if PASSWORD does not equal CONFIRM_PASSWORD
-        } else {
-            showDialog(
-                    getString(R.string.register_dialog_title_password_match),
-                    getString(R.string.register_dialog_text_password_match));
         }
     }
 
