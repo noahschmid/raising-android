@@ -1,4 +1,4 @@
-package com.example.raising.authentication.fragments;
+package com.raising.app.authentication.fragments;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
@@ -16,19 +16,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.raising.ApiRequestHandler;
-import com.example.raising.AuthenticationHandler;
-import com.example.raising.MainActivity;
-import com.example.raising.MatchesFragment;
-import com.example.raising.R;
-import com.example.raising.authentication.AuthenticationDialog;
-import com.example.raising.authentication.view_models.RegisterViewModel;
+import com.raising.app.ApiRequestHandler;
+import com.raising.app.AuthenticationHandler;
+import com.raising.app.MainActivity;
+import com.raising.app.MatchesFragment;
+import com.raising.app.R;
+import com.raising.app.authentication.AuthenticationDialog;
+import com.raising.app.authentication.view_models.RegisterViewModel;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
@@ -90,7 +88,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener  
     }
 
     /**
-     * Call {@link com.example.raising.MainActivity#hideBottomNavigation(boolean)}
+     * Call {@link com.raising.app.MainActivity#hideBottomNavigation(boolean)}
      * @param isHidden if true, the bottomNavigation should be invisible,
      *                 if false, the bottomNavigation should be visible
      *

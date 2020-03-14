@@ -1,4 +1,4 @@
-package com.example.raising.authentication;
+package com.raising.app.authentication;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.raising.R;
+import com.raising.app.R;
 
 
 public class AuthenticationDialog extends DialogFragment {

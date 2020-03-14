@@ -1,4 +1,4 @@
-package com.example.raising;
+package com.raising.app;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.raising.authentication.fragments.LoginFragment;
+import com.raising.app.authentication.fragments.LoginFragment;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 

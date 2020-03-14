@@ -1,4 +1,4 @@
-package com.example.raising;
+package com.raising.app;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -8,28 +8,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class ProfileFragment extends Fragment {
+public class MatchesFragment extends Fragment {
 
-    private ProfileViewModel mViewModel;
+    private MatchesViewModel mViewModel;
 
-    public static ProfileFragment newInstance() {
-        return new ProfileFragment();
+    public static MatchesFragment newInstance() {
+        return new MatchesFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        return inflater.inflate(R.layout.fragment_matches, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(MatchesViewModel.class);
+
+        String token = AuthenticationHandler.getToken();
+        Log.d("debugMessage", "token: " + token);
         // TODO: Use the ViewModel
     }
 
