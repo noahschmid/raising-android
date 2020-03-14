@@ -9,8 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.raising.app.R;
+import com.raising.app.RaisingFragment;
 
-public class RegisterStartupMatchingCriteriaFragment extends Fragment {
+public class RegisterStartupMatchingCriteriaFragment extends RaisingFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

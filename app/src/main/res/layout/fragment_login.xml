@@ -7,86 +7,89 @@
     android:layout_height="match_parent"
     tools:context=".authentication.fragments.LoginFragment">
 
-    <EditText
-        android:id="@+id/editText_login_username"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_email"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-        android:background="@drawable/border_login_form"
-        android:ems="10"
-        android:hint="@string/username_input_placeholder"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/editText_login_password"
+        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+        android:hint="@string/login_email"
+        app:layout_constraintBottom_toTopOf="@+id/login_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/login_input_email"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/inputFormHeight" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/login_password"
+        app:layout_constraintBottom_toTopOf="@+id/button_login"
+        app:layout_constraintEnd_toEndOf="@+id/login_email"
+        app:layout_constraintStart_toStartOf="@+id/login_email"
+        app:layout_constraintTop_toBottomOf="@+id/login_email">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/login_input_password"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/inputFormHeight" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/button_login"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/authenticationButtonHeight"
+        android:layout_marginTop="@dimen/inputFormVerticalMargin"
+        android:layout_marginEnd="@dimen/inputFormHorizontalMarginSmall"
+        android:hint="@string/login_button_text"
+        android:textSize="@dimen/buttonFontSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/login_password"
+        app:layout_constraintTop_toBottomOf="@+id/login_password" />
 
     <TextView
         android:id="@+id/text_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"
         android:hint="@string/login_welcome_text"
-        android:textSize="28sp"
+        android:textSize="@dimen/loginScreenFontSize"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/editText_login_username"
+        app:layout_constraintBottom_toTopOf="@+id/login_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editText_login_password"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/border_login_form"
-        android:ems="10"
-        android:hint="@string/password_input_placeholder"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/button_login"
-        app:layout_constraintEnd_toEndOf="@+id/editText_login_username"
-        app:layout_constraintStart_toStartOf="@+id/editText_login_username"
-        app:layout_constraintTop_toBottomOf="@+id/editText_login_username" />
-
     <Button
-        android:id="@+id/button_login"
+        android:id="@+id/button_login_forgot_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/btn_login"
-        android:hint="@string/login_button_text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/editText_login_username"
-        app:layout_constraintTop_toBottomOf="@+id/editText_login_password" />
-
-    <Button
-        android:id="@+id/button_login_goToRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:hint="@string/register_now_text"
-        app:layout_constraintStart_toStartOf="@+id/editText_login_username"
-        app:layout_constraintTop_toBottomOf="@+id/editText_login_password" />
-
-    <Button
-        android:id="@+id/button_login_forgotPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:hint="@string/login_forgot_button_text"
-        app:layout_constraintStart_toStartOf="@+id/editText_login_username"
-        app:layout_constraintTop_toBottomOf="@+id/button_login_goToRegister" />
+        android:textSize="@dimen/buttonFontSize"
+        app:layout_constraintBottom_toTopOf="@+id/button_login_goTo_register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_password"
+        app:layout_constraintVertical_chainStyle="packed" />
 
+    <Button
+        android:id="@+id/button_login_goTo_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/login_register_text"
+        android:textSize="@dimen/buttonFontSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/button_login_forgot_password"
+        app:layout_constraintStart_toStartOf="@+id/button_login_forgot_password"
+        app:layout_constraintTop_toBottomOf="@+id/button_login_forgot_password" />
 </androidx.constraintlayout.widget.ConstraintLayout>

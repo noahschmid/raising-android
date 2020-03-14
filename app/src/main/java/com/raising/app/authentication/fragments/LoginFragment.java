@@ -27,6 +27,7 @@ import com.raising.app.RaisingFragment;
 import com.raising.app.authentication.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.authentication.fragments.forgotPassword.ForgotPasswordFragment;
 
+import com.raising.app.authentication.fragments.registration.startup.RegisterCompanyInformationFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterFinancialRequirementsFragment;
 import com.raising.app.authentication.view_models.LoginViewModel;
 
@@ -36,8 +37,7 @@ import java.util.HashMap;
 
 
 public class LoginFragment extends RaisingFragment implements View.OnClickListener {
-    private EditText usernameInput;
-    private EditText passwordInput;
+    private EditText emailInput, passwordInput;
 
     final private String loginEndpoint = "https://33383.hostserv.eu:8080/account/login";
     private LoginViewModel mViewModel;
@@ -53,14 +53,14 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
 
         hideBottomNavigation(true);
 
-        usernameInput = view.findViewById(R.id.editText_login_username);
-        passwordInput = view.findViewById(R.id.editText_login_password);
+        emailInput = view.findViewById(R.id.login_input_email);
+        passwordInput = view.findViewById(R.id.login_input_password);
 
         Button btnLogin = view.findViewById(R.id.button_login);
         btnLogin.setOnClickListener(this);
-        Button btnRegister = view.findViewById(R.id.button_login_goToRegister);
+        Button btnRegister = view.findViewById(R.id.button_login_goTo_register);
         btnRegister.setOnClickListener(this);
-        Button btnForgot = view.findViewById(R.id.button_login_forgotPassword);
+        Button btnForgot = view.findViewById(R.id.button_login_forgot_password);
         btnForgot.setOnClickListener(this);
 
         return view;
@@ -79,10 +79,10 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
             case R.id.button_login:
                 prepareLogin();
                 break;
-            case R.id.button_login_goToRegister:
+            case R.id.button_login_goTo_register:
                 goToRegisterFragment();
                 break;
-            case R.id.button_login_forgotPassword:
+            case R.id.button_login_forgot_password:
                 goToForgotFragment();
                 break;
             default:
@@ -106,7 +106,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
      * @version 1.0
      */
     private void prepareLogin() {
-        String username = usernameInput.getText().toString();
+        String username = emailInput.getText().toString();
         String password = passwordInput.getText().toString();
         login(username, password);
     }
@@ -182,7 +182,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
      * @author Lorenz Caliezi 02.03.2020
      */
     private void goToRegisterFragment() {
-        changeFragment(new RegisterFinancialRequirementsFragment(), "RegisterLoginInformationFragment");
+        changeFragment(new RegisterCompanyInformationFragment(), "RegisterLoginInformationFragment");
     }
 
     /**

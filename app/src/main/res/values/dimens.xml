@@ -3,6 +3,7 @@
 
     <dimen name="buttonFontSize"> 18sp </dimen>
     <dimen name="fragmentTextFontSize"> 14sp </dimen>
+    <dimen name="loginScreenFontSize"> 30sp </dimen>
 
 
     <dimen name="inputFormHeight"> 60dp </dimen>

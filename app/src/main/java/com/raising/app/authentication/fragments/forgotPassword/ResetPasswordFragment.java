@@ -33,8 +33,8 @@ public class ResetPasswordFragment extends RaisingFragment implements View.OnCli
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reset_password, container, false);
 
-        codeInput = view.findViewById(R.id.editText_reset_code);
-        passwordInput = view.findViewById(R.id.editText_new_password);
+        codeInput = view.findViewById(R.id.forgot_input_reset_code);
+        passwordInput = view.findViewById(R.id.forgot_input_new_password);
 
         hideBottomNavigation(true);
 

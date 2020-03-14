@@ -30,7 +30,7 @@ public class ForgotPasswordFragment extends RaisingFragment implements View.OnCl
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_forgot_password, container, false);
 
-        emailInput = view.findViewById(R.id.editText_forgot_email);
+        emailInput = view.findViewById(R.id.forgot_input_email);
 
         hideBottomNavigation(true);
 
