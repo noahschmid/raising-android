@@ -4,22 +4,23 @@
     android:id="@+id/register_matching_criteria_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingCriteriaFragment" >
+    tools:context="com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingCriteriaFragment">
+
 
     <ScrollView
-        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/text_startup_matching_information"
@@ -32,7 +33,6 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_scope"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed" />
@@ -41,8 +41,8 @@
                 android:id="@+id/text_startup_matching_scope"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                 android:hint="@string/register_startup_matching_scope"
                 android:textSize="@dimen/fragmentSubtitleFontSize"
                 android:textStyle="bold"
@@ -58,6 +58,7 @@
                 android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                 android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/register_startup_matching_scope_"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_min_ticket"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -76,12 +77,11 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/register_startup_matching_min_ticket"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_max_ticket"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_scope"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_scope"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_scope">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -97,12 +97,11 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/checkBox3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/register_startup_matching_max_ticket"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_investor"
+                app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_scope"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_scope"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_min_ticket">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -112,46 +111,226 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <CheckBox
-                android:id="@+id/checkBox3"
+            <TextView
+                android:id="@+id/text_startup_matching_investor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CheckBox"
-                app:layout_constraintBottom_toTopOf="@+id/checkBox4"
-                tools:layout_editor_absoluteX="126dp" />
+                android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                android:hint="@string/register_startup_matching_investor"
+                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_check_vc"
+                app:layout_constraintStart_toStartOf="@+id/text_startup_matching_scope"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_max_ticket" />
 
             <CheckBox
-                android:id="@+id/checkBox4"
+                android:id="@+id/register_startup_matching_check_vc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CheckBox"
-                app:layout_constraintBottom_toTopOf="@+id/checkBox5"
-                tools:layout_editor_absoluteX="126dp" />
+                android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
+                android:hint="@string/register_startup_matching_check_vc"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_check_angel"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_scope"
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_investor" />
 
             <CheckBox
-                android:id="@+id/checkBox5"
+                android:id="@+id/register_startup_matching_check_angel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:text="CheckBox"
-                app:layout_constraintBottom_toTopOf="@+id/checkBox6"
-                tools:layout_editor_absoluteX="126dp" />
+                android:hint="@string/register_startup_matching_check_angel"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_check_cvc"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_check_vc"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_check_vc" />
 
             <CheckBox
-                android:id="@+id/checkBox6"
+                android:id="@+id/register_startup_matching_check_cvc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CheckBox"
-                app:layout_constraintBottom_toTopOf="@+id/checkBox7"
-                tools:layout_editor_absoluteX="126dp" />
+                android:hint="@string/register_startup_matching_check_cvc"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_check_strategic"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_check_vc"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_check_angel" />
 
             <CheckBox
-                android:id="@+id/checkBox7"
+                android:id="@+id/register_startup_matching_check_strategic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CheckBox"
+                android:hint="@string/register_startup_matching_check_strategic"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_check_club"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_check_vc"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_check_cvc" />
+
+            <CheckBox
+                android:id="@+id/register_startup_matching_check_club"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_startup_matching_check_club"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_phase"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_check_vc"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_check_strategic" />
+
+            <TextView
+                android:id="@+id/text_startup_matching_phase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                android:hint="@string/register_startup_matching_phase"
+                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_radio_phase"
+                app:layout_constraintStart_toStartOf="@+id/text_startup_matching_investor"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_check_club" />
+
+            <RadioGroup
+                android:id="@+id/register_startup_matching_radio_phase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_industry"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_check_vc"
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_phase">
+
+                <RadioButton
+                    android:id="@+id/register_startup_matching_radio_preseed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_startup_matching_radio_preseed" />
+
+                <RadioButton
+                    android:id="@+id/register_startup_matching_radio_seed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_startup_matching_radio_seed" />
+
+                <RadioButton
+                    android:id="@+id/register_startup_matching_radio_seriesA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_startup_matching_radio_seriesA" />
+
+                <RadioButton
+                    android:id="@+id/register_startup_matching_radio_seriesB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_startup_matching_radio_seriesB" />
+
+                <RadioButton
+                    android:id="@+id/register_startup_matching_radio_seriesC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_startup_matching_radio_seriesC" />
+
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/text_startup_matching_industry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                android:hint="@string/register_startup_matching_industry"
+                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_radio_industry"
+                app:layout_constraintStart_toStartOf="@+id/text_startup_matching_phase"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_radio_phase" />
+
+            <RadioGroup
+                android:id="@+id/register_startup_matching_radio_industry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_support"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_radio_phase"
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_industry">
+
+                <RadioButton
+                    android:id="@+id/register_startup_matching_radio_energy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_startup_matching_radio_energy" />
+
+                <RadioButton
+                    android:id="@+id/register_startup_matching_radio_general"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_startup_matching_radio_general" />
+
+                <RadioButton
+                    android:id="@+id/register_startup_matching_radio_health"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_startup_matching_radio_health" />
+
+                <RadioButton
+                    android:id="@+id/register_startup_matching_radio_hightech"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_startup_matching_radio_hightech" />
+
+                <RadioButton
+                    android:id="@+id/register_startup_matching_radio_social"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_startup_matching_radio_social" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/text_startup_matching_support"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                android:hint="@string/register_startup_matching_support"
+                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_check_mentor"
+                app:layout_constraintStart_toStartOf="@+id/text_startup_matching_industry"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_radio_industry" />
+
+            <CheckBox
+                android:id="@+id/register_startup_matching_check_mentor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_startup_matching_check_mentor"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_check_board"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_check_vc"
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_support" />
+
+            <CheckBox
+                android:id="@+id/register_startup_matching_check_board"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_startup_matching_check_board"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_check_passive"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_check_vc"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_check_mentor" />
+
+            <CheckBox
+                android:id="@+id/register_startup_matching_check_passive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/register_startup_matching_check_passive"
+                app:layout_constraintBottom_toTopOf="@+id/button_startup_matching"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_check_vc"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_check_board" />
+
+            <Button
+                android:id="@+id/button_startup_matching"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/authenticationButtonHeight"
+                android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/register_button_text"
+                android:textSize="@dimen/buttonFontSize"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:layout_editor_absoluteX="265dp" />
+                app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_scope"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_scope"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_check_passive" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
