@@ -74,33 +74,33 @@
     <string name="register_profile_website"> Website </string>
     <string name="register_profile_company"> Company </string>
 
-    <string name="register_startup_matching_information_text"> Matching Criteria </string>
-    <string name="register_startup_matching_scope"> Scope </string>
-        <string name="register_startup_matching_scope_"> Scope (CHF) </string>
-        <string name="register_startup_matching_min_ticket"> Minimal Ticket Size (CHF) </string>
-        <string name="register_startup_matching_max_ticket"> Maximal Ticket Size (CHF) </string>
-    <string name="register_startup_matching_investor"> Type of investor </string>
-        <string name="register_startup_matching_check_vc"> Venture Capitalist </string>
-        <string name="register_startup_matching_check_angel"> Business Angel </string>
-        <string name="register_startup_matching_check_cvc"> Corporate Venture Capitalist </string>
-        <string name="register_startup_matching_check_strategic"> Strategic Investor </string>
-        <string name="register_startup_matching_check_club"> Investment Club </string>
-    <string name="register_startup_matching_phase"> Phase </string>
-        <string name="register_startup_matching_radio_preseed"> Pre-Seed </string>
-        <string name="register_startup_matching_radio_seed"> Seed </string>
-        <string name="register_startup_matching_radio_seriesA"> Series A </string>
-        <string name="register_startup_matching_radio_seriesB"> Series B </string>
-        <string name="register_startup_matching_radio_seriesC"> Series C </string>
-    <string name="register_startup_matching_industry"> Industry </string>
-        <string name="register_startup_matching_radio_energy"> Energy / Clean Tech </string>
-        <string name="register_startup_matching_radio_general"> General</string>
-        <string name="register_startup_matching_radio_health"> Healthcare / Life Science </string>
-        <string name="register_startup_matching_radio_hightech"> High Tech </string>
-        <string name="register_startup_matching_radio_social"> Social Impact </string>
-    <string name="register_startup_matching_support"> Requested support </string>
-        <string name="register_startup_matching_check_mentor"> Mentoring </string>
-        <string name="register_startup_matching_check_board"> Member of the board </string>
-        <string name="register_startup_matching_check_passive"> Passive </string>
+    <string name="register_matching_information_text"> Matching Criteria </string>
+    <string name="register_matching_scope"> Scope </string>
+        <string name="register_matching_scope_"> Scope (CHF) </string>
+        <string name="register_matching_min_ticket"> Minimal Ticket Size (CHF) </string>
+        <string name="register_matching_max_ticket"> Maximal Ticket Size (CHF) </string>
+    <string name="register_matching_investor"> Type of investor </string>
+        <string name="register_matching_vc"> Venture Capitalist </string>
+        <string name="register_matching_angel"> Business Angel </string>
+        <string name="register_matching_cvc"> Corporate Venture Capitalist </string>
+        <string name="register_matching_strategic"> Strategic Investor </string>
+        <string name="register_matching_club"> Investment Club </string>
+    <string name="register_matching_phase"> Phase </string>
+        <string name="register_matching_preseed"> Pre-Seed </string>
+        <string name="register_matching_seed"> Seed </string>
+        <string name="register_matching_seriesA"> Series A </string>
+        <string name="register_matching_seriesB"> Series B </string>
+        <string name="register_matching_seriesC"> Series C </string>
+    <string name="register_matching_industry"> Industry </string>
+        <string name="register_matching_energy"> Energy / Clean Tech </string>
+        <string name="register_matching_general"> General</string>
+        <string name="register_matching_health"> Healthcare / Life Science </string>
+        <string name="register_matching_hightech"> High Tech </string>
+        <string name="register_matching_social"> Social Impact </string>
+    <string name="register_matching_support"> Requested support </string>
+        <string name="register_matching_mentor"> Mentoring </string>
+        <string name="register_matching_board"> Member of the board </string>
+        <string name="register_matching_passive"> Passive </string>
 
     <string name="register_pitch_information_text"> Pitch </string>
     <string name="register_pitch_label_information_text"> Labels </string>
@@ -111,7 +111,7 @@
     <string name="register_label_innosuisse"> Innosuisse </string>
     <string name="register_label_swissef_upscaler"> SwissEF Upscaler </string>
     <string name="register_error_word_limit_overflow"> You have exceeded your word limit! </string>
-    
+
 
     <string name="register_financial_information_text"> Financial Requirements </string>
     <string name="register_financial_type"> Type </string>

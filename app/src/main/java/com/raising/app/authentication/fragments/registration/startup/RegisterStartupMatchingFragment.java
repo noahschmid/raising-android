@@ -16,7 +16,7 @@ import android.widget.RadioButton;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
 
-public class RegisterStartupMatchingCriteriaFragment extends RaisingFragment
+public class RegisterStartupMatchingFragment extends RaisingFragment
         implements View.OnClickListener {
     private EditText scopeInput, minSizeInput, maxSizeInput;
     private CheckBox checkVC, checkAngel, checkCVC, checkStrategic, checkClub;
@@ -28,7 +28,7 @@ public class RegisterStartupMatchingCriteriaFragment extends RaisingFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_startup_matching_criteria,
+        View view = inflater.inflate(R.layout.fragment_register_startup_matching,
                 container, false);
 
         hideBottomNavigation(true);
