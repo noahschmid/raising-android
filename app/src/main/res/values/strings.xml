@@ -101,16 +101,19 @@
         <string name="register_matching_mentor"> Mentoring </string>
         <string name="register_matching_board"> Member of the board </string>
         <string name="register_matching_passive"> Passive </string>
+    <string name="register_matching_geographics"> Geographics </string>
+        <string name="register_matching_continents"> Continents </string>
+        <string name="register_matching_countries"> Countries </string>
 
     <string name="register_pitch_information_text"> Pitch </string>
-    <string name="register_pitch_label_information_text"> Labels </string>
     <string name="register_pitch_sentence"> One sentence description </string>
     <string name="register_pitch"> Your pitch </string>
-    <string name="register_label_sef4kmu"> SEF4KMU </string>
-    <string name="register_label_venture_kick"> Venture Kick </string>
-    <string name="register_label_innosuisse"> Innosuisse </string>
-    <string name="register_label_swissef_upscaler"> SwissEF Upscaler </string>
-    <string name="register_error_word_limit_overflow"> You have exceeded your word limit! </string>
+    <string name="register_pitch_label_information_text"> Labels </string>
+        <string name="register_label_sef4kmu"> SEF4KMU </string>
+        <string name="register_label_venture_kick"> Venture Kick </string>
+        <string name="register_label_innosuisse"> Innosuisse </string>
+        <string name="register_label_swissef_upscaler"> SwissEF Upscaler </string>
+        <string name="register_error_word_limit_overflow"> You have exceeded your word limit! </string>
 
 
     <string name="register_financial_information_text"> Financial Requirements </string>

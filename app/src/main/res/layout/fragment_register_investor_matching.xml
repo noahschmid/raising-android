@@ -7,334 +7,359 @@
     android:layout_height="match_parent"
     tools:context=".authentication.fragments.registration.investor.RegisterInvestorMatchingFragment">
 
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/text_investor_matching_information"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormInformationTextMargin"
-                android:layout_marginBottom="@dimen/inputFormInformationTextMargin"
-                android:hint="@string/register_matching_information_text"
-                android:textSize="@dimen/fragmentTitleFontSize"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_scope"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/text_investor_matching_scope"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
-                android:hint="@string/register_matching_scope"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_scope"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_scope"
-                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_information" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/register_investor_matching_scope"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                android:hint="@string/register_matching_scope_"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_min_ticket"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_scope">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/register_input_investor_matching_scope"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/register_investor_matching_min_ticket"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                android:hint="@string/register_matching_min_ticket"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_max_ticket"
-                app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_scope"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_scope"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_scope">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/register_input_investor_matching_min_ticket"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/register_investor_matching_max_ticket"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                android:hint="@string/register_matching_max_ticket"
-                app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_investor"
-                app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_scope"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_scope"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_min_ticket">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/register_input_investor_matching_max_ticket"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/text_investor_matching_investor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
-                android:hint="@string/register_matching_investor"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_radio_investor"
-                app:layout_constraintStart_toStartOf="@+id/text_investor_matching_scope"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_max_ticket" />
-
-            <RadioGroup
-                android:id="@+id/register_investor_matching_radio_investor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_phase"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_preseed"
-                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_investor">
-
-                <RadioButton
-                    android:id="@+id/register_investor_matching_radio_vc"
+                <TextView
+                    android:id="@+id/text_investor_matching_information"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/register_matching_vc" />
+                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                    android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                    android:hint="@string/register_matching_information_text"
+                    android:textSize="@dimen/fragmentTitleFontSize"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_scope"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <RadioButton
-                    android:id="@+id/register_investor_matching_radio_angel"
+                <TextView
+                    android:id="@+id/text_investor_matching_scope"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/register_matching_angel" />
+                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                    android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                    android:hint="@string/register_matching_scope"
+                    android:textSize="@dimen/fragmentSubtitleFontSize"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_min_ticket"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_min_ticket"
+                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_information" />
 
-                <RadioButton
-                    android:id="@+id/register_investor_matching_radio_cvc"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/register_investor_matching_min_ticket"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+                    android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                    android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                    android:hint="@string/register_matching_min_ticket"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_max_ticket"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_scope">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/register_input_investor_matching_min_ticket"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/inputFormHeight" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/register_investor_matching_max_ticket"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                    android:hint="@string/register_matching_max_ticket"
+                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_investor"
+                    app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_min_ticket"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_min_ticket"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_min_ticket">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/register_input_investor_matching_max_ticket"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/inputFormHeight" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/text_investor_matching_investor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/register_matching_cvc" />
+                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                    android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                    android:hint="@string/register_matching_investor"
+                    android:textSize="@dimen/fragmentSubtitleFontSize"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_radio_investor"
+                    app:layout_constraintStart_toStartOf="@+id/text_investor_matching_scope"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_max_ticket" />
 
-                <RadioButton
-                    android:id="@+id/register_investor_matching_radio_strategic"
+                <RadioGroup
+                    android:id="@+id/register_investor_matching_radio_investor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/register_matching_strategic" />
+                    android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
+                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_phase"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_min_ticket"
+                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_investor">
 
-                <RadioButton
-                    android:id="@+id/register_investor_matching_radio_club"
+                    <RadioButton
+                        android:id="@+id/register_investor_matching_radio_vc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/register_matching_vc" />
+
+                    <RadioButton
+                        android:id="@+id/register_investor_matching_radio_angel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/register_matching_angel" />
+
+                    <RadioButton
+                        android:id="@+id/register_investor_matching_radio_cvc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/register_matching_cvc" />
+
+                    <RadioButton
+                        android:id="@+id/register_investor_matching_radio_strategic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/register_matching_strategic" />
+
+                    <RadioButton
+                        android:id="@+id/register_investor_matching_radio_club"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/register_matching_club" />
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/text_investor_matching_phase"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/register_matching_club" />
+                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                    android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                    android:hint="@string/register_matching_phase"
+                    android:textSize="@dimen/fragmentSubtitleFontSize"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_preseed"
+                    app:layout_constraintStart_toStartOf="@+id/text_investor_matching_investor"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_radio_investor" />
 
-            </RadioGroup>
-
-            <TextView
-                android:id="@+id/text_investor_matching_phase"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
-                android:hint="@string/register_matching_phase"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_preseed"
-                app:layout_constraintStart_toStartOf="@+id/text_investor_matching_investor"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_radio_investor" />
-
-            <CheckBox
-                android:id="@+id/register_investor_matching_check_preseed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
-                android:hint="@string/register_matching_preseed"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_seed"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_scope"
-                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_phase" />
-
-            <CheckBox
-                android:id="@+id/register_investor_matching_check_seed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_matching_seed"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_seriesA"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_preseed"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_preseed" />
-
-            <CheckBox
-                android:id="@+id/register_investor_matching_check_seriesA"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_matching_seriesA"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_seriesB"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_preseed"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_seed" />
-
-            <CheckBox
-                android:id="@+id/register_investor_matching_check_seriesB"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_matching_seriesB"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_seriesC"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_preseed"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_seriesA" />
-
-            <CheckBox
-                android:id="@+id/register_investor_matching_check_seriesC"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                android:hint="@string/register_matching_seriesC"
-                app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_industry"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_preseed"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_seriesB" />
-
-            <TextView
-                android:id="@+id/text_investor_matching_industry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
-                android:hint="@string/register_matching_industry"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_energy"
-                app:layout_constraintStart_toStartOf="@+id/text_investor_matching_phase"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_seriesC" />
-
-            <CheckBox
-                android:id="@+id/register_investor_matching_check_energy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_matching_energy"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_general"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_preseed"
-                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_industry" />
-
-            <CheckBox
-                android:id="@+id/register_investor_matching_check_general"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_matching_general"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_health"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_preseed"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_energy" />
-
-            <CheckBox
-                android:id="@+id/register_investor_matching_check_health"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_matching_health"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_hightech"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_preseed"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_general" />
-
-            <CheckBox
-                android:id="@+id/register_investor_matching_check_hightech"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_matching_hightech"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_social"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_preseed"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_health" />
-
-            <CheckBox
-                android:id="@+id/register_investor_matching_check_social"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                android:hint="@string/register_matching_social"
-                app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_support"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_preseed"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_hightech" />
-
-            <TextView
-                android:id="@+id/text_investor_matching_support"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
-                android:hint="@string/register_matching_support"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_radio_support"
-                app:layout_constraintStart_toStartOf="@+id/text_investor_matching_industry"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_social" />
-
-            <RadioGroup
-                android:id="@+id/register_investor_matching_radio_support"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                app:layout_constraintBottom_toTopOf="@+id/button_investor_matching"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_energy"
-                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_support">
-
-                <RadioButton
-                    android:id="@+id/register_investor_matching_radio_mentor"
+                <CheckBox
+                    android:id="@+id/register_investor_matching_check_preseed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/register_matching_mentor" />
+                    android:hint="@string/register_matching_preseed"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_seed"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_radio_investor"
+                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_phase" />
 
-                <RadioButton
-                    android:id="@+id/register_investor_matching_radio_board"
+                <CheckBox
+                    android:id="@+id/register_investor_matching_check_seed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/register_matching_board" />
+                    android:hint="@string/register_matching_seed"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_seriesA"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_preseed"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_preseed" />
 
-                <RadioButton
-                    android:id="@+id/register_investor_matching_radio_passive"
+                <CheckBox
+                    android:id="@+id/register_investor_matching_check_seriesA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/register_matching_passive" />
-            </RadioGroup>
+                    android:hint="@string/register_matching_seriesA"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_seriesB"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_preseed"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_seed" />
 
-            <Button
-                android:id="@+id/button_investor_matching"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/authenticationButtonHeight"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                android:hint="@string/register_button_text"
-                android:textSize="@dimen/buttonFontSize"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_scope"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_scope"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_radio_support" />
+                <CheckBox
+                    android:id="@+id/register_investor_matching_check_seriesB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_matching_seriesB"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_seriesC"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_preseed"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_seriesA" />
 
+                <CheckBox
+                    android:id="@+id/register_investor_matching_check_seriesC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_matching_seriesC"
+                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_industry"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_preseed"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_seriesB" />
 
+                <TextView
+                    android:id="@+id/text_investor_matching_industry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                    android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                    android:hint="@string/register_matching_industry"
+                    android:textSize="@dimen/fragmentSubtitleFontSize"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_energy"
+                    app:layout_constraintStart_toStartOf="@+id/text_investor_matching_phase"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_seriesC" />
 
+                <CheckBox
+                    android:id="@+id/register_investor_matching_check_energy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_matching_energy"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_general"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_seriesC"
+                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_industry" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+                <CheckBox
+                    android:id="@+id/register_investor_matching_check_general"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_matching_general"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_health"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_energy"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_energy" />
+
+                <CheckBox
+                    android:id="@+id/register_investor_matching_check_health"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_matching_health"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_hightech"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_energy"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_general"
+                    tools:layout_editor_absoluteX="48dp" />
+
+                <CheckBox
+                    android:id="@+id/register_investor_matching_check_hightech"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_matching_hightech"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_check_social"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_energy"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_health"
+                    tools:layout_editor_absoluteX="48dp" />
+
+                <CheckBox
+                    android:id="@+id/register_investor_matching_check_social"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/register_matching_social"
+                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_support"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_energy"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_hightech"
+                    tools:layout_editor_absoluteX="48dp" />
+
+                <TextView
+                    android:id="@+id/text_investor_matching_support"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                    android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                    android:hint="@string/register_matching_support"
+                    android:textSize="@dimen/fragmentSubtitleFontSize"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_radio_support"
+                    app:layout_constraintStart_toStartOf="@+id/text_investor_matching_industry"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_check_social" />
+
+                <RadioGroup
+                    android:id="@+id/register_investor_matching_radio_support"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geograpgics"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_check_social"
+                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_support">
+
+                    <RadioButton
+                        android:id="@+id/register_investor_matching_radio_mentor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/register_matching_mentor" />
+
+                    <RadioButton
+                        android:id="@+id/register_investor_matching_radio_board"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/register_matching_board" />
+
+                    <RadioButton
+                        android:id="@+id/register_investor_matching_radio_passive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/register_matching_passive" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/text_investor_matching_geograpgics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                    android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                    android:hint="@string/register_matching_geographics"
+                    android:textSize="@dimen/fragmentSubtitleFontSize"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_continents"
+                    app:layout_constraintStart_toStartOf="@+id/text_investor_matching_support"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_radio_support" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/register_investor_matching_continents"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                    android:hint="@string/register_matching_continents"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_countries"
+                    app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_min_ticket"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_min_ticket"
+                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_geograpgics">
+
+                    <MultiAutoCompleteTextView
+                        android:id="@+id/register_input_investor_matching_continents"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/register_investor_matching_countries"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                    android:hint="@string/register_matching_countries"
+                    app:layout_constraintBottom_toTopOf="@+id/button_investor_matching"
+                    app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_min_ticket"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_min_ticket"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_continents">
+
+                    <MultiAutoCompleteTextView
+                        android:id="@+id/register_input_investor_matching_countries"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/button_investor_matching"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/authenticationButtonHeight"
+                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                    android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                    android:hint="@string/register_button_text"
+                    android:textSize="@dimen/buttonFontSize"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_countries"
+                    app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_min_ticket"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_min_ticket" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

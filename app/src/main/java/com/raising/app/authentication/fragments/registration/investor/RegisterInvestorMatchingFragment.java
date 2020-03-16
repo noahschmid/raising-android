@@ -9,17 +9,23 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioButton;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
 
+import java.util.concurrent.ConcurrentNavigableMap;
+
 public class RegisterInvestorMatchingFragment extends RaisingFragment
         implements View.OnClickListener {
-    private EditText scopeInput, minSizeInput, maxSizeInput;
+    private EditText minSizeInput, maxSizeInput;
+    private MultiAutoCompleteTextView continentInput, countryInput;
     private RadioButton radioVc, radioAngel, radioCvc, radioStrategic, radioClub;
     private RadioButton radioMentor, radioBoard, radioPassive;
     private CheckBox checkPreSeed, checkSeed, checkSeriesA, checkSeriesB, checkSeriesC;
@@ -33,6 +39,20 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         View view = inflater.inflate(R.layout.fragment_register_investor_matching,
                 container, false);
 
+        // TODO: fetch VALUES_CONTINENTS from backend
+        String [] VALUES_CONTINENTS = new String[] {"Asia", "Europe", "Africa", "Australia",
+                "North America", "South America"};
+
+        ArrayAdapter adapterContinents = new ArrayAdapter<>( getContext(),
+                R.layout.dropdown_menu_items, VALUES_CONTINENTS);
+
+        continentInput = view.findViewById(R.id.register_input_investor_matching_continents);
+        continentInput.setAdapter(adapterContinents);
+        continentInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+        //TODO: fetchs countries based on given continents and insert
+        countryInput = view.findViewById(R.id.register_input_investor_matching_countries);
+
         hideBottomNavigation(true);
 
         return view;
@@ -42,7 +62,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        scopeInput = view.findViewById(R.id.register_input_investor_matching_scope);
         minSizeInput = view.findViewById(R.id.register_input_investor_matching_min_ticket);
         maxSizeInput = view.findViewById(R.id.register_input_investor_matching_max_ticket);
 
