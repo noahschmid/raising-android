@@ -77,6 +77,17 @@
     <string name="register_startup_matching_information_text"> Matching Criteria </string>
     <string name="register_startup_matching_scope"> Scope </string>
 
+    <string name="register_pitch_information_text"> Pitch </string>
+    <string name="register_pitch_label_information_text"> Labels </string>
+    <string name="register_pitch_sentence"> One sentence description </string>
+    <string name="register_pitch"> Your pitch </string>
+    <string name="register_label_sef4kmu"> SEF4KMU </string>
+    <string name="register_label_venture_kick"> Venture Kick </string>
+    <string name="register_label_innosuisse"> Innosuisse </string>
+    <string name="register_label_swissef_upscaler"> SwissEF Upscaler </string>
+    <string name="register_error_word_limit_overflow"> You have exceeded your word limit! </string>
+    
+
     <string name="register_financial_information_text"> Financial Requirements </string>
     <string name="register_financial_type"> Type </string>
     <string name="register_financial_valuation"> Valuation (CHF) </string>
@@ -102,4 +113,4 @@
 
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    </resources>
+</resources>

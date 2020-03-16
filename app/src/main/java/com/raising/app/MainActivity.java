@@ -68,6 +68,6 @@ public class MainActivity extends AppCompatActivity {
      *                 if false, the bottom navigation is visible
      */
     public void hideBottomNavigation(boolean isHidden) {
-        findViewById(R.id.bottom_navigation).setVisibility(isHidden ? View.INVISIBLE : View.VISIBLE);
+        findViewById(R.id.bottom_navigation).setVisibility(isHidden ? View.GONE : View.VISIBLE);
     }
 }

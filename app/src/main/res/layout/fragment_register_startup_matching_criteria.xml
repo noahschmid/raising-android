@@ -99,7 +99,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                 android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/checkBox3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_min_ticket">
@@ -110,6 +111,47 @@
                     android:layout_height="@dimen/inputFormHeight" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <CheckBox
+                android:id="@+id/checkBox3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CheckBox"
+                app:layout_constraintBottom_toTopOf="@+id/checkBox4"
+                tools:layout_editor_absoluteX="126dp" />
+
+            <CheckBox
+                android:id="@+id/checkBox4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CheckBox"
+                app:layout_constraintBottom_toTopOf="@+id/checkBox5"
+                tools:layout_editor_absoluteX="126dp" />
+
+            <CheckBox
+                android:id="@+id/checkBox5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:text="CheckBox"
+                app:layout_constraintBottom_toTopOf="@+id/checkBox6"
+                tools:layout_editor_absoluteX="126dp" />
+
+            <CheckBox
+                android:id="@+id/checkBox6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CheckBox"
+                app:layout_constraintBottom_toTopOf="@+id/checkBox7"
+                tools:layout_editor_absoluteX="126dp" />
+
+            <CheckBox
+                android:id="@+id/checkBox7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CheckBox"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:layout_editor_absoluteX="265dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

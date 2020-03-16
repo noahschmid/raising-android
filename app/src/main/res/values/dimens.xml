@@ -7,6 +7,10 @@
 
 
     <dimen name="inputFormHeight"> 60dp </dimen>
+    <dimen name="inputOneSentenceDescriptionHeight"> 80dp </dimen>
+    <dimen name="inputPitchHeight"> 300dp </dimen>
+    <dimen name="checkBoxHeight"> 40dp </dimen>
+
     <dimen name="authenticationButtonHeight"> 60dp </dimen>
 
     <dimen name="inputFormHorizontalMarginSmall"> 16dp </dimen>
@@ -18,4 +22,7 @@
 
     <dimen name="fragmentTitleFontSize"> 20sp </dimen>
     <dimen name="fragmentSubtitleFontSize"> 14sp </dimen>
+
+    <dimen name="pitch_sentence_max_character"> 15 </dimen>
+    <dimen name="pitch_pitch_max_character"> 500 </dimen>
 </resources>
