@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
@@ -19,6 +20,8 @@ import com.raising.app.RaisingFragment;
 public class RegisterCompanyInformationFragment extends RaisingFragment implements View.OnClickListener {
     private EditText companyNameInput, companyUidInput, companyRevenueInput,
             companyBreakevenInput, companyFteInput, companyMarketInput;
+    private AutoCompleteTextView revenueInput;
+    private MultiAutoCompleteTextView marketsInput;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,11 +40,12 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
         ArrayAdapter adapterMarkets = new ArrayAdapter<>( getContext(),
                 R.layout.dropdown_menu_items, VALUES_MARKETS);
 
-        AutoCompleteTextView revenueExposedDropdown = view.findViewById(R.id.register_input_company_revenue);
-        revenueExposedDropdown.setAdapter(adapterRevenue);
+        revenueInput = view.findViewById(R.id.register_input_company_revenue);
+        revenueInput.setAdapter(adapterRevenue);
 
-        AutoCompleteTextView marketsExposedDropdown = view.findViewById(R.id.register_input_company_markets);
-        marketsExposedDropdown.setAdapter(adapterMarkets);
+        marketsInput = view.findViewById(R.id.register_input_company_markets);
+        marketsInput.setAdapter(adapterMarkets);
+        marketsInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         hideBottomNavigation(true);
 
