@@ -10,6 +10,8 @@
     <dimen name="inputPitchHeight"> 300dp </dimen>
     <dimen name="checkBoxHeight"> 40dp </dimen>
 
+    <dimen name="dropDownHeight"> 180dp </dimen>
+
     <dimen name="authenticationButtonHeight"> 60dp </dimen>
 
     <dimen name="inputFormHorizontalMarginSmall"> 16dp </dimen>

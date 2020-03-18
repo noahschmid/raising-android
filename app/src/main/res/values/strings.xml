@@ -58,6 +58,7 @@
     <string name="register_company_breakeven"> Break Even </string>
     <string name="register_company_fte"> FTE </string>
     <string name="register_company_markets"> Current Markets </string>
+    <string name="register_company_founding_year"> Founding Year </string>
 
     <string name="register_address_information_text"> Address Information</string>
     <string name="register_address_country"> Country </string>

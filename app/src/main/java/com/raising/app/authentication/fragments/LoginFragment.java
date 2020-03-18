@@ -28,6 +28,7 @@ import com.raising.app.authentication.fragments.forgotPassword.ForgotPasswordFra
 
 import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorMatchingFragment;
 import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorPitchFragment;
+import com.raising.app.authentication.fragments.registration.startup.RegisterCompanyInformationFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterStartupPitchFragment;
 import com.raising.app.authentication.view_models.LoginViewModel;
@@ -183,7 +184,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
      * @author Lorenz Caliezi 02.03.2020
      */
     private void goToRegisterFragment() {
-        changeFragment(new RegisterStartupPitchFragment(), "RegisterLoginInformationFragment");
+        changeFragment(new RegisterCompanyInformationFragment(), "RegisterLoginInformationFragment");
     }
 
     /**

@@ -20,7 +20,7 @@ import com.raising.app.RaisingFragment;
 public class RegisterCompanyInformationFragment extends RaisingFragment implements View.OnClickListener {
     private EditText companyNameInput, companyUidInput, companyRevenueInput,
             companyBreakevenInput, companyFteInput, companyMarketInput;
-    private AutoCompleteTextView revenueInput;
+    private AutoCompleteTextView revenueInput, foundingInput;
     private MultiAutoCompleteTextView marketsInput;
 
     @Override
@@ -33,6 +33,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
                 "CHF 1'000'000 - 10'000'000", "CHF 10'000'000+"};
         String [] VALUES_MARKETS = new String[] {"Asia", "Europe", "Africa", "Australia",
                 "North America", "South America"};
+        String [] VALUES_YEARS = new String[] {"2000", "1990", "1980", "1970"};
 
         ArrayAdapter adapterRevenue = new ArrayAdapter<>( getContext(),
                 R.layout.dropdown_menu_items, VALUES_REVENUE);
@@ -40,12 +41,19 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
         ArrayAdapter adapterMarkets = new ArrayAdapter<>( getContext(),
                 R.layout.dropdown_menu_items, VALUES_MARKETS);
 
+        ArrayAdapter adapterYear = new ArrayAdapter<>( getContext(),
+                R.layout.dropdown_menu_items, VALUES_YEARS);
+
         revenueInput = view.findViewById(R.id.register_input_company_revenue);
         revenueInput.setAdapter(adapterRevenue);
 
         marketsInput = view.findViewById(R.id.register_input_company_markets);
         marketsInput.setAdapter(adapterMarkets);
         marketsInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+        foundingInput = view.findViewById(R.id.register_input_company_founding_year);
+        foundingInput.setAdapter(adapterYear);
+
 
         hideBottomNavigation(true);
 
