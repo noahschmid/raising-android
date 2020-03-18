@@ -19,6 +19,8 @@ import android.widget.RadioButton;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.authentication.fragments.registration.RegisterPitchFragment;
+import com.raising.app.authentication.fragments.registration.startup.RegisterAddressInformationFragment;
 
 import java.util.concurrent.ConcurrentNavigableMap;
 
@@ -31,8 +33,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
     private CheckBox checkPreSeed, checkSeed, checkSeriesA, checkSeriesB, checkSeriesC;
     private CheckBox checkEnergy, checkGeneral, checkHealth, checkHighTech, checkSocial;
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,16 +42,22 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         // TODO: fetch VALUES_CONTINENTS from backend
         String [] VALUES_CONTINENTS = new String[] {"Asia", "Europe", "Africa", "Australia",
                 "North America", "South America"};
+        String [] VALUES_COUNTRIES = new String[] {"Asia", "Europe", "Africa", "Australia",
+                "North America", "South America"};
 
         ArrayAdapter adapterContinents = new ArrayAdapter<>( getContext(),
                 R.layout.dropdown_menu_items, VALUES_CONTINENTS);
+
+        ArrayAdapter adapterCountries = new ArrayAdapter<>( getContext(),
+                R.layout.dropdown_menu_items, VALUES_COUNTRIES);
 
         continentInput = view.findViewById(R.id.register_input_investor_matching_continents);
         continentInput.setAdapter(adapterContinents);
         continentInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
-        //TODO: fetchs countries based on given continents and insert
         countryInput = view.findViewById(R.id.register_input_investor_matching_countries);
+        continentInput.setAdapter(adapterCountries);
+        continentInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         hideBottomNavigation(true);
 
@@ -100,9 +106,10 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
     @Override
     public void onClick(View v) {
-        switch (getId()) {
+        switch (v.getId()) {
             case R.id.button_investor_matching:
-                //TODO: insert methods
+                changeFragment(new RegisterAddressInformationFragment(),
+                        "RegisterAddressInformationFragment");
                 break;
             default:
                 break;

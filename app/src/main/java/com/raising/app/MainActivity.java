@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.raising.app.authentication.fragments.LoginFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.raising.app.util.AuthenticationHandler;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -76,9 +76,10 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
 
     @Override
     public void onClick(View view) {
-        switch(getId()) {
+        switch(view.getId()) {
             case R.id.button_company_information:
-                //TODO: insert function to be executed
+                changeFragment(new RegisterAddressInformationFragment(),
+                        "RegisterAddressInformationFragment");
                 break;
             default:
                 break;

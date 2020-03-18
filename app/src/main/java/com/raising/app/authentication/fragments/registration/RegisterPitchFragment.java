@@ -16,10 +16,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.raising.app.MatchesFragment;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.util.RegistrationHandler;
 
-public class RegisterPitchFragment extends RaisingFragment implements View.OnClickListener {
+public class    RegisterPitchFragment extends RaisingFragment implements View.OnClickListener {
     private EditText sentenceInput, pitchInput;
     private TextInputLayout sentenceLayout, pitchLayout;
     private CheckBox checkSef4Kmu, checkVentureKick, checkInnosuisse, checkUpscaler;
@@ -63,9 +65,10 @@ public class RegisterPitchFragment extends RaisingFragment implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        switch(getId()) {
+        switch(v.getId()) {
             case R.id.button_pitch:
-                //TODO: insert method
+                RegistrationHandler.submit();
+                changeFragment(new MatchesFragment(), "MatchesFragment");
                 break;
             default:
                 break;

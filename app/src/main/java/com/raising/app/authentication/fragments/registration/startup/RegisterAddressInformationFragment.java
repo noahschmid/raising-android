@@ -51,9 +51,10 @@ public class RegisterAddressInformationFragment extends RaisingFragment implemen
 
     @Override
     public void onClick(View view) {
-        switch(getId()) {
+        switch(view.getId()) {
             case R.id.button_address_information:
-                //TODO: insert function to be executed
+                changeFragment(new RegisterStartupMatchingFragment(),
+                        "RegisterStartupMatchingFragment");
                 break;
             default:
                 break;
