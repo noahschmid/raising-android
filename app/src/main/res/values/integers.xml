@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <integer name="pitch_sentence_max_word"> 15 </integer>
+    <integer name="pitch_pitch_max_word"> 250 </integer>
+
+</resources>

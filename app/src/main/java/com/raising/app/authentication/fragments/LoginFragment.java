@@ -180,7 +180,8 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
      * @author Lorenz Caliezi 02.03.2020
      */
     private void goToRegisterFragment() {
-        changeFragment(new RegisterSelectTypeFragment(), "RegisterSelectTypeFragment");
+        changeFragment(new RegisterSelectTypeFragment(),
+                "RegisterSelectTypeFragment");
     }
 
     /**

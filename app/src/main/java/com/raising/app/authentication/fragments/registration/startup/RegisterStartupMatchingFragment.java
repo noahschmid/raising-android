@@ -15,7 +15,6 @@ import android.widget.RadioButton;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
-import com.raising.app.authentication.fragments.registration.RegisterPitchFragment;
 
 public class RegisterStartupMatchingFragment extends RaisingFragment
         implements View.OnClickListener {
@@ -82,7 +81,8 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_startup_matching:
-                changeFragment(new RegisterPitchFragment(), "RegisterPitchFragment");
+                changeFragment(new RegisterStartupPitchFragment(),
+                        "RegisterStartupPitchFragment");
                 break;
             default:
                 break;
