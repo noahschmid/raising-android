@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/register_pitch_frame_layout"
+    android:id="@+id/register__startup_pitch_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authentication.fragments.registration.RegisterPitchFragment">
+    tools:context=".authentication.fragments.registration.startup.RegisterStartupPitchFragment">
 
 
     <ScrollView
@@ -22,7 +22,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/text_pitch"
+                android:id="@+id/text_startup_pitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/inputFormInformationTextMargin"
@@ -30,14 +30,14 @@
                 android:hint="@string/register_pitch_information_text"
                 android:textSize="@dimen/fragmentTitleFontSize"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/register_pitch_sentence"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_pitch_sentence"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/register_pitch_sentence"
+                android:id="@+id/register_startup_pitch_sentence"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -47,20 +47,21 @@
                 android:hint="@string/register_pitch_sentence"
                 app:helperTextEnabled="true"
                 app:errorEnabled="true"
-                app:layout_constraintBottom_toTopOf="@+id/register_pitch_pitch"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_pitch_pitch"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_pitch">
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_pitch">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/register_input_pitch_sentence"
+                    android:id="@+id/register_input_startup_pitch_sentence"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputOneSentenceDescriptionHeight"
-                    android:gravity="top|left" />
+                    android:layout_height="wrap_content"
+                    android:gravity="start|top"
+                    android:minHeight="@dimen/inputOneSentenceDescriptionHeight" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/register_pitch_pitch"
+                android:id="@+id/register_startup_pitch_pitch"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -68,20 +69,20 @@
                 android:hint="@string/register_pitch"
                 app:helperTextEnabled="true"
                 app:errorEnabled="true"
-                app:layout_constraintBottom_toTopOf="@+id/text_label"
-                app:layout_constraintEnd_toEndOf="@+id/register_pitch_sentence"
-                app:layout_constraintStart_toStartOf="@+id/register_pitch_sentence"
-                app:layout_constraintTop_toBottomOf="@+id/register_pitch_sentence">d
-
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_label"
+                app:layout_constraintEnd_toEndOf="@+id/register_startup_pitch_sentence"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_pitch_sentence"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_pitch_sentence">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/register_input_pitch"
+                    android:id="@+id/register_input_startup_pitch"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputPitchHeight"
-                    android:gravity="top|left" />
+                    android:layout_height="wrap_content"
+                    android:gravity="start|top"
+                    android:minHeight="@dimen/inputPitchHeight" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/text_label"
+                android:id="@+id/text_startup_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/inputFormInformationTextMargin"
@@ -89,58 +90,58 @@
                 android:hint="@string/register_pitch_label_information_text"
                 android:textSize="@dimen/fragmentTitleFontSize"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/register_check_sef4kmu"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_check_sef4kmu"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register_pitch_pitch" />
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_pitch_pitch" />
 
             <CheckBox
-                android:id="@+id/register_check_sef4kmu"
+                android:id="@+id/register_startup_check_sef4kmu"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/checkBoxHeight"
                 android:hint="@string/register_label_sef4kmu"
-                app:layout_constraintBottom_toTopOf="@+id/register_check_venture_kick"
-                app:layout_constraintStart_toStartOf="@+id/register_pitch_sentence"
-                app:layout_constraintTop_toBottomOf="@+id/text_label" />
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_check_venture_kick"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_pitch_sentence"
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_label" />
 
             <CheckBox
-                android:id="@+id/register_check_venture_kick"
+                android:id="@+id/register_startup_check_venture_kick"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/checkBoxHeight"
                 android:hint="@string/register_label_venture_kick"
-                app:layout_constraintBottom_toTopOf="@+id/register_check_innosuisse"
-                app:layout_constraintStart_toStartOf="@+id/register_check_sef4kmu"
-                app:layout_constraintTop_toBottomOf="@+id/register_check_sef4kmu" />
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_check_innosuisse"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_check_sef4kmu"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_check_sef4kmu" />
 
             <CheckBox
-                android:id="@+id/register_check_innosuisse"
+                android:id="@+id/register_startup_check_innosuisse"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/checkBoxHeight"
                 android:hint="@string/register_label_innosuisse"
-                app:layout_constraintBottom_toTopOf="@+id/register_check_swissef_upscaler"
-                app:layout_constraintStart_toStartOf="@+id/register_check_sef4kmu"
-                app:layout_constraintTop_toBottomOf="@+id/register_check_venture_kick" />
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_check_swissef_upscaler"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_check_sef4kmu"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_check_venture_kick" />
 
             <CheckBox
-                android:id="@+id/register_check_swissef_upscaler"
+                android:id="@+id/register_startup_check_swissef_upscaler"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/checkBoxHeight"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_label_swissef_upscaler"
-                app:layout_constraintBottom_toTopOf="@+id/button_pitch"
-                app:layout_constraintStart_toStartOf="@+id/register_check_sef4kmu"
-                app:layout_constraintTop_toBottomOf="@+id/register_check_innosuisse" />
+                app:layout_constraintBottom_toTopOf="@+id/button_startup_pitch"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_check_sef4kmu"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_check_innosuisse" />
 
             <Button
-                android:id="@+id/button_pitch"
+                android:id="@+id/button_startup_pitch"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_button_text"
                 android:textSize="@dimen/buttonFontSize"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/register_pitch_sentence"
-                app:layout_constraintStart_toStartOf="@+id/register_pitch_sentence" />
+                app:layout_constraintEnd_toEndOf="@+id/register_startup_pitch_sentence"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_pitch_sentence" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
