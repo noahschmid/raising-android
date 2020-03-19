@@ -117,7 +117,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_profile_country"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
@@ -127,10 +127,10 @@
         app:layout_constraintStart_toStartOf="@+id/register_profile_company"
         app:layout_constraintTop_toBottomOf="@+id/register_profile_city">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/register_input_profile_country"
+        <MultiAutoCompleteTextView
+            android:id="@+id/register_input_profile_countries"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/inputFormHeight" />
+            android:layout_height="@dimen/inputFormHeight"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

@@ -91,8 +91,7 @@
                 <AutoCompleteTextView
                     android:id="@+id/register_input_company_revenue"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight"
-                    android:dropDownHeight="@dimen/dropDownHeight" />
+                    android:layout_height="@dimen/inputFormHeight"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -147,8 +146,7 @@
                 <MultiAutoCompleteTextView
                     android:id="@+id/register_input_company_markets"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight"
-                    android:dropDownHeight="@dimen/dropDownHeight" />
+                    android:layout_height="@dimen/inputFormHeight"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -166,8 +164,7 @@
                 <AutoCompleteTextView
                     android:id="@+id/register_input_company_founding_year"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight"
-                    android:dropDownHeight="@dimen/dropDownHeight" />
+                    android:layout_height="@dimen/inputFormHeight"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

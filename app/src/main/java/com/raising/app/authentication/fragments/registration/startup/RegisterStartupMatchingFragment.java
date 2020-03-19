@@ -13,12 +13,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
+import com.google.android.material.slider.Slider;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
 
 public class RegisterStartupMatchingFragment extends RaisingFragment
         implements View.OnClickListener {
-    private EditText scopeInput, minSizeInput, maxSizeInput;
+    private EditText scopeInput;
+    private Slider ticketSize;
     private CheckBox checkVC, checkAngel, checkCVC, checkStrategic, checkClub;
     private CheckBox checkMentor, checkBoard, checkPassive;
     private RadioButton radioPreSeed, radioSeed, radioSeriesA, radioSeriesB, radioSeriesC;
@@ -31,6 +33,12 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         View view = inflater.inflate(R.layout.fragment_register_startup_matching,
                 container, false);
 
+        ticketSize = view.findViewById(R.id.register_startup_matching_ticket_size);
+        ticketSize.setValues(
+                (float) getResources().getInteger(R.integer.ticket_size_slider_min_value),
+                (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
+        // hint: to fetch the value of the slider use getMinimumValue() and getMaximumValue()
+
         hideBottomNavigation(true);
 
         return view;
@@ -41,8 +49,6 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         super.onViewCreated(view, savedInstanceState);
 
         scopeInput = view.findViewById(R.id.register_input_startup_matching_scope);
-        minSizeInput = view.findViewById(R.id.register_input_startup_matching_min_ticket);
-        maxSizeInput = view.findViewById(R.id.register_input_startup_matching_max_ticket);
 
         checkVC = view.findViewById(R.id.register_startup_matching_check_vc);
         checkAngel = view.findViewById(R.id.register_startup_matching_check_angel);

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioButton;
 
+import com.google.android.material.slider.Slider;
+import com.google.android.material.snackbar.Snackbar;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
 
@@ -24,7 +27,7 @@ import java.util.concurrent.ConcurrentNavigableMap;
 
 public class RegisterInvestorMatchingFragment extends RaisingFragment
         implements View.OnClickListener {
-    private EditText minSizeInput, maxSizeInput;
+    private Slider ticketSize;
     private MultiAutoCompleteTextView continentInput, countryInput;
     private RadioButton radioVc, radioAngel, radioCvc, radioStrategic, radioClub;
     private RadioButton radioMentor, radioBoard, radioPassive;
@@ -50,8 +53,14 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         continentInput.setAdapter(adapterContinents);
         continentInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
-        //TODO: fetchs countries based on given continents and insert
+        //TODO: fetch countries based on given continents and insert
         countryInput = view.findViewById(R.id.register_input_investor_matching_countries);
+
+        ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
+        ticketSize.setValues(
+                (float) getResources().getInteger(R.integer.ticket_size_slider_min_value),
+                (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
+        // hint: to fetch the value of the slider use getMinimumValue() and getMaximumValue()
 
         hideBottomNavigation(true);
 
@@ -61,9 +70,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        minSizeInput = view.findViewById(R.id.register_input_investor_matching_min_ticket);
-        maxSizeInput = view.findViewById(R.id.register_input_investor_matching_max_ticket);
 
         radioVc = view.findViewById(R.id.register_investor_matching_radio_vc);
         radioAngel = view.findViewById(R.id.register_investor_matching_radio_angel);
@@ -102,7 +108,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
     public void onClick(View v) {
         switch (getId()) {
             case R.id.button_investor_matching:
-                //TODO: insert methods
                 break;
             default:
                 break;
