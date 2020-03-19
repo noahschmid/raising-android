@@ -26,16 +26,8 @@ import com.raising.app.R;
 import com.raising.app.RaisingFragment;
 import com.raising.app.authentication.fragments.forgotPassword.ForgotPasswordFragment;
 
-<<<<<<< HEAD
-import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorMatchingFragment;
-import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorPitchFragment;
-import com.raising.app.authentication.fragments.registration.investor.RegisterProfileInformationFragment;
-import com.raising.app.authentication.fragments.registration.startup.RegisterCompanyInformationFragment;
-import com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingFragment;
-import com.raising.app.authentication.fragments.registration.startup.RegisterStartupPitchFragment;
-=======
 import com.raising.app.authentication.fragments.registration.RegisterSelectTypeFragment;
->>>>>>> ea78acfd6508c5e7a9f2e6e6cea930eb44c6818a
+
 import com.raising.app.authentication.view_models.LoginViewModel;
 
 import org.json.JSONObject;
