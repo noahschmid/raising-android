@@ -16,7 +16,7 @@ import android.widget.MultiAutoCompleteTextView;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
 
-public class RegisterProfileInformationFragment extends RaisingFragment implements View.OnClickListener {
+public class RegisterInvestorInformationFragment extends RaisingFragment implements View.OnClickListener {
     private EditText profileCompanyInput, profileWebsiteInput, profileStreetInput,
             profileZipInput, profileCityInput;
     private MultiAutoCompleteTextView profileCountryInput;
@@ -24,7 +24,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_profile_information, container, false);
+        View view = inflater.inflate(R.layout.fragment_register_investor_information, container, false);
 
         // TODO: fetch VALUES_CONTINENTS from backend
         String [] VALUES_COUNTRIES = new String[] {"Switzerland", "South Africa", "Peru", "Sweden", "Vietnam"};
@@ -67,9 +67,10 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
 
     @Override
     public void onClick(View view) {
-        switch(getId()) {
+        switch(view.getId()) {
             case R.id.button_profile_information:
-                //TODO: insert function to be executed
+                changeFragment(new RegisterInvestorMatchingFragment(),
+                        "RegisterInvestorMatchingFragment");
                 break;
             default:
                 break;

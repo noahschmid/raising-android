@@ -85,9 +85,10 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
 
     @Override
     public void onClick(View v) {
-        switch (getId()) {
+        switch (v.getId()) {
             case R.id.button_startup_matching:
-                //TODO: insert methods
+                changeFragment(new RegisterStartupPitchFragment(),
+                        "RegisterStartupPitchFragment");
                 break;
             default:
                 break;

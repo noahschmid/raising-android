@@ -18,20 +18,24 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.raising.app.ApiRequestHandler;
-import com.raising.app.AuthenticationHandler;
+import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 
 import com.raising.app.MatchesFragment;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
 import com.raising.app.authentication.fragments.forgotPassword.ForgotPasswordFragment;
 
+<<<<<<< HEAD
 import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorMatchingFragment;
 import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorPitchFragment;
 import com.raising.app.authentication.fragments.registration.investor.RegisterProfileInformationFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterCompanyInformationFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterStartupPitchFragment;
+=======
+import com.raising.app.authentication.fragments.registration.RegisterSelectTypeFragment;
+>>>>>>> ea78acfd6508c5e7a9f2e6e6cea930eb44c6818a
 import com.raising.app.authentication.view_models.LoginViewModel;
 
 import org.json.JSONObject;
@@ -185,7 +189,9 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
      * @author Lorenz Caliezi 02.03.2020
      */
     private void goToRegisterFragment() {
-        changeFragment(new RegisterProfileInformationFragment(), "RegisterLoginInformationFragment");
+        changeFragment(new RegisterSelectTypeFragment(),
+                "RegisterSelectTypeFragment");
+
     }
 
     /**

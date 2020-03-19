@@ -4,14 +4,12 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -22,8 +20,7 @@ import com.google.android.material.slider.Slider;
 import com.google.android.material.snackbar.Snackbar;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
-
-import java.util.concurrent.ConcurrentNavigableMap;
+import com.raising.app.authentication.fragments.registration.startup.RegisterAddressInformationFragment;
 
 public class RegisterInvestorMatchingFragment extends RaisingFragment
         implements View.OnClickListener {
@@ -34,8 +31,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
     private CheckBox checkPreSeed, checkSeed, checkSeriesA, checkSeriesB, checkSeriesC;
     private CheckBox checkEnergy, checkGeneral, checkHealth, checkHighTech, checkSocial;
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,16 +40,23 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         // TODO: fetch VALUES_CONTINENTS from backend
         String [] VALUES_CONTINENTS = new String[] {"Asia", "Europe", "Africa", "Australia",
                 "North America", "South America"};
+        String [] VALUES_COUNTRIES = new String[] {"Switzerland"};
 
         ArrayAdapter adapterContinents = new ArrayAdapter<>( getContext(),
                 R.layout.dropdown_menu_items, VALUES_CONTINENTS);
+
+        ArrayAdapter adapterCountries = new ArrayAdapter<>( getContext(),
+                R.layout.dropdown_menu_items, VALUES_COUNTRIES);
 
         continentInput = view.findViewById(R.id.register_input_investor_matching_continents);
         continentInput.setAdapter(adapterContinents);
         continentInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         //TODO: fetch countries based on given continents and insert
+
         countryInput = view.findViewById(R.id.register_input_investor_matching_countries);
+        countryInput.setAdapter(adapterCountries);
+        countryInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
         ticketSize.setValues(
@@ -106,8 +108,10 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
     @Override
     public void onClick(View v) {
-        switch (getId()) {
+        switch (v.getId()) {
             case R.id.button_investor_matching:
+                changeFragment(new RegisterAddressInformationFragment(),
+                        "RegisterAddressInformationFragment");
                 break;
             default:
                 break;

@@ -13,6 +13,9 @@ import android.widget.EditText;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorInformationFragment;
+import com.raising.app.authentication.fragments.registration.startup.RegisterCompanyInformationFragment;
+import com.raising.app.util.RegistrationHandler;
 
 public class RegisterLoginInformationFragment extends RaisingFragment implements View.OnClickListener {
     private EditText firstNameInput, lastNameInput, emailInput, passwordInput;
@@ -21,7 +24,6 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_login_information, container, false);
-
         hideBottomNavigation(true);
 
         return view;
@@ -49,9 +51,15 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
 
     @Override
     public void onClick(View view) {
-        switch(getId()) {
+        switch(view.getId()) {
             case R.id.button_login_information:
-                //TODO: insert function to be executed
+                if(RegistrationHandler.isStartup()) {
+                    changeFragment(new RegisterCompanyInformationFragment(),
+                            "RegisterCompanyInformationFragment");
+                } else {
+                    changeFragment(new RegisterInvestorInformationFragment(),
+                            "RegisterInvestorInformationFragment");
+                }
                 break;
             default:
                 break;

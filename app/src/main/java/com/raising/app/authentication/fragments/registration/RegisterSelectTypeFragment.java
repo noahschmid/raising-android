@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.Button;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingFragment;
+import com.raising.app.util.RegistrationHandler;
 
 public class RegisterSelectTypeFragment extends RaisingFragment implements View.OnClickListener {
 
@@ -19,7 +22,6 @@ public class RegisterSelectTypeFragment extends RaisingFragment implements View.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_select_type, container, false);
-
         hideBottomNavigation(true);
 
         return view;
@@ -38,18 +40,19 @@ public class RegisterSelectTypeFragment extends RaisingFragment implements View.
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         hideBottomNavigation(false);
     }
 
     @Override
     public void onClick(View v) {
-        switch(getId()) {
+        switch(v.getId()) {
             case R.id.button_register_as_startup:
-                //TODO: implement further action
+                RegistrationHandler.setAccountType("startup");
+                changeFragment(new RegisterLoginInformationFragment(), "RegisterLoginInformationFragment");
                 break;
             case R.id.button_register_as_investor:
-                //TODO: implement further action
+                RegistrationHandler.setAccountType("investor");
+                changeFragment(new RegisterLoginInformationFragment(), "RegisterLoginInformationFragment");
                 break;
             default:
                 break;

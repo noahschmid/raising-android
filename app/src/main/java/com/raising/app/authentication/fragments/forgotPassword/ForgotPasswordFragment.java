@@ -12,7 +12,7 @@ import android.widget.EditText;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.raising.app.ApiRequestHandler;
+import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.GenericRequest;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;

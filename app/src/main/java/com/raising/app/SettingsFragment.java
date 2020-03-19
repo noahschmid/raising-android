@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.raising.app.authentication.fragments.LoginFragment;
+import com.raising.app.util.AuthenticationHandler;
 
 public class SettingsFragment extends RaisingFragment implements View.OnClickListener {
 

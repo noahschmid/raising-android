@@ -94,7 +94,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
     @Override
     public void onClick(View view) {
-        switch(getId()) {
+        switch(view.getId()) {
             case R.id.button_financial_requirements:
                 //TODO: insert function to call
                 break;
