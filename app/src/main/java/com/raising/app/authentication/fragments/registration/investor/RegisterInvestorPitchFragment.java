@@ -38,15 +38,14 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        prepareSentenceLayout();
-        preparePitchLayout();
-
         sentenceLayout = view.findViewById(R.id.register_startup_pitch_sentence);
         sentenceInput = view.findViewById(R.id.register_input_startup_pitch_sentence);
 
         pitchLayout = view.findViewById(R.id.register_startup_pitch_pitch);
         pitchInput = view.findViewById(R.id.register_input_startup_pitch);
 
+        prepareSentenceLayout();
+        preparePitchLayout();
 
         Button btnInvestorPitch = view.findViewById(R.id.button_investor_pitch);
         btnInvestorPitch.setOnClickListener(this);
