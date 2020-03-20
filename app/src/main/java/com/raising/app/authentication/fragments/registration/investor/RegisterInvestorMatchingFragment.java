@@ -25,7 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.android.material.;
+import com.google.android.material.slider.Slider;
 import com.google.android.material.snackbar.Snackbar;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
@@ -68,7 +68,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         //TODO: fetch countries based on given continents and insert
 
         countryInput = view.findViewById(R.id.register_input_investor_matching_countries);
-        countryInput.setAdapter(adapterCountries);
         countryInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);

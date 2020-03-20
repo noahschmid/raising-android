@@ -53,7 +53,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         profileStreetInput = view.findViewById(R.id.register_input_profile_street);
         profileZipInput = view.findViewById(R.id.register_input_profile_zip);
         profileCityInput = view.findViewById(R.id.register_input_profile_city);
-        profileCountryInput = view.findViewById(R.id.register_input_profile_country);
+        //profileCountryInput = view.findViewById(R.id.register_input_profile_country);
 
         Button btnProfileInformation = view.findViewById(R.id.button_profile_information);
         btnProfileInformation.setOnClickListener(this);
