@@ -40,7 +40,6 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
 
         if(RegistrationHandler.hasBeenVisited()) {
             RegistrationHandler.skip();
-            load = true;
             changeFragment(new RegisterSelectTypeFragment(),
                     "RegisterSelectTypeFragment");
         }
@@ -57,13 +56,13 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         emailInput = view.findViewById(R.id.register_input_email);
         passwordInput = view.findViewById(R.id.register_input_password);
 
-        if(load) {
-            Account account = RegistrationHandler.loadAccount();
-            firstNameInput.setText(account.getFirstName());
-            lastNameInput.setText(account.getLastName());
-            emailInput.setText(account.getEmail());
-            passwordInput.setText(account.getPassword());
-        }
+
+        Account account = RegistrationHandler.getAccount();
+        firstNameInput.setText(account.getFirstName());
+        lastNameInput.setText(account.getLastName());
+        emailInput.setText(account.getEmail());
+        passwordInput.setText(account.getPassword());
+
 
         Button btnLoginInformation = view.findViewById(R.id.button_login_information);
         btnLoginInformation.setOnClickListener(this);

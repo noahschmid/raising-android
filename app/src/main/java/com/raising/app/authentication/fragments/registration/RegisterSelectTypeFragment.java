@@ -18,6 +18,8 @@ import com.raising.app.authentication.fragments.registration.startup.RegisterCom
 import com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingFragment;
 import com.raising.app.util.RegistrationHandler;
 
+import java.io.IOException;
+
 public class RegisterSelectTypeFragment extends RaisingFragment implements View.OnClickListener {
 
     @Override
@@ -25,6 +27,17 @@ public class RegisterSelectTypeFragment extends RaisingFragment implements View.
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_select_type, container, false);
         hideBottomNavigation(true);
+
+        if(RegistrationHandler.hasBeenVisited()) {
+            RegistrationHandler.skip();
+            if(RegistrationHandler.isStartup()) {
+                changeFragment(new RegisterCompanyInformationFragment(),
+                        "RegisterCompanyInformationFragment");
+            } else {
+                changeFragment(new RegisterProfileInformationFragment(),
+                        "RegisterProfileInformationFragment");
+            }
+        }
 
         return view;
     }
@@ -49,14 +62,25 @@ public class RegisterSelectTypeFragment extends RaisingFragment implements View.
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.button_register_as_startup:
-                RegistrationHandler.setAccountType("startup");
-                changeFragment(new RegisterCompanyInformationFragment(),
-                        "RegisterCompanyInformationFragment");
+                try {
+                    RegistrationHandler.setAccountType("startup");
+                    RegistrationHandler.proceed();
+                    changeFragment(new RegisterCompanyInformationFragment(),
+                            "RegisterCompanyInformationFragment");
+                } catch (IOException e) {
+                    Log.d("debugMessage", e.getLocalizedMessage());
+                }
                 break;
             case R.id.button_register_as_investor:
-                RegistrationHandler.setAccountType("investor");
-                changeFragment(new RegisterProfileInformationFragment(),
-                        "RegiserProfileInformationFragment");
+                try {
+                    RegistrationHandler.setAccountType("investor");
+                    RegistrationHandler.proceed();
+                    changeFragment(new RegisterProfileInformationFragment(),
+                            "RegisterProfileInformationFragment");
+                } catch (IOException e) {
+                    //TODO: Proper error handling
+                    Log.d("debugMessage", e.getLocalizedMessage());
+                }
                 break;
             default:
                 break;
