@@ -4,8 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioButton;
@@ -24,12 +21,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.slider.Slider;
-import com.google.android.material.snackbar.Snackbar;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
-import com.raising.app.authentication.fragments.registration.startup.RegisterAddressInformationFragment;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
 
@@ -38,7 +32,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class RegisterInvestorMatchingFragment extends RaisingFragment
@@ -153,8 +146,8 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             return;
         }
 
-        int investmentMin = ticketSize.getMinimumValue();
-        int investmentMax = ticketSize.getMaximumValue();
+        int investmentMin = (int) ticketSize.getMinimumValue();
+        int investmentMax = (int) ticketSize.getMaximumValue();
 
         ArrayList<Long> industries = new ArrayList<>();
         for (int i = 0; i < industryLayout.getChildCount(); ++i) {
@@ -373,7 +366,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                                 continents.add(jresponse.getString("name"));
                             }
                             ArrayAdapter adapterContinents = new ArrayAdapter<>(getContext(),
-                                    R.layout.dropdown_menu_items, continents.toArray());
+                                    R.layout.item_dropdown_menu, continents.toArray());
                             continentInput.setAdapter(adapterContinents);
                         } catch (JSONException e) {
                             // TODO: Proper exception handling
@@ -408,7 +401,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                                 countries.add(jresponse.getString("name"));
                             }
                             ArrayAdapter adapterCountries = new ArrayAdapter<>(getContext(),
-                                    R.layout.dropdown_menu_items, countries.toArray());
+                                    R.layout.item_dropdown_menu, countries.toArray());
                             countryInput.setAdapter(adapterCountries);
                         } catch (JSONException e) {
                             // TODO: Proper exception handling

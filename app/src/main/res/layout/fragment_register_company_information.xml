@@ -97,7 +97,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/register_company_breakeven"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
@@ -107,7 +107,7 @@
                 app:layout_constraintStart_toStartOf="@+id/register_company_name"
                 app:layout_constraintTop_toBottomOf="@+id/register_company_revenue">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <AutoCompleteTextView
                     android:id="@+id/register_input_company_breakeven"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight" />
@@ -128,7 +128,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/register_input_company_fte"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight" />
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

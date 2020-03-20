@@ -18,10 +18,9 @@ import com.raising.app.R;
 import com.raising.app.RaisingFragment;
 
 public class RegisterCompanyInformationFragment extends RaisingFragment implements View.OnClickListener {
-    private EditText companyNameInput, companyUidInput, companyRevenueInput,
-            companyBreakevenInput, companyFteInput, companyMarketInput;
-    private AutoCompleteTextView revenueInput, foundingInput;
-    private MultiAutoCompleteTextView marketsInput;
+    private EditText companyNameInput, companyUidInput, companyFteInput;
+    private AutoCompleteTextView companyRevenueInput, companyBreakevenInput, companyFoundingInput;
+    private MultiAutoCompleteTextView companyMarketsInput;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,23 +35,26 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
         String [] VALUES_YEARS = new String[] {"2000", "1990", "1980", "1970"};
 
         ArrayAdapter adapterRevenue = new ArrayAdapter<>( getContext(),
-                R.layout.dropdown_menu_items, VALUES_REVENUE);
+                R.layout.item_dropdown_menu, VALUES_REVENUE);
 
         ArrayAdapter adapterMarkets = new ArrayAdapter<>( getContext(),
-                R.layout.dropdown_menu_items, VALUES_MARKETS);
+                R.layout.item_dropdown_menu, VALUES_MARKETS);
 
         ArrayAdapter adapterYear = new ArrayAdapter<>( getContext(),
-                R.layout.dropdown_menu_items, VALUES_YEARS);
+                R.layout.item_dropdown_menu, VALUES_YEARS);
 
-        revenueInput = view.findViewById(R.id.register_input_company_revenue);
-        revenueInput.setAdapter(adapterRevenue);
+        companyRevenueInput = view.findViewById(R.id.register_input_company_revenue);
+        companyRevenueInput.setAdapter(adapterRevenue);
 
-        marketsInput = view.findViewById(R.id.register_input_company_markets);
-        marketsInput.setAdapter(adapterMarkets);
-        marketsInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        companyBreakevenInput = view.findViewById(R.id.register_input_company_breakeven);
+        companyBreakevenInput.setAdapter(adapterYear);
 
-        foundingInput = view.findViewById(R.id.register_input_company_founding_year);
-        foundingInput.setAdapter(adapterYear);
+        companyMarketsInput = view.findViewById(R.id.register_input_company_markets);
+        companyMarketsInput.setAdapter(adapterMarkets);
+        companyMarketsInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+        companyFoundingInput = view.findViewById(R.id.register_input_company_founding_year);
+        companyFoundingInput.setAdapter(adapterYear);
 
 
         hideBottomNavigation(true);
@@ -66,10 +68,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
 
         companyNameInput = view.findViewById(R.id.register_input_company_name);
         companyUidInput = view.findViewById(R.id.register_input_company_uid);
-        companyRevenueInput = view.findViewById(R.id.register_input_company_revenue);
-        companyBreakevenInput = view.findViewById(R.id.register_input_company_breakeven);
         companyFteInput = view.findViewById(R.id.register_input_company_fte);
-        companyMarketInput = view.findViewById(R.id.register_input_company_markets);
 
         Button btnCompanyInformation = view.findViewById(R.id.button_company_information);
         btnCompanyInformation.setOnClickListener(this);
