@@ -34,11 +34,11 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
                 container, false);
 
         ticketSize = view.findViewById(R.id.register_startup_matching_ticket_size);
-      /*  ticketSize.setValues(
+        ticketSize.setValues(
                 (float) getResources().getInteger(R.integer.ticket_size_slider_min_value),
                 (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
         // hint: to fetch the value of the slider use getMinimumValue() and getMaximumValue()
-*/
+
         hideBottomNavigation(true);
 
         return view;

@@ -1,10 +1,8 @@
 package com.raising.app.authentication.fragments.registration.startup;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +15,6 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.material.textfield.TextInputLayout;
-import com.raising.app.MainActivity;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
 
@@ -26,7 +22,8 @@ import java.util.Calendar;
 import java.util.Objects;
 
 public class RegisterFinancialRequirementsFragment extends RaisingFragment implements View.OnClickListener {
-    private EditText financialTypeInput, financialValuationInput, financialClosingTimeInput;
+    private EditText financialValuationInput, financialClosingTimeInput;
+    private AutoCompleteTextView financialTypeInput;
     private DatePickerDialog.OnDateSetListener dateSetListener;
 
     @Override
@@ -41,10 +38,10 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         String [] VALUES_TYPE = new String[] {"Equity", "Deposit", "Loan", "Grant"};
 
         ArrayAdapter adapterType = new ArrayAdapter<>( getContext(),
-                R.layout.dropdown_menu_items, VALUES_TYPE);
+                R.layout.item_dropdown_menu, VALUES_TYPE);
 
-        AutoCompleteTextView typeExposedDropdown = view.findViewById(R.id.register_input_financial_type);
-        typeExposedDropdown.setAdapter(adapterType);
+        financialTypeInput = view.findViewById(R.id.register_input_financial_type);
+        financialTypeInput.setAdapter(adapterType);
 
         return view;
     }
@@ -53,19 +50,13 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        financialTypeInput = view.findViewById(R.id.register_input_financial_type);
         financialValuationInput = view.findViewById(R.id.register_input_financial_valuation);
 
         Button btnFinancialRequirements = view.findViewById(R.id.button_financial_requirements);
         btnFinancialRequirements.setOnClickListener(this);
 
         financialClosingTimeInput = view.findViewById(R.id.register_input_financial_closing_time);
-        financialClosingTimeInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                prepareDatePicker();
-            }
-        });
+        financialClosingTimeInput.setOnClickListener(v -> prepareDatePicker());
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             /**
              * Get date, that has been selected in datePicker
@@ -115,7 +106,6 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 Objects.requireNonNull(getView()).getContext(),
                 R.style.DialogTheme, dateSetListener, year, month, day);
-
         datePickerDialog.show();
     }
 }

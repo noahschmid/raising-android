@@ -35,12 +35,6 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         View view = inflater.inflate(R.layout.fragment_register_investor_pitch,
                 container, false);
 
-        sentenceLayout = view.findViewById(R.id.register_investor_pitch_sentence);
-        sentenceInput = view.findViewById(R.id.register_input_investor_pitch_sentence);
-
-        pitchLayout = view.findViewById(R.id.register_investor_pitch_pitch);
-        pitchInput = view.findViewById(R.id.register_input_investor_pitch_pitch);
-
         hideBottomNavigation(true);
         return view;
     }
@@ -48,6 +42,12 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        sentenceLayout = view.findViewById(R.id.register_investor_pitch_sentence);
+        sentenceInput = view.findViewById(R.id.register_input_investor_pitch_sentence);
+
+        pitchLayout = view.findViewById(R.id.register_investor_pitch_pitch);
+        pitchInput = view.findViewById(R.id.register_input_investor_pitch_pitch);
 
         prepareSentenceLayout();
         preparePitchLayout();

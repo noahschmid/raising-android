@@ -33,7 +33,11 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
             if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
+<<<<<<< HEAD
                 fragmentTransaction.add(R.id.fragment_container, new LoginFragment());
+=======
+                fragmentTransaction.add(R.id.fragment_container, new RegisterInvestorMatchingFragment());git a
+>>>>>>> d199b4caa60d31e584952eee3b50a16b23270886
                 fragmentTransaction.addToBackStack("LoginFragment");
             } else {
                 fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());

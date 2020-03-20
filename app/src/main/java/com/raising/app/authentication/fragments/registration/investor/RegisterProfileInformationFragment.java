@@ -9,8 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -28,12 +30,25 @@ import org.json.JSONObject;
 
 public class RegisterProfileInformationFragment extends RaisingFragment implements View.OnClickListener {
     private EditText profileCompanyInput, profileWebsiteInput, profileStreetInput,
-            profileZipInput, profileCityInput, profileCountryInput;
+            profileZipInput, profileCityInput;
+    private MultiAutoCompleteTextView profileCountryInput;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_profile_information, container, false);
+        View view = inflater.inflate(R.layout.fragment_register_profile_information,
+                container, false);
+
+        // TODO: fetch VALUES_CONTINENTS from backend
+        String [] VALUES_COUNTRIES = new String[] {"Switzerland",
+                "South Africa", "Peru", "Sweden", "Vietnam"};
+
+        ArrayAdapter adapterCountries = new ArrayAdapter<>( getContext(),
+                R.layout.item_dropdown_menu, VALUES_COUNTRIES);
+
+        profileCountryInput = view.findViewById(R.id.register_input_profile_countries);
+        profileCountryInput.setAdapter(adapterCountries);
+        profileCountryInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         hideBottomNavigation(true);
 
@@ -82,6 +97,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         switch(view.getId()) {
             case R.id.button_profile_information:
                 processProfileInformation();
+                // changeFragment(new RegisterInvestorMatchingFragment(), "RegisterInvestorMatchingFragment");
                 break;
             default:
                 break;

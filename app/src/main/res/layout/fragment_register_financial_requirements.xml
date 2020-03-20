@@ -50,6 +50,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:hint="@string/register_financial_valuation"
+        app:helperTextEnabled="true"
+        app:helperText="@string/register_financial_valuation_helper"
         app:layout_constraintBottom_toTopOf="@+id/register_financial_closing_time"
         app:layout_constraintEnd_toEndOf="@+id/register_financial_type"
         app:layout_constraintStart_toStartOf="@+id/register_financial_type"
@@ -58,7 +60,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_input_financial_valuation"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/inputFormHeight" />
+            android:layout_height="@dimen/inputFormHeight"
+            android:inputType="numberDecimal"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

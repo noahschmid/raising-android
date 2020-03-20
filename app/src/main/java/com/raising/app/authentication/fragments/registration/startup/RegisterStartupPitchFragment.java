@@ -19,8 +19,9 @@ import com.raising.app.R;
 import com.raising.app.RaisingFragment;
 
 public class RegisterStartupPitchFragment extends RaisingFragment implements View.OnClickListener {
-    private EditText sentenceInput, pitchInput;
     private TextInputLayout sentenceLayout, pitchLayout;
+    private EditText sentenceInput, pitchInput;
+
     private CheckBox checkSef4Kmu, checkVentureKick, checkInnosuisse, checkUpscaler;
 
     @Override
@@ -44,8 +45,8 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
         pitchLayout = view.findViewById(R.id.register_startup_pitch_pitch);
         pitchInput = view.findViewById(R.id.register_input_startup_pitch);
 
-        prepareSentenceLayout(view);
-        preparePitchLayout(view);
+        prepareSentenceLayout();
+        preparePitchLayout();
 
         checkSef4Kmu = view.findViewById(R.id.register_startup_check_sef4kmu);
         checkVentureKick = view.findViewById(R.id.register_startup_check_venture_kick);
@@ -79,7 +80,7 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
      *
      * @author Lorenz Caliezi 18.03.2020
      */
-    private void prepareSentenceLayout(View view) {
+    private void prepareSentenceLayout() {
         prepareRestrictedTextLayout(sentenceLayout, sentenceInput, getResources().getInteger(R.integer.pitch_sentence_max_word));
     }
 
@@ -88,7 +89,7 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
      *
      * @author Lorenz Caliezi 18.03.2020
      */
-    private void preparePitchLayout(View view) {
+    private void preparePitchLayout() {
         prepareRestrictedTextLayout(pitchLayout, pitchInput, getResources().getInteger(R.integer.pitch_pitch_max_word));
     }
 }

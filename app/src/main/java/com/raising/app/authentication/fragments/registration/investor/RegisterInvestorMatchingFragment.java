@@ -145,7 +145,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
-
+        
         float investmentMin =  ticketSize.getMinimumValue();
         float investmentMax =  ticketSize.getMaximumValue();
 
@@ -362,7 +362,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                                 continents.add(jresponse.getString("name"));
                             }
                             ArrayAdapter adapterContinents = new ArrayAdapter<>(getContext(),
-                                    R.layout.dropdown_menu_items, continents.toArray());
+                                    R.layout.item_dropdown_menu, continents.toArray());
                             continentInput.setAdapter(adapterContinents);
                         } catch (JSONException e) {
                             // TODO: Proper exception handling
@@ -397,7 +397,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                                 countries.add(jresponse.getString("name"));
                             }
                             ArrayAdapter adapterCountries = new ArrayAdapter<>(getContext(),
-                                    R.layout.dropdown_menu_items, countries.toArray());
+                                    R.layout.item_dropdown_menu, countries.toArray());
                             countryInput.setAdapter(adapterCountries);
                         } catch (JSONException e) {
                             // TODO: Proper exception handling
