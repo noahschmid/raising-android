@@ -30,61 +30,38 @@
                     android:hint="@string/register_matching_information_text"
                     android:textSize="@dimen/fragmentTitleFontSize"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_scope"
+                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_ticket"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/text_investor_matching_scope"
+                    android:id="@+id/text_investor_matching_ticket"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/inputFormVerticalMargin"
                     android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
-                    android:hint="@string/register_matching_scope"
+                    android:hint="@string/register_matching_ticket_size"
                     android:textSize="@dimen/fragmentSubtitleFontSize"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_min_ticket"
-                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_min_ticket"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_ticket_size"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_ticket_size"
                     app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_information" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/register_investor_matching_min_ticket"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/register_investor_matching_ticket_size"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                     android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                    android:hint="@string/register_matching_min_ticket"
-                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_max_ticket"
+                    android:stepSize="@integer/ticket_size_slider_step_size"
+                    android:valueFrom="@integer/ticket_size_slider_min_value"
+                    android:valueTo="@integer/ticket_size_slider_max_value"
+                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_investor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_scope">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/register_input_investor_matching_min_ticket"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/inputFormHeight" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/register_investor_matching_max_ticket"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                    android:hint="@string/register_matching_max_ticket"
-                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_investor"
-                    app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_min_ticket"
-                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_min_ticket"
-                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_min_ticket">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/register_input_investor_matching_max_ticket"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/inputFormHeight" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_ticket" />
 
                 <TextView
                     android:id="@+id/text_investor_matching_investor"
@@ -96,8 +73,8 @@
                     android:textSize="@dimen/fragmentSubtitleFontSize"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_radio_investor"
-                    app:layout_constraintStart_toStartOf="@+id/text_investor_matching_scope"
-                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_max_ticket" />
+                    app:layout_constraintStart_toStartOf="@+id/text_investor_matching_ticket"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_ticket_size" />
 
                 <RadioGroup
                     android:id="@+id/register_investor_matching_radio_investor"
@@ -108,6 +85,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_phase"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+
                     app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_investor">
 
                 </RadioGroup>
@@ -173,12 +151,13 @@
                     app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_countries"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+
                     app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_geograpgics">
 
                     <MultiAutoCompleteTextView
                         android:id="@+id/register_input_investor_matching_continents"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/inputFormHeight" />
+                        android:layout_height="@dimen/inputFormHeight"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -198,7 +177,7 @@
                     <MultiAutoCompleteTextView
                         android:id="@+id/register_input_investor_matching_countries"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/inputFormHeight" />
+                        android:layout_height="@dimen/inputFormHeight"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button

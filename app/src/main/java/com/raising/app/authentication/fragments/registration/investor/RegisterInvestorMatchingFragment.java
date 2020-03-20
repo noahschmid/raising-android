@@ -25,6 +25,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.material.;
+import com.google.android.material.snackbar.Snackbar;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterAddressInformationFragment;
@@ -41,7 +43,7 @@ import java.util.ArrayList;
 
 public class RegisterInvestorMatchingFragment extends RaisingFragment
         implements View.OnClickListener {
-    private EditText minSizeInput, maxSizeInput;
+    private Slider ticketSize;
     private MultiAutoCompleteTextView continentInput, countryInput;
     private LinearLayout industryLayout;
     private LinearLayout investmentPhaseLayout;
@@ -63,8 +65,17 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         continentInput = view.findViewById(R.id.register_input_investor_matching_continents);
         continentInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
+        //TODO: fetch countries based on given continents and insert
+
         countryInput = view.findViewById(R.id.register_input_investor_matching_countries);
+        countryInput.setAdapter(adapterCountries);
         countryInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+        ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
+        ticketSize.setValues(
+                (float) getResources().getInteger(R.integer.ticket_size_slider_min_value),
+                (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
+        // hint: to fetch the value of the slider use getMinimumValue() and getMaximumValue()
 
         hideBottomNavigation(true);
 
@@ -100,10 +111,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                 }
             }
         });
-
-        minSizeInput = view.findViewById(R.id.register_input_investor_matching_min_ticket);
-        maxSizeInput = view.findViewById(R.id.register_input_investor_matching_max_ticket);
-
 
         Button btnInvestorMatching = view.findViewById(R.id.button_investor_matching);
         btnInvestorMatching.setOnClickListener(this);
@@ -141,15 +148,14 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
      * Check if all information is valid and save it
      */
     private void processMatchingInformation() {
-        if(minSizeInput.getText().length() == 0 || maxSizeInput.getText().length() == 0 ||
-                investorType == -1 || countryInput.getText().length() == 0) {
+        if(investorType == -1 || countryInput.getText().length() == 0) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
-        int investmentMin = Integer.parseInt(minSizeInput.getText().toString());
-        int investmentMax = Integer.parseInt(maxSizeInput.getText().toString());
+        int investmentMin = ticketSize.getMinimumValue();
+        int investmentMax = ticketSize.getMaximumValue();
 
         ArrayList<Long> industries = new ArrayList<>();
         for (int i = 0; i < industryLayout.getChildCount(); ++i) {

@@ -58,6 +58,7 @@
     <string name="register_company_breakeven"> Break Even </string>
     <string name="register_company_fte"> FTE </string>
     <string name="register_company_markets"> Current Markets </string>
+    <string name="register_company_founding_year"> Founding Year </string>
 
     <string name="register_address_information_text"> Address Information</string>
     <string name="register_address_country"> Country </string>
@@ -76,6 +77,7 @@
 
     <string name="register_matching_information_text"> Matching Criteria </string>
     <string name="register_matching_scope"> Scope </string>
+    <string name="register_matching_ticket_size"> Ticket Size </string>
     <string name="register_matching_scope_"> Scope (CHF) </string>
     <string name="register_matching_min_ticket"> Minimal Ticket Size (CHF) </string>
     <string name="register_matching_max_ticket"> Maximal Ticket Size (CHF) </string>

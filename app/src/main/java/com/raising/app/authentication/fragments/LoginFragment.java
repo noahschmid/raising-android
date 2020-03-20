@@ -28,6 +28,7 @@ import com.raising.app.RaisingFragment;
 import com.raising.app.authentication.fragments.forgotPassword.ForgotPasswordFragment;
 
 import com.raising.app.authentication.fragments.registration.RegisterSelectTypeFragment;
+
 import com.raising.app.authentication.view_models.LoginViewModel;
 import com.raising.app.util.RegistrationHandler;
 

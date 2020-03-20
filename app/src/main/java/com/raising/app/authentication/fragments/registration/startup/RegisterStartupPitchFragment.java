@@ -38,14 +38,14 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        prepareSentenceLayout(view);
-        preparePitchLayout(view);
-
         sentenceLayout = view.findViewById(R.id.register_startup_pitch_sentence);
         sentenceInput = view.findViewById(R.id.register_input_startup_pitch_sentence);
 
         pitchLayout = view.findViewById(R.id.register_startup_pitch_pitch);
         pitchInput = view.findViewById(R.id.register_input_startup_pitch);
+
+        prepareSentenceLayout(view);
+        preparePitchLayout(view);
 
         checkSef4Kmu = view.findViewById(R.id.register_startup_check_sef4kmu);
         checkVentureKick = view.findViewById(R.id.register_startup_check_venture_kick);
