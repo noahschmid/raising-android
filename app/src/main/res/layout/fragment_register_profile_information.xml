@@ -5,7 +5,7 @@
     android:id="@+id/register_profile_information_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authentication.fragments.registration.investor.RegisterInvestorInformationFragment">
+    tools:context=".authentication.fragments.registration.investor.RegisterProfileInformationFragment">
 
     <TextView
         android:id="@+id/text_profile_information"

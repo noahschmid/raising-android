@@ -34,7 +34,7 @@ public class RegisterFragment extends RaisingFragment implements View.OnClickLis
     private EditText passwordInput;
     private EditText confirmPasswordInput;
 
-    final private String registerEndpoint = "https://33383.hostserv.eu:8080/account/register";
+    final private String registerEndpoint = ApiRequestHandler.getDomain() + "account/register";
 
     private RegisterViewModel mViewModel;
 

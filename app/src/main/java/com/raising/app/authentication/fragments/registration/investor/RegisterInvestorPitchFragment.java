@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.util.RegistrationHandler;
+
+import java.io.IOException;
 
 public class RegisterInvestorPitchFragment extends RaisingFragment implements View.OnClickListener {
     private EditText sentenceInput, pitchInput;
@@ -29,8 +34,13 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         View view = inflater.inflate(R.layout.fragment_register_investor_pitch,
                 container, false);
 
-        hideBottomNavigation(true);
+        sentenceLayout = view.findViewById(R.id.register_investor_pitch_sentence);
+        sentenceInput = view.findViewById(R.id.register_input_investor_pitch_sentence);
 
+        pitchLayout = view.findViewById(R.id.register_investor_pitch_pitch);
+        pitchInput = view.findViewById(R.id.register_input_investor_pitch_pitch);
+
+        hideBottomNavigation(true);
         return view;
     }
 
@@ -40,13 +50,6 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
 
         prepareSentenceLayout();
         preparePitchLayout();
-
-        sentenceLayout = view.findViewById(R.id.register_startup_pitch_sentence);
-        sentenceInput = view.findViewById(R.id.register_input_startup_pitch_sentence);
-
-        pitchLayout = view.findViewById(R.id.register_startup_pitch_pitch);
-        pitchInput = view.findViewById(R.id.register_input_startup_pitch);
-
 
         Button btnInvestorPitch = view.findViewById(R.id.button_investor_pitch);
         btnInvestorPitch.setOnClickListener(this);
@@ -61,12 +64,32 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
 
     @Override
     public void onClick(View v) {
-        switch (getId()) {
+        switch (v.getId()) {
             case R.id.button_investor_pitch:
-                //TODO: insert method
+                processInputs();
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * Process inputs, save them and submit registration
+     */
+    private void processInputs() {
+        if(sentenceInput.getText().length() == 0 || pitchInput.getText().length() == 0) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_dialog_text_empty_credentials));
+            return;
+        }
+
+        try {
+            RegistrationHandler.savePitch(sentenceInput.getText().toString(),
+                    pitchInput.getText().toString());
+            RegistrationHandler.submit();
+        } catch (IOException e) {
+            //TODO: Proper exception handling
+            Log.d("debugMessage", e.getMessage());
         }
     }
 

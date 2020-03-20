@@ -18,6 +18,7 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.raising.app.authentication.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
 
@@ -28,16 +29,18 @@ import com.raising.app.authentication.fragments.forgotPassword.ForgotPasswordFra
 
 import com.raising.app.authentication.fragments.registration.RegisterSelectTypeFragment;
 import com.raising.app.authentication.view_models.LoginViewModel;
+import com.raising.app.util.RegistrationHandler;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 
 public class LoginFragment extends RaisingFragment implements View.OnClickListener {
     private EditText emailInput, passwordInput;
 
-    final private String loginEndpoint = "https://33383.hostserv.eu:8080/account/login";
+    final private String loginEndpoint = ApiRequestHandler.getDomain() + "account/login";
     private LoginViewModel mViewModel;
 
     public static LoginFragment newInstance() {
@@ -50,6 +53,11 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         hideBottomNavigation(true);
+
+        // if registration was in progress, cancel it
+        if (RegistrationHandler.isInProgress(getContext()))
+            changeFragment(new RegisterLoginInformationFragment(),
+                    "RegisterLoginInformationFragment");
 
         emailInput = view.findViewById(R.id.login_input_email);
         passwordInput = view.findViewById(R.id.login_input_password);
@@ -104,25 +112,25 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
      * @version 1.0
      */
     private void prepareLogin() {
-        String username = emailInput.getText().toString();
+        String email = emailInput.getText().toString();
         String password = passwordInput.getText().toString();
-        login(username, password);
+        login(email, password);
     }
 
     /**
      * Send login request to backend and process response
-     * @param username
+     * @param email
      * @param password
      */
-    private void login(String username, String password) {
-        if(username.length() == 0 || password.length() == 0) {
+    private void login(String email, String password) {
+        if(email.length() == 0 || password.length() == 0) {
             showSimpleDialog(getString(R.string.login_dialog_title),
                     getString(R.string.login_dialog_text_empty_credentials));
             return;
         }
         try {
             HashMap<String, String> params = new HashMap<>();
-            params.put("username", username);
+            params.put("email", email);
             params.put("password", password);
             JsonObjectRequest loginRequest = new JsonObjectRequest(
                     loginEndpoint, new JSONObject(params),
@@ -180,8 +188,15 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
      * @author Lorenz Caliezi 02.03.2020
      */
     private void goToRegisterFragment() {
-        changeFragment(new RegisterSelectTypeFragment(),
-                "RegisterSelectTypeFragment");
+        try {
+            RegistrationHandler.begin();
+            changeFragment(new RegisterLoginInformationFragment(),
+                    "RegisterLoginInformationFragment");
+            Log.d("debugMessage", "success");
+        } catch (IOException e) {
+            //TODO: Display error message
+            Log.d("debugMessage", e.getStackTrace().toString());
+        }
     }
 
     /**

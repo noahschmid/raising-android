@@ -27,7 +27,7 @@ public class ResetPasswordFragment extends RaisingFragment implements View.OnCli
     private EditText codeInput;
     private EditText passwordInput;
 
-    private final String resetEndpoint = "https://33383.hostserv.eu:8080/account/reset";
+    private final String resetEndpoint = ApiRequestHandler.getDomain() + "account/reset";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

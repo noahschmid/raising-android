@@ -23,7 +23,7 @@ import java.util.HashMap;
 
 public class ForgotPasswordFragment extends RaisingFragment implements View.OnClickListener{
     private EditText emailInput;
-    private final String forgotEndpoint = "https://33383.hostserv.eu:8080/account/forgot";
+    private final String forgotEndpoint = ApiRequestHandler.getDomain() +"account/forgot";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

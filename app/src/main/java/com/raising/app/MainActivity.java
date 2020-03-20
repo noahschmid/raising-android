@@ -11,7 +11,11 @@ import android.view.View;
 
 import com.raising.app.authentication.fragments.LoginFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.raising.app.authentication.fragments.registration.RegisterLoginInformationFragment;
+import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorMatchingFragment;
+import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorPitchFragment;
 import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.RegistrationHandler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+        RegistrationHandler.setContext(getApplicationContext());
 
         if(savedInstanceState == null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -53,8 +59,9 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_settings:
                             selected = new SettingsFragment();
                             break;
+                        default:
+                            return false;
                     }
-
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragment_container, selected)

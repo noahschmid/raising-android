@@ -141,4 +141,7 @@
 
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="register_dialog_text_invalid_email">Entered email is invalid</string>
+    <string name="register_dialog_text_weak_password">Entered password is too short (min. 6 characters)!</string>
+    <string name="register_dialog_text_email_registered">There\'s already an account with the same email!</string>
 </resources>

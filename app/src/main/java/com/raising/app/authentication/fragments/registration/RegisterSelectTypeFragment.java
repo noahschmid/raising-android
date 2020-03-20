@@ -13,6 +13,8 @@ import android.widget.Button;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.authentication.fragments.registration.investor.RegisterProfileInformationFragment;
+import com.raising.app.authentication.fragments.registration.startup.RegisterCompanyInformationFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingFragment;
 import com.raising.app.util.RegistrationHandler;
 
@@ -48,11 +50,13 @@ public class RegisterSelectTypeFragment extends RaisingFragment implements View.
         switch(v.getId()) {
             case R.id.button_register_as_startup:
                 RegistrationHandler.setAccountType("startup");
-                changeFragment(new RegisterLoginInformationFragment(), "RegisterLoginInformationFragment");
+                changeFragment(new RegisterCompanyInformationFragment(),
+                        "RegisterCompanyInformationFragment");
                 break;
             case R.id.button_register_as_investor:
                 RegistrationHandler.setAccountType("investor");
-                changeFragment(new RegisterLoginInformationFragment(), "RegisterLoginInformationFragment");
+                changeFragment(new RegisterProfileInformationFragment(),
+                        "RegiserProfileInformationFragment");
                 break;
             default:
                 break;
