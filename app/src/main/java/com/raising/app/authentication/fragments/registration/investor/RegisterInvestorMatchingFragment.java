@@ -54,33 +54,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         View view = inflater.inflate(R.layout.fragment_register_investor_matching,
                 container, false);
 
-        investorTypeGroup = view.findViewById(R.id.register_investor_matching_radio_investor);
-
-        continentInput = view.findViewById(R.id.register_input_investor_matching_continents);
-        continentInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-
-        countryInput = view.findViewById(R.id.register_input_investor_matching_countries);
-        countryInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-
-        ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
-        ticketSize.setValues(
-                (float) getResources().getInteger(R.integer.ticket_size_slider_min_value),
-                (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
-        // hint: to fetch the value of the slider use getMinimumValue() and getMaximumValue()
-
         hideBottomNavigation(true);
-
-        fragmentView = view;
-        industryLayout = view.findViewById(R.id.register_investor_matching_industry_layout);
-        investmentPhaseLayout = view.findViewById(R.id.register_investor_matching_phase_layout);
-        supportLayout = view.findViewById(R.id.register_investor_matching_support_layout);
-
-        getContinents();
-        getCountries();
-        getInvestorTypes();
-        getSupportTypes();
-        getIndustries();
-        getInvestmentPhases();
 
         if(RegistrationHandler.hasBeenVisited()) {
             RegistrationHandler.skip();
@@ -109,8 +83,34 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             }
         });
 
+        investorTypeGroup = view.findViewById(R.id.register_investor_matching_radio_investor);
+
+        continentInput = view.findViewById(R.id.register_input_investor_matching_continents);
+        continentInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+        countryInput = view.findViewById(R.id.register_input_investor_matching_countries);
+        countryInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+        ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
+        ticketSize.setValues(
+                (float) getResources().getInteger(R.integer.ticket_size_slider_min_value),
+                (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
+
         Investor investor = RegistrationHandler.getInvestor();
-        ticketSize.setValues(investor.getInvestmentMin(), investor.getInvestmentMax());
+        if(investor.getTicketSizeMin() != 0 && investor.getTicketSizeMax() != 0)
+            ticketSize.setValues(investor.getTicketSizeMin(), investor.getTicketSizeMax());
+
+
+        industryLayout = view.findViewById(R.id.register_investor_matching_industry_layout);
+        investmentPhaseLayout = view.findViewById(R.id.register_investor_matching_phase_layout);
+        supportLayout = view.findViewById(R.id.register_investor_matching_support_layout);
+
+        getContinents();
+        getCountries();
+        getInvestorTypes();
+        getSupportTypes();
+        getIndustries();
+        getInvestmentPhases();
 
         Button btnInvestorMatching = view.findViewById(R.id.button_investor_matching);
         btnInvestorMatching.setOnClickListener(this);
@@ -145,9 +145,9 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
-        
-        float investmentMin =  ticketSize.getMinimumValue();
-        float investmentMax =  ticketSize.getMaximumValue();
+
+        float ticketSizeMin =  ticketSize.getMinimumValue();
+        float ticketSizeMax =  ticketSize.getMaximumValue();
 
         ArrayList<Long> industries = new ArrayList<>();
         for (int i = 0; i < industryLayout.getChildCount(); ++i) {
@@ -181,7 +181,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
         ArrayList<Long> countries = new ArrayList<>();
         try {
-            RegistrationHandler.saveInvestorMatchingFragment(investmentMin, investmentMax,
+            RegistrationHandler.saveInvestorMatchingFragment(ticketSizeMin, ticketSizeMax,
                     investorType, investmentPhases, industries, support, countries);
             RegistrationHandler.proceed();
             changeFragment(new RegisterInvestorPitchFragment(),

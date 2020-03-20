@@ -208,7 +208,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_industry"
-                    app:layout_constraintVertical_bias="0.0"></LinearLayout>
+                    app:layout_constraintVertical_bias="0.0"/>
 
                 <LinearLayout
                     android:id="@+id/register_investor_matching_phase_layout"
@@ -223,7 +223,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_phase"
-                    app:layout_constraintVertical_bias="0.52"></LinearLayout>
+                    app:layout_constraintVertical_bias="0.52"/>
 
                 <LinearLayout
                     android:id="@+id/register_investor_matching_support_layout"
@@ -237,7 +237,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geograpgics"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_support"></LinearLayout>
+                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_support"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

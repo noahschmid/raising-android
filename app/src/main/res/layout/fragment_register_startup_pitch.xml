@@ -90,47 +90,22 @@
                 android:hint="@string/register_pitch_label_information_text"
                 android:textSize="@dimen/fragmentTitleFontSize"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/register_startup_check_sef4kmu"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_pitch_pitch" />
 
-            <CheckBox
-                android:id="@+id/register_startup_check_sef4kmu"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/checkBoxHeight"
-                android:hint="@string/register_label_sef4kmu"
-                app:layout_constraintBottom_toTopOf="@+id/register_startup_check_venture_kick"
-                app:layout_constraintStart_toStartOf="@+id/register_startup_pitch_sentence"
+            <LinearLayout
+                android:id="@+id/register_startup_pitch_labels"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_label" />
-
-            <CheckBox
-                android:id="@+id/register_startup_check_venture_kick"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/checkBoxHeight"
-                android:hint="@string/register_label_venture_kick"
-                app:layout_constraintBottom_toTopOf="@+id/register_startup_check_innosuisse"
-                app:layout_constraintStart_toStartOf="@+id/register_startup_check_sef4kmu"
-                app:layout_constraintTop_toBottomOf="@+id/register_startup_check_sef4kmu" />
-
-            <CheckBox
-                android:id="@+id/register_startup_check_innosuisse"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/checkBoxHeight"
-                android:hint="@string/register_label_innosuisse"
-                app:layout_constraintBottom_toTopOf="@+id/register_startup_check_swissef_upscaler"
-                app:layout_constraintStart_toStartOf="@+id/register_startup_check_sef4kmu"
-                app:layout_constraintTop_toBottomOf="@+id/register_startup_check_venture_kick" />
-
-            <CheckBox
-                android:id="@+id/register_startup_check_swissef_upscaler"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/checkBoxHeight"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                android:hint="@string/register_label_swissef_upscaler"
-                app:layout_constraintBottom_toTopOf="@+id/button_startup_pitch"
-                app:layout_constraintStart_toStartOf="@+id/register_startup_check_sef4kmu"
-                app:layout_constraintTop_toBottomOf="@+id/register_startup_check_innosuisse" />
 
             <Button
                 android:id="@+id/button_startup_pitch"
@@ -139,6 +114,7 @@
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_button_text"
                 android:textSize="@dimen/buttonFontSize"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_pitch_labels"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_pitch_sentence"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_pitch_sentence" />

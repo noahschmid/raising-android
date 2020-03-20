@@ -56,7 +56,6 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         emailInput = view.findViewById(R.id.register_input_email);
         passwordInput = view.findViewById(R.id.register_input_password);
 
-
         Account account = RegistrationHandler.getAccount();
         firstNameInput.setText(account.getFirstName());
         lastNameInput.setText(account.getLastName());

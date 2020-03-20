@@ -22,6 +22,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RegistrationHandler {
     private static final String registrationEndpoint = "account/register";
@@ -306,13 +307,18 @@ public class RegistrationHandler {
         }
     }
 
-    public static void saveInvestorMatchingFragment(float investmentMin, float investmentMax,
+    public static void saveInvestorMatchingFragment(float ticketSizeMin, float ticketSizeMax,
                                                     int investorType, ArrayList<Long> investmentPhases,
                                                     ArrayList<Long> industries, ArrayList<Long> support,
                                                     ArrayList<Long> countries) throws IOException {
-        investor.setInvestmentMax(investmentMax);
-        investor.setInvestmentMin(investmentMin);
+        investor.setTicketSizeMax(ticketSizeMax);
+        investor.setTicketSizeMin(ticketSizeMin);
         investor.setInvestorTypeId(investorType);
+
+        investor.clearIndustries();
+        investor.clearCountries();
+        investor.clearInvestmentPhases();
+        investor.clearSupport();
 
         for(Long id : industries) {
             investor.addIndustry(id);
@@ -344,5 +350,111 @@ public class RegistrationHandler {
         account.setDescription(description);
 
         saveObject(account, "rgstr_account");
+    }
+
+    /**
+     * Save company information to internal storage
+     * @param breakevenYear
+     * @param fte
+     * @param companyName
+     * @param companyUid
+     * @param revenue
+     * @param markets
+     * @param foundingYear
+     */
+    public static void saveCompanyInformation(int breakevenYear, int fte, String companyName,
+                                              String companyUid, String revenue,
+                                              ArrayList<Long> markets, int foundingYear) throws IOException{
+        startup.setBreakevenYear(breakevenYear);
+        startup.setNumberOfFte(fte);
+        startup.setName(companyName);
+        startup.setRevenue(revenue);
+        startup.setFoundingYear(foundingYear);
+
+        startup.clearCurrentMarkets();
+
+        for(Long id : markets) {
+            startup.addMarket(id);
+        }
+
+        saveObject(startup, "rgstr_startup");
+    }
+
+    /**
+     * Save startup matching information
+     * @param ticketSizeMin
+     * @param ticketSizeMax
+     * @param investorTypes
+     * @param investmentPhases
+     * @param industries
+     * @param support
+     * @param scope
+     */
+    public static void saveStartupMatchingFragment(float ticketSizeMin, float ticketSizeMax,
+                                                   ArrayList<Long> investorTypes,
+                                                   ArrayList<Long> investmentPhases,
+                                                   ArrayList<Long> industries, ArrayList<Long> support,
+                                                   float scope) throws IOException {
+        startup.setTicketSizeMin(ticketSizeMin);
+        startup.setTicketSizeMax(ticketSizeMax);
+        startup.setScope(scope);
+
+        startup.clearSupport();
+        startup.clearInvestorTypes();
+        startup.clearIndustries();
+        startup.clearInvestmentPhases();
+
+        for(Long id : industries) {
+            startup.addIndustry(id);
+        }
+
+        for(Long id : investorTypes) {
+            startup.addInvestorType(id);
+        }
+
+        for(Long id : investmentPhases) {
+            startup.addInvestmentPhase(id);
+        }
+
+        for(Long id : support) {
+            startup.addSupport(id);
+        }
+
+        saveObject(startup, "rgstr_startup");
+    }
+
+    /**
+     * Save pitch information to startup
+     * @param pitch
+     * @param description
+     * @param labels
+     */
+    public static void saveStartupPitch(String pitch, String description,
+                                        ArrayList<Long> labels) throws IOException{
+        startup.setDescription(description);
+        startup.setPitch(pitch);
+
+        startup.clearLabels();
+
+        for(Long id : labels) {
+            startup.addLabel(id);
+        }
+
+        saveObject(startup, "rgstr_startup");
+    }
+
+    /**
+     *
+     * @param type
+     * @param valuation
+     * @param closingTime
+     */
+    public static void saveFinancialRequirements(long type, float valuation,
+                                                 Date closingTime) throws IOException {
+        startup.setClosingTime(closingTime);
+        startup.setValuation(valuation);
+        startup.setFinancialType(type);
+
+        saveObject(startup, "rgstr_startup");
     }
 }
