@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,10 +45,31 @@ public class FragmentStakeholderShareholder extends RaisingFragment implements V
         corporateNameInput = view.findViewById(R.id.input_shareholder_name);
         corporateWebsiteInput = view.findViewById(R.id.input_shareholder_website);
 
+        String [] VALUES_COUNTRIES = new String[] { "Switzerland", "Sweden", "USA"};
+        String [] VALUES_EQUITY = new String[] { "10", "20", "30"};
+        String [] VALUES_CORPORATE_BODY = new String[] {"Family Business"};
+
+        ArrayAdapter adapterCountries = new ArrayAdapter<>( getContext(),
+                R.layout.item_dropdown_menu, VALUES_COUNTRIES);
+
+        ArrayAdapter adapterEquity = new ArrayAdapter<>( getContext(),
+                R.layout.item_dropdown_menu, VALUES_EQUITY);
+
+        ArrayAdapter adapterCorporateBody = new ArrayAdapter<>( getContext(),
+                R.layout.item_dropdown_menu, VALUES_CORPORATE_BODY);
+
         privateCountryInput = view.findViewById(R.id.input_shareholder_country);
+        privateCountryInput.setAdapter(adapterCountries);
+
         privateEquityInput = view.findViewById(R.id.input_shareholder_equity_share);
+        privateEquityInput.setAdapter(adapterEquity);
+
         corporateBodyInput = view.findViewById(R.id.input_shareholder_corporate_body);
+        corporateBodyInput.setAdapter(adapterCorporateBody);
+
         corporateEquityInput = view.findViewById(R.id.input_shareholder_corporate_equity_share);
+        corporateEquityInput.setAdapter(adapterEquity);
+
 
         privateFrameLayout = view.findViewById(R.id.stakeholder_private_shareholder);
         privateFrameLayout.setVisibility(View.GONE);
