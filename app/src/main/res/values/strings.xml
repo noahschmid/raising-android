@@ -8,8 +8,9 @@
 
     <!-- Strings used in multiple screens -->
     <string name="register_now_text"> Register now </string>
-
     <string name="ok_text"> OK </string>
+    <string name="cancel_text"> Cancel </string>
+    <string name="add_text"> Add </string>
 
     <!-- Strings used in LoginScreen -->
     <string name="login_welcome_text"> Welcome to Raising </string>
@@ -117,12 +118,32 @@
     <string name="register_label_swissef_upscaler"> SwissEF Upscaler </string>
     <string name="register_error_word_limit_overflow"> You have exceeded your word limit! </string>
 
-
     <string name="register_financial_information_text"> Financial Requirements </string>
     <string name="register_financial_type"> Type </string>
     <string name="register_financial_valuation"> Valuation (CHF) </string>
     <string name="register_financial_valuation_helper"> optional </string>
     <string name="register_financial_closing_time"> Closing Time </string>
+
+    <string name="register_stakeholder_information_text"> Stakeholders </string>
+        <string name="register_stakeholder_founder_information_text"> Add a founder </string>
+            <string name="register_stakeholder_founder"> Founder </string>
+            <string name="register_stakeholder_first_name"> First Name </string>
+            <string name="register_stakeholder_last_name"> Last Name </string>
+            <string name="register_stakeholder_name"> Name </string>
+            <string name="register_stakeholder_position"> Position </string>
+            <string name="register_stakeholder_education"> Education </string>
+    <string name="register_stakeholder_board_member"> Member of the board </string>
+        <string name="register_stakeholder_board_member_information_text"> Add a member of the board </string>
+            <string name="register_stakeholder_profession"> Profession </string>
+            <string name="register_stakeholder_member_since"> Member Since </string>
+    <string name="register_stakeholder_shareholder"> Shareholder </string>
+        <string name="register_stakeholder_shareholder_information_text"> Add a shareholder </string>
+            <string name="register_stakeholder_shareholder_private"> Private Shareholder </string>
+                <string name="register_stakeholder_shareholder_country"> Country </string>
+                <string name="register_stakeholder_shareholder_equity"> Equity Share (%) </string>
+            <string name="register_stakeholder_shareholder_corporate"> Corporate Shareholder </string>
+                <string name="register_stakeholder_shareholder_corporate_body"> Corporate Body </string>
+                <string name="register_stakeholder_shareholder_website"> Website </string>
 
     <string name="register_button_text"> Continue </string>
     <string name="text_register"> Register now </string>

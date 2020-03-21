@@ -14,6 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.raising.app.authentication.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorMatchingFragment;
 import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorPitchFragment;
+import com.raising.app.authentication.fragments.registration.startup.RegisterStakeholderFragment;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.RegistrationHandler;
 
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
             if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
-                fragmentTransaction.add(R.id.fragment_container, new RegisterInvestorMatchingFragment());git a
+                fragmentTransaction.add(R.id.fragment_container, new RegisterInvestorMatchingFragment());
                 fragmentTransaction.addToBackStack("LoginFragment");
             } else {
                 fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
