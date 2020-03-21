@@ -24,6 +24,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.android.material.slider.Slider;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.models.Investor;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
 
@@ -53,35 +54,13 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         View view = inflater.inflate(R.layout.fragment_register_investor_matching,
                 container, false);
 
-        investorTypeGroup = view.findViewById(R.id.register_investor_matching_radio_investor);
-
-        continentInput = view.findViewById(R.id.register_input_investor_matching_continents);
-        continentInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-
-        //TODO: fetch countries based on given continents and insert
-
-        countryInput = view.findViewById(R.id.register_input_investor_matching_countries);
-        countryInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-
-        ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
-        ticketSize.setValues(
-                (float) getResources().getInteger(R.integer.ticket_size_slider_min_value),
-                (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
-        // hint: to fetch the value of the slider use getMinimumValue() and getMaximumValue()
-
         hideBottomNavigation(true);
 
-        fragmentView = view;
-        industryLayout = view.findViewById(R.id.register_investor_matching_industry_layout);
-        investmentPhaseLayout = view.findViewById(R.id.register_investor_matching_phase_layout);
-        supportLayout = view.findViewById(R.id.register_investor_matching_support_layout);
-
-        getContinents();
-        getCountries();
-        getInvestorTypes();
-        getSupportTypes();
-        getIndustries();
-        getInvestmentPhases();
+        if(RegistrationHandler.hasBeenVisited()) {
+            RegistrationHandler.skip();
+            changeFragment(new RegisterInvestorPitchFragment(),
+                    "RegisterInvestorPitchFragment");
+        }
 
         return view;
     }
@@ -104,6 +83,35 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             }
         });
 
+        investorTypeGroup = view.findViewById(R.id.register_investor_matching_radio_investor);
+
+        continentInput = view.findViewById(R.id.register_input_investor_matching_continents);
+        continentInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+        countryInput = view.findViewById(R.id.register_input_investor_matching_countries);
+        countryInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+        ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
+        ticketSize.setValues(
+                (float) getResources().getInteger(R.integer.ticket_size_slider_min_value),
+                (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
+
+        Investor investor = RegistrationHandler.getInvestor();
+        if(investor.getTicketSizeMin() != 0 && investor.getTicketSizeMax() != 0)
+            ticketSize.setValues(investor.getTicketSizeMin(), investor.getTicketSizeMax());
+
+
+        industryLayout = view.findViewById(R.id.register_investor_matching_industry_layout);
+        investmentPhaseLayout = view.findViewById(R.id.register_investor_matching_phase_layout);
+        supportLayout = view.findViewById(R.id.register_investor_matching_support_layout);
+
+        getContinents();
+        getCountries();
+        getInvestorTypes();
+        getSupportTypes();
+        getIndustries();
+        getInvestmentPhases();
+
         Button btnInvestorMatching = view.findViewById(R.id.button_investor_matching);
         btnInvestorMatching.setOnClickListener(this);
     }
@@ -123,17 +131,9 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             case R.id.button_investor_matching:
                 processMatchingInformation();
                 break;
-            case R.id.register_investor_matching_radio_investor:
-                    Log.d("debugMessage", "investor type clicked with id " + investorTypeGroup.getCheckedRadioButtonId());
-
-                break;
             default:
                 break;
         }
-    }
-    private String getInvestorType() {
-        //if(radioVc.val)
-        return "";
     }
 
     /**
@@ -146,8 +146,8 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             return;
         }
 
-        int investmentMin = (int) ticketSize.getMinimumValue();
-        int investmentMax = (int) ticketSize.getMaximumValue();
+        float ticketSizeMin =  ticketSize.getMinimumValue();
+        float ticketSizeMax =  ticketSize.getMaximumValue();
 
         ArrayList<Long> industries = new ArrayList<>();
         for (int i = 0; i < industryLayout.getChildCount(); ++i) {
@@ -181,7 +181,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
         ArrayList<Long> countries = new ArrayList<>();
         try {
-            RegistrationHandler.saveInvestorMatchingFragment(investmentMin, investmentMax,
+            RegistrationHandler.saveInvestorMatchingFragment(ticketSizeMin, ticketSizeMax,
                     investorType, investmentPhases, industries, support, countries);
             RegistrationHandler.proceed();
             changeFragment(new RegisterInvestorPitchFragment(),
@@ -204,11 +204,10 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                     public void onResponse(JSONArray response) {
                         try {
                             final RadioButton[] rb = new RadioButton[response.length() + 1];
-                           // rg.setOrientation(RadioGroup.HORIZONTAL);
+                            // rg.setOrientation(RadioGroup.HORIZONTAL);
 
                             for(int i=0; i<response.length(); i++){
                                 JSONObject type = response.getJSONObject(i);
-                                Log.d("debugMessage", type.getString("name"));
                                 rb[i]  = new RadioButton(getContext());
                                 rb[i].setText(type.getString("name"));
                                 rb[i].setContentDescription(String.valueOf(type.getLong("id")));
@@ -247,7 +246,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
                             for(int i=0; i<response.length(); i++){
                                 JSONObject type = response.getJSONObject(i);
-                                Log.d("debugMessage", type.getString("name"));
 
                                 rb[i]  = new CheckBox(getContext());
                                 rb[i].setText(type.getString("name"));
@@ -286,7 +284,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                             final CheckBox cb[] = new CheckBox[response.length() + 1];
                             for(int i=0; i<response.length(); i++){
                                 JSONObject type = response.getJSONObject(i);
-                                Log.d("debugMessage", type.getString("name"));
                                 cb[i] = new CheckBox(getContext());
                                 cb[i].setText(type.getString("name"));
                                 cb[i].setContentDescription(String.valueOf(type.getLong("id")));
@@ -331,7 +328,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                                 cb[i].setContentDescription(String.valueOf(type.getLong("id")));
                                 cb[i].setId(View.generateViewId());
                                 investmentPhaseLayout.addView(cb[i]);
-                                //industriesCheckboxes.add(cb[i]);
                             }
                         } catch (Exception e) {
                             // TODO: Proper exception handling

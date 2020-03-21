@@ -20,6 +20,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.authentication.fragments.registration.RegisterSelectTypeFragment;
+import com.raising.app.models.Account;
+import com.raising.app.models.PrivateProfile;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
 
@@ -67,6 +70,15 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         profileStreetInput = view.findViewById(R.id.register_input_profile_street);
         profileZipInput = view.findViewById(R.id.register_input_profile_zip);
         profileCityInput = view.findViewById(R.id.register_input_profile_city);
+        profileCountryInput = view.findViewById(R.id.register_input_profile_countries);
+
+        PrivateProfile profile = RegistrationHandler.getPrivateProfile();
+        profileCompanyInput.setText(profile.getCompany());
+        profileWebsiteInput.setText(profile.getWebsite());
+        profileStreetInput.setText(profile.getStreet());
+        profileZipInput.setText(profile.getZipCode());
+        profileCityInput.setText(profile.getCity());
+        profileCountryInput.setText(profile.getCountry());
 
         Button btnProfileInformation = view.findViewById(R.id.button_profile_information);
         btnProfileInformation.setOnClickListener(this);

@@ -3,6 +3,7 @@ package com.raising.app.authentication.fragments.registration.startup;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,12 @@ import androidx.annotation.Nullable;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.authentication.fragments.LoginFragment;
+import com.raising.app.util.RegistrationHandler;
 
+import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 public class RegisterFinancialRequirementsFragment extends RaisingFragment implements View.OnClickListener {
@@ -87,10 +92,35 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.button_financial_requirements:
-                //TODO: insert function to call
+                processInputs();
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * Process inputs and submit registration
+     */
+    private void processInputs() {
+        long type = 1;
+        float valuation = Float.parseFloat(financialValuationInput.getText().toString());
+        Date closingTime = new Date(financialClosingTimeInput.getText().toString());
+
+        if(financialClosingTimeInput.getText().length() == 0 ||
+                financialTypeInput.getText().length() == 0) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_dialog_text_empty_credentials));
+            return;
+        }
+
+        try {
+            RegistrationHandler.proceed();
+            RegistrationHandler.saveFinancialRequirements(type, valuation, closingTime);
+            RegistrationHandler.submit();
+            changeFragment(new LoginFragment(), "LoginFragment");
+        } catch (IOException e) {
+            Log.d("debugMessage", e.getMessage());
         }
     }
 

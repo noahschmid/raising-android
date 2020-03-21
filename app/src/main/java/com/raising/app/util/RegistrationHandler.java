@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment;
 
 import com.raising.app.authentication.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.models.Account;
+import com.raising.app.models.Investor;
 import com.raising.app.models.PrivateProfile;
+import com.raising.app.models.Startup;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,6 +22,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RegistrationHandler {
     private static final String registrationEndpoint = "account/register";
@@ -28,17 +31,21 @@ public class RegistrationHandler {
     private static boolean inProgress = false;
     private static int currentPage = 0;
     private static Context context;
+    private static boolean cancelAllowed = false;
 
     private static String accountType;
     private static Account account = new Account();
+    private static Investor investor = new Investor();
+    private static Startup startup = new Startup();
     private static PrivateProfile privateProfile = new PrivateProfile();
 
     /**
      * Proceed to next page. Gets called whenever user gets to next page in the registration process
      */
-    public static void proceed() {
+    public static void proceed() throws IOException {
         currentPage++;
         inProgress = true;
+        saveRegistrationState();
     }
 
     public static void setContext(Context ctx) {
@@ -49,7 +56,14 @@ public class RegistrationHandler {
      * Indicates whether current registration page has already been visited
      * @return true if page has been visited, false otherwise
      */
-    public static boolean hasBeenVisited() { return (currentPage > 0) && !inProgress; }
+    public static boolean hasBeenVisited() {
+        cancelAllowed = true;
+        return (currentPage > 0) && !inProgress;
+    }
+
+    public static boolean shouldCancel() {
+        return cancelAllowed;
+    }
 
     /**
      * Skip current page. Gets called  when app is reloaded to skip to the page that was last modified
@@ -107,8 +121,16 @@ public class RegistrationHandler {
         inProgress = false;
         context.deleteFile("rgstr_profile");
         context.deleteFile("rgstr_account");
+        context.deleteFile("rgstr_startup");
+        context.deleteFile("rgstr_investor");
+        context.deleteFile("rgstr");
         currentPage = 0;
     }
+
+    public static Account getAccount() { return account; }
+    public static Investor getInvestor() { return investor; }
+    public static Startup getStartup() { return startup; }
+    public static PrivateProfile getPrivateProfile() { return privateProfile; }
 
     /**
      * Cancel current registration process
@@ -118,6 +140,9 @@ public class RegistrationHandler {
         context.deleteFile("rgstr_profile");
         context.deleteFile("rgstr_account");
         context.deleteFile("rgstr");
+        context.deleteFile("rgstr_startup");
+        context.deleteFile("rgstr_investor");
+        Log.d("debugMessage", "canceled registration");
     }
 
     /**
@@ -136,9 +161,14 @@ public class RegistrationHandler {
             BufferedReader bufferedReader = new BufferedReader(isr);
 
             currentPage = Integer.parseInt(bufferedReader.readLine());
+            Log.d("debugMessage", "page: " + currentPage);
             accountType = bufferedReader.readLine();
             isr.close();
             fis.close();
+
+            account = loadAccount();
+            privateProfile = loadPrivateProfile();
+            investor = loadInvestor();
         } catch(Exception e) {
             Log.d("debugMessage", e.getMessage());
             return false;
@@ -189,6 +219,11 @@ public class RegistrationHandler {
         outputStream.close();
     }
 
+    private static void saveRegistrationState() throws IOException {
+        String registrationInfo = currentPage + "\n" + accountType;
+        saveString(registrationInfo, "rgstr");
+    }
+
     /**
      * Load object from internal storage
      * @param filename the file to load from
@@ -237,6 +272,30 @@ public class RegistrationHandler {
     }
 
     /**
+     * Load saved investor specific details
+     * @return
+     */
+    public static Investor loadInvestor() {
+        try {
+            return (Investor) loadObject("rgstr_investor");
+        } catch (Exception e) {
+            return new Investor();
+        }
+    }
+
+    /**
+     * Load saved investor specific details
+     * @return
+     */
+    public static Startup loadStartup() {
+        try {
+            return (Startup) loadObject("rgstr_startup");
+        } catch (Exception e) {
+            return new Startup();
+        }
+    }
+
+    /**
      * Load saved private profile
      * @return
      */
@@ -248,31 +307,36 @@ public class RegistrationHandler {
         }
     }
 
-    public static void saveInvestorMatchingFragment(int investmentMin, int investmentMax,
+    public static void saveInvestorMatchingFragment(float ticketSizeMin, float ticketSizeMax,
                                                     int investorType, ArrayList<Long> investmentPhases,
                                                     ArrayList<Long> industries, ArrayList<Long> support,
                                                     ArrayList<Long> countries) throws IOException {
-        account.setInvestmentMax(investmentMax);
-        account.setInvestmentMin(investmentMin);
-        account.setInvestorTypeId(investorType);
+        investor.setTicketSizeMax(ticketSizeMax);
+        investor.setTicketSizeMin(ticketSizeMin);
+        investor.setInvestorTypeId(investorType);
+
+        investor.clearIndustries();
+        investor.clearCountries();
+        investor.clearInvestmentPhases();
+        investor.clearSupport();
 
         for(Long id : industries) {
-            account.addIndustry(id);
+            investor.addIndustry(id);
         }
 
         for(Long id : support) {
-            account.addSupport(id);
+            investor.addSupport(id);
         }
 
         for(Long id : countries) {
-            account.addCountry(id);
+            investor.addCountry(id);
         }
 
         for(Long id : investmentPhases) {
-            account.addInvestmentPhase(id);
+            investor.addInvestmentPhase(id);
         }
 
-        saveObject(account, "rgstr_account");
+        saveObject(investor, "rgstr_investor");
     }
 
     /**
@@ -286,5 +350,111 @@ public class RegistrationHandler {
         account.setDescription(description);
 
         saveObject(account, "rgstr_account");
+    }
+
+    /**
+     * Save company information to internal storage
+     * @param breakevenYear
+     * @param fte
+     * @param companyName
+     * @param companyUid
+     * @param revenue
+     * @param markets
+     * @param foundingYear
+     */
+    public static void saveCompanyInformation(int breakevenYear, int fte, String companyName,
+                                              String companyUid, String revenue,
+                                              ArrayList<Long> markets, int foundingYear) throws IOException{
+        startup.setBreakevenYear(breakevenYear);
+        startup.setNumberOfFte(fte);
+        startup.setName(companyName);
+        startup.setRevenue(revenue);
+        startup.setFoundingYear(foundingYear);
+
+        startup.clearCurrentMarkets();
+
+        for(Long id : markets) {
+            startup.addMarket(id);
+        }
+
+        saveObject(startup, "rgstr_startup");
+    }
+
+    /**
+     * Save startup matching information
+     * @param ticketSizeMin
+     * @param ticketSizeMax
+     * @param investorTypes
+     * @param investmentPhases
+     * @param industries
+     * @param support
+     * @param scope
+     */
+    public static void saveStartupMatchingFragment(float ticketSizeMin, float ticketSizeMax,
+                                                   ArrayList<Long> investorTypes,
+                                                   ArrayList<Long> investmentPhases,
+                                                   ArrayList<Long> industries, ArrayList<Long> support,
+                                                   float scope) throws IOException {
+        startup.setTicketSizeMin(ticketSizeMin);
+        startup.setTicketSizeMax(ticketSizeMax);
+        startup.setScope(scope);
+
+        startup.clearSupport();
+        startup.clearInvestorTypes();
+        startup.clearIndustries();
+        startup.clearInvestmentPhases();
+
+        for(Long id : industries) {
+            startup.addIndustry(id);
+        }
+
+        for(Long id : investorTypes) {
+            startup.addInvestorType(id);
+        }
+
+        for(Long id : investmentPhases) {
+            startup.addInvestmentPhase(id);
+        }
+
+        for(Long id : support) {
+            startup.addSupport(id);
+        }
+
+        saveObject(startup, "rgstr_startup");
+    }
+
+    /**
+     * Save pitch information to startup
+     * @param pitch
+     * @param description
+     * @param labels
+     */
+    public static void saveStartupPitch(String pitch, String description,
+                                        ArrayList<Long> labels) throws IOException{
+        startup.setDescription(description);
+        startup.setPitch(pitch);
+
+        startup.clearLabels();
+
+        for(Long id : labels) {
+            startup.addLabel(id);
+        }
+
+        saveObject(startup, "rgstr_startup");
+    }
+
+    /**
+     *
+     * @param type
+     * @param valuation
+     * @param closingTime
+     */
+    public static void saveFinancialRequirements(long type, float valuation,
+                                                 Date closingTime) throws IOException {
+        startup.setClosingTime(closingTime);
+        startup.setValuation(valuation);
+        startup.setFinancialType(type);
+
+        saveObject(startup, "rgstr_startup");
     }
 }

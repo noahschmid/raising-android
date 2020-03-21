@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.models.Account;
 import com.raising.app.util.RegistrationHandler;
 
 import java.io.IOException;
@@ -53,6 +54,10 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
 
         Button btnInvestorPitch = view.findViewById(R.id.button_investor_pitch);
         btnInvestorPitch.setOnClickListener(this);
+
+        Account account = RegistrationHandler.getAccount();
+        pitchInput.setText(account.getPitch());
+        sentenceInput.setText(account.getDescription());
     }
 
     @Override

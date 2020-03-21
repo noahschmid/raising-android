@@ -55,11 +55,14 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
 
         hideBottomNavigation(true);
 
-        // if registration was in progress, cancel it
-        if (RegistrationHandler.isInProgress(getContext()))
-            changeFragment(new RegisterLoginInformationFragment(),
-                    "RegisterLoginInformationFragment");
-
+        // if registration was in progress but user pressed back button, cancel it
+        if (RegistrationHandler.isInProgress(getContext())) {
+            if(RegistrationHandler.shouldCancel())
+                RegistrationHandler.cancel();
+            else
+                changeFragment(new RegisterLoginInformationFragment(),
+                        "RegisterLoginInformationFragment");
+        }
         emailInput = view.findViewById(R.id.login_input_email);
         passwordInput = view.findViewById(R.id.login_input_password);
 
