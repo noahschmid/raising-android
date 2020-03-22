@@ -37,7 +37,6 @@ import java.util.ArrayList;
 
 public class RegisterStartupMatchingFragment extends RaisingFragment
         implements View.OnClickListener {
-    private EditText scopeInput;
     private Slider ticketSize;
     private LinearLayout investorTypeLayout;
     private LinearLayout supportLayout;
@@ -70,7 +69,7 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        scopeInput = view.findViewById(R.id.register_input_startup_matching_scope);
+
         investorTypeLayout = view.findViewById(R.id.register_startup_investor_type_layout);
         supportLayout = view.findViewById(R.id.register_support_matching_support_layout);
         investmentPhaseGroup = view.findViewById(R.id.register_startup_matching_radio_phase);

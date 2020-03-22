@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.Objects;
 
 public class RegisterFinancialRequirementsFragment extends RaisingFragment implements View.OnClickListener {
-    private EditText financialValuationInput, financialClosingTimeInput;
+    private EditText financialValuationInput, financialClosingTimeInput, scopeInput;
     private AutoCompleteTextView financialTypeInput;
     private DatePickerDialog.OnDateSetListener dateSetListener;
 
@@ -55,6 +55,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        scopeInput = view.findViewById(R.id.register_input_startup_financial_scope);
         financialValuationInput = view.findViewById(R.id.register_input_financial_valuation);
 
         Button btnFinancialRequirements = view.findViewById(R.id.button_financial_requirements);

@@ -32,7 +32,7 @@
         android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:hint="@string/register_financial_type"
-        app:layout_constraintBottom_toTopOf="@+id/register_financial_valuation"
+        app:layout_constraintBottom_toTopOf="@+id/register_startup_financial_scope"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_financial_information">
@@ -44,24 +44,44 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/register_startup_financial_scope"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+        android:hint="@string/register_matching_scope_"
+        app:layout_constraintBottom_toTopOf="@+id/register_financial_valuation"
+        app:layout_constraintEnd_toEndOf="@+id/register_financial_type"
+        app:layout_constraintStart_toStartOf="@+id/register_financial_type"
+        app:layout_constraintTop_toBottomOf="@+id/register_financial_type">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_input_startup_financial_scope"
+            android:inputType="numberDecimal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/inputFormHeight" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_financial_valuation"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:hint="@string/register_financial_valuation"
-        app:helperTextEnabled="true"
         app:helperText="@string/register_financial_valuation_helper"
+        app:helperTextEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/register_financial_closing_time"
         app:layout_constraintEnd_toEndOf="@+id/register_financial_type"
         app:layout_constraintStart_toStartOf="@+id/register_financial_type"
-        app:layout_constraintTop_toBottomOf="@+id/register_financial_type">
+        app:layout_constraintTop_toBottomOf="@+id/register_startup_financial_scope"
+        app:layout_constraintVertical_bias="0.51">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_input_financial_valuation"
             android:layout_width="match_parent"
             android:layout_height="@dimen/inputFormHeight"
-            android:inputType="numberDecimal"/>
+            android:inputType="numberDecimal" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -69,9 +89,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:hint="@string/register_financial_closing_time"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button_financial_requirements"
         app:layout_constraintEnd_toEndOf="@+id/register_financial_type"
         app:layout_constraintStart_toStartOf="@+id/register_financial_type"
         app:layout_constraintTop_toBottomOf="@+id/register_financial_valuation">
@@ -80,7 +99,7 @@
             android:id="@+id/register_input_financial_closing_time"
             android:layout_width="match_parent"
             android:layout_height="@dimen/inputFormHeight"
-            android:focusableInTouchMode="false"/>
+            android:focusableInTouchMode="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
