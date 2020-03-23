@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -23,8 +22,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.android.material.slider.Slider;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
-import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorPitchFragment;
-import com.raising.app.models.Investor;
 import com.raising.app.models.Startup;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
@@ -79,6 +76,7 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         scopeInput.setText(String.valueOf(startup.getScope()));
         if(startup.getTicketSizeMin() != 0 && startup.getTicketSizeMax() != 0)
             ticketSize.setValues(startup.getTicketSizeMin(), startup.getTicketSizeMax());
+
 
         getIndustries();
         getInvestmentPhases();

@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.authentication.fragments.registration.helper.FragmentStakeholderBoardMember;
 import com.raising.app.authentication.fragments.registration.helper.FragmentStakeholderFounder;
 import com.raising.app.authentication.fragments.registration.helper.FragmentStakeholderShareholder;
 import com.raising.app.models.stakeholder.StakeholderBoardMember;
@@ -59,25 +61,21 @@ public class RegisterStakeholderFragment extends RaisingFragment {
 
         //creates a example list for founderRecyclerViewList
         founderRecyclerViewList = new ArrayList<>();
-        founderRecyclerViewList.add(new StakeholderRecyclerListItem( "Max Mustermann"));
-        founderRecyclerViewList.add(new StakeholderRecyclerListItem( "Maxine Mustermann"));
-        founderRecyclerViewList.add(new StakeholderRecyclerListItem( "Maxim Mustermann"));
+        populateTemplateList(founderRecyclerViewList);
+        populateTemplateList(founderList);
 
         createFounderRecyclerView(view);
 
         //creates a example list for boardMemberRecyclerViewList
         boardMemberRecyclerViewList = new ArrayList<>();
-        boardMemberRecyclerViewList.add(new StakeholderRecyclerListItem( "Max Mustermann"));
-        boardMemberRecyclerViewList.add(new StakeholderRecyclerListItem( "Maxine Mustermann"));
-        boardMemberRecyclerViewList.add(new StakeholderRecyclerListItem( "Maxim Mustermann"));
+        populateTemplateList(boardMemberRecyclerViewList);
+        populateTemplateList(boardMemberList);
 
         createBoardMemberRecyclerView(view);
 
         //creates a example list for shareholderRecyclerViewList
         shareholderRecyclerViewList = new ArrayList<>();
-        shareholderRecyclerViewList.add(new StakeholderRecyclerListItem( "Max Mustermann"));
-        shareholderRecyclerViewList.add(new StakeholderRecyclerListItem( "Maxine Mustermann"));
-        shareholderRecyclerViewList.add(new StakeholderRecyclerListItem( "Maxim Mustermann"));
+        populateTemplateList(shareholderRecyclerViewList);
 
         createShareholderRecyclerView(view);
 
@@ -88,6 +86,15 @@ public class RegisterStakeholderFragment extends RaisingFragment {
             public void onClick(View v) {
                 //TODO: change to needed fragment and remove again from backstack
                 changeFragment(new FragmentStakeholderFounder(), "FragmentStakeholderFounder");
+            }
+        });
+
+        FloatingActionButton floatingBtnAddBoardMember = view.findViewById(R.id.floating_button_add_board_member);
+        floatingBtnAddBoardMember.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: change to needed fragment and remove again from backstack
+                changeFragment(new FragmentStakeholderBoardMember(), "FragmentStakeholderBoardMember");
             }
         });
 
@@ -115,7 +122,13 @@ public class RegisterStakeholderFragment extends RaisingFragment {
         founderAdapter.setOnClickListener(new StakeholderRecyclerViewAdapter.OnClickListener() {
             @Override
             public void onClickEdit(int position) {
-                //TODO: handle click on edit button
+                Fragment fragment = new FragmentStakeholderFounder();
+                Bundle args = new Bundle();
+                args.putString("firstName", founderList.get(position).getFirstName());
+                args.putString("lastName", founderList.get(position).getLastName());
+                args.putString("position", founderList.get(position).getCompanyPosition());
+                args.putString("education", founderList.get(position).getEducation());
+                fragment.setArguments(args);
             }
 
             @Override
@@ -165,6 +178,11 @@ public class RegisterStakeholderFragment extends RaisingFragment {
 
             }
         });
+    }
 
+    private void populateTemplateList(ArrayList list) {
+        list.add(new StakeholderRecyclerListItem( "Max Mustermann"));
+        list.add(new StakeholderRecyclerListItem( "Maxine Mustermann"));
+        list.add(new StakeholderRecyclerListItem( "Maxim Mustermann"));
     }
 }

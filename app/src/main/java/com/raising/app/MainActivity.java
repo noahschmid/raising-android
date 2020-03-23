@@ -9,11 +9,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.raising.app.authentication.fragments.LoginFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.raising.app.authentication.fragments.registration.RegisterLoginInformationFragment;
-import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorMatchingFragment;
-import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorPitchFragment;
+import com.raising.app.authentication.fragments.registration.startup.RegisterStakeholderFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingFragment;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.RegistrationHandler;
@@ -34,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
             if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
-                fragmentTransaction.add(R.id.fragment_container, new RegisterStartupMatchingFragment());
+                fragmentTransaction.add(R.id.fragment_container, new RegisterStakeholderFragment());
                 fragmentTransaction.addToBackStack("LoginFragment");
             } else {
                 fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
