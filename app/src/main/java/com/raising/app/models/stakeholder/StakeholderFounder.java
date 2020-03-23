@@ -1,6 +1,8 @@
 package com.raising.app.models.stakeholder;
 
-public class StakeholderFounder {
+import java.io.Serializable;
+
+public class StakeholderFounder implements Serializable {
 
     private String firstName;
     private String lastName;

@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +18,12 @@ import android.widget.RadioButton;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.authentication.fragments.registration.helper.viewModels.ShareholderViewModel;
 import com.raising.app.models.stakeholder.StakeholderShareholder;
 
 public class FragmentStakeholderShareholder extends RaisingFragment {
+    private ShareholderViewModel shareholderViewModel;
+
     private boolean privateShareholder;
 
     private RadioButton selectPrivateShareholder, selectCorporateShareholder;
@@ -42,6 +45,7 @@ public class FragmentStakeholderShareholder extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        shareholderViewModel = new ViewModelProvider(requireActivity()).get(ShareholderViewModel.class);
 
         privateFirstNameInput = view.findViewById(R.id.input_shareholder_first_name);
         privateLastNameInput = view.findViewById(R.id.input_shareholder_last_name);
@@ -134,13 +138,14 @@ public class FragmentStakeholderShareholder extends RaisingFragment {
         btnCancelShareholder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancelShareholder();
+                leaveShareholderFragment();
             }
         });
         Button btnAddShareholder = view.findViewById(R.id.button_add_shareholder);
         btnAddShareholder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                StakeholderShareholder shareholder;
                 if(privateShareholder) {
                     String firstName = privateFirstNameInput.getText().toString();
                     String lastName = privateLastNameInput.getText().toString();
@@ -153,7 +158,7 @@ public class FragmentStakeholderShareholder extends RaisingFragment {
                                 getString(R.string.register_dialog_text_empty_credentials));
                         return;
                     }
-                    StakeholderShareholder shareholder = new StakeholderShareholder(
+                    shareholder = new StakeholderShareholder(
                             true, firstName, lastName, country,
                             null, null, null, privateEquityShare);
                 } else {
@@ -168,11 +173,12 @@ public class FragmentStakeholderShareholder extends RaisingFragment {
                                 getString(R.string.register_dialog_text_empty_credentials));
                         return;
                     }
-                    StakeholderShareholder shareholder = new StakeholderShareholder(
+                    shareholder = new StakeholderShareholder(
                             false, null, null, null,
                             name, corporateBody, website, corporateEquityShare);
                 }
-                //TODO: return generated object to RegisterStakeholderFragment
+                shareholderViewModel.select(shareholder);
+                leaveShareholderFragment();
             }
         });
     }
@@ -184,7 +190,7 @@ public class FragmentStakeholderShareholder extends RaisingFragment {
         hideBottomNavigation(false);
     }
 
-    private void cancelShareholder() {
+    private void leaveShareholderFragment() {
         popCurrentFragment(this);
     }
 }

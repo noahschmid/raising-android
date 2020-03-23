@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +16,13 @@ import android.widget.EditText;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.authentication.fragments.registration.helper.viewModels.BoardMemberViewModel;
+import com.raising.app.authentication.fragments.registration.helper.viewModels.FounderViewModel;
 import com.raising.app.models.stakeholder.StakeholderBoardMember;
-import com.raising.app.models.stakeholder.StakeholderFounder;
 
 public class FragmentStakeholderBoardMember extends RaisingFragment {
+    private BoardMemberViewModel boardMemberViewModel;
+
     private EditText boardFirstNameInput, boardLastNameInput, boardProfessionInput, boardEducationInput;
     private AutoCompleteTextView boardPositionInput, memberSinceInput;
 
@@ -37,6 +41,7 @@ public class FragmentStakeholderBoardMember extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        boardMemberViewModel = new ViewModelProvider(requireActivity()).get(BoardMemberViewModel.class);
 
         //TODO: fetch these values from the backend
         String [] VALUES_YEARS = new String[] {"2000", "1990", "1980", "1970"};
@@ -73,7 +78,7 @@ public class FragmentStakeholderBoardMember extends RaisingFragment {
         btnCancelBoardMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancelBoardMember();
+                leaveBoardMemberFragment();
             }
         });
         Button btnAddBoardMember = view.findViewById(R.id.button_add_board_member);
@@ -96,8 +101,9 @@ public class FragmentStakeholderBoardMember extends RaisingFragment {
                 }
                 StakeholderBoardMember boardMember = new StakeholderBoardMember(
                         firstName, lastName, profession, boardPosition, memberSince, education);
-                //TODO: return generated object to RegisterStakeholderFragment
 
+                boardMemberViewModel.select(boardMember);
+                leaveBoardMemberFragment();
             }
         });
     }
@@ -109,7 +115,7 @@ public class FragmentStakeholderBoardMember extends RaisingFragment {
         hideBottomNavigation(false);
     }
 
-    private void cancelBoardMember() {
+    private void leaveBoardMemberFragment() {
         popCurrentFragment(this);
     }
 }

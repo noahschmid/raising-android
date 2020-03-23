@@ -87,14 +87,11 @@ public class FragmentStakeholderFounder extends RaisingFragment {
                             getString(R.string.register_dialog_text_empty_credentials));
                     return;
                 }
-
                 StakeholderFounder founder = new StakeholderFounder(
                         firstName, lastName, companyPosition, education);
 
                 founderViewModel.select(founder);
-
                 leaveFounderFragment();
-
             }
         });
     }

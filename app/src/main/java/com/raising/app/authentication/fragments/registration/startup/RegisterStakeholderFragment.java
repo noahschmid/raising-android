@@ -52,15 +52,21 @@ public class RegisterStakeholderFragment extends RaisingFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_stakeholder,
-                container, false);
-        founderViewModel = new ViewModelProvider(requireActivity()).get(FounderViewModel.class);
-        boardMemberViewModel = new ViewModelProvider(requireActivity()).get(BoardMemberViewModel.class);
-        shareholderViewModel = new ViewModelProvider(requireActivity()).get(ShareholderViewModel.class);
+        if(savedInstanceState == null) {
+            View view = inflater.inflate(R.layout.fragment_register_stakeholder,
+                    container, false);
+            founderViewModel = new ViewModelProvider(requireActivity()).get(FounderViewModel.class);
+            boardMemberViewModel = new ViewModelProvider(requireActivity()).get(BoardMemberViewModel.class);
+            shareholderViewModel = new ViewModelProvider(requireActivity()).get(ShareholderViewModel.class);
 
-        hideBottomNavigation(true);
+            hideBottomNavigation(true);
 
-        return view;
+            return view;
+        } else {
+
+
+        }
+
     }
 
     @Override
@@ -74,33 +80,13 @@ public class RegisterStakeholderFragment extends RaisingFragment {
 
         //creates a example list for boardMemberRecyclerViewList
         boardMemberRecyclerViewList = new ArrayList<>();
-        boardMemberRecyclerViewList.add(new StakeholderRecyclerListItem("Max Mustermann"));
-        boardMemberRecyclerViewList.add(new StakeholderRecyclerListItem("Maxine Mustermann"));
-        boardMemberRecyclerViewList.add(new StakeholderRecyclerListItem("Maxim Mustermann"));
-
         boardMemberList = new ArrayList<>();
-        boardMemberList.add(new StakeholderBoardMember("Max", "Mustermann", "Carpenter", "VRP", "2010", "Bachelor"));
-        boardMemberList.add(new StakeholderBoardMember("Maxine", "Mustermann", "Carpenter", "VRP", "2010", "Bachelor"));
-        boardMemberList.add(new StakeholderBoardMember("Maxim", "Mustermann", "Carpenter", "VRP", "2010", "Bachelor"));
 
         createBoardMemberRecyclerView(view);
 
         //creates a example list for shareholderRecyclerViewList
         shareholderRecyclerViewList = new ArrayList<>();
-        shareholderRecyclerViewList.add(new StakeholderRecyclerListItem("Max Mustermann"));
-        shareholderRecyclerViewList.add(new StakeholderRecyclerListItem("Maxine Mustermann"));
-
         shareholderList = new ArrayList<>();
-        shareholderList.add(
-                new StakeholderShareholder(
-                        true, "Max", "Mustermann",
-                        "Switzerland", null, null, null,
-                        "15"));
-        shareholderList.add(
-                new StakeholderShareholder(
-                        false, null, null,
-                        null, "Maxine", "Family Business",
-                        "www.www.de", "50"));
 
         createShareholderRecyclerView(view);
 
@@ -174,6 +160,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putArray(founderList.toArray());
     }
 
     private void createFounderRecyclerView(View view) {
