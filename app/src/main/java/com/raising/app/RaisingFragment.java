@@ -17,22 +17,39 @@ public class RaisingFragment extends Fragment {
     /**
      * Change from the current fragment to the next
      * @param fragment The fragment, that should be displayed next
-     * @param fragmentName The name of the next fragment.
-     *                     Allows us to put the fragment on the BackStack
      *
      * @author Lorenz Caliezi 09.03.2020
      */
-    public void changeFragment(Fragment fragment, String fragmentName) {
+    public void changeFragment(Fragment fragment) {
         try {
             getActivitiesFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragment)
-                    .addToBackStack(fragmentName)
+                    .addToBackStack(null)
                     .commit();
         } catch (NullPointerException e) {
             Log.d("debugMessage", e.getMessage());
         }
     }
+
+    /**
+     * Change from the current fragment to the next
+     * @param fragment The fragment, that should be displayed next
+     * @param name The transaction name
+     * @author Lorenz Caliezi 09.03.2020
+     */
+    public void changeFragment(Fragment fragment, String name) {
+        try {
+            getActivitiesFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(name)
+                    .commit();
+        } catch (NullPointerException e) {
+            Log.d("debugMessage", e.getMessage());
+        }
+    }
+
 
     /**
      * Call {@link com.raising.app.MainActivity#hideBottomNavigation(boolean)}

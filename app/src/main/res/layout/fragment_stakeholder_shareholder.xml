@@ -5,7 +5,7 @@
     android:id="@+id/stakeholder_shareholder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authentication.fragments.registration.helper.FragmentStakeholderShareholder">
+    tools:context=".authentication.fragments.registration.helper.ShareholderInputFragment">
 
 
     <ScrollView

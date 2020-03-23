@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +17,17 @@ import android.widget.RadioButton;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
-import com.raising.app.models.stakeholder.StakeholderShareholder;
+import com.raising.app.models.stakeholder.Shareholder;
 
-public class FragmentStakeholderShareholder extends RaisingFragment {
+public class ShareholderInputFragment extends RaisingFragment {
     private boolean privateShareholder;
 
     private RadioButton selectPrivateShareholder, selectCorporateShareholder;
     private EditText privateFirstNameInput, privateLastNameInput, corporateNameInput, corporateWebsiteInput;
     private AutoCompleteTextView privateCountryInput, privateEquityInput, corporateBodyInput, corporateEquityInput;
     private FrameLayout privateFrameLayout, corporateFrameLayout;
+
+    private Shareholder shareholder;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +38,10 @@ public class FragmentStakeholderShareholder extends RaisingFragment {
         hideBottomNavigation(true);
 
         return view;
+    }
+
+    public void passShareholder(Shareholder shareholder) {
+        this.shareholder = shareholder;
     }
 
     @Override
@@ -153,7 +158,7 @@ public class FragmentStakeholderShareholder extends RaisingFragment {
                                 getString(R.string.register_dialog_text_empty_credentials));
                         return;
                     }
-                    StakeholderShareholder shareholder = new StakeholderShareholder(
+                    Shareholder shareholder = new Shareholder(
                             true, firstName, lastName, country,
                             null, null, null, privateEquityShare);
                 } else {
@@ -168,7 +173,7 @@ public class FragmentStakeholderShareholder extends RaisingFragment {
                                 getString(R.string.register_dialog_text_empty_credentials));
                         return;
                     }
-                    StakeholderShareholder shareholder = new StakeholderShareholder(
+                    Shareholder shareholder = new Shareholder(
                             false, null, null, null,
                             name, corporateBody, website, corporateEquityShare);
                 }

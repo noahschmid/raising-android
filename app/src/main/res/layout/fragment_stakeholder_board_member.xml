@@ -5,7 +5,7 @@
     android:id="@+id/stakeholder_board_member"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authentication.fragments.registration.helper.FragmentStakeholderBoardMember">
+    tools:context=".authentication.fragments.registration.helper.BoardMemberInputFragment">
 
     <TextView
         android:id="@+id/text_add_board_member_information"

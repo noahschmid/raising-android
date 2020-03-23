@@ -1,7 +1,11 @@
 package com.raising.app.models.stakeholder;
 
-public class StakeholderShareholder {
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+@Data
+public class Shareholder extends StakeholderRecyclerListItem {
     private boolean isPrivateShareholder;
     private String firstName;
     private String lastName;
@@ -11,9 +15,10 @@ public class StakeholderShareholder {
     private String website;
     private String equityShare;
 
-    public StakeholderShareholder(
+    public Shareholder(
             boolean privateShareholder, String firstName, String lastName, String country,
             String name, String corporateBody, String website, String equityShare) {
+        super(privateShareholder ? firstName + " " + lastName : name);
         this.isPrivateShareholder = privateShareholder;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -24,35 +29,7 @@ public class StakeholderShareholder {
         this.equityShare = equityShare;
     }
 
-    public boolean isPrivateShareholder() {
-        return isPrivateShareholder;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getCorporateBody() {
-        return corporateBody;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public String getEquityShare() {
-        return equityShare;
+    public void updateTitle() {
+        setTitle(isPrivateShareholder ? firstName + " " + lastName : name);
     }
 }

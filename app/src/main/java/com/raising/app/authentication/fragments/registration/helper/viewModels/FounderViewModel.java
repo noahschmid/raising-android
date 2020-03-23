@@ -4,17 +4,17 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.raising.app.models.stakeholder.StakeholderFounder;
+import com.raising.app.models.stakeholder.Founder;
 
 public class FounderViewModel extends ViewModel {
-    private final MutableLiveData<StakeholderFounder> selectedFounder
-            = new MutableLiveData<StakeholderFounder>();
+    private final MutableLiveData<Founder> selectedFounder
+            = new MutableLiveData<Founder>();
 
-    public void select(StakeholderFounder founder ) {
+    public void select(Founder founder ) {
         selectedFounder.setValue(founder);
     }
 
-    public LiveData<StakeholderFounder> getSelectedFounder() {
+    public LiveData<Founder> getSelectedFounder() {
         return selectedFounder;
     }
 }

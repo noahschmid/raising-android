@@ -15,13 +15,12 @@ import android.widget.EditText;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
-import com.raising.app.models.stakeholder.StakeholderBoardMember;
-import com.raising.app.models.stakeholder.StakeholderFounder;
+import com.raising.app.models.stakeholder.BoardMember;
 
-public class FragmentStakeholderBoardMember extends RaisingFragment {
+public class BoardMemberInputFragment extends RaisingFragment {
     private EditText boardFirstNameInput, boardLastNameInput, boardProfessionInput, boardEducationInput;
     private AutoCompleteTextView boardPositionInput, memberSinceInput;
-
+    private BoardMember boardMember;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,9 +33,17 @@ public class FragmentStakeholderBoardMember extends RaisingFragment {
         return view;
     }
 
+    public void passBoardMember(BoardMember member) {
+        boardMember = member;
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if(boardMember == null) {
+            boardMember = new BoardMember();
+        }
 
         //TODO: fetch these values from the backend
         String [] VALUES_YEARS = new String[] {"2000", "1990", "1980", "1970"};
@@ -94,7 +101,7 @@ public class FragmentStakeholderBoardMember extends RaisingFragment {
                             getString(R.string.register_dialog_text_empty_credentials));
                     return;
                 }
-                StakeholderBoardMember boardMember = new StakeholderBoardMember(
+                BoardMember boardMember = new BoardMember(
                         firstName, lastName, profession, boardPosition, memberSince, education);
                 //TODO: return generated object to RegisterStakeholderFragment
 

@@ -120,7 +120,7 @@ public class RegistrationHandler {
     public static void submit() {
         inProgress = false;
 
-        
+
 
         context.deleteFile("rgstr_profile");
         context.deleteFile("rgstr_account");

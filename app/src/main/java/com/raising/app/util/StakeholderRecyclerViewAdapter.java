@@ -1,10 +1,8 @@
 package com.raising.app.util;
 
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -12,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.raising.app.R;
-import com.raising.app.models.stakeholder.StakeholderFounder;
 import com.raising.app.models.stakeholder.StakeholderRecyclerListItem;
 
 import java.util.ArrayList;

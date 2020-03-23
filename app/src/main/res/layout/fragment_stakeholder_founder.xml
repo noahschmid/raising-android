@@ -5,7 +5,7 @@
     android:id="@+id/stakeholder_founder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".authentication.fragments.registration.helper.FragmentStakeholderFounder">
+    tools:context=".authentication.fragments.registration.helper.FounderInputFragment">
 
     <TextView
         android:id="@+id/text_add_founder_information"

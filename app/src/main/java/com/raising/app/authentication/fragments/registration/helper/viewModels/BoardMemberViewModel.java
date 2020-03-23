@@ -4,17 +4,17 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.raising.app.models.stakeholder.StakeholderBoardMember;
+import com.raising.app.models.stakeholder.BoardMember;
 
 public class BoardMemberViewModel extends ViewModel {
-    private final MutableLiveData<StakeholderBoardMember> selectedBoardMember
+    private final MutableLiveData<BoardMember> selectedBoardMember
             = new MutableLiveData<>();
 
-    public void select(StakeholderBoardMember boardMember) {
+    public void select(BoardMember boardMember) {
         selectedBoardMember.setValue(boardMember);
     }
 
-    public LiveData<StakeholderBoardMember> getSelectedBoardMember() {
+    public LiveData<BoardMember> getSelectedBoardMember() {
         return selectedBoardMember;
     }
 }
