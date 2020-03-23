@@ -23,6 +23,9 @@ import com.raising.app.models.Startup;
 import com.raising.app.util.RegistrationHandler;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
@@ -117,7 +120,22 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         long type = 1;
         float valuation = Float.parseFloat(financialValuationInput.getText().toString());
-        Date closingTime = new Date(financialClosingTimeInput.getText().toString());
+        Date closingTime;
+
+        try {
+            DateFormat targetFormat = new SimpleDateFormat("MM/dd/yyyy");
+            closingTime = targetFormat.parse(String.valueOf(financialClosingTimeInput.getText()));
+            if(closingTime.before(new Date())) {
+                showSimpleDialog(getString(R.string.register_dialog_title),
+                        getString(R.string.register_dialog_text_invalid_date));
+                return;
+            }
+        } catch (ParseException e) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_dialog_text_invalid_date));
+            return;
+        }
+
         float scope = Float.parseFloat(scopeInput.getText().toString());
 
         if(financialClosingTimeInput.getText().length() == 0 ||
@@ -130,8 +148,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         try {
             RegistrationHandler.proceed();
             RegistrationHandler.saveFinancialRequirements(type, valuation, closingTime, scope);
-            RegistrationHandler.submit();
-            changeFragment(new LoginFragment(), "LoginFragment");
+            changeFragment(new RegisterStakeholderFragment(), "RegisterStakeholderFragment");
         } catch (IOException e) {
             Log.d("debugMessage", e.getMessage());
         }

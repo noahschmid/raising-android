@@ -93,6 +93,7 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         super.onDestroyView();
 
         hideBottomNavigation(false);
+        Log.d("debugMessage", "onDestroy()");
     }
 
     @Override
