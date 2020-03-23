@@ -73,7 +73,6 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         industryGroup = view.findViewById(R.id.register_startup_matching_radio_industry);
 
         Startup startup = RegistrationHandler.getStartup();
-        scopeInput.setText(String.valueOf(startup.getScope()));
         if(startup.getTicketSizeMin() != 0 && startup.getTicketSizeMax() != 0)
             ticketSize.setValues(startup.getTicketSizeMin(), startup.getTicketSizeMax());
 
@@ -109,15 +108,8 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
      * Check if all information is valid and save it
      */
     private void processMatchingInformation() {
-        if(scopeInput.getText().length() == 0) {
-            showSimpleDialog(getString(R.string.register_dialog_title),
-                    getString(R.string.register_dialog_text_empty_credentials));
-            return;
-        }
-
         float ticketSizeMin =  ticketSize.getMinimumValue();
         float ticketSizeMax =  ticketSize.getMaximumValue();
-        float scope = Float.parseFloat(scopeInput.getText().toString());
 
         ArrayList<Long> industries = new ArrayList<>();
         for (int i = 0; i < industryGroup.getChildCount(); ++i) {
@@ -162,7 +154,7 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         try {
             RegistrationHandler.proceed();
             RegistrationHandler.saveStartupMatchingFragment(ticketSizeMin, ticketSizeMax,
-                    investorTypes, investmentPhases, industries, support, scope);
+                    investorTypes, investmentPhases, industries, support);
 
             changeFragment(new RegisterStartupPitchFragment(),
                     "RegisterStartupPitchFragment");
