@@ -63,23 +63,21 @@ public class RegisterStakeholderFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-/*
-        //creates a example list for boardMemberRecyclerViewList
-        boardMemberList = new ArrayList<>();
-        boardMemberList.add(new BoardMember("Max", "Mustermann", "Carpenter", "VRP", "2010", "Bachelor"));
-        boardMemberList.add(new BoardMember("Maxine", "Mustermann", "Carpenter", "VRP", "2010", "Bachelor"));
-        boardMemberList.add(new BoardMember("Maxim", "Mustermann", "Carpenter", "VRP", "2010", "Bachelor"));
-
-        createBoardMemberRecyclerView(view);
-
-        //creates a example list for shareholderRecyclerViewList
-        shareholderList = new ArrayList<>();
-        createShareholderRecyclerView(view);*/
 
         if (savedInstanceState == null) {
             founderList = new ArrayList<>();
             boardMemberList = new ArrayList<>();
             shareholderList = new ArrayList<>();
+        } else {
+            Gson gson = new Gson();
+            Type founderListType = new TypeToken<ArrayList<Founder>>(){}.getType();
+            founderList = gson.fromJson(savedInstanceState.getString("founderList"), founderListType);
+
+            Type boardMemberListType = new TypeToken<ArrayList<BoardMember>>(){}.getType();
+            boardMemberList = gson.fromJson(savedInstanceState.getString("boardMemberList"), boardMemberListType);
+
+            Type shareholderListType = new TypeToken<ArrayList<Shareholder>>(){}.getType();
+            shareholderList = gson.fromJson(savedInstanceState.getString("shareholderList"), shareholderListType);
         }
 
         // initialize the different recycler views
@@ -91,12 +89,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
         floatingBtnAddFounder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                founderViewModel.getSelectedFounder().observe(getViewLifecycleOwner(), founder -> {
-                            // add item to recycler view
-                            founderList.add(founder);
-                            founderAdapter.notifyDataSetChanged();
-                        });
-                changeFragment(new FounderInputFragment(), "FragmentStakeholderFounder");
+                changeFragment(new FounderInputFragment());
             }
         });
 
@@ -105,11 +98,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
         floatingBtnAddBoardMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boardMemberViewModel.getSelectedBoardMember().observe(getViewLifecycleOwner(), boardMember -> {
-                    boardMemberList.add(boardMember);
-                    boardMemberAdapter.notifyDataSetChanged();
-                });
-                changeFragment(new BoardMemberInputFragment(), "FragmentStakeholderBoardMember");
+                changeFragment(new BoardMemberInputFragment());
             }
         });
 
@@ -118,37 +107,9 @@ public class RegisterStakeholderFragment extends RaisingFragment {
         floatingBtnAddShareholder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shareholderViewModel.getSelectedShareholder().observe(getViewLifecycleOwner(), shareholder -> {
-                        shareholderList.add(shareholder);
-                        shareholderAdapter.notifyDataSetChanged();
-                    });
-                changeFragment(new ShareholderInputFragment(), "FragmentStakeholderShareholder");
+                changeFragment(new ShareholderInputFragment());
             }
         });
-
-        if(savedInstanceState != null) {
-            Gson gson = new Gson();
-            Type founderListType = new TypeToken<ArrayList<Founder>>(){}.getType();
-            founderList = gson.fromJson(savedInstanceState.getString("founderList"), founderListType);
-
-            Type boardMemberListType = new TypeToken<ArrayList<BoardMember>>(){}.getType();
-            boardMemberList = gson.fromJson(savedInstanceState.getString("boardmemberList"), boardMemberListType);
-
-            Type shareholderListType = new TypeToken<ArrayList<Shareholder>>(){}.getType();
-            shareholderList = gson.fromJson(savedInstanceState.getString("shareholderList"), shareholderListType);
-        } else {
-            shareholderList.add(
-                    new Shareholder(
-                            true, "Max", "Mustermann",
-                            "Switzerland", null, null, null,
-                            "15"));
-            shareholderList.add(
-                    new Shareholder(
-                            false, null, null,
-                            null, "Maxine", "Family Business",
-                            "www.www.de", "50"));
-        }
-
     }
 
     @Override
@@ -162,6 +123,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Gson gson = new Gson();
+        outState.clear();
         String json = gson.toJson(founderList.toArray());
         outState.putString("founderList", json);
 
@@ -180,16 +142,9 @@ public class RegisterStakeholderFragment extends RaisingFragment {
         createFounderRecyclerView(view);
         founderViewModel = new ViewModelProvider(requireActivity()).get(FounderViewModel.class);
         founderViewModel.getSelectedFounder().observe(getViewLifecycleOwner(),
-                stakeholderFounder -> {
-            // add item to founderList
-            founderList.add(stakeholderFounder);
-
-            // add item to recycler view
-            String founderTitle
-                    = stakeholderFounder.getFirstName() + " " + stakeholderFounder.getLastName();
-            StakeholderRecyclerListItem founderListItem
-                    = new StakeholderRecyclerListItem(founderTitle);
-            founderList.add(founderListItem);
+                founder -> {
+                    founder.updateTitle();
+            founderList.add(founder);
             founderAdapter.notifyDataSetChanged();
         });
     }
@@ -213,7 +168,6 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                 changeFragment(founderFragment, null);
 
                 founderViewModel.getSelectedFounder().observe(getViewLifecycleOwner(), founder -> {
-                    // set updated item into founderList
                     founder.updateTitle();
                     founderList.set(position, founder);
                     founderAdapter.notifyItemChanged(position);
@@ -224,7 +178,6 @@ public class RegisterStakeholderFragment extends RaisingFragment {
             public void onClickDelete(int position) {
                 founderList.remove(position);
                 founderAdapter.notifyItemRemoved(position);
-
             }
         });
     }
@@ -237,16 +190,9 @@ public class RegisterStakeholderFragment extends RaisingFragment {
         createBoardMemberRecyclerView(view);
         boardMemberViewModel = new ViewModelProvider(requireActivity()).get(BoardMemberViewModel.class);
         boardMemberViewModel.getSelectedBoardMember().observe(getViewLifecycleOwner(),
-                stakeholderBoardMember -> {
-            // add item to boardMemberList
-            boardMemberList.add(stakeholderBoardMember);
-
-            // add item to recycler view
-            String boardMemberTitle
-                    = stakeholderBoardMember.getFirstName() + " " + stakeholderBoardMember.getLastName();
-            StakeholderRecyclerListItem boardMemberListItem
-                    = new StakeholderRecyclerListItem(boardMemberTitle);
-            boardMemberList.add(boardMemberListItem);
+                boardMember -> {
+                    boardMember.updateTitle();
+            boardMemberList.add(boardMember);
             boardMemberAdapter.notifyDataSetChanged();
         });
     }
@@ -269,7 +215,6 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                 changeFragment(boardMemberFragment);
 
                 boardMemberViewModel.getSelectedBoardMember().observe(getViewLifecycleOwner(), boardMember -> {
-                    // set updated item into boardMemberList
                     boardMember.updateTitle();
                     boardMemberList.set(position, boardMember);
                     boardMemberAdapter.notifyItemChanged(position);
@@ -293,7 +238,6 @@ public class RegisterStakeholderFragment extends RaisingFragment {
         shareholderViewModel = new ViewModelProvider(requireActivity()).get(ShareholderViewModel.class);
         shareholderViewModel.getSelectedShareholder().observe(getViewLifecycleOwner(),
                 shareholder -> {
-            // add item to shareholderList
                     shareholder.updateTitle();
                     shareholderList.add(shareholder);
                     shareholderAdapter.notifyDataSetChanged();
@@ -315,9 +259,9 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                 ShareholderInputFragment shareholderFragment = new ShareholderInputFragment();
                 Shareholder selectedShareholder = ((Shareholder)shareholderList.get(position));
                 shareholderFragment.passShareholder(selectedShareholder);
-                changeFragment(shareholderFragment, "StakeholderShareholder");
-                shareholderViewModel.getSelectedShareholder().observe(getViewLifecycleOwner(), shareholder -> {
-                    // set updated item to shareholderList
+                changeFragment(shareholderFragment);
+                shareholderViewModel.getSelectedShareholder().observe(getViewLifecycleOwner(),
+                        shareholder -> {
                     shareholder.updateTitle();
                     shareholderList.set(position, shareholder);
                     shareholderAdapter.notifyItemChanged(position);

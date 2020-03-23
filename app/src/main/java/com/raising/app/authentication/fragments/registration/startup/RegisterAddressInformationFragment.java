@@ -113,8 +113,7 @@ public class RegisterAddressInformationFragment extends RaisingFragment implemen
             RegistrationHandler.saveProfileInformation("", city, street, zipCode,
                     website, country);
             RegistrationHandler.proceed();
-            changeFragment(new RegisterStartupMatchingFragment(),
-                    "RegisterStartupMatchingFragment");
+            changeFragment(new RegisterStartupMatchingFragment());
         } catch (IOException e) {
             //TODO: proper error handling
             Log.d("debugMessage", e.getMessage());
@@ -126,7 +125,7 @@ public class RegisterAddressInformationFragment extends RaisingFragment implemen
      */
     public void getCountries() {
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "country",
+                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/country",
                         null, new Response.Listener<JSONArray>() {
 
                     @Override

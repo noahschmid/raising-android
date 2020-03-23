@@ -107,21 +107,11 @@ public class ShareholderInputFragment extends RaisingFragment {
             }
         });
 
-        Bundle bundle = this.getArguments();
-        if(bundle != null) {
-            privateFirstNameInput.setText(bundle.getString("firstName"));
-            privateLastNameInput.setText(bundle.getString("lastName"));
-            corporateNameInput.setText(bundle.getString("name"));
-            corporateWebsiteInput.setText(bundle.getString("website"));
-
-            privateCountryInput.setText(bundle.getString("country"));
-            corporateBodyInput.setText(bundle.getString("corporateBody"));
-
-            /**
-             * Retrieve current values, if the user wants to edit a shareholder
-             */
-            if(bundle.getBoolean("privateShareholder")) {
-                privateEquityInput.setText(bundle.getString("equityShare"));
+        if(shareholder == null) {
+            shareholder = new Shareholder();
+        } else {
+            if(shareholder.isPrivateShareholder()) {
+                privateEquityInput.setText(shareholder.getEquityShare());
                 privateShareholder = true;
 
                 selectPrivateShareholder.setChecked(true);
@@ -130,8 +120,13 @@ public class ShareholderInputFragment extends RaisingFragment {
                 corporateFrameLayout.setVisibility(View.GONE);
                 privateFrameLayout.setVisibility(View.VISIBLE);
 
+                privateFirstNameInput.setText(shareholder.getFirstName());
+                privateLastNameInput.setText(shareholder.getLastName());
+
+                privateCountryInput.setText(shareholder.getCountry());
+
             } else {
-                corporateEquityInput.setText(bundle.getString("equityShare"));
+                corporateEquityInput.setText(shareholder.getEquityShare());
                 privateShareholder = false;
 
                 selectPrivateShareholder.setChecked(false);
@@ -139,6 +134,10 @@ public class ShareholderInputFragment extends RaisingFragment {
 
                 privateFrameLayout.setVisibility(View.GONE);
                 corporateFrameLayout.setVisibility(View.VISIBLE);
+
+                corporateNameInput.setText(shareholder.getCorporateBody());
+                corporateWebsiteInput.setText(shareholder.getWebsite());
+                corporateBodyInput.setText(shareholder.getCorporateBody());
             }
         }
 
@@ -165,9 +164,11 @@ public class ShareholderInputFragment extends RaisingFragment {
                                 getString(R.string.register_dialog_text_empty_credentials));
                         return;
                     }
-                    Shareholder shareholder = new Shareholder(
+                    Shareholder newShareholder = new Shareholder(
                             true, firstName, lastName, country,
                             null, null, null, privateEquityShare);
+                    shareholderViewModel.select(newShareholder);
+                    leaveShareholderFragment();
                 } else {
                     String name = corporateNameInput.getText().toString();
                     String corporateBody = corporateBodyInput.getText().toString();
@@ -180,12 +181,12 @@ public class ShareholderInputFragment extends RaisingFragment {
                                 getString(R.string.register_dialog_text_empty_credentials));
                         return;
                     }
-                    Shareholder shareholder = new Shareholder(
+                    Shareholder newShareholder = new Shareholder(
                             false, null, null, null,
                             name, corporateBody, website, corporateEquityShare);
+                    shareholderViewModel.select(newShareholder);
+                    leaveShareholderFragment();
                 }
-                shareholderViewModel.select(shareholder);
-                leaveShareholderFragment();
             }
         });
     }

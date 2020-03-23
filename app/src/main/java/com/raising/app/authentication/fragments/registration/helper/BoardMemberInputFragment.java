@@ -45,10 +45,6 @@ public class BoardMemberInputFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
         boardMemberViewModel = new ViewModelProvider(requireActivity()).get(BoardMemberViewModel.class);
 
-        if(boardMember == null) {
-            boardMember = new BoardMember();
-        }
-
         //TODO: fetch these values from the backend
         String [] VALUES_YEARS = new String[] {"2000", "1990", "1980", "1970"};
         String [] VALUES_POSITIONS = new String[] {"CEO", "CFO", "VRP" };
@@ -70,17 +66,15 @@ public class BoardMemberInputFragment extends RaisingFragment {
         memberSinceInput = view.findViewById(R.id.input_board_member_member_since);
         memberSinceInput.setAdapter(adapterYear);
 
-        /**
-         * Sets the current values, if the user wants to edit a BoardMember
-         */
-        Bundle bundle = this.getArguments();
-        if(bundle != null) {
-            boardFirstNameInput.setText(bundle.getString("firstName"));
-            boardLastNameInput.setText(bundle.getString("lastName"));
-            boardProfessionInput.setText(bundle.getString("profession"));
-            boardPositionInput.setText(bundle.getString("position"));
-            memberSinceInput.setText(bundle.getInt("memberSince"));
-            boardEducationInput.setText(bundle.getString("education"));
+        if(boardMember == null) {
+            boardMember = new BoardMember();
+        } else {
+            boardFirstNameInput.setText(boardMember.getFirstName());
+            boardLastNameInput.setText(boardMember.getLastName());
+            boardProfessionInput.setText(boardMember.getProfession());
+            boardPositionInput.setText(boardMember.getBoardPosition());
+            memberSinceInput.setText(boardMember.getMemberSince());
+            boardEducationInput.setText(boardMember.getEducation());
         }
 
         Button btnCancelBoardMember = view.findViewById(R.id.button_cancel_board_member);

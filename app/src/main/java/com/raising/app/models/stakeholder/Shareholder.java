@@ -1,11 +1,13 @@
 package com.raising.app.models.stakeholder;
 
+import java.io.Serializable;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Data
-public class Shareholder extends StakeholderRecyclerListItem {
+public class Shareholder extends StakeholderRecyclerListItem implements Serializable {
     private boolean isPrivateShareholder;
     private String firstName;
     private String lastName;
@@ -22,7 +24,7 @@ public class Shareholder extends StakeholderRecyclerListItem {
     public Shareholder(
             boolean privateShareholder, String firstName, String lastName, String country,
             String name, String corporateBody, String website, String equityShare) {
-        super(privateShareholder ? firstName + " " + lastName : name);
+        super(privateShareholder ? (firstName + " " + lastName) : name);
         this.isPrivateShareholder = privateShareholder;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -34,6 +36,6 @@ public class Shareholder extends StakeholderRecyclerListItem {
     }
 
     public void updateTitle() {
-        setTitle(isPrivateShareholder ? firstName + " " + lastName : name);
+        setTitle(isPrivateShareholder ? (firstName + " " + lastName) : name);
     }
 }

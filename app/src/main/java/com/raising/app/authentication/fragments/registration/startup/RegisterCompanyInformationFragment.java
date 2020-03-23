@@ -156,7 +156,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
      */
     public void getContinents() {
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "continent",
+                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/continent",
                         null, new Response.Listener<JSONArray>() {
 
                     @Override

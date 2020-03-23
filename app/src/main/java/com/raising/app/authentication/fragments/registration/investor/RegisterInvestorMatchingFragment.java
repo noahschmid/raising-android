@@ -197,7 +197,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
     public void getInvestorTypes() {
         String countries;
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "investortype",
+                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/investortype",
                         null, new Response.Listener<JSONArray>() {
 
                     @Override
@@ -236,7 +236,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
     public void getSupportTypes() {
         String countries;
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "support",
+                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/support",
                         null, new Response.Listener<JSONArray>() {
 
                     @Override
@@ -275,7 +275,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
     public void getIndustries() {
         String countries;
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "industry",
+                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/industry",
                         null, new Response.Listener<JSONArray>() {
 
                     @Override
@@ -313,7 +313,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
     public void getInvestmentPhases() {
         String countries;
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "investmentphase",
+                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/investmentphase",
                         null, new Response.Listener<JSONArray>() {
 
                     @Override
@@ -350,7 +350,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
      */
     public void getContinents() {
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "continent",
+                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/continent",
                         null, new Response.Listener<JSONArray>() {
 
                     @Override
@@ -385,7 +385,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
      */
     private void getCountries() {
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "country",
+                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/country",
                         null, new Response.Listener<JSONArray>() {
 
                     @Override

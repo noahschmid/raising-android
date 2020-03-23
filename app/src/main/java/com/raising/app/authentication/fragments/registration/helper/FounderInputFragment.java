@@ -47,10 +47,6 @@ public class FounderInputFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(founder == null) {
-            founder = new Founder();
-        }
-
         founderViewModel = new ViewModelProvider(requireActivity()).get(FounderViewModel.class);
 
         String [] VALUES_POSITIONS = new String[] {"CEO", "CFO", "VRP" };
@@ -65,15 +61,13 @@ public class FounderInputFragment extends RaisingFragment {
         founderCompanyPositionInput = view.findViewById(R.id.input_founder_poistion);
         founderCompanyPositionInput.setAdapter(adapterPosition);
 
-        /**
-         * Retrieve current values, if the user wants to edit a founder
-         */
-        Bundle bundle = this.getArguments();
-        if(bundle != null) {
-            founderFirstNameInput.setText(bundle.getString("firstName"));
-            founderLastNameInput.setText(bundle.getString("lastName"));
-            founderCompanyPositionInput.setText(bundle.getString("position"));
-            founderEducationInput.setText(bundle.getString("education"));
+        if(founder == null) {
+            founder = new Founder();
+        } else {
+            founderFirstNameInput.setText(founder.getFirstName());
+            founderLastNameInput.setText(founder.getLastName());
+            founderCompanyPositionInput.setText(founder.getCompanyPosition());
+            founderEducationInput.setText(founder.getEducation());
         }
 
         Button btnCancelFounder = view.findViewById(R.id.button_cancel_founder);

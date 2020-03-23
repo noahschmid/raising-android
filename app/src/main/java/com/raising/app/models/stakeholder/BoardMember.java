@@ -2,12 +2,14 @@ package com.raising.app.models.stakeholder;
 
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Data
-public class BoardMember extends StakeholderRecyclerListItem {
+public class BoardMember extends StakeholderRecyclerListItem implements Serializable {
         private String firstName;
         private String lastName;
         private String profession;

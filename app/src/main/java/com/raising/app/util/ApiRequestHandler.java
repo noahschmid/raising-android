@@ -29,7 +29,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class ApiRequestHandler {
-    private static final boolean CONNECT_TO_DEV_SERVER = false;
+    private static final boolean CONNECT_TO_DEV_SERVER = true;
     private static ApiRequestHandler instance;
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;

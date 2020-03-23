@@ -139,7 +139,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
      */
     public void getCountries() {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "country",
+                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/country",
                         null, new Response.Listener<JSONObject>() {
 
                     @Override

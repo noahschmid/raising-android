@@ -148,7 +148,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         try {
             RegistrationHandler.proceed();
             RegistrationHandler.saveFinancialRequirements(type, valuation, closingTime, scope);
-            changeFragment(new RegisterStakeholderFragment(), "RegisterStakeholderFragment");
+            changeFragment(new RegisterStakeholderFragment());
         } catch (IOException e) {
             Log.d("debugMessage", e.getMessage());
         }

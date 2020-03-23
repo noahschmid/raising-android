@@ -1,11 +1,13 @@
 package com.raising.app.models.stakeholder;
 
+import java.io.Serializable;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Data
-public class Founder extends StakeholderRecyclerListItem {
+public class Founder extends StakeholderRecyclerListItem implements Serializable {
     private String firstName;
     private String lastName;
     private String companyPosition;
