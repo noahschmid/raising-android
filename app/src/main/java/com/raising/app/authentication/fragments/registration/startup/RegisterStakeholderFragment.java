@@ -280,7 +280,6 @@ public class RegisterStakeholderFragment extends RaisingFragment {
             public void onClickDelete(int position) {
                 boardMemberList.remove(position);
                 boardMemberAdapter.notifyItemRemoved(position);
-
             }
         });
     }
@@ -293,22 +292,11 @@ public class RegisterStakeholderFragment extends RaisingFragment {
         createShareholderRecyclerView(view);
         shareholderViewModel = new ViewModelProvider(requireActivity()).get(ShareholderViewModel.class);
         shareholderViewModel.getSelectedShareholder().observe(getViewLifecycleOwner(),
-                stakeholderShareholder -> {
+                shareholder -> {
             // add item to shareholderList
-            shareholderList.add(stakeholderShareholder);
-
-            // add item to recycler view
-            String shareholderTitle;
-            if (stakeholderShareholder.isPrivateShareholder()) {
-                shareholderTitle
-                        = stakeholderShareholder.getFirstName() + " " + stakeholderShareholder.getLastName();
-            } else {
-                shareholderTitle = stakeholderShareholder.getName();
-            }
-            StakeholderRecyclerListItem shareholderListItem
-                    = new StakeholderRecyclerListItem(shareholderTitle);
-            shareholderList.add(shareholderListItem);
-            shareholderAdapter.notifyDataSetChanged();
+                    shareholder.updateTitle();
+                    shareholderList.add(shareholder);
+                    shareholderAdapter.notifyDataSetChanged();
         });
     }
 
@@ -340,7 +328,6 @@ public class RegisterStakeholderFragment extends RaisingFragment {
             public void onClickDelete(int position) {
                 shareholderList.remove(position);
                 shareholderAdapter.notifyItemRemoved(position);
-
             }
         });
     }
