@@ -10,10 +10,18 @@ public class BoardMemberViewModel extends ViewModel {
     private final MutableLiveData<BoardMember> selectedBoardMember
             = new MutableLiveData<>();
 
+    /**
+     * Set a board member
+     * @param boardMember The board member that is to be stored
+     */
     public void select(BoardMember boardMember) {
         selectedBoardMember.setValue(boardMember);
     }
 
+    /**
+     * Retrieve the currently stored board member
+     * @return The board member currently stored
+     */
     public LiveData<BoardMember> getSelectedBoardMember() {
         return selectedBoardMember;
     }

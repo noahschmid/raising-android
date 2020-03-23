@@ -15,6 +15,10 @@ public class Shareholder extends StakeholderRecyclerListItem {
     private String website;
     private String equityShare;
 
+    public Shareholder() {
+        super();
+    }
+
     public Shareholder(
             boolean privateShareholder, String firstName, String lastName, String country,
             String name, String corporateBody, String website, String equityShare) {

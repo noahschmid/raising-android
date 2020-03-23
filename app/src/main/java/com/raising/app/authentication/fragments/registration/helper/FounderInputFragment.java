@@ -65,6 +65,9 @@ public class FounderInputFragment extends RaisingFragment {
         founderCompanyPositionInput = view.findViewById(R.id.input_founder_poistion);
         founderCompanyPositionInput.setAdapter(adapterPosition);
 
+        /**
+         * Retrieve current values, if the user wants to edit a founder
+         */
         Bundle bundle = this.getArguments();
         if(bundle != null) {
             founderFirstNameInput.setText(bundle.getString("firstName"));
@@ -95,14 +98,10 @@ public class FounderInputFragment extends RaisingFragment {
                             getString(R.string.register_dialog_text_empty_credentials));
                     return;
                 }
-
-                Founder founder = new Founder(
-                        firstName, lastName, companyPosition, education);
+                Founder founder = new Founder(firstName, lastName, companyPosition, education);
 
                 founderViewModel.select(founder);
-
                 leaveFounderFragment();
-
             }
         });
     }
@@ -113,6 +112,9 @@ public class FounderInputFragment extends RaisingFragment {
         hideBottomNavigation(false);
     }
 
+    /**
+     * {@link com.raising.app.RaisingFragment#popCurrentFragment(androidx.fragment.app.Fragment)}
+     */
     private void leaveFounderFragment() {
         popCurrentFragment(this);
     }

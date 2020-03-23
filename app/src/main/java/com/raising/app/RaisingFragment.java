@@ -122,6 +122,13 @@ public class RaisingFragment extends Fragment {
         });
     }
 
+    /**
+     * Leaves the currentFragment and removes currentFragment from the backstack
+     * Currently only works, if currentFragment is on top of the stack
+     * @param currentFragment The fragment that is to be removed
+     *
+     * @author Lorenz Caliezi 23.03.2020
+     */
     public void popCurrentFragment(Fragment currentFragment) {
         FragmentManager fragmentManager = getActivitiesFragmentManager();
         fragmentManager.beginTransaction().remove(currentFragment);

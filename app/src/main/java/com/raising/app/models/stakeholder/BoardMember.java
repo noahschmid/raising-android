@@ -15,6 +15,10 @@ public class BoardMember extends StakeholderRecyclerListItem {
         private String memberSince;
         private String education;
 
+        public BoardMember() {
+            super();
+        }
+
         public BoardMember(String firstName, String lastName, String profession,
                            String boardPosition, String memberSince, String education) {
             super(firstName + " " + lastName);

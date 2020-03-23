@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +16,11 @@ import android.widget.EditText;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.authentication.fragments.registration.helper.viewModels.BoardMemberViewModel;
 import com.raising.app.models.stakeholder.BoardMember;
 
 public class BoardMemberInputFragment extends RaisingFragment {
+    private BoardMemberViewModel boardMemberViewModel;
     private EditText boardFirstNameInput, boardLastNameInput, boardProfessionInput, boardEducationInput;
     private AutoCompleteTextView boardPositionInput, memberSinceInput;
     private BoardMember boardMember;
@@ -40,6 +43,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        boardMemberViewModel = new ViewModelProvider(requireActivity()).get(BoardMemberViewModel.class);
 
         if(boardMember == null) {
             boardMember = new BoardMember();
@@ -66,6 +70,9 @@ public class BoardMemberInputFragment extends RaisingFragment {
         memberSinceInput = view.findViewById(R.id.input_board_member_member_since);
         memberSinceInput.setAdapter(adapterYear);
 
+        /**
+         * Sets the current values, if the user wants to edit a BoardMember
+         */
         Bundle bundle = this.getArguments();
         if(bundle != null) {
             boardFirstNameInput.setText(bundle.getString("firstName"));
@@ -80,7 +87,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
         btnCancelBoardMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancelBoardMember();
+                leaveBoardMemberFragment();
             }
         });
         Button btnAddBoardMember = view.findViewById(R.id.button_add_board_member);
@@ -103,8 +110,9 @@ public class BoardMemberInputFragment extends RaisingFragment {
                 }
                 BoardMember boardMember = new BoardMember(
                         firstName, lastName, profession, boardPosition, memberSince, education);
-                //TODO: return generated object to RegisterStakeholderFragment
 
+                boardMemberViewModel.select(boardMember);
+                leaveBoardMemberFragment();
             }
         });
     }
@@ -116,7 +124,10 @@ public class BoardMemberInputFragment extends RaisingFragment {
         hideBottomNavigation(false);
     }
 
-    private void cancelBoardMember() {
+    /**
+     * {@link com.raising.app.RaisingFragment#popCurrentFragment(androidx.fragment.app.Fragment)}
+     */
+    private void leaveBoardMemberFragment() {
         popCurrentFragment(this);
     }
 }

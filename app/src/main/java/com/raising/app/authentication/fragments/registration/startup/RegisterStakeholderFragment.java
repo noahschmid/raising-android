@@ -53,9 +53,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_stakeholder,
                 container, false);
-        founderViewModel = new ViewModelProvider(requireActivity()).get(FounderViewModel.class);
-        boardMemberViewModel = new ViewModelProvider(requireActivity()).get(BoardMemberViewModel.class);
-        shareholderViewModel = new ViewModelProvider(requireActivity()).get(ShareholderViewModel.class);
+
 
         hideBottomNavigation(true);
 
@@ -65,10 +63,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        founderList = new ArrayList<>();
-        createFounderRecyclerView(view);
-
+/*
         //creates a example list for boardMemberRecyclerViewList
         boardMemberList = new ArrayList<>();
         boardMemberList.add(new BoardMember("Max", "Mustermann", "Carpenter", "VRP", "2010", "Bachelor"));
@@ -79,7 +74,18 @@ public class RegisterStakeholderFragment extends RaisingFragment {
 
         //creates a example list for shareholderRecyclerViewList
         shareholderList = new ArrayList<>();
-        createShareholderRecyclerView(view);
+        createShareholderRecyclerView(view);*/
+
+        if (savedInstanceState == null) {
+            founderList = new ArrayList<>();
+            boardMemberList = new ArrayList<>();
+            shareholderList = new ArrayList<>();
+        }
+
+        // initialize the different recycler views
+        setupFounderRecyclerView(view);
+        setupBoardMemberRecyclerView(view);
+        setupShareholderRecyclerView(view);
 
         FloatingActionButton floatingBtnAddFounder = view.findViewById(R.id.floating_button_add_founder);
         floatingBtnAddFounder.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +100,8 @@ public class RegisterStakeholderFragment extends RaisingFragment {
             }
         });
 
-        FloatingActionButton floatingBtnAddBoardMember = view.findViewById(R.id.floating_button_add_board_member);
+        FloatingActionButton floatingBtnAddBoardMember
+                = view.findViewById(R.id.floating_button_add_board_member);
         floatingBtnAddBoardMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +113,8 @@ public class RegisterStakeholderFragment extends RaisingFragment {
             }
         });
 
-        FloatingActionButton floatingBtnAddShareholder = view.findViewById(R.id.floating_button_add_shareholder);
+        FloatingActionButton floatingBtnAddShareholder
+                = view.findViewById(R.id.floating_button_add_shareholder);
         floatingBtnAddShareholder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,6 +172,32 @@ public class RegisterStakeholderFragment extends RaisingFragment {
         outState.putString("shareholderList", json);
     }
 
+    /**
+     * Delegate creating of recycler view and create observer for FounderViewModel
+     * @param view The view containing the recycler view
+     */
+    private void setupFounderRecyclerView(View view) {
+        createFounderRecyclerView(view);
+        founderViewModel = new ViewModelProvider(requireActivity()).get(FounderViewModel.class);
+        founderViewModel.getSelectedFounder().observe(getViewLifecycleOwner(),
+                stakeholderFounder -> {
+            // add item to founderList
+            founderList.add(stakeholderFounder);
+
+            // add item to recycler view
+            String founderTitle
+                    = stakeholderFounder.getFirstName() + " " + stakeholderFounder.getLastName();
+            StakeholderRecyclerListItem founderListItem
+                    = new StakeholderRecyclerListItem(founderTitle);
+            founderList.add(founderListItem);
+            founderAdapter.notifyDataSetChanged();
+        });
+    }
+
+    /**
+     * Create the recycler view for the founders by linking the UI components and setting the adapter
+     * @param view The view containing this recycler view
+     */
     private void createFounderRecyclerView(View view) {
         founderRecyclerView = view.findViewById(R.id.stakeholder_founder_recycler_view);
         founderRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -189,13 +223,38 @@ public class RegisterStakeholderFragment extends RaisingFragment {
             @Override
             public void onClickDelete(int position) {
                 founderList.remove(position);
-                founderList.remove(position);
                 founderAdapter.notifyItemRemoved(position);
 
             }
         });
     }
 
+    /**
+     * Delegate creating of the recycler view and create observer for BoardMemberViewModel
+     * @param view The view containing the recycler view
+     */
+    private void setupBoardMemberRecyclerView(View view) {
+        createBoardMemberRecyclerView(view);
+        boardMemberViewModel = new ViewModelProvider(requireActivity()).get(BoardMemberViewModel.class);
+        boardMemberViewModel.getSelectedBoardMember().observe(getViewLifecycleOwner(),
+                stakeholderBoardMember -> {
+            // add item to boardMemberList
+            boardMemberList.add(stakeholderBoardMember);
+
+            // add item to recycler view
+            String boardMemberTitle
+                    = stakeholderBoardMember.getFirstName() + " " + stakeholderBoardMember.getLastName();
+            StakeholderRecyclerListItem boardMemberListItem
+                    = new StakeholderRecyclerListItem(boardMemberTitle);
+            boardMemberList.add(boardMemberListItem);
+            boardMemberAdapter.notifyDataSetChanged();
+        });
+    }
+
+    /**
+     * Create the recycler view for the board members by linking the UI components and setting the adapter
+     * @param view The view containing this recycler view
+     */
     private void createBoardMemberRecyclerView(View view) {
         boardMemberRecyclerView = view.findViewById(R.id.stakeholder_board_member_recycler_view);
         boardMemberRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -220,13 +279,43 @@ public class RegisterStakeholderFragment extends RaisingFragment {
             @Override
             public void onClickDelete(int position) {
                 boardMemberList.remove(position);
-                boardMemberList.remove(position);
                 boardMemberAdapter.notifyItemRemoved(position);
 
             }
         });
     }
 
+    /**
+     * Delegate creating of ShareholderRecycler view and create observer for ShareholderViewModel
+     * @param view The view containing the recycler view
+     */
+    private void setupShareholderRecyclerView(View view) {
+        createShareholderRecyclerView(view);
+        shareholderViewModel = new ViewModelProvider(requireActivity()).get(ShareholderViewModel.class);
+        shareholderViewModel.getSelectedShareholder().observe(getViewLifecycleOwner(),
+                stakeholderShareholder -> {
+            // add item to shareholderList
+            shareholderList.add(stakeholderShareholder);
+
+            // add item to recycler view
+            String shareholderTitle;
+            if (stakeholderShareholder.isPrivateShareholder()) {
+                shareholderTitle
+                        = stakeholderShareholder.getFirstName() + " " + stakeholderShareholder.getLastName();
+            } else {
+                shareholderTitle = stakeholderShareholder.getName();
+            }
+            StakeholderRecyclerListItem shareholderListItem
+                    = new StakeholderRecyclerListItem(shareholderTitle);
+            shareholderList.add(shareholderListItem);
+            shareholderAdapter.notifyDataSetChanged();
+        });
+    }
+
+    /**
+     * Creating the recycler view for the shareholder by linking the UI components and setting the adapter
+     * @param view
+     */
     private void createShareholderRecyclerView(View view) {
         shareholderRecyclerView = view.findViewById(R.id.stakeholder_shareholder_recycler_view);
         shareholderRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -239,7 +328,6 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                 Shareholder selectedShareholder = ((Shareholder)shareholderList.get(position));
                 shareholderFragment.passShareholder(selectedShareholder);
                 changeFragment(shareholderFragment, "StakeholderShareholder");
-
                 shareholderViewModel.getSelectedShareholder().observe(getViewLifecycleOwner(), shareholder -> {
                     // set updated item to shareholderList
                     shareholder.updateTitle();
@@ -250,7 +338,6 @@ public class RegisterStakeholderFragment extends RaisingFragment {
 
             @Override
             public void onClickDelete(int position) {
-                shareholderList.remove(position);
                 shareholderList.remove(position);
                 shareholderAdapter.notifyItemRemoved(position);
 

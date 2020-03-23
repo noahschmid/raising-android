@@ -11,6 +11,10 @@ public class Founder extends StakeholderRecyclerListItem {
     private String companyPosition;
     private String education;
 
+    public Founder() {
+        super();
+    }
+
     public Founder(String firstName, String lastName, String companyPosition,
                    String education) {
         super(firstName + " " + lastName);

@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +18,12 @@ import android.widget.RadioButton;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.authentication.fragments.registration.helper.viewModels.ShareholderViewModel;
 import com.raising.app.models.stakeholder.Shareholder;
 
 public class ShareholderInputFragment extends RaisingFragment {
     private boolean privateShareholder;
+    private ShareholderViewModel shareholderViewModel;
 
     private RadioButton selectPrivateShareholder, selectCorporateShareholder;
     private EditText privateFirstNameInput, privateLastNameInput, corporateNameInput, corporateWebsiteInput;
@@ -47,6 +50,7 @@ public class ShareholderInputFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        shareholderViewModel = new ViewModelProvider(requireActivity()).get(ShareholderViewModel.class);
 
         privateFirstNameInput = view.findViewById(R.id.input_shareholder_first_name);
         privateLastNameInput = view.findViewById(R.id.input_shareholder_last_name);
@@ -113,6 +117,9 @@ public class ShareholderInputFragment extends RaisingFragment {
             privateCountryInput.setText(bundle.getString("country"));
             corporateBodyInput.setText(bundle.getString("corporateBody"));
 
+            /**
+             * Retrieve current values, if the user wants to edit a shareholder
+             */
             if(bundle.getBoolean("privateShareholder")) {
                 privateEquityInput.setText(bundle.getString("equityShare"));
                 privateShareholder = true;
@@ -139,7 +146,7 @@ public class ShareholderInputFragment extends RaisingFragment {
         btnCancelShareholder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancelShareholder();
+                leaveShareholderFragment();
             }
         });
         Button btnAddShareholder = view.findViewById(R.id.button_add_shareholder);
@@ -177,7 +184,8 @@ public class ShareholderInputFragment extends RaisingFragment {
                             false, null, null, null,
                             name, corporateBody, website, corporateEquityShare);
                 }
-                //TODO: return generated object to RegisterStakeholderFragment
+                shareholderViewModel.select(shareholder);
+                leaveShareholderFragment();
             }
         });
     }
@@ -189,7 +197,10 @@ public class ShareholderInputFragment extends RaisingFragment {
         hideBottomNavigation(false);
     }
 
-    private void cancelShareholder() {
+    /**
+     * {@link com.raising.app.RaisingFragment#popCurrentFragment(androidx.fragment.app.Fragment)}
+     */
+    private void leaveShareholderFragment() {
         popCurrentFragment(this);
     }
 }
