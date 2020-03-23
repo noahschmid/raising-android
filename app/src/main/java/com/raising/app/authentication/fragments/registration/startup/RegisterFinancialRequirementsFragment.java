@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
 import com.raising.app.authentication.fragments.LoginFragment;
+import com.raising.app.models.Startup;
 import com.raising.app.util.RegistrationHandler;
 
 import java.io.IOException;
@@ -63,6 +64,10 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         financialClosingTimeInput = view.findViewById(R.id.register_input_financial_closing_time);
         financialClosingTimeInput.setOnClickListener(v -> prepareDatePicker());
+
+        Startup startup = RegistrationHandler.getStartup();
+        scopeInput.setText(String.valueOf(startup.getScope()));
+
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             /**
              * Get date, that has been selected in datePicker
@@ -104,9 +109,16 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
      * Process inputs and submit registration
      */
     private void processInputs() {
+        if(scopeInput.getText().length() == 0) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_dialog_text_empty_credentials));
+            return;
+        }
+
         long type = 1;
         float valuation = Float.parseFloat(financialValuationInput.getText().toString());
         Date closingTime = new Date(financialClosingTimeInput.getText().toString());
+        float scope = Float.parseFloat(scopeInput.getText().toString());
 
         if(financialClosingTimeInput.getText().length() == 0 ||
                 financialTypeInput.getText().length() == 0) {
@@ -117,7 +129,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         try {
             RegistrationHandler.proceed();
-            RegistrationHandler.saveFinancialRequirements(type, valuation, closingTime);
+            RegistrationHandler.saveFinancialRequirements(type, valuation, closingTime, scope);
             RegistrationHandler.submit();
             changeFragment(new LoginFragment(), "LoginFragment");
         } catch (IOException e) {

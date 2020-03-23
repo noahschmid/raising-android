@@ -388,16 +388,14 @@ public class RegistrationHandler {
      * @param investmentPhases
      * @param industries
      * @param support
-     * @param scope
      */
     public static void saveStartupMatchingFragment(float ticketSizeMin, float ticketSizeMax,
                                                    ArrayList<Long> investorTypes,
                                                    ArrayList<Long> investmentPhases,
-                                                   ArrayList<Long> industries, ArrayList<Long> support,
-                                                   float scope) throws IOException {
+                                                   ArrayList<Long> industries, ArrayList<Long> support
+                                                   ) throws IOException {
         startup.setTicketSizeMin(ticketSizeMin);
         startup.setTicketSizeMax(ticketSizeMax);
-        startup.setScope(scope);
 
         startup.clearSupport();
         startup.clearInvestorTypes();
@@ -448,12 +446,14 @@ public class RegistrationHandler {
      * @param type
      * @param valuation
      * @param closingTime
+     * @param scope
      */
     public static void saveFinancialRequirements(long type, float valuation,
-                                                 Date closingTime) throws IOException {
+                                                 Date closingTime, float scope) throws IOException {
         startup.setClosingTime(closingTime);
         startup.setValuation(valuation);
         startup.setFinancialType(type);
+        startup.setScope(scope);
 
         saveObject(startup, "rgstr_startup");
     }
