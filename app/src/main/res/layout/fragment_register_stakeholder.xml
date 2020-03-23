@@ -64,14 +64,15 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floating_button_add_founder"
-                android:layout_width="51dp"
-                android:layout_height="47dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
                 android:clickable="true"
-                android:src="@android:drawable/ic_menu_add"
+                android:src="@drawable/ic_button_add_circle_outline_dark_grey_24dp"
                 app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_board_member"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_founder_recycler_view"
-                app:layout_constraintTop_toBottomOf="@+id/stakeholder_founder_recycler_view" />
+                app:layout_constraintTop_toBottomOf="@+id/stakeholder_founder_recycler_view"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/text_stakeholder_board_member"
@@ -97,14 +98,15 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floating_button_add_board_member"
-                android:layout_width="40dp"
-                android:layout_height="36dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
                 android:clickable="true"
-                android:src="@drawable/btn_login"
+                android:src="@drawable/ic_button_add_circle_outline_dark_grey_24dp"
                 app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_shareholder"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_board_member_recycler_view"
-                app:layout_constraintTop_toBottomOf="@+id/stakeholder_board_member_recycler_view" />
+                app:layout_constraintTop_toBottomOf="@+id/stakeholder_board_member_recycler_view"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/text_stakeholder_shareholder"
@@ -130,15 +132,16 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floating_button_add_shareholder"
-                android:layout_width="43dp"
-                android:layout_height="47dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:clickable="true"
-                android:src="@drawable/ic_launcher_background"
+                android:src="@drawable/ic_button_add_circle_outline_dark_grey_24dp"
                 app:layout_constraintBottom_toTopOf="@+id/button_stakeholder"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_shareholder_recycler_view"
-                app:layout_constraintTop_toBottomOf="@+id/stakeholder_shareholder_recycler_view" />
+                app:layout_constraintTop_toBottomOf="@+id/stakeholder_shareholder_recycler_view"
+                android:focusable="true" />
 
             <Button
                 android:id="@+id/button_stakeholder"
@@ -146,6 +149,7 @@
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/register_button_finish_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/stakeholder_shareholder_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_shareholder_recycler_view"

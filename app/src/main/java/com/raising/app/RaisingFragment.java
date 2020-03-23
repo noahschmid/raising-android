@@ -104,4 +104,10 @@ public class RaisingFragment extends Fragment {
             public void afterTextChanged(Editable s) {}
         });
     }
+
+    public void popCurrentFragment(Fragment currentFragment) {
+        FragmentManager fragmentManager = getActivitiesFragmentManager();
+        fragmentManager.beginTransaction().remove(currentFragment);
+        fragmentManager.popBackStackImmediate();
+    }
 }

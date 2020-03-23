@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +18,13 @@ import android.widget.EditText;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.authentication.fragments.registration.helper.viewModels.FounderViewModel;
+import com.raising.app.models.stakeholder.StakeholderFounder;
+import com.raising.app.models.stakeholder.StakeholderShareholder;
 
-public class FragmentStakeholderFounder extends RaisingFragment implements View.OnClickListener {
+public class FragmentStakeholderFounder extends RaisingFragment {
+    private FounderViewModel founderViewModel;
+
     private EditText founderFirstNameInput, founderLastNameInput,
             founderEducationInput;
     private AutoCompleteTextView founderCompanyPositionInput;
@@ -36,6 +43,7 @@ public class FragmentStakeholderFounder extends RaisingFragment implements View.
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        founderViewModel = new ViewModelProvider(requireActivity()).get(FounderViewModel.class);
 
         String [] VALUES_POSITIONS = new String[] {"CEO", "CFO", "VRP" };
 
@@ -49,10 +57,46 @@ public class FragmentStakeholderFounder extends RaisingFragment implements View.
         founderCompanyPositionInput = view.findViewById(R.id.input_founder_poistion);
         founderCompanyPositionInput.setAdapter(adapterPosition);
 
+        Bundle bundle = this.getArguments();
+        if(bundle != null) {
+            founderFirstNameInput.setText(bundle.getString("firstName"));
+            founderLastNameInput.setText(bundle.getString("lastName"));
+            founderCompanyPositionInput.setText(bundle.getString("position"));
+            founderEducationInput.setText(bundle.getString("education"));
+        }
+
         Button btnCancelFounder = view.findViewById(R.id.button_cancel_founder);
-        btnCancelFounder.setOnClickListener(this);
+        btnCancelFounder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                leaveFounderFragment();
+            }
+        });
         Button btnAddFounder = view.findViewById(R.id.button_add_founder);
-        btnAddFounder.setOnClickListener(this);
+        btnAddFounder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String firstName = founderFirstNameInput.getText().toString();
+                String lastName = founderLastNameInput.getText().toString();
+                String companyPosition = founderCompanyPositionInput.getText().toString();
+                String education = founderEducationInput.getText().toString();
+
+                if(firstName.length() == 0 || lastName.length() == 0
+                        || companyPosition.length() == 0 || education.length() == 0) {
+                    showSimpleDialog(getString(R.string.register_dialog_title),
+                            getString(R.string.register_dialog_text_empty_credentials));
+                    return;
+                }
+
+                StakeholderFounder founder = new StakeholderFounder(
+                        firstName, lastName, companyPosition, education);
+
+                founderViewModel.select(founder);
+
+                leaveFounderFragment();
+
+            }
+        });
     }
 
     @Override
@@ -61,19 +105,8 @@ public class FragmentStakeholderFounder extends RaisingFragment implements View.
         hideBottomNavigation(false);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch(getId()) {
-            case R.id.button_cancel_founder:
-                //TODO: pop uppermost fragment from backstack
-                break;
-            case R.id.button_add_founder:
-                //TODO: link with RegisterStakeholderFragment view ViewModel and pass data
-                break;
-            default:
-                break;
-        }
-
+    private void leaveFounderFragment() {
+        popCurrentFragment(this);
     }
 }
 
