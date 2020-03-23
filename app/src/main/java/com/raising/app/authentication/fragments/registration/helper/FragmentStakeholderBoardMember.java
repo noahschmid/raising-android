@@ -64,6 +64,9 @@ public class FragmentStakeholderBoardMember extends RaisingFragment {
         memberSinceInput = view.findViewById(R.id.input_board_member_member_since);
         memberSinceInput.setAdapter(adapterYear);
 
+        /**
+         * Sets the current values, if the user wants to edit a BoardMember
+         */
         Bundle bundle = this.getArguments();
         if(bundle != null) {
             boardFirstNameInput.setText(bundle.getString("firstName"));
@@ -115,6 +118,9 @@ public class FragmentStakeholderBoardMember extends RaisingFragment {
         hideBottomNavigation(false);
     }
 
+    /**
+     * {@link com.raising.app.RaisingFragment#popCurrentFragment(androidx.fragment.app.Fragment)}
+     */
     private void leaveBoardMemberFragment() {
         popCurrentFragment(this);
     }

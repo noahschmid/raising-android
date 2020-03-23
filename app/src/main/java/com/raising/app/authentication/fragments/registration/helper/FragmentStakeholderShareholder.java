@@ -112,6 +112,9 @@ public class FragmentStakeholderShareholder extends RaisingFragment {
             privateCountryInput.setText(bundle.getString("country"));
             corporateBodyInput.setText(bundle.getString("corporateBody"));
 
+            /**
+             * Retrieve current values, if the user wants to edit a shareholder
+             */
             if(bundle.getBoolean("privateShareholder")) {
                 privateEquityInput.setText(bundle.getString("equityShare"));
                 privateShareholder = true;
@@ -190,6 +193,9 @@ public class FragmentStakeholderShareholder extends RaisingFragment {
         hideBottomNavigation(false);
     }
 
+    /**
+     * {@link com.raising.app.RaisingFragment#popCurrentFragment(androidx.fragment.app.Fragment)}
+     */
     private void leaveShareholderFragment() {
         popCurrentFragment(this);
     }

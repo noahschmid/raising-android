@@ -10,10 +10,18 @@ public class FounderViewModel extends ViewModel {
     private final MutableLiveData<StakeholderFounder> selectedFounder
             = new MutableLiveData<StakeholderFounder>();
 
+    /**
+     * Set a founder
+     * @param founder The founder that is to be stored
+     */
     public void select(StakeholderFounder founder ) {
         selectedFounder.setValue(founder);
     }
 
+    /**
+     * Retrieve the currently stored founder
+     * @return The currently stored founder
+     */
     public LiveData<StakeholderFounder> getSelectedFounder() {
         return selectedFounder;
     }

@@ -57,6 +57,9 @@ public class FragmentStakeholderFounder extends RaisingFragment {
         founderCompanyPositionInput = view.findViewById(R.id.input_founder_poistion);
         founderCompanyPositionInput.setAdapter(adapterPosition);
 
+        /**
+         * Retrieve current values, if the user wants to edit a founder
+         */
         Bundle bundle = this.getArguments();
         if(bundle != null) {
             founderFirstNameInput.setText(bundle.getString("firstName"));
@@ -102,6 +105,9 @@ public class FragmentStakeholderFounder extends RaisingFragment {
         hideBottomNavigation(false);
     }
 
+    /**
+     * {@link com.raising.app.RaisingFragment#popCurrentFragment(androidx.fragment.app.Fragment)}
+     */
     private void leaveFounderFragment() {
         popCurrentFragment(this);
     }

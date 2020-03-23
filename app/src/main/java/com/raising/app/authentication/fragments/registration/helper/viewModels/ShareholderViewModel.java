@@ -10,10 +10,18 @@ public class ShareholderViewModel extends ViewModel {
     private final MutableLiveData<StakeholderShareholder> selectedShareholder
         = new MutableLiveData<>();
 
+    /**
+     * Set a shareholder
+     * @param shareholder The shareholder that is to be stored
+     */
     public void select(StakeholderShareholder shareholder ) {
         selectedShareholder.setValue(shareholder);
     }
 
+    /**
+     * Retrieve the currently stored shareholder
+     * @return The currently stored shareholder
+     */
     public LiveData<StakeholderShareholder> getSelectedShareholder() {
         return selectedShareholder;
     }
