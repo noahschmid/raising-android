@@ -6,10 +6,10 @@ public class StakeholderBoardMember {
         private String lastName;
         private String profession;
         private String boardPosition;
-        private int memberSince;
+        private String memberSince;
         private String education;
 
-        public StakeholderBoardMember(String firstName, String lastName, String profession, String boardPosition, int memberSince, String education) {
+        public StakeholderBoardMember(String firstName, String lastName, String profession, String boardPosition, String memberSince, String education) {
             this.firstName = firstName;
             this.lastName = lastName;
             this.profession = profession;
@@ -34,7 +34,7 @@ public class StakeholderBoardMember {
         return boardPosition;
     }
 
-    public int getMemberSince() {
+    public String getMemberSince() {
         return memberSince;
     }
 

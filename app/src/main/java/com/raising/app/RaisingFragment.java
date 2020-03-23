@@ -108,6 +108,6 @@ public class RaisingFragment extends Fragment {
     public void popCurrentFragment(Fragment currentFragment) {
         FragmentManager fragmentManager = getActivitiesFragmentManager();
         fragmentManager.beginTransaction().remove(currentFragment);
-        fragmentManager.popBackStack();
+        fragmentManager.popBackStackImmediate();
     }
 }

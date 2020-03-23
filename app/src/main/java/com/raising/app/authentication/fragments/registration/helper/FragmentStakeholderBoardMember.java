@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +15,12 @@ import android.widget.EditText;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.models.stakeholder.StakeholderBoardMember;
+import com.raising.app.models.stakeholder.StakeholderFounder;
 
-public class FragmentStakeholderBoardMember extends RaisingFragment implements View.OnClickListener {
+public class FragmentStakeholderBoardMember extends RaisingFragment {
     private EditText boardFirstNameInput, boardLastNameInput, boardProfessionInput, boardEducationInput;
-    private AutoCompleteTextView boardPositionInput, boardSinceInput;
+    private AutoCompleteTextView boardPositionInput, memberSinceInput;
 
 
     @Override
@@ -55,27 +56,50 @@ public class FragmentStakeholderBoardMember extends RaisingFragment implements V
         boardPositionInput = view.findViewById(R.id.input_board_member_position);
         boardPositionInput.setAdapter(adapterPosition);
 
-        boardSinceInput = view.findViewById(R.id.input_board_member_member_since);
-        boardSinceInput.setAdapter(adapterYear);
+        memberSinceInput = view.findViewById(R.id.input_board_member_member_since);
+        memberSinceInput.setAdapter(adapterYear);
+
+        Bundle bundle = this.getArguments();
+        if(bundle != null) {
+            boardFirstNameInput.setText(bundle.getString("firstName"));
+            boardLastNameInput.setText(bundle.getString("lastName"));
+            boardProfessionInput.setText(bundle.getString("profession"));
+            boardPositionInput.setText(bundle.getString("position"));
+            memberSinceInput.setText(bundle.getInt("memberSince"));
+            boardEducationInput.setText(bundle.getString("education"));
+        }
 
         Button btnCancelBoardMember = view.findViewById(R.id.button_cancel_board_member);
-        btnCancelBoardMember.setOnClickListener(this);
+        btnCancelBoardMember.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelBoardMember();
+            }
+        });
         Button btnAddBoardMember = view.findViewById(R.id.button_add_board_member);
-        btnAddBoardMember.setOnClickListener(this);
-    }
+        btnAddBoardMember.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String firstName = boardFirstNameInput.getText().toString();
+                String lastName = boardLastNameInput.getText().toString();
+                String profession = boardProfessionInput.getText().toString();
+                String boardPosition = boardPositionInput.getText().toString();
+                String memberSince = memberSinceInput.getText().toString();
+                String education = boardEducationInput.getText().toString();
 
-    @Override
-    public void onClick(View v) {
-        switch (getId()) {
-            case R.id.button_cancel_board_member:
-                //TODO: insert method
-                break;
-            case R.id.button_add_board_member:
-                //TODO: insert method
-                break;
-            default:
-                break;
-        }
+                if(firstName.length() == 0 || lastName.length() == 0
+                        || profession.length() == 0 || boardPosition.length() == 0
+                        || memberSince.length() == 0 || education.length() == 0) {
+                    showSimpleDialog(getString(R.string.register_dialog_title),
+                            getString(R.string.register_dialog_text_empty_credentials));
+                    return;
+                }
+                StakeholderBoardMember boardMember = new StakeholderBoardMember(
+                        firstName, lastName, profession, boardPosition, memberSince, education);
+                //TODO: return generated object to RegisterStakeholderFragment
+
+            }
+        });
     }
 
     @Override
@@ -83,5 +107,9 @@ public class FragmentStakeholderBoardMember extends RaisingFragment implements V
         super.onDestroyView();
 
         hideBottomNavigation(false);
+    }
+
+    private void cancelBoardMember() {
+        popCurrentFragment(this);
     }
 }

@@ -18,12 +18,15 @@ import android.widget.RadioButton;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.models.stakeholder.StakeholderShareholder;
 
-public class FragmentStakeholderShareholder extends RaisingFragment implements View.OnClickListener {
-    RadioButton selectPrivateShareholder, selectCorporateShareholder;
-    EditText privateFirstNameInput, privateLastNameInput, corporateNameInput, corporateWebsiteInput;
-    AutoCompleteTextView privateCountryInput, privateEquityInput, corporateBodyInput, corporateEquityInput;
-    FrameLayout privateFrameLayout, corporateFrameLayout;
+public class FragmentStakeholderShareholder extends RaisingFragment {
+    private boolean privateShareholder;
+
+    private RadioButton selectPrivateShareholder, selectCorporateShareholder;
+    private EditText privateFirstNameInput, privateLastNameInput, corporateNameInput, corporateWebsiteInput;
+    private AutoCompleteTextView privateCountryInput, privateEquityInput, corporateBodyInput, corporateEquityInput;
+    private FrameLayout privateFrameLayout, corporateFrameLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,6 +83,7 @@ public class FragmentStakeholderShareholder extends RaisingFragment implements V
         selectPrivateShareholder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                privateShareholder = true;
                 corporateFrameLayout.setVisibility(View.GONE);
                 privateFrameLayout.setVisibility(View.VISIBLE);
             }
@@ -88,36 +92,99 @@ public class FragmentStakeholderShareholder extends RaisingFragment implements V
         selectCorporateShareholder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                privateShareholder = false;
                 privateFrameLayout.setVisibility(View.GONE);
                 corporateFrameLayout.setVisibility(View.VISIBLE);
             }
         });
 
-        Button btnCancelShareholder = view.findViewById(R.id.button_cancel_shareholder);
-        btnCancelShareholder.setOnClickListener(this);
-        Button btnAddShareholder = view.findViewById(R.id.button_add_shareholder);
-        btnAddShareholder.setOnClickListener(this);
-    }
+        Bundle bundle = this.getArguments();
+        if(bundle != null) {
+            privateFirstNameInput.setText(bundle.getString("firstName"));
+            privateLastNameInput.setText(bundle.getString("lastName"));
+            corporateNameInput.setText(bundle.getString("name"));
+            corporateWebsiteInput.setText(bundle.getString("website"));
 
-    @Override
-    public void onClick(View v) {
-        switch (getId()) {
-            case R.id.button_cancel_shareholder:
-                //TODO: insert method
-                break;
-            case R.id.button_add_shareholder:
-                //TODO: insert method
-                break;
-            default:
-                break;
+            privateCountryInput.setText(bundle.getString("country"));
+            corporateBodyInput.setText(bundle.getString("corporateBody"));
+
+            if(bundle.getBoolean("privateShareholder")) {
+                privateEquityInput.setText(bundle.getString("equityShare"));
+                privateShareholder = true;
+
+                selectPrivateShareholder.setChecked(true);
+                selectCorporateShareholder.setChecked(false);
+
+                corporateFrameLayout.setVisibility(View.GONE);
+                privateFrameLayout.setVisibility(View.VISIBLE);
+
+            } else {
+                corporateEquityInput.setText(bundle.getString("equityShare"));
+                privateShareholder = false;
+
+                selectPrivateShareholder.setChecked(false);
+                selectCorporateShareholder.setChecked(true);
+
+                privateFrameLayout.setVisibility(View.GONE);
+                corporateFrameLayout.setVisibility(View.VISIBLE);
+            }
         }
-    }
 
+        Button btnCancelShareholder = view.findViewById(R.id.button_cancel_shareholder);
+        btnCancelShareholder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelShareholder();
+            }
+        });
+        Button btnAddShareholder = view.findViewById(R.id.button_add_shareholder);
+        btnAddShareholder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(privateShareholder) {
+                    String firstName = privateFirstNameInput.getText().toString();
+                    String lastName = privateLastNameInput.getText().toString();
+                    String country = privateCountryInput.getText().toString();
+                    String privateEquityShare = privateEquityInput.getText().toString();
+
+                    if(firstName.length() == 0 || lastName.length() == 0
+                            || country.length() == 0 || privateEquityShare.length() == 0) {
+                        showSimpleDialog(getString(R.string.register_dialog_title),
+                                getString(R.string.register_dialog_text_empty_credentials));
+                        return;
+                    }
+                    StakeholderShareholder shareholder = new StakeholderShareholder(
+                            true, firstName, lastName, country,
+                            null, null, null, privateEquityShare);
+                } else {
+                    String name = corporateNameInput.getText().toString();
+                    String corporateBody = corporateBodyInput.getText().toString();
+                    String website = corporateWebsiteInput.getText().toString();
+                    String corporateEquityShare = corporateEquityInput.getText().toString();
+
+                    if(name.length() == 0 || corporateBody.length() == 0
+                            || website.length() == 0 || corporateEquityShare.length() == 0) {
+                        showSimpleDialog(getString(R.string.register_dialog_title),
+                                getString(R.string.register_dialog_text_empty_credentials));
+                        return;
+                    }
+                    StakeholderShareholder shareholder = new StakeholderShareholder(
+                            false, null, null, null,
+                            name, corporateBody, website, corporateEquityShare);
+                }
+                //TODO: return generated object to RegisterStakeholderFragment
+            }
+        });
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
         hideBottomNavigation(false);
+    }
+
+    private void cancelShareholder() {
+        popCurrentFragment(this);
     }
 }
