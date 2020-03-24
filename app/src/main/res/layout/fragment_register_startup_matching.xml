@@ -31,6 +31,7 @@
                 android:hint="@string/register_matching_information_text"
                 android:textSize="@dimen/fragmentTitleFontSize"
                 android:textStyle="bold"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_ticket"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -46,6 +47,7 @@
                 android:hint="@string/register_matching_ticket_size"
                 android:textSize="@dimen/fragmentSubtitleFontSize"
                 android:textStyle="bold"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_information" />
@@ -74,6 +76,7 @@
                 android:hint="@string/register_matching_investor"
                 android:textSize="@dimen/fragmentSubtitleFontSize"
                 android:textStyle="bold"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintStart_toStartOf="@+id/text_investor_matching_ticket"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_ticket_size" />
 
@@ -97,6 +100,7 @@
                 android:hint="@string/register_matching_phase"
                 android:textSize="14sp"
                 android:textStyle="bold"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_investor_type_layout"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_radio_phase"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_matching_investor" />
@@ -121,6 +125,7 @@
                 android:hint="@string/register_matching_industry"
                 android:textSize="@dimen/fragmentSubtitleFontSize"
                 android:textStyle="bold"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_radio_industry"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_matching_phase"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_radio_phase" />
@@ -147,6 +152,7 @@
                 android:hint="@string/register_matching_support"
                 android:textSize="@dimen/fragmentSubtitleFontSize"
                 android:textStyle="bold"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_matching_industry"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_radio_industry" />
 
@@ -171,6 +177,8 @@
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_button_text"
                 android:textSize="@dimen/buttonFontSize"
+                android:backgroundTint="@color/raisingPrimaryButton"
+                android:textColorHint="@color/raisingButtonTextLight"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size" />

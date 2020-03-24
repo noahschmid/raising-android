@@ -29,6 +29,7 @@
                 android:textSize="@dimen/fragmentTitleFontSize"
                 android:textStyle="bold"
                 android:hint="@string/register_stakeholder_shareholder_information_text"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_select_type_of_shareholder"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
@@ -74,7 +75,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/shareholder_first_name"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        style="@style/TextInputLayoutTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/inputFormHorizontalMargin"
@@ -94,7 +95,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/shareholder_last_name"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        style="@style/TextInputLayoutTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
@@ -112,7 +113,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/shareholder_country"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        style="@style/TextInputExposedDropdownMenuTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
@@ -130,7 +131,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/shareholder_equity_share"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        style="@style/TextInputExposedDropdownMenuTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
@@ -178,7 +179,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/shareholder_name"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        style="@style/TextInputLayoutTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/inputFormHorizontalMargin"
@@ -198,7 +199,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/shareholder_corporate_body"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        style="@style/TextInputExposedDropdownMenuTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
@@ -216,7 +217,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/shareholder_website"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        style="@style/TextInputLayoutTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
@@ -234,7 +235,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/shareholder_corporate_equity_share"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        style="@style/TextInputExposedDropdownMenuTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
@@ -261,6 +262,8 @@
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/cancel_text"
+                android:backgroundTint="@color/raisingPrimaryButton"
+                android:textColorHint="@color/raisingButtonTextLight"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_select_type_of_shareholder"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder"/>
 
@@ -272,6 +275,8 @@
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:layout_marginEnd="@dimen/inputFormHorizontalMarginSmall"
                 android:hint="@string/add_text"
+                android:backgroundTint="@color/raisingPrimaryButton"
+                android:textColorHint="@color/raisingButtonTextLight"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder" />
 

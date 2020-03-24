@@ -16,6 +16,7 @@
         android:hint="@string/register_financial_information_text"
         android:textSize="@dimen/fragmentTitleFontSize"
         android:textStyle="bold"
+        android:textColorHint="@color/raisingPrimaryTextColor"
         app:layout_constraintBottom_toTopOf="@+id/register_financial_type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +26,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_financial_type"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        style="@style/TextInputExposedDropdownMenuTheme"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/inputFormHorizontalMargin"
@@ -45,7 +46,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_startup_financial_scope"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/TextInputLayoutTheme"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
@@ -64,7 +65,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_financial_valuation"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/TextInputLayoutTheme"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
@@ -86,7 +87,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_financial_closing_time"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/TextInputLayoutTheme"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/register_financial_closing_time"
@@ -109,6 +110,8 @@
         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:hint="@string/register_button_text"
         android:textSize="@dimen/buttonFontSize"
+        android:backgroundTint="@color/raisingPrimaryButton"
+        android:textColorHint="@color/raisingButtonTextLight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/register_financial_type"
         app:layout_constraintHorizontal_bias="0.0"

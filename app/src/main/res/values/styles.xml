@@ -10,4 +10,8 @@
 
     <style name="DialogTheme" parent="Theme.MaterialComponents.Light.Dialog.MinWidth" />
 
+    <style name="TextInputLayoutTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox" />
+
+    <style name="TextInputExposedDropdownMenuTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu" />
+
 </resources>

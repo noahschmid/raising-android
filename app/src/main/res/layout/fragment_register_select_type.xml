@@ -14,11 +14,10 @@
         android:layout_marginStart="@dimen/inputFormHorizontalMargin"
         android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-
         android:hint="@string/register_select_startup_button"
         android:textSize="@dimen/buttonFontSize"
-        android:textColorHint="@color/primaryButtonTextColor"
-
+        android:backgroundTint="@color/raisingPrimaryButton"
+        android:textColorHint="@color/raisingButtonTextLight"
         app:layout_constraintBottom_toTopOf="@+id/button_register_as_investor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,11 +28,10 @@
         android:id="@+id/button_register_as_investor"
         android:layout_width="0dp"
         android:layout_height="@dimen/inputFormHeight"
-
         android:hint="@string/register_select_investor_button"
         android:textSize="@dimen/buttonFontSize"
-        android:textColorHint="@color/primaryButtonTextColor"
-
+        android:backgroundTint="@color/raisingPrimaryButton"
+        android:textColorHint="@color/raisingButtonTextLight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/button_register_as_startup"
         app:layout_constraintStart_toStartOf="@+id/button_register_as_startup"
@@ -41,16 +39,17 @@
 
     <TextView
         android:id="@+id/text_select_type"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-
+        android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+        android:gravity="center"
         android:hint="@string/register_select_type_text"
+        android:textColorHint="@color/raisingPrimaryTextColor"
         android:textSize="@dimen/fragmentTextFontSize"
-        android:textColorHint="@color/primaryTextColor"
-
         app:layout_constraintBottom_toTopOf="@+id/button_register_as_startup"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/button_register_as_startup"
+        app:layout_constraintStart_toStartOf="@+id/button_register_as_startup"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
