@@ -30,6 +30,7 @@
                 android:hint="@string/register_pitch_information_text"
                 android:textSize="@dimen/fragmentTitleFontSize"
                 android:textStyle="bold"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_pitch_sentence"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +39,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/register_startup_pitch_sentence"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/TextInputLayoutTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inputFormHorizontalMargin"
@@ -62,7 +63,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/register_startup_pitch_pitch"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/TextInputLayoutTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
@@ -90,6 +91,7 @@
                 android:hint="@string/register_pitch_label_information_text"
                 android:textSize="@dimen/fragmentTitleFontSize"
                 android:textStyle="bold"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_pitch_pitch" />
@@ -114,6 +116,8 @@
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_button_text"
                 android:textSize="@dimen/buttonFontSize"
+                android:backgroundTint="@color/raisingPrimaryButton"
+                android:textColorHint="@color/raisingButtonTextLight"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_pitch_labels"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_pitch_sentence"

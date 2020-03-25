@@ -30,6 +30,7 @@
                 android:hint="@string/register_stakeholder_information_text"
                 android:textSize="@dimen/fragmentTitleFontSize"
                 android:textStyle="bold"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_founder"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -46,6 +47,7 @@
                 android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                 android:hint="@string/register_stakeholder_founder"
                 android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_founder_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_founder_recycler_view"
                 app:layout_constraintTop_toBottomOf="@+id/text_stakeholder_information" />
@@ -82,6 +84,7 @@
                 android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                 android:hint="@string/register_stakeholder_board_member"
                 android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_board_member_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/text_stakeholder_founder"
                 app:layout_constraintTop_toBottomOf="@+id/floating_button_add_founder" />
@@ -116,6 +119,7 @@
                 android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                 android:hint="@string/register_stakeholder_shareholder"
                 android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_shareholder_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/text_stakeholder_board_member"
                 app:layout_constraintTop_toBottomOf="@+id/floating_button_add_board_member" />
@@ -150,6 +154,8 @@
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_button_finish_text"
+                android:backgroundTint="@color/raisingPrimaryButton"
+                android:textColorHint="@color/raisingButtonTextLight"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/stakeholder_shareholder_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_shareholder_recycler_view"
