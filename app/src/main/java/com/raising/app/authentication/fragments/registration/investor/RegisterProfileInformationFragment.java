@@ -44,7 +44,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
                 "South Africa", "Peru", "Sweden", "Vietnam"};
 
         ArrayAdapter adapterCountries = new ArrayAdapter<>( getContext(),
-                R.layout.item_dropdown_menu, VALUES_COUNTRIES);
+                R.layout.item_dropdown_checkbox_menu, VALUES_COUNTRIES);
 
         profileCountryInput = view.findViewById(R.id.register_input_profile_countries);
         profileCountryInput.setAdapter(adapterCountries);
