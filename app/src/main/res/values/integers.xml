@@ -9,4 +9,6 @@
     <integer name="ticket_size_slider_max_value"> 1000000 </integer>
     <integer name="ticket_size_slider_min_value"> 50000 </integer>
 
+    <integer name="startup_registration_max_steps">8</integer>
+
 </resources>

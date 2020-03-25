@@ -100,7 +100,7 @@
     <string name="register_matching_health"> Healthcare / Life Science </string>
     <string name="register_matching_hightech"> High Tech </string>
     <string name="register_matching_social"> Social Impact </string>
-    <string name="register_matching_support"> Requested support </string>
+    <string name="register_matching_support"> Desired Involvement </string>
     <string name="register_matching_mentor"> Mentoring </string>
     <string name="register_matching_board"> Member of the board </string>
     <string name="register_matching_passive"> Passive </string>

@@ -1,14 +1,21 @@
 package com.raising.app.authentication.fragments.registration.helper.viewModels;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.raising.app.models.stakeholder.BoardMember;
 
-public class BoardMemberViewModel extends ViewModel {
+public class BoardMemberViewModel extends AndroidViewModel {
     private final MutableLiveData<BoardMember> selectedBoardMember
             = new MutableLiveData<>();
+
+    public BoardMemberViewModel(@NonNull Application application) {
+        super(application);
+    }
 
     /**
      * Set a board member
