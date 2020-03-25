@@ -62,7 +62,7 @@ public class RegisterAddressInformationFragment extends RaisingFragment implemen
         addressZipInput = view.findViewById(R.id.register_input_address_zip);
         addressStreetInput = view.findViewById(R.id.register_input_address_street);
         addressWebsiteInput = view.findViewById(R.id.register_input_address_website);
-        addressCountryInput = view.findViewById(R.id.register_input_profile_countries);
+        addressCountryInput = view.findViewById(R.id.register_input_address_country);
 
         PrivateProfile profile = RegistrationHandler.getPrivateProfile();
         addressCityInput.setText(profile.getCity());

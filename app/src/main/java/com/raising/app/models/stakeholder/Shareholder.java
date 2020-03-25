@@ -3,11 +3,9 @@ package com.raising.app.models.stakeholder;
 import java.io.Serializable;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
-public class Shareholder extends StakeholderRecyclerListItem implements Serializable {
+public class Shareholder extends StakeholderItem implements Serializable {
     private boolean isPrivateShareholder;
     private String firstName;
     private String lastName;
@@ -16,6 +14,7 @@ public class Shareholder extends StakeholderRecyclerListItem implements Serializ
     private String corporateBody;
     private String website;
     private String equityShare;
+    private long countryId;
 
     public Shareholder() {
         super();

@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.raising.app.authentication.fragments.LoginFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterStakeholderFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingFragment;
 import com.raising.app.util.AuthenticationHandler;
@@ -27,44 +28,51 @@ public class MainActivity extends AppCompatActivity {
 
         RegistrationHandler.setContext(getApplicationContext());
 
-        if(savedInstanceState == null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
             if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
-                fragmentTransaction.add(R.id.fragment_container, new RegisterStakeholderFragment());
-                fragmentTransaction.addToBackStack("LoginFragment");
+                hideBottomNavigation(true);
+                fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
             } else {
+                hideBottomNavigation(false);
                 fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
-                fragmentTransaction.addToBackStack("MatchesFragment");
             }
             fragmentTransaction.commit();
-        }
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selected = null;
 
-                    switch(item.getItemId()) {
-                        case R.id.nav_home:
-                            selected = new MatchesFragment();
-                            break;
-                        case R.id.nav_profile:
-                            selected = new ProfileFragment();
-                            break;
-                        case R.id.nav_settings:
-                            selected = new SettingsFragment();
-                            break;
-                        default:
-                            return false;
+                    Fragment selected = null;
+                    if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, new LoginFragment())
+                                .commit();
+                        return true;
+                    } else {
+                        switch (item.getItemId()) {
+                            case R.id.nav_home:
+                                selected = new MatchesFragment();
+                                break;
+                            case R.id.nav_profile:
+                                selected = new ProfileFragment();
+                                break;
+                            case R.id.nav_settings:
+                                selected = new SettingsFragment();
+                                break;
+                            default:
+                                return false;
+                        }
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, selected)
+                                .commit();
+                        return true;
                     }
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, selected)
-                            .commit();
-                    return true;
                 }
             };
 

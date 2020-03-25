@@ -29,11 +29,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 
 public class RegisterFinancialRequirementsFragment extends RaisingFragment implements View.OnClickListener {
     private EditText financialValuationInput, financialClosingTimeInput, scopeInput;
     private AutoCompleteTextView financialTypeInput;
     private DatePickerDialog.OnDateSetListener dateSetListener;
+    private Calendar selectedDate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,11 +83,13 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
              */
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+               String selected = dayOfMonth + "." + (month + 1) + "." + year;
+               financialClosingTimeInput.setText(selected);
 
-                month = month + 1;
-               String selectedDate = dayOfMonth + "." + month + "." + year;
-               financialClosingTimeInput.setText(selectedDate);
-
+               selectedDate = Calendar.getInstance();
+               selectedDate.set(Calendar.YEAR, year);
+               selectedDate.set(Calendar.MONTH, month);
+               selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             }
         };
     }
@@ -99,12 +103,8 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()) {
-            case R.id.button_financial_requirements:
-                processInputs();
-                break;
-            default:
-                break;
+        if(view.getId() == R.id.button_financial_requirements){
+            processInputs();
         }
     }
 
@@ -112,25 +112,20 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
      * Process inputs and submit registration
      */
     private void processInputs() {
-        if(scopeInput.getText().length() == 0) {
+        Log.d("debugMessage", "processInputs");
+        if(scopeInput.getText().length() == 0 || selectedDate == null) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
         long type = 1;
-        float valuation = Float.parseFloat(financialValuationInput.getText().toString());
-        Date closingTime;
 
-        try {
-            DateFormat targetFormat = new SimpleDateFormat("MM/dd/yyyy");
-            closingTime = targetFormat.parse(String.valueOf(financialClosingTimeInput.getText()));
-            if(closingTime.before(new Date())) {
-                showSimpleDialog(getString(R.string.register_dialog_title),
-                        getString(R.string.register_dialog_text_invalid_date));
-                return;
-            }
-        } catch (ParseException e) {
+        float valuation = 0;
+        if(financialValuationInput.getText().length() > 0)
+            valuation = Float.parseFloat(financialValuationInput.getText().toString());
+
+        if(selectedDate.before(Calendar.getInstance())) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_invalid_date));
             return;
@@ -147,7 +142,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         try {
             RegistrationHandler.proceed();
-            RegistrationHandler.saveFinancialRequirements(type, valuation, closingTime, scope);
+            RegistrationHandler.saveFinancialRequirements(type, valuation, selectedDate, scope);
             changeFragment(new RegisterStakeholderFragment());
         } catch (IOException e) {
             Log.d("debugMessage", e.getMessage());
