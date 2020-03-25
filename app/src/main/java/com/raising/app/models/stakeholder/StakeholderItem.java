@@ -5,14 +5,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class StakeholderRecyclerListItem {
+public class StakeholderItem {
     private String title;
 
-    public StakeholderRecyclerListItem() {
+    public StakeholderItem() {
         this.title = "";
     }
 
-    public StakeholderRecyclerListItem(String title) {
+    public StakeholderItem(String title) {
         this.title = title;
     }
 }

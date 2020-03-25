@@ -16,14 +16,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 
+import com.android.volley.VolleyError;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.authentication.fragments.LoginFragment;
 import com.raising.app.models.Account;
+import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 public class RegisterInvestorPitchFragment extends RaisingFragment implements View.OnClickListener {
     private EditText sentenceInput, pitchInput;
@@ -91,12 +103,28 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         try {
             RegistrationHandler.savePitch(sentenceInput.getText().toString(),
                     pitchInput.getText().toString());
-            RegistrationHandler.submit();
-        } catch (IOException e) {
+            Gson gson = new Gson();
+            String investor = gson.toJson(RegistrationHandler.getInvestor());
+            ApiRequestHandler.performPostRequest("/investor/register", registerCallback,
+                    errorCallback, new JSONObject(investor), getContext());
+            Log.d("debugMessage", investor);
+        } catch (IOException | JSONException e) {
             //TODO: Proper exception handling
             Log.d("debugMessage", e.getMessage());
         }
     }
+
+
+    Function<JSONObject, Void> registerCallback = response -> {
+        RegistrationHandler.cancel();
+        getActivitiesFragmentManager().popBackStack("LoginFragment", 0);
+        return null;
+    };
+
+    Function<VolleyError, Void> errorCallback = response -> {
+        Log.d("debugMessage", response.getStackTrace().toString());
+        return null;
+    };
 
     /**
      * Call {@link com.raising.app.RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int)}

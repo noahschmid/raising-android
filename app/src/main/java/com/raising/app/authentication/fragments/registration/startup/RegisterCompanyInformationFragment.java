@@ -91,12 +91,20 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
         btnCompanyInformation.setOnClickListener(this);
 
         Startup startup = RegistrationHandler.getStartup();
-        companyRevenueInput.setText(startup.getRevenue());
-        companyUidInput.setText(startup.getUid());
-       // companyFteInput.setText(startup.getNumberOfFte());
-        companyFoundingInput.setText(startup.getFoundingYear());
-        companyBreakevenInput.setText(startup.getBreakevenYear());
-        companyNameInput.setText(startup.getName());
+        companyRevenueInput.setText(String.valueOf(startup.getRevenueMin()));
+        companyUidInput.setText(startup.getUId());
+        companyFteInput.setText(Integer.toString(startup.getNumberOfFte()));
+        companyFoundingInput.setText(Integer.toString(startup.getFoundingYear()));
+        companyBreakevenInput.setText(Integer.toString(startup.getBreakEvenYear()));
+        companyNameInput.setText(startup.getCompany());
+
+        getCountries();
+        final ArrayList<String> markets = new ArrayList<>();
+        startup.getCountries().forEach(country -> {
+            markets.add(country.getName());
+        });
+        companyMarketsInput.setText(markets.toString());
+
         //TODO: load current markets
     }
 
@@ -140,8 +148,9 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
         ArrayList<Long> markets = new ArrayList<>();
         int foundingYear = Integer.parseInt(companyFoundingInput.getText().toString());
         try {
+            // TODO: Proper revenue handling
             RegistrationHandler.saveCompanyInformation(breakevenYear, fte, companyName, companyUid,
-                    revenue, markets, foundingYear);
+                    50000, markets, foundingYear);
             RegistrationHandler.proceed();
 
             changeFragment(new RegisterAddressInformationFragment(),
@@ -155,6 +164,41 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
      * Get continents and add them to multiautocompletetextview
      */
     public void getContinents() {
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
+                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/continent",
+                        null, new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            ArrayList<String> continents = new ArrayList<>();
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject jresponse = response.getJSONObject(i);
+                                continents.add(jresponse.getString("name"));
+                            }
+                            ArrayAdapter adapterContinents = new ArrayAdapter<>(getContext(),
+                                    R.layout.item_dropdown_menu, continents.toArray());
+                            companyMarketsInput.setAdapter(adapterContinents);
+                        } catch (JSONException e) {
+                            // TODO: Proper exception handling
+                            Log.d("debugMessage", e.getMessage());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+        ApiRequestHandler.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
+    }
+
+    /**
+     * Get continents and add them to multiautocompletetextview
+     */
+    public void getCountries() {
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
                 (Request.Method.GET, ApiRequestHandler.getDomain() + "public/continent",
                         null, new Response.Listener<JSONArray>() {

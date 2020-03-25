@@ -73,8 +73,8 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         industryGroup = view.findViewById(R.id.register_startup_matching_radio_industry);
 
         Startup startup = RegistrationHandler.getStartup();
-        if(startup.getTicketSizeMin() != 0 && startup.getTicketSizeMax() != 0)
-            ticketSize.setValues(startup.getTicketSizeMin(), startup.getTicketSizeMax());
+        if(startup.getInvestmentMin() != 0 && startup.getInvestmentMax() != 0)
+            ticketSize.setValues((float)startup.getInvestmentMin(), (float)startup.getInvestmentMax());
 
 
         getIndustries();

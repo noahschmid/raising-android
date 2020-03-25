@@ -69,6 +69,27 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        investorTypeGroup = view.findViewById(R.id.register_investor_matching_radio_investor);
+
+        continentInput = view.findViewById(R.id.register_input_investor_matching_continents);
+        continentInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+        countryInput = view.findViewById(R.id.register_input_investor_matching_countries);
+        countryInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+        ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
+
+        Investor investor = RegistrationHandler.getInvestor();
+        ticketSize.setValues((float)50000, (float)100000);
+
+
+        if(investor.getInvestmentMin() != 0 && investor.getInvestmentMax() != 0)
+            ticketSize.setValues((float)investor.getInvestmentMin(), (float)investor.getInvestmentMax());
+
+        industryLayout = view.findViewById(R.id.register_investor_matching_industry_layout);
+        investmentPhaseLayout = view.findViewById(R.id.register_investor_matching_phase_layout);
+        supportLayout = view.findViewById(R.id.register_investor_matching_support_layout);
+
         investorTypeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
@@ -83,34 +104,14 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             }
         });
 
-        investorTypeGroup = view.findViewById(R.id.register_investor_matching_radio_investor);
-
-        continentInput = view.findViewById(R.id.register_input_investor_matching_continents);
-        continentInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-
-        countryInput = view.findViewById(R.id.register_input_investor_matching_countries);
-        countryInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-
-        ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
-        ticketSize.setValues(
-                (float) getResources().getInteger(R.integer.ticket_size_slider_min_value),
-                (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
-
-        Investor investor = RegistrationHandler.getInvestor();
-        if(investor.getTicketSizeMin() != 0 && investor.getTicketSizeMax() != 0)
-            ticketSize.setValues(investor.getTicketSizeMin(), investor.getTicketSizeMax());
-
-
-        industryLayout = view.findViewById(R.id.register_investor_matching_industry_layout);
-        investmentPhaseLayout = view.findViewById(R.id.register_investor_matching_phase_layout);
-        supportLayout = view.findViewById(R.id.register_investor_matching_support_layout);
-
         getContinents();
         getCountries();
         getInvestorTypes();
         getSupportTypes();
         getIndustries();
         getInvestmentPhases();
+
+        //TODO: restore lists
 
         Button btnInvestorMatching = view.findViewById(R.id.button_investor_matching);
         btnInvestorMatching.setOnClickListener(this);

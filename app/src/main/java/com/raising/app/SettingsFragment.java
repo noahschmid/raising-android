@@ -56,6 +56,9 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     private void logout() {
         Log.d("debugMessage", "logout()");
         AuthenticationHandler.logout(getContext());
-        changeFragment(new LoginFragment(), "LoginFragment");
+        getActivitiesFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new LoginFragment())
+                .commit();
     }
 }

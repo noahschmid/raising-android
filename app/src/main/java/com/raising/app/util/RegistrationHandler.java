@@ -1,28 +1,43 @@
 package com.raising.app.util;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
-import androidx.fragment.app.Fragment;
+import androidx.annotation.RequiresApi;
 
-import com.raising.app.authentication.fragments.registration.RegisterLoginInformationFragment;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.raising.app.models.Account;
+import com.raising.app.models.Country;
+import com.raising.app.models.Industry;
+import com.raising.app.models.InvestmentPhase;
 import com.raising.app.models.Investor;
+import com.raising.app.models.InvestorType;
+import com.raising.app.models.Label;
 import com.raising.app.models.PrivateProfile;
 import com.raising.app.models.Startup;
+import com.raising.app.models.Support;
+import com.raising.app.models.stakeholder.BoardMember;
+import com.raising.app.models.stakeholder.Founder;
+import com.raising.app.models.stakeholder.Shareholder;
+import com.raising.app.models.stakeholder.StakeholderItem;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ConnectException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class RegistrationHandler {
     private static final String registrationEndpoint = "account/register";
@@ -70,7 +85,17 @@ public class RegistrationHandler {
      */
     public static void skip() { currentPage--; }
 
-    public static void setAccountType(String type) { accountType = type; }
+    public static void setAccountType(String type) {
+        accountType = type;
+        Gson gson  = new Gson();
+        String tmp = gson.toJson(account);
+        if(isStartup()) {
+            startup = gson.fromJson(tmp, new TypeToken<Startup>(){}.getType());
+        }
+        else{
+            investor = gson.fromJson(tmp, new TypeToken<Investor>(){}.getType());
+        }
+    }
     public static String getAccountType() { return accountType; }
     public static boolean isStartup() { return accountType.equalsIgnoreCase("startup"); }
 
@@ -85,6 +110,7 @@ public class RegistrationHandler {
     public static void saveLoginInformation(String firstName, String lastName,
                                             String email, String password)  throws IOException {
         account.setEmail(email);
+        account.setName(firstName + " " + lastName);
         account.setFirstName(firstName);
         account.setLastName(lastName);
         account.setPassword(password);
@@ -114,22 +140,6 @@ public class RegistrationHandler {
         saveObject(privateProfile, "rgstr_profile");
     }
 
-    /**
-     * Submit registration to server
-     */
-    public static void submit() {
-        inProgress = false;
-
-
-
-        context.deleteFile("rgstr_profile");
-        context.deleteFile("rgstr_account");
-        context.deleteFile("rgstr_startup");
-        context.deleteFile("rgstr_investor");
-        context.deleteFile("rgstr");
-        currentPage = 0;
-    }
-
     public static Account getAccount() { return account; }
     public static Investor getInvestor() { return investor; }
     public static Startup getStartup() { return startup; }
@@ -145,7 +155,6 @@ public class RegistrationHandler {
         context.deleteFile("rgstr");
         context.deleteFile("rgstr_startup");
         context.deleteFile("rgstr_investor");
-        Log.d("debugMessage", "canceled registration");
     }
 
     /**
@@ -222,6 +231,10 @@ public class RegistrationHandler {
         outputStream.close();
     }
 
+    /**
+     * Save current page and account type
+     * @throws IOException
+     */
     private static void saveRegistrationState() throws IOException {
         String registrationInfo = currentPage + "\n" + accountType;
         saveString(registrationInfo, "rgstr");
@@ -310,12 +323,23 @@ public class RegistrationHandler {
         }
     }
 
+    /**
+     * Save matching information for investor
+     * @param ticketSizeMin
+     * @param ticketSizeMax
+     * @param investorType
+     * @param investmentPhases
+     * @param industries
+     * @param support
+     * @param countries
+     * @throws IOException
+     */
     public static void saveInvestorMatchingFragment(float ticketSizeMin, float ticketSizeMax,
                                                     int investorType, ArrayList<Long> investmentPhases,
                                                     ArrayList<Long> industries, ArrayList<Long> support,
                                                     ArrayList<Long> countries) throws IOException {
-        investor.setTicketSizeMax(ticketSizeMax);
-        investor.setTicketSizeMin(ticketSizeMin);
+        investor.setInvestmentMax((int)ticketSizeMax);
+        investor.setInvestmentMin((int)ticketSizeMin);
         investor.setInvestorTypeId(investorType);
 
         investor.clearIndustries();
@@ -324,19 +348,19 @@ public class RegistrationHandler {
         investor.clearSupport();
 
         for(Long id : industries) {
-            investor.addIndustry(id);
+            investor.addIndustry(new Industry(id));
         }
 
         for(Long id : support) {
-            investor.addSupport(id);
+            investor.addSupport(new Support(id));
         }
 
         for(Long id : countries) {
-            investor.addCountry(id);
+            investor.addCountry(new Country(id));
         }
 
         for(Long id : investmentPhases) {
-            investor.addInvestmentPhase(id);
+            investor.addInvestmentPhase(new InvestmentPhase(id));
         }
 
         saveObject(investor, "rgstr_investor");
@@ -366,18 +390,19 @@ public class RegistrationHandler {
      * @param foundingYear
      */
     public static void saveCompanyInformation(int breakevenYear, int fte, String companyName,
-                                              String companyUid, String revenue,
+                                              String companyUid, int revenue,
                                               ArrayList<Long> markets, int foundingYear) throws IOException{
-        startup.setBreakevenYear(breakevenYear);
+        startup.setBreakEvenYear(breakevenYear);
         startup.setNumberOfFte(fte);
         startup.setName(companyName);
-        startup.setRevenue(revenue);
+        startup.setRevenueMin(revenue);
+        startup.setRevenueMax(revenue);
         startup.setFoundingYear(foundingYear);
 
-        startup.clearCurrentMarkets();
+        startup.clearCountries();
 
         for(Long id : markets) {
-            startup.addMarket(id);
+            startup.addCountry(new Country(id));
         }
 
         saveObject(startup, "rgstr_startup");
@@ -397,29 +422,27 @@ public class RegistrationHandler {
                                                    ArrayList<Long> investmentPhases,
                                                    ArrayList<Long> industries, ArrayList<Long> support
                                                    ) throws IOException {
-        startup.setTicketSizeMin(ticketSizeMin);
-        startup.setTicketSizeMax(ticketSizeMax);
+        startup.setInvestmentMin((int)ticketSizeMin);
+        startup.setInvestmentMax((int)ticketSizeMax);
 
         startup.clearSupport();
         startup.clearInvestorTypes();
         startup.clearIndustries();
-        startup.clearInvestmentPhases();
 
         for(Long id : industries) {
-            startup.addIndustry(id);
-        }
-
-        for(Long id : investorTypes) {
-            startup.addInvestorType(id);
-        }
-
-        for(Long id : investmentPhases) {
-            startup.addInvestmentPhase(id);
+            startup.addIndustry(new Industry(id));
         }
 
         for(Long id : support) {
-            startup.addSupport(id);
+            startup.addSupport(new Support(id));
         }
+
+        for(Long id : investorTypes) {
+            startup.addInvestorType(new InvestorType(id));
+        }
+
+        startup.setInvestmentPhaseId(investmentPhases.get(0));
+
 
         saveObject(startup, "rgstr_startup");
     }
@@ -438,7 +461,7 @@ public class RegistrationHandler {
         startup.clearLabels();
 
         for(Long id : labels) {
-            startup.addLabel(id);
+            startup.addLabel(new Label(id));
         }
 
         saveObject(startup, "rgstr_startup");
@@ -451,12 +474,39 @@ public class RegistrationHandler {
      * @param closingTime
      * @param scope
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static void saveFinancialRequirements(long type, float valuation,
-                                                 Date closingTime, float scope) throws IOException {
-        startup.setClosingTime(closingTime);
-        startup.setValuation(valuation);
-        startup.setFinancialType(type);
-        startup.setScope(scope);
+                                                 Calendar closingTime, float scope) throws IOException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd" );
+        startup.setClosingTime(format.format(closingTime.getTime()));
+        startup.setPreMoneyValuation((int)valuation);
+        startup.setFinanceTypeId(type);
+        startup.setScope((int)scope);
+
+        saveObject(startup, "rgstr_startup");
+    }
+
+    /**
+     * Save stakeholder information for startup
+     * @param shareholderList
+     * @param boardMemberList
+     * @param founderList
+     * @throws IOException
+     */
+    public static void saveStakeholder(ArrayList<StakeholderItem> shareholderList,
+                                       ArrayList<StakeholderItem> boardMemberList,
+                                       ArrayList<StakeholderItem> founderList) throws IOException {
+
+        boardMemberList.forEach(boardMember -> startup.addBoardMember((BoardMember)boardMember));
+        founderList.forEach(founder -> startup.addFounder((Founder) founder));
+
+        for(StakeholderItem shareholder : shareholderList) {
+            if(((Shareholder)shareholder).isPrivateShareholder()) {
+                startup.addPrivateShareholder((Shareholder)shareholder);
+            } else {
+                startup.addCorporateShareholder((Shareholder)shareholder);
+            }
+        }
 
         saveObject(startup, "rgstr_startup");
     }

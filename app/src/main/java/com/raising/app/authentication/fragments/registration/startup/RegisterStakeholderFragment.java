@@ -4,20 +4,23 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.android.volley.VolleyError;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.authentication.fragments.LoginFragment;
 import com.raising.app.authentication.fragments.registration.helper.BoardMemberInputFragment;
 import com.raising.app.authentication.fragments.registration.helper.FounderInputFragment;
 import com.raising.app.authentication.fragments.registration.helper.ShareholderInputFragment;
@@ -27,13 +30,22 @@ import com.raising.app.authentication.fragments.registration.helper.viewModels.S
 import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.models.stakeholder.Shareholder;
-import com.raising.app.models.stakeholder.StakeholderRecyclerListItem;
+import com.raising.app.models.stakeholder.StakeholderItem;
+import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.StakeholderRecyclerViewAdapter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
-public class RegisterStakeholderFragment extends RaisingFragment {
+public class RegisterStakeholderFragment extends RaisingFragment implements View.OnClickListener {
     private FounderViewModel founderViewModel;
     private BoardMemberViewModel boardMemberViewModel;
     private ShareholderViewModel shareholderViewModel;
@@ -45,7 +57,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
     private StakeholderRecyclerViewAdapter founderAdapter, boardMemberAdapter, shareholderAdapter;
 
     // the lists, that are displayed in the respective recycler views
-    private ArrayList<StakeholderRecyclerListItem> founderList,
+    private ArrayList<StakeholderItem> founderList,
             boardMemberList, shareholderList;
 
     @Override
@@ -110,6 +122,9 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                 changeFragment(new ShareholderInputFragment());
             }
         });
+
+        Button btnFinishRegistration = view.findViewById(R.id.button_stakeholder);
+        btnFinishRegistration.setOnClickListener(this);
     }
 
     @Override
@@ -275,4 +290,56 @@ public class RegisterStakeholderFragment extends RaisingFragment {
             }
         });
     }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.button_stakeholder:
+                processInputs();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void processInputs() {
+        if(founderList.isEmpty()) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_dialog_text_empty_credentials));
+            return;
+        }
+
+        try {
+            RegistrationHandler.saveStakeholder(shareholderList, boardMemberList, founderList);
+            RegistrationHandler.proceed();
+
+            Gson gson = new Gson();
+            String startup = gson.toJson(RegistrationHandler.getStartup());
+            JSONObject jsonStartup = new JSONObject(startup);
+            ApiRequestHandler.performPostRequest("/startup/register", registerCallback,
+                    errorCallback, jsonStartup, getContext());
+            Log.d("debugMessage", startup);
+        } catch (IOException | JSONException e) {
+            //TODO: Proper exception handling
+            Log.d("debugMessage", e.getMessage());
+        }
+    }
+
+    Function<JSONObject, Void> registerCallback = response -> {
+        RegistrationHandler.cancel();
+        getActivitiesFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new LoginFragment())
+                .commit();
+        return null;
+    };
+
+    Function<VolleyError, Void> errorCallback = response -> {
+        showSimpleDialog(getString(R.string.generic_error_title),
+                getString(R.string.generic_error_text));
+
+        ApiRequestHandler.parseVolleyError(response, getContext());
+
+        return null;
+    };
 }

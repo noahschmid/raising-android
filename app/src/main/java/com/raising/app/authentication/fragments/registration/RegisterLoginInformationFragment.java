@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.function.Function;
 
 public class RegisterLoginInformationFragment extends RaisingFragment implements View.OnClickListener {
     private EditText firstNameInput, lastNameInput, emailInput, passwordInput;
@@ -119,53 +120,55 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         try {
             HashMap<String, String> params = new HashMap<>();
             params.put("email", email);
-            GenericRequest loginRequest = new GenericRequest(
-                    ApiRequestHandler.getDomain() + "account/valid", new JSONObject(params),
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                RegistrationHandler.saveLoginInformation(firstName, lastName, email, password);
-                                RegistrationHandler.proceed();
-                                changeFragment(new RegisterSelectTypeFragment(),
-                                        "RegisterSelectTypeFragment");
-                            } catch (IOException e) {
-                                // TODO: Display error message
-                                Log.d("debugMessage", e.getMessage());
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    try {
-                        if(error.networkResponse.statusCode == 400) {
-                            showSimpleDialog(
-                                    getString(R.string.register_dialog_title),
-                                    getString(R.string.register_dialog_text_email_registered)
-                            );
-                        }
-                    } catch (NullPointerException e) {
-                        showSimpleDialog(
-                                getString(R.string.login_dialog_server_error_title),
-                                getString(R.string.login_dialog_server_error_text)
-                        );
-                        Log.d("debugMessage", e.toString());
-                        Log.d("debugMessage", error.toString());
-                    }
-                }
-            }){
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-            };
-            loginRequest.setRetryPolicy(new DefaultRetryPolicy(10000, 1, 1.0f));
 
-            ApiRequestHandler.getInstance(getContext()).addToRequestQueue(loginRequest);
+            Log.d("debugMessage", "sending request...");
+
+            ApiRequestHandler.performPostRequest("account/valid",
+                    callback, errorHandler, new JSONObject(params), getContext());
         } catch(Exception e) {
             Log.d("debugMessage", e.getMessage());
             Log.d("debugMessage", e.toString());
             return;
         }
     }
+
+    Function<JSONObject, Void> callback = response -> {
+        final String firstName = firstNameInput.getText().toString();
+        final String lastName = lastNameInput.getText().toString();
+        final String email = emailInput.getText().toString();
+        final String password = passwordInput.getText().toString();
+
+        try {
+            Log.d("debugMessage", "successful response");
+            RegistrationHandler.saveLoginInformation(firstName, lastName, email, password);
+            RegistrationHandler.proceed();
+            changeFragment(new RegisterSelectTypeFragment(),
+                    "RegisterSelectTypeFragment");
+        } catch (IOException e) {
+            // TODO: Display error message
+            Log.d("debugMessage", e.getMessage());
+        }
+        return null;
+    };
+
+    Function<VolleyError, Void> errorHandler = error -> {
+        try {
+            if(error.networkResponse.statusCode == 400) {
+                showSimpleDialog(
+                        getString(R.string.register_dialog_title),
+                        getString(R.string.register_dialog_text_email_registered)
+                );
+            }
+
+            Log.d("debugMessage", error.getMessage());
+        } catch (NullPointerException e) {
+            showSimpleDialog(
+                    getString(R.string.login_dialog_server_error_title),
+                    getString(R.string.login_dialog_server_error_text)
+            );
+            Log.d("debugMessage", e.toString());
+            Log.d("debugMessage", error.toString());
+        }
+        return null;
+    };
 }

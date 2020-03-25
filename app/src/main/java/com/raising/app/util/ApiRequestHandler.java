@@ -2,8 +2,10 @@ package com.raising.app.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.telephony.AccessNetworkConstants;
 import android.util.Log;
 import android.util.LruCache;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -20,8 +22,11 @@ import com.raising.app.R;
 import com.raising.app.authentication.fragments.LoginFragment;
 import com.raising.app.authentication.fragments.registration.RegisterSelectTypeFragment;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.function.BiPredicate;
@@ -80,14 +85,15 @@ public class ApiRequestHandler {
      * @param callback
      * @param errorCallback
      * @param params
+     * @param ctx
      */
     public static void performPostRequest(String endpoint, Function<JSONObject, Void> callback,
                                           Function<VolleyError, Void> errorCallback,
-                                          HashMap<String, String> params) {
+                                          JSONObject params, Context ctx) {
         try {
-            JsonObjectRequest request = new JsonObjectRequest(
-                    endpoint,
-                    new JSONObject(params),
+            GenericRequest request = new GenericRequest(
+                    getDomain() + endpoint,
+                    params,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
@@ -99,7 +105,7 @@ public class ApiRequestHandler {
                     errorCallback.apply(error);
                 }
             });
-            ApiRequestHandler.getInstance(context).addToRequestQueue(request);
+            ApiRequestHandler.getInstance(ctx).addToRequestQueue(request);
         } catch (Exception e) {
             Log.d("debugMessage", e.getMessage());
         }
@@ -112,8 +118,8 @@ public class ApiRequestHandler {
      * @param errorCallback the function to call when there was an error
      */
     public static void performGetRequest(String endpoint, Function<JSONObject, Void> callback,
-                           Function<VolleyError, Void> errorCallback) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                           Function<VolleyError, Void> errorCallback, Context ctx) {
+        GenericRequest jsonObjectRequest = new GenericRequest
                 (Request.Method.GET, getDomain() + endpoint, null, new Response.Listener<JSONObject>() {
 
                     @Override
@@ -128,11 +134,27 @@ public class ApiRequestHandler {
                     }
                 });
 
-        getInstance(context).addToRequestQueue(jsonObjectRequest);
+        getInstance(ctx).addToRequestQueue(jsonObjectRequest);
     }
 
     public <T> void addToRequestQueue(Request<T> req) {
         getRequestQueue().add(req);
+    }
+
+    public static void parseVolleyError(VolleyError error, Context ctx) {
+        try {
+            String responseBody = new String(error.networkResponse.data, "utf-8");
+            JSONObject data = new JSONObject(responseBody);
+            JSONArray errors = data.getJSONArray("errors");
+            JSONObject jsonMessage = errors.getJSONObject(0);
+            String message = jsonMessage.getString("message");
+            Toast.makeText(ctx, message, Toast.LENGTH_LONG).show();
+            Log.d("debugMessage", message);
+        } catch (JSONException e) {
+            Log.d("debugMessage catch jsonexception", e.getMessage());
+        } catch (UnsupportedEncodingException err) {
+            Log.d("debugMessage unsupported encoding", err.getMessage());
+        }
     }
 
     public ImageLoader getImageLoader() {

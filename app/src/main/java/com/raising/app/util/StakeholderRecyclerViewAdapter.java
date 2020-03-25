@@ -10,15 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.raising.app.R;
-import com.raising.app.models.stakeholder.StakeholderRecyclerListItem;
+import com.raising.app.models.stakeholder.StakeholderItem;
 
 import java.util.ArrayList;
 
 public class StakeholderRecyclerViewAdapter extends RecyclerView.Adapter<StakeholderRecyclerViewAdapter.ViewHolder> {
-    private ArrayList<StakeholderRecyclerListItem> founderRecyclerItems;
+    private ArrayList<StakeholderItem> founderRecyclerItems;
     private OnClickListener clickListener;
 
-    public StakeholderRecyclerViewAdapter(ArrayList<StakeholderRecyclerListItem> recyclerItems) {
+    public StakeholderRecyclerViewAdapter(ArrayList<StakeholderItem> recyclerItems) {
         this.founderRecyclerItems = recyclerItems;
     }
 
@@ -32,7 +32,7 @@ public class StakeholderRecyclerViewAdapter extends RecyclerView.Adapter<Stakeho
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        StakeholderRecyclerListItem recyclerItem = founderRecyclerItems.get(position);
+        StakeholderItem recyclerItem = founderRecyclerItems.get(position);
 
         holder.stakeholderRecyclerTitle.setText(recyclerItem.getTitle());
 

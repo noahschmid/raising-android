@@ -83,6 +83,16 @@ public class ForgotPasswordFragment extends RaisingFragment implements View.OnCl
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    try {
+                        if(error.networkResponse.statusCode == 500) {
+                            showSimpleDialog(
+                                    getString(R.string.generic_error_title),
+                                    getString(R.string.reset_email_not_found_text)
+                            );
+                        }
+                    } catch (Exception e) {
+
+                    }
                     showSimpleDialog(
                             getString(R.string.generic_error_title),
                             getString(R.string.generic_error_text)
