@@ -7,6 +7,55 @@
     android:layout_height="match_parent"
     tools:context=".authentication.fragments.registration.startup.RegisterFinancialRequirementsFragment">
 
+    <LinearLayout
+        android:id="@+id/registration_profile_progress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+        android:layout_marginTop="@dimen/inputFormVerticalMargin"
+        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/text_financial_information"
         android:layout_width="wrap_content"
@@ -20,7 +69,7 @@
         app:layout_constraintBottom_toTopOf="@+id/register_financial_type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registration_profile_progress"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintVertical_chainStyle="packed" />
 

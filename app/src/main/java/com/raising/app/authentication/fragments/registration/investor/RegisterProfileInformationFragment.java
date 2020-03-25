@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
 
 import com.android.volley.Request;
@@ -44,7 +45,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
                 "South Africa", "Peru", "Sweden", "Vietnam"};
 
         ArrayAdapter adapterCountries = new ArrayAdapter<>( getContext(),
-                R.layout.item_dropdown_checkbox_menu, VALUES_COUNTRIES);
+                R.layout.item_dropdown_menu, VALUES_COUNTRIES);
 
         profileCountryInput = view.findViewById(R.id.register_input_profile_countries);
         profileCountryInput.setAdapter(adapterCountries);
@@ -128,6 +129,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
             RegistrationHandler.proceed();
             changeFragment(new RegisterInvestorMatchingFragment(),
                     "RegisterInvestorMatchingFragment");
+
         } catch (Exception e) {
             Log.d("debugMessage", e.getMessage());
         }

@@ -18,8 +18,46 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/register_investor_matching_constraint"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/registration_profile_progress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                    android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_information"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/progress_circle_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+                    <ImageView
+                        android:id="@+id/progress_circle_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+                    <ImageView
+                        android:id="@+id/progress_circle_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+
+                    <ImageView
+                        android:id="@+id/progress_circle_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/text_investor_matching_information"
@@ -34,7 +72,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_ticket"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/registration_profile_progress" />
 
                 <TextView
                     android:id="@+id/text_investor_matching_ticket"

@@ -21,6 +21,44 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:id="@+id/registration_profile_progress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+                android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/progress_circle_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+                <ImageView
+                    android:id="@+id/progress_circle_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+                <ImageView
+                    android:id="@+id/progress_circle_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+                <ImageView
+                    android:id="@+id/progress_circle_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/text_investor_pitch"
                 android:layout_width="wrap_content"
@@ -34,7 +72,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/register_investor_pitch_sentence"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registration_profile_progress"
                 app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintVertical_chainStyle="packed" />
 
@@ -87,16 +125,14 @@
                 android:id="@+id/button_investor_pitch"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:hint="@string/register_button_text"
-                android:textSize="@dimen/buttonFontSize"
                 android:backgroundTint="@color/raisingPrimaryButton"
+                android:hint="@string/register_button_text"
                 android:textColorHint="@color/raisingButtonTextLight"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_pitch_pitch"
+                android:textSize="@dimen/buttonFontSize"
                 app:layout_constraintEnd_toEndOf="@+id/register_investor_pitch_sentence"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_pitch_sentence" />
+                app:layout_constraintStart_toStartOf="@+id/register_investor_pitch_sentence"
+                app:layout_constraintTop_toBottomOf="@+id/register_investor_pitch_pitch" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
