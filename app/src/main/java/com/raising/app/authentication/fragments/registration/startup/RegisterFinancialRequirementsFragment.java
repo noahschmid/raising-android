@@ -92,6 +92,11 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
                selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             }
         };
+
+        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
+            btnFinancialRequirements.setHint(getString(R.string.myProfile_apply_changes));
+            btnFinancialRequirements.setOnClickListener(v -> popCurrentFragment(this));
+        }
     }
 
     @Override

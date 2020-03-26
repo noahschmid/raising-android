@@ -11,8 +11,7 @@ import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.raising.app.authentication.fragments.LoginFragment;
-import com.raising.app.authentication.fragments.registration.startup.RegisterStakeholderFragment;
-import com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingFragment;
+import com.raising.app.authentication.fragments.myProfile.ProfileFragment;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.RegistrationHandler;
 

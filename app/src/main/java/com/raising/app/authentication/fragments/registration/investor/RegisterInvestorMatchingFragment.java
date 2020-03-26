@@ -115,6 +115,11 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
         Button btnInvestorMatching = view.findViewById(R.id.button_investor_matching);
         btnInvestorMatching.setOnClickListener(this);
+
+        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
+            btnInvestorMatching.setHint(getString(R.string.myProfile_apply_changes));
+            btnInvestorMatching.setOnClickListener(v -> popCurrentFragment(this));
+        }
     }
 
 

@@ -106,6 +106,11 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
         companyMarketsInput.setText(markets.toString());
 
         //TODO: load current markets
+
+        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
+            btnCompanyInformation.setHint(getString(R.string.myProfile_apply_changes));
+            btnCompanyInformation.setOnClickListener(v -> popCurrentFragment(this));
+        }
     }
 
     @Override

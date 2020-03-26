@@ -67,6 +67,11 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         Button btnInvestorPitch = view.findViewById(R.id.button_investor_pitch);
         btnInvestorPitch.setOnClickListener(this);
 
+        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
+            btnInvestorPitch.setHint(getString(R.string.myProfile_apply_changes));
+            btnInvestorPitch.setOnClickListener(v -> popCurrentFragment(this));
+        }
+
         Account account = RegistrationHandler.getAccount();
         pitchInput.setText(account.getPitch());
         sentenceInput.setText(account.getDescription());

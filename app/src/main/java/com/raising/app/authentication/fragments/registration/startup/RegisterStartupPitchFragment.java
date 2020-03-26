@@ -80,6 +80,11 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
 
         Button btnStartupPitch = view.findViewById(R.id.button_startup_pitch);
         btnStartupPitch.setOnClickListener(this);
+
+        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
+            btnStartupPitch.setHint(getString(R.string.myProfile_apply_changes));
+            btnStartupPitch.setOnClickListener(v -> popCurrentFragment(this));
+        }
     }
 
     @Override

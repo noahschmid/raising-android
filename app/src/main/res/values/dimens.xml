@@ -15,6 +15,7 @@
     <dimen name="dropDownHeight"> 180dp </dimen>
 
     <dimen name="authenticationButtonHeight"> 60dp </dimen>
+    <dimen name="myProfileButtonHeight"> 75dp </dimen>
 
     <dimen name="inputFormHorizontalMarginSmall"> 16dp </dimen>
     <dimen name="inputFormHorizontalMargin"> 32dp </dimen>
