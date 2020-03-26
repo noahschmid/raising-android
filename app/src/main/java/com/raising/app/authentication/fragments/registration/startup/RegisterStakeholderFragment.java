@@ -127,6 +127,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         btnFinishRegistration.setOnClickListener(this);
 
         if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
             btnFinishRegistration.setHint(getString(R.string.myProfile_apply_changes));
             btnFinishRegistration.setOnClickListener(v -> popCurrentFragment(this));
         }

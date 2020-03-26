@@ -94,6 +94,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         };
 
         if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
             btnFinancialRequirements.setHint(getString(R.string.myProfile_apply_changes));
             btnFinancialRequirements.setOnClickListener(v -> popCurrentFragment(this));
         }

@@ -68,6 +68,7 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         btnInvestorPitch.setOnClickListener(this);
 
         if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
             btnInvestorPitch.setHint(getString(R.string.myProfile_apply_changes));
             btnInvestorPitch.setOnClickListener(v -> popCurrentFragment(this));
         }

@@ -22,6 +22,8 @@ import com.raising.app.authentication.fragments.registration.startup.RegisterFin
 import com.raising.app.authentication.fragments.registration.startup.RegisterStakeholderFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterStartupPitchFragment;
+import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.RegistrationHandler;
 
 public class ProfileFragment extends RaisingFragment {
     private FrameLayout startUpLayout, investorLayout;
@@ -44,13 +46,13 @@ public class ProfileFragment extends RaisingFragment {
         startUpLayout = view.findViewById(R.id.myProfile_startUp_layout);
         investorLayout = view.findViewById(R.id.myProfile_investor_layout);
 
-        /* TODO: check if the logged in user is a startup or investor
-        if(userIsInvestor) {
-            startUpLayout.setVisibility(View.GONE);
-            investorLayout.setVisibility(View.VISIBLE);
-        } else {
+        /*
+        if(RegistrationHandler.getAccountType().equals("startup")) {
             startUpLayout.setVisibility(View.VISIBLE);
             investorLayout.setVisibility(View.GONE);
+        } else if (RegistrationHandler.getAccountType().equals("investor")) {
+            startUpLayout.setVisibility(View.GONE);
+            investorLayout.setVisibility(View.VISIBLE);
         }
          */
 

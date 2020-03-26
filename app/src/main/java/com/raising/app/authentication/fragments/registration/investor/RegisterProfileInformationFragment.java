@@ -85,6 +85,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         btnProfileInformation.setOnClickListener(this);
 
         if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
             btnProfileInformation.setHint(getString(R.string.myProfile_apply_changes));
             btnProfileInformation.setOnClickListener(v -> popCurrentFragment(this));
         }
