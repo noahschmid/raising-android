@@ -229,14 +229,11 @@
 
             <Button
                 android:id="@+id/button_startup_matching"
+                style="@style/ButtonConfirmRegistration"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_button_text"
-                android:textSize="@dimen/buttonFontSize"
-                android:backgroundTint="@color/raisingPrimaryButton"
-                android:textColorHint="@color/raisingButtonTextLight"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size" />

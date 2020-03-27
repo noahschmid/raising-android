@@ -256,31 +256,25 @@
 
             <Button
                 android:id="@+id/button_cancel_shareholder"
+                style="@style/ButtonConfirmRegistration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/cancel_text"
-                android:backgroundTint="@color/raisingPrimaryButton"
-                android:textColorHint="@color/raisingButtonTextLight"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_select_type_of_shareholder"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder"/>
 
             <Button
                 android:id="@+id/button_add_shareholder"
+                style="@style/ButtonConfirmRegistration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:layout_marginEnd="@dimen/inputFormHorizontalMarginSmall"
                 android:hint="@string/add_text"
-                android:backgroundTint="@color/raisingPrimaryButton"
-                android:textColorHint="@color/raisingButtonTextLight"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder" />
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

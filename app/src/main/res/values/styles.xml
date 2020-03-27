@@ -14,4 +14,11 @@
 
     <style name="TextInputExposedDropdownMenuTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu" />
 
+    <style name="ButtonConfirmRegistration">
+        <item name="android:layout_marginBottom"> @dimen/inputFormVerticalMargin </item>
+        <item name="android:textSize"> @dimen/buttonFontSize </item>
+        <item name="android:backgroundTint"> @color/raisingPrimaryButton </item>
+        <item name="android:textColorHint"> @color/raisingButtonTextLight </item>
+    </style>
+
 </resources>

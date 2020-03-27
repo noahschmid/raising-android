@@ -237,16 +237,13 @@
 
                 <Button
                     android:id="@+id/button_investor_matching"
+                    style="@style/ButtonConfirmRegistration"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/authenticationButtonHeight"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="@dimen/inputFormVerticalMargin"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                     android:hint="@string/register_button_text"
-                    android:textSize="@dimen/buttonFontSize"
-                    android:backgroundTint="@color/raisingPrimaryButton"
-                    android:textColorHint="@color/raisingButtonTextLight"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

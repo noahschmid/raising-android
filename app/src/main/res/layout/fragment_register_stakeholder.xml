@@ -198,13 +198,11 @@
 
             <Button
                 android:id="@+id/button_stakeholder"
+                style="@style/ButtonConfirmRegistration"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_button_finish_text"
-                android:backgroundTint="@color/raisingPrimaryButton"
-                android:textColorHint="@color/raisingButtonTextLight"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/stakeholder_shareholder_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_shareholder_recycler_view"
