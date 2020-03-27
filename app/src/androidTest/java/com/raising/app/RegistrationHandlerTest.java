@@ -51,28 +51,22 @@ public class RegistrationHandlerTest {
     @Test
     public void testSaveAndLoadProfile() {
         PrivateProfile profile = new PrivateProfile();
-        profile.setCity("city");
+        profile.setPhone("0123456789");
         profile.setCompany("company");
-        profile.setCountry("country");
-        profile.setStreet("street");
         profile.setWebsite("website");
         profile.setZipCode("zipCode");
 
         try {
             RegistrationHandler.begin();
-            RegistrationHandler.saveProfileInformation("company", "city", "street",
-                    "zipCode", "website", "country");
+            RegistrationHandler.saveProfileInformation("company", "0123456789", "website", "country");
         } catch (IOException e) {
             fail();
         }
         PrivateProfile loaded = RegistrationHandler.loadPrivateProfile();
 
-        assertEquals(profile.getCity(), loaded.getCity());
         assertEquals(profile.getCompany(), loaded.getCompany());
         assertEquals(profile.getCountry(), loaded.getCountry());
-        assertEquals(profile.getStreet(), loaded.getStreet());
+        assertEquals(profile.getPhone(), loaded.getPhone());
         assertEquals(profile.getWebsite(), loaded.getWebsite());
-        assertEquals(profile.getZipCode(), loaded.getZipCode());
-
     }
 }

@@ -19,7 +19,7 @@
     <string name="login_password"> Password..</string>
 
     <string name="login_forgot_button_text"> Forgot password? </string>
-    <string name="login_register_text"> No Account? </string>
+    <string name="login_register_text"> No account? </string>
 
     <string name="login_dialog_title"> Login failed </string>
     <string name="login_dialog_text_403"> Incorrect username or password </string>
@@ -28,7 +28,7 @@
     <!-- Strings used in ForgotPasswordScreens -->
     <string name="reset_email_input_placeholder"> Email.. </string>
     <string name="forgot_button_sendEmail"> Reset password </string>
-    <string name="forgot_dialog_title_no_input"> No Input </string>
+    <string name="forgot_dialog_title_no_input"> No input </string>
     <string name="forgot_dialog_text_no_input"> You must enter a valid address </string>
 
     <string name="forgot_dialog_title"> Password reset code sent </string>
@@ -42,15 +42,15 @@
     <string name="reset_dialog_text_no_input">You have to enter a code and a new password!</string>
 
     <!-- Strings used in Registration -->
-    <string name="register_select_type_text"> Select if you want to register an investor- or start-up-account</string>
+    <string name="register_select_type_text"> Are you a startup or an investor? </string>
     <string name="register_select_investor_button"> Investor </string>
     <string name="register_select_startup_button"> Start Up</string>
 
     <string name="register_login_information_text"> Login Information </string>
-    <string name="register_first_name"> First Name </string>
-    <string name="register_last_name"> Last Name </string>
-    <string name="register_email"> Email </string>
-    <string name="register_password"> Password </string>
+    <string name="register_first_name"> First Name* </string>
+    <string name="register_last_name"> Last Name* </string>
+    <string name="register_email"> Email* </string>
+    <string name="register_password"> Password* </string>
 
     <string name="register_company_information_text"> Company Information </string>
     <string name="register_company_name"> Company </string>
@@ -69,10 +69,7 @@
     <string name="register_address_website"> Website </string>
 
     <string name="register_profile_information_text"> Profile Information</string>
-    <string name="register_profile_country"> Country </string>
-    <string name="register_profile_city"> City </string>
-    <string name="register_profile_zip"> ZIP-Code </string>
-    <string name="register_profile_street"> Street </string>
+    <string name="register_profile_country"> Country* </string>
     <string name="register_profile_website"> Website </string>
     <string name="register_profile_company"> Company </string>
 
@@ -83,27 +80,6 @@
     <string name="register_matching_min_ticket"> Minimal Ticket Size (CHF) </string>
     <string name="register_matching_max_ticket"> Maximal Ticket Size (CHF) </string>
     <string name="register_matching_investor"> Type of investor </string>
-    <string name="register_matching_vc"> Venture Capitalist </string>
-    <string name="register_matching_angel"> Business Angel </string>
-    <string name="register_matching_cvc"> Corporate Venture Capitalist </string>
-    <string name="register_matching_strategic"> Strategic Investor </string>
-    <string name="register_matching_club"> Investment Club </string>
-    <string name="register_matching_phase"> Phase </string>
-    <string name="register_matching_preseed"> Pre-Seed </string>
-    <string name="register_matching_seed"> Seed </string>
-    <string name="register_matching_seriesA"> Series A </string>
-    <string name="register_matching_seriesB"> Series B </string>
-    <string name="register_matching_seriesC"> Series C </string>
-    <string name="register_matching_industry"> Industry </string>
-    <string name="register_matching_energy"> Energy / Clean Tech </string>
-    <string name="register_matching_general"> General</string>
-    <string name="register_matching_health"> Healthcare / Life Science </string>
-    <string name="register_matching_hightech"> High Tech </string>
-    <string name="register_matching_social"> Social Impact </string>
-    <string name="register_matching_support"> Requested support </string>
-    <string name="register_matching_mentor"> Mentoring </string>
-    <string name="register_matching_board"> Member of the board </string>
-    <string name="register_matching_passive"> Passive </string>
     <string name="register_matching_geographics"> Geographics </string>
     <string name="register_matching_continents"> Continents </string>
     <string name="register_matching_countries"> Countries </string>
@@ -171,4 +147,11 @@
     <string name="register_dialog_text_email_registered">There\'s already an account with the same email!</string>
     <string name="register_dialog_text_invalid_date">Entered date is invalid!</string>
     <string name="reset_email_not_found_text">No account found with given email.</string>
+    <string name="error_no_countries_found">No countries found! Did you call build?</string>
+    <string name="search">Search...</string>
+    <string name="register_profile_phone">Phone Number*</string>
+    <string name="register_matching_phase">Phase</string>
+    <string name="register_matching_support">Desired involvement</string>
+    <string name="register_matching_industry">Industry</string>
+    <string name="register_matching_geographics_input">Geographics...</string>
 </resources>

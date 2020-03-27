@@ -2,6 +2,7 @@ package com.raising.app;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.authentication.SimpleMessageDialog;
+import com.raising.app.authentication.fragments.LoginFragment;
 
 public class RaisingFragment extends Fragment {
 
@@ -48,6 +50,21 @@ public class RaisingFragment extends Fragment {
         } catch (NullPointerException e) {
             Log.d("debugMessage", e.getMessage());
         }
+    }
+
+    /**
+     * Clear all fragments on the backstack and replace fragment container with new fragment
+     * @param fragment the fragment to display next
+     */
+    public void clearBackstackAndReplace(RaisingFragment fragment) {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
+        }
+
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
     }
 
 

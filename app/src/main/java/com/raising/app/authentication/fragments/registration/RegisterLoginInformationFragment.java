@@ -39,11 +39,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         View view = inflater.inflate(R.layout.fragment_register_login_information, container, false);
         hideBottomNavigation(true);
 
-        if(RegistrationHandler.hasBeenVisited()) {
-            RegistrationHandler.skip();
-            changeFragment(new RegisterSelectTypeFragment(),
-                    "RegisterSelectTypeFragment");
-        }
+        RegistrationHandler.setCancelAllowed(true);
 
         return view;
     }
@@ -141,7 +137,6 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         try {
             Log.d("debugMessage", "successful response");
             RegistrationHandler.saveLoginInformation(firstName, lastName, email, password);
-            RegistrationHandler.proceed();
             changeFragment(new RegisterSelectTypeFragment(),
                     "RegisterSelectTypeFragment");
         } catch (IOException e) {
@@ -159,8 +154,6 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
                         getString(R.string.register_dialog_text_email_registered)
                 );
             }
-
-            Log.d("debugMessage", error.getMessage());
         } catch (NullPointerException e) {
             showSimpleDialog(
                     getString(R.string.login_dialog_server_error_title),

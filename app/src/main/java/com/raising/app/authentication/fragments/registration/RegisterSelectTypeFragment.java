@@ -28,17 +28,6 @@ public class RegisterSelectTypeFragment extends RaisingFragment implements View.
         View view = inflater.inflate(R.layout.fragment_register_select_type, container, false);
         hideBottomNavigation(true);
 
-        if(RegistrationHandler.hasBeenVisited()) {
-            RegistrationHandler.skip();
-            if(RegistrationHandler.isStartup()) {
-                changeFragment(new RegisterCompanyInformationFragment(),
-                        "RegisterCompanyInformationFragment");
-            } else {
-                changeFragment(new RegisterProfileInformationFragment(),
-                        "RegisterProfileInformationFragment");
-            }
-        }
-
         return view;
     }
 
@@ -64,7 +53,6 @@ public class RegisterSelectTypeFragment extends RaisingFragment implements View.
             case R.id.button_register_as_startup:
                 try {
                     RegistrationHandler.setAccountType("startup");
-                    RegistrationHandler.proceed();
                     changeFragment(new RegisterCompanyInformationFragment(),
                             "RegisterCompanyInformationFragment");
                 } catch (IOException e) {
@@ -74,7 +62,6 @@ public class RegisterSelectTypeFragment extends RaisingFragment implements View.
             case R.id.button_register_as_investor:
                 try {
                     RegistrationHandler.setAccountType("investor");
-                    RegistrationHandler.proceed();
                     changeFragment(new RegisterProfileInformationFragment(),
                             "RegisterProfileInformationFragment");
                 } catch (IOException e) {

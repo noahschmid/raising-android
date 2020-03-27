@@ -105,24 +105,37 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
                     pitchInput.getText().toString());
             Gson gson = new Gson();
             String investor = gson.toJson(RegistrationHandler.getInvestor());
-            ApiRequestHandler.performPostRequest("/investor/register", registerCallback,
+            ApiRequestHandler.performPostRequest("investor/register", registerCallback,
                     errorCallback, new JSONObject(investor), getContext());
             Log.d("debugMessage", investor);
         } catch (IOException | JSONException e) {
-            //TODO: Proper exception handling
             Log.d("debugMessage", e.getMessage());
         }
     }
 
-
+    /**
+     * Cancel the current registration (as it was successfully sent to backend) and
+     * proceed to login screen
+     */
     Function<JSONObject, Void> registerCallback = response -> {
         RegistrationHandler.cancel();
-        getActivitiesFragmentManager().popBackStack("LoginFragment", 0);
+        clearBackstackAndReplace(new LoginFragment());
         return null;
     };
 
+    /**
+     * Display error from backend
+     */
     Function<VolleyError, Void> errorCallback = response -> {
-        Log.d("debugMessage", response.getStackTrace().toString());
+        try {
+            if (response.networkResponse.statusCode == 500) {
+                showSimpleDialog(getString(R.string.generic_error_title),
+                        getString(R.string.generic_error_text));
+            }
+        } catch (Exception e) {
+            Log.d("debugMessage", e.toString());
+        }
+        Log.d("debugMessage", ApiRequestHandler.parseVolleyError(response));
         return null;
     };
 

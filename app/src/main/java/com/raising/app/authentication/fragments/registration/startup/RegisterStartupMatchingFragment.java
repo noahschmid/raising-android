@@ -22,9 +22,12 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.android.material.slider.Slider;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.models.Investor;
+import com.raising.app.models.Model;
 import com.raising.app.models.Startup;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
+import com.raising.app.util.ResourcesManager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,9 +38,8 @@ import java.util.ArrayList;
 public class RegisterStartupMatchingFragment extends RaisingFragment
         implements View.OnClickListener {
     private Slider ticketSize;
-    private LinearLayout investorTypeLayout;
-    private LinearLayout supportLayout;
-    private RadioGroup investmentPhaseGroup, industryGroup;
+    private LinearLayout investorTypeLayout, supportLayout, industryLayout;
+    private RadioGroup investmentPhaseGroup;
 
 
     @Override
@@ -45,12 +47,6 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_startup_matching,
                 container, false);
-
-        if(RegistrationHandler.hasBeenVisited()) {
-            RegistrationHandler.skip();
-            changeFragment(new RegisterStartupPitchFragment(),
-                    "RegisterStartupPitchFragment");
-        }
 
         ticketSize = view.findViewById(R.id.register_startup_matching_ticket_size);
         ticketSize.setValues(
@@ -66,25 +62,104 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         investorTypeLayout = view.findViewById(R.id.register_startup_investor_type_layout);
         supportLayout = view.findViewById(R.id.register_support_matching_support_layout);
         investmentPhaseGroup = view.findViewById(R.id.register_startup_matching_radio_phase);
-        industryGroup = view.findViewById(R.id.register_startup_matching_radio_industry);
+        industryLayout = view.findViewById(R.id.register_startup_matching_industry_layout);
 
         Startup startup = RegistrationHandler.getStartup();
         if(startup.getInvestmentMin() != 0 && startup.getInvestmentMax() != 0)
             ticketSize.setValues((float)startup.getInvestmentMin(), (float)startup.getInvestmentMax());
 
-
-        getIndustries();
-        getInvestmentPhases();
-        getInvestorTypes();
-        getSupportTypes();
+        setupLists();
+        restoreLists();
 
         Button btnStartUpMatching = view.findViewById(R.id.button_startup_matching);
         btnStartUpMatching.setOnClickListener(this);
     }
+
+    /**
+     * Load all necessary items into list
+     */
+    private void setupLists() {
+        setupRadioGroup(ResourcesManager.getInvestmentPhases(), investmentPhaseGroup);
+        setupCheckboxes(ResourcesManager.getIndustries(), industryLayout);
+        setupCheckboxes(ResourcesManager.getInvestorTypes(), investorTypeLayout);
+        setupCheckboxes(ResourcesManager.getSupports(), supportLayout);
+    }
+
+    /**
+     * Create checkbox group out of array list
+     * @param list the items to add
+     * @param layout where to add to
+     */
+    private void setupCheckboxes(ArrayList<? extends Model> list, LinearLayout layout) {
+        list.forEach(item -> {
+            CheckBox cb = new CheckBox(getContext());
+            cb.setText(item.getName());
+            cb.setContentDescription(String.valueOf(item.getId()));
+            layout.addView(cb);
+        });
+    }
+
+    /**
+     * Add radio boxes to radio group out of array list
+     * @param list the items to add
+     * @param group where to add to
+     */
+    private void setupRadioGroup(ArrayList<? extends Model> list, RadioGroup group) {
+        list.forEach(item -> {
+            RadioButton rb = new RadioButton(getContext());
+            rb.setText(item.getName());
+            rb.setContentDescription(String.valueOf(item.getId()));
+            group.addView(rb);
+        });
+    }
+
+    /**
+     * Tick checkbox with given id
+     * @param layout
+     * @param id
+     */
+    private void tickCheckbox(LinearLayout layout, long id) {
+        for (int i = 0; i < layout.getChildCount(); ++i) {
+            CheckBox cb = (CheckBox) layout.getChildAt(i);
+            if(Long.parseLong((String) cb.getContentDescription()) == id)
+                cb.setChecked(true);
+        }
+    }
+
+    /**
+     * Tick radio button with given id
+     * @param group
+     * @param id
+     */
+    private void tickRadioButton(RadioGroup group, long id) {
+        for (int i = 0; i < group.getChildCount(); ++i) {
+            RadioButton rb = (RadioButton) group.getChildAt(i);
+            if(Long.parseLong((String) rb.getContentDescription()) == id)
+                rb.setChecked(true);
+        }
+    }
+
+    /**
+     * Restore values of lists from previous entered data (saved in RegistrationHandler)
+     */
+    private void restoreLists() {
+        Startup startup = RegistrationHandler.getStartup();
+
+        startup.getInvestorTypes().forEach(type ->
+                tickCheckbox(investorTypeLayout, type.getId()));
+
+        startup.getIndustries().forEach(industry ->
+                tickCheckbox(industryLayout, industry.getId()));
+
+        tickRadioButton(investmentPhaseGroup, startup.getInvestmentPhaseId());
+
+        startup.getSupport().forEach(support ->
+                tickCheckbox(supportLayout, support.getId()));
+    }
+
 
     @Override
     public void onDestroyView() {
@@ -113,10 +188,10 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         float ticketSizeMax =  ticketSize.getMaximumValue();
 
         ArrayList<Long> industries = new ArrayList<>();
-        for (int i = 0; i < industryGroup.getChildCount(); ++i) {
-            View v = industryGroup.getChildAt(i);
-            if(((RadioButton)v).isChecked() && ((String)((RadioButton)v).getContentDescription()).length() > 0) {
-                industries.add(Long.parseLong((String)((RadioButton)v).getContentDescription()));
+        for (int i = 0; i < industryLayout.getChildCount(); ++i) {
+            View v = industryLayout.getChildAt(i);
+            if(((RadioButton)v).isChecked() && ((String)((CheckBox)v).getContentDescription()).length() > 0) {
+                industries.add(Long.parseLong((String)((CheckBox)v).getContentDescription()));
             }
         }
 
@@ -153,7 +228,6 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
 
         ArrayList<Long> countries = new ArrayList<>();
         try {
-            RegistrationHandler.proceed();
             RegistrationHandler.saveStartupMatchingFragment(ticketSizeMin, ticketSizeMax,
                     investorTypes, investmentPhases, industries, support);
 
@@ -162,158 +236,5 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         } catch (IOException e) {
             Log.d("debugMessage", e.getMessage());
         }
-    }
-
-    /**
-     * Get investor types and add them to radio group
-     */
-    public void getInvestorTypes() {
-        String countries;
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/investortype",
-                        null, new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            final CheckBox[] rb = new CheckBox[response.length() + 1];
-                            // rg.setOrientation(RadioGroup.HORIZONTAL);
-
-                            for(int i=0; i<response.length(); i++){
-                                JSONObject type = response.getJSONObject(i);
-                                rb[i]  = new CheckBox(getContext());
-                                rb[i].setText(type.getString("name"));
-                                rb[i].setContentDescription(String.valueOf(type.getLong("id")));
-                                rb[i].setId(View.generateViewId());
-                                investorTypeLayout.addView(rb[i]);
-                            }
-                        } catch (Exception e) {
-                            // TODO: Proper exception handling
-                            Log.d("debugMessage0", e.getMessage());
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        ApiRequestHandler.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
-    }
-
-    /**
-     * Get support types and add them to checkboxes
-     */
-    public void getSupportTypes() {
-        String countries;
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/support",
-                        null, new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            final CheckBox[] rb = new CheckBox[response.length() + 1];
-
-                            for(int i=0; i<response.length(); i++){
-                                JSONObject type = response.getJSONObject(i);
-
-                                rb[i]  = new CheckBox(getContext());
-                                rb[i].setText(type.getString("name"));
-                                rb[i].setContentDescription(String.valueOf(type.getLong("id")));
-                                rb[i].setId(View.generateViewId());
-                                supportLayout.addView(rb[i]);
-                            }
-                        } catch (Exception e) {
-                            // TODO: Proper exception handling
-                            Log.d("debugMessage1", e.getLocalizedMessage());
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        ApiRequestHandler.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
-    }
-
-    /**
-     * Get industries and add them to checkboxes
-     */
-    public void getIndustries() {
-        String countries;
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/industry",
-                        null, new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            final RadioButton cb[] = new RadioButton[response.length() + 1];
-                            for(int i=0; i<response.length(); i++){
-                                JSONObject type = response.getJSONObject(i);
-                                cb[i] = new RadioButton(getContext());
-                                cb[i].setText(type.getString("name"));
-                                cb[i].setContentDescription(String.valueOf(type.getLong("id")));
-                                cb[i].setId(View.generateViewId());
-                                industryGroup.addView(cb[i]);
-                            }
-                        } catch (Exception e) {
-                            // TODO: Proper exception handling
-                            Log.d("debugMessage1", e.getLocalizedMessage());
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        ApiRequestHandler.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
-    }
-
-    /**
-     * Get investment phases and add them to checkboxes
-     */
-    public void getInvestmentPhases() {
-        String countries;
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/investmentphase",
-                        null, new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            final RadioButton cb[] = new RadioButton[response.length() + 1];
-                            for(int i=0; i<response.length(); i++){
-                                JSONObject type = response.getJSONObject(i);
-                                Log.d("debugMessage", type.getString("name"));
-                                cb[i] = new RadioButton(getContext());
-                                cb[i].setText(type.getString("name"));
-                                cb[i].setContentDescription(String.valueOf(type.getLong("id")));
-                                cb[i].setId(View.generateViewId());
-                                investmentPhaseGroup.addView(cb[i]);
-                            }
-                        } catch (Exception e) {
-                            // TODO: Proper exception handling
-                            Log.d("debugMessage1", e.getLocalizedMessage());
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        ApiRequestHandler.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
     }
 }

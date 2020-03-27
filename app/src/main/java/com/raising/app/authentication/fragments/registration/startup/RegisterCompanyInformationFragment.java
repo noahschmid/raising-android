@@ -70,12 +70,6 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
 
         hideBottomNavigation(true);
 
-        if(RegistrationHandler.hasBeenVisited()) {
-            RegistrationHandler.skip();
-            changeFragment(new RegisterAddressInformationFragment(),
-                    "RegisterAddressInformationFragment");
-        }
-
         return view;
     }
 
@@ -151,10 +145,8 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
             // TODO: Proper revenue handling
             RegistrationHandler.saveCompanyInformation(breakevenYear, fte, companyName, companyUid,
                     50000, markets, foundingYear);
-            RegistrationHandler.proceed();
-
-            changeFragment(new RegisterAddressInformationFragment(),
-                    "RegisterAddressInformationFragment");
+            changeFragment(new RegisterStartupMatchingFragment(),
+                    "RegisterStartupMatchingFragment");
         }catch (IOException e) {
             Log.d("debugMessage", e.getMessage());
         }

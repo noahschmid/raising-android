@@ -126,12 +126,12 @@
                 android:textSize="@dimen/fragmentSubtitleFontSize"
                 android:textStyle="bold"
                 android:textColorHint="@color/raisingPrimaryTextColor"
-                app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_radio_industry"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_industry_layout"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_matching_phase"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_radio_phase" />
 
-            <RadioGroup
-                android:id="@+id/register_startup_matching_radio_industry"
+            <LinearLayout
+                android:id="@+id/register_startup_matching_industry_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
@@ -141,7 +141,7 @@
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_support"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_industry">
-            </RadioGroup>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/text_startup_matching_support"
@@ -154,7 +154,7 @@
                 android:textStyle="bold"
                 android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_matching_industry"
-                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_radio_industry" />
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_industry_layout" />
 
             <LinearLayout
                 android:id="@+id/register_support_matching_support_layout"

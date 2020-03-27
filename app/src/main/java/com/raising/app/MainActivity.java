@@ -11,9 +11,8 @@ import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.raising.app.authentication.fragments.LoginFragment;
-import com.raising.app.authentication.fragments.registration.startup.RegisterStakeholderFragment;
-import com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingFragment;
 import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.RegistrationHandler;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ResourcesManager.init(getApplicationContext());
+        ResourcesManager.loadAll();
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);

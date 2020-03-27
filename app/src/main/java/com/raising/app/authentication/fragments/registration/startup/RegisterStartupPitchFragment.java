@@ -48,12 +48,6 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
 
         hideBottomNavigation(true);
 
-        if(RegistrationHandler.hasBeenVisited()) {
-            RegistrationHandler.skip();
-            changeFragment(new RegisterFinancialRequirementsFragment(),
-                    "RegisterFinancialRequirementsFragment");
-        }
-
         return view;
     }
 
@@ -122,7 +116,6 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
         }
 
         try {
-            RegistrationHandler.proceed();
             RegistrationHandler.saveStartupPitch(pitch, description, labels);
             changeFragment(new RegisterFinancialRequirementsFragment(),
                     "RegisterFinancialRequirementsFragment");

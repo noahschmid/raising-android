@@ -28,14 +28,13 @@
                 android:layout_marginTop="@dimen/inputFormInformationTextMargin"
                 android:layout_marginBottom="@dimen/inputFormInformationTextMargin"
                 android:hint="@string/register_profile_information_text"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/fragmentTitleFontSize"
                 android:textStyle="bold"
-                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/register_profile_company"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintVertical_chainStyle="packed" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -45,10 +44,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                 android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:layout_marginBottom="16dp"
                 android:hint="@string/register_profile_company"
-                app:layout_constraintBottom_toTopOf="@+id/register_profile_street"
+                app:layout_constraintBottom_toTopOf="@+id/register_profile_country"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.6"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_information">
 
@@ -59,76 +59,43 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/register_profile_street"
-                style="@style/TextInputLayoutTheme"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                android:hint="@string/register_profile_street"
-                app:layout_constraintBottom_toTopOf="@+id/register_profile_zip"
-                app:layout_constraintEnd_toEndOf="@+id/register_profile_company"
-                app:layout_constraintStart_toStartOf="@+id/register_profile_company"
-                app:layout_constraintTop_toBottomOf="@+id/register_profile_company">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/register_input_profile_street"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/register_profile_zip"
-                style="@style/TextInputLayoutTheme"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                android:hint="@string/register_profile_zip"
-                app:layout_constraintBottom_toTopOf="@+id/register_profile_city"
-                app:layout_constraintEnd_toEndOf="@+id/register_profile_company"
-                app:layout_constraintStart_toStartOf="@+id/register_profile_company"
-                app:layout_constraintTop_toBottomOf="@+id/register_profile_street">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/register_input_profile_zip"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight"
-                    android:inputType="numberDecimal"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/register_profile_city"
-                style="@style/TextInputLayoutTheme"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                android:hint="@string/register_profile_city"
-                app:layout_constraintBottom_toTopOf="@+id/register_profile_country"
-                app:layout_constraintEnd_toEndOf="@+id/register_profile_company"
-                app:layout_constraintStart_toStartOf="@+id/register_profile_company"
-                app:layout_constraintTop_toBottomOf="@+id/register_profile_zip">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/register_input_profile_city"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/register_profile_country"
-                style="@style/TextInputExposedDropdownMenuTheme"
+                style="@style/TextInputLayoutTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_profile_country"
+                app:layout_constraintBottom_toTopOf="@+id/register_profile_phone"
+                app:layout_constraintEnd_toEndOf="@+id/register_profile_company"
+                app:layout_constraintStart_toStartOf="@+id/register_profile_company"
+                app:layout_constraintTop_toBottomOf="@+id/register_profile_company"
+                app:layout_constraintVertical_bias="0.16000003">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/register_input_profile_countries"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:editable="false"
+                    app:endIconMode="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/register_profile_phone"
+                style="@style/TextInputLayoutTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/register_profile_phone"
                 app:layout_constraintBottom_toTopOf="@+id/register_profile_website"
                 app:layout_constraintEnd_toEndOf="@+id/register_profile_company"
                 app:layout_constraintStart_toStartOf="@+id/register_profile_company"
-                app:layout_constraintTop_toBottomOf="@+id/register_profile_city">
+                app:layout_constraintTop_toBottomOf="@+id/register_profile_country">
 
-                <MultiAutoCompleteTextView
-                    android:id="@+id/register_input_profile_countries"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/register_input_profile_phone"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight" />
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:inputType="numberDecimal"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -141,7 +108,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/button_profile_information"
                 app:layout_constraintEnd_toEndOf="@+id/register_profile_company"
                 app:layout_constraintStart_toStartOf="@+id/register_profile_company"
-                app:layout_constraintTop_toBottomOf="@+id/register_profile_country">
+                app:layout_constraintTop_toBottomOf="@+id/register_profile_phone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/register_input_profile_website"

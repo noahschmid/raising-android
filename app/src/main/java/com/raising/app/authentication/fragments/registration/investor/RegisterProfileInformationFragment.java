@@ -4,34 +4,29 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.MultiAutoCompleteTextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
-import com.raising.app.authentication.fragments.registration.RegisterSelectTypeFragment;
-import com.raising.app.models.Account;
+import com.raising.app.authentication.fragments.LoginFragment;
 import com.raising.app.models.PrivateProfile;
-import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
-
-import org.json.JSONObject;
+import com.raising.app.util.ResourcesManager;
+import com.raising.app.util.customPicker.CustomPicker;
+import com.raising.app.util.customPicker.PickerItem;
+import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
 
 public class RegisterProfileInformationFragment extends RaisingFragment implements View.OnClickListener {
-    private EditText profileCompanyInput, profileWebsiteInput, profileStreetInput,
-            profileZipInput, profileCityInput;
-    private MultiAutoCompleteTextView profileCountryInput;
+    private EditText profileCompanyInput, profileWebsiteInput, profilePhoneInput, profileCountryInput;
+    private CustomPicker customPicker;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,25 +34,43 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         View view = inflater.inflate(R.layout.fragment_register_profile_information,
                 container, false);
 
-        // TODO: fetch VALUES_CONTINENTS from backend
-        String [] VALUES_COUNTRIES = new String[] {"Switzerland",
-                "South Africa", "Peru", "Sweden", "Vietnam"};
-
-        ArrayAdapter adapterCountries = new ArrayAdapter<>( getContext(),
-                R.layout.item_dropdown_menu, VALUES_COUNTRIES);
-
         profileCountryInput = view.findViewById(R.id.register_input_profile_countries);
-        profileCountryInput.setAdapter(adapterCountries);
-        profileCountryInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+        CustomPicker.Builder builder =
+                new CustomPicker.Builder()
+                        .with(getContext())
+                        .canSearch(true)
+                .listener(new OnCustomPickerListener() {
+                    @Override
+                    public void onSelectItem(PickerItem country) {
+                        profileCountryInput.setText(country.getName());
+                    }
+                })
+                .setItems(ResourcesManager.getCountries());
+
+        customPicker = builder.build();
+
+        profileCountryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    if(!customPicker.instanceRunning())
+                        customPicker.showDialog(getActivity());
+                }
+            }
+        });
+
+        profileCountryInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(customPicker.instanceRunning())
+                    customPicker.dismiss();
+
+                customPicker.showDialog(getActivity());
+            }
+        });
 
         hideBottomNavigation(true);
-
-        if(RegistrationHandler.hasBeenVisited()) {
-            RegistrationHandler.skip();
-            changeFragment(new RegisterInvestorMatchingFragment(),
-                    "RegisterInvestorMatchingFragment");
-        }
-
         return view;
     }
 
@@ -67,22 +80,18 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
 
         profileCompanyInput = view.findViewById(R.id.register_input_profile_company);
         profileWebsiteInput = view.findViewById(R.id.register_input_profile_website);
-        profileStreetInput = view.findViewById(R.id.register_input_profile_street);
-        profileZipInput = view.findViewById(R.id.register_input_profile_zip);
-        profileCityInput = view.findViewById(R.id.register_input_profile_city);
+        profilePhoneInput = view.findViewById(R.id.register_input_profile_phone);
         profileCountryInput = view.findViewById(R.id.register_input_profile_countries);
 
         PrivateProfile profile = RegistrationHandler.getPrivateProfile();
         profileCompanyInput.setText(profile.getCompany());
         profileWebsiteInput.setText(profile.getWebsite());
-        profileStreetInput.setText(profile.getStreet());
-        profileZipInput.setText(profile.getZipCode());
-        profileCityInput.setText(profile.getCity());
         profileCountryInput.setText(profile.getCountry());
+        profilePhoneInput.setText(profile.getPhone());
+
 
         Button btnProfileInformation = view.findViewById(R.id.button_profile_information);
         btnProfileInformation.setOnClickListener(this);
-
     }
 
     @Override
@@ -110,51 +119,23 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
      */
     private void processProfileInformation() {
         String company = profileCompanyInput.getText().toString();
-        String city = profileCityInput.getText().toString();
+        String phone = profilePhoneInput.getText().toString();
         String country = profileCountryInput.getText().toString();
-        String street = profileStreetInput.getText().toString();
         String website = profileWebsiteInput.getText().toString();
-        String zipCode = profileZipInput.getText().toString();
 
         //TODO: also test country for length == 0
-        if(city.length() == 0 || street.length() == 0 || zipCode.length() == 0) {
+        if(country.length() == 0 || phone.length() == 0) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
         try {
-            RegistrationHandler.saveProfileInformation(company, city, street, zipCode, website, country);
-            RegistrationHandler.proceed();
+            RegistrationHandler.saveProfileInformation(company, phone, website, country);
             changeFragment(new RegisterInvestorMatchingFragment(),
                     "RegisterInvestorMatchingFragment");
         } catch (Exception e) {
             Log.d("debugMessage", e.getMessage());
         }
-    }
-
-
-    /**
-     * Get countries and add them to combobox
-     */
-    public void getCountries() {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/country",
-                        null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        //add countries to combobox
-                        //TODO: add combobox
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        ApiRequestHandler.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
     }
 }

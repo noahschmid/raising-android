@@ -12,4 +12,5 @@ public class PrivateProfile implements Serializable {
     private String street;
     private String zipCode;
     private String city;
+    private String phone;
 }

@@ -1,6 +1,7 @@
 package com.raising.app.authentication.fragments.registration.startup;
 
 import android.app.DatePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
@@ -111,6 +113,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
     /**
      * Process inputs and submit registration
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void processInputs() {
         Log.d("debugMessage", "processInputs");
         if(scopeInput.getText().length() == 0 || selectedDate == null) {
@@ -141,7 +144,6 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         }
 
         try {
-            RegistrationHandler.proceed();
             RegistrationHandler.saveFinancialRequirements(type, valuation, selectedDate, scope);
             changeFragment(new RegisterStakeholderFragment());
         } catch (IOException e) {

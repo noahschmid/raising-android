@@ -8,8 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class Account implements Serializable {
-    protected long accountId = -1l;
+public class Account implements Serializable, Model {
+    protected long id = -1l;
     protected String company;
     protected String name;
     private String firstName;
