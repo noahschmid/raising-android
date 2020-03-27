@@ -42,7 +42,8 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
     private RadioGroup investmentPhaseGroup, industryGroup;
 
     private int minimumTicketSize, maximumTicketSize;
-    private ArrayList<String> ticketSizeStrings;
+    private String [] ticketSizeStrings;
+    private int [] ticketSizeSteps;
 
 
     @Override
@@ -319,10 +320,15 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         ApiRequestHandler.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
     }
 
+    /**
+     * Prepare the ticket size slider for optimal usage
+     * @param view The view in which the slider lies
+     */
     private void prepareTicketSizeSlider(View view) {
 
-        ticketSizeStrings = new ArrayList<String>();
-        //TODO: fetch String array of ticket size steps from backend, store in ticketSizeStrings
+        //TODO: fetch Integer array of ticket size steps from backend, store in ticketSizeSteps
+        // ticketSizeStrings = createStringRepresentationOfTicketSizeSteps(ticketSizeSteps);
+
         ticketSizeText = view.findViewById(R.id.register_startup_matching_ticket_size_text);
         ticketSize = view.findViewById(R.id.register_startup_matching_ticket_size);
         ticketSize.addOnChangeListener(new Slider.OnChangeListener() {
@@ -341,19 +347,29 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
                 (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
     }
 
+    /**
+     * Create the string representation of the currently selected slider values
+     * @param maxValue The currently selected maximal value
+     * @param minValue The currently selected minimal value
+     * @return String representing the current slider selection
+     */
     private String adaptSliderValues(int maxValue, int minValue) {
+        // TODO: remove following two lines and change all arrays to the ones defined in method above
         String [] ticketSizes = getResources().getStringArray(R.array.matching_ticket_sizes_string);
         int [] intTicketSizes = getResources().getIntArray(R.array.matching_ticket_sizes);
+
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("Currently selected ticket size: ");
         //TODO: replace with stringBuilder.append(ticketSizeStrings[minValue - 1]);
         stringBuilder.append(ticketSizes[minValue - 1]);
+        //TODO: replace with minimumTicketSize = ticketSizeSteps[minValue - 1];
         minimumTicketSize = intTicketSizes[minValue - 1];
 
         stringBuilder.append(" - ");
         //TODO: replace with stringBuilder.append(ticketSizeStrings[maxValue - 1]);
         stringBuilder.append(ticketSizes[maxValue - 1]);
+        //TODO: replace with minimumTicketSize = ticketSizeSteps[maxValue - 1];
         maximumTicketSize = intTicketSizes[maxValue - 1];
 
         return stringBuilder.toString();

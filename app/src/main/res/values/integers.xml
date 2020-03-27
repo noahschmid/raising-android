@@ -22,4 +22,8 @@
         <item> 2000000 </item>
     </integer-array>
 
+    <integer name="billion"> 1000000000 </integer>
+    <integer name="million"> 1000000 </integer>
+    <integer name="thousand"> 1000 </integer>
+
 </resources>

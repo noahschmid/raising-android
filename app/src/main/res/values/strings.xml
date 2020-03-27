@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">RaisingMVP</string>
 
+    <string name="billion"> B </string>
+    <string name="million"> M </string>
+    <string name="thousand"> K </string>
+
     <!-- Strings used in bottom navigation -->
     <string name="navigation_home"> Home </string>
     <string name="navigation_profile"> Profile </string>

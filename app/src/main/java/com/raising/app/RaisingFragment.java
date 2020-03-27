@@ -134,4 +134,36 @@ public class RaisingFragment extends Fragment {
         fragmentManager.beginTransaction().remove(currentFragment);
         fragmentManager.popBackStackImmediate();
     }
+
+    /**
+     * Takes the values of an integer arrays of ticket size steps and converts them into more readable strings
+     * @param ticketSizeSteps The integer array that is to be converted
+     * @return Array of String representations of the given integer array
+     */
+    public String [] createStringRepresentationOfTicketSizeSteps(int [] ticketSizeSteps) {
+        String [] ticketSizeStrings = new String[ticketSizeSteps.length];
+        for(int i = 0; i < ticketSizeSteps.length; i++ ) {
+            StringBuilder stringBuilder = new StringBuilder();
+            if((ticketSizeSteps[i] % getResources().getInteger(R.integer.billion)) >= 1) {
+                stringBuilder.append(
+                        Math.floor(ticketSizeSteps[i] % getResources().getInteger(R.integer.billion)));
+                stringBuilder.append(getString(R.string.billion));
+                ticketSizeStrings[i] = stringBuilder.toString();
+            } else if((ticketSizeSteps[i] % getResources().getInteger(R.integer.million)) >= 1) {
+                stringBuilder.append(
+                        Math.floor(ticketSizeSteps[i] % getResources().getInteger(R.integer.million)));
+                stringBuilder.append(getString(R.string.million));
+                ticketSizeStrings[i] = stringBuilder.toString();
+            } else if((ticketSizeSteps[i] % getResources().getInteger(R.integer.thousand)) >= 1) {
+                stringBuilder.append(
+                        Math.floor(ticketSizeSteps[i] % getResources().getInteger(R.integer.thousand)));
+                stringBuilder.append(getString(R.string.thousand));
+                ticketSizeStrings[i] = stringBuilder.toString();
+            } else {
+                stringBuilder.append(Math.floor(ticketSizeSteps[i]));
+                ticketSizeStrings[i] = stringBuilder.toString();
+            }
+        }
+        return ticketSizeStrings;
+    }
 }
