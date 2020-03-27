@@ -107,14 +107,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                 android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                 android:stepSize="@integer/ticket_size_slider_step_size"
                 android:valueFrom="@integer/ticket_size_slider_min_value"
                 android:valueTo="@integer/ticket_size_slider_max_value"
-                app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_investor"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_ticket_size_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_ticket" />
+
+            <TextView
+                android:id="@+id/register_startup_matching_ticket_size_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_ticket_size"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_investor" />
 
             <TextView
                 android:id="@+id/text_startup_matching_investor"
@@ -127,7 +136,7 @@
                 android:textStyle="bold"
                 android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintStart_toStartOf="@+id/text_investor_matching_ticket"
-                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_ticket_size" />
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_ticket_size_text" />
 
             <LinearLayout
                 android:id="@+id/register_startup_investor_type_layout"

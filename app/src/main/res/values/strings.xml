@@ -107,6 +107,16 @@
     <string name="register_matching_geographics"> Geographics </string>
     <string name="register_matching_continents"> Continents </string>
     <string name="register_matching_countries"> Countries </string>
+    <string-array name="matching_ticket_sizes_string">
+        <item> 20k </item>
+        <item> 50k </item>
+        <item> 100k </item>
+        <item> 200k </item>
+        <item> 250k </item>
+        <item> 500k </item>
+        <item> 1M </item>
+        <item> 2M+ </item>
+    </string-array>
 
     <string name="register_pitch_information_text"> Pitch </string>
     <string name="register_pitch_sentence"> One sentence description </string>
@@ -163,7 +173,6 @@
 
     <string name="generic_error_title">Action failed</string>
     <string name="generic_error_text">Oops! Something went wrong.</string>
-
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="register_dialog_text_invalid_email">Entered email is invalid</string>
