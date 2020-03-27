@@ -11,7 +11,7 @@
 
     <integer name="startup_registration_max_steps">8</integer>
 
-    <integer-array name="matching_ticket_sizes">
+    <integer-array name="matching_ticket_sizes" >
         <item> 20000 </item>
         <item> 50000 </item>
         <item> 100000 </item>
