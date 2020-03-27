@@ -32,4 +32,11 @@
         <item name="android:textColorHint"> @color/raisingPrimaryTextColor </item>
     </style>
 
+    <style name="TransparentRoundIconFloatingButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="fabSize"> mini </item>
+        <item name="backgroundTint"> @color/raisingPrimaryLight </item>
+        <item name="android:clickable"> true </item>
+        <item name="android:focusable"> true </item>
+    </style>
+
 </resources>

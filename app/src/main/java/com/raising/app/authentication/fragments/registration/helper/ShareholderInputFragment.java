@@ -148,7 +148,7 @@ public class ShareholderInputFragment extends RaisingFragment {
                 leaveShareholderFragment();
             }
         });
-        Button btnAddShareholder = view.findViewById(R.id.button_add_shareholder);
+        Button btnAddShareholder = view.findViewById(R.id.floating_button_add_shareholder);
         btnAddShareholder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

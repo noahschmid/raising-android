@@ -26,15 +26,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/inputFormInformationTextMargin"
                 android:layout_marginBottom="@dimen/inputFormInformationTextMargin"
-                android:textSize="@dimen/fragmentTitleFontSize"
-                android:textStyle="bold"
                 android:hint="@string/register_stakeholder_shareholder_information_text"
                 android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/fragmentTitleFontSize"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_select_type_of_shareholder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="packed"
-                tools:layout_editor_absoluteX="176dp" />
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <RadioGroup
                 android:id="@+id/stakeholder_select_type_of_shareholder"
@@ -266,14 +267,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder"/>
 
             <Button
-                android:id="@+id/button_add_shareholder"
+                android:id="@+id/floating_button_add_shareholder"
                 style="@style/ButtonConfirmRegistration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginEnd="@dimen/inputFormHorizontalMarginSmall"
+                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
                 android:hint="@string/add_text"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/stakeholder_corporate_shareholder"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

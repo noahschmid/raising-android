@@ -105,10 +105,11 @@
                 style="@style/TextInputLayoutTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:hint="@string/register_pitch"
-                app:helperTextEnabled="true"
                 app:errorEnabled="true"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:helperTextEnabled="true"
+                app:layout_constraintBottom_toTopOf="@+id/button_investor_pitch"
                 app:layout_constraintEnd_toEndOf="@+id/register_investor_pitch_sentence"
                 app:layout_constraintStart_toStartOf="@+id/register_investor_pitch_sentence"
                 app:layout_constraintTop_toBottomOf="@+id/register_investor_pitch_sentence">
@@ -128,6 +129,7 @@
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_button_text"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/register_investor_pitch_sentence"
                 app:layout_constraintStart_toStartOf="@+id/register_investor_pitch_sentence"
                 app:layout_constraintTop_toBottomOf="@+id/register_investor_pitch_pitch" />

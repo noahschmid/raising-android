@@ -23,6 +23,8 @@
 
     <dimen name="inputFormInformationTextMargin"> 16dp </dimen>
 
+    <dimen name="cornerRadius24dpIcons"> 12dp </dimen>
+
     <dimen name="fragmentTitleFontSize"> 20sp </dimen>
     <dimen name="fragmentSubtitleFontSize"> 14sp </dimen>
 </resources>
