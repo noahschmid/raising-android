@@ -76,14 +76,11 @@
 
                 <TextView
                     android:id="@+id/text_investor_matching_ticket"
+                    style="@style/SubtitleTextWithLeftIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                    android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                     android:hint="@string/register_matching_ticket_size"
-                    android:textSize="@dimen/fragmentSubtitleFontSize"
-                    android:textStyle="bold"
-                    android:textColorHint="@color/raisingPrimaryTextColor"
+                    android:drawableLeft="@drawable/ic_matching_ticket_size_24dp"
                     app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_ticket_size"
                     app:layout_constraintStart_toStartOf="@+id/register_investor_matching_ticket_size"
                     app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_information" />
@@ -155,28 +152,23 @@
 
                 <TextView
                     android:id="@+id/text_investor_matching_industry"
+                    style="@style/SubtitleTextWithLeftIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
                     android:hint="@string/register_matching_industry"
-                    android:textSize="@dimen/fragmentSubtitleFontSize"
-                    android:textStyle="bold"
-                    android:textColorHint="@color/raisingPrimaryTextColor"
+                    android:drawableLeft="@drawable/ic_matching_markets_24dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_phase_layout" />
 
                 <TextView
                     android:id="@+id/text_investor_matching_support"
+                    style="@style/SubtitleTextWithLeftIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                     android:hint="@string/register_matching_support"
-                    android:textSize="@dimen/fragmentSubtitleFontSize"
-                    android:textStyle="bold"
-                    android:textColorHint="@color/raisingPrimaryTextColor"
+                    android:drawableLeft="@drawable/ic_matching_involvement_24dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_industry_layout" />
 
