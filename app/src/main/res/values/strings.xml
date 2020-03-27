@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">RaisingMVP</string>
 
+    <string name="billion"> B </string>
+    <string name="million"> M </string>
+    <string name="thousand"> K </string>
+
     <!-- Strings used in bottom navigation -->
     <string name="navigation_home"> Home </string>
     <string name="navigation_profile"> Profile </string>
@@ -80,9 +84,20 @@
     <string name="register_matching_min_ticket"> Minimal Ticket Size (CHF) </string>
     <string name="register_matching_max_ticket"> Maximal Ticket Size (CHF) </string>
     <string name="register_matching_investor"> Type of investor </string>
+
     <string name="register_matching_geographics"> Geographics </string>
     <string name="register_matching_continents"> Continents </string>
     <string name="register_matching_countries"> Countries </string>
+    <string-array name="matching_ticket_sizes_string">
+        <item> 20k </item>
+        <item> 50k </item>
+        <item> 100k </item>
+        <item> 200k </item>
+        <item> 250k </item>
+        <item> 500k </item>
+        <item> 1M </item>
+        <item> 2M+ </item>
+    </string-array>
 
     <string name="register_pitch_information_text"> Pitch </string>
     <string name="register_pitch_sentence"> One sentence description </string>
@@ -101,25 +116,25 @@
     <string name="register_financial_closing_time"> Closing Time </string>
 
     <string name="register_stakeholder_information_text"> Stakeholders </string>
-        <string name="register_stakeholder_founder_information_text"> Add a founder </string>
-            <string name="register_stakeholder_founder"> Founder </string>
-            <string name="register_stakeholder_first_name"> First Name </string>
-            <string name="register_stakeholder_last_name"> Last Name </string>
-            <string name="register_stakeholder_name"> Name </string>
-            <string name="register_stakeholder_position"> Position </string>
-            <string name="register_stakeholder_education"> Education </string>
+    <string name="register_stakeholder_founder_information_text"> Add a founder </string>
+    <string name="register_stakeholder_founder"> Founder </string>
+    <string name="register_stakeholder_first_name"> First Name </string>
+    <string name="register_stakeholder_last_name"> Last Name </string>
+    <string name="register_stakeholder_name"> Name </string>
+    <string name="register_stakeholder_position"> Position </string>
+    <string name="register_stakeholder_education"> Education </string>
     <string name="register_stakeholder_board_member"> Member of the board </string>
-        <string name="register_stakeholder_board_member_information_text"> Add a member of the board </string>
-            <string name="register_stakeholder_profession"> Profession </string>
-            <string name="register_stakeholder_member_since"> Member Since </string>
+    <string name="register_stakeholder_board_member_information_text"> Add a member of the board </string>
+    <string name="register_stakeholder_profession"> Profession </string>
+    <string name="register_stakeholder_member_since"> Member Since </string>
     <string name="register_stakeholder_shareholder"> Shareholder </string>
-        <string name="register_stakeholder_shareholder_information_text"> Add a shareholder </string>
-            <string name="register_stakeholder_shareholder_private"> Private Shareholder </string>
-                <string name="register_stakeholder_shareholder_country"> Country </string>
-                <string name="register_stakeholder_shareholder_equity"> Equity Share (%) </string>
-            <string name="register_stakeholder_shareholder_corporate"> Corporate Shareholder </string>
-                <string name="register_stakeholder_shareholder_corporate_body"> Corporate Body </string>
-                <string name="register_stakeholder_shareholder_website"> Website </string>
+    <string name="register_stakeholder_shareholder_information_text"> Add a shareholder </string>
+    <string name="register_stakeholder_shareholder_private"> Private Shareholder </string>
+    <string name="register_stakeholder_shareholder_country"> Country </string>
+    <string name="register_stakeholder_shareholder_equity"> Equity Share (%) </string>
+    <string name="register_stakeholder_shareholder_corporate"> Corporate Shareholder </string>
+    <string name="register_stakeholder_shareholder_corporate_body"> Corporate Body </string>
+    <string name="register_stakeholder_shareholder_website"> Website </string>
 
     <string name="register_button_text"> Continue </string>
     <string name="register_button_finish_text"> Finish </string>
@@ -139,7 +154,6 @@
 
     <string name="generic_error_title">Action failed</string>
     <string name="generic_error_text">Oops! Something went wrong.</string>
-
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="register_dialog_text_invalid_email">Entered email is invalid</string>

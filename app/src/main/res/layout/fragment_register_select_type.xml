@@ -9,15 +9,12 @@
 
     <Button
         android:id="@+id/button_register_as_startup"
+        style="@style/ButtonConfirmRegistration"
         android:layout_width="0dp"
         android:layout_height="@dimen/inputFormHeight"
         android:layout_marginStart="@dimen/inputFormHorizontalMargin"
         android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:hint="@string/register_select_startup_button"
-        android:textSize="@dimen/buttonFontSize"
-        android:backgroundTint="@color/raisingPrimaryButton"
-        android:textColorHint="@color/raisingButtonTextLight"
         app:layout_constraintBottom_toTopOf="@+id/button_register_as_investor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,12 +23,10 @@
 
     <Button
         android:id="@+id/button_register_as_investor"
+        style="@style/ButtonConfirmRegistration"
         android:layout_width="0dp"
         android:layout_height="@dimen/inputFormHeight"
         android:hint="@string/register_select_investor_button"
-        android:textSize="@dimen/buttonFontSize"
-        android:backgroundTint="@color/raisingPrimaryButton"
-        android:textColorHint="@color/raisingButtonTextLight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/button_register_as_startup"
         app:layout_constraintStart_toStartOf="@+id/button_register_as_startup"

@@ -14,9 +14,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
-import com.raising.app.authentication.fragments.LoginFragment;
 import com.raising.app.models.PrivateProfile;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.ResourcesManager;
@@ -134,6 +134,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
             RegistrationHandler.saveProfileInformation(company, phone, website, country);
             changeFragment(new RegisterInvestorMatchingFragment(),
                     "RegisterInvestorMatchingFragment");
+
         } catch (Exception e) {
             Log.d("debugMessage", e.getMessage());
         }

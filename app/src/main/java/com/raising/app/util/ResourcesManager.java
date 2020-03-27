@@ -19,6 +19,7 @@ import com.raising.app.models.Industry;
 import com.raising.app.models.InvestmentPhase;
 import com.raising.app.models.InvestorType;
 import com.raising.app.models.Label;
+import com.raising.app.models.Revenue;
 import com.raising.app.models.Support;
 
 import org.json.JSONArray;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.function.Function;
 
 public class ResourcesManager {
-    private static final int TOTAL_REQUESTS = 7;
+    private static final int REQUESTS_SENT = 8;
     private static int responsesGot = 0;
     private static boolean loadingSuccessful = false;
 
@@ -40,6 +41,7 @@ public class ResourcesManager {
     private static ArrayList<Label> labels = new ArrayList<>();
     private static ArrayList<Industry> industries = new ArrayList<>();
     private static ArrayList<InvestmentPhase> investmentPhases = new ArrayList<>();
+    private static ArrayList<Revenue> revenues = new ArrayList<>();
 
     private static Context ctx;
 
@@ -70,6 +72,8 @@ public class ResourcesManager {
                 errorHandler, ctx);
         ApiRequestHandler.performArrayGetRequest("public/industry", loadIndustries,
                 errorHandler, ctx);
+        ApiRequestHandler.performArrayGetRequest("public/revenue", loadRevenues,
+                errorHandler, ctx);
     }
 
     public static ArrayList<Country> getCountries() { return countries; }
@@ -79,13 +83,14 @@ public class ResourcesManager {
     public static ArrayList<InvestorType> getInvestorTypes() { return investorTypes; }
     public static ArrayList<Label> getLabels() { return labels; }
     public static ArrayList<Support> getSupports() { return supports; }
+    public static ArrayList<Revenue> getRevenues() { return revenues; }
 
     /**
      * Check whether all backend requests have returned and if so, check whether they were
      * all successful or not. If not, notify main activity
      */
     private static void handleProcess() {
-        if(responsesGot != TOTAL_REQUESTS)
+        if(responsesGot != REQUESTS_SENT)
             return;
         if(!loadingSuccessful) {
             // TODO: notification that resources didn't load
@@ -295,6 +300,35 @@ public class ResourcesManager {
 
             if(labels.isEmpty()) {
                 Log.d("debugMessage", "Fetched an empty array in loadLabels");
+                loadingSuccessful = false;
+            }
+
+        } catch (JSONException e) {
+            loadingSuccessful = false;
+            Log.d("debugMessage", "Error while parsing labels: " + e.getMessage());
+        }
+
+        ++responsesGot;
+        handleProcess();
+        return null;
+    };
+
+    /**
+     * Handle backend response and load revenues into arraylist
+     */
+    static Function<JSONArray, Void> loadRevenues = response -> {
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject jresponse = response.getJSONObject(i);
+                Revenue revenue = new Revenue();
+                revenue.setId(jresponse.getLong("id"));
+                revenue.setName(jresponse.getString("name"));
+                if(revenue.getName().length() > 0)
+                    revenues.add(revenue);
+            }
+
+            if(revenues.isEmpty()) {
+                Log.d("debugMessage", "Fetched an empty array in loadRevenues");
                 loadingSuccessful = false;
             }
 

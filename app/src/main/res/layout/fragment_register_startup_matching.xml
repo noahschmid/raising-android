@@ -22,6 +22,55 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:id="@+id/registration_profile_progress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+                android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/text_startup_matching_information"
                 android:layout_width="wrap_content"
@@ -35,19 +84,16 @@
                 app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_ticket"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registration_profile_progress"
                 app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
                 android:id="@+id/text_investor_matching_ticket"
+                style="@style/SubtitleTextWithLeftIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                 android:hint="@string/register_matching_ticket_size"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
-                android:textStyle="bold"
-                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:drawableLeft="@drawable/ic_matching_ticket_size_24dp"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_information" />
@@ -58,14 +104,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                 android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                 android:stepSize="@integer/ticket_size_slider_step_size"
                 android:valueFrom="@integer/ticket_size_slider_min_value"
                 android:valueTo="@integer/ticket_size_slider_max_value"
-                app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_investor"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_ticket_size_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_ticket" />
+
+            <TextView
+                android:id="@+id/register_startup_matching_ticket_size_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_ticket_size"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_investor" />
 
             <TextView
                 android:id="@+id/text_startup_matching_investor"
@@ -78,7 +133,7 @@
                 android:textStyle="bold"
                 android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintStart_toStartOf="@+id/text_investor_matching_ticket"
-                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_ticket_size" />
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_ticket_size_text" />
 
             <LinearLayout
                 android:id="@+id/register_startup_investor_type_layout"
@@ -118,15 +173,15 @@
 
             <TextView
                 android:id="@+id/text_startup_matching_industry"
+                style="@style/SubtitleTextWithLeftIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                 android:hint="@string/register_matching_industry"
                 android:textSize="@dimen/fragmentSubtitleFontSize"
                 android:textStyle="bold"
                 android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_industry_layout"
+                android:drawableLeft="@drawable/ic_matching_markets_24dp"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_matching_phase"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_radio_phase" />
 
@@ -145,14 +200,11 @@
 
             <TextView
                 android:id="@+id/text_startup_matching_support"
+                style="@style/SubtitleTextWithLeftIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                 android:hint="@string/register_matching_support"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
-                android:textStyle="bold"
-                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:drawableLeft="@drawable/ic_matching_involvement_24dp"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_matching_industry"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_industry_layout" />
 
@@ -171,14 +223,11 @@
 
             <Button
                 android:id="@+id/button_startup_matching"
+                style="@style/ButtonConfirmRegistration"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_button_text"
-                android:textSize="@dimen/buttonFontSize"
-                android:backgroundTint="@color/raisingPrimaryButton"
-                android:textColorHint="@color/raisingButtonTextLight"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size" />
