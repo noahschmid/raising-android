@@ -3,9 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/raisingPrimary</item>
+        <item name="colorPrimaryDark">@color/raisingPrimaryDark</item>
+        <item name="colorAccent">@color/raisingPrimaryAccent</item>
     </style>
 
     <style name="DialogTheme" parent="Theme.MaterialComponents.Light.Dialog.MinWidth" />
@@ -58,6 +58,13 @@
         <item name="android:textSize"> @dimen/fragmentSubtitleFontSize </item>
         <item name="android:textStyle"> bold </item>
         <item name="android:textColorHint"> @color/raisingPrimaryTextColor </item>
+    </style>
+
+    <style name="TransparentRoundIconFloatingButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="fabSize"> mini </item>
+        <item name="backgroundTint"> @color/raisingPrimaryLight </item>
+        <item name="android:clickable"> true </item>
+        <item name="android:focusable"> true </item>
     </style>
 
 </resources>
