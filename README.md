@@ -25,12 +25,12 @@
 
 ## Start the app on an emulator <a name="startEmulator"/>
 
-NOTE: Before using an emulator to start our app, keep in mind, that the emulator is pretty hungry for hardware resources and can quickly overload your system. We therefore recommend, that you start our app on a connected device.
+NOTE: Before using an emulator to start our app, keep in mind, that the emulator is pretty hungry for hardware resources and can quickly overload your system. We therefore recommend, if it is possible, that you start our app on a connected device.
 
 1. Click here, to start with the setup of your emulator </br> ![](docs-resources/readme_setup_emulator.PNG)
-1. A new window opens, click on `Create virtual device..`. You can now select a phone of your choice. We recommend, that you use either `Pixel 3` oder `Nexus 5` for this application.
-1. In the next window you can select an API Level for your emulator. We recommend, that you use API Level 27 or higher. Click on `Download`to install the operating system on your virtual device.
-1. After everything is installed, which may take about 5 minutes, you can give your new emulator a name, and then hit `Finish`to finish the installation.
+1. A new window opens, click on `Create virtual device..` You can now select a phone of your choice. We recommend, that you use either `Pixel 3` oder `Nexus 5` for this application
+1. In the next window you can select an API Level for your emulator. We recommend, that you use API Level 27 or higher. Click on `Download` to install the operating system on your virtual device
+1. After everything is installed, which may take about 5 minutes, you can give your emulator a name, and then hit `Finish` to finish the installation
 1. Your can now use your emulator to start our app by selecting it and clicking on the green arrow next to it ![](docs-resources/readme_select_emulator.PNG)
 
 ## Further development <a name="development"/>
