@@ -198,7 +198,7 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         ArrayList<Long> industries = new ArrayList<>();
         for (int i = 0; i < industryLayout.getChildCount(); ++i) {
             View v = industryLayout.getChildAt(i);
-            if(((RadioButton)v).isChecked() && ((String)((CheckBox)v).getContentDescription()).length() > 0) {
+            if(((CheckBox)v).isChecked() && ((String)((CheckBox)v).getContentDescription()).length() > 0) {
                 industries.add(Long.parseLong((String)((CheckBox)v).getContentDescription()));
             }
         }

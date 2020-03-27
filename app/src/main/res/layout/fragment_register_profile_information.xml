@@ -115,7 +115,7 @@
                     android:id="@+id/register_input_profile_countries"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"
-                    android:editable="false"
+                    android:inputType="none"
                     app:endIconMode="none" />
             </com.google.android.material.textfield.TextInputLayout>
 

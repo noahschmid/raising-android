@@ -15,6 +15,7 @@ import com.android.volley.toolbox.Volley;
 import com.raising.app.R;
 import com.raising.app.models.Continent;
 import com.raising.app.models.Country;
+import com.raising.app.models.FinanceType;
 import com.raising.app.models.Industry;
 import com.raising.app.models.InvestmentPhase;
 import com.raising.app.models.InvestorType;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.function.Function;
 
 public class ResourcesManager {
-    private static final int REQUESTS_SENT = 8;
+    private static final int REQUESTS_SENT = 9;
     private static int responsesGot = 0;
     private static boolean loadingSuccessful = false;
 
@@ -42,6 +43,7 @@ public class ResourcesManager {
     private static ArrayList<Industry> industries = new ArrayList<>();
     private static ArrayList<InvestmentPhase> investmentPhases = new ArrayList<>();
     private static ArrayList<Revenue> revenues = new ArrayList<>();
+    private static ArrayList<FinanceType> financeTypes = new ArrayList<>();
 
     private static Context ctx;
 
@@ -74,6 +76,8 @@ public class ResourcesManager {
                 errorHandler, ctx);
         ApiRequestHandler.performArrayGetRequest("public/revenue", loadRevenues,
                 errorHandler, ctx);
+        ApiRequestHandler.performArrayGetRequest("public/financetype", loadFinanceTypes,
+                errorHandler, ctx);
     }
 
     public static ArrayList<Country> getCountries() { return countries; }
@@ -84,6 +88,7 @@ public class ResourcesManager {
     public static ArrayList<Label> getLabels() { return labels; }
     public static ArrayList<Support> getSupports() { return supports; }
     public static ArrayList<Revenue> getRevenues() { return revenues; }
+    public static ArrayList<FinanceType> getFinanceTypes() { return financeTypes; }
 
     /**
      * Check whether all backend requests have returned and if so, check whether they were
@@ -318,13 +323,22 @@ public class ResourcesManager {
      */
     static Function<JSONArray, Void> loadRevenues = response -> {
         try {
+            int lastId = 0;
+            int lastValue = 0;
+            Revenue revenue;
             for (int i = 0; i < response.length(); i++) {
                 JSONObject jresponse = response.getJSONObject(i);
-                Revenue revenue = new Revenue();
-                revenue.setId(jresponse.getLong("id"));
-                revenue.setName(jresponse.getString("name"));
-                if(revenue.getName().length() > 0)
+                if(i > 0) {
+                    revenue = new Revenue();
+                    revenue.setRevenueMinId(lastId);
+                    revenue.setRevenueMin(lastValue);
+                    revenue.setRevenueMaxId(jresponse.getInt("id"));
+                    revenue.setRevenueMax(jresponse.getInt("name"));
                     revenues.add(revenue);
+                }
+
+                lastId = jresponse.getInt("id");
+                lastValue = jresponse.getInt("name");
             }
 
             if(revenues.isEmpty()) {
@@ -334,7 +348,35 @@ public class ResourcesManager {
 
         } catch (JSONException e) {
             loadingSuccessful = false;
-            Log.d("debugMessage", "Error while parsing labels: " + e.getMessage());
+            Log.d("debugMessage", "Error while parsing revenues: " + e.getMessage());
+        }
+
+        ++responsesGot;
+        handleProcess();
+        return null;
+    };
+
+    /**
+     * Handle backend response and load financetypes into arraylist
+     */
+    static Function<JSONArray, Void> loadFinanceTypes = response -> {
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject jresponse = response.getJSONObject(i);
+                FinanceType financeType = new FinanceType();
+                financeType.setId(jresponse.getInt("id"));
+                financeType.setName(jresponse.getString("name"));
+                financeTypes.add(financeType);
+            }
+
+            if(financeTypes.isEmpty()) {
+                Log.d("debugMessage", "Fetched an empty array in loadFinanceTypes");
+                loadingSuccessful = false;
+            }
+
+        } catch (JSONException e) {
+            loadingSuccessful = false;
+            Log.d("debugMessage", "Error while parsing finance types: " + e.getMessage());
         }
 
         ++responsesGot;

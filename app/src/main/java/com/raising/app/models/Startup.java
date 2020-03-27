@@ -26,12 +26,13 @@ public class Startup extends Account implements Serializable {
     private int turnover;
     private int preMoneyValuation;
     private String closingTime;
-    private int revenueMax;
-    private int revenueMin;
+    private int revenueMax = -1;
+    private int revenueMin = -1;
     private int scope;
     private String uId;
     private int foundingYear;
     private long financeTypeId = -1;
+    private int completed;
 
     private List<InvestorType> investorTypes;
     private List<Label> labels;
@@ -40,7 +41,7 @@ public class Startup extends Account implements Serializable {
     private List<Founder> founders;
     private List<Shareholder> privateShareholders;
     private List<Shareholder> corporateShareholders;
-
+    private Country country;
 
     public Startup() {
         investorTypes = new ArrayList<>();

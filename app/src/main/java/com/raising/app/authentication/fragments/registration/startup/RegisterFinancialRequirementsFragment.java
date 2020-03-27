@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -21,23 +22,27 @@ import androidx.annotation.RequiresApi;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
 import com.raising.app.authentication.fragments.LoginFragment;
+import com.raising.app.models.FinanceType;
 import com.raising.app.models.Startup;
 import com.raising.app.util.RegistrationHandler;
+import com.raising.app.util.ResourcesManager;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
 public class RegisterFinancialRequirementsFragment extends RaisingFragment implements View.OnClickListener {
-    private EditText financialValuationInput, financialClosingTimeInput, scopeInput;
+    private EditText financialValuationInput, financialClosingTimeInput, scopeInput, completedInput;
     private AutoCompleteTextView financialTypeInput;
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private Calendar selectedDate;
+    private int financialTypeId = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,14 +52,30 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         hideBottomNavigation(true);
 
-        //TODO: fetch these values from our backend
-        String [] VALUES_TYPE = new String[] {"Equity", "Deposit", "Loan", "Grant"};
+        ArrayList<FinanceType> financeTypes = ResourcesManager.getFinanceTypes();
+        ArrayList<String> values = new ArrayList<>();
+        financeTypes.forEach(type -> values.add(type.getName()));
 
         ArrayAdapter adapterType = new ArrayAdapter<>( getContext(),
-                R.layout.item_dropdown_menu, VALUES_TYPE);
+                R.layout.item_dropdown_menu, values);
+
 
         financialTypeInput = view.findViewById(R.id.register_input_financial_type);
         financialTypeInput.setAdapter(adapterType);
+
+        financialTypeInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String itemName = (String)adapterType.getItem(i);
+
+                for (FinanceType type : financeTypes) {
+                    if (type.getName().equals(itemName)) {
+                        financialTypeId = (int)type.getId();
+                        break;
+                    }
+                }
+            }
+        });
 
         return view;
     }
@@ -62,6 +83,8 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        financialTypeInput.setShowSoftInputOnFocus(false);
 
         scopeInput = view.findViewById(R.id.register_input_startup_financial_scope);
         financialValuationInput = view.findViewById(R.id.register_input_financial_valuation);
@@ -72,8 +95,20 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         financialClosingTimeInput = view.findViewById(R.id.register_input_financial_closing_time);
         financialClosingTimeInput.setOnClickListener(v -> prepareDatePicker());
 
+        completedInput = view.findViewById(R.id.register_input_financial_completed);
+
         Startup startup = RegistrationHandler.getStartup();
-        scopeInput.setText(String.valueOf(startup.getScope()));
+        if(startup.getScope() > 0)
+            scopeInput.setText(String.valueOf(startup.getScope()));
+
+        if(startup.getPreMoneyValuation() > 0)
+            financialValuationInput.setText(String.valueOf(startup.getPreMoneyValuation()));
+
+        if(startup.getClosingTime() != null)
+            financialClosingTimeInput.setText(startup.getClosingTime());
+
+        if(startup.getCompleted() > 0)
+            completedInput.setText(String.valueOf(startup.getCompleted()));
 
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             /**
@@ -103,6 +138,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         hideBottomNavigation(false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.button_financial_requirements){
@@ -116,15 +152,16 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void processInputs() {
         Log.d("debugMessage", "processInputs");
-        if(scopeInput.getText().length() == 0 || selectedDate == null) {
+        if(scopeInput.getText().length() == 0 || selectedDate == null ||
+                financialTypeId == -1 ||
+                Integer.parseInt(scopeInput.getText().toString()) == 0) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
-        long type = 1;
-
         float valuation = 0;
+
         if(financialValuationInput.getText().length() > 0)
             valuation = Float.parseFloat(financialValuationInput.getText().toString());
 
@@ -135,16 +172,14 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         }
 
         float scope = Float.parseFloat(scopeInput.getText().toString());
-
-        if(financialClosingTimeInput.getText().length() == 0 ||
-                financialTypeInput.getText().length() == 0) {
-            showSimpleDialog(getString(R.string.register_dialog_title),
-                    getString(R.string.register_dialog_text_empty_credentials));
-            return;
+        int completed = 0;
+        if(completedInput.getText().length() != 0) {
+            completed = Integer.parseInt(completedInput.getText().toString());
         }
 
         try {
-            RegistrationHandler.saveFinancialRequirements(type, valuation, selectedDate, scope);
+            RegistrationHandler.saveFinancialRequirements(financialTypeId, valuation, selectedDate, scope,
+                    completed);
             changeFragment(new RegisterStakeholderFragment());
         } catch (IOException e) {
             Log.d("debugMessage", e.getMessage());

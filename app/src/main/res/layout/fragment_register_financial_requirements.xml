@@ -7,6 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".authentication.fragments.registration.startup.RegisterFinancialRequirementsFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
     <LinearLayout
         android:id="@+id/registration_profile_progress"
         android:layout_width="0dp"
@@ -140,7 +153,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/register_financial_closing_time"
-        app:layout_constraintBottom_toTopOf="@+id/button_financial_requirements"
+        app:layout_constraintBottom_toTopOf="@+id/register_financial_completed"
         app:layout_constraintEnd_toEndOf="@+id/register_financial_type"
         app:layout_constraintStart_toStartOf="@+id/register_financial_type"
         app:layout_constraintTop_toBottomOf="@+id/register_financial_valuation">
@@ -152,14 +165,35 @@
             android:focusableInTouchMode="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/register_financial_completed"
+        style="@style/TextInputLayoutTheme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/register_financial_completed"
+        app:layout_constraintBottom_toTopOf="@+id/button_financial_requirements"
+        app:layout_constraintEnd_toEndOf="@+id/register_financial_type"
+        app:layout_constraintStart_toStartOf="@+id/register_financial_type"
+        app:layout_constraintTop_toBottomOf="@+id/register_financial_closing_time">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/register_input_financial_completed"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/inputFormHeight"
+            android:inputType="numberDecimal"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
     <Button
         android:id="@+id/button_financial_requirements"
         style="@style/ButtonConfirmRegistration"
         android:layout_width="0dp"
         android:layout_height="@dimen/authenticationButtonHeight"
         android:hint="@string/register_button_text"
+        app:layout_constraintTop_toBottomOf="@+id/register_financial_completed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/register_financial_type"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/register_financial_type" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

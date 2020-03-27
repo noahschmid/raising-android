@@ -87,8 +87,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
         prepareTicketSizeSlider(view);
 
-        Investor investor = RegistrationHandler.getInvestor();
-
         if(investor.getInvestmentMin() != 0 && investor.getInvestmentMax() != 0)
             ticketSize.setValues((float)investor.getInvestmentMin(), (float)investor.getInvestmentMax());
 

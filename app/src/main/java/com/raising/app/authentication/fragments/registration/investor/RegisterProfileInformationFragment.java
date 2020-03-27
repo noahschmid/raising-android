@@ -1,5 +1,6 @@
 package com.raising.app.authentication.fragments.registration.investor;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -89,6 +90,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         profileCountryInput.setText(profile.getCountry());
         profilePhoneInput.setText(profile.getPhone());
 
+        profileCountryInput.setShowSoftInputOnFocus(false);
 
         Button btnProfileInformation = view.findViewById(R.id.button_profile_information);
         btnProfileInformation.setOnClickListener(this);

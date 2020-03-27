@@ -60,7 +60,7 @@
     <string name="register_company_name"> Company </string>
     <string name="register_company_uid"> UID </string>
     <string name="register_company_revenue"> Revenue (CHF) </string>
-    <string name="register_company_breakeven"> Break Even </string>
+    <string name="register_company_breakeven"> Breakeven Year </string>
     <string name="register_company_fte"> FTE </string>
     <string name="register_company_markets"> Current Markets </string>
     <string name="register_company_founding_year"> Founding Year </string>
@@ -78,9 +78,9 @@
     <string name="register_profile_company"> Company </string>
 
     <string name="register_matching_information_text"> Matching Criteria </string>
-    <string name="register_matching_scope"> Scope </string>
+    <string name="register_matching_scope"> Scope* </string>
     <string name="register_matching_ticket_size"> Ticket Size </string>
-    <string name="register_matching_scope_"> Scope (CHF) </string>
+    <string name="register_matching_scope_"> Scope* (CHF) </string>
     <string name="register_matching_min_ticket"> Minimal Ticket Size (CHF) </string>
     <string name="register_matching_max_ticket"> Maximal Ticket Size (CHF) </string>
     <string name="register_matching_investor"> Type of investor </string>
@@ -99,6 +99,12 @@
         <item> 2M+ </item>
     </string-array>
 
+    <string-array name="revenue_units">
+        <item>k</item>
+        <item>M</item>
+        <item>B</item>
+    </string-array>
+
     <string name="register_pitch_information_text"> Pitch </string>
     <string name="register_pitch_sentence"> One sentence description </string>
     <string name="register_pitch"> Your pitch </string>
@@ -110,10 +116,10 @@
     <string name="register_error_word_limit_overflow"> You have exceeded your word limit! </string>
 
     <string name="register_financial_information_text"> Financial Requirements </string>
-    <string name="register_financial_type"> Type </string>
+    <string name="register_financial_type"> Type* </string>
     <string name="register_financial_valuation"> Valuation (CHF) </string>
     <string name="register_financial_valuation_helper"> optional </string>
-    <string name="register_financial_closing_time"> Closing Time </string>
+    <string name="register_financial_closing_time"> Closing Time* </string>
 
     <string name="register_stakeholder_information_text"> Stakeholders </string>
     <string name="register_stakeholder_founder_information_text"> Add a founder </string>
@@ -168,4 +174,9 @@
     <string name="register_matching_support">Desired involvement</string>
     <string name="register_matching_industry">Industry</string>
     <string name="register_matching_geographics_input">Geographics...</string>
+    <string name="currency">CHF</string>
+    <string name="register_company_phone">Phone Number</string>
+    <string name="register_company_website">Website</string>
+    <string name="register_company_country">Country</string>
+    <string name="register_financial_completed">Completed</string>
 </resources>
