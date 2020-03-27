@@ -19,8 +19,8 @@
     <!-- Strings used in LoginScreen -->
     <string name="login_welcome_text"> Welcome to Raising </string>
     <string name="login_button_text"> Login </string>
-    <string name="login_email"> E-Mail.. </string>
-    <string name="login_password"> Password..</string>
+    <string name="login_email"> E-Mail </string>
+    <string name="login_password"> Password</string>
 
     <string name="login_forgot_button_text"> Forgot password? </string>
     <string name="login_register_text"> No Account? </string>

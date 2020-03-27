@@ -4,13 +4,15 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="raisingPrimary">#f92a2a</color>
-    <color name="raisingPrimaryLight">#ff6e6e</color>
+    <color name="raisingPrimary">#911A20</color>
+    <color name="raisingPrimaryLight"> #DE6A70 </color>
+    <color name="raisingPrimaryDark"> #6B1318 </color>
+    <color name="raisingPrimaryAccent"> #DEADAF </color>
 
     <color name="raisingWhite">#ffffff</color>
 
-    <color name="raisingPrimaryButton">#007478</color>
-    <color name="raisingPrimaryTextColor">#405269</color>
+    <color name="raisingPrimaryButton"> #707F91 </color>
+    <color name="raisingPrimaryTextColor"> #586473 </color>
 
     <color name="primaryTextColor"> #000000 </color>
     <color name="raisingButtonTextLight"> #ffffff </color>

@@ -49,16 +49,16 @@
 
     <Button
         android:id="@+id/button_login"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="@dimen/authenticationButtonHeight"
         android:layout_marginTop="@dimen/inputFormVerticalMargin"
-        android:layout_marginEnd="@dimen/inputFormHorizontalMarginSmall"
-        android:hint="@string/login_button_text"
-        android:textSize="@dimen/buttonFontSize"
         android:backgroundTint="@color/raisingPrimaryButton"
+        android:hint="@string/login_button_text"
         android:textColorHint="@color/raisingButtonTextLight"
+        android:textSize="@dimen/buttonFontSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/login_password"
+        app:layout_constraintStart_toStartOf="@+id/login_password"
         app:layout_constraintTop_toBottomOf="@+id/login_password" />
 
     <TextView
@@ -76,12 +76,14 @@
 
     <Button
         android:id="@+id/button_login_forgot_password"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+        android:backgroundTint="@color/raisingWhite"
         android:hint="@string/login_forgot_button_text"
-        android:backgroundTint="@color/raisingPrimaryButton"
-        android:textColorHint="@color/raisingButtonTextLight"
+        android:shadowColor="@color/raisingWhite"
+        android:textColorHint="@color/raisingPrimaryTextColor"
+        android:textSize="@dimen/fragmentSubtitleFontSize"
         app:layout_constraintBottom_toTopOf="@+id/button_login_goTo_register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -90,11 +92,13 @@
 
     <Button
         android:id="@+id/button_login_goTo_register"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/login_register_text"
-        android:backgroundTint="@color/raisingPrimaryButton"
-        android:textColorHint="@color/raisingButtonTextLight"
+        android:textSize="@dimen/fragmentSubtitleFontSize"
+        android:backgroundTint="@color/raisingWhite"
+        android:textColorHint="@color/raisingPrimaryTextColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/button_login_forgot_password"
         app:layout_constraintStart_toStartOf="@+id/button_login_forgot_password"
