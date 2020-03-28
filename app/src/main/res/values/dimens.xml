@@ -12,6 +12,8 @@
 
     <dimen name="inputDropdownItemPadding"> 16dp </dimen>
 
+    <dimen name="floatingButtonCustomMiniSize"> 24dp </dimen>
+
     <dimen name="dropDownHeight"> 180dp </dimen>
 
     <dimen name="authenticationButtonHeight"> 60dp </dimen>
@@ -27,4 +29,6 @@
 
     <dimen name="fragmentTitleFontSize"> 20sp </dimen>
     <dimen name="fragmentSubtitleFontSize"> 14sp </dimen>
+
+    <dimen name="imagesGalleryFABNegativeMargin"> -16dp </dimen>
 </resources>

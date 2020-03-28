@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/image_menu_select_image"
+        android:icon="@drawable/ic_image_24dp"
+        android:title="@string/image_floating_menu_select_image"/>
+
+    <item
+        android:id="@+id/image_menu_take_image"
+        android:icon="@drawable/ic_camera_24dp"
+        android:title="@string/image_floating_menu_take_image" />
+</menu>

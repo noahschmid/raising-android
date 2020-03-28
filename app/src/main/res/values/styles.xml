@@ -32,11 +32,24 @@
         <item name="android:textColorHint"> @color/raisingPrimaryTextColor </item>
     </style>
 
-    <style name="TransparentRoundIconFloatingButton" parent="Widget.AppCompat.Button.Borderless">
+    <style name="FragmentTitle">
+        <item name="android:layout_marginTop"> @dimen/inputFormInformationTextMargin </item>
+        <item name="android:layout_marginBottom"> @dimen/inputFormInformationTextMargin </item>
+        <item name="android:textSize"> @dimen/fragmentTitleFontSize </item>
+        <item name="android:textStyle"> bold </item>
+        <item name="android:textColorHint"> @color/raisingPrimaryTextColor </item>
+    </style>
+
+    <style name="RoundIconFloatingButton" parent="Widget.AppCompat.Button.Borderless">
         <item name="fabSize"> mini </item>
         <item name="backgroundTint"> @color/raisingPrimaryLight </item>
         <item name="android:clickable"> true </item>
         <item name="android:focusable"> true </item>
+    </style>
+    
+    <style name="CentralizeImagePopup">
+        <item name="android:dropDownHorizontalOffset"> 10dp </item>
+        <item name="android:dropDownVerticalOffset"> -20dp </item>
     </style>
 
 </resources>

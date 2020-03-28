@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.raising.app.authentication.fragments.LoginFragment;
+import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorImagesFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterStakeholderFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingFragment;
 import com.raising.app.util.AuthenticationHandler;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
                 hideBottomNavigation(true);
-                fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
+                fragmentTransaction.replace(R.id.fragment_container, new RegisterInvestorImagesFragment());
             } else {
                 hideBottomNavigation(false);
                 fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());

@@ -159,6 +159,14 @@
     <string name="register_stakeholder_shareholder_corporate_body"> Corporate Body </string>
     <string name="register_stakeholder_shareholder_website"> Website </string>
 
+    <string name="register_images_information_text"> Images </string>
+    <string name="register_images_add_profile_text"> Add a profile picture </string>
+    <string name="register_images_add_gallery"> Add a picture to your gallery </string>
+    <string name="register_images_video_information_text"> Video Pitch </string>
+    <string name="image_floating_menu_select_image"> Import image </string>
+    <string name="image_floating_menu_take_image"> Take image </string>
+    <string name="gallery_floating_menu_delete_image"> Delete </string>
+
     <string name="register_button_text"> Continue </string>
     <string name="register_button_finish_text"> Finish </string>
     <string name="text_register"> Register now </string>

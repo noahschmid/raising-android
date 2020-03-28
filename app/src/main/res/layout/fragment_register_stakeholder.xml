@@ -72,14 +72,10 @@
 
             <TextView
                 android:id="@+id/text_stakeholder_information"
+                style="@style/FragmentTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormInformationTextMargin"
-                android:layout_marginBottom="@dimen/inputFormInformationTextMargin"
                 android:hint="@string/register_stakeholder_information_text"
-                android:textSize="@dimen/fragmentTitleFontSize"
-                android:textStyle="bold"
-                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_founder"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -115,11 +111,11 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floating_button_add_founder"
-                style="@style/TransparentRoundIconFloatingButton"
+                style="@style/RoundIconFloatingButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
-                android:src="@drawable/ic_button_add_circle_outline_dark_grey_24dp"
+                android:src="@drawable/ic_add_circle_outline_24dp"
                 app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_board_member"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_founder_recycler_view"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_founder_recycler_view" />
@@ -149,11 +145,11 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floating_button_add_board_member"
-                style="@style/TransparentRoundIconFloatingButton"
+                style="@style/RoundIconFloatingButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
-                android:src="@drawable/ic_button_add_circle_outline_dark_grey_24dp"
+                android:src="@drawable/ic_add_circle_outline_24dp"
                 app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_shareholder"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_board_member_recycler_view"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_board_member_recycler_view"/>
@@ -183,12 +179,12 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floating_button_add_shareholder"
-                style="@style/TransparentRoundIconFloatingButton"
+                style="@style/RoundIconFloatingButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                android:src="@drawable/ic_button_add_circle_outline_dark_grey_24dp"
+                android:src="@drawable/ic_add_circle_outline_24dp"
                 app:layout_constraintBottom_toTopOf="@+id/button_stakeholder"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_shareholder_recycler_view"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_shareholder_recycler_view" />

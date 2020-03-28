@@ -58,14 +58,10 @@
 
     <TextView
         android:id="@+id/text_financial_information"
+        style="@style/FragmentTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/inputFormInformationTextMargin"
-        android:layout_marginBottom="@dimen/inputFormInformationTextMargin"
         android:hint="@string/register_financial_information_text"
-        android:textSize="@dimen/fragmentTitleFontSize"
-        android:textStyle="bold"
-        android:textColorHint="@color/raisingPrimaryTextColor"
         app:layout_constraintBottom_toTopOf="@+id/register_financial_type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
