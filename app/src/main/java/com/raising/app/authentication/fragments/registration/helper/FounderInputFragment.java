@@ -61,6 +61,8 @@ public class FounderInputFragment extends RaisingFragment {
         founderCompanyPositionInput = view.findViewById(R.id.input_founder_poistion);
         founderCompanyPositionInput.setAdapter(adapterPosition);
 
+        founderCompanyPositionInput.setShowSoftInputOnFocus(false);
+
         if(founder == null) {
             founder = new Founder();
         } else {
@@ -87,7 +89,7 @@ public class FounderInputFragment extends RaisingFragment {
                 String education = founderEducationInput.getText().toString();
 
                 if(firstName.length() == 0 || lastName.length() == 0
-                        || companyPosition.length() == 0 || education.length() == 0) {
+                        || companyPosition.length() == 0) {
                     showSimpleDialog(getString(R.string.register_dialog_title),
                             getString(R.string.register_dialog_text_empty_credentials));
                     return;

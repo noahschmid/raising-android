@@ -82,6 +82,11 @@ public class ShareholderInputFragment extends RaisingFragment {
         corporateEquityInput = view.findViewById(R.id.input_shareholder_corporate_equity_share);
         corporateEquityInput.setAdapter(adapterEquity);
 
+        privateCountryInput.setShowSoftInputOnFocus(false);
+        privateEquityInput.setShowSoftInputOnFocus(false);
+        corporateBodyInput.setShowSoftInputOnFocus(false);
+        corporateEquityInput.setShowSoftInputOnFocus(false);
+
 
         privateFrameLayout = view.findViewById(R.id.stakeholder_private_shareholder);
         privateFrameLayout.setVisibility(View.GONE);

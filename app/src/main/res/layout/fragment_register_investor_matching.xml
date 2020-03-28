@@ -135,7 +135,6 @@
                     app:layout_constraintStart_toStartOf="parent"
 
                     app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_investor">
-
                 </RadioGroup>
 
                 <TextView
@@ -172,9 +171,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_industry_layout" />
 
-
                 <TextView
-                    android:id="@+id/text_investor_matching_geograpgics"
+                    android:id="@+id/text_investor_matching_geographics"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
@@ -182,50 +180,24 @@
                     android:textSize="@dimen/fragmentSubtitleFontSize"
                     android:textStyle="bold"
                     android:textColorHint="@color/raisingPrimaryTextColor"
-                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_continents"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_geographics_button"
                     app:layout_constraintStart_toStartOf="@+id/text_investor_matching_support"
                     app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_support_layout" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/register_investor_matching_continents"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/register_investor_matching_geographics_button"
                     style="@style/TextInputExposedDropdownMenuTheme"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                    android:hint="@string/register_matching_continents"
-                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_countries"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-
-                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_geograpgics">
-
-                    <MultiAutoCompleteTextView
-                        android:id="@+id/register_input_investor_matching_continents"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/inputFormHeight"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/register_investor_matching_countries"
-                    style="@style/TextInputExposedDropdownMenuTheme"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                    android:hint="@string/register_matching_countries"
+                    android:hint="@string/register_matching_geographics_input"
                     app:layout_constraintBottom_toTopOf="@+id/button_investor_matching"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_continents">
-
-                    <MultiAutoCompleteTextView
-                        android:id="@+id/register_input_investor_matching_countries"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/inputFormHeight"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_support_layout">
+                </com.google.android.material.button.MaterialButton>
 
                 <Button
                     android:id="@+id/button_investor_matching"
@@ -239,7 +211,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_countries" />
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_geographics_button" />
 
                 <LinearLayout
                     android:id="@+id/register_investor_matching_industry_layout"
@@ -250,7 +222,7 @@
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="16dp"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geograpgics"
+                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geographics"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_industry"
@@ -280,7 +252,7 @@
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="16dp"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geograpgics"
+                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geographics"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_support"/>

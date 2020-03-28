@@ -309,12 +309,11 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
         try {
             RegistrationHandler.saveStakeholder(shareholderList, boardMemberList, founderList);
-            RegistrationHandler.proceed();
 
             Gson gson = new Gson();
             String startup = gson.toJson(RegistrationHandler.getStartup());
             JSONObject jsonStartup = new JSONObject(startup);
-            ApiRequestHandler.performPostRequest("/startup/register", registerCallback,
+            ApiRequestHandler.performPostRequest("startup/register", registerCallback,
                     errorCallback, jsonStartup, getContext());
             Log.d("debugMessage", startup);
         } catch (IOException | JSONException e) {
@@ -336,7 +335,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         showSimpleDialog(getString(R.string.generic_error_title),
                 getString(R.string.generic_error_text));
 
-        ApiRequestHandler.parseVolleyError(response, getContext());
+        ApiRequestHandler.parseVolleyError(response);
 
         return null;
     };

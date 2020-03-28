@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -18,36 +17,38 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.android.material.slider.Slider;
 import com.raising.app.R;
 import com.raising.app.RaisingFragment;
+import com.raising.app.models.Continent;
+import com.raising.app.models.Country;
 import com.raising.app.models.Investor;
-import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.models.Model;
 import com.raising.app.util.RegistrationHandler;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.raising.app.util.ResourcesManager;
+import com.raising.app.util.customPicker.CustomPicker;
+import com.raising.app.util.customPicker.PickerItem;
+import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class RegisterInvestorMatchingFragment extends RaisingFragment
         implements View.OnClickListener {
     private Slider ticketSize;
+    private Button geographicsButton;
+    private CustomPicker customPicker;
     private TextView ticketSizeText;
-    private MultiAutoCompleteTextView continentInput, countryInput;
     private LinearLayout industryLayout;
     private LinearLayout investmentPhaseLayout;
     private LinearLayout supportLayout;
     private RadioGroup investorTypeGroup;
 
     private View fragmentView;
-    private int investorType = -1;
+    private long investorType = -1;
+    public ArrayList<PickerItem> pickerItems;
 
     private int minimumTicketSize, maximumTicketSize;
     private int [] ticketSizeSteps;
@@ -62,12 +63,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
         hideBottomNavigation(true);
 
-        if(RegistrationHandler.hasBeenVisited()) {
-            RegistrationHandler.skip();
-            changeFragment(new RegisterInvestorPitchFragment(),
-                    "RegisterInvestorPitchFragment");
-        }
-
         return view;
     }
 
@@ -77,15 +72,20 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
         investorTypeGroup = view.findViewById(R.id.register_investor_matching_radio_investor);
 
-        continentInput = view.findViewById(R.id.register_input_investor_matching_continents);
-        continentInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        geographicsButton = view.findViewById(R.id.register_investor_matching_geographics_button);
 
-        countryInput = view.findViewById(R.id.register_input_investor_matching_countries);
-        countryInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-
-        prepareTicketSizeSlider(view);
+        ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
+        ticketSize.setValues(
+                (float) getResources().getInteger(R.integer.ticket_size_slider_min_value),
+                (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
 
         Investor investor = RegistrationHandler.getInvestor();
+
+        pickerItems = new ArrayList<>();
+        pickerItems.addAll(ResourcesManager.getContinents());
+        pickerItems.addAll(ResourcesManager.getCountries());
+
+        prepareTicketSizeSlider(view);
 
         if(investor.getInvestmentMin() != 0 && investor.getInvestmentMax() != 0)
             ticketSize.setValues((float)investor.getInvestmentMin(), (float)investor.getInvestmentMax());
@@ -100,7 +100,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                 boolean isChecked = checkedRadioButton.isChecked();
 
                 if (isChecked) {
-                    Log.d("debugMessage", "id: " + checkedRadioButton.getContentDescription());
                     investorType = Integer.parseInt((String) checkedRadioButton.getContentDescription());
                 } else {
                     investorType = -1;
@@ -108,19 +107,112 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             }
         });
 
-        getContinents();
-        getCountries();
-        getInvestorTypes();
-        getSupportTypes();
-        getIndustries();
-        getInvestmentPhases();
+        CustomPicker.Builder builder =
+                new CustomPicker.Builder()
+                        .with(getContext())
+                        .canSearch(true)
+                        .multiSelect(true)
+                        .setItems(pickerItems);
 
-        //TODO: restore lists
+        customPicker = builder.build();
+
+        geographicsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(customPicker.instanceRunning())
+                    customPicker.dismiss();
+
+                customPicker.showDialog(getActivity());
+            }
+        });
+
+        setupLists();
+        restoreLists();
 
         Button btnInvestorMatching = view.findViewById(R.id.button_investor_matching);
         btnInvestorMatching.setOnClickListener(this);
     }
 
+    /**
+     * Load all necessary items into list
+     */
+    private void setupLists() {
+        setupCheckboxes(ResourcesManager.getInvestmentPhases(), investmentPhaseLayout);
+        setupCheckboxes(ResourcesManager.getIndustries(), industryLayout);
+        setupRadioGroup(ResourcesManager.getInvestorTypes(), investorTypeGroup);
+        setupCheckboxes(ResourcesManager.getSupports(), supportLayout);
+    }
+
+    /**
+     * Create checkbox group out of array list
+     * @param list the items to add
+     * @param layout where to add to
+     */
+    private void setupCheckboxes(ArrayList<? extends Model> list, LinearLayout layout) {
+        list.forEach(item -> {
+            CheckBox cb = new CheckBox(getContext());
+            cb.setText(item.getName());
+            cb.setContentDescription(String.valueOf(item.getId()));
+            layout.addView(cb);
+        });
+    }
+
+    /**
+     * Add radio boxes to radio group out of array list
+     * @param list the items to add
+     * @param group where to add to
+     */
+    private void setupRadioGroup(ArrayList<? extends Model> list, RadioGroup group) {
+        list.forEach(item -> {
+            RadioButton rb = new RadioButton(getContext());
+            rb.setText(item.getName());
+            rb.setContentDescription(String.valueOf(item.getId()));
+            group.addView(rb);
+        });
+    }
+
+    /**
+     * Tick checkbox with given id
+     * @param layout
+     * @param id
+     */
+    private void tickCheckbox(LinearLayout layout, long id) {
+        for (int i = 0; i < layout.getChildCount(); ++i) {
+            CheckBox cb = (CheckBox) layout.getChildAt(i);
+            if(Long.parseLong((String) cb.getContentDescription()) == id)
+                cb.setChecked(true);
+        }
+    }
+
+    /**
+     * Tick radio button with given id
+     * @param group
+     * @param id
+     */
+    private void tickRadioButton(RadioGroup group, long id) {
+        for (int i = 0; i < group.getChildCount(); ++i) {
+            RadioButton rb = (RadioButton) group.getChildAt(i);
+            if(Long.parseLong((String) rb.getContentDescription()) == id)
+                rb.setChecked(true);
+        }
+    }
+
+    /**
+     * Restore values of lists from previous entered data (saved in RegistrationHandler)
+     */
+    private void restoreLists() {
+        Investor investor = RegistrationHandler.getInvestor();
+        investorType = investor.getInvestorTypeId();
+        investor.getInvestmentPhases().forEach(phase ->
+                tickCheckbox(investmentPhaseLayout, phase.getId()));
+        investor.getIndustries().forEach(industry ->
+                tickCheckbox(industryLayout, industry.getId()));
+
+        tickRadioButton(investorTypeGroup, investor.getInvestorTypeId());
+
+        investor.getSupport().forEach(support ->
+                tickCheckbox(supportLayout, support.getId()));
+    }
 
 
     @Override
@@ -145,7 +237,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
      * Check if all information is valid and save it
      */
     private void processMatchingInformation() {
-        if(investorType == -1 || countryInput.getText().length() == 0) {
+        if(investorType == -1) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
@@ -178,246 +270,39 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             }
         }
 
-        if(industries.size() == 0 || investmentPhases.size() == 0 || support.size() == 0) {
+        ArrayList<Country> countries = new ArrayList<>();
+        ArrayList<Continent> continents = new ArrayList<>();
+
+        pickerItems.forEach(item -> {
+            if(item instanceof Continent && item.isChecked()) {
+                continents.add((Continent)item);
+                pickerItems.forEach(i -> {
+                    if(i instanceof Country) {
+                        i.setChecked(false);
+                    }
+                });
+            }
+
+            if(item instanceof Country && item.isChecked()) {
+                countries.add((Country)item);
+            }
+        });
+
+        if(industries.size() == 0 || investmentPhases.size() == 0 || support.size() == 0 ||
+                (continents.size() == 0 && countries.size() == 0)) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
-        ArrayList<Long> countries = new ArrayList<>();
         try {
             RegistrationHandler.saveInvestorMatchingFragment(ticketSizeMin, ticketSizeMax,
-                    investorType, investmentPhases, industries, support, countries);
-            RegistrationHandler.proceed();
+                    investorType, investmentPhases, industries, support, countries, continents);
             changeFragment(new RegisterInvestorPitchFragment(),
                     "RegisterInvestorPitchFragment");
         } catch (IOException e) {
             Log.d("debugMessage", e.getMessage());
         }
-    }
-
-    /**
-     * Get investor types and add them to radio group
-     */
-    public void getInvestorTypes() {
-        String countries;
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/investortype",
-                        null, new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            final RadioButton[] rb = new RadioButton[response.length() + 1];
-                            // rg.setOrientation(RadioGroup.HORIZONTAL);
-
-                            for(int i=0; i<response.length(); i++){
-                                JSONObject type = response.getJSONObject(i);
-                                rb[i]  = new RadioButton(getContext());
-                                rb[i].setText(type.getString("name"));
-                                rb[i].setContentDescription(String.valueOf(type.getLong("id")));
-                                rb[i].setId(View.generateViewId());
-                                investorTypeGroup.addView(rb[i]);
-                            }
-                        } catch (Exception e) {
-                            // TODO: Proper exception handling
-                            Log.d("debugMessage0", e.getMessage());
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        ApiRequestHandler.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
-    }
-
-    /**
-     * Get support types and add them to radio group
-     */
-    public void getSupportTypes() {
-        String countries;
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/support",
-                        null, new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            final CheckBox[] rb = new CheckBox[response.length() + 1];
-
-                            for(int i=0; i<response.length(); i++){
-                                JSONObject type = response.getJSONObject(i);
-
-                                rb[i]  = new CheckBox(getContext());
-                                rb[i].setText(type.getString("name"));
-                                rb[i].setContentDescription(String.valueOf(type.getLong("id")));
-                                rb[i].setId(View.generateViewId());
-                                supportLayout.addView(rb[i]);
-                            }
-                        } catch (Exception e) {
-                            // TODO: Proper exception handling
-                            Log.d("debugMessage1", e.getLocalizedMessage());
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        ApiRequestHandler.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
-    }
-
-    /**
-     * Get industries and add them to checkboxes
-     */
-    public void getIndustries() {
-        String countries;
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/industry",
-                        null, new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            final CheckBox cb[] = new CheckBox[response.length() + 1];
-                            for(int i=0; i<response.length(); i++){
-                                JSONObject type = response.getJSONObject(i);
-                                cb[i] = new CheckBox(getContext());
-                                cb[i].setText(type.getString("name"));
-                                cb[i].setContentDescription(String.valueOf(type.getLong("id")));
-                                cb[i].setId(View.generateViewId());
-                                industryLayout.addView(cb[i]);
-                                //industriesCheckboxes.add(cb[i]);
-                            }
-                        } catch (Exception e) {
-                            // TODO: Proper exception handling
-                            Log.d("debugMessage1", e.getLocalizedMessage());
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        ApiRequestHandler.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
-    }
-
-    /**
-     * Get investment phases and add them to checkboxes
-     */
-    public void getInvestmentPhases() {
-        String countries;
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/investmentphase",
-                        null, new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            final CheckBox cb[] = new CheckBox[response.length() + 1];
-                            for(int i=0; i<response.length(); i++){
-                                JSONObject type = response.getJSONObject(i);
-                                Log.d("debugMessage", type.getString("name"));
-                                cb[i] = new CheckBox(getContext());
-                                cb[i].setText(type.getString("name"));
-                                cb[i].setContentDescription(String.valueOf(type.getLong("id")));
-                                cb[i].setId(View.generateViewId());
-                                investmentPhaseLayout.addView(cb[i]);
-                            }
-                        } catch (Exception e) {
-                            // TODO: Proper exception handling
-                            Log.d("debugMessage1", e.getLocalizedMessage());
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        ApiRequestHandler.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
-    }
-
-    /**
-     * Get continents and add them to combobox
-     */
-    public void getContinents() {
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/continent",
-                        null, new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            ArrayList<String> continents = new ArrayList<>();
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject jresponse = response.getJSONObject(i);
-                                continents.add(jresponse.getString("name"));
-                            }
-                            ArrayAdapter adapterContinents = new ArrayAdapter<>(getContext(),
-                                    R.layout.item_dropdown_menu, continents.toArray());
-                            continentInput.setAdapter(adapterContinents);
-                        } catch (JSONException e) {
-                            // TODO: Proper exception handling
-                            Log.d("debugMessage", e.getMessage());
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        ApiRequestHandler.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
-    }
-
-    /**
-     * Get countries and add them to combobox
-     */
-    private void getCountries() {
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
-                (Request.Method.GET, ApiRequestHandler.getDomain() + "public/country",
-                        null, new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            ArrayList<String> countries = new ArrayList<>();
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject jresponse = response.getJSONObject(i);
-                                countries.add(jresponse.getString("name"));
-                            }
-                            ArrayAdapter adapterCountries = new ArrayAdapter<>(getContext(),
-                                    R.layout.item_dropdown_menu, countries.toArray());
-                            countryInput.setAdapter(adapterCountries);
-                        } catch (JSONException e) {
-                            // TODO: Proper exception handling
-                            Log.d("debugMessage", e.getMessage());
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        ApiRequestHandler.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
     }
 
     /**

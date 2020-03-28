@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.raising.app.models.Account;
+import com.raising.app.models.Continent;
 import com.raising.app.models.Country;
 import com.raising.app.models.Industry;
 import com.raising.app.models.InvestmentPhase;
@@ -31,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -44,7 +46,6 @@ public class RegistrationHandler {
     private static final String freeEmailEndpoint = "account/valid";
 
     private static boolean inProgress = false;
-    private static int currentPage = 0;
     private static Context context;
     private static boolean cancelAllowed = false;
 
@@ -54,38 +55,18 @@ public class RegistrationHandler {
     private static Startup startup = new Startup();
     private static PrivateProfile privateProfile = new PrivateProfile();
 
-    /**
-     * Proceed to next page. Gets called whenever user gets to next page in the registration process
-     */
-    public static void proceed() throws IOException {
-        currentPage++;
-        inProgress = true;
-        saveRegistrationState();
-    }
 
     public static void setContext(Context ctx) {
         context = ctx;
-    }
-
-    /**
-     * Indicates whether current registration page has already been visited
-     * @return true if page has been visited, false otherwise
-     */
-    public static boolean hasBeenVisited() {
-        cancelAllowed = true;
-        return (currentPage > 0) && !inProgress;
     }
 
     public static boolean shouldCancel() {
         return cancelAllowed;
     }
 
-    /**
-     * Skip current page. Gets called  when app is reloaded to skip to the page that was last modified
-     */
-    public static void skip() { currentPage--; }
+    public static void setCancelAllowed(boolean allowed) { cancelAllowed = allowed; }
 
-    public static void setAccountType(String type) {
+    public static void setAccountType(String type) throws IOException {
         accountType = type;
         Gson gson  = new Gson();
         String tmp = gson.toJson(account);
@@ -95,6 +76,7 @@ public class RegistrationHandler {
         else{
             investor = gson.fromJson(tmp, new TypeToken<Investor>(){}.getType());
         }
+        saveRegistrationState();
     }
     public static String getAccountType() { return accountType; }
     public static boolean isStartup() { return accountType.equalsIgnoreCase("startup"); }
@@ -121,20 +103,14 @@ public class RegistrationHandler {
     /**
      * Save the private profile information which doesn't get stored in the database
      * @param company
-     * @param city
-     * @param street
-     * @param zipCode
      * @param website
      * @param country
      */
-    public static void saveProfileInformation(String company, String city,
-                                              String street, String zipCode, String website,
+    public static void saveProfileInformation(String company, String phone, String website,
                                               String country) throws IOException {
         privateProfile.setCompany(company);
-        privateProfile.setCity(city);
-        privateProfile.setStreet(street);
+        privateProfile.setPhone(phone);
         privateProfile.setWebsite(website);
-        privateProfile.setZipCode(zipCode);
         privateProfile.setCountry(country);
 
         saveObject(privateProfile, "rgstr_profile");
@@ -149,7 +125,6 @@ public class RegistrationHandler {
      * Cancel current registration process
      */
     public static void cancel() {
-        currentPage = 0;
         context.deleteFile("rgstr_profile");
         context.deleteFile("rgstr_account");
         context.deleteFile("rgstr");
@@ -172,8 +147,6 @@ public class RegistrationHandler {
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader bufferedReader = new BufferedReader(isr);
 
-            currentPage = Integer.parseInt(bufferedReader.readLine());
-            Log.d("debugMessage", "page: " + currentPage);
             accountType = bufferedReader.readLine();
             isr.close();
             fis.close();
@@ -193,13 +166,12 @@ public class RegistrationHandler {
      * Start a new registration process
      */
     public static void begin() throws IOException {
-        currentPage = 0;
         accountType = "undefined";
         inProgress = true;
         account = new Account();
         privateProfile = new PrivateProfile();
 
-        String registrationInfo = currentPage + "\n" + accountType;
+        String registrationInfo = accountType;
         saveString(registrationInfo, "rgstr");
     }
 
@@ -236,7 +208,7 @@ public class RegistrationHandler {
      * @throws IOException
      */
     private static void saveRegistrationState() throws IOException {
-        String registrationInfo = currentPage + "\n" + accountType;
+        String registrationInfo = accountType;
         saveString(registrationInfo, "rgstr");
     }
 
@@ -335,9 +307,10 @@ public class RegistrationHandler {
      * @throws IOException
      */
     public static void saveInvestorMatchingFragment(float ticketSizeMin, float ticketSizeMax,
-                                                    int investorType, ArrayList<Long> investmentPhases,
+                                                    long investorType, ArrayList<Long> investmentPhases,
                                                     ArrayList<Long> industries, ArrayList<Long> support,
-                                                    ArrayList<Long> countries) throws IOException {
+                                                    ArrayList<Country> countries,
+                                                    ArrayList<Continent> continents) throws IOException {
         investor.setInvestmentMax((int)ticketSizeMax);
         investor.setInvestmentMin((int)ticketSizeMin);
         investor.setInvestorTypeId(investorType);
@@ -355,9 +328,8 @@ public class RegistrationHandler {
             investor.addSupport(new Support(id));
         }
 
-        for(Long id : countries) {
-            investor.addCountry(new Country(id));
-        }
+        investor.setCountries(countries);
+        investor.setContinents(continents);
 
         for(Long id : investmentPhases) {
             investor.addInvestmentPhase(new InvestmentPhase(id));
@@ -385,27 +357,30 @@ public class RegistrationHandler {
      * @param fte
      * @param companyName
      * @param companyUid
-     * @param revenue
-     * @param markets
+     * @param revenueMinId
+     * @param revenueMaxId
      * @param foundingYear
      */
     public static void saveCompanyInformation(int breakevenYear, int fte, String companyName,
-                                              String companyUid, int revenue,
-                                              ArrayList<Long> markets, int foundingYear) throws IOException{
+                                              String companyUid, int revenueMinId, int revenueMaxId,
+                                              int foundingYear,
+                                              ArrayList<Country> countries,
+                                              ArrayList<Continent> continents,
+                                              Country country, String phone, String website) throws IOException{
         startup.setBreakEvenYear(breakevenYear);
         startup.setNumberOfFte(fte);
         startup.setName(companyName);
-        startup.setRevenueMin(revenue);
-        startup.setRevenueMax(revenue);
+        startup.setRevenueMin(revenueMinId);
+        startup.setRevenueMax(revenueMaxId);
         startup.setFoundingYear(foundingYear);
-
-        startup.clearCountries();
-
-        for(Long id : markets) {
-            startup.addCountry(new Country(id));
-        }
+        startup.setCountries(countries);
+        startup.setContinents(continents);
+        startup.setCountry(country);
+        startup.setWebsite(website);
+        privateProfile.setPhone(phone);
 
         saveObject(startup, "rgstr_startup");
+        saveObject(privateProfile, "rgstr_profile");
     }
 
     /**
@@ -424,7 +399,6 @@ public class RegistrationHandler {
                                                    ) throws IOException {
         startup.setInvestmentMin((int)ticketSizeMin);
         startup.setInvestmentMax((int)ticketSizeMax);
-
         startup.clearSupport();
         startup.clearInvestorTypes();
         startup.clearIndustries();
@@ -442,8 +416,6 @@ public class RegistrationHandler {
         }
 
         startup.setInvestmentPhaseId(investmentPhases.get(0));
-
-
         saveObject(startup, "rgstr_startup");
     }
 
@@ -457,7 +429,6 @@ public class RegistrationHandler {
                                         ArrayList<Long> labels) throws IOException{
         startup.setDescription(description);
         startup.setPitch(pitch);
-
         startup.clearLabels();
 
         for(Long id : labels) {
@@ -476,12 +447,14 @@ public class RegistrationHandler {
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void saveFinancialRequirements(long type, float valuation,
-                                                 Calendar closingTime, float scope) throws IOException {
+                                                 Calendar closingTime, float scope,
+                                                 int completed) throws IOException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd" );
         startup.setClosingTime(format.format(closingTime.getTime()));
         startup.setPreMoneyValuation((int)valuation);
         startup.setFinanceTypeId(type);
         startup.setScope((int)scope);
+        startup.setCompleted(completed);
 
         saveObject(startup, "rgstr_startup");
     }
@@ -510,4 +483,5 @@ public class RegistrationHandler {
 
         saveObject(startup, "rgstr_startup");
     }
+
 }

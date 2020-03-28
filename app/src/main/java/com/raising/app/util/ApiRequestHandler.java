@@ -13,6 +13,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.JsonObject;
@@ -137,23 +138,51 @@ public class ApiRequestHandler {
         getInstance(ctx).addToRequestQueue(jsonObjectRequest);
     }
 
+    /**
+     * Perform a simple get request with jsonarray as response
+     * @param endpoint the backend endpoint
+     * @param callback the function to call when request was successful
+     * @param errorCallback the function to call when there was an error
+     */
+    public static void performArrayGetRequest(String endpoint, Function<JSONArray, Void> callback,
+                                         Function<VolleyError, Void> errorCallback, Context ctx) {
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest
+                (Request.Method.GET, getDomain() + endpoint, null, new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        callback.apply(response);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        errorCallback.apply(error);
+                    }
+                });
+
+        getInstance(ctx).addToRequestQueue(jsonObjectRequest);
+    }
+
     public <T> void addToRequestQueue(Request<T> req) {
         getRequestQueue().add(req);
     }
 
-    public static void parseVolleyError(VolleyError error, Context ctx) {
+    /**
+     * Parse error returned by volley to a string
+     * @param error
+     */
+    public static String parseVolleyError(VolleyError error) {
         try {
             String responseBody = new String(error.networkResponse.data, "utf-8");
             JSONObject data = new JSONObject(responseBody);
             JSONArray errors = data.getJSONArray("errors");
             JSONObject jsonMessage = errors.getJSONObject(0);
             String message = jsonMessage.getString("message");
-            Toast.makeText(ctx, message, Toast.LENGTH_LONG).show();
-            Log.d("debugMessage", message);
-        } catch (JSONException e) {
-            Log.d("debugMessage catch jsonexception", e.getMessage());
-        } catch (UnsupportedEncodingException err) {
-            Log.d("debugMessage unsupported encoding", err.getMessage());
+            return message;
+        } catch (JSONException | UnsupportedEncodingException e) {
+            Log.d("debugMessage", e.getMessage() + "");
+            return "failed to parse error";
         }
     }
 
