@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authentication.fragments.registration.investor.RegisterInvestorImagesFragment">
+    tools:context=".fragments.registration.investor.RegisterInvestorImagesFragment">
 
     <TextView
         android:id="@+id/text_investor_images_information"
@@ -20,39 +20,6 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintVertical_chainStyle="packed" />
 
-    <ImageView
-        android:id="@+id/register_investor_profile_image"
-        android:layout_width="0dp"
-        android:layout_height="169dp"
-        android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-        android:src="@drawable/ic_add_24dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_take_profile_picture"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_investor_images_add_profile_picutre" />
-
-    <Button
-        android:id="@+id/button_select_profile_picutre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-        android:hint="@string/image_floating_menu_take_image"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button_take_profile_picture"
-        app:layout_constraintEnd_toEndOf="@+id/register_investor_profile_image" />
-
-    <Button
-        android:id="@+id/button_take_profile_picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-        android:hint="@string/image_floating_menu_select_image"
-        app:layout_constraintBottom_toTopOf="@+id/text_investor_images_add_gallery"
-        app:layout_constraintStart_toStartOf="@+id/register_investor_profile_image"
-        app:layout_constraintTop_toBottomOf="@+id/register_investor_profile_image" />
-
     <TextView
         android:id="@+id/text_investor_images_add_profile_picutre"
         android:layout_width="wrap_content"
@@ -65,6 +32,31 @@
         app:layout_constraintStart_toStartOf="@+id/register_investor_profile_image"
         app:layout_constraintTop_toBottomOf="@+id/text_investor_images_information" />
 
+    <ImageView
+        android:id="@+id/register_investor_profile_image"
+        android:layout_width="0dp"
+        android:layout_height="169dp"
+        android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+        android:src="@drawable/ic_add_24dp"
+        app:layout_constraintBottom_toTopOf="@+id/text_investor_images_add_gallery"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_investor_images_add_profile_picutre" />
+
+    <TextView
+        android:id="@+id/text_investor_images_add_gallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+        android:hint="@string/register_images_add_gallery"
+        android:textColorHint="@color/raisingPrimaryTextColor"
+        android:textSize="@dimen/fragmentSubtitleFontSize"
+        app:layout_constraintBottom_toTopOf="@+id/register_investor_images_gallery"
+        app:layout_constraintStart_toStartOf="@+id/text_investor_images_add_profile_picutre"
+        app:layout_constraintTop_toBottomOf="@+id/register_investor_profile_image" />
+
     <LinearLayout
         android:id="@+id/register_investor_images_gallery"
         android:layout_width="0dp"
@@ -72,7 +64,7 @@
         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:orientation="horizontal"
         android:weightSum="12"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/button_investor_images"
         app:layout_constraintEnd_toEndOf="@+id/register_investor_profile_image"
         app:layout_constraintStart_toStartOf="@+id/register_investor_profile_image"
         app:layout_constraintTop_toBottomOf="@+id/text_investor_images_add_gallery">
@@ -89,18 +81,6 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/text_investor_images_add_gallery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
-        android:hint="@string/register_images_add_gallery"
-        android:textColorHint="@color/raisingPrimaryTextColor"
-        android:textSize="@dimen/fragmentSubtitleFontSize"
-        app:layout_constraintBottom_toTopOf="@+id/register_investor_images_gallery"
-        app:layout_constraintStart_toStartOf="@+id/text_investor_images_add_profile_picutre"
-        app:layout_constraintTop_toBottomOf="@+id/button_take_profile_picture" />
-
     <Button
         android:id="@+id/button_investor_images"
         style="@style/ButtonConfirmRegistration"
@@ -110,23 +90,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/register_investor_images_gallery"
         app:layout_constraintStart_toStartOf="@+id/register_investor_images_gallery" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-        android:hint="@string/image_floating_menu_select_image"
-        app:layout_constraintBottom_toTopOf="@+id/button_investor_images"
-        app:layout_constraintStart_toStartOf="@+id/register_investor_images_gallery"
-        app:layout_constraintTop_toBottomOf="@+id/register_investor_images_gallery" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-        android:hint="@string/image_floating_menu_take_image"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="@+id/register_investor_images_gallery" />
 </androidx.constraintlayout.widget.ConstraintLayout>

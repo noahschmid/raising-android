@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -59,34 +58,19 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         }
     }
 
-    @Override
-    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        getActivity().getMenuInflater().inflate(R.menu.image_floating_popup_menu, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.image_menu_select_image:
-
-            case R.id.image_menu_take_image:
-
-            default:
-                return super.onContextItemSelected(item);
-        }
-    }
 
     private void showImageMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this.getContext(), view, R.style.CentralizeImagePopup);
         popupMenu.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.image_menu_select_image:
+                    // lets user choose picture from gallery
                     Intent openGalleryIntent = new Intent(
                             Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                     startActivityForResult(openGalleryIntent, REQUEST_IMAGE_FETCH);
                     return true;
                 case R.id.image_menu_take_image:
+                    // lets user take a picture
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     return true;
