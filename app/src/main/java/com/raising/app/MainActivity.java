@@ -10,8 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.raising.app.authentication.fragments.LoginFragment;
+import com.raising.app.fragments.LoginFragment;
+import com.raising.app.fragments.MatchesFragment;
+import com.raising.app.fragments.ProfileFragment;
+import com.raising.app.fragments.SettingsFragment;
 import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.RegistrationHandler;
 
@@ -22,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ResourcesManager.init(getApplicationContext());
+        ResourcesManager.init(getApplicationContext(), getSupportFragmentManager());
+        InternalStorageHandler.init(getApplicationContext());
         ResourcesManager.loadAll();
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);

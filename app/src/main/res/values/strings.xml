@@ -179,4 +179,6 @@
     <string name="register_company_website">Website</string>
     <string name="register_company_country">Country</string>
     <string name="register_financial_completed">Completed</string>
+    <string name="server_error">Server Error</string>
+    <string name="server_error_msg_rsc">Couldn\'t fetch all data from server!</string>
 </resources>

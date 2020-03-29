@@ -4,7 +4,7 @@
     android:id="@+id/settings_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsFragment">
+    tools:context=".fragments.SettingsFragment">
 
     <Button
         android:id="@+id/button_logout"

@@ -5,7 +5,7 @@
     android:id="@+id/register_stakeholder_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authentication.fragments.registration.startup.RegisterStakeholderFragment">
+    tools:context=".fragments.registration.startup.RegisterStakeholderFragment">
 
 
     <ScrollView

@@ -9,9 +9,8 @@ public class Shareholder extends StakeholderItem implements Serializable {
     private boolean isPrivateShareholder;
     private String firstName;
     private String lastName;
-    private String country;
-    private String name;
-    private String corporateBody;
+    private String corpName;
+    private int corporateBodyId;
     private String website;
     private String equityShare;
     private long countryId;
@@ -21,20 +20,20 @@ public class Shareholder extends StakeholderItem implements Serializable {
     }
 
     public Shareholder(
-            boolean privateShareholder, String firstName, String lastName, String country,
-            String name, String corporateBody, String website, String equityShare) {
+            boolean privateShareholder, String firstName, String lastName, long countryId,
+            String name, int corporateBody, String website, String equityShare) {
         super(privateShareholder ? (firstName + " " + lastName) : name);
         this.isPrivateShareholder = privateShareholder;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.country = country;
-        this.name = name;
-        this.corporateBody = corporateBody;
+        this.countryId = countryId;
+        this.corpName = name;
+        this.corporateBodyId = corporateBody;
         this.website = website;
         this.equityShare = equityShare;
     }
 
     public void updateTitle() {
-        setTitle(isPrivateShareholder ? (firstName + " " + lastName) : name);
+        setTitle(isPrivateShareholder ? (firstName + " " + lastName) : corpName);
     }
 }
