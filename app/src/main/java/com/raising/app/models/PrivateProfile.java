@@ -6,11 +6,9 @@ import lombok.Data;
 
 @Data
 public class PrivateProfile implements Serializable {
-    private String company;
-    private String website;
-    private String country;
-    private String street;
-    private String zipCode;
-    private String city;
+    private boolean isStartup;
+    private int countryId;
     private String phone;
+    private String email;
+    private String website;
 }

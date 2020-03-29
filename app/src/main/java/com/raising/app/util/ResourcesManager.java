@@ -2,24 +2,20 @@ package com.raising.app.util;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.RadioButton;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
+import androidx.fragment.app.FragmentManager;
+
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 import com.raising.app.R;
 import com.raising.app.models.Continent;
+import com.raising.app.models.CorporateBody;
 import com.raising.app.models.Country;
 import com.raising.app.models.FinanceType;
 import com.raising.app.models.Industry;
 import com.raising.app.models.InvestmentPhase;
 import com.raising.app.models.InvestorType;
 import com.raising.app.models.Label;
+import com.raising.app.models.Model;
 import com.raising.app.models.Revenue;
 import com.raising.app.models.Support;
 
@@ -27,11 +23,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.function.Function;
 
-public class ResourcesManager {
-    private static final int REQUESTS_SENT = 9;
+public class ResourcesManager implements Serializable {
+    private static final int REQUESTS_SENT = 10;
     private static int responsesGot = 0;
     private static boolean loadingSuccessful = false;
 
@@ -44,40 +41,59 @@ public class ResourcesManager {
     private static ArrayList<InvestmentPhase> investmentPhases = new ArrayList<>();
     private static ArrayList<Revenue> revenues = new ArrayList<>();
     private static ArrayList<FinanceType> financeTypes = new ArrayList<>();
+    private static ArrayList<CorporateBody> corporateBodies = new ArrayList<>();
 
-    private static Context ctx;
+    private static Context context;
+    private static FragmentManager fragmentManager;
 
-    public static void init(Context context) {
-        ctx = context;
+    public static void init(Context ctx, FragmentManager fManager) {
+        fragmentManager = fManager;
+        context = ctx;
+    }
+
+    /**
+     * Get model from list by id
+     * @param id the id to search for
+     * @param list where to search in
+     * @return search result, null if not found
+     */
+    public static Model findById(int id, ArrayList<? extends Model> list) {
+        for(Model item : list) {
+            if(item.getId() == id)
+                return item;
+        }
+        return null;
     }
 
     /**
      * Load all resources from backend
      */
     public static void loadAll() {
-        if(ctx == null)
+        if(context == null)
             throw new Error("No context found. Did you call init?");
 
         loadingSuccessful = true;
 
         ApiRequestHandler.performArrayGetRequest("public/country", loadCountries,
-                errorHandler, ctx);
+                errorHandler, context);
         ApiRequestHandler.performArrayGetRequest("public/continent", loadContinents,
-                errorHandler, ctx);
+                errorHandler, context);
         ApiRequestHandler.performArrayGetRequest("public/support", loadSupport,
-                errorHandler, ctx);
+                errorHandler, context);
         ApiRequestHandler.performArrayGetRequest("public/investmentphase", loadInvestmentPhases,
-                errorHandler, ctx);
+                errorHandler, context);
         ApiRequestHandler.performArrayGetRequest("public/investortype", loadInvestorTypes,
-                errorHandler, ctx);
+                errorHandler, context);
         ApiRequestHandler.performArrayGetRequest("public/label", loadLabels,
-                errorHandler, ctx);
+                errorHandler, context);
         ApiRequestHandler.performArrayGetRequest("public/industry", loadIndustries,
-                errorHandler, ctx);
+                errorHandler, context);
         ApiRequestHandler.performArrayGetRequest("public/revenue", loadRevenues,
-                errorHandler, ctx);
+                errorHandler, context);
         ApiRequestHandler.performArrayGetRequest("public/financetype", loadFinanceTypes,
-                errorHandler, ctx);
+                errorHandler, context);
+        ApiRequestHandler.performArrayGetRequest("public/corporatebody", loadCorporateBodies,
+                errorHandler, context);
     }
 
     public static ArrayList<Country> getCountries() { return countries; }
@@ -89,6 +105,34 @@ public class ResourcesManager {
     public static ArrayList<Support> getSupports() { return supports; }
     public static ArrayList<Revenue> getRevenues() { return revenues; }
     public static ArrayList<FinanceType> getFinanceTypes() { return financeTypes; }
+    public static ArrayList<CorporateBody> getCorporateBodies() { return corporateBodies; }
+
+    public static Country getCountry(int id) { return (Country)findById(id, countries); }
+    public static Continent getContinent(int id) { return (Continent)findById(id, continents); }
+    public static InvestorType getInvestorType(int id) { return (InvestorType)findById(id, investorTypes); }
+    public static Revenue getRevenue(int minId) {
+        for(Revenue rev : revenues) {
+            if(rev.getRevenueMinId() == minId)
+                return rev;
+        }
+        return null;
+    }
+
+    public static CorporateBody getCorporateBody(int id) {
+        for(CorporateBody body : corporateBodies) {
+            if(body.getId() == id)
+                return body;
+        }
+        return null;
+    }
+
+    public static String getRevenueString(int minId) {
+        Revenue rev = getRevenue(minId);
+        if(rev == null)
+            return "";
+        return rev.toString(context.getString(R.string.currency),
+                context.getResources().getStringArray(R.array.revenue_units));
+    }
 
     /**
      * Check whether all backend requests have returned and if so, check whether they were
@@ -97,9 +141,12 @@ public class ResourcesManager {
     private static void handleProcess() {
         if(responsesGot != REQUESTS_SENT)
             return;
+
         if(!loadingSuccessful) {
-            // TODO: notification that resources didn't load
-            throw new Error("Couldn't fetch all data from backend!");
+            SimpleMessageDialog dialog =
+                    new SimpleMessageDialog().newInstance(context.getString(R.string.server_error),
+                            context.getString(R.string.server_error_msg_rsc));
+            dialog.show(fragmentManager, "server_error");
         }
     }
 
@@ -108,9 +155,10 @@ public class ResourcesManager {
      */
     static Function<VolleyError, Void> errorHandler = volleyError -> {
         ++responsesGot;
+        loadingSuccessful = false;
+        handleProcess();
         Log.d("debugMessage", "Volley error: " +
                 ApiRequestHandler.parseVolleyError(volleyError));
-        handleProcess();
         return null;
     };
 
@@ -270,8 +318,6 @@ public class ResourcesManager {
                 industry.setName(jresponse.getString("name"));
                 if(industry.getName().length() > 0)
                     industries.add(industry);
-
-                Log.d("debugMessage", "name: " + industry.getName() + " id: " + industry.getId());
             }
 
             if(industries.isEmpty()) {
@@ -377,6 +423,34 @@ public class ResourcesManager {
         } catch (JSONException e) {
             loadingSuccessful = false;
             Log.d("debugMessage", "Error while parsing finance types: " + e.getMessage());
+        }
+
+        ++responsesGot;
+        handleProcess();
+        return null;
+    };
+
+    /**
+     * Handle backend response and load corporate bodies into arraylist
+     */
+    static Function<JSONArray, Void> loadCorporateBodies = response -> {
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject jresponse = response.getJSONObject(i);
+                CorporateBody corporateBody = new CorporateBody();
+                corporateBody.setId(jresponse.getInt("id"));
+                corporateBody.setName(jresponse.getString("name"));
+                corporateBodies.add(corporateBody);
+            }
+
+            if(corporateBodies.isEmpty()) {
+                Log.d("debugMessage", "Fetched an empty array in loadCorporateBodies");
+                loadingSuccessful = false;
+            }
+
+        } catch (JSONException e) {
+            loadingSuccessful = false;
+            Log.d("debugMessage", "Error while parsing corporate bodies: " + e.getMessage());
         }
 
         ++responsesGot;

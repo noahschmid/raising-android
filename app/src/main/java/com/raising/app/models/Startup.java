@@ -17,22 +17,19 @@ import lombok.Data;
 public class Startup extends Account implements Serializable {
     private long investmentPhaseId = -1;
     private int boosts = 0;
-    private String street;
-    private String city;
-    private int zipCode;
     private String website;
     private int breakEvenYear;
     private int numberOfFte;
     private int turnover;
     private int preMoneyValuation;
     private String closingTime;
-    private int revenueMax = -1;
-    private int revenueMin = -1;
+    private int revenueMaxId = -1;
+    private int revenueMinId = -1;
     private int scope;
     private String uId;
     private int foundingYear;
     private long financeTypeId = -1;
-    private int completed;
+    private int raised;
 
     private List<InvestorType> investorTypes;
     private List<Label> labels;
@@ -41,7 +38,7 @@ public class Startup extends Account implements Serializable {
     private List<Founder> founders;
     private List<Shareholder> privateShareholders;
     private List<Shareholder> corporateShareholders;
-    private Country country;
+    private int countryId;
 
     public Startup() {
         investorTypes = new ArrayList<>();

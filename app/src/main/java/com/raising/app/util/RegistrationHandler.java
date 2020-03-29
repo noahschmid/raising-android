@@ -55,7 +55,6 @@ public class RegistrationHandler {
     private static Startup startup = new Startup();
     private static PrivateProfile privateProfile = new PrivateProfile();
 
-
     public static void setContext(Context ctx) {
         context = ctx;
     }
@@ -68,15 +67,26 @@ public class RegistrationHandler {
 
     public static void setAccountType(String type) throws IOException {
         accountType = type;
-        Gson gson  = new Gson();
-        String tmp = gson.toJson(account);
         if(isStartup()) {
-            startup = gson.fromJson(tmp, new TypeToken<Startup>(){}.getType());
+            startup.setFirstName(account.getFirstName());
+            startup.setLastName(account.getLastName());
+            startup.setName(account.getName());
+            startup.setEmail(account.getEmail());
+            startup.setPassword(account.getPassword());
+            privateProfile.setStartup(true);
+            InternalStorageHandler.saveObject(privateProfile, "rgstr_startup");
         }
         else{
-            investor = gson.fromJson(tmp, new TypeToken<Investor>(){}.getType());
+            investor.setFirstName(account.getFirstName());
+            investor.setLastName(account.getLastName());
+            investor.setName(account.getName());
+            investor.setEmail(account.getEmail());
+            investor.setPassword(account.getPassword());
+            privateProfile.setStartup(false);
+            InternalStorageHandler.saveObject(privateProfile, "rgstr_investor");
         }
         saveRegistrationState();
+        InternalStorageHandler.saveObject(privateProfile, "rgstr_profile");
     }
     public static String getAccountType() { return accountType; }
     public static boolean isStartup() { return accountType.equalsIgnoreCase("startup"); }
@@ -96,24 +106,28 @@ public class RegistrationHandler {
         account.setFirstName(firstName);
         account.setLastName(lastName);
         account.setPassword(password);
+        privateProfile.setEmail(email);
 
-        saveObject(account, "rgstr_account");
+        InternalStorageHandler.saveObject(account, "rgstr_account");
+        InternalStorageHandler.saveObject(privateProfile, "rgstr_profile");
     }
 
     /**
      * Save the private profile information which doesn't get stored in the database
      * @param company
+     * @param phone
      * @param website
-     * @param country
+     * @param countryId
      */
     public static void saveProfileInformation(String company, String phone, String website,
-                                              String country) throws IOException {
-        privateProfile.setCompany(company);
+                                              int countryId) throws IOException {
+        account.setCompany(company);
         privateProfile.setPhone(phone);
         privateProfile.setWebsite(website);
-        privateProfile.setCountry(country);
+        privateProfile.setCountryId(countryId);
 
-        saveObject(privateProfile, "rgstr_profile");
+        InternalStorageHandler.saveObject(privateProfile, "rgstr_profile");
+        InternalStorageHandler.saveObject(privateProfile, "account");
     }
 
     public static Account getAccount() { return account; }
@@ -154,11 +168,11 @@ public class RegistrationHandler {
             account = loadAccount();
             privateProfile = loadPrivateProfile();
             investor = loadInvestor();
+            startup = loadStartup();
         } catch(Exception e) {
             Log.d("debugMessage", e.getMessage());
             return false;
         }
-
         return true;
     }
 
@@ -173,20 +187,6 @@ public class RegistrationHandler {
 
         String registrationInfo = accountType;
         saveString(registrationInfo, "rgstr");
-    }
-
-    /**
-     * Save object to internal storage
-     * @param object
-     * @param filename
-     * @throws IOException
-     */
-    private static void saveObject(Object object, String filename) throws IOException {
-        FileOutputStream outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-        objectOutputStream.writeObject(object);
-        objectOutputStream.flush();
-        objectOutputStream.close();
     }
 
     /**
@@ -213,47 +213,12 @@ public class RegistrationHandler {
     }
 
     /**
-     * Load object from internal storage
-     * @param filename the file to load from
-     * @return Object loaded from internal storage
-     * @throws Exception
-     */
-    private static Object loadObject(String filename) throws Exception {
-        FileInputStream fis = context.openFileInput(filename);
-        ObjectInputStream ois = new ObjectInputStream (fis);
-        Object obj = ois.readObject();
-        ois.close();
-        fis.close();
-        return obj;
-    }
-
-    /**
-     * Read file line by line and return array list of strings
-     * @param filename
-     * @return
-     * @throws IOException
-     */
-    private static ArrayList<String> loadStrings(String filename) throws IOException {
-        FileInputStream fis = context.openFileInput(filename);
-        InputStreamReader isr = new InputStreamReader(fis);
-        BufferedReader bufferedReader = new BufferedReader(isr);
-        ArrayList<String> result = new ArrayList<>();
-        String line;
-        while((line = bufferedReader.readLine()) != null){
-            result.add(line);
-        }
-        isr.close();
-        fis.close();
-        return result;
-    }
-
-    /**
      * Load saved account details
      * @return
      */
     public static Account loadAccount() {
         try {
-            return (Account) loadObject("rgstr_account");
+            return (Account) InternalStorageHandler.loadObject("rgstr_account");
         } catch (Exception e) {
             return new Account();
         }
@@ -265,8 +230,9 @@ public class RegistrationHandler {
      */
     public static Investor loadInvestor() {
         try {
-            return (Investor) loadObject("rgstr_investor");
+            return (Investor) InternalStorageHandler.loadObject("rgstr_investor");
         } catch (Exception e) {
+            Log.d("debugMessage", "error loading investor");
             return new Investor();
         }
     }
@@ -277,8 +243,9 @@ public class RegistrationHandler {
      */
     public static Startup loadStartup() {
         try {
-            return (Startup) loadObject("rgstr_startup");
+            return (Startup) InternalStorageHandler.loadObject("rgstr_startup");
         } catch (Exception e) {
+            Log.d("debugMessage", "error loading startup");
             return new Startup();
         }
     }
@@ -289,7 +256,7 @@ public class RegistrationHandler {
      */
     public static PrivateProfile loadPrivateProfile() {
         try {
-            return (PrivateProfile) loadObject("rgstr_profile");
+            return (PrivateProfile) InternalStorageHandler.loadObject("rgstr_profile");
         } catch (Exception e) {
             return new PrivateProfile();
         }
@@ -311,8 +278,8 @@ public class RegistrationHandler {
                                                     ArrayList<Long> industries, ArrayList<Long> support,
                                                     ArrayList<Country> countries,
                                                     ArrayList<Continent> continents) throws IOException {
-        investor.setInvestmentMax((int)ticketSizeMax);
-        investor.setInvestmentMin((int)ticketSizeMin);
+        investor.setTicketMaxId((int)ticketSizeMax);
+        investor.setTicketMinId((int)ticketSizeMin);
         investor.setInvestorTypeId(investorType);
 
         investor.clearIndustries();
@@ -335,7 +302,7 @@ public class RegistrationHandler {
             investor.addInvestmentPhase(new InvestmentPhase(id));
         }
 
-        saveObject(investor, "rgstr_investor");
+        InternalStorageHandler.saveObject(investor, "rgstr_investor");
     }
 
     /**
@@ -348,7 +315,7 @@ public class RegistrationHandler {
         account.setPitch(pitch);
         account.setDescription(description);
 
-        saveObject(account, "rgstr_account");
+        InternalStorageHandler.saveObject(account, "rgstr_account");
     }
 
     /**
@@ -369,18 +336,19 @@ public class RegistrationHandler {
                                               Country country, String phone, String website) throws IOException{
         startup.setBreakEvenYear(breakevenYear);
         startup.setNumberOfFte(fte);
-        startup.setName(companyName);
-        startup.setRevenueMin(revenueMinId);
-        startup.setRevenueMax(revenueMaxId);
+        startup.setCompany(companyName);
+        startup.setUId(companyUid);
+        startup.setRevenueMinId(revenueMinId);
+        startup.setRevenueMaxId(revenueMaxId);
         startup.setFoundingYear(foundingYear);
         startup.setCountries(countries);
         startup.setContinents(continents);
-        startup.setCountry(country);
+        startup.setCountryId((int)country.getId());
         startup.setWebsite(website);
         privateProfile.setPhone(phone);
 
-        saveObject(startup, "rgstr_startup");
-        saveObject(privateProfile, "rgstr_profile");
+        InternalStorageHandler.saveObject(startup, "rgstr_startup");
+        InternalStorageHandler.saveObject(privateProfile, "rgstr_profile");
     }
 
     /**
@@ -397,8 +365,8 @@ public class RegistrationHandler {
                                                    ArrayList<Long> investmentPhases,
                                                    ArrayList<Long> industries, ArrayList<Long> support
                                                    ) throws IOException {
-        startup.setInvestmentMin((int)ticketSizeMin);
-        startup.setInvestmentMax((int)ticketSizeMax);
+        startup.setTicketMinId((int)ticketSizeMin);
+        startup.setTicketMaxId((int)ticketSizeMax);
         startup.clearSupport();
         startup.clearInvestorTypes();
         startup.clearIndustries();
@@ -416,7 +384,7 @@ public class RegistrationHandler {
         }
 
         startup.setInvestmentPhaseId(investmentPhases.get(0));
-        saveObject(startup, "rgstr_startup");
+        InternalStorageHandler.saveObject(startup, "rgstr_startup");
     }
 
     /**
@@ -435,7 +403,7 @@ public class RegistrationHandler {
             startup.addLabel(new Label(id));
         }
 
-        saveObject(startup, "rgstr_startup");
+        InternalStorageHandler.saveObject(startup, "rgstr_startup");
     }
 
     /**
@@ -448,15 +416,15 @@ public class RegistrationHandler {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void saveFinancialRequirements(long type, float valuation,
                                                  Calendar closingTime, float scope,
-                                                 int completed) throws IOException {
+                                                 int raised) throws IOException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd" );
         startup.setClosingTime(format.format(closingTime.getTime()));
         startup.setPreMoneyValuation((int)valuation);
         startup.setFinanceTypeId(type);
         startup.setScope((int)scope);
-        startup.setCompleted(completed);
+        startup.setRaised(raised);
 
-        saveObject(startup, "rgstr_startup");
+        InternalStorageHandler.saveObject(startup, "rgstr_startup");
     }
 
     /**
@@ -469,7 +437,6 @@ public class RegistrationHandler {
     public static void saveStakeholder(ArrayList<StakeholderItem> shareholderList,
                                        ArrayList<StakeholderItem> boardMemberList,
                                        ArrayList<StakeholderItem> founderList) throws IOException {
-
         boardMemberList.forEach(boardMember -> startup.addBoardMember((BoardMember)boardMember));
         founderList.forEach(founder -> startup.addFounder((Founder) founder));
 
@@ -481,7 +448,7 @@ public class RegistrationHandler {
             }
         }
 
-        saveObject(startup, "rgstr_startup");
+        InternalStorageHandler.saveObject(startup, "rgstr_startup");
     }
 
 }
