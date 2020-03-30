@@ -1,10 +1,6 @@
 <resources>
     <string name="app_name">RaisingMVP</string>
 
-    <string name="billion"> B </string>
-    <string name="million"> M </string>
-    <string name="thousand"> K </string>
-
     <!-- Strings used in bottom navigation -->
     <string name="navigation_home"> Home </string>
     <string name="navigation_profile"> Profile </string>
@@ -88,16 +84,6 @@
     <string name="register_matching_geographics"> Geographics </string>
     <string name="register_matching_continents"> Continents </string>
     <string name="register_matching_countries"> Countries </string>
-    <string-array name="matching_ticket_sizes_string">
-        <item> 20k </item>
-        <item> 50k </item>
-        <item> 100k </item>
-        <item> 200k </item>
-        <item> 250k </item>
-        <item> 500k </item>
-        <item> 1M </item>
-        <item> 2M+ </item>
-    </string-array>
 
     <string-array name="revenue_units">
         <item>k</item>
@@ -150,8 +136,8 @@
     <string name="image_floating_menu_take_image"> Take image </string>
     <string name="gallery_floating_menu_delete_image"> Delete </string>
 
-    <string name="register_button_text"> Continue </string>
-    <string name="register_button_finish_text"> Finish </string>
+    <string name="register_button_text"> CONTINUE </string>
+    <string name="register_button_finish_text"> FINISH </string>
     <string name="text_register"> Register now </string>
 
     <string name="register_dialog_title"> Invalid inputs </string>
@@ -189,4 +175,5 @@
     <string name="register_financial_completed">Completed</string>
     <string name="server_error">Server Error</string>
     <string name="server_error_msg_rsc">Couldn\'t fetch all data from server!</string>
+    <string name="register_no_picture_text">Please select a profile picture!</string>
 </resources>

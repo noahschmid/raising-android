@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import com.raising.app.models.Account;
 import com.raising.app.models.Continent;
 import com.raising.app.models.Country;
+import com.raising.app.models.Image;
 import com.raising.app.models.Industry;
 import com.raising.app.models.InvestmentPhase;
 import com.raising.app.models.Investor;
@@ -38,6 +39,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
@@ -110,6 +112,25 @@ public class RegistrationHandler {
 
         InternalStorageHandler.saveObject(account, "rgstr_account");
         InternalStorageHandler.saveObject(privateProfile, "rgstr_profile");
+    }
+
+    /**
+     * Set images
+     * @param profilePicture
+     * @param gallery
+     */
+    public static void setImages(Image profilePicture, List<Image> gallery) {
+        if(isStartup()) {
+            startup.setProfilePicture(profilePicture);
+            if(!gallery.isEmpty()) {
+                startup.setGallery(gallery);
+            }
+        } else {
+            investor.setProfilePicture(profilePicture);
+            if(!gallery.isEmpty()) {
+                investor.setGallery(gallery);
+            }
+        }
     }
 
     /**
@@ -264,8 +285,8 @@ public class RegistrationHandler {
 
     /**
      * Save matching information for investor
-     * @param ticketSizeMin
-     * @param ticketSizeMax
+     * @param ticketSizeMinId
+     * @param ticketSizeMaxId
      * @param investorType
      * @param investmentPhases
      * @param industries
@@ -273,13 +294,13 @@ public class RegistrationHandler {
      * @param countries
      * @throws IOException
      */
-    public static void saveInvestorMatchingFragment(float ticketSizeMin, float ticketSizeMax,
+    public static void saveInvestorMatchingFragment(int ticketSizeMinId, int ticketSizeMaxId,
                                                     long investorType, ArrayList<Long> investmentPhases,
                                                     ArrayList<Long> industries, ArrayList<Long> support,
                                                     ArrayList<Country> countries,
                                                     ArrayList<Continent> continents) throws IOException {
-        investor.setTicketMaxId((int)ticketSizeMax);
-        investor.setTicketMinId((int)ticketSizeMin);
+        investor.setTicketMaxId(ticketSizeMaxId);
+        investor.setTicketMinId(ticketSizeMinId);
         investor.setInvestorTypeId(investorType);
 
         investor.clearIndustries();
@@ -312,10 +333,10 @@ public class RegistrationHandler {
      * @throws IOException
      */
     public static void savePitch(String description, String pitch) throws IOException {
-        account.setPitch(pitch);
-        account.setDescription(description);
+        investor.setPitch(pitch);
+        investor.setDescription(description);
 
-        InternalStorageHandler.saveObject(account, "rgstr_account");
+        InternalStorageHandler.saveObject(investor, "rgstr_investor");
     }
 
     /**
@@ -353,20 +374,20 @@ public class RegistrationHandler {
 
     /**
      * Save startup matching information
-     * @param ticketSizeMin
-     * @param ticketSizeMax
+     * @param ticketSizeMinId
+     * @param ticketSizeMaxId
      * @param investorTypes
      * @param investmentPhases
      * @param industries
      * @param support
      */
-    public static void saveStartupMatchingFragment(float ticketSizeMin, float ticketSizeMax,
+    public static void saveStartupMatchingFragment(int ticketSizeMinId, int ticketSizeMaxId,
                                                    ArrayList<Long> investorTypes,
                                                    ArrayList<Long> investmentPhases,
                                                    ArrayList<Long> industries, ArrayList<Long> support
                                                    ) throws IOException {
-        startup.setTicketMinId((int)ticketSizeMin);
-        startup.setTicketMaxId((int)ticketSizeMax);
+        startup.setTicketMinId(ticketSizeMinId);
+        startup.setTicketMaxId(ticketSizeMaxId);
         startup.clearSupport();
         startup.clearInvestorTypes();
         startup.clearIndustries();

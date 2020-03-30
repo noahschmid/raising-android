@@ -108,6 +108,7 @@
                 android:stepSize="@integer/ticket_size_slider_step_size"
                 android:valueFrom="@integer/ticket_size_slider_min_value"
                 android:valueTo="@integer/ticket_size_slider_max_value"
+                app:labelBehavior="gone"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_ticket_size_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

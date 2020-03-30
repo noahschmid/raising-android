@@ -18,6 +18,7 @@ import com.raising.app.models.Label;
 import com.raising.app.models.Model;
 import com.raising.app.models.Revenue;
 import com.raising.app.models.Support;
+import com.raising.app.models.TicketSize;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.function.Function;
 
 public class ResourcesManager implements Serializable {
-    private static final int REQUESTS_SENT = 10;
+    private static final int REQUESTS_SENT = 11;
     private static int responsesGot = 0;
     private static boolean loadingSuccessful = false;
 
@@ -42,6 +43,7 @@ public class ResourcesManager implements Serializable {
     private static ArrayList<Revenue> revenues = new ArrayList<>();
     private static ArrayList<FinanceType> financeTypes = new ArrayList<>();
     private static ArrayList<CorporateBody> corporateBodies = new ArrayList<>();
+    private static ArrayList<TicketSize> ticketSizes = new ArrayList<>();
 
     private static Context context;
     private static FragmentManager fragmentManager;
@@ -94,6 +96,8 @@ public class ResourcesManager implements Serializable {
                 errorHandler, context);
         ApiRequestHandler.performArrayGetRequest("public/corporatebody", loadCorporateBodies,
                 errorHandler, context);
+        ApiRequestHandler.performArrayGetRequest("public/ticketsize", loadTicketSizes,
+                errorHandler, context);
     }
 
     public static ArrayList<Country> getCountries() { return countries; }
@@ -106,6 +110,19 @@ public class ResourcesManager implements Serializable {
     public static ArrayList<Revenue> getRevenues() { return revenues; }
     public static ArrayList<FinanceType> getFinanceTypes() { return financeTypes; }
     public static ArrayList<CorporateBody> getCorporateBodies() { return corporateBodies; }
+    public static ArrayList<TicketSize> getTicketSizes() { return ticketSizes; }
+
+    public static String[] getTicketSizeStrings(String currency, String[] units) {
+        ArrayList<String> result = new ArrayList();
+        ticketSizes.forEach(size -> result.add(size.toString(currency, units)));
+        return result.toArray(new String[0]);
+    }
+
+    public static int[] getTicketSizeValues() {
+        ArrayList<Integer> result = new ArrayList();
+        ticketSizes.forEach(size -> result.add(size.getTicketSize()));
+        return result.stream().mapToInt(Integer::valueOf).toArray();
+    }
 
     public static Country getCountry(int id) { return (Country)findById(id, countries); }
     public static Continent getContinent(int id) { return (Continent)findById(id, continents); }
@@ -451,6 +468,34 @@ public class ResourcesManager implements Serializable {
         } catch (JSONException e) {
             loadingSuccessful = false;
             Log.d("debugMessage", "Error while parsing corporate bodies: " + e.getMessage());
+        }
+
+        ++responsesGot;
+        handleProcess();
+        return null;
+    };
+
+    /**
+     * Load ticket sizes from backend to array list
+     */
+    public static Function<JSONArray, Void> loadTicketSizes = response -> {
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject jresponse = response.getJSONObject(i);
+                TicketSize ticketSize = new TicketSize();
+                ticketSize.setId(jresponse.getInt("id"));
+                ticketSize.setTicketSize(jresponse.getInt("name"));
+                ticketSizes.add(ticketSize);
+            }
+
+            if(ticketSizes.isEmpty()) {
+                Log.d("debugMessage", "Fetched an empty array in loadTicketSizes");
+                loadingSuccessful = false;
+            }
+
+        } catch (JSONException e) {
+            loadingSuccessful = false;
+            Log.d("debugMessage", "Error while parsing ticket sizes: " + e.getMessage());
         }
 
         ++responsesGot;

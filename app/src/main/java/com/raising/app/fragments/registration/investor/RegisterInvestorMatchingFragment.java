@@ -81,6 +81,11 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         pickerItems.addAll(ResourcesManager.getContinents());
         pickerItems.addAll(ResourcesManager.getCountries());
 
+        ticketSizeStrings = ResourcesManager.getTicketSizeStrings(getString(R.string.currency),
+                getResources().getStringArray(R.array.revenue_units));
+
+        ticketSizeSteps = ResourcesManager.getTicketSizeValues();
+
         prepareTicketSizeSlider(view);
 
         if(investor.getTicketMinId() != 0 && investor.getTicketMaxId() != 0)
@@ -182,8 +187,11 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             return;
         }
 
-        float ticketSizeMin =  minimumTicketSize;
-        float ticketSizeMax =  maximumTicketSize;
+        int ticketSizeMinId =  (int)ResourcesManager.getTicketSizes().get(
+                (int)ticketSize.getMinimumValue()).getId();
+
+        int ticketSizeMaxId =  (int)ResourcesManager.getTicketSizes().get(
+                (int)ticketSize.getMaximumValue()).getId();
 
         ArrayList<Long> industries = getSelectedCheckboxIds(industryLayout);
         ArrayList<Long> investmentPhases = getSelectedCheckboxIds(investmentPhaseLayout);
@@ -217,7 +225,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         }
 
         try {
-            RegistrationHandler.saveInvestorMatchingFragment(ticketSizeMin, ticketSizeMax,
+            RegistrationHandler.saveInvestorMatchingFragment(ticketSizeMinId, ticketSizeMaxId,
                     investorType, investmentPhases, industries, support, countries, continents);
             changeFragment(new RegisterInvestorPitchFragment(),
                     "RegisterInvestorPitchFragment");
@@ -231,10 +239,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
      * @param view The view in which the slider lies
      */
     private void prepareTicketSizeSlider(View view) {
-
-        //TODO: fetch Integer array of ticket size steps from backend, store in ticketSizeSteps
-        // ticketSizeStrings = createStringRepresentationOfTicketSizeSteps(ticketSizeSteps);
-
         ticketSizeText = view.findViewById(R.id.register_investor_matching_ticket_size_text);
         ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
         ticketSize.addOnChangeListener(new Slider.OnChangeListener() {
@@ -245,13 +249,11 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                         (int) slider.getMaximumValue(), (int) slider.getMinimumValue()));
             }
         });
-        // TODO: if array fetched from backend, replace following line,  ticketSize.setValueTo(ticketSizeSteps().size());
-        ticketSize.setValueTo(getResources().getStringArray(R.array.matching_ticket_sizes_string).length);
 
+        ticketSize.setValueTo(ticketSizeSteps.length);
         ticketSize.setValues(
                 (float) getResources().getInteger(R.integer.ticket_size_slider_min_value),
                 (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
-
         ticketSizeText.setText(adaptSliderValues(
                 (int) ticketSize.getMaximumValue(), (int) ticketSize.getMinimumValue()));
     }
@@ -263,23 +265,14 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
      * @return String representing the current slider selection
      */
     private String adaptSliderValues(int maxValue, int minValue) {
-        // TODO: remove following two lines and change all arrays to the ones defined in method above
-        String [] ticketSizes = getResources().getStringArray(R.array.matching_ticket_sizes_string);
-        int [] intTicketSizes = getResources().getIntArray(R.array.matching_ticket_sizes);
-
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append("Currently selected ticket size: ");
-        //TODO: replace with stringBuilder.append(ticketSizeStrings[minValue - 1]);
-        stringBuilder.append(ticketSizes[minValue - 1]);
-        //TODO: replace with minimumTicketSize = ticketSizeSteps[minValue - 1];
-        minimumTicketSize = intTicketSizes[minValue - 1];
+        stringBuilder.append(ticketSizeStrings[minValue - 1]);
+        minimumTicketSize = ticketSizeSteps[minValue - 1];
 
         stringBuilder.append(" - ");
-        //TODO: replace with stringBuilder.append(ticketSizeStrings[maxValue - 1]);
-        stringBuilder.append(ticketSizes[maxValue - 1]);
-        //TODO: replace with minimumTicketSize = ticketSizeSteps[maxValue - 1];
-        maximumTicketSize = intTicketSizes[maxValue - 1];
+        stringBuilder.append(ticketSizeStrings[maxValue - 1]);
+        maximumTicketSize = ticketSizeSteps[maxValue - 1];
 
         return stringBuilder.toString();
     }

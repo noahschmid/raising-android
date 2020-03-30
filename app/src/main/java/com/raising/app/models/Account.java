@@ -21,6 +21,8 @@ public class Account implements Serializable, Model {
     private String description;
     private int ticketMinId = -1;
     private int ticketMaxId = -1;
+    private Image profilePicture;
+    private List<Image> gallery;
 
     private List<Country> countries = new ArrayList<>();
     private List<Continent> continents = new ArrayList<>();
