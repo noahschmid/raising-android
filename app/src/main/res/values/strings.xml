@@ -87,7 +87,7 @@
     <string name="register_matching_phase"> Phase </string>
     <string name="register_matching_industry"> Industry </string>
     <string name="register_matching_support"> Desired involvement </string>
-    <string name="register_matching_geographics_input">Select geographic preferences</string>
+    <string name="register_matching_geographics_input"> Geographic preferences </string>
 
     <string name="register_matching_geographics"> Geographics </string>
     <string name="register_matching_continents"> Continents </string>

@@ -31,4 +31,7 @@
     <dimen name="fragmentSubtitleFontSize"> 14sp </dimen>
 
     <dimen name="imagesGalleryFABNegativeMargin"> -16dp </dimen>
+
+    <dimen name="outlinedButtonStrokeWidth"> 2dp </dimen>
+    <dimen name="popupButtonFontSize"> 14sp </dimen>
 </resources>

@@ -177,20 +177,20 @@
                     app:layout_constraintStart_toStartOf="@+id/text_investor_matching_support"
                     app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_support_layout" />
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/register_investor_matching_geographics_button"
-                    style="@style/TextInputExposedDropdownMenuTheme"
+                    style="@style/PrimaryOutlineButton"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
+                    android:layout_height="@dimen/authenticationButtonHeight"
+                    android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+                    android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                     android:hint="@string/register_matching_geographics_input"
                     app:layout_constraintBottom_toTopOf="@+id/button_investor_matching"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_support_layout">
-                </com.google.android.material.button.MaterialButton>
+                </Button>
 
                 <Button
                     android:id="@+id/button_investor_matching"
