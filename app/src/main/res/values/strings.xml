@@ -14,6 +14,9 @@
     <string name="remove_text"> Remove </string>
     <string name="add_text"> Add </string>
 
+    <string name="general_dialog_error_title"> Error occurred! </string>
+    <string name="general_dialog_error_text"> Something went wrong. Please try again </string>
+
     <!-- Strings used in LoginScreen -->
     <string name="login_welcome_text"> Welcome to Raising </string>
     <string name="login_button_text"> Login </string>

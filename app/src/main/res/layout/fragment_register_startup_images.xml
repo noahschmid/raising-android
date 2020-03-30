@@ -16,9 +16,12 @@
         android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
         android:gravity="center"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/text_startup_images_information"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="packed">
 
         <ImageView
             android:id="@+id/progress_circle_1"
@@ -43,72 +46,91 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+        <ImageView
+            android:id="@+id/progress_circle_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+        <ImageView
+            android:id="@+id/progress_circle_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+        <ImageView
+            android:id="@+id/progress_circle_7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_circle_full_darkgrey_24dp" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/text_investor_images_information"
+        android:id="@+id/text_startup_images_information"
         style="@style/FragmentTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/inputFormVerticalMargin"
+        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:hint="@string/register_images_information_text"
-        app:layout_constraintBottom_toTopOf="@+id/text_investor_images_add_profile_picutre"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registration_images_progress"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintBottom_toTopOf="@+id/text_startup_images_add_profile_picture"
+        app:layout_constraintEnd_toEndOf="@+id/registration_images_progress"
+        app:layout_constraintStart_toStartOf="@+id/registration_images_progress"
+        app:layout_constraintTop_toBottomOf="@+id/registration_images_progress" />
 
     <TextView
-        android:id="@+id/text_investor_images_add_profile_picture"
+        android:id="@+id/text_startup_images_add_profile_picture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
         android:hint="@string/register_images_add_profile_text"
         android:textColorHint="@color/raisingPrimaryTextColor"
         android:textSize="@dimen/fragmentSubtitleFontSize"
-        app:layout_constraintBottom_toTopOf="@+id/register_investor_profile_image"
-        app:layout_constraintStart_toStartOf="@+id/register_investor_profile_image"
-        app:layout_constraintTop_toBottomOf="@+id/text_investor_images_information" />
+        app:layout_constraintBottom_toTopOf="@+id/register_startup_profile_image"
+        app:layout_constraintStart_toStartOf="@+id/register_startup_profile_image"
+        app:layout_constraintTop_toBottomOf="@+id/text_startup_images_information" />
 
     <ImageView
-        android:id="@+id/register_investor_profile_image"
+        android:id="@+id/register_startup_profile_image"
         android:layout_width="0dp"
-        android:layout_height="169dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_height="180dp"
+        android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:background="@drawable/background_profile_picture"
         android:src="@drawable/ic_add_24dp"
-        app:layout_constraintBottom_toTopOf="@+id/text_investor_images_add_gallery"
+        app:layout_constraintBottom_toTopOf="@+id/text_startup_images_add_gallery"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_investor_images_add_profile_picture" />
+        app:layout_constraintTop_toBottomOf="@+id/text_startup_images_add_profile_picture" />
 
     <TextView
-        android:id="@+id/text_investor_images_add_gallery"
+        android:id="@+id/text_startup_images_add_gallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
         android:hint="@string/register_images_add_gallery"
         android:textColorHint="@color/raisingPrimaryTextColor"
         android:textSize="@dimen/fragmentSubtitleFontSize"
-        app:layout_constraintBottom_toTopOf="@+id/register_investor_images_gallery"
-        app:layout_constraintStart_toStartOf="@+id/text_investor_images_add_profile_picture"
-        app:layout_constraintTop_toBottomOf="@+id/register_investor_profile_image" />
+        app:layout_constraintBottom_toTopOf="@+id/register_startup_images_gallery"
+        app:layout_constraintStart_toStartOf="@+id/register_startup_images_gallery"
+        app:layout_constraintTop_toBottomOf="@+id/register_startup_profile_image" />
 
     <LinearLayout
-        android:id="@+id/register_investor_images_gallery"
+        android:id="@+id/register_startup_images_gallery"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:orientation="horizontal"
         android:weightSum="12"
-        app:layout_constraintBottom_toTopOf="@+id/button_investor_images"
-        app:layout_constraintEnd_toEndOf="@+id/register_investor_profile_image"
-        app:layout_constraintStart_toStartOf="@+id/register_investor_profile_image"
-        app:layout_constraintTop_toBottomOf="@+id/text_investor_images_add_gallery">
+        app:layout_constraintBottom_toTopOf="@+id/button_startup_images"
+        app:layout_constraintEnd_toEndOf="@+id/register_startup_profile_image"
+        app:layout_constraintStart_toStartOf="@+id/register_startup_profile_image"
+        app:layout_constraintTop_toBottomOf="@+id/text_startup_images_add_gallery">
 
         <ImageView
+            android:id="@+id/register_startup_gallery_image1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
@@ -122,12 +144,14 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button_investor_images"
+        android:id="@+id/button_startup_images"
         style="@style/ButtonConfirmRegistration"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:hint="@string/register_button_finish_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/register_investor_images_gallery"
-        app:layout_constraintStart_toStartOf="@+id/register_investor_images_gallery" />
+        app:layout_constraintEnd_toEndOf="@+id/register_startup_images_gallery"
+        app:layout_constraintStart_toStartOf="@+id/register_startup_images_gallery" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

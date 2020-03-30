@@ -33,6 +33,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.function.Function;
 
 public class RegisterInvestorImagesFragment extends RaisingFragment {
@@ -64,14 +65,32 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        hideBottomNavigation(false);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_IMAGE_CAPTURE) {
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            profileImage.setImageBitmap(bitmap);
+            try {
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                profileImage.setImageBitmap(bitmap);
+            } catch (NullPointerException e) {
+                Log.d("InvestorImages", "Nullpointer");
+            }
         } else if (requestCode == REQUEST_IMAGE_FETCH) {
-            Uri imageUri = data.getData();
-            profileImage.setImageURI(imageUri);
+            try {
+                Uri imageUri = data.getData();
+                profileImage.setImageURI(imageUri);
+            } catch (NullPointerException e) {
+                Log.d("InvestorImages", "Nullpointer");
+            }
+        } else {
+            showSimpleDialog(getString(R.string.general_dialog_error_title),
+                    getString(R.string.general_dialog_error_text));
         }
     }
 
@@ -85,12 +104,18 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     // lets user choose picture from gallery
                     Intent openGalleryIntent = new Intent(
                             Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                    startActivityForResult(openGalleryIntent, REQUEST_IMAGE_FETCH);
+                    if (openGalleryIntent.resolveActivity(
+                            Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
+                        startActivityForResult(openGalleryIntent, REQUEST_IMAGE_FETCH);
+                    }
                     return true;
                 case R.id.image_menu_take_image:
                     // lets user take a picture
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(
+                            Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    }
                     return true;
                 default:
                     return false;
@@ -102,7 +127,9 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     }
 
     private void processInputs() {
-        if(profileImage.getDrawable() == null) {
+        if(profileImage.getDrawable() == null ||
+                profileImage.getDrawable() == getResources().getDrawable(
+                        R.drawable.ic_add_24dp, Objects.requireNonNull(getContext()).getTheme())) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_no_picture_text));
             return;
