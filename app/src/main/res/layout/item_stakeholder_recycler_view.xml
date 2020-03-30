@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/inputFormHorizontalMarginSmall"
             android:background="@color/raisingWhite"
-            android:src="@drawable/ic_button_edit_blue_32dp"
+            android:src="@drawable/ic_edit_blue_32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/stakeholder_recycler_button_delete"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/inputFormHorizontalMarginSmall"
-            android:src="@drawable/ic_button_delete_red_32dp"
+            android:src="@drawable/ic_trash_can_red_32dp"
             android:background="@color/raisingWhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -93,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/register_matching_ticket_size"
-                android:drawableLeft="@drawable/ic_noun_tag_24dp"
+                android:drawableLeft="@drawable/ic_price_tag_24dp"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_information" />
@@ -125,14 +125,11 @@
 
             <TextView
                 android:id="@+id/text_startup_matching_investor"
+                style="@style/SubtitleTextWithLeftIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                 android:hint="@string/register_matching_investor"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
-                android:textStyle="bold"
-                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:drawableLeft="@drawable/ic_chess_horse_24dp"
                 app:layout_constraintStart_toStartOf="@+id/text_investor_matching_ticket"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_ticket_size_text" />
 
@@ -149,14 +146,11 @@
 
             <TextView
                 android:id="@+id/text_startup_matching_phase"
+                style="@style/SubtitleTextWithLeftIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                 android:hint="@string/register_matching_phase"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:drawableLeft="@drawable/ic_stairs_24dp"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_investor_type_layout"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_radio_phase"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_matching_investor" />
@@ -182,7 +176,7 @@
                 android:textStyle="bold"
                 android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_industry_layout"
-                android:drawableLeft="@drawable/ic_matching_markets_24dp"
+                android:drawableLeft="@drawable/ic_gear_24dp"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_matching_phase"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_radio_phase" />
 
@@ -205,7 +199,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/register_matching_support"
-                android:drawableLeft="@drawable/ic_matching_involvement_24dp"
+                android:drawableLeft="@drawable/ic_conversation_24dp"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_matching_industry"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_industry_layout" />
 

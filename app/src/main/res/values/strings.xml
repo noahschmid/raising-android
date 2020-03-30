@@ -2,7 +2,8 @@
     <string name="app_name">RaisingMVP</string>
 
     <!-- Strings used in bottom navigation -->
-    <string name="navigation_home"> Home </string>
+    <string name="navigation_matches"> Matches </string>
+    <string name="navigation_handshakes"> Handshakes </string>
     <string name="navigation_profile"> Profile </string>
     <string name="navigation_settings"> Settings </string>
 
@@ -35,8 +36,8 @@
     <string name="forgot_dialog_title"> Password reset code sent </string>
     <string name="forgot_dialog_text"> Check your email for further information </string>
     <string name="forgot_reset_text"> Enter the code, that you have received via email </string>
-    <string name="reset_password_input_placeholder"> New Password.. </string>
-    <string name="reset_code_input_placeholder"> Reset Code..</string>
+    <string name="reset_password_input_placeholder"> New Password </string>
+    <string name="reset_code_input_placeholder"> Reset Code</string>
     <string name="reset_button_text"> Reset Password </string>
 
     <string name="reset_dialog_title_no_input">Invalid inputs</string>
@@ -48,10 +49,10 @@
     <string name="register_select_startup_button"> Start Up</string>
 
     <string name="register_login_information_text"> Login Information </string>
-    <string name="register_first_name"> First Name* </string>
-    <string name="register_last_name"> Last Name* </string>
-    <string name="register_email"> Email* </string>
-    <string name="register_password"> Password* </string>
+    <string name="register_first_name"> First Name </string>
+    <string name="register_last_name"> Last Name </string>
+    <string name="register_email"> Email </string>
+    <string name="register_password"> Password </string>
 
     <string name="register_company_information_text"> Company Information </string>
     <string name="register_company_name"> Company </string>
@@ -61,6 +62,9 @@
     <string name="register_company_fte"> FTE </string>
     <string name="register_company_markets"> Current Markets </string>
     <string name="register_company_founding_year"> Founding Year </string>
+    <string name="register_company_phone">Phone Number</string>
+    <string name="register_company_website">Website</string>
+    <string name="register_company_country">Country</string>
 
     <string name="register_address_information_text"> Address Information</string>
     <string name="register_address_country"> Country </string>
@@ -70,17 +74,20 @@
     <string name="register_address_website"> Website </string>
 
     <string name="register_profile_information_text"> Profile Information</string>
-    <string name="register_profile_country"> Country* </string>
+    <string name="register_profile_country"> Country </string>
     <string name="register_profile_website"> Website </string>
     <string name="register_profile_company"> Company </string>
+    <string name="register_profile_phone">Phone Number</string>
 
     <string name="register_matching_information_text"> Matching Criteria </string>
-    <string name="register_matching_scope"> Scope* </string>
+    <string name="register_matching_scope"> Scope </string>
     <string name="register_matching_ticket_size"> Ticket Size </string>
-    <string name="register_matching_scope_"> Scope* (CHF) </string>
-    <string name="register_matching_min_ticket"> Minimal Ticket Size (CHF) </string>
-    <string name="register_matching_max_ticket"> Maximal Ticket Size (CHF) </string>
+    <string name="register_matching_scope_"> Scope (CHF) </string>
     <string name="register_matching_investor"> Type of investor </string>
+    <string name="register_matching_phase"> Phase </string>
+    <string name="register_matching_industry"> Industry </string>
+    <string name="register_matching_support"> Desired involvement </string>
+    <string name="register_matching_geographics_input">Select geographic preferences</string>
 
     <string name="register_matching_geographics"> Geographics </string>
     <string name="register_matching_continents"> Continents </string>
@@ -103,10 +110,11 @@
     <string name="register_error_word_limit_overflow"> You have exceeded your word limit! </string>
 
     <string name="register_financial_information_text"> Financial Requirements </string>
-    <string name="register_financial_type"> Type* </string>
+    <string name="register_financial_type"> Type </string>
     <string name="register_financial_valuation"> Valuation (CHF) </string>
     <string name="register_financial_valuation_helper"> optional </string>
-    <string name="register_financial_closing_time"> Closing Time* </string>
+    <string name="register_financial_closing_time"> Closing Time </string>
+    <string name="register_financial_completed">Completed</string>
 
     <string name="register_stakeholder_information_text"> Stakeholders </string>
     <string name="register_stakeholder_founder_information_text"> Add a founder </string>
@@ -163,17 +171,8 @@
     <string name="register_dialog_text_invalid_date">Entered date is invalid!</string>
     <string name="reset_email_not_found_text">No account found with given email.</string>
     <string name="error_no_countries_found">No countries found! Did you call build?</string>
-    <string name="search">Search...</string>
-    <string name="register_profile_phone">Phone Number*</string>
-    <string name="register_matching_phase">Phase</string>
-    <string name="register_matching_support">Desired involvement</string>
-    <string name="register_matching_industry">Industry</string>
-    <string name="register_matching_geographics_input">Geographics...</string>
+    <string name="search">Search..</string>
     <string name="currency">CHF</string>
-    <string name="register_company_phone">Phone Number</string>
-    <string name="register_company_website">Website</string>
-    <string name="register_company_country">Country</string>
-    <string name="register_financial_completed">Completed</string>
     <string name="server_error">Server Error</string>
     <string name="server_error_msg_rsc">Couldn\'t fetch all data from server!</string>
     <string name="register_no_picture_text">Please select a profile picture!</string>

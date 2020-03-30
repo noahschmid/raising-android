@@ -14,7 +14,6 @@ import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.ProfileFragment;
 import com.raising.app.fragments.SettingsFragment;
-import com.raising.app.fragments.registration.investor.RegisterInvestorImagesFragment;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.ResourcesManager;
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     } else {
                         switch (item.getItemId()) {
-                            case R.id.nav_home:
+                            case R.id.nav_matches:
                                 selected = new MatchesFragment();
                                 break;
                             case R.id.nav_profile:
