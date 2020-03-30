@@ -32,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.function.Function;
@@ -141,15 +142,15 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         Image logo = new Image(Base64.encodeToString(imageBytes, Base64.DEFAULT));
 
         ArrayList<Image> gallery = new ArrayList<>();
-        RegistrationHandler.setImages(logo, gallery);
 
         try {
+            RegistrationHandler.setImages(logo, gallery);
             Gson gson = new Gson();
             String investor = gson.toJson(RegistrationHandler.getInvestor());
             ApiRequestHandler.performPostRequest("investor/register", registerCallback,
                     errorCallback, new JSONObject(investor), getContext());
             Log.d("debugMessage", investor);
-        } catch (JSONException e) {
+        } catch (JSONException | IOException e) {
             Log.d("debugMessage", e.getMessage());
         }
     }
