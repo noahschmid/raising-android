@@ -32,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.function.Function;
@@ -140,42 +141,12 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         Image logo = new Image(Base64.encodeToString(imageBytes, Base64.DEFAULT));
 
         ArrayList<Image> gallery = new ArrayList<>();
-        RegistrationHandler.setImages(logo, gallery);
 
         try {
-            Gson gson = new Gson();
-            String investor = gson.toJson(RegistrationHandler.getInvestor());
-            ApiRequestHandler.performPostRequest("investor/register", registerCallback,
-                    errorCallback, new JSONObject(investor), getContext());
-            Log.d("debugMessage", investor);
-        } catch (JSONException e) {
+            RegistrationHandler.setImages(logo, gallery);
+            changeFragment(new RegisterFinancialRequirementsFragment());
+        } catch (IOException e) {
             Log.d("debugMessage", e.getMessage());
         }
     }
-
-    /**
-     * Cancel the current registration (as it was successfully sent to backend) and
-     * proceed to login screen
-     */
-    Function<JSONObject, Void> registerCallback = response -> {
-        RegistrationHandler.cancel();
-        clearBackstackAndReplace(new LoginFragment());
-        return null;
-    };
-
-    /**
-     * Display error from backend
-     */
-    Function<VolleyError, Void> errorCallback = response -> {
-        try {
-            if (response.networkResponse.statusCode == 500) {
-                showSimpleDialog(getString(R.string.generic_error_title),
-                        getString(R.string.generic_error_text));
-            }
-        } catch (Exception e) {
-            Log.d("debugMessage", e.toString());
-        }
-        Log.d("debugMessage", ApiRequestHandler.parseVolleyError(response));
-        return null;
-    };
 }

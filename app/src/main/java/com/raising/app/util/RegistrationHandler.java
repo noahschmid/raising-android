@@ -119,17 +119,19 @@ public class RegistrationHandler {
      * @param profilePicture
      * @param gallery
      */
-    public static void setImages(Image profilePicture, List<Image> gallery) {
+    public static void setImages(Image profilePicture, List<Image> gallery) throws IOException {
         if(isStartup()) {
             startup.setProfilePicture(profilePicture);
             if(!gallery.isEmpty()) {
                 startup.setGallery(gallery);
             }
+            InternalStorageHandler.saveObject(startup, "rgstr_startup");
         } else {
             investor.setProfilePicture(profilePicture);
             if(!gallery.isEmpty()) {
                 investor.setGallery(gallery);
             }
+            InternalStorageHandler.saveObject(investor, "rgstr_investor");
         }
     }
 
@@ -142,13 +144,13 @@ public class RegistrationHandler {
      */
     public static void saveProfileInformation(String company, String phone, String website,
                                               int countryId) throws IOException {
-        account.setCompany(company);
+        investor.setCompany(company);
         privateProfile.setPhone(phone);
         privateProfile.setWebsite(website);
         privateProfile.setCountryId(countryId);
 
         InternalStorageHandler.saveObject(privateProfile, "rgstr_profile");
-        InternalStorageHandler.saveObject(privateProfile, "account");
+        InternalStorageHandler.saveObject(investor, "rgstr_investor");
     }
 
     public static Account getAccount() { return account; }

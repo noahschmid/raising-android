@@ -45,8 +45,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_investor_images, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_register_investor_images,
+                container, false);
         hideBottomNavigation(true);
 
         return view;
@@ -94,7 +94,6 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         }
     }
 
-
     private void showImageMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this.getContext(), view);
         popupMenu.setGravity(Gravity.END);
@@ -119,7 +118,6 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     return true;
                 default:
                     return false;
-
             }
         });
         popupMenu.inflate(R.menu.image_floating_menu);
