@@ -22,6 +22,7 @@ import com.raising.app.models.Country;
 import com.raising.app.models.PrivateProfile;
 import com.raising.app.models.Revenue;
 import com.raising.app.models.Startup;
+import com.raising.app.util.NoFilterArrayAdapter;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
@@ -54,8 +55,8 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
         revenues.forEach(rev -> values.add(rev.toString(getString(R.string.currency),
                 getResources().getStringArray(R.array.revenue_units))));
 
-        ArrayAdapter adapterRevenue = new ArrayAdapter<String>( getContext(),
-                R.layout.item_dropdown_menu, values.toArray(new String[0]));
+        NoFilterArrayAdapter<String> adapterRevenue = new NoFilterArrayAdapter<String>( getContext(),
+                R.layout.item_dropdown_menu, values);
 
         companyRevenueInput = view.findViewById(R.id.register_input_company_revenue);
         companyRevenueInput.setAdapter(adapterRevenue);

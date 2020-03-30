@@ -94,6 +94,8 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         profilePhoneInput.setText(profile.getPhone());
 
         profileCountryInput.setShowSoftInputOnFocus(false);
+        if(profile.getCountryId() != -1)
+            countryId = profile.getCountryId();
 
         Button btnProfileInformation = view.findViewById(R.id.button_profile_information);
         btnProfileInformation.setOnClickListener(this);

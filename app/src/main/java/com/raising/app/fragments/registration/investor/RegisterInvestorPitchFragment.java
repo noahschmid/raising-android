@@ -19,6 +19,7 @@ import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.models.Account;
+import com.raising.app.models.Investor;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
 
@@ -58,9 +59,9 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         Button btnInvestorPitch = view.findViewById(R.id.button_investor_pitch);
         btnInvestorPitch.setOnClickListener(this);
 
-        Account account = RegistrationHandler.getAccount();
-        pitchInput.setText(account.getPitch());
-        sentenceInput.setText(account.getDescription());
+        Investor investor = RegistrationHandler.getInvestor();
+        pitchInput.setText(investor.getPitch());
+        sentenceInput.setText(investor.getDescription());
     }
 
     @Override

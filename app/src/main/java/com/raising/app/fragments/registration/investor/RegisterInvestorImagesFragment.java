@@ -42,6 +42,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     static final int REQUEST_IMAGE_FETCH = 2;
 
     ImageView profileImage;
+    Button deleteProfileImageButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,6 +62,10 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         profileImage.setOnClickListener(v -> {
             showImageMenu(profileImage);
         });
+
+        deleteProfileImageButton = view.findViewById(R.id.button_delete_profile_img);
+        deleteProfileImageButton.setVisibility(View.GONE);
+
         Button finishButton = view.findViewById(R.id.button_investor_images);
         finishButton.setOnClickListener(v -> processInputs());
     }
@@ -79,6 +84,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             try {
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 profileImage.setImageBitmap(bitmap);
+                deleteProfileImageButton.setVisibility(View.VISIBLE);
             } catch (NullPointerException e) {
                 Log.d("InvestorImages", "Nullpointer");
             }

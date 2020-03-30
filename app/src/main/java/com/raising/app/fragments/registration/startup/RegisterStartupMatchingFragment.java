@@ -148,10 +148,10 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         }
 
         int ticketSizeMinId =  (int)ResourcesManager.getTicketSizes().get(
-                (int)ticketSize.getMinimumValue()).getId();
+                (int)ticketSize.getMinimumValue() - 1).getId();
 
         int ticketSizeMaxId =  (int)ResourcesManager.getTicketSizes().get(
-                (int)ticketSize.getMaximumValue()).getId();
+                (int)ticketSize.getMaximumValue() - 1).getId();
 
         try {
             RegistrationHandler.saveStartupMatchingFragment(ticketSizeMinId, ticketSizeMaxId,

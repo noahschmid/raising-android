@@ -21,6 +21,7 @@ import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.ShareholderViewModel;
 import com.raising.app.models.CorporateBody;
 import com.raising.app.models.stakeholder.Shareholder;
+import com.raising.app.util.NoFilterArrayAdapter;
 import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
@@ -81,8 +82,8 @@ public class ShareholderInputFragment extends RaisingFragment {
         ArrayList<String> bodies = new ArrayList<>();
         ResourcesManager.getCorporateBodies().forEach(body -> bodies.add(body.getName()));
 
-        ArrayAdapter adapterCorporateBody = new ArrayAdapter<>( getContext(),
-                R.layout.item_dropdown_menu, bodies.toArray(new String[0]));
+        NoFilterArrayAdapter<String> adapterCorporateBody = new NoFilterArrayAdapter<>( getContext(),
+                R.layout.item_dropdown_menu, bodies);
 
         privateCountryInput = view.findViewById(R.id.input_shareholder_country);
         privateCountryInput.setShowSoftInputOnFocus(false);
