@@ -2,7 +2,6 @@ package com.raising.app.fragments.registration.investor;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,9 +11,8 @@ import androidx.annotation.Nullable;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
-import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -42,7 +40,6 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     static final int REQUEST_IMAGE_FETCH = 2;
 
     ImageView profileImage;
-    Button finishButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,13 +59,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         profileImage.setOnClickListener(v -> {
             showImageMenu(profileImage);
         });
-        finishButton = view.findViewById(R.id.button_investor_images);
-        finishButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                processInputs();
-            }
-        });
+        Button finishButton = view.findViewById(R.id.button_investor_images);
+        finishButton.setOnClickListener(v -> processInputs());
     }
 
     @Override
@@ -85,7 +77,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
 
     private void showImageMenu(View view) {
-        PopupMenu popupMenu = new PopupMenu(this.getContext(), view, R.style.CentralizeImagePopup);
+        PopupMenu popupMenu = new PopupMenu(this.getContext(), view);
+        popupMenu.setGravity(Gravity.END);
         popupMenu.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.image_menu_select_image:
@@ -104,7 +97,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
             }
         });
-        popupMenu.inflate(R.menu.image_floating_popup_menu);
+        popupMenu.inflate(R.menu.image_floating_menu);
         popupMenu.show();
     }
 
