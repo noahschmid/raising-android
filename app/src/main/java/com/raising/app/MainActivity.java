@@ -11,7 +11,8 @@ import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.raising.app.authentication.fragments.LoginFragment;
-import com.raising.app.authentication.fragments.myProfile.ProfileFragment;
+import com.raising.app.authentication.fragments.profile.InvestorPublicProfileFragment;
+import com.raising.app.authentication.fragments.profile.MyProfileFragment;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.RegistrationHandler;
 
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
                 hideBottomNavigation(true);
-                fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
+                fragmentTransaction.replace(R.id.fragment_container, new InvestorPublicProfileFragment());
             } else {
                 hideBottomNavigation(false);
                 fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                                 selected = new MatchesFragment();
                                 break;
                             case R.id.nav_profile:
-                                selected = new ProfileFragment();
+                                selected = new MyProfileFragment();
                                 break;
                             case R.id.nav_settings:
                                 selected = new SettingsFragment();

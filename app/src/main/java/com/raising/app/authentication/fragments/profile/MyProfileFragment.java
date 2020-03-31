@@ -1,4 +1,4 @@
-package com.raising.app.authentication.fragments.myProfile;
+package com.raising.app.authentication.fragments.profile;
 
 import android.os.Bundle;
 
@@ -22,10 +22,8 @@ import com.raising.app.authentication.fragments.registration.startup.RegisterFin
 import com.raising.app.authentication.fragments.registration.startup.RegisterStakeholderFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterStartupPitchFragment;
-import com.raising.app.util.AuthenticationHandler;
-import com.raising.app.util.RegistrationHandler;
 
-public class ProfileFragment extends RaisingFragment {
+public class MyProfileFragment extends RaisingFragment {
     private FrameLayout startUpLayout, investorLayout;
     private Button startUpCompanyInformation, startUpMatching, startUpPitch,
             startUpImages, startUpFinancial, startUpStakeholder,
