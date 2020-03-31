@@ -91,7 +91,7 @@ public class RegistrationHandler {
         InternalStorageHandler.saveObject(privateProfile, "rgstr_profile");
     }
     public static String getAccountType() { return accountType; }
-    public static boolean isStartup() { return accountType.equalsIgnoreCase("startup"); }
+    public static boolean isStartup() { return privateProfile.isStartup(); }
 
     /**
      * Save login information to internal storage until registration gets submitted

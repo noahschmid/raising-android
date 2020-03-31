@@ -14,6 +14,8 @@ import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.ProfileFragment;
 import com.raising.app.fragments.SettingsFragment;
+import com.raising.app.fragments.registration.investor.RegisterInvestorImagesFragment;
+import com.raising.app.fragments.registration.startup.RegisterStartupImagesFragment;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.ResourcesManager;
@@ -35,16 +37,16 @@ public class MainActivity extends AppCompatActivity {
 
         RegistrationHandler.setContext(getApplicationContext());
 
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-            if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
-                hideBottomNavigation(true);
-                fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
-            } else {
-                hideBottomNavigation(false);
-                fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
-            }
-            fragmentTransaction.commit();
+        if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
+            hideBottomNavigation(true);
+            fragmentTransaction.replace(R.id.fragment_container, new RegisterStartupImagesFragment());
+        } else {
+            hideBottomNavigation(false);
+            fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
+        }
+        fragmentTransaction.commit();
 
     }
 
