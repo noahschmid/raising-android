@@ -18,10 +18,14 @@ import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.BoardMemberViewModel;
 import com.raising.app.models.stakeholder.BoardMember;
+import com.raising.app.util.NoFilterArrayAdapter;
 import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BoardMemberInputFragment extends RaisingFragment {
     private BoardMemberViewModel boardMemberViewModel;
@@ -53,10 +57,10 @@ public class BoardMemberInputFragment extends RaisingFragment {
         boardMemberViewModel = new ViewModelProvider(requireActivity()).get(BoardMemberViewModel.class);
 
         //TODO: fetch these values from the backend
-        String [] VALUES_POSITIONS = new String[] {"CEO", "CFO", "VRP" };
+        ArrayList<String> positions = new ArrayList<String>(Arrays.asList(new String[]{"CEO", "CFO", "VRP"}));
 
-        ArrayAdapter adapterPosition = new ArrayAdapter<>( getContext(),
-                R.layout.item_dropdown_menu, VALUES_POSITIONS);
+        NoFilterArrayAdapter<String> adapterPosition = new NoFilterArrayAdapter<String>( getContext(),
+                R.layout.item_dropdown_menu, positions);
 
         boardFirstNameInput = view.findViewById(R.id.input_board_member_first_name);
         boardLastNameInput = view.findViewById(R.id.input_board_member_last_name);

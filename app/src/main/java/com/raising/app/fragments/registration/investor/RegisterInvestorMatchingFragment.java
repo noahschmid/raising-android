@@ -71,9 +71,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         geographicsButton = view.findViewById(R.id.register_investor_matching_geographics_button);
 
         ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
-        ticketSize.setValues(
-                (float) getResources().getInteger(R.integer.ticket_size_slider_min_value),
-                (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
 
         Investor investor = RegistrationHandler.getInvestor();
 
@@ -188,10 +185,10 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         }
 
         int ticketSizeMinId =  (int)ResourcesManager.getTicketSizes().get(
-                (int)ticketSize.getMinimumValue()).getId();
+                (int)ticketSize.getMinimumValue() - 1).getId();
 
         int ticketSizeMaxId =  (int)ResourcesManager.getTicketSizes().get(
-                (int)ticketSize.getMaximumValue()).getId();
+                (int)ticketSize.getMaximumValue() - 1).getId();
 
         ArrayList<Long> industries = getSelectedCheckboxIds(industryLayout);
         ArrayList<Long> investmentPhases = getSelectedCheckboxIds(investmentPhaseLayout);

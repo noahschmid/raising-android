@@ -23,12 +23,16 @@ import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.FinanceType;
 import com.raising.app.models.Startup;
+import com.raising.app.util.NoFilterArrayAdapter;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.ResourcesManager;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 public class RegisterFinancialRequirementsFragment extends RaisingFragment implements View.OnClickListener {
@@ -50,9 +54,8 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         ArrayList<String> values = new ArrayList<>();
         financeTypes.forEach(type -> values.add(type.getName()));
 
-        ArrayAdapter adapterType = new ArrayAdapter<>( getContext(),
+        NoFilterArrayAdapter<String> adapterType = new NoFilterArrayAdapter( getContext(),
                 R.layout.item_dropdown_menu, values);
-
 
         financialTypeInput = view.findViewById(R.id.register_input_financial_type);
         financialTypeInput.setAdapter(adapterType);
@@ -93,14 +96,24 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         Startup startup = RegistrationHandler.getStartup();
 
+        if(startup.getClosingTime() != null) {
+            try {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                Date date = formatter.parse(startup.getClosingTime());
+                selectedDate = Calendar.getInstance();
+                selectedDate.setTime(date);
+                financialClosingTimeInput.setText(selectedDate.get(Calendar.DAY_OF_MONTH)
+                        + "." + (selectedDate.get(Calendar.MONTH) + 1 + "."
+                                + selectedDate.get(Calendar.YEAR)));
+            } catch (ParseException e) {
+                Log.d("debugMessage", "error parsing date!");
+            }
+        }
         if(startup.getScope() > 0)
             scopeInput.setText(String.valueOf(startup.getScope()));
 
         if(startup.getPreMoneyValuation() > 0)
             financialValuationInput.setText(String.valueOf(startup.getPreMoneyValuation()));
-
-        if(startup.getClosingTime() != null)
-            financialClosingTimeInput.setText(startup.getClosingTime());
 
         if(startup.getRaised() > 0)
             completedInput.setText(String.valueOf(startup.getRaised()));

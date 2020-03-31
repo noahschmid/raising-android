@@ -18,10 +18,14 @@ import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.FounderViewModel;
 import com.raising.app.models.stakeholder.Founder;
+import com.raising.app.util.NoFilterArrayAdapter;
 import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FounderInputFragment extends RaisingFragment {
     private FounderViewModel founderViewModel;
@@ -54,10 +58,12 @@ public class FounderInputFragment extends RaisingFragment {
 
         founderViewModel = new ViewModelProvider(requireActivity()).get(FounderViewModel.class);
 
-        String [] VALUES_POSITIONS = new String[] {"CEO", "CFO", "VRP" };
+        ArrayList<String> positions = new ArrayList<String>(Arrays.asList(
+                new String[]{"CEO", "CFO", "VRP"}));
 
-        ArrayAdapter adapterPosition = new ArrayAdapter<>( getContext(),
-                R.layout.item_dropdown_menu, VALUES_POSITIONS);
+
+        NoFilterArrayAdapter<String> adapterPosition = new NoFilterArrayAdapter<>( getContext(),
+                R.layout.item_dropdown_menu, positions);
 
         founderFirstNameInput = view.findViewById(R.id.input_founder_first_name);
         founderLastNameInput = view.findViewById(R.id.input_founder_last_name);
