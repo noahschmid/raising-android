@@ -126,7 +126,7 @@
         android:id="@+id/button_investor_images"
         style="@style/ButtonConfirmRegistration"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/authenticationButtonHeight"
         android:hint="@string/register_button_finish_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/register_investor_images_gallery"
