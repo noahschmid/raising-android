@@ -10,7 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.raising.app.models.stakeholder.Founder;
 
 public class FounderViewModel extends AndroidViewModel {
-    private final MutableLiveData<Founder> selectedFounder
+    private MutableLiveData<Founder> selectedFounder
             = new MutableLiveData<Founder>();
 
     public FounderViewModel(@NonNull Application application) {
@@ -32,5 +32,12 @@ public class FounderViewModel extends AndroidViewModel {
      */
     public LiveData<Founder> getSelectedFounder() {
         return selectedFounder;
+    }
+
+    /**
+     * Deselect the currently selected founder before every fragment change
+     */
+    public void deselectFounder() {
+        selectedFounder = new MutableLiveData<>();
     }
 }

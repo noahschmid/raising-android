@@ -32,6 +32,6 @@ public class BoardMember extends StakeholderItem implements Serializable {
         }
 
         public void updateTitle() {
-            setTitle(firstName + " " + lastName);
+            setTitle(firstName + " " + lastName + ", " + boardPosition);
         }
 }

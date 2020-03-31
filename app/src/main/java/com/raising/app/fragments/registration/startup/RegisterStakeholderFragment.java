@@ -58,6 +58,10 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     private ArrayList<StakeholderItem> founderList,
             boardMemberList, shareholderList;
 
+    public RegisterStakeholderFragment() {
+        setArguments(new Bundle());
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,20 +78,25 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (savedInstanceState == null) {
+        if (getArguments().getString("founderList") == null
+                && getArguments().getString("boardMemberList") == null
+                && getArguments().getString("shareholderList") == null) {
             founderList = new ArrayList<>();
             boardMemberList = new ArrayList<>();
             shareholderList = new ArrayList<>();
         } else {
             Gson gson = new Gson();
-            Type founderListType = new TypeToken<ArrayList<Founder>>(){}.getType();
-            founderList = gson.fromJson(savedInstanceState.getString("founderList"), founderListType);
+            Type founderListType = new TypeToken<ArrayList<Founder>>() {
+            }.getType();
+            founderList = gson.fromJson(getArguments().getString("founderList"), founderListType);
 
-            Type boardMemberListType = new TypeToken<ArrayList<BoardMember>>(){}.getType();
-            boardMemberList = gson.fromJson(savedInstanceState.getString("boardMemberList"), boardMemberListType);
+            Type boardMemberListType = new TypeToken<ArrayList<BoardMember>>() {
+            }.getType();
+            boardMemberList = gson.fromJson(getArguments().getString("boardMemberList"), boardMemberListType);
 
-            Type shareholderListType = new TypeToken<ArrayList<Shareholder>>(){}.getType();
-            shareholderList = gson.fromJson(savedInstanceState.getString("shareholderList"), shareholderListType);
+            Type shareholderListType = new TypeToken<ArrayList<Shareholder>>() {
+            }.getType();
+            shareholderList = gson.fromJson(getArguments().getString("shareholderList"), shareholderListType);
         }
 
         // initialize the different recycler views
@@ -95,26 +104,26 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         setupBoardMemberRecyclerView(view);
         setupShareholderRecyclerView(view);
 
-        FloatingActionButton floatingBtnAddFounder = view.findViewById(R.id.floating_button_add_founder);
-        floatingBtnAddFounder.setOnClickListener(new View.OnClickListener() {
+        Button btnAddFounder = view.findViewById(R.id.floating_button_add_founder);
+        btnAddFounder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 changeFragment(new FounderInputFragment());
             }
         });
 
-        FloatingActionButton floatingBtnAddBoardMember
+        Button btnAddBoardMember
                 = view.findViewById(R.id.floating_button_add_board_member);
-        floatingBtnAddBoardMember.setOnClickListener(new View.OnClickListener() {
+        btnAddBoardMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 changeFragment(new BoardMemberInputFragment());
             }
         });
 
-        FloatingActionButton floatingBtnAddShareholder
+        Button btnAddShareholder
                 = view.findViewById(R.id.floating_button_add_shareholder);
-        floatingBtnAddShareholder.setOnClickListener(new View.OnClickListener() {
+        btnAddShareholder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 changeFragment(new ShareholderInputFragment());
@@ -130,6 +139,24 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         super.onDestroyView();
 
         hideBottomNavigation(false);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Gson gson = new Gson();
+        String json = gson.toJson(founderList.toArray());
+        getArguments().putString("founderList", json);
+        founderViewModel.deselectFounder();
+
+        json = gson.toJson(boardMemberList.toArray());
+        getArguments().putString("boardMemberList", json);
+        boardMemberViewModel.deselectBoardMember();
+
+        json = gson.toJson(shareholderList.toArray());
+        getArguments().putString("shareholderList", json);
+        shareholderViewModel.deselectShareholder();
+
     }
 
     @Override
@@ -149,6 +176,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
     /**
      * Delegate creating of recycler view and create observer for FounderViewModel
+     *
      * @param view The view containing the recycler view
      */
     private void setupFounderRecyclerView(View view) {
@@ -157,13 +185,16 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         founderViewModel.getSelectedFounder().observe(getViewLifecycleOwner(),
                 founder -> {
                     founder.updateTitle();
-            founderList.add(founder);
-            founderAdapter.notifyDataSetChanged();
-        });
+                    if(!founderList.contains(founder)) {
+                        founderList.add(founder);
+                        founderAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     /**
      * Create the recycler view for the founders by linking the UI components and setting the adapter
+     *
      * @param view The view containing this recycler view
      */
     private void createFounderRecyclerView(View view) {
@@ -176,7 +207,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             public void onClickEdit(int position) {
                 FounderInputFragment founderFragment = new FounderInputFragment();
                 Bundle args = new Bundle();
-                Founder selectedFounder = ((Founder)founderList.get(position));
+                Founder selectedFounder = ((Founder) founderList.get(position));
                 founderFragment.passFounder(selectedFounder);
                 changeFragment(founderFragment, null);
 
@@ -197,6 +228,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
     /**
      * Delegate creating of the recycler view and create observer for BoardMemberViewModel
+     *
      * @param view The view containing the recycler view
      */
     private void setupBoardMemberRecyclerView(View view) {
@@ -205,13 +237,15 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         boardMemberViewModel.getSelectedBoardMember().observe(getViewLifecycleOwner(),
                 boardMember -> {
                     boardMember.updateTitle();
-            boardMemberList.add(boardMember);
-            boardMemberAdapter.notifyDataSetChanged();
-        });
+                    boardMemberList.add(boardMember);
+                    boardMemberAdapter.notifyDataSetChanged();
+                });
+
     }
 
     /**
      * Create the recycler view for the board members by linking the UI components and setting the adapter
+     *
      * @param view The view containing this recycler view
      */
     private void createBoardMemberRecyclerView(View view) {
@@ -223,7 +257,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             @Override
             public void onClickEdit(int position) {
                 BoardMemberInputFragment boardMemberFragment = new BoardMemberInputFragment();
-                BoardMember selectedBoardMember = ((BoardMember)boardMemberList.get(position));
+                BoardMember selectedBoardMember = ((BoardMember) boardMemberList.get(position));
                 boardMemberFragment.passBoardMember(selectedBoardMember);
                 changeFragment(boardMemberFragment);
 
@@ -232,6 +266,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                     boardMemberList.set(position, boardMember);
                     boardMemberAdapter.notifyItemChanged(position);
                 });
+
             }
 
             @Override
@@ -244,6 +279,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
     /**
      * Delegate creating of ShareholderRecycler view and create observer for ShareholderViewModel
+     *
      * @param view The view containing the recycler view
      */
     private void setupShareholderRecyclerView(View view) {
@@ -252,13 +288,16 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         shareholderViewModel.getSelectedShareholder().observe(getViewLifecycleOwner(),
                 shareholder -> {
                     shareholder.updateTitle();
-                    shareholderList.add(shareholder);
-                    shareholderAdapter.notifyDataSetChanged();
-        });
+                    if(!shareholderList.contains(shareholder)) {
+                        shareholderList.add(shareholder);
+                        shareholderAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     /**
      * Creating the recycler view for the shareholder by linking the UI components and setting the adapter
+     *
      * @param view
      */
     private void createShareholderRecyclerView(View view) {
@@ -270,15 +309,15 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             @Override
             public void onClickEdit(int position) {
                 ShareholderInputFragment shareholderFragment = new ShareholderInputFragment();
-                Shareholder selectedShareholder = ((Shareholder)shareholderList.get(position));
+                Shareholder selectedShareholder = ((Shareholder) shareholderList.get(position));
                 shareholderFragment.passShareholder(selectedShareholder);
                 changeFragment(shareholderFragment);
                 shareholderViewModel.getSelectedShareholder().observe(getViewLifecycleOwner(),
                         shareholder -> {
-                    shareholder.updateTitle();
-                    shareholderList.set(position, shareholder);
-                    shareholderAdapter.notifyItemChanged(position);
-                });
+                            shareholder.updateTitle();
+                            shareholderList.set(position, shareholder);
+                            shareholderAdapter.notifyItemChanged(position);
+                        });
             }
 
             @Override
@@ -291,7 +330,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.button_stakeholder:
                 processInputs();
                 break;
@@ -301,7 +340,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     }
 
     private void processInputs() {
-        if(founderList.isEmpty()) {
+        if (founderList.isEmpty()) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;

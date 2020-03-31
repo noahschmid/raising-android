@@ -10,7 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.raising.app.models.stakeholder.Shareholder;
 
 public class ShareholderViewModel extends AndroidViewModel {
-    private final MutableLiveData<Shareholder> selectedShareholder
+    private MutableLiveData<Shareholder> selectedShareholder
         = new MutableLiveData<>();
 
     public ShareholderViewModel(@NonNull Application application) {
@@ -31,5 +31,12 @@ public class ShareholderViewModel extends AndroidViewModel {
      */
     public LiveData<Shareholder> getSelectedShareholder() {
         return selectedShareholder;
+    }
+
+    /**
+     * Deselect the currently selected shareholder before every fragment change
+     */
+    public void deselectShareholder() {
+        selectedShareholder = new MutableLiveData<>();
     }
 }

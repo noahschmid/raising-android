@@ -10,7 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.raising.app.models.stakeholder.BoardMember;
 
 public class BoardMemberViewModel extends AndroidViewModel {
-    private final MutableLiveData<BoardMember> selectedBoardMember
+    private MutableLiveData<BoardMember> selectedBoardMember
             = new MutableLiveData<>();
 
     public BoardMemberViewModel(@NonNull Application application) {
@@ -31,5 +31,12 @@ public class BoardMemberViewModel extends AndroidViewModel {
      */
     public LiveData<BoardMember> getSelectedBoardMember() {
         return selectedBoardMember;
+    }
+
+    /**
+     * Deselect the currently selected board member before every fragment change
+     */
+    public void deselectBoardMember() {
+        selectedBoardMember = new MutableLiveData<>();
     }
 }

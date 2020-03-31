@@ -34,6 +34,6 @@ public class Shareholder extends StakeholderItem implements Serializable {
     }
 
     public void updateTitle() {
-        setTitle(isPrivateShareholder ? (firstName + " " + lastName) : corpName);
+        setTitle(isPrivateShareholder ? (firstName + " " + lastName + ", " + equityShare + "%") : (corpName + ", " + equityShare + "%"));
     }
 }

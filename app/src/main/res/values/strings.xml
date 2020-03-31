@@ -120,6 +120,7 @@
     <string name="register_financial_completed">Completed</string>
 
     <string name="register_stakeholder_information_text"> Stakeholders </string>
+    <string name="register_stakeholder_founder_add"> Add Founder</string>
     <string name="register_stakeholder_founder_information_text"> Add a founder </string>
     <string name="register_stakeholder_founder"> Founder </string>
     <string name="register_stakeholder_first_name"> First Name </string>
@@ -128,10 +129,12 @@
     <string name="register_stakeholder_position"> Position </string>
     <string name="register_stakeholder_education"> Education </string>
     <string name="register_stakeholder_board_member"> Member of the board </string>
+    <string name="register_stakeholder_board_member_add"> Add Board Member </string>
     <string name="register_stakeholder_board_member_information_text"> Add a member of the board </string>
     <string name="register_stakeholder_profession"> Profession </string>
     <string name="register_stakeholder_member_since"> Member Since </string>
     <string name="register_stakeholder_shareholder"> Shareholder </string>
+    <string name="register_stakeholder_shareholder_add"> Add Shareholder </string>
     <string name="register_stakeholder_shareholder_information_text"> Add a shareholder </string>
     <string name="register_stakeholder_shareholder_private"> Private Shareholder </string>
     <string name="register_stakeholder_shareholder_country"> Country </string>
