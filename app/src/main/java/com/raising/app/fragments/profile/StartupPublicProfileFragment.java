@@ -1,4 +1,4 @@
-package com.raising.app.authentication.fragments.profile;
+package com.raising.app.fragments.profile;
 
 import android.os.Bundle;
 
@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.raising.app.R;
-import com.raising.app.RaisingFragment;
+import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Startup;
 
 public class StartupPublicProfileFragment extends RaisingFragment {

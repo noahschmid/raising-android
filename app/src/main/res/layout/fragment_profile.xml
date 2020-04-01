@@ -5,7 +5,8 @@
     android:id="@+id/profile_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.profile.MyProfileFragment">
+    tools:context=".fragments.profile.MyProfileFragment"
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/myProfile_startUp_layout"
@@ -93,9 +94,6 @@
                 app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_financial_requirements"
                 app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_financial_requirements" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
     </FrameLayout>
 
     <FrameLayout

@@ -1,4 +1,4 @@
-package com.raising.app.authentication.fragments.profile;
+package com.raising.app.fragments.profile;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -19,8 +19,8 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.raising.app.R;
-import com.raising.app.RaisingFragment;
-import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorMatchingFragment;
+import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.registration.investor.RegisterInvestorMatchingFragment;
 import com.raising.app.models.Investor;
 
 import java.util.Objects;
@@ -32,9 +32,9 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     ImageSwitcher imageSwitcher;
 
     // this is a placeholder array with image resources, replace with actual images
-    int[] images = {R.drawable.ic_menu_person_black_24dp,
-            R.drawable.ic_button_edit_blue_32dp,
-            R.drawable.ic_button_delete_red_32dp};
+    int[] images = {R.drawable.ic_person_24dp,
+            R.drawable.ic_edit_blue_32dp,
+            R.drawable.ic_trash_can_red_32dp};
     int currentImageIndex = 0;
 
     @Override

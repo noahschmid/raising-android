@@ -93,6 +93,12 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             }
         });
 
+        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
+            view.findViewById(R.id.registration_images_progress).setVisibility(View.GONE);
+            finishButton.setHint(getString(R.string.myProfile_apply_changes));
+            finishButton.setOnClickListener(v -> popCurrentFragment(this));
+        }
+
     }
 
     @Override

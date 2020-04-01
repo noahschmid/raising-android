@@ -14,13 +14,11 @@
     <string name="remove_text"> Remove </string>
     <string name="add_text"> Add </string>
 
-<<<<<<< HEAD
-    <!-- Strings used for myProfile -->
-    <string name="myProfile_apply_changes"> Apply Changes </string>
-=======
     <string name="general_dialog_error_title"> Error occurred! </string>
     <string name="general_dialog_error_text"> Something went wrong. Please try again </string>
->>>>>>> registration
+
+    <!-- Strings used for myProfile -->
+    <string name="myProfile_apply_changes"> Apply Changes </string>
 
     <!-- Strings used in LoginScreen -->
     <string name="login_welcome_text"> Welcome to Raising </string>
@@ -125,10 +123,7 @@
     <string name="register_financial_completed">Completed</string>
 
     <string name="register_stakeholder_information_text"> Stakeholders </string>
-<<<<<<< HEAD
-=======
     <string name="register_stakeholder_founder_add"> Add Founder</string>
->>>>>>> registration
     <string name="register_stakeholder_founder_information_text"> Add a founder </string>
     <string name="register_stakeholder_founder"> Founder </string>
     <string name="register_stakeholder_first_name"> First Name </string>
@@ -137,18 +132,12 @@
     <string name="register_stakeholder_position"> Position </string>
     <string name="register_stakeholder_education"> Education </string>
     <string name="register_stakeholder_board_member"> Member of the board </string>
-<<<<<<< HEAD
-=======
     <string name="register_stakeholder_board_member_add"> Add Board Member </string>
->>>>>>> registration
     <string name="register_stakeholder_board_member_information_text"> Add a member of the board </string>
     <string name="register_stakeholder_profession"> Profession </string>
     <string name="register_stakeholder_member_since"> Member Since </string>
     <string name="register_stakeholder_shareholder"> Shareholder </string>
-<<<<<<< HEAD
-=======
     <string name="register_stakeholder_shareholder_add"> Add Shareholder </string>
->>>>>>> registration
     <string name="register_stakeholder_shareholder_information_text"> Add a shareholder </string>
     <string name="register_stakeholder_shareholder_private"> Private Shareholder </string>
     <string name="register_stakeholder_shareholder_country"> Country </string>
@@ -158,11 +147,6 @@
     <string name="register_stakeholder_shareholder_website"> Website </string>
 
     <string name="register_images_information_text"> Images </string>
-<<<<<<< HEAD
-
-    <string name="register_button_text"> Continue </string>
-    <string name="register_button_finish_text"> Finish </string>
-=======
     <string name="register_images_add_profile_text"> Add a profile picture </string>
     <string name="register_images_add_gallery"> Add a picture to your gallery </string>
     <string name="register_images_video_information_text"> Video Pitch </string>
@@ -172,7 +156,7 @@
 
     <string name="register_button_text"> CONTINUE </string>
     <string name="register_button_finish_text"> FINISH </string>
->>>>>>> registration
+
     <string name="text_register"> Register now </string>
 
     <string name="register_dialog_title"> Invalid inputs </string>

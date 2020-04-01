@@ -1,4 +1,4 @@
-package com.raising.app.authentication.fragments.profile;
+package com.raising.app.fragments.profile;
 
 import android.os.Bundle;
 
@@ -13,15 +13,17 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.raising.app.R;
-import com.raising.app.RaisingFragment;
-import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorMatchingFragment;
-import com.raising.app.authentication.fragments.registration.investor.RegisterInvestorPitchFragment;
-import com.raising.app.authentication.fragments.registration.startup.RegisterCompanyInformationFragment;
-import com.raising.app.authentication.fragments.registration.startup.RegisterFinancialRequirementsFragment;
-import com.raising.app.authentication.fragments.registration.startup.RegisterStakeholderFragment;
-import com.raising.app.authentication.fragments.registration.startup.RegisterStartupPitchFragment;
+import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.registration.investor.RegisterInvestorImagesFragment;
+import com.raising.app.fragments.registration.investor.RegisterInvestorMatchingFragment;
+import com.raising.app.fragments.registration.investor.RegisterInvestorPitchFragment;
 import com.raising.app.fragments.registration.investor.RegisterProfileInformationFragment;
+import com.raising.app.fragments.registration.startup.RegisterCompanyInformationFragment;
+import com.raising.app.fragments.registration.startup.RegisterFinancialRequirementsFragment;
+import com.raising.app.fragments.registration.startup.RegisterStakeholderFragment;
+import com.raising.app.fragments.registration.startup.RegisterStartupImagesFragment;
 import com.raising.app.fragments.registration.startup.RegisterStartupMatchingFragment;
+import com.raising.app.fragments.registration.startup.RegisterStartupPitchFragment;
 
 public class MyProfileFragment extends RaisingFragment implements View.OnClickListener {
     private FrameLayout startUpLayout, investorLayout;
@@ -53,8 +55,6 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
             investorLayout.setVisibility(View.VISIBLE);
         }
          */
-
-
 
         startUpCompanyInformation = view.findViewById(R.id.button_myProfile_startup_company_information);
         startUpCompanyInformation.setOnClickListener(this);
@@ -107,7 +107,7 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 fragment.setArguments(bundle);
                 break;
             case R.id.button_myProfile_startup_images:
-                // fragment = new RegisterStartupImagesFragment();
+                fragment = new RegisterStartupImagesFragment();
                 fragment.setArguments(bundle);
                 break;
 
@@ -137,7 +137,7 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 break;
 
             case R.id.button_myProfile_investor_images:
-                // fragment = new RegisterInvestorImagesFragment();
+                fragment = new RegisterInvestorImagesFragment();
                 fragment.setArguments(bundle);
                 break;
         }
