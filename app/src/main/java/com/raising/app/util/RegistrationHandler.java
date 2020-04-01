@@ -478,6 +478,11 @@ public class RegistrationHandler {
     public static void saveStakeholder(ArrayList<StakeholderItem> shareholderList,
                                        ArrayList<StakeholderItem> boardMemberList,
                                        ArrayList<StakeholderItem> founderList) throws IOException {
+        startup.clearBoardMembers();
+        startup.clearFounders();
+        startup.clearPrivateShareholders();
+        startup.clearCorporateShareholders();
+
         boardMemberList.forEach(boardMember -> startup.addBoardMember((BoardMember)boardMember));
         founderList.forEach(founder -> startup.addFounder((Founder) founder));
 
