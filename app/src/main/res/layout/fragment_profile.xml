@@ -5,9 +5,7 @@
     android:id="@+id/profile_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".authentication.fragments.profile.MyProfileFragment">
-
+    tools:context=".fragments.profile.MyProfileFragment">
 
     <FrameLayout
         android:id="@+id/myProfile_startUp_layout"
@@ -26,7 +24,7 @@
                 android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                android:drawableLeft="@drawable/ic_menu_person_black_24dp"
+                android:drawableLeft="@drawable/ic_person_24dp"
                 android:hint="@string/register_company_information_text"
                 app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_matching_criteria"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +115,7 @@
                 android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                android:drawableLeft="@drawable/ic_menu_person_black_24dp"
+                android:drawableLeft="@drawable/ic_person_24dp"
                 android:hint="@string/register_profile_information_text"
                 app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_matching_criteria"
                 app:layout_constraintEnd_toEndOf="parent"

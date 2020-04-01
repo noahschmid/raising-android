@@ -5,7 +5,7 @@
     android:id="@+id/register_investor_matching_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authentication.fragments.registration.investor.RegisterInvestorMatchingFragment">
+    tools:context=".fragments.registration.investor.RegisterInvestorMatchingFragment">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -76,14 +76,11 @@
 
                 <TextView
                     android:id="@+id/text_investor_matching_ticket"
+                    style="@style/SubtitleTextWithLeftIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                    android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                     android:hint="@string/register_matching_ticket_size"
-                    android:textSize="@dimen/fragmentSubtitleFontSize"
-                    android:textStyle="bold"
-                    android:textColorHint="@color/raisingPrimaryTextColor"
+                    android:drawableLeft="@drawable/ic_price_tag_24dp"
                     app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_ticket_size"
                     app:layout_constraintStart_toStartOf="@+id/register_investor_matching_ticket_size"
                     app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_information" />
@@ -94,28 +91,35 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                     android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                    android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                    android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                    app:labelBehavior="gone"
                     android:stepSize="@integer/ticket_size_slider_step_size"
                     android:valueFrom="@integer/ticket_size_slider_min_value"
                     android:valueTo="@integer/ticket_size_slider_max_value"
-                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_investor"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_ticket_size_text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_ticket" />
 
                 <TextView
-                    android:id="@+id/text_investor_matching_investor"
+                    android:id="@+id/register_investor_matching_ticket_size_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                    android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                    android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_ticket_size"
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_ticket_size"
+                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_investor"/>
+
+                <TextView
+                    android:id="@+id/text_investor_matching_investor"
+                    style="@style/SubtitleTextWithLeftIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:hint="@string/register_matching_investor"
-                    android:textSize="@dimen/fragmentSubtitleFontSize"
-                    android:textStyle="bold"
-                    android:textColorHint="@color/raisingPrimaryTextColor"
+                    android:drawableLeft="@drawable/ic_chess_horse_24dp"
                     app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_radio_investor"
                     app:layout_constraintStart_toStartOf="@+id/text_investor_matching_ticket"
-                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_ticket_size" />
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_ticket_size_text" />
 
                 <RadioGroup
                     android:id="@+id/register_investor_matching_radio_investor"
@@ -128,119 +132,78 @@
                     app:layout_constraintStart_toStartOf="parent"
 
                     app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_investor">
-
                 </RadioGroup>
 
                 <TextView
                     android:id="@+id/text_investor_matching_phase"
+                    style="@style/SubtitleTextWithLeftIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
                     android:hint="@string/register_matching_phase"
-                    android:textSize="@dimen/fragmentSubtitleFontSize"
-                    android:textStyle="bold"
-                    android:textColorHint="@color/raisingPrimaryTextColor"
+                    android:drawableLeft="@drawable/ic_stairs_24dp"
                     app:layout_constraintStart_toStartOf="@+id/text_investor_matching_investor"
                     app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_radio_investor" />
 
                 <TextView
                     android:id="@+id/text_investor_matching_industry"
+                    style="@style/SubtitleTextWithLeftIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
                     android:hint="@string/register_matching_industry"
-                    android:textSize="@dimen/fragmentSubtitleFontSize"
-                    android:textStyle="bold"
-                    android:textColorHint="@color/raisingPrimaryTextColor"
+                    android:drawableLeft="@drawable/ic_gear_24dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_phase_layout" />
 
                 <TextView
                     android:id="@+id/text_investor_matching_support"
+                    style="@style/SubtitleTextWithLeftIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                     android:hint="@string/register_matching_support"
-                    android:textSize="@dimen/fragmentSubtitleFontSize"
-                    android:textStyle="bold"
-                    android:textColorHint="@color/raisingPrimaryTextColor"
+                    android:drawableLeft="@drawable/ic_conversation_24dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_industry_layout" />
 
-
                 <TextView
-                    android:id="@+id/text_investor_matching_geograpgics"
+                    android:id="@+id/text_investor_matching_geographics"
+                    style="@style/SubtitleTextWithLeftIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                     android:hint="@string/register_matching_geographics"
-                    android:textSize="@dimen/fragmentSubtitleFontSize"
-                    android:textStyle="bold"
-                    android:textColorHint="@color/raisingPrimaryTextColor"
-                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_continents"
+                    android:drawableLeft="@drawable/ic_globe_24dp"
+                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_geographics_button"
                     app:layout_constraintStart_toStartOf="@+id/text_investor_matching_support"
                     app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_support_layout" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/register_investor_matching_continents"
-                    style="@style/TextInputExposedDropdownMenuTheme"
+                <Button
+                    android:id="@+id/register_investor_matching_geographics_button"
+                    style="@style/PrimaryOutlineButton"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
+                    android:layout_height="@dimen/authenticationButtonHeight"
+                    android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+                    android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                    android:hint="@string/register_matching_continents"
-                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_countries"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-
-                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_geograpgics">
-
-                    <MultiAutoCompleteTextView
-                        android:id="@+id/register_input_investor_matching_continents"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/inputFormHeight"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/register_investor_matching_countries"
-                    style="@style/TextInputExposedDropdownMenuTheme"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                    android:hint="@string/register_matching_countries"
+                    android:hint="@string/register_matching_geographics_input"
                     app:layout_constraintBottom_toTopOf="@+id/button_investor_matching"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_continents">
-
-                    <MultiAutoCompleteTextView
-                        android:id="@+id/register_input_investor_matching_countries"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/inputFormHeight"/>
-                </com.google.android.material.textfield.TextInputLayout>
+                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_support_layout">
+                </Button>
 
                 <Button
                     android:id="@+id/button_investor_matching"
+                    style="@style/ButtonConfirmRegistration"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/authenticationButtonHeight"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="@dimen/inputFormVerticalMargin"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                     android:hint="@string/register_button_text"
-                    android:textSize="@dimen/buttonFontSize"
-                    android:backgroundTint="@color/raisingPrimaryButton"
-                    android:textColorHint="@color/raisingButtonTextLight"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_countries" />
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <LinearLayout
                     android:id="@+id/register_investor_matching_industry_layout"
@@ -251,7 +214,7 @@
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="16dp"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geograpgics"
+                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geographics"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_industry"
@@ -281,7 +244,7 @@
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="16dp"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geograpgics"
+                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geographics"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_support"/>

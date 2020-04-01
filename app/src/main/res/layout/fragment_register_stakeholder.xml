@@ -5,7 +5,7 @@
     android:id="@+id/register_stakeholder_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authentication.fragments.registration.startup.RegisterStakeholderFragment">
+    tools:context=".fragments.registration.startup.RegisterStakeholderFragment">
 
 
     <ScrollView
@@ -30,9 +30,12 @@
                 android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
                 android:gravity="center"
                 android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_information"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -67,36 +70,31 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/text_stakeholder_information"
+                style="@style/FragmentTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormInformationTextMargin"
-                android:layout_marginBottom="@dimen/inputFormInformationTextMargin"
+                android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_stakeholder_information_text"
-                android:textSize="@dimen/fragmentTitleFontSize"
-                android:textStyle="bold"
-                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_founder"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/registration_profile_progress"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintEnd_toEndOf="@+id/registration_profile_progress"
+                app:layout_constraintStart_toStartOf="@+id/registration_profile_progress"
+                app:layout_constraintTop_toBottomOf="@+id/registration_profile_progress" />
 
             <TextView
                 android:id="@+id/text_stakeholder_founder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                 android:hint="@string/register_stakeholder_founder"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
                 android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_founder_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_founder_recycler_view"
                 app:layout_constraintTop_toBottomOf="@+id/text_stakeholder_information" />
@@ -107,108 +105,113 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                 android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 app:layout_constraintBottom_toTopOf="@+id/floating_button_add_founder"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_stakeholder_founder" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <Button
                 android:id="@+id/floating_button_add_founder"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
-                android:clickable="true"
-                android:src="@drawable/ic_button_add_circle_outline_dark_grey_24dp"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:backgroundTint="@color/raisingWhite"
+                android:drawableLeft="@drawable/ic_add_circle_outline_24dp"
+                android:hint="@string/register_stakeholder_founder_add"
+                android:shadowColor="@color/raisingWhite"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/fragmentSubtitleFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_board_member"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_founder_recycler_view"
-                app:layout_constraintTop_toBottomOf="@+id/stakeholder_founder_recycler_view"
-                android:focusable="true" />
+                app:layout_constraintTop_toBottomOf="@+id/stakeholder_founder_recycler_view" />
 
             <TextView
                 android:id="@+id/text_stakeholder_board_member"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                 android:hint="@string/register_stakeholder_board_member"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
                 android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_board_member_recycler_view"
-                app:layout_constraintStart_toStartOf="@+id/text_stakeholder_founder"
+                app:layout_constraintStart_toStartOf="@+id/stakeholder_board_member_recycler_view"
                 app:layout_constraintTop_toBottomOf="@+id/floating_button_add_founder" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/stakeholder_board_member_recycler_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 app:layout_constraintBottom_toTopOf="@+id/floating_button_add_board_member"
                 app:layout_constraintEnd_toEndOf="@+id/stakeholder_founder_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_founder_recycler_view"
                 app:layout_constraintTop_toBottomOf="@+id/text_stakeholder_board_member" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <Button
                 android:id="@+id/floating_button_add_board_member"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
-                android:clickable="true"
-                android:src="@drawable/ic_button_add_circle_outline_dark_grey_24dp"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:backgroundTint="@color/raisingWhite"
+                android:drawableLeft="@drawable/ic_add_circle_outline_24dp"
+                android:hint="@string/register_stakeholder_board_member_add"
+                android:shadowColor="@color/raisingWhite"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/fragmentSubtitleFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_shareholder"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_board_member_recycler_view"
-                app:layout_constraintTop_toBottomOf="@+id/stakeholder_board_member_recycler_view"
-                android:focusable="true" />
+                app:layout_constraintTop_toBottomOf="@+id/stakeholder_board_member_recycler_view" />
 
             <TextView
                 android:id="@+id/text_stakeholder_shareholder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
                 android:hint="@string/register_stakeholder_shareholder"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
                 android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_shareholder_recycler_view"
-                app:layout_constraintStart_toStartOf="@+id/text_stakeholder_board_member"
+                app:layout_constraintStart_toStartOf="@+id/stakeholder_shareholder_recycler_view"
                 app:layout_constraintTop_toBottomOf="@+id/floating_button_add_board_member" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/stakeholder_shareholder_recycler_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 app:layout_constraintBottom_toTopOf="@+id/floating_button_add_shareholder"
                 app:layout_constraintEnd_toEndOf="@+id/stakeholder_board_member_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_board_member_recycler_view"
                 app:layout_constraintTop_toBottomOf="@+id/text_stakeholder_shareholder" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <Button
                 android:id="@+id/floating_button_add_shareholder"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                android:clickable="true"
-                android:src="@drawable/ic_button_add_circle_outline_dark_grey_24dp"
+                android:backgroundTint="@color/raisingWhite"
+                android:drawableLeft="@drawable/ic_add_circle_outline_24dp"
+                android:hint="@string/register_stakeholder_shareholder_add"
+                android:shadowColor="@color/raisingWhite"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/fragmentSubtitleFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/button_stakeholder"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_shareholder_recycler_view"
-                app:layout_constraintTop_toBottomOf="@+id/stakeholder_shareholder_recycler_view"
-                android:focusable="true" />
+                app:layout_constraintTop_toBottomOf="@+id/stakeholder_shareholder_recycler_view" />
 
             <Button
                 android:id="@+id/button_stakeholder"
+                style="@style/ButtonConfirmRegistration"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_button_finish_text"
-                android:backgroundTint="@color/raisingPrimaryButton"
-                android:textColorHint="@color/raisingButtonTextLight"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/stakeholder_shareholder_recycler_view"
-                app:layout_constraintStart_toStartOf="@+id/stakeholder_shareholder_recycler_view"
-                app:layout_constraintTop_toBottomOf="@+id/floating_button_add_shareholder" />
+                app:layout_constraintStart_toStartOf="@+id/stakeholder_shareholder_recycler_view" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

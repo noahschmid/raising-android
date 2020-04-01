@@ -10,10 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.raising.app.authentication.fragments.LoginFragment;
-import com.raising.app.authentication.fragments.profile.InvestorPublicProfileFragment;
-import com.raising.app.authentication.fragments.profile.MyProfileFragment;
+import com.raising.app.fragments.LoginFragment;
+import com.raising.app.fragments.MatchesFragment;
+import com.raising.app.fragments.SettingsFragment;
+import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.InternalStorageHandler;
+import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.RegistrationHandler;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,16 +26,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ResourcesManager.init(getApplicationContext(), getSupportFragmentManager());
+        InternalStorageHandler.init(getApplicationContext());
+        ResourcesManager.loadAll();
+
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         RegistrationHandler.setContext(getApplicationContext());
 
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
             if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
                 hideBottomNavigation(true);
-                fragmentTransaction.replace(R.id.fragment_container, new InvestorPublicProfileFragment());
+                fragmentTransaction.replace(R.id.fragment_container, new Investor());
             } else {
                 hideBottomNavigation(false);
                 fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
@@ -55,11 +62,11 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     } else {
                         switch (item.getItemId()) {
-                            case R.id.nav_home:
+                            case R.id.nav_matches:
                                 selected = new MatchesFragment();
                                 break;
                             case R.id.nav_profile:
-                                selected = new MyProfileFragment();
+                                selected = new com.raising.app.authentication.fragments.profile.MyProfileFragment();
                                 break;
                             case R.id.nav_settings:
                                 selected = new SettingsFragment();

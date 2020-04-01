@@ -2,7 +2,8 @@
     <string name="app_name">RaisingMVP</string>
 
     <!-- Strings used in bottom navigation -->
-    <string name="navigation_home"> Home </string>
+    <string name="navigation_matches"> Matches </string>
+    <string name="navigation_handshakes"> Handshakes </string>
     <string name="navigation_profile"> Profile </string>
     <string name="navigation_settings"> Settings </string>
 
@@ -10,10 +11,16 @@
     <string name="register_now_text"> Register now </string>
     <string name="ok_text"> OK </string>
     <string name="cancel_text"> Cancel </string>
+    <string name="remove_text"> Remove </string>
     <string name="add_text"> Add </string>
 
+<<<<<<< HEAD
     <!-- Strings used for myProfile -->
     <string name="myProfile_apply_changes"> Apply Changes </string>
+=======
+    <string name="general_dialog_error_title"> Error occurred! </string>
+    <string name="general_dialog_error_text"> Something went wrong. Please try again </string>
+>>>>>>> registration
 
     <!-- Strings used in LoginScreen -->
     <string name="login_welcome_text"> Welcome to Raising </string>
@@ -22,7 +29,7 @@
     <string name="login_password"> Password</string>
 
     <string name="login_forgot_button_text"> Forgot password? </string>
-    <string name="login_register_text"> No Account? </string>
+    <string name="login_register_text"> No account? </string>
 
     <string name="login_dialog_title"> Login failed </string>
     <string name="login_dialog_text_403"> Incorrect username or password </string>
@@ -31,21 +38,21 @@
     <!-- Strings used in ForgotPasswordScreens -->
     <string name="reset_email_input_placeholder"> Email.. </string>
     <string name="forgot_button_sendEmail"> Reset password </string>
-    <string name="forgot_dialog_title_no_input"> No Input </string>
+    <string name="forgot_dialog_title_no_input"> No input </string>
     <string name="forgot_dialog_text_no_input"> You must enter a valid address </string>
 
     <string name="forgot_dialog_title"> Password reset code sent </string>
     <string name="forgot_dialog_text"> Check your email for further information </string>
     <string name="forgot_reset_text"> Enter the code, that you have received via email </string>
-    <string name="reset_password_input_placeholder"> New Password.. </string>
-    <string name="reset_code_input_placeholder"> Reset Code..</string>
+    <string name="reset_password_input_placeholder"> New Password </string>
+    <string name="reset_code_input_placeholder"> Reset Code</string>
     <string name="reset_button_text"> Reset Password </string>
 
     <string name="reset_dialog_title_no_input">Invalid inputs</string>
     <string name="reset_dialog_text_no_input">You have to enter a code and a new password!</string>
 
     <!-- Strings used in Registration -->
-    <string name="register_select_type_text"> Select if you want to register an investor- or start-up-account</string>
+    <string name="register_select_type_text"> Are you a startup or an investor? </string>
     <string name="register_select_investor_button"> Investor </string>
     <string name="register_select_startup_button"> Start Up</string>
 
@@ -59,10 +66,13 @@
     <string name="register_company_name"> Company </string>
     <string name="register_company_uid"> UID </string>
     <string name="register_company_revenue"> Revenue (CHF) </string>
-    <string name="register_company_breakeven"> Break Even </string>
+    <string name="register_company_breakeven"> Breakeven Year </string>
     <string name="register_company_fte"> FTE </string>
     <string name="register_company_markets"> Current Markets </string>
     <string name="register_company_founding_year"> Founding Year </string>
+    <string name="register_company_phone">Phone Number</string>
+    <string name="register_company_website">Website</string>
+    <string name="register_company_country">Country</string>
 
     <string name="register_address_information_text"> Address Information</string>
     <string name="register_address_country"> Country </string>
@@ -73,43 +83,29 @@
 
     <string name="register_profile_information_text"> Profile Information</string>
     <string name="register_profile_country"> Country </string>
-    <string name="register_profile_city"> City </string>
-    <string name="register_profile_zip"> ZIP-Code </string>
-    <string name="register_profile_street"> Street </string>
     <string name="register_profile_website"> Website </string>
     <string name="register_profile_company"> Company </string>
+    <string name="register_profile_phone">Phone Number</string>
 
     <string name="register_matching_information_text"> Matching Criteria </string>
     <string name="register_matching_scope"> Scope </string>
     <string name="register_matching_ticket_size"> Ticket Size </string>
     <string name="register_matching_scope_"> Scope (CHF) </string>
-    <string name="register_matching_min_ticket"> Minimal Ticket Size (CHF) </string>
-    <string name="register_matching_max_ticket"> Maximal Ticket Size (CHF) </string>
     <string name="register_matching_investor"> Type of investor </string>
-    <string name="register_matching_vc"> Venture Capitalist </string>
-    <string name="register_matching_angel"> Business Angel </string>
-    <string name="register_matching_cvc"> Corporate Venture Capitalist </string>
-    <string name="register_matching_strategic"> Strategic Investor </string>
-    <string name="register_matching_club"> Investment Club </string>
     <string name="register_matching_phase"> Phase </string>
-    <string name="register_matching_preseed"> Pre-Seed </string>
-    <string name="register_matching_seed"> Seed </string>
-    <string name="register_matching_seriesA"> Series A </string>
-    <string name="register_matching_seriesB"> Series B </string>
-    <string name="register_matching_seriesC"> Series C </string>
     <string name="register_matching_industry"> Industry </string>
-    <string name="register_matching_energy"> Energy / Clean Tech </string>
-    <string name="register_matching_general"> General</string>
-    <string name="register_matching_health"> Healthcare / Life Science </string>
-    <string name="register_matching_hightech"> High Tech </string>
-    <string name="register_matching_social"> Social Impact </string>
-    <string name="register_matching_support"> Desired Involvement </string>
-    <string name="register_matching_mentor"> Mentoring </string>
-    <string name="register_matching_board"> Member of the board </string>
-    <string name="register_matching_passive"> Passive </string>
+    <string name="register_matching_support"> Desired involvement </string>
+    <string name="register_matching_geographics_input"> Geographic preferences </string>
+
     <string name="register_matching_geographics"> Geographics </string>
     <string name="register_matching_continents"> Continents </string>
     <string name="register_matching_countries"> Countries </string>
+
+    <string-array name="revenue_units">
+        <item>k</item>
+        <item>M</item>
+        <item>B</item>
+    </string-array>
 
     <string name="register_pitch_information_text"> Pitch </string>
     <string name="register_pitch_sentence"> One sentence description </string>
@@ -126,8 +122,13 @@
     <string name="register_financial_valuation"> Valuation (CHF) </string>
     <string name="register_financial_valuation_helper"> optional </string>
     <string name="register_financial_closing_time"> Closing Time </string>
+    <string name="register_financial_completed">Completed</string>
 
     <string name="register_stakeholder_information_text"> Stakeholders </string>
+<<<<<<< HEAD
+=======
+    <string name="register_stakeholder_founder_add"> Add Founder</string>
+>>>>>>> registration
     <string name="register_stakeholder_founder_information_text"> Add a founder </string>
     <string name="register_stakeholder_founder"> Founder </string>
     <string name="register_stakeholder_first_name"> First Name </string>
@@ -136,10 +137,18 @@
     <string name="register_stakeholder_position"> Position </string>
     <string name="register_stakeholder_education"> Education </string>
     <string name="register_stakeholder_board_member"> Member of the board </string>
+<<<<<<< HEAD
+=======
+    <string name="register_stakeholder_board_member_add"> Add Board Member </string>
+>>>>>>> registration
     <string name="register_stakeholder_board_member_information_text"> Add a member of the board </string>
     <string name="register_stakeholder_profession"> Profession </string>
     <string name="register_stakeholder_member_since"> Member Since </string>
     <string name="register_stakeholder_shareholder"> Shareholder </string>
+<<<<<<< HEAD
+=======
+    <string name="register_stakeholder_shareholder_add"> Add Shareholder </string>
+>>>>>>> registration
     <string name="register_stakeholder_shareholder_information_text"> Add a shareholder </string>
     <string name="register_stakeholder_shareholder_private"> Private Shareholder </string>
     <string name="register_stakeholder_shareholder_country"> Country </string>
@@ -149,9 +158,21 @@
     <string name="register_stakeholder_shareholder_website"> Website </string>
 
     <string name="register_images_information_text"> Images </string>
+<<<<<<< HEAD
 
     <string name="register_button_text"> Continue </string>
     <string name="register_button_finish_text"> Finish </string>
+=======
+    <string name="register_images_add_profile_text"> Add a profile picture </string>
+    <string name="register_images_add_gallery"> Add a picture to your gallery </string>
+    <string name="register_images_video_information_text"> Video Pitch </string>
+    <string name="image_floating_menu_select_image"> Import image </string>
+    <string name="image_floating_menu_take_image"> Take image </string>
+    <string name="gallery_floating_menu_delete_image"> Delete </string>
+
+    <string name="register_button_text"> CONTINUE </string>
+    <string name="register_button_finish_text"> FINISH </string>
+>>>>>>> registration
     <string name="text_register"> Register now </string>
 
     <string name="register_dialog_title"> Invalid inputs </string>
@@ -169,11 +190,16 @@
     <string name="generic_error_title">Action failed</string>
     <string name="generic_error_text">Oops! Something went wrong.</string>
 
-
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="register_dialog_text_invalid_email">Entered email is invalid</string>
     <string name="register_dialog_text_weak_password">Entered password is too short (min. 6 characters)!</string>
     <string name="register_dialog_text_email_registered">There\'s already an account with the same email!</string>
     <string name="register_dialog_text_invalid_date">Entered date is invalid!</string>
     <string name="reset_email_not_found_text">No account found with given email.</string>
+    <string name="error_no_countries_found">No countries found! Did you call build?</string>
+    <string name="search">Search..</string>
+    <string name="currency">CHF</string>
+    <string name="server_error">Server Error</string>
+    <string name="server_error_msg_rsc">Couldn\'t fetch all data from server!</string>
+    <string name="register_no_picture_text">Please select a profile picture!</string>
 </resources>

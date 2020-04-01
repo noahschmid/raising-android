@@ -8,19 +8,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class Account implements Serializable {
-    protected long accountId = -1l;
+public class Account implements Serializable, Model {
+    protected long id = -1L;
     protected String company;
     protected String name;
     private String firstName;
     private String lastName;
     private String password;
-    private String roles;
+    private String roles = "ROLE_USER";
     private String email;
     private String pitch;
     private String description;
-    private int investmentMin = -1;
-    private int investmentMax = -1;
+    private int ticketMinId = -1;
+    private int ticketMaxId = -1;
+    private Image profilePicture;
+    private List<Image> gallery;
 
     private List<Country> countries = new ArrayList<>();
     private List<Continent> continents = new ArrayList<>();

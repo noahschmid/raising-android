@@ -5,7 +5,7 @@
     android:id="@+id/register__startup_pitch_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authentication.fragments.registration.startup.RegisterStartupPitchFragment">
+    tools:context=".fragments.registration.startup.RegisterStartupPitchFragment">
 
 
     <ScrollView
@@ -159,13 +159,10 @@
 
             <Button
                 android:id="@+id/button_startup_pitch"
+                style="@style/ButtonConfirmRegistration"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_button_text"
-                android:textSize="@dimen/buttonFontSize"
-                android:backgroundTint="@color/raisingPrimaryButton"
-                android:textColorHint="@color/raisingButtonTextLight"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_pitch_labels"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_pitch_sentence"

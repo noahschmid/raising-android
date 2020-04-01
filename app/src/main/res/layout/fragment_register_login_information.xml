@@ -5,7 +5,7 @@
     android:id="@+id/register_login_information_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authentication.fragments.registration.RegisterLoginInformationFragment">
+    tools:context=".fragments.registration.RegisterLoginInformationFragment">
 
     <TextView
         android:id="@+id/text_login_information"
@@ -101,13 +101,10 @@
 
     <Button
         android:id="@+id/button_login_information"
+        style="@style/ButtonConfirmRegistration"
         android:layout_width="0dp"
         android:layout_height="@dimen/authenticationButtonHeight"
-        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
         android:hint="@string/register_button_text"
-        android:textSize="@dimen/buttonFontSize"
-        android:backgroundTint="@color/raisingPrimaryButton"
-        android:textColorHint="@color/raisingButtonTextLight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/register_first_name"
         app:layout_constraintStart_toStartOf="@+id/register_first_name" />
