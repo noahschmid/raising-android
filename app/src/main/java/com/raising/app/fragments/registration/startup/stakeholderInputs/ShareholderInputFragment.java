@@ -14,7 +14,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
@@ -22,6 +24,7 @@ import com.raising.app.fragments.registration.startup.stakeholderInputs.viewMode
 import com.raising.app.models.CorporateBody;
 import com.raising.app.models.stakeholder.Shareholder;
 import com.raising.app.util.NoFilterArrayAdapter;
+import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
@@ -39,7 +42,7 @@ public class ShareholderInputFragment extends RaisingFragment {
             corporateCountryInput, privateEquityInput, corporateEquityInput;
     private AutoCompleteTextView corporateBodyInput;
     private FrameLayout privateFrameLayout, corporateFrameLayout;
-
+    private RadioGroup privateTypeGroup;
     private Shareholder shareholder;
     private CustomPicker countryPicker;
     private int countryId = -1;
@@ -69,6 +72,10 @@ public class ShareholderInputFragment extends RaisingFragment {
         corporateNameInput = view.findViewById(R.id.input_shareholder_name);
         corporateWebsiteInput = view.findViewById(R.id.input_shareholder_website);
         corporateCountryInput = view.findViewById(R.id.input_shareholder_corporate_country);
+
+        privateTypeGroup = view.findViewById(R.id.private_shareholder_type);
+
+        setupRadioGroup(ResourcesManager.getInvestorTypes(), privateTypeGroup);
 
         corporateCountryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -149,6 +156,8 @@ public class ShareholderInputFragment extends RaisingFragment {
                 privateFirstNameInput.setText(shareholder.getFirstName());
                 privateLastNameInput.setText(shareholder.getLastName());
 
+                tickRadioButton(privateTypeGroup, shareholder.getInvestortypeId());
+
                 privateCountryInput.setText(ResourcesManager.getCountry((int)shareholder
                         .getCountryId()).getName());
 
@@ -189,16 +198,19 @@ public class ShareholderInputFragment extends RaisingFragment {
                     String firstName = privateFirstNameInput.getText().toString();
                     String lastName = privateLastNameInput.getText().toString();
                     String privateEquityShare = privateEquityInput.getText().toString();
+                    long typeId = getSelectedRadioId(privateTypeGroup);
 
-                    if(firstName.length() == 0 || lastName.length() == 0
-                            || countryId == -1 || privateEquityShare.length() == 0) {
+                    if(firstName.length() == 0 || lastName.length() == 0 ||
+                            countryId == -1 || privateEquityShare.length() == 0 ||
+                            typeId == -1) {
                         showSimpleDialog(getString(R.string.register_dialog_title),
                                 getString(R.string.register_dialog_text_empty_credentials));
                         return;
                     }
                     Shareholder newShareholder = new Shareholder(
                             true, firstName, lastName, countryId,
-                            null, -1, null, privateEquityShare);
+                            null, -1, null, privateEquityShare,
+                            getSelectedRadioId(privateTypeGroup));
                     shareholderViewModel.select(newShareholder);
                     leaveShareholderFragment();
                 } else {
@@ -224,7 +236,7 @@ public class ShareholderInputFragment extends RaisingFragment {
 
                     Shareholder newShareholder = new Shareholder(
                             false, null, null, countryId,
-                            name, corporateBodyId, website, corporateEquityShare);
+                            name, corporateBodyId, website, corporateEquityShare, -1);
                     shareholderViewModel.select(newShareholder);
                     leaveShareholderFragment();
                 }

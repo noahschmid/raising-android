@@ -140,7 +140,7 @@
                         app:layout_constraintEnd_toEndOf="@+id/shareholder_first_name"
                         app:layout_constraintStart_toStartOf="@+id/shareholder_first_name"
                         app:layout_constraintTop_toBottomOf="@+id/shareholder_country"
-                        app:layout_constraintBottom_toTopOf="@+id/privateShareholderType">
+                        app:layout_constraintBottom_toTopOf="@+id/text_shareholder_type">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_shareholder_equity_share"
@@ -149,17 +149,28 @@
                             android:inputType="numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <LinearLayout
-                        android:id="@+id/privateShareholderType"
+                    <TextView
+                        android:id="@+id/text_shareholder_type"
+                        style="@style/FragmentTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginEnd="32dp"
+                        android:text="@string/register_stakeholder_shareholder_type"
+                        app:layout_constraintBottom_toTopOf="@+id/shareholder_first_name"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/shareholder_equity_share"></TextView>
+
+                    <RadioGroup
+                        android:id="@+id/private_shareholder_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@+id/shareholder_equity_share"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/shareholder_first_name"
                         app:layout_constraintStart_toStartOf="@+id/shareholder_first_name"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:orientation="vertical" />
-
-
+                        app:layout_constraintTop_toBottomOf="@+id/text_shareholder_type" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </FrameLayout>

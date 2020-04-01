@@ -67,9 +67,14 @@ public class RegistrationHandler {
 
     public static void setCancelAllowed(boolean allowed) { cancelAllowed = allowed; }
 
+    /**
+     * Set the type of the account (startup or investor)
+     * @param type
+     * @throws IOException
+     */
     public static void setAccountType(String type) throws IOException {
         accountType = type;
-        if(isStartup()) {
+        if(type.equals("startup")) {
             startup.setFirstName(account.getFirstName());
             startup.setLastName(account.getLastName());
             startup.setName(account.getName());
@@ -121,15 +126,17 @@ public class RegistrationHandler {
      */
     public static void setImages(Image profilePicture, List<Image> gallery) throws IOException {
         if(isStartup()) {
-            startup.setProfilePicture(profilePicture);
+            //TODO: insert actual images
+            startup.setProfilePicture(null);
             if(!gallery.isEmpty()) {
-                startup.setGallery(gallery);
+                startup.setGallery(null);
             }
             InternalStorageHandler.saveObject(startup, "rgstr_startup");
         } else {
-            investor.setProfilePicture(profilePicture);
+            //TODO: insert actual images
+            investor.setProfilePicture(null);
             if(!gallery.isEmpty()) {
-                investor.setGallery(gallery);
+                investor.setGallery(null);
             }
             InternalStorageHandler.saveObject(investor, "rgstr_investor");
         }
@@ -286,6 +293,18 @@ public class RegistrationHandler {
     }
 
     /**
+     * Save private profile in a file named with id of account and cancel delete registration info
+     * @param id the id of the newly created account
+     * @param token the login token
+     * @throws IOException
+     */
+    public static void finish(long id, String token) throws Exception {
+        InternalStorageHandler.saveObject(privateProfile, "profile_" + id);
+        AuthenticationHandler.login(token, id, context);
+        cancel();
+    }
+
+    /**
      * Save matching information for investor
      * @param ticketSizeMinId
      * @param ticketSizeMaxId
@@ -368,6 +387,7 @@ public class RegistrationHandler {
         startup.setContinents(continents);
         startup.setCountryId((int)country.getId());
         startup.setWebsite(website);
+        startup.setName(companyName);
         privateProfile.setPhone(phone);
 
         InternalStorageHandler.saveObject(startup, "rgstr_startup");
@@ -460,6 +480,11 @@ public class RegistrationHandler {
     public static void saveStakeholder(ArrayList<StakeholderItem> shareholderList,
                                        ArrayList<StakeholderItem> boardMemberList,
                                        ArrayList<StakeholderItem> founderList) throws IOException {
+        startup.clearBoardMembers();
+        startup.clearFounders();
+        startup.clearPrivateShareholders();
+        startup.clearCorporateShareholders();
+
         boardMemberList.forEach(boardMember -> startup.addBoardMember((BoardMember)boardMember));
         founderList.forEach(founder -> startup.addFounder((Founder) founder));
 

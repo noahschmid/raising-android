@@ -19,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.raising.app.R;
+import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.BoardMemberInputFragment;
@@ -47,6 +48,10 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     private FounderViewModel founderViewModel;
     private BoardMemberViewModel boardMemberViewModel;
     private ShareholderViewModel shareholderViewModel;
+    Button finishButton;
+
+    boolean EditMode = false;
+    int editedIndex;
 
     // hold references to the respective recycler views
     private RecyclerView founderRecyclerView, boardMemberRecyclerView, shareholderRecyclerView;
@@ -191,6 +196,13 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         founderViewModel.getSelectedFounder().observe(getViewLifecycleOwner(),
                 founder -> {
                     founder.updateTitle();
+                    if(getArguments().getBoolean("editFounder")) {
+                        int position = getArguments().getInt("editIndex");
+                        founderList.set(position, founder);
+                        founderAdapter.notifyItemChanged(position);
+                        getArguments().putBoolean("editFounder", false);
+                    }
+
                     if(!founderList.contains(founder)) {
                         founderList.add(founder);
                         founderAdapter.notifyDataSetChanged();
@@ -217,11 +229,8 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                 founderFragment.passFounder(selectedFounder);
                 changeFragment(founderFragment, null);
 
-                founderViewModel.getSelectedFounder().observe(getViewLifecycleOwner(), founder -> {
-                    founder.updateTitle();
-                    founderList.set(position, founder);
-                    founderAdapter.notifyItemChanged(position);
-                });
+                getArguments().putBoolean("editFounder", true);
+                getArguments().putInt("editIndex", position);
             }
 
             @Override
@@ -243,8 +252,17 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         boardMemberViewModel.getSelectedBoardMember().observe(getViewLifecycleOwner(),
                 boardMember -> {
                     boardMember.updateTitle();
-                    boardMemberList.add(boardMember);
-                    boardMemberAdapter.notifyDataSetChanged();
+                    if(getArguments().getBoolean("editBoardMember")) {
+                        int position = getArguments().getInt("editIndex");
+                        boardMemberList.set(position, boardMember);
+                        boardMemberAdapter.notifyItemChanged(position);
+                        getArguments().putBoolean("editBoardMember", false);
+                    }
+
+                    if(!boardMemberList.contains(boardMember)) {
+                        boardMemberList.add(boardMember);
+                        boardMemberAdapter.notifyDataSetChanged();
+                    }
                 });
 
     }
@@ -267,12 +285,8 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                 boardMemberFragment.passBoardMember(selectedBoardMember);
                 changeFragment(boardMemberFragment);
 
-                boardMemberViewModel.getSelectedBoardMember().observe(getViewLifecycleOwner(), boardMember -> {
-                    boardMember.updateTitle();
-                    boardMemberList.set(position, boardMember);
-                    boardMemberAdapter.notifyItemChanged(position);
-                });
-
+                getArguments().putBoolean("editBoardMember", true);
+                getArguments().putInt("editIndex", position);
             }
 
             @Override
@@ -294,6 +308,13 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         shareholderViewModel.getSelectedShareholder().observe(getViewLifecycleOwner(),
                 shareholder -> {
                     shareholder.updateTitle();
+                    if(getArguments().getBoolean("editShareholder")) {
+                        int position = getArguments().getInt("editIndex");
+                        shareholderList.set(position, shareholder);
+                        shareholderAdapter.notifyItemChanged(position);
+                        getArguments().putBoolean("editShareholder", false);
+                    }
+
                     if(!shareholderList.contains(shareholder)) {
                         shareholderList.add(shareholder);
                         shareholderAdapter.notifyDataSetChanged();
@@ -318,12 +339,9 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                 Shareholder selectedShareholder = ((Shareholder) shareholderList.get(position));
                 shareholderFragment.passShareholder(selectedShareholder);
                 changeFragment(shareholderFragment);
-                shareholderViewModel.getSelectedShareholder().observe(getViewLifecycleOwner(),
-                        shareholder -> {
-                            shareholder.updateTitle();
-                            shareholderList.set(position, shareholder);
-                            shareholderAdapter.notifyItemChanged(position);
-                        });
+
+                getArguments().putBoolean("editShareholder", true);
+                getArguments().putInt("editIndex", position);
             }
 
             @Override
@@ -339,16 +357,21 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         switch (view.getId()) {
             case R.id.button_stakeholder:
                 processInputs();
+                finishButton.setEnabled(false);
                 break;
             default:
                 break;
         }
     }
 
+    /**
+     * Process given inputs
+     */
     private void processInputs() {
         if (founderList.isEmpty()) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
+            finishButton.setEnabled(true);
             return;
         }
 
@@ -371,19 +394,33 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
      * Cancel ongoing registration as request was successful and proceed to login page
      */
     Function<JSONObject, Void> registerCallback = response -> {
-        RegistrationHandler.cancel();
-        getActivitiesFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, new LoginFragment())
-                .commit();
+        try {
+            RegistrationHandler.finish(response.getLong("id"), response.getString("token"));
+            clearBackstackAndReplace(new MatchesFragment());
+        } catch (Exception e ){
+            showSimpleDialog(getString(R.string.generic_error_title),
+                    getString(R.string.generic_error_text));
+            Log.d("StartupStakeholder", e.getMessage());
+        }
+
+        finishButton.setEnabled(true);
         return null;
     };
 
     Function<VolleyError, Void> errorCallback = response -> {
+        try {
+            if (response.networkResponse.statusCode == 500) {
+                JSONObject body = new JSONObject(new String(
+                        response.networkResponse.data, "UTF-8"));
+                Log.d("StartupImages", body.getString("message"));
+            }
+        } catch(Exception e) {
+            Log.d("InvestorImagesErrorException", e.getMessage());
+        }
+
         showSimpleDialog(getString(R.string.generic_error_title),
                 getString(R.string.generic_error_text));
-
-        ApiRequestHandler.parseVolleyError(response);
+        finishButton.setEnabled(true);
         return null;
     };
 }

@@ -189,4 +189,7 @@
     <string name="server_error">Server Error</string>
     <string name="server_error_msg_rsc">Couldn\'t fetch all data from server!</string>
     <string name="register_no_picture_text">Please select a profile picture!</string>
+    <string name="register_images_add_video_text">Add a video pitch</string>
+    <string name="register_video_information_text">Video Pitch</string>
+    <string name="register_stakeholder_shareholder_type">Investor Type</string>
 </resources>
