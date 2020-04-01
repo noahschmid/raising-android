@@ -15,6 +15,7 @@ import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.SettingsFragment;
 import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
+import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.Investor;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
                 hideBottomNavigation(true);
-                fragmentTransaction.replace(R.id.fragment_container, new MyProfileFragment());
+                fragmentTransaction.replace(R.id.fragment_container, new InvestorPublicProfileFragment());
             } else {
                 hideBottomNavigation(false);
                 fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());

@@ -252,7 +252,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                         (int) slider.getMaximumValue(), (int) slider.getMinimumValue()));
             }
         });
-
+        ticketSize.setValueFrom((float) 1);
         ticketSize.setValueTo(ticketSizeSteps.length);
         ticketSize.setValues(
                 (float) getResources().getInteger(R.integer.ticket_size_slider_min_value),

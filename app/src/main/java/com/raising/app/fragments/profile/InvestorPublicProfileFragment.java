@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
@@ -26,8 +26,8 @@ import com.raising.app.models.Investor;
 import java.util.Objects;
 
 public class InvestorPublicProfileFragment extends RaisingFragment {
-    TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch;
-    Button profileAccept, profileDecline, profileWebsite;
+    TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch, profileWebsite;
+    ImageButton profileAccept, profileDecline;
     Investor profileInvestor;
     ImageSwitcher imageSwitcher;
 
@@ -46,40 +46,45 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         //TODO @noah : store investor for this profile in following line
         // profileInvestor = (Investor) getArguments().get("investor");
 
+        /*
         Fragment matchingFragment = new RegisterInvestorMatchingFragment();
+
         Bundle args = new Bundle();
         //TODO: add all data for matching fragment to args bundle
-        args.putBoolean("isProfileMatching", true);
+        // args.putBoolean("isProfileMatching", true);
 
-        matchingFragment.setArguments(args);
-        getChildFragmentManager()
-                .beginTransaction()
-                .add(R.id.investor_profile_matching, matchingFragment, "InvestorProfileMatching");
+        // matchingFragment.setArguments(args);
 
+        getChildFragmentManager().beginTransaction()
+                .add(R.id.investor_matching_fragment_container, matchingFragment)
+                .commit();
+         */
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        imageIndex = view.findViewById(R.id.text_profile_gallery_image_index);
+        imageIndex = view.findViewById(R.id.text_investor_profile_gallery_image_index);
 
         prepareImageSwitcher(view);
 
-         matchingPercent = view.findViewById(R.id.text_public_profile_matching_percent);
-         profileName = view.findViewById(R.id.text_public_profile_name);
-         profileLocation = view.findViewById(R.id.text_public_profile_location);
-         profilePitch = view.findViewById(R.id.text_public_profile_pitch);
-         //TODO: fill texts with investors data
+        matchingPercent = view.findViewById(R.id.text_investor_public_profile_matching_percent);
+        profileName = view.findViewById(R.id.text_investor_public_profile_name);
+        profileLocation = view.findViewById(R.id.text_investor_public_profile_location);
+        profilePitch = view.findViewById(R.id.text_investor_public_profile_pitch);
+        profileWebsite = view.findViewById(R.id.button_investor_public_profile_website);
+        profileWebsite.setOnClickListener(v -> {
+            //TODO: replace with actual website
+            String website = "https://www.google.com";
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+            startActivity(browserIntent);
+        });
+        //TODO: fill texts with investors data
 
-         profileAccept = view.findViewById(R.id.button_public_profile_accept);
-         profileDecline = view.findViewById(R.id.button_public_profile_decline);
-         profileWebsite = view.findViewById(R.id.button_public_profile_website);
-         profileWebsite.setOnClickListener(v -> {
-             String website = "";
-             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
-             startActivity(browserIntent);
-         });
+        profileAccept = view.findViewById(R.id.button_investor_public_profile_accept);
+        profileDecline = view.findViewById(R.id.button_investor_public_profile_decline);
+
     }
 
     /**
@@ -87,7 +92,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
      * @param view The view in which the image switcher lies
      */
     private void prepareImageSwitcher(View view) {
-        imageSwitcher = view.findViewById(R.id.public_profile_gallery);
+        imageSwitcher = view.findViewById(R.id.investor_public_profile_gallery);
         imageSwitcher.setFactory(() -> {
             ImageView imageView = new ImageView(
                     Objects.requireNonNull(getActivity()).getApplicationContext());
@@ -108,7 +113,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                 AnimationUtils.loadAnimation(this.getContext(), R.anim.public_profile_gallery_out));
 
          */
-        ImageButton btnPrevious = view.findViewById(R.id.button_gallery_previous);
+        ImageButton btnPrevious = view.findViewById(R.id.button_investor_gallery_previous);
         btnPrevious.setOnClickListener(v -> {
             currentImageIndex--;
             if(currentImageIndex == -1) {
@@ -119,7 +124,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             }
             imageIndex.setText(currentIndexToString(currentImageIndex));
         });
-        ImageButton btnNext = view.findViewById(R.id.button_gallery_next);
+        ImageButton btnNext = view.findViewById(R.id.button_investor_gallery_next);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
