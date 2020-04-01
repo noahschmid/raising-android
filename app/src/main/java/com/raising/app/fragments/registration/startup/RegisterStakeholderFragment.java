@@ -406,7 +406,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             if (response.networkResponse.statusCode == 500) {
                 JSONObject body = new JSONObject(new String(
                         response.networkResponse.data, "UTF-8"));
-                Log.d("InvestorImages", body.getString("message"));
+                Log.d("StartupImages", body.getString("message"));
             }
         } catch(Exception e) {
             Log.d("InvestorImagesErrorException", e.getMessage());

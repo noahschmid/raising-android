@@ -334,7 +334,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Bitmap bitmap = Bitmap.createBitmap(imageView.getDrawable().getIntrinsicWidth(),
                 imageView.getDrawable().getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
         byte[] imageBytes = baos.toByteArray();
         return new Image(Base64.encodeToString(imageBytes, Base64.DEFAULT));
     }

@@ -22,7 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.function.Function;
 
 public class ApiRequestHandler {
-    private static final boolean CONNECT_TO_DEV_SERVER = true;
+    private static final boolean CONNECT_TO_DEV_SERVER = false;
     private static ApiRequestHandler instance;
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;

@@ -126,15 +126,17 @@ public class RegistrationHandler {
      */
     public static void setImages(Image profilePicture, List<Image> gallery) throws IOException {
         if(isStartup()) {
-            startup.setProfilePicture(profilePicture);
+            //TODO: insert actual images
+            startup.setProfilePicture(null);
             if(!gallery.isEmpty()) {
-                startup.setGallery(gallery);
+                startup.setGallery(null);
             }
             InternalStorageHandler.saveObject(startup, "rgstr_startup");
         } else {
-            investor.setProfilePicture(profilePicture);
+            //TODO: insert actual images
+            investor.setProfilePicture(null);
             if(!gallery.isEmpty()) {
-                investor.setGallery(gallery);
+                investor.setGallery(null);
             }
             InternalStorageHandler.saveObject(investor, "rgstr_investor");
         }
