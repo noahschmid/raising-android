@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import com.raising.app.authentication.fragments.registration.startup.RegisterSta
 import com.raising.app.authentication.fragments.registration.startup.RegisterStartupMatchingFragment;
 import com.raising.app.authentication.fragments.registration.startup.RegisterStartupPitchFragment;
 
-public class MyProfileFragment extends RaisingFragment {
+public class MyProfileFragment extends RaisingFragment implements View.OnClickListener {
     private FrameLayout startUpLayout, investorLayout;
     private Button startUpCompanyInformation, startUpMatching, startUpPitch,
             startUpImages, startUpFinancial, startUpStakeholder,
@@ -54,71 +55,94 @@ public class MyProfileFragment extends RaisingFragment {
         }
          */
 
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("isProfileFragment", IS_PROFILE_FRAGMENT);
+
 
         startUpCompanyInformation = view.findViewById(R.id.button_myProfile_startup_company_information);
-        startUpCompanyInformation.setOnClickListener(v -> {
-            Fragment fragment = new RegisterCompanyInformationFragment();
-            fragment.setArguments(bundle);
-            changeFragment(fragment);
-        });
+        startUpCompanyInformation.setOnClickListener(this);
+
         startUpMatching = view.findViewById(R.id.button_myProfile_startup_matching_criteria);
-        startUpMatching.setOnClickListener(v -> {
-            Fragment fragment = new RegisterStartupMatchingFragment();
-            fragment.setArguments(bundle);
-            changeFragment(fragment);
-        });
+        startUpMatching.setOnClickListener(this);
+
         startUpPitch = view.findViewById(R.id.button_myProfile_startup_pitch);
-        startUpPitch.setOnClickListener(v -> {
-            Fragment fragment = new RegisterStartupPitchFragment();
-            fragment.setArguments(bundle);
-            changeFragment(fragment);
-        });
+        startUpPitch.setOnClickListener(this);
+
         startUpImages = view.findViewById(R.id.button_myProfile_startup_images);
-        // startUpImages.setOnClickListener(v -> {
-        //            Fragment fragment = new RegisterStartupImagesFragment();
-        //            fragment.setArguments(bundle);
-        //            changeFragment(fragment);
-        //        });
+        startUpImages.setOnClickListener(this);
+
         startUpFinancial = view.findViewById(R.id.button_myProfile_startup_financial_requirements);
-        startUpFinancial.setOnClickListener(v -> {
-            Fragment fragment = new RegisterFinancialRequirementsFragment();
-            fragment.setArguments(bundle);
-            changeFragment(fragment);
-        });
+        startUpFinancial.setOnClickListener(this);
+
         startUpStakeholder = view.findViewById(R.id.button_myProfile_startup_stakeholders);
-        startUpStakeholder.setOnClickListener(v -> {
-            Fragment fragment = new RegisterStakeholderFragment();
-            fragment.setArguments(bundle);
-            changeFragment(fragment);
-        });
+        startUpStakeholder.setOnClickListener(this);
 
         investorProfileInformation = view.findViewById(R.id.button_myProfile_investor_profile_information);
-        investorProfileInformation.setOnClickListener(v -> {
-            Fragment fragment = new RegisterProfileInformationFragment();
-            fragment.setArguments(bundle);
-            changeFragment(fragment);
-        });
-        investorMatching = view.findViewById(R.id.button_myProfile_investor_matching_criteria);
-        investorMatching.setOnClickListener(v -> {
-            Fragment fragment = new RegisterInvestorMatchingFragment();
-            fragment.setArguments(bundle);
-            changeFragment(fragment);
-        });
-        investorPitch = view.findViewById(R.id.button_myProfile_investor_images);
-        investorPitch.setOnClickListener(v -> {
-            Fragment fragment = new RegisterInvestorPitchFragment();
-            fragment.setArguments(bundle);
-            changeFragment(fragment);
-        });
-        investorImages = view.findViewById(R.id.button_myProfile_investor_pitch);
-        // investorImages.setOnClickListener(v -> {
-        //            Fragment fragment = new RegisterInvestorImagesFragment();
-        //            fragment.setArguments(bundle);
-        //            changeFragment(fragment);
-        //        });
+        investorProfileInformation.setOnClickListener(this);
 
+        investorMatching = view.findViewById(R.id.button_myProfile_investor_matching_criteria);
+        investorMatching.setOnClickListener(this);
+
+        investorPitch = view.findViewById(R.id.button_myProfile_investor_images);
+        investorPitch.setOnClickListener(this);
+
+        investorImages = view.findViewById(R.id.button_myProfile_investor_pitch);
+        investorImages.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        Fragment fragment = new MyProfileFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isProfileFragment", IS_PROFILE_FRAGMENT);
+        switch (v.getId()) {
+            case R.id.button_myProfile_startup_company_information:
+                fragment = new RegisterCompanyInformationFragment();
+                fragment.setArguments(bundle);
+                break;
+            case R.id.button_myProfile_startup_matching_criteria:
+                fragment = new RegisterStartupMatchingFragment();
+                fragment.setArguments(bundle);
+                break;
+            case R.id.button_myProfile_startup_pitch:
+                fragment = new RegisterStartupPitchFragment();
+                fragment.setArguments(bundle);
+                break;
+            case R.id.button_myProfile_startup_images:
+                // fragment = new RegisterStartupImagesFragment();
+                fragment.setArguments(bundle);
+                break;
+
+            case R.id.button_myProfile_startup_financial_requirements:
+                fragment = new RegisterFinancialRequirementsFragment();
+                fragment.setArguments(bundle);
+                break;
+
+            case R.id.button_myProfile_startup_stakeholders:
+                fragment = new RegisterStakeholderFragment();
+                fragment.setArguments(bundle);
+                break;
+
+            case R.id.button_myProfile_investor_profile_information:
+                fragment = new RegisterProfileInformationFragment();
+                fragment.setArguments(bundle);
+                break;
+
+            case R.id.button_myProfile_investor_matching_criteria:
+                fragment = new RegisterInvestorMatchingFragment();
+                fragment.setArguments(bundle);
+                break;
+
+            case R.id.button_myProfile_investor_pitch:
+                fragment = new RegisterInvestorPitchFragment();
+                fragment.setArguments(bundle);
+                break;
+
+            case R.id.button_myProfile_investor_images:
+                // fragment = new RegisterInvestorImagesFragment();
+                fragment.setArguments(bundle);
+                break;
+        }
+        changeFragment(fragment);
     }
 
     @Override
