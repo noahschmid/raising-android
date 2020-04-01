@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="buttonFontSize"> 18sp </dimen>
+    <dimen name="fragmentTextFontSize"> 16sp </dimen>
+    <dimen name="loginScreenFontSize"> 30sp </dimen>
+
+    <dimen name="inputFormHeight"> 60dp </dimen>
+    <dimen name="inputOneSentenceDescriptionHeight"> 80dp </dimen>
+    <dimen name="inputPitchHeight"> 300dp </dimen>
+    <dimen name="checkBoxHeight"> 40dp </dimen>
+
+    <dimen name="inputDropdownItemPadding"> 16dp </dimen>
+
+    <dimen name="floatingButtonCustomMiniSize"> 24dp </dimen>
+
+    <dimen name="dropDownHeight"> 180dp </dimen>
+
+    <dimen name="authenticationButtonHeight"> 60dp </dimen>
+
+    <dimen name="inputFormHorizontalMarginSmall"> 16dp </dimen>
+    <dimen name="inputFormHorizontalMargin"> 32dp </dimen>
+    <dimen name="inputFormVerticalMarginSmall"> 8dp </dimen>
+    <dimen name="inputFormVerticalMargin"> 16dp </dimen>
+
+    <dimen name="inputFormInformationTextMargin"> 16dp </dimen>
+
+    <dimen name="cornerRadius24dpIcons"> 12dp </dimen>
+
+    <dimen name="fragmentTitleFontSize"> 20sp </dimen>
+    <dimen name="fragmentSubtitleFontSize"> 14sp </dimen>
+
+    <dimen name="imagesGalleryFABNegativeMargin"> -16dp </dimen>
+
+    <dimen name="outlinedButtonStrokeWidth"> 2dp </dimen>
+    <dimen name="popupButtonFontSize"> 14sp </dimen>
+</resources>

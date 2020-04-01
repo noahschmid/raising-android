@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <integer name="pitch_sentence_max_word"> 15 </integer>
+    <integer name="pitch_pitch_max_word"> 250 </integer>
+
+    <integer name="ticket_size_slider_step_size"> 1 </integer>
+    <integer name="ticket_size_slider_max_value"> 8 </integer>
+    <integer name="ticket_size_slider_min_value"> 1 </integer>
+    <integer name="ticket_size_slider_starting_value"> 3</integer>
+
+    <integer name="startup_registration_max_steps">8</integer>
+
+    <integer-array name="matching_ticket_sizes" >
+        <item> 20000 </item>
+        <item> 50000 </item>
+        <item> 100000 </item>
+        <item> 200000 </item>
+        <item> 250000 </item>
+        <item> 500000 </item>
+        <item> 1000000 </item>
+        <item> 2000000 </item>
+    </integer-array>
+
+    <integer name="billion"> 1000000000 </integer>
+    <integer name="million"> 1000000 </integer>
+    <integer name="thousand"> 1000 </integer>
+
+</resources>

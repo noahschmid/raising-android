@@ -9,8 +9,17 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.raising.app.authentication.fragments.LoginFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.raising.app.fragments.LoginFragment;
+import com.raising.app.fragments.MatchesFragment;
+import com.raising.app.fragments.ProfileFragment;
+import com.raising.app.fragments.SettingsFragment;
+import com.raising.app.fragments.registration.investor.RegisterInvestorImagesFragment;
+import com.raising.app.fragments.registration.startup.RegisterStartupImagesFragment;
+import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.InternalStorageHandler;
+import com.raising.app.util.ResourcesManager;
+import com.raising.app.util.RegistrationHandler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,17 +28,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ResourcesManager.init(getApplicationContext(), getSupportFragmentManager());
+        InternalStorageHandler.init(getApplicationContext());
+        ResourcesManager.loadAll();
+
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+        RegistrationHandler.setContext(getApplicationContext());
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
         if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
-            fragmentTransaction.add(R.id.fragment_container, new LoginFragment());
-            fragmentTransaction.addToBackStack("LoginFragment");
+            hideBottomNavigation(true);
+            fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
         } else {
+            hideBottomNavigation(false);
             fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
-            fragmentTransaction.addToBackStack("MatchesFragment");
         }
         fragmentTransaction.commit();
     }
@@ -38,26 +53,34 @@ public class MainActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
                     Fragment selected = null;
-
-                    switch(item.getItemId()) {
-                        case R.id.nav_home:
-                            selected = new MatchesFragment();
-                            break;
-                        case R.id.nav_profile:
-                            selected = new ProfileFragment();
-                            break;
-                        case R.id.nav_settings:
-                            selected = new SettingsFragment();
-                            break;
+                    if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, new LoginFragment())
+                                .commit();
+                        return true;
+                    } else {
+                        switch (item.getItemId()) {
+                            case R.id.nav_matches:
+                                selected = new MatchesFragment();
+                                break;
+                            case R.id.nav_profile:
+                                selected = new ProfileFragment();
+                                break;
+                            case R.id.nav_settings:
+                                selected = new SettingsFragment();
+                                break;
+                            default:
+                                return false;
+                        }
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, selected)
+                                .commit();
+                        return true;
                     }
-
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, selected)
-                            .commit();
-
-                    return true;
                 }
             };
 
@@ -67,6 +90,6 @@ public class MainActivity extends AppCompatActivity {
      *                 if false, the bottom navigation is visible
      */
     public void hideBottomNavigation(boolean isHidden) {
-        findViewById(R.id.bottom_navigation).setVisibility(isHidden ? View.INVISIBLE : View.VISIBLE);
+        findViewById(R.id.bottom_navigation).setVisibility(isHidden ? View.GONE : View.VISIBLE);
     }
 }

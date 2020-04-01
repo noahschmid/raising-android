@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stakeholder_founder"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".fragments.registration.startup.stakeholderInputs.FounderInputFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/text_add_founder_information"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/inputFormInformationTextMargin"
+        android:hint="@string/register_stakeholder_founder_information_text"
+        android:textSize="@dimen/fragmentTitleFontSize"
+        android:textStyle="bold"
+        android:textColorHint="@color/raisingPrimaryTextColor"
+        app:layout_constraintBottom_toTopOf="@+id/founder_first_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/founder_first_name"
+        style="@style/TextInputLayoutTheme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+        android:hint="@string/register_stakeholder_first_name"
+        app:layout_constraintBottom_toTopOf="@+id/founder_last_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_founder_first_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/inputFormHeight" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/founder_last_name"
+        style="@style/TextInputLayoutTheme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+        android:hint="@string/register_stakeholder_last_name"
+        app:layout_constraintBottom_toTopOf="@+id/founder_position"
+        app:layout_constraintEnd_toEndOf="@+id/founder_first_name"
+        app:layout_constraintStart_toStartOf="@+id/founder_first_name"
+        app:layout_constraintTop_toBottomOf="@+id/founder_first_name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_founder_last_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/inputFormHeight" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/founder_position"
+        style="@style/TextInputExposedDropdownMenuTheme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+        android:hint="@string/register_stakeholder_position"
+        app:layout_constraintBottom_toTopOf="@+id/founder_education"
+        app:layout_constraintEnd_toEndOf="@+id/founder_last_name"
+        app:layout_constraintStart_toStartOf="@+id/founder_last_name"
+        app:layout_constraintTop_toBottomOf="@+id/founder_last_name">
+
+        <AutoCompleteTextView
+            android:id="@+id/input_founder_poistion"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/inputFormHeight" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/founder_education"
+        style="@style/TextInputLayoutTheme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+        android:hint="@string/register_stakeholder_education"
+        app:layout_constraintBottom_toTopOf="@+id/founder_country"
+        app:layout_constraintEnd_toEndOf="@+id/founder_position"
+        app:layout_constraintStart_toStartOf="@+id/founder_position"
+        app:layout_constraintTop_toBottomOf="@+id/founder_position">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_founder_education"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/inputFormHeight" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/founder_country"
+        style="@style/TextInputLayoutTheme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/register_stakeholder_shareholder_country"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/founder_education"
+        app:layout_constraintStart_toStartOf="@+id/founder_education"
+        app:layout_constraintTop_toBottomOf="@+id/founder_education">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_founder_country"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/inputFormHeight" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/button_add_founder"
+        style="@style/ButtonConfirmRegistration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/inputFormVerticalMargin"
+        android:layout_marginEnd="@dimen/inputFormHorizontalMarginSmall"
+        android:hint="@string/add_text"
+        app:layout_constraintEnd_toEndOf="@+id/founder_country"
+        app:layout_constraintTop_toBottomOf="@+id/founder_country" />
+
+    <Button
+        android:id="@+id/button_cancel_founder"
+        style="@style/ButtonConfirmRegistration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
+        android:layout_marginTop="@dimen/inputFormVerticalMargin"
+        android:hint="@string/cancel_text"
+        app:layout_constraintStart_toStartOf="@+id/founder_country"
+        app:layout_constraintTop_toBottomOf="@+id/founder_country" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
