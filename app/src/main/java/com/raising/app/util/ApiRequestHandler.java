@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import android.util.LruCache;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -92,6 +93,8 @@ public class ApiRequestHandler {
                     errorCallback.apply(error);
                 }
             });
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 1, 1.0f));
+
             ApiRequestHandler.getInstance(ctx).addToRequestQueue(request);
         } catch (Exception e) {
             Log.d("debugMessage", e.getMessage());
@@ -120,6 +123,8 @@ public class ApiRequestHandler {
                         errorCallback.apply(error);
                     }
                 });
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                1, 1.0f));
 
         getInstance(ctx).addToRequestQueue(jsonObjectRequest);
     }
@@ -146,7 +151,8 @@ public class ApiRequestHandler {
                         errorCallback.apply(error);
                     }
                 });
-
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                1, 1.0f));
         getInstance(ctx).addToRequestQueue(jsonObjectRequest);
     }
 

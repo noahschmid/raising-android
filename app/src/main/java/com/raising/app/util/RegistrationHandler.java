@@ -67,9 +67,14 @@ public class RegistrationHandler {
 
     public static void setCancelAllowed(boolean allowed) { cancelAllowed = allowed; }
 
+    /**
+     * Set the type of the account (startup or investor)
+     * @param type
+     * @throws IOException
+     */
     public static void setAccountType(String type) throws IOException {
         accountType = type;
-        if(isStartup()) {
+        if(type.equals("startup")) {
             startup.setFirstName(account.getFirstName());
             startup.setLastName(account.getLastName());
             startup.setName(account.getName());
@@ -286,6 +291,18 @@ public class RegistrationHandler {
     }
 
     /**
+     * Save private profile in a file named with id of account and cancel delete registration info
+     * @param id the id of the newly created account
+     * @param token the login token
+     * @throws IOException
+     */
+    public static void finish(long id, String token) throws Exception {
+        InternalStorageHandler.saveObject(privateProfile, "profile_" + id);
+        AuthenticationHandler.login(token, id, context);
+        cancel();
+    }
+
+    /**
      * Save matching information for investor
      * @param ticketSizeMinId
      * @param ticketSizeMaxId
@@ -368,6 +385,7 @@ public class RegistrationHandler {
         startup.setContinents(continents);
         startup.setCountryId((int)country.getId());
         startup.setWebsite(website);
+        startup.setName(companyName);
         privateProfile.setPhone(phone);
 
         InternalStorageHandler.saveObject(startup, "rgstr_startup");

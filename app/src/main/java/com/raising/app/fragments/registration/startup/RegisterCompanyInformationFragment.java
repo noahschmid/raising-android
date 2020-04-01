@@ -122,7 +122,8 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
             companyFoundingInput.setText(Integer.toString(startup.getFoundingYear()));
         if(startup.getBreakEvenYear() > 0)
             companyBreakevenInput.setText(Integer.toString(startup.getBreakEvenYear()));
-        companyNameInput.setText(startup.getCompany());
+
+        companyNameInput.setText(startup.getName());
 
         if(ResourcesManager.getCountry(startup.getCountryId()) != null)
             companyCountryInput.setText(ResourcesManager.getCountry(startup.getCountryId()).getName());

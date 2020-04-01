@@ -159,7 +159,6 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                 showImageMenu(addGalleryImage, false);
             }
         });
-
     }
 
     @Override
@@ -298,6 +297,8 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
     private void processInputs() {
         if(profileImage.getDrawable() == null ||
+                profileImage.getDrawable().getIntrinsicWidth()  == 0 ||
+                profileImage.getDrawable().getIntrinsicHeight() == 0 ||
                 profileImage.getDrawable() == getResources().getDrawable(
                         R.drawable.ic_add_24dp, Objects.requireNonNull(getContext()).getTheme())) {
             showSimpleDialog(getString(R.string.register_dialog_title),

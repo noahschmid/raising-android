@@ -16,6 +16,7 @@ import com.raising.app.models.InvestmentPhase;
 import com.raising.app.models.InvestorType;
 import com.raising.app.models.Label;
 import com.raising.app.models.Model;
+import com.raising.app.models.PrivateProfile;
 import com.raising.app.models.Revenue;
 import com.raising.app.models.Support;
 import com.raising.app.models.TicketSize;

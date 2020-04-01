@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
             hideBottomNavigation(true);
-            fragmentTransaction.replace(R.id.fragment_container, new RegisterInvestorImagesFragment());
+            fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
         } else {
             hideBottomNavigation(false);
             fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());

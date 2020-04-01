@@ -19,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.raising.app.R;
+import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.BoardMemberInputFragment;
@@ -47,6 +48,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     private FounderViewModel founderViewModel;
     private BoardMemberViewModel boardMemberViewModel;
     private ShareholderViewModel shareholderViewModel;
+    Button finishButton;
 
     // hold references to the respective recycler views
     private RecyclerView founderRecyclerView, boardMemberRecyclerView, shareholderRecyclerView;
@@ -130,8 +132,8 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             }
         });
 
-        Button btnFinishRegistration = view.findViewById(R.id.button_stakeholder);
-        btnFinishRegistration.setOnClickListener(this);
+        finishButton = view.findViewById(R.id.button_stakeholder);
+        finishButton.setOnClickListener(this);
     }
 
     @Override
@@ -333,16 +335,21 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         switch (view.getId()) {
             case R.id.button_stakeholder:
                 processInputs();
+                finishButton.setEnabled(false);
                 break;
             default:
                 break;
         }
     }
 
+    /**
+     * Process given inputs
+     */
     private void processInputs() {
         if (founderList.isEmpty()) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
+            finishButton.setEnabled(true);
             return;
         }
 
@@ -365,19 +372,33 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
      * Cancel ongoing registration as request was successful and proceed to login page
      */
     Function<JSONObject, Void> registerCallback = response -> {
-        RegistrationHandler.cancel();
-        getActivitiesFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, new LoginFragment())
-                .commit();
+        try {
+            RegistrationHandler.finish(response.getLong("id"), response.getString("token"));
+            clearBackstackAndReplace(new MatchesFragment());
+        } catch (Exception e ){
+            showSimpleDialog(getString(R.string.generic_error_title),
+                    getString(R.string.generic_error_text));
+            Log.d("StartupStakeholder", e.getMessage());
+        }
+
+        finishButton.setEnabled(true);
         return null;
     };
 
     Function<VolleyError, Void> errorCallback = response -> {
+        try {
+            if (response.networkResponse.statusCode == 500) {
+                JSONObject body = new JSONObject(new String(
+                        response.networkResponse.data, "UTF-8"));
+                Log.d("InvestorImages", body.getString("message"));
+            }
+        } catch(Exception e) {
+            Log.d("InvestorImagesErrorException", e.getMessage());
+        }
+
         showSimpleDialog(getString(R.string.generic_error_title),
                 getString(R.string.generic_error_text));
-
-        ApiRequestHandler.parseVolleyError(response);
+        finishButton.setEnabled(true);
         return null;
     };
 }

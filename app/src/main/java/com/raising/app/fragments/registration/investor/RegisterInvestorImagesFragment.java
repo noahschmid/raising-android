@@ -26,8 +26,10 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.google.gson.Gson;
 import com.raising.app.R;
 import com.raising.app.fragments.LoginFragment;
+import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Image;
+import com.raising.app.models.Investor;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
 
@@ -37,6 +39,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -50,6 +53,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     Button deleteProfileImageButton;
     FlexboxLayout galleryLayout;
     LayoutInflater inflater;
+    Button finishButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,8 +99,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             }
         });
 
-        Button finishButton = view.findViewById(R.id.button_investor_images);
-        finishButton.setOnClickListener(v -> processInputs());
+        finishButton = view.findViewById(R.id.button_investor_images);
+        finishButton.setOnClickListener(v -> { processInputs(); finishButton.setEnabled(false);});
     }
 
     @Override
@@ -106,9 +110,18 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         hideBottomNavigation(false);
     }
 
+    /**
+     * Process media selected from gallery/camera
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(data == null)
+            return;
+
         switch (requestCode) {
             case REQUEST_GALLERY_CAPTURE:
                 Bitmap image = (Bitmap) data.getExtras().get("data");
@@ -146,6 +159,10 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         }
     }
 
+    /**
+     * Set the chosen profile image
+     * @param image
+     */
     private void setProfileImage(Bitmap image) {
         try {
             profileImage.setImageBitmap(image);
@@ -156,6 +173,10 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         }
     }
 
+    /**
+     * Add a new image to the gallery
+     * @param image
+     */
     private void addImageToGallery(Bitmap image) {
         final View galleryObject = inflater.inflate(R.layout.item_gallery, null);
         ImageView galleryImage = galleryObject.findViewById(R.id.gallery_image);
@@ -171,6 +192,11 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         galleryLayout.addView(galleryObject);
     }
 
+    /**
+     * Show popup menu where user can choose between taking a new photo or choosing an old one
+     * @param view
+     * @param profileImage
+     */
     private void showImageMenu(View view, boolean profileImage) {
         PopupMenu popupMenu = new PopupMenu(this.getContext(), view);
         popupMenu.setGravity(Gravity.END);
@@ -203,12 +229,18 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         popupMenu.show();
     }
 
+    /**
+     * Process the given inputss
+     */
     private void processInputs() {
         if(profileImage.getDrawable() == null ||
+                profileImage.getDrawable().getIntrinsicWidth()  == 0 ||
+                profileImage.getDrawable().getIntrinsicHeight() == 0 ||
                 profileImage.getDrawable() == getResources().getDrawable(
                         R.drawable.ic_add_24dp, Objects.requireNonNull(getContext()).getTheme())) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_no_picture_text));
+            finishButton.setEnabled(true);
             return;
         }
         //encode image to base64 string
@@ -250,12 +282,19 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     }
 
     /**
-     * Cancel the current registration (as it was successfully sent to backend) and
-     * proceed to login screen
+     * Save private profile after login response and proceed to matches fragment
      */
     Function<JSONObject, Void> registerCallback = response -> {
-        RegistrationHandler.cancel();
-        clearBackstackAndReplace(new LoginFragment());
+        try {
+            RegistrationHandler.finish(response.getLong("id"),
+                    response.getString("token"));
+            clearBackstackAndReplace(new MatchesFragment());
+        } catch (Exception e) {
+            Log.d("InvestorImagesFragment", e.getMessage());
+            showSimpleDialog(getString(R.string.generic_error_title),
+                    getString(R.string.generic_error_text));
+        }
+        finishButton.setEnabled(true);
         return null;
     };
 
@@ -265,13 +304,17 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     Function<VolleyError, Void> errorCallback = response -> {
         try {
             if (response.networkResponse.statusCode == 500) {
+                JSONObject body = new JSONObject(new String(
+                        response.networkResponse.data,"UTF-8"));
                 showSimpleDialog(getString(R.string.generic_error_title),
-                        getString(R.string.generic_error_text));
+                        body.getString("message"));
+                Log.d("InvestorImages", body.getString("message"));
             }
         } catch (Exception e) {
             Log.d("debugMessage", e.toString());
         }
         Log.d("debugMessage", ApiRequestHandler.parseVolleyError(response));
+        finishButton.setEnabled(true);
         return null;
     };
 }
