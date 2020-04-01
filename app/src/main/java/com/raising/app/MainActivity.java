@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
         }
         fragmentTransaction.commit();
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
