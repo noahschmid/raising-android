@@ -46,7 +46,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     static final int REQUEST_GALLERY_CAPTURE = 3;
     static final int REQUEST_GALLERY_FETCH = 4;
 
-    ImageView profileImage, addGalleryImage;
+    ImageView profileImage, addGalleryImage, profileImageOverlay;
     Button deleteProfileImageButton;
     FlexboxLayout galleryLayout;
     LayoutInflater inflater;
@@ -73,6 +73,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             showImageMenu(profileImage, true);
         });
 
+        profileImageOverlay = view.findViewById(R.id.register_profile_image_overlay);
         galleryLayout = view.findViewById(R.id.register_investor_images_gallery);
 
         deleteProfileImageButton = view.findViewById(R.id.button_delete_profile_img);
@@ -80,9 +81,9 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         deleteProfileImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                profileImageOverlay.setVisibility(View.VISIBLE);
                 deleteProfileImageButton.setVisibility(View.GONE);
-                profileImage.setImageDrawable(getResources().getDrawable(
-                        R.drawable.ic_add_24dp, Objects.requireNonNull(getContext()).getTheme()));
+                profileImage.setImageBitmap(null);
             }
         });
 
@@ -149,6 +150,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         try {
             profileImage.setImageBitmap(image);
             deleteProfileImageButton.setVisibility(View.VISIBLE);
+            profileImageOverlay.setVisibility(View.GONE);
         } catch (NullPointerException e) {
             Log.d("InvestorImages", e.getMessage());
         }
