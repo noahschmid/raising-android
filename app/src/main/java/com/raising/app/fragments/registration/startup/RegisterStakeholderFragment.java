@@ -50,6 +50,9 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     private ShareholderViewModel shareholderViewModel;
     Button finishButton;
 
+    boolean EditMode = false;
+    int editedIndex;
+
     // hold references to the respective recycler views
     private RecyclerView founderRecyclerView, boardMemberRecyclerView, shareholderRecyclerView;
 
@@ -187,6 +190,13 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         founderViewModel.getSelectedFounder().observe(getViewLifecycleOwner(),
                 founder -> {
                     founder.updateTitle();
+                    if(getArguments().getBoolean("editFounder")) {
+                        int position = getArguments().getInt("editIndex");
+                        founderList.set(position, founder);
+                        founderAdapter.notifyItemChanged(position);
+                        getArguments().putBoolean("editFounder", false);
+                    }
+
                     if(!founderList.contains(founder)) {
                         founderList.add(founder);
                         founderAdapter.notifyDataSetChanged();
@@ -213,11 +223,8 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                 founderFragment.passFounder(selectedFounder);
                 changeFragment(founderFragment, null);
 
-                founderViewModel.getSelectedFounder().observe(getViewLifecycleOwner(), founder -> {
-                    founder.updateTitle();
-                    founderList.set(position, founder);
-                    founderAdapter.notifyItemChanged(position);
-                });
+                getArguments().putBoolean("editFounder", true);
+                getArguments().putInt("editIndex", position);
             }
 
             @Override
@@ -239,8 +246,17 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         boardMemberViewModel.getSelectedBoardMember().observe(getViewLifecycleOwner(),
                 boardMember -> {
                     boardMember.updateTitle();
-                    boardMemberList.add(boardMember);
-                    boardMemberAdapter.notifyDataSetChanged();
+                    if(getArguments().getBoolean("editBoardMember")) {
+                        int position = getArguments().getInt("editIndex");
+                        boardMemberList.set(position, boardMember);
+                        boardMemberAdapter.notifyItemChanged(position);
+                        getArguments().putBoolean("editBoardMember", false);
+                    }
+
+                    if(!boardMemberList.contains(boardMember)) {
+                        boardMemberList.add(boardMember);
+                        boardMemberAdapter.notifyDataSetChanged();
+                    }
                 });
 
     }
@@ -263,12 +279,8 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                 boardMemberFragment.passBoardMember(selectedBoardMember);
                 changeFragment(boardMemberFragment);
 
-                boardMemberViewModel.getSelectedBoardMember().observe(getViewLifecycleOwner(), boardMember -> {
-                    boardMember.updateTitle();
-                    boardMemberList.set(position, boardMember);
-                    boardMemberAdapter.notifyItemChanged(position);
-                });
-
+                getArguments().putBoolean("editBoardMember", true);
+                getArguments().putInt("editIndex", position);
             }
 
             @Override
@@ -290,6 +302,13 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         shareholderViewModel.getSelectedShareholder().observe(getViewLifecycleOwner(),
                 shareholder -> {
                     shareholder.updateTitle();
+                    if(getArguments().getBoolean("editShareholder")) {
+                        int position = getArguments().getInt("editIndex");
+                        shareholderList.set(position, shareholder);
+                        shareholderAdapter.notifyItemChanged(position);
+                        getArguments().putBoolean("editShareholder", false);
+                    }
+
                     if(!shareholderList.contains(shareholder)) {
                         shareholderList.add(shareholder);
                         shareholderAdapter.notifyDataSetChanged();
@@ -314,12 +333,9 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                 Shareholder selectedShareholder = ((Shareholder) shareholderList.get(position));
                 shareholderFragment.passShareholder(selectedShareholder);
                 changeFragment(shareholderFragment);
-                shareholderViewModel.getSelectedShareholder().observe(getViewLifecycleOwner(),
-                        shareholder -> {
-                            shareholder.updateTitle();
-                            shareholderList.set(position, shareholder);
-                            shareholderAdapter.notifyItemChanged(position);
-                        });
+
+                getArguments().putBoolean("editShareholder", true);
+                getArguments().putInt("editIndex", position);
             }
 
             @Override
