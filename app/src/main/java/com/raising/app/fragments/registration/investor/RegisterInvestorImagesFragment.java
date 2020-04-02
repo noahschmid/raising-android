@@ -294,7 +294,6 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             showSimpleDialog(getString(R.string.generic_error_title),
                     getString(R.string.generic_error_text));
         }
-        finishButton.setEnabled(true);
         return null;
     };
 
