@@ -14,13 +14,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.raising.app.R;
-import com.raising.app.SettingsViewModel;
 import com.raising.app.util.AuthenticationHandler;
 
 public class SettingsFragment extends RaisingFragment implements View.OnClickListener {
-
-    private SettingsViewModel mViewModel;
-
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
     }
@@ -39,7 +35,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
         // TODO: Use the ViewModel
     }
 

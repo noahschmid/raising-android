@@ -165,7 +165,6 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
             finishButton.setOnClickListener(v -> popCurrentFragment(this));
         }
-
     }
 
     @Override
