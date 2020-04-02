@@ -396,8 +396,6 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                     getString(R.string.generic_error_text));
             Log.d("StartupStakeholder", e.getMessage());
         }
-
-        finishButton.setEnabled(true);
         return null;
     };
 
