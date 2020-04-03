@@ -31,16 +31,16 @@
     <string name="login_email"> E-Mail </string>
     <string name="login_password"> Password</string>
 
-    <string name="login_forgot_button_text"> Forgot password? </string>
-    <string name="login_register_text"> No account? </string>
+    <string name="login_forgot_button_text"> Forgot Password? </string>
+    <string name="login_register_text"> No Account? </string>
 
     <string name="login_dialog_title"> Login failed </string>
     <string name="login_dialog_text_403"> Incorrect username or password </string>
     <string name="login_dialog_text_empty_credentials"> Please fill out all required fields </string>
 
     <!-- Strings used in ForgotPasswordScreens -->
-    <string name="reset_email_input_placeholder"> Email.. </string>
-    <string name="forgot_button_sendEmail"> Reset password </string>
+    <string name="reset_email_input_placeholder"> E-Mail </string>
+    <string name="forgot_button_sendEmail"> Send E-Mail </string>
     <string name="forgot_dialog_title_no_input"> No input </string>
     <string name="forgot_dialog_text_no_input"> You must enter a valid address </string>
 
