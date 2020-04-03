@@ -25,6 +25,14 @@
 
     <string name="startup_shareholder_chart_title"> Shareholder Equity Shares </string>
 
+    <string name="investor_matching_scope"> Investment Scope </string>
+    <string name="investor_matching_min_ticket"> Minimal Ticket Size </string>
+    <string name="investor_matching_max_ticket"> Maximal Ticket Size </string>
+    <string name="investor_matching_investor_type"> Interested in these investors </string>
+    <string name="investor_matching_phase"> Currently in this investment phase </string>
+    <string name="investor_matching_industry"> Operates in these industries </string>
+    <string name="investor_matching_involvement"> Desired form of involvement </string>
+
     <!-- Strings used in LoginScreen -->
     <string name="login_welcome_text"> Welcome to Raising </string>
     <string name="login_button_text"> Login </string>

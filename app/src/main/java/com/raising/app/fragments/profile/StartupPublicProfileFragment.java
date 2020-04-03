@@ -30,15 +30,11 @@ import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.models.stakeholder.Shareholder;
 import com.raising.app.util.ResourcesManager;
-import com.raising.app.util.StakeholderRecyclerViewAdapter;
-import com.raising.app.util.StartupProfileBoardMemberRecyclerViewAdapter;
-import com.raising.app.util.StartupProfileFounderRecyclerViewAdapter;
+import com.raising.app.util.recyclerViewAdapter.StartupProfileBoardMemberRecyclerViewAdapter;
+import com.raising.app.util.recyclerViewAdapter.StartupProfileFounderRecyclerViewAdapter;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Objects;
 
 public class StartupPublicProfileFragment extends RaisingFragment {
@@ -86,14 +82,16 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         prepareImageSwitcher(view);
 
+        profileAccept = view.findViewById(R.id.button_startup_public_profile_accept);
+        profileDecline = view.findViewById(R.id.button_startup_public_profile_decline);
+
+        // setup general startup information
         matchingPercent = view.findViewById(R.id.text_startup_public_profile_matching_percent);
         profileName = view.findViewById(R.id.text_startup_public_profile_name);
         profileLocation = view.findViewById(R.id.text_startup_public_profile_location);
         profilePitch = view.findViewById(R.id.text_startup_public_profile_pitch);
         //TODO: fill texts with startup data
 
-        profileAccept = view.findViewById(R.id.button_startup_public_profile_accept);
-        profileDecline = view.findViewById(R.id.button_startup_public_profile_decline);
         profileWebsite = view.findViewById(R.id.button_startup_public_profile_website);
         profileWebsite.setOnClickListener(v -> {
             //TODO: replace with actual website
@@ -102,6 +100,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             startActivity(browserIntent);
         });
 
+        // setup startup specific information
         startupRevenue = view.findViewById(R.id.text_profile_revenue_title);
         startupBreakEven = view.findViewById(R.id.text_profile_breakeven_title);
         startupFoundingYear = view.findViewById(R.id.text_profile_founding_year_title);
@@ -119,6 +118,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         //TODO: set actual progress
         completed.setProgress(75);
 
+        // setup recycler views for founders and board members
         //TODO: fill array list with founder
         ArrayList<Founder> founderList = new ArrayList<>();
         RecyclerView founderRecyclerView = view.findViewById(R.id.startup_profile_founder_list);
@@ -135,7 +135,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 = new StartupProfileBoardMemberRecyclerViewAdapter(boardMemberList);
         boardMemberRecyclerView.setAdapter(boardMemberListAdapter);
 
-        setupEquityPieChart(view);
+        setupShareholderPieChart(view);
     }
 
     /**
@@ -192,7 +192,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         });
     }
 
-    private void setupEquityPieChart(View view) {
+    private void setupShareholderPieChart(View view) {
         PieChart pieChart = view.findViewById(R.id.stakeholder_equity_chart);
         List<PieEntry> pieEntries = new ArrayList<>();
 
