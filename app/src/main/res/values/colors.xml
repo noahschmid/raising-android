@@ -11,6 +11,7 @@
     <color name="raisingPrimaryAccent"> #DEADAF </color>
 
     <color name="raisingWhite">#ffffff</color>
+    <color name="raisingBlack"> #000000 </color>
 
     <color name="raisingPrimaryButton"> #707F91 </color>
     <color name="raisingPrimaryTextColor"> #586473 </color>
