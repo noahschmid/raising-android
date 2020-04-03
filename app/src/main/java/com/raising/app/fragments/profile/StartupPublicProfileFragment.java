@@ -19,16 +19,26 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Startup;
 import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.models.stakeholder.Founder;
+import com.raising.app.models.stakeholder.Shareholder;
+import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.StakeholderRecyclerViewAdapter;
 import com.raising.app.util.StartupProfileBoardMemberRecyclerViewAdapter;
 import com.raising.app.util.StartupProfileFounderRecyclerViewAdapter;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Objects;
 
 public class StartupPublicProfileFragment extends RaisingFragment {
@@ -124,6 +134,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         StartupProfileBoardMemberRecyclerViewAdapter boardMemberListAdapter
                 = new StartupProfileBoardMemberRecyclerViewAdapter(boardMemberList);
         boardMemberRecyclerView.setAdapter(boardMemberListAdapter);
+
+        setupEquityPieChart(view);
     }
 
     /**
@@ -178,6 +190,47 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 imageIndex.setText(currentIndexToString(currentImageIndex));
             }
         });
+    }
+
+    private void setupEquityPieChart(View view) {
+        PieChart pieChart = view.findViewById(R.id.stakeholder_equity_chart);
+        List<PieEntry> pieEntries = new ArrayList<>();
+
+        //TODO: store shareholders in this array list
+        ArrayList<Shareholder> shareholders = new ArrayList<>();
+
+        //add all shareholders to pieEntries list
+        for (Shareholder shareholder : shareholders) {
+            String investorType = ResourcesManager.getInvestorType(shareholder.getInvestortypeId()).toString();
+            String chartTitle = shareholder.getTitle() + ", " + investorType;
+            String equityShareString = shareholder.getEquityShare();
+            float equityShare = Float.parseFloat(equityShareString.substring(0, equityShareString.length() - 2));
+            pieEntries.add(new PieEntry(equityShare, chartTitle));
+        }
+
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, getString(R.string.startup_shareholder_chart_title));
+        pieDataSet.setColors(populateColorArray());
+
+        PieData pieData = new PieData(pieDataSet);
+        pieChart.setData(pieData);
+        pieChart.setHoleRadius(0f);
+        pieChart.animateY(1000);
+        pieChart.invalidate();
+    }
+
+    /**
+     * Add colors to the pieChartColors array used for the shareholder pie chart
+     */
+    private ArrayList<Integer> populateColorArray() {
+        ArrayList<Integer> pieChartColors = new ArrayList<>();
+        pieChartColors.add(getResources().getColor(R.color.raisingPrimary, null));
+        pieChartColors.add(getResources().getColor(R.color.raisingPrimaryLight, null));
+        pieChartColors.add(getResources().getColor(R.color.raisingPrimaryDark, null));
+        pieChartColors.add(getResources().getColor(R.color.raisingPrimaryAccent, null));
+        pieChartColors.add(getResources().getColor(R.color.raisingPrimaryTextColor, null));
+        pieChartColors.add(getResources().getColor(R.color.raisingPrimaryButton, null));
+
+        return pieChartColors;
     }
 
     /**

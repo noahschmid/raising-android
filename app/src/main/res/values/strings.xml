@@ -23,6 +23,8 @@
     <string name="myProfile_apply_changes"> Apply Changes </string>
     <string name="startup_profile_key_figures"> Key Figures </string>
 
+    <string name="startup_shareholder_chart_title"> Shareholder Equity Shares </string>
+
     <!-- Strings used in LoginScreen -->
     <string name="login_welcome_text"> Welcome to Raising </string>
     <string name="login_button_text"> Login </string>

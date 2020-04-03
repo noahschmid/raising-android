@@ -520,13 +520,23 @@
                 android:id="@+id/text_profile_shareholder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_stakeholder_shareholder"
                 android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/fragmentSubtitleFontSize"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/stakeholder_equity_chart"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_board_member"
                 app:layout_constraintTop_toBottomOf="@+id/startup_profile_board_member_list" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/stakeholder_equity_chart"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_shareholder" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
