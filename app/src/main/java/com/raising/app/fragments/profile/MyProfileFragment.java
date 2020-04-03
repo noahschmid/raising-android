@@ -24,6 +24,7 @@ import com.raising.app.fragments.registration.startup.RegisterStakeholderFragmen
 import com.raising.app.fragments.registration.startup.RegisterStartupImagesFragment;
 import com.raising.app.fragments.registration.startup.RegisterStartupMatchingFragment;
 import com.raising.app.fragments.registration.startup.RegisterStartupPitchFragment;
+import com.raising.app.util.RegistrationHandler;
 
 public class MyProfileFragment extends RaisingFragment implements View.OnClickListener {
     private FrameLayout startUpLayout, investorLayout;

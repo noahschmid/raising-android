@@ -42,9 +42,9 @@
                     android:id="@+id/button_startup_gallery_previous"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
-                    android:src="@drawable/ic_keyboard_arrow_left_32dp"
+                    android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
                     android:background="?android:selectableItemBackground"
+                    android:src="@drawable/ic_keyboard_arrow_left_32dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -53,9 +53,9 @@
                     android:id="@+id/button_startup_gallery_next"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/inputFormHorizontalMarginSmall"
-                    android:src="@drawable/ic_keyboard_arrow_right_32dp"
+                    android:layout_marginEnd="@dimen/inputFormVerticalMarginSmall"
                     android:background="?android:selectableItemBackground"
+                    android:src="@drawable/ic_keyboard_arrow_right_32dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -88,7 +88,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-                        android:hint="Matching Percent"
+                        android:hint="Percent"
                         android:textColorHint="@color/raisingWhite"
                         android:textSize="@dimen/fragmentTitleFontSize"
                         android:textStyle="bold"
@@ -96,23 +96,57 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/button_startup_public_profile_decline"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Button"
-                        app:layout_constraintBottom_toBottomOf="@+id/button_startup_public_profile_accept"
+                        android:layout_marginTop="@dimen/inputFormVerticalMarginSmall"
+                        android:layout_marginEnd="@dimen/inputFormHorizontalMarginSmall"
+                        android:background="@drawable/btn_public_profile_round"
+                        android:backgroundTint="@color/raisingWhite"
+                        android:src="@drawable/ic_not_interested_40dp"
+                        app:layout_constraintBottom_toTopOf="@+id/text_startup_decline"
                         app:layout_constraintEnd_toStartOf="@+id/button_startup_public_profile_accept"
-                        app:layout_constraintTop_toTopOf="@+id/button_startup_public_profile_accept" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/button_startup_public_profile_accept"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Button"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginTop="@dimen/inputFormVerticalMarginSmall"
+                        android:layout_marginEnd="@dimen/inputFormHorizontalMarginSmall"
+                        android:background="@drawable/btn_public_profile_round"
+                        android:backgroundTint="@color/raisingWhite"
+                        android:src="@drawable/ic_check_40dp"
+                        app:layout_constraintBottom_toTopOf="@+id/text_startup_accept"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/text_startup_decline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                        android:hint="@string/decline_text"
+                        android:textColorHint="@color/raisingWhite"
+                        android:textSize="@dimen/raisingSmallTextFontSize"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/button_startup_public_profile_decline"
+                        app:layout_constraintStart_toStartOf="@+id/button_startup_public_profile_decline"
+                        app:layout_constraintTop_toBottomOf="@+id/button_startup_public_profile_decline" />
+
+                    <TextView
+                        android:id="@+id/text_startup_accept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                        android:hint="@string/accept_text"
+                        android:textColorHint="@color/raisingWhite"
+                        android:textSize="@dimen/raisingSmallTextFontSize"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/button_startup_public_profile_accept"
+                        app:layout_constraintStart_toStartOf="@+id/button_startup_public_profile_accept"
+                        app:layout_constraintTop_toBottomOf="@+id/button_startup_public_profile_accept" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -124,7 +158,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:text="Name"
+                android:hint="Name"
                 android:textSize="@dimen/fragmentTitleFontSize"
                 android:textStyle="bold"
                 android:textColorHint="@color/raisingPrimaryTextColor"
@@ -135,7 +169,7 @@
                 android:id="@+id/text_startup_public_profile_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Location"
+                android:hint="Location"
                 android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_name"
@@ -147,24 +181,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                android:text="Pitch"
+                android:hint="Pitch"
                 android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_location"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_location" />
 
-            <Button
+            <TextView
                 android:id="@+id/button_startup_public_profile_website"
-                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:backgroundTint="@color/raisingWhite"
-                android:hint="Button"
-                android:shadowColor="@color/raisingWhite"
-                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:hint="Website"
                 android:textSize="@dimen/raisingTextFontSize"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_pitch"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_pitch" />
 
@@ -178,7 +209,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/button_startup_public_profile_website"
                 app:layout_constraintBottom_toTopOf="@+id/text_profile_key_figures"/>
 
-
             <TextView
                 android:id="@+id/text_profile_key_figures"
                 android:layout_width="wrap_content"
@@ -190,62 +220,132 @@
                 android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/fragmentSubtitleFontSize"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/text_profile_revenue"
+                app:layout_constraintBottom_toTopOf="@+id/text_profile_revenue_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/startup_profile_matching"
                 app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
-                android:id="@+id/text_profile_revenue"
+                android:id="@+id/text_profile_revenue_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:hint="@string/register_company_revenue"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
-                app:layout_constraintBottom_toTopOf="@+id/text_profile_breakeven"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/text_profile_breakeven_title"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_key_figures"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_key_figures" />
 
             <TextView
-                android:id="@+id/text_profile_breakeven"
+                android:id="@+id/text_profile_revenue"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
+                android:text="TextView"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                app:layout_constraintBottom_toBottomOf="@+id/text_profile_revenue_title"
+                app:layout_constraintStart_toEndOf="@+id/text_profile_revenue_title"
+                app:layout_constraintTop_toTopOf="@+id/text_profile_revenue_title" />
+
+            <TextView
+                android:id="@+id/text_profile_breakeven_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:hint="@string/register_company_breakeven"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
-                app:layout_constraintBottom_toTopOf="@+id/text_profile_founding_year"
-                app:layout_constraintStart_toStartOf="@+id/text_profile_revenue"
-                app:layout_constraintTop_toBottomOf="@+id/text_profile_revenue" />
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/text_profile_founding_year_title"
+                app:layout_constraintStart_toStartOf="@+id/text_profile_revenue_title"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_revenue_title" />
+
+            <TextView
+                android:id="@+id/text_profile_breakeven"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
+                android:text="TextView"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                app:layout_constraintBottom_toBottomOf="@+id/text_profile_breakeven_title"
+                app:layout_constraintStart_toEndOf="@+id/text_profile_breakeven_title"
+                app:layout_constraintTop_toTopOf="@+id/text_profile_breakeven_title" />
+
+            <TextView
+                android:id="@+id/text_profile_founding_year_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_company_founding_year"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/text_profile_current_markets_title"
+                app:layout_constraintStart_toStartOf="@+id/text_profile_breakeven_title"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_breakeven_title" />
 
             <TextView
                 android:id="@+id/text_profile_founding_year"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
                 android:text="TextView"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
-                app:layout_constraintBottom_toTopOf="@+id/text_profile_current_markets"
-                app:layout_constraintStart_toStartOf="@+id/text_profile_breakeven"
-                app:layout_constraintTop_toBottomOf="@+id/text_profile_breakeven" />
+                app:layout_constraintBottom_toBottomOf="@+id/text_profile_founding_year_title"
+                app:layout_constraintStart_toEndOf="@+id/text_profile_founding_year_title"
+                app:layout_constraintTop_toTopOf="@+id/text_profile_founding_year_title" />
+
+            <TextView
+                android:id="@+id/text_profile_current_markets_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_company_markets"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/text_profile_fte_title"
+                app:layout_constraintStart_toStartOf="@+id/text_profile_founding_year_title"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_founding_year_title" />
 
             <TextView
                 android:id="@+id/text_profile_current_markets"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
                 android:text="TextView"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
-                app:layout_constraintBottom_toTopOf="@+id/text_profile_fte"
-                app:layout_constraintStart_toStartOf="@+id/text_profile_founding_year"
-                app:layout_constraintTop_toBottomOf="@+id/text_profile_founding_year" />
+                app:layout_constraintBottom_toBottomOf="@+id/text_profile_current_markets_title"
+                app:layout_constraintStart_toEndOf="@+id/text_profile_current_markets_title"
+                app:layout_constraintTop_toTopOf="@+id/text_profile_current_markets_title" />
+
+            <TextView
+                android:id="@+id/text_profile_fte_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/register_company_fte"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/text_profile_financial"
+                app:layout_constraintStart_toStartOf="@+id/text_profile_current_markets_title"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_current_markets_title" />
 
             <TextView
                 android:id="@+id/text_profile_fte"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
                 android:text="TextView"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
-                app:layout_constraintBottom_toTopOf="@+id/text_profile_financial"
-                app:layout_constraintStart_toStartOf="@+id/text_profile_current_markets"
-                app:layout_constraintTop_toBottomOf="@+id/text_profile_current_markets" />
+                app:layout_constraintBottom_toBottomOf="@+id/text_profile_fte_title"
+                app:layout_constraintStart_toEndOf="@+id/text_profile_fte_title"
+                app:layout_constraintTop_toTopOf="@+id/text_profile_fte_title" />
 
             <TextView
                 android:id="@+id/text_profile_financial"
@@ -256,50 +356,106 @@
                 android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/fragmentSubtitleFontSize"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/text_profile_investment_type"
+                app:layout_constraintBottom_toTopOf="@+id/text_profile_investment_type_title"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_key_figures"
-                app:layout_constraintTop_toBottomOf="@+id/text_profile_fte" />
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_fte_title" />
 
             <TextView
-                android:id="@+id/text_profile_investment_type"
+                android:id="@+id/text_profile_investment_type_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:hint="@string/register_financial_type"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
-                app:layout_constraintBottom_toTopOf="@+id/text_profile_valuation"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/text_profile_valuation_title"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_financial"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_financial" />
 
             <TextView
-                android:id="@+id/text_profile_valuation"
+                android:id="@+id/text_profile_investment_type"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
+                android:text="TextView"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                app:layout_constraintBottom_toBottomOf="@+id/text_profile_investment_type_title"
+                app:layout_constraintStart_toEndOf="@+id/text_profile_investment_type_title"
+                app:layout_constraintTop_toTopOf="@+id/text_profile_investment_type_title" />
+
+            <TextView
+                android:id="@+id/text_profile_valuation_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+               android:hint="@string/register_financial_valuation"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
-                app:layout_constraintBottom_toTopOf="@+id/text_profile_closing_time"
-                app:layout_constraintStart_toStartOf="@+id/text_profile_investment_type"
-                app:layout_constraintTop_toBottomOf="@+id/text_profile_investment_type" />
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/text_profile_closing_time_title"
+                app:layout_constraintStart_toStartOf="@+id/text_profile_investment_type_title"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_investment_type_title" />
+
+            <TextView
+                android:id="@+id/text_profile_valuation"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
+                android:text="TextView"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                app:layout_constraintBottom_toBottomOf="@+id/text_profile_valuation_title"
+                app:layout_constraintStart_toEndOf="@+id/text_profile_valuation_title"
+                app:layout_constraintTop_toTopOf="@+id/text_profile_valuation_title" />
+
+            <TextView
+                android:id="@+id/text_profile_closing_time_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_financial_closing_time"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/text_profile_completed_title"
+                app:layout_constraintStart_toStartOf="@+id/text_profile_valuation_title"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_valuation_title" />
 
             <TextView
                 android:id="@+id/text_profile_closing_time"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
                 android:text="TextView"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
-                app:layout_constraintBottom_toTopOf="@+id/text_profile_completed"
-                app:layout_constraintStart_toStartOf="@+id/text_profile_valuation"
-                app:layout_constraintTop_toBottomOf="@+id/text_profile_valuation" />
+                app:layout_constraintBottom_toBottomOf="@+id/text_profile_closing_time_title"
+                app:layout_constraintStart_toEndOf="@+id/text_profile_closing_time_title"
+                app:layout_constraintTop_toTopOf="@+id/text_profile_closing_time_title" />
+
+            <TextView
+                android:id="@+id/text_profile_completed_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/register_financial_completed"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/text_profile_founders"
+                app:layout_constraintStart_toStartOf="@+id/text_profile_closing_time_title"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_closing_time_title" />
 
             <TextView
                 android:id="@+id/text_profile_completed"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
                 android:text="TextView"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
-                app:layout_constraintBottom_toTopOf="@+id/text_profile_founders"
-                app:layout_constraintStart_toStartOf="@+id/text_profile_closing_time"
-                app:layout_constraintTop_toBottomOf="@+id/text_profile_closing_time" />
+                app:layout_constraintBottom_toBottomOf="@+id/text_profile_completed_title"
+                app:layout_constraintStart_toEndOf="@+id/text_profile_completed_title"
+                app:layout_constraintTop_toTopOf="@+id/text_profile_completed_title" />
 
             <ProgressBar
                 android:id="@+id/progress_profile_completed"
@@ -310,8 +466,7 @@
                 android:progressTint="@color/raisingPrimary"
                 app:layout_constraintBottom_toBottomOf="@+id/text_profile_completed"
                 app:layout_constraintStart_toEndOf="@+id/text_profile_completed"
-                app:layout_constraintTop_toTopOf="@+id/text_profile_completed"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toTopOf="@+id/text_profile_completed" />
 
             <TextView
                 android:id="@+id/text_profile_founders"
@@ -322,9 +477,20 @@
                 android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/fragmentSubtitleFontSize"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/text_profile_board_member"
+                app:layout_constraintBottom_toTopOf="@+id/startup_profile_founder_list"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_financial"
-                app:layout_constraintTop_toBottomOf="@+id/text_profile_completed" />
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_completed_title" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/startup_profile_founder_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                app:layout_constraintBottom_toTopOf="@+id/text_profile_board_member"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/text_profile_founders"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_founders" />
 
             <TextView
                 android:id="@+id/text_profile_board_member"
@@ -335,9 +501,20 @@
                 android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/fragmentSubtitleFontSize"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/text_profile_shareholder"
+                app:layout_constraintBottom_toTopOf="@+id/startup_profile_board_member_list"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_founders"
-                app:layout_constraintTop_toBottomOf="@+id/text_profile_founders" />
+                app:layout_constraintTop_toBottomOf="@+id/startup_profile_founder_list" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/startup_profile_board_member_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                app:layout_constraintBottom_toTopOf="@+id/text_profile_shareholder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/text_profile_board_member"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_board_member" />
 
             <TextView
                 android:id="@+id/text_profile_shareholder"
@@ -349,7 +526,8 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_board_member"
-                app:layout_constraintTop_toBottomOf="@+id/text_profile_board_member" />
+                app:layout_constraintTop_toBottomOf="@+id/startup_profile_board_member_list" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,7 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,18 +21,23 @@ import android.widget.TextView;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.fragments.registration.startup.RegisterStartupMatchingFragment;
 import com.raising.app.models.Startup;
+import com.raising.app.models.stakeholder.BoardMember;
+import com.raising.app.models.stakeholder.Founder;
+import com.raising.app.util.StakeholderRecyclerViewAdapter;
+import com.raising.app.util.StartupProfileBoardMemberRecyclerViewAdapter;
+import com.raising.app.util.StartupProfileFounderRecyclerViewAdapter;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class StartupPublicProfileFragment extends RaisingFragment {
-    Startup profileStartup;
-    ImageSwitcher imageSwitcher;
-    TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch;
-    Button profileAccept, profileDecline, profileWebsite;
+    private Startup profileStartup;
+    private ImageSwitcher imageSwitcher;
+    private TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch;
+    private Button profileAccept, profileDecline, profileWebsite;
 
-    TextView startupRevenue, startupBreakEven, startupFoundingYear, startupMarkets, startupFte,
+    private TextView startupRevenue, startupBreakEven, startupFoundingYear, startupMarkets, startupFte,
             startupInvestmentType, startupValuation, startupClosingTime, startupCompleted;
 
     // this is a placeholder array with image resources, replace with actual images
@@ -86,22 +92,38 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             startActivity(browserIntent);
         });
 
-        startupRevenue = view.findViewById(R.id.text_profile_revenue);
-        startupBreakEven = view.findViewById(R.id.text_profile_breakeven);
-        startupFoundingYear = view.findViewById(R.id.text_profile_founding_year);
-        startupMarkets = view.findViewById(R.id.text_profile_current_markets);
-        startupFte = view.findViewById(R.id.text_profile_fte);
+        startupRevenue = view.findViewById(R.id.text_profile_revenue_title);
+        startupBreakEven = view.findViewById(R.id.text_profile_breakeven_title);
+        startupFoundingYear = view.findViewById(R.id.text_profile_founding_year_title);
+        startupMarkets = view.findViewById(R.id.text_profile_current_markets_title);
+        startupFte = view.findViewById(R.id.text_profile_fte_title);
 
-        startupInvestmentType = view.findViewById(R.id.text_profile_investment_type);
-        startupValuation = view.findViewById(R.id.text_profile_valuation);
-        startupClosingTime = view.findViewById(R.id.text_profile_closing_time);
-        startupCompleted = view.findViewById(R.id.text_profile_completed);
+        startupInvestmentType = view.findViewById(R.id.text_profile_investment_type_title);
+        startupValuation = view.findViewById(R.id.text_profile_valuation_title);
+        startupClosingTime = view.findViewById(R.id.text_profile_closing_time_title);
+        startupCompleted = view.findViewById(R.id.text_profile_completed_title);
         //TODO: fill texts with startup data
 
         ProgressBar completed = view.findViewById(R.id.progress_profile_completed);
         completed.setMax(getResources().getInteger(R.integer.maxPercent));
         //TODO: set actual progress
         completed.setProgress(75);
+
+        //TODO: fill array list with founder
+        ArrayList<Founder> founderList = new ArrayList<>();
+        RecyclerView founderRecyclerView = view.findViewById(R.id.startup_profile_founder_list);
+        founderRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        StartupProfileFounderRecyclerViewAdapter founderListAdapter
+                = new StartupProfileFounderRecyclerViewAdapter(founderList);
+        founderRecyclerView.setAdapter(founderListAdapter);
+
+        //TODO: fill array list with board member
+        ArrayList<BoardMember> boardMemberList = new ArrayList<>();
+        RecyclerView boardMemberRecyclerView = view.findViewById(R.id.startup_profile_board_member_list);
+        boardMemberRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        StartupProfileBoardMemberRecyclerViewAdapter boardMemberListAdapter
+                = new StartupProfileBoardMemberRecyclerViewAdapter(boardMemberList);
+        boardMemberRecyclerView.setAdapter(boardMemberListAdapter);
     }
 
     /**
