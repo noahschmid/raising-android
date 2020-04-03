@@ -101,7 +101,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         recyclerInvolvement = view.findViewById(R.id.investor_public_profile_involvement_list);
         recyclerInvolvement.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerInvolvement.setAdapter(new PublicProfileMatchingRecyclerViewAdapter(investorsInvolvement));
-
     }
 
     /**

@@ -189,7 +189,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_location" />
 
             <TextView
-                android:id="@+id/button_startup_public_profile_website"
+                android:id="@+id/text_startup_public_profile_website"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
@@ -197,16 +197,218 @@
                 android:textSize="@dimen/raisingTextFontSize"
                 android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_pitch"
-                app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_pitch" />
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_pitch"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_public_profile_matching"/>
 
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/startup_profile_matching"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/text_startup_public_profile_matching"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/register_matching_information_text"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/fragmentTitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_public_profile_scope"
+                app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_website"
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_website" />
+
+            <TextView
+                android:id="@+id/text_startup_public_profile_scope"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                android:drawableLeft="@drawable/ic_price_tag_24dp"
+                android:drawablePadding="@dimen/inputFormVerticalMarginSmall"
+                android:drawableTint="@color/raisingPrimaryTextColor"
+                android:hint="@string/investor_matching_scope"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_public_profile_scope_title"
+                app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_matching"
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_matching" />
+
+            <TextView
+                android:id="@+id/text_startup_public_profile_scope_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_matching_scope"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_scope"
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_scope"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_public_profile_min_ticket_title"/>
+
+            <TextView
+                android:id="@+id/text_startup_public_profile_actual_scope"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
+                android:hint="Scope"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                app:layout_constraintBottom_toBottomOf="@+id/text_startup_public_profile_scope_title"
+                app:layout_constraintStart_toEndOf="@+id/text_startup_public_profile_scope_title"
+                app:layout_constraintTop_toTopOf="@+id/text_startup_public_profile_scope_title" />
+
+            <TextView
+                android:id="@+id/text_startup_public_profile_min_ticket_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/investor_matching_min_ticket"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_public_profile_max_ticket_title"
+                app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_scope_title"
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_scope_title" />
+            <TextView
+                android:id="@+id/text_startup_public_profile_min_ticket"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
+                android:hint="Min Ticket"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                app:layout_constraintBottom_toBottomOf="@+id/text_startup_public_profile_min_ticket_title"
+                app:layout_constraintStart_toEndOf="@+id/text_startup_public_profile_min_ticket_title"
+                app:layout_constraintTop_toTopOf="@+id/text_startup_public_profile_min_ticket_title" />
+
+            <TextView
+                android:id="@+id/text_startup_public_profile_max_ticket_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/investor_matching_max_ticket"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_public_profile_type_of_investor"
+                app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_min_ticket_title"
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_min_ticket_title" />
+
+            <TextView
+                android:id="@+id/text_startup_public_profile_max_ticket"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
+                android:hint="Max Ticket"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                app:layout_constraintBottom_toBottomOf="@+id/text_startup_public_profile_max_ticket_title"
+                app:layout_constraintStart_toEndOf="@+id/text_startup_public_profile_max_ticket_title"
+                app:layout_constraintTop_toTopOf="@+id/text_startup_public_profile_max_ticket_title" />
+
+            <TextView
+                android:id="@+id/text_startup_public_profile_type_of_investor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/investor_matching_investor_type"
+                android:drawableLeft="@drawable/ic_chess_horse_24dp"
+                android:drawableTint="@color/raisingPrimaryTextColor"
+                android:drawablePadding="@dimen/inputFormVerticalMarginSmall"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/startup_public_profile_investor_type_list"
+                app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_max_ticket_title"
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_max_ticket_title" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/startup_public_profile_investor_type_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_public_profile_investment_phase"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_startup_public_profile_website"
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_type_of_investor" />
+
+            <TextView
+                android:id="@+id/text_startup_public_profile_investment_phase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/investor_matching_phase"
+                android:drawableLeft="@drawable/ic_stairs_24dp"
+                android:drawableTint="@color/raisingPrimaryTextColor"
+                android:drawablePadding="@dimen/inputFormVerticalMarginSmall"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/startup_public_profile_phase_list"
+                app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_type_of_investor"
+                app:layout_constraintTop_toBottomOf="@+id/startup_public_profile_investor_type_list" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/startup_public_profile_phase_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_public_profile_industry"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_investment_phase" />
+
+            <TextView
+                android:id="@+id/text_startup_public_profile_industry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/investor_matching_industry"
+                android:drawableLeft="@drawable/ic_gear_24dp"
+                android:drawableTint="@color/raisingPrimaryTextColor"
+                android:drawablePadding="@dimen/inputFormVerticalMarginSmall"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/startup_public_profile_industry_list"
+                app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_investment_phase"
+                app:layout_constraintTop_toBottomOf="@+id/startup_public_profile_phase_list" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/startup_public_profile_industry_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_public_profile_involvement"
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_industry"/>
+
+            <TextView
+                android:id="@+id/text_startup_public_profile_involvement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:drawableLeft="@drawable/ic_conversation_24dp"
+                android:drawablePadding="@dimen/inputFormVerticalMarginSmall"
+                android:drawableTint="@color/raisingPrimaryTextColor"
+                android:hint="@string/investor_matching_involvement"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/startup_public_profile_involvement_list"
+                app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_industry"
+                app:layout_constraintTop_toBottomOf="@+id/startup_public_profile_industry_list" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/startup_public_profile_involvement_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_involvement"
                 app:layout_constraintBottom_toTopOf="@+id/text_profile_key_figures"/>
 
             <TextView
@@ -222,7 +424,7 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_profile_revenue_title"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/startup_profile_matching"
+                app:layout_constraintTop_toBottomOf="@+id/startup_public_profile_involvement_list"
                 app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintVertical_chainStyle="packed" />
 

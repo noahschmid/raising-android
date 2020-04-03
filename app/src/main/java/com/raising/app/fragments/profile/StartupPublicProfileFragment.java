@@ -30,6 +30,7 @@ import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.models.stakeholder.Shareholder;
 import com.raising.app.util.ResourcesManager;
+import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
 import com.raising.app.util.recyclerViewAdapter.StartupProfileBoardMemberRecyclerViewAdapter;
 import com.raising.app.util.recyclerViewAdapter.StartupProfileFounderRecyclerViewAdapter;
 
@@ -40,39 +41,28 @@ import java.util.Objects;
 public class StartupPublicProfileFragment extends RaisingFragment {
     private Startup profileStartup;
     private ImageSwitcher imageSwitcher;
-    private TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch;
-    private Button profileAccept, profileDecline, profileWebsite;
+    private Button profileAccept, profileDecline;
+    private TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch, profileWebsite;
+    private TextView scope, minTicket, maxTicket;
+    private RecyclerView recyclerInvestorType, recyclerPhase, recyclerIndustry, recyclerInvolvement;
 
     private TextView startupRevenue, startupBreakEven, startupFoundingYear, startupMarkets, startupFte,
             startupInvestmentType, startupValuation, startupClosingTime, startupCompleted;
 
     // this is a placeholder array with image resources, replace with actual images
-    int[] images = {R.drawable.ic_person_24dp,
+    private int[] images = {R.drawable.ic_person_24dp,
             R.drawable.ic_edit_blue_32dp,
             R.drawable.ic_trash_can_red_32dp};
-    int currentImageIndex = 0;
+    private int currentImageIndex = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_startup_public_profile,
-                container, false);
 
         // TODO: store this profiles startup with the following line
         // profileStartup = (Startup) getArguments().get("startup");
-
-        /*
-        Fragment matchingFragment = new RegisterStartupMatchingFragment();
-        Bundle args = new Bundle();
-        //TODO: add all data for matching fragment to args bundle
-        args.putBoolean("isProfileMatching", true);
-
-        matchingFragment.setArguments(args);
-        getChildFragmentManager()
-                .beginTransaction()
-                .add(R.id.startup_profile_matching, matchingFragment, "StartupProfileMatching");
-        */
-        return view;
+        return inflater.inflate(R.layout.fragment_startup_public_profile,
+                container, false);
     }
 
     @Override
@@ -92,13 +82,40 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         profilePitch = view.findViewById(R.id.text_startup_public_profile_pitch);
         //TODO: fill texts with startup data
 
-        profileWebsite = view.findViewById(R.id.button_startup_public_profile_website);
+        profileWebsite = view.findViewById(R.id.text_startup_public_profile_website);
         profileWebsite.setOnClickListener(v -> {
             //TODO: replace with actual website
             String website = "";
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
             startActivity(browserIntent);
         });
+
+        // setup matching criteria
+        scope = view.findViewById(R.id.text_startup_public_profile_actual_scope);
+        minTicket = view.findViewById(R.id.text_startup_public_profile_min_ticket);
+        maxTicket = view.findViewById(R.id.text_startup_public_profile_max_ticket);
+        //TODO: fill texts with investors data
+
+        ArrayList startupInvestmentType = new ArrayList();
+        recyclerInvestorType = view.findViewById(R.id.startup_public_profile_investor_type_list);
+        recyclerInvestorType.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerInvestorType.setAdapter(new PublicProfileMatchingRecyclerViewAdapter(startupInvestmentType));
+
+        ArrayList startupPhase = new ArrayList();
+        recyclerPhase = view.findViewById(R.id.startup_public_profile_phase_list);
+        recyclerPhase.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerPhase.setAdapter(new PublicProfileMatchingRecyclerViewAdapter(startupPhase));
+
+        ArrayList startupIndustries = new ArrayList();
+        recyclerIndustry = view.findViewById(R.id.startup_public_profile_industry_list);
+        recyclerIndustry.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerIndustry.setAdapter(new PublicProfileMatchingRecyclerViewAdapter(startupIndustries));
+
+        ArrayList startupInvolvement = new ArrayList();
+        recyclerInvolvement = view.findViewById(R.id.startup_public_profile_involvement_list);
+        recyclerInvolvement.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerInvolvement.setAdapter(new PublicProfileMatchingRecyclerViewAdapter(startupInvolvement));
+
 
         // setup startup specific information
         startupRevenue = view.findViewById(R.id.text_profile_revenue_title);
@@ -107,7 +124,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         startupMarkets = view.findViewById(R.id.text_profile_current_markets_title);
         startupFte = view.findViewById(R.id.text_profile_fte_title);
 
-        startupInvestmentType = view.findViewById(R.id.text_profile_investment_type_title);
+        this.startupInvestmentType = view.findViewById(R.id.text_profile_investment_type_title);
         startupValuation = view.findViewById(R.id.text_profile_valuation_title);
         startupClosingTime = view.findViewById(R.id.text_profile_closing_time_title);
         startupCompleted = view.findViewById(R.id.text_profile_completed_title);
