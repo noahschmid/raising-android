@@ -219,11 +219,14 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         //add all shareholders to pieEntries list
         for (Shareholder shareholder : shareholders) {
             // extract the chart name and value for every shareholder
+            /*
             String investorType = ResourcesManager.getInvestorType(shareholder.getInvestortypeId()).toString();
             String chartTitle = shareholder.getTitle() + ", " + investorType;
             String equityShareString = shareholder.getEquityShare();
             float equityShare = Float.parseFloat(equityShareString.substring(0, equityShareString.length() - 2));
             pieEntries.add(new PieEntry(equityShare, chartTitle));
+
+             */
         }
 
         PieDataSet pieDataSet = new PieDataSet(pieEntries, getString(R.string.startup_shareholder_chart_title));

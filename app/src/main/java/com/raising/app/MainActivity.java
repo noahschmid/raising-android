@@ -10,12 +10,14 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.raising.app.fragments.HandshakesFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.SettingsFragment;
 import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
+import com.raising.app.fragments.registration.startup.RegisterFinancialRequirementsFragment;
 import com.raising.app.models.Investor;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
                 hideBottomNavigation(true);
-                fragmentTransaction.replace(R.id.fragment_container, new InvestorPublicProfileFragment());
+                fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
             } else {
                 hideBottomNavigation(false);
                 fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
@@ -67,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.nav_matches:
                                 selected = new MatchesFragment();
+                                break;
+                            case R.id.nav_handshakes:
+                                selected = new HandshakesFragment();
                                 break;
                             case R.id.nav_profile:
                                 selected = new MyProfileFragment();

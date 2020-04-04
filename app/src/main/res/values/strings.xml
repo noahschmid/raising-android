@@ -27,6 +27,9 @@
     <string name="startup_shareholder_chart_title"> Shareholder Equity Shares </string>
     <string name="public_profile_matching_title"> Matching Information </string>
 
+    <string name="startup_public_profile_founder"> Founders </string>
+    <string name="startup_public_profile_board_member"> Members of the board </string>
+
     <string name="investor_matching_scope"> Investment Scope </string>
     <string name="investor_matching_min_ticket"> Minimal Ticket Size </string>
     <string name="investor_matching_max_ticket"> Maximal Ticket Size </string>
@@ -70,22 +73,22 @@
     <string name="register_select_startup_button"> Start Up</string>
 
     <string name="register_login_information_text"> Login Information </string>
-    <string name="register_first_name"> First Name </string>
-    <string name="register_last_name"> Last Name </string>
-    <string name="register_email"> Email </string>
-    <string name="register_password"> Password </string>
+    <string name="register_first_name"> First Name* </string>
+    <string name="register_last_name"> Last Name* </string>
+    <string name="register_email"> E-Mail* </string>
+    <string name="register_password"> Password* </string>
 
     <string name="register_company_information_text"> Company Information </string>
-    <string name="register_company_name"> Company </string>
-    <string name="register_company_uid"> UID </string>
-    <string name="register_company_revenue"> Revenue (CHF) </string>
-    <string name="register_company_breakeven"> Breakeven Year </string>
-    <string name="register_company_fte"> FTE </string>
-    <string name="register_company_markets"> Current Markets </string>
-    <string name="register_company_founding_year"> Founding Year </string>
-    <string name="register_company_phone">Phone Number</string>
-    <string name="register_company_website">Website</string>
-    <string name="register_company_country">Country</string>
+    <string name="register_company_name"> Company* </string>
+    <string name="register_company_uid"> UID* </string>
+    <string name="register_company_revenue"> Revenue* </string>
+    <string name="register_company_breakeven"> Break-Even Year* </string>
+    <string name="register_company_fte"> FTE* </string>
+    <string name="register_company_markets"> Current Markets* </string>
+    <string name="register_company_founding_year"> Founding Year* </string>
+    <string name="register_company_phone"> Phone Number </string>
+    <string name="register_company_website"> Website </string>
+    <string name="register_company_country"> Country* </string>
 
     <string name="register_address_information_text"> Address Information</string>
     <string name="register_address_country"> Country </string>
@@ -95,15 +98,13 @@
     <string name="register_address_website"> Website </string>
 
     <string name="register_profile_information_text"> Profile Information</string>
-    <string name="register_profile_country"> Country </string>
+    <string name="register_profile_country"> Country* </string>
     <string name="register_profile_website"> Website </string>
-    <string name="register_profile_company"> Company </string>
-    <string name="register_profile_phone">Phone Number</string>
+    <string name="register_profile_company"> Company* </string>
+    <string name="register_profile_phone"> Phone Number </string>
 
     <string name="register_matching_information_text"> Matching Criteria </string>
-    <string name="register_matching_scope"> Scope </string>
     <string name="register_matching_ticket_size"> Ticket Size </string>
-    <string name="register_matching_scope_"> Scope (CHF) </string>
     <string name="register_matching_investor"> Type of investor </string>
     <string name="register_matching_phase"> Phase </string>
     <string name="register_matching_industry"> Industry </string>
@@ -131,38 +132,39 @@
     <string name="register_error_word_limit_overflow"> You have exceeded your word limit! </string>
 
     <string name="register_financial_information_text"> Financial Requirements </string>
-    <string name="register_financial_type"> Type </string>
-    <string name="register_financial_valuation"> Valuation (CHF) </string>
-    <string name="register_financial_valuation_helper"> optional </string>
-    <string name="register_financial_closing_time"> Closing Time </string>
+    <string name="register_financial_type"> Type* </string>
+    <string name="register_financial_valuation"> Pre Money Valuation </string>
+    <string name="register_financial_closing_time"> Closing Time* </string>
+    <string name="register_financial_scope"> Scope </string>
+    <string name="register_financial_scope_"> Scope* </string>
     <string name="register_financial_completed">Completed</string>
 
     <string name="register_stakeholder_information_text"> Stakeholders </string>
     <string name="register_stakeholder_founder_add"> Add Founder</string>
     <string name="register_stakeholder_founder_information_text"> Add a founder </string>
-    <string name="register_stakeholder_founder"> Founders </string>
-    <string name="register_stakeholder_first_name"> First Name </string>
-    <string name="register_stakeholder_last_name"> Last Name </string>
-    <string name="register_stakeholder_name"> Name </string>
-    <string name="register_stakeholder_position"> Position </string>
-    <string name="register_stakeholder_education"> Education </string>
-    <string name="register_stakeholder_board_member"> Members of the board </string>
+    <string name="register_stakeholder_founder"> Founders* </string>
+    <string name="register_stakeholder_first_name"> First Name* </string>
+    <string name="register_stakeholder_last_name"> Last Name* </string>
+    <string name="register_stakeholder_name"> Name* </string>
+    <string name="register_stakeholder_position"> Position* </string>
+    <string name="register_stakeholder_education"> Education* </string>
+    <string name="register_stakeholder_board_member"> Members of the board* </string>
     <string name="register_stakeholder_board_member_add"> Add Board Member </string>
     <string name="register_stakeholder_board_member_information_text"> Add a member of the board </string>
-    <string name="register_stakeholder_profession"> Profession </string>
-    <string name="register_stakeholder_member_since"> Member Since </string>
+    <string name="register_stakeholder_profession"> Profession* </string>
+    <string name="register_stakeholder_member_since"> Member Since* </string>
     <string name="register_stakeholder_shareholder"> Shareholders </string>
     <string name="register_stakeholder_shareholder_add"> Add Shareholder </string>
     <string name="register_stakeholder_shareholder_information_text"> Add a shareholder </string>
     <string name="register_stakeholder_shareholder_private"> Private Shareholder </string>
-    <string name="register_stakeholder_shareholder_country"> Country </string>
-    <string name="register_stakeholder_shareholder_equity"> Equity Share (%) </string>
+    <string name="register_stakeholder_shareholder_country"> Country* </string>
+    <string name="register_stakeholder_shareholder_equity"> Equity Share(%)* </string>
     <string name="register_stakeholder_shareholder_corporate"> Corporate Shareholder </string>
-    <string name="register_stakeholder_shareholder_corporate_body"> Corporate Body </string>
+    <string name="register_stakeholder_shareholder_corporate_body"> Corporate Body* </string>
     <string name="register_stakeholder_shareholder_website"> Website </string>
 
     <string name="register_images_information_text"> Images </string>
-    <string name="register_images_add_profile_text"> Add a profile picture </string>
+    <string name="register_images_add_profile_text"> Add a profile picture* </string>
     <string name="register_images_add_gallery"> Add a picture to your gallery </string>
     <string name="register_images_video_information_text"> Video Pitch </string>
     <string name="image_floating_menu_select_image"> Import image </string>

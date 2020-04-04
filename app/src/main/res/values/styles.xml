@@ -28,6 +28,18 @@
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
+    <style name="DatePickerStyle" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorAccent"> @color/raisingPrimaryLight</item>
+        <item name="colorPrimary"> @color/raisingWhite </item>
+        <item name="colorPrimaryDark"> @color/raisingPrimaryDark</item>
+        <item name="android:buttonBarNegativeButtonStyle"> @style/DatePickerButtonStyle </item>
+        <item name="android:buttonBarPositiveButtonStyle"> @style/DatePickerButtonStyle</item>
+    </style>
+
+    <style name="DatePickerButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor"> @color/raisingPrimary </item>
+        <item name="background"> @color/raisingWhite </item>
+    </style>
 
     <style name="MaterialDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>

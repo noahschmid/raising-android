@@ -127,7 +127,7 @@ public class ResourcesManager implements Serializable {
 
     public static Country getCountry(int id) { return (Country)findById(id, countries); }
     public static Continent getContinent(int id) { return (Continent)findById(id, continents); }
-    public static InvestorType getInvestorType(long id) { return (InvestorType)findById(id, investorTypes); }
+    public static InvestorType getInvestorType(int id) { return (InvestorType)findById(id, investorTypes); }
     public static Revenue getRevenue(int minId) {
         for(Revenue rev : revenues) {
             if(rev.getRevenueMinId() == minId)
