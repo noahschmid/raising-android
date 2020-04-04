@@ -68,8 +68,9 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         profileName = view.findViewById(R.id.text_investor_public_profile_name);
         profileLocation = view.findViewById(R.id.text_investor_public_profile_location);
         profilePitch = view.findViewById(R.id.text_investor_public_profile_pitch);
-        profileWebsite = view.findViewById(R.id.button_investor_public_profile_website);
         //TODO: fill with investors data
+
+        profileWebsite = view.findViewById(R.id.button_investor_public_profile_website);
         profileWebsite.setOnClickListener(v -> {
             //TODO: replace with actual website
             String website = "https://www.google.com";
