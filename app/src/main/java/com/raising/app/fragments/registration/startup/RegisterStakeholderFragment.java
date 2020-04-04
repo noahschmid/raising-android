@@ -133,13 +133,13 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             }
         });
 
-        Button btnFinishRegistration = view.findViewById(R.id.button_stakeholder);
-        btnFinishRegistration.setOnClickListener(this);
+        finishButton = view.findViewById(R.id.button_stakeholder);
+        finishButton.setOnClickListener(this);
 
         if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
-            btnFinishRegistration.setHint(getString(R.string.myProfile_apply_changes));
-            btnFinishRegistration.setOnClickListener(v -> popCurrentFragment(this));
+            finishButton.setHint(getString(R.string.myProfile_apply_changes));
+            finishButton.setOnClickListener(v -> popCurrentFragment(this));
         }
     }
 

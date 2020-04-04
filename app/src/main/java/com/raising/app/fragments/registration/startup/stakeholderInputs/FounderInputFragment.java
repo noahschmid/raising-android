@@ -31,8 +31,7 @@ public class FounderInputFragment extends RaisingFragment {
     private FounderViewModel founderViewModel;
 
     private EditText founderFirstNameInput, founderLastNameInput,
-            founderEducationInput, founderCountryInput;
-    private AutoCompleteTextView founderCompanyPositionInput;
+            founderEducationInput, founderCompanyPositionInput, founderCountryInput;
 
     private Founder founder;
     private CustomPicker countryPicker;
@@ -58,21 +57,10 @@ public class FounderInputFragment extends RaisingFragment {
 
         founderViewModel = new ViewModelProvider(requireActivity()).get(FounderViewModel.class);
 
-        ArrayList<String> positions = new ArrayList<String>(Arrays.asList(
-                new String[]{"CEO", "CFO", "VRP"}));
-
-
-        NoFilterArrayAdapter<String> adapterPosition = new NoFilterArrayAdapter<>( getContext(),
-                R.layout.item_dropdown_menu, positions);
-
         founderFirstNameInput = view.findViewById(R.id.input_founder_first_name);
         founderLastNameInput = view.findViewById(R.id.input_founder_last_name);
         founderEducationInput = view.findViewById(R.id.input_founder_education);
-
         founderCompanyPositionInput = view.findViewById(R.id.input_founder_poistion);
-        founderCompanyPositionInput.setAdapter(adapterPosition);
-
-        founderCompanyPositionInput.setShowSoftInputOnFocus(false);
 
         if(founder == null) {
             founder = new Founder();
@@ -132,12 +120,10 @@ public class FounderInputFragment extends RaisingFragment {
 
         countryPicker = builder.build();
 
-        founderCountryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        founderCountryInput.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    countryPicker.showDialog(getActivity());
-                }
+            public void onClick(View v) {
+                countryPicker.showDialog(getActivity());
             }
         });
     }

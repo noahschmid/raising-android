@@ -202,7 +202,8 @@
                 <AutoCompleteTextView
                     android:id="@+id/register_input_company_revenue"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight" />
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:focusable="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -222,7 +223,8 @@
                     android:id="@+id/register_input_company_founding_year"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"
-                    android:inputType="none" />
+                    android:inputType="none"
+                    android:focusable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -241,7 +243,8 @@
                     android:id="@+id/register_input_company_breakeven"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"
-                    android:inputType="none" />
+                    android:inputType="none"
+                    android:focusable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -261,7 +264,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"
                     android:inputType="none"
-                    app:endIconMode="none" />
+                    app:endIconMode="none"
+                    android:focusable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

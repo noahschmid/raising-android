@@ -183,7 +183,7 @@
                 android:id="@+id/button_investor_images"
                 style="@style/ButtonConfirmRegistration"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginBottom="24dp"
                 android:hint="@string/register_button_finish_text"
                 app:layout_constraintBottom_toBottomOf="parent"

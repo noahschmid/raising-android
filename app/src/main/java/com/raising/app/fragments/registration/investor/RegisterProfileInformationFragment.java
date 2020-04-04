@@ -135,7 +135,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         String website = profileWebsiteInput.getText().toString();
 
         //TODO: also test country for length == 0
-        if(countryId == -1 || phone.length() == 0) {
+        if(countryId == -1 || company.length() == 0) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;

@@ -30,8 +30,7 @@ import java.util.Arrays;
 public class BoardMemberInputFragment extends RaisingFragment {
     private BoardMemberViewModel boardMemberViewModel;
     private EditText boardFirstNameInput, boardLastNameInput, boardProfessionInput,
-            boardEducationInput, memberSinceInput, countryInput;
-    private AutoCompleteTextView boardPositionInput;
+            boardEducationInput, boardPositionInput, memberSinceInput, countryInput;
     private BoardMember boardMember;
     private CustomPicker countryPicker;
     private int countryId = -1;
@@ -56,20 +55,11 @@ public class BoardMemberInputFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
         boardMemberViewModel = new ViewModelProvider(requireActivity()).get(BoardMemberViewModel.class);
 
-        //TODO: fetch these values from the backend
-        ArrayList<String> positions = new ArrayList<String>(Arrays.asList(new String[]{"CEO", "CFO", "VRP"}));
-
-        NoFilterArrayAdapter<String> adapterPosition = new NoFilterArrayAdapter<String>( getContext(),
-                R.layout.item_dropdown_menu, positions);
-
         boardFirstNameInput = view.findViewById(R.id.input_board_member_first_name);
         boardLastNameInput = view.findViewById(R.id.input_board_member_last_name);
         boardProfessionInput = view.findViewById(R.id.input_board_member_profession);
         boardEducationInput = view.findViewById(R.id.input_board_member_education);
-
         boardPositionInput = view.findViewById(R.id.input_board_member_position);
-        boardPositionInput.setAdapter(adapterPosition);
-
         memberSinceInput = view.findViewById(R.id.input_board_member_member_since);
         countryInput = view.findViewById(R.id.input_board_member_country);
         memberSinceInput.setShowSoftInputOnFocus(false);
@@ -83,22 +73,16 @@ public class BoardMemberInputFragment extends RaisingFragment {
                             @Override
                             public void onSelectItem(PickerItem country) {
                                 countryInput.setText(country.getName());
-                                countryId = (int)country.getId();
+                                countryId = (int) country.getId();
                             }
                         })
                         .setItems(ResourcesManager.getCountries());
 
         countryPicker = builder.build();
 
-        countryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus)
-                    countryPicker.showDialog(getActivity());
-            }
-        });
+        countryInput.setOnClickListener(v -> countryPicker.showDialog(getActivity()));
 
-        if(boardMember == null) {
+        if (boardMember == null) {
             boardMember = new BoardMember();
         } else {
             boardFirstNameInput.setText(boardMember.getFirstName());
@@ -107,7 +91,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
             boardPositionInput.setText(boardMember.getBoardPosition());
             memberSinceInput.setText(String.valueOf(boardMember.getMemberSince()));
             boardEducationInput.setText(boardMember.getEducation());
-            if(boardMember.getCountryId() != -1)
+            if (boardMember.getCountryId() != -1)
                 countryInput.setText(ResourcesManager.getCountry(boardMember.getCountryId()).getName());
         }
 
@@ -129,7 +113,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
                 String memberSince = memberSinceInput.getText().toString();
                 String education = boardEducationInput.getText().toString();
 
-                if(firstName.length() == 0 || lastName.length() == 0
+                if (firstName.length() == 0 || lastName.length() == 0
                         || profession.length() == 0 || boardPosition.length() == 0
                         || memberSince.length() == 0 || countryId == -1) {
                     showSimpleDialog(getString(R.string.register_dialog_title),
@@ -145,14 +129,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
             }
         });
 
-        memberSinceInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    showYearPicker("Select year", memberSinceInput);
-                }
-            }
-        });
+        memberSinceInput.setOnClickListener(v -> showYearPicker("Select year", memberSinceInput));
     }
 
     @Override

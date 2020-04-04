@@ -77,15 +77,11 @@ public class ShareholderInputFragment extends RaisingFragment {
 
         setupRadioGroup(ResourcesManager.getInvestorTypes(), privateTypeGroup);
 
-        corporateCountryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    countryPicker.dismiss();
-                    countryPicker.showDialog(getActivity());
-                }
-            }
+        corporateCountryInput.setOnClickListener(v -> {
+            countryPicker.dismiss();
+            countryPicker.showDialog(getActivity());
         });
+
         ArrayList<String> bodies = new ArrayList<>();
         ResourcesManager.getCorporateBodies().forEach(body -> bodies.add(body.getName()));
 
@@ -106,14 +102,9 @@ public class ShareholderInputFragment extends RaisingFragment {
         privateCountryInput.setShowSoftInputOnFocus(false);
         corporateBodyInput.setShowSoftInputOnFocus(false);
 
-        privateCountryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    countryPicker.dismiss();
-                    countryPicker.showDialog(getActivity());
-                }
-            }
+        privateCountryInput.setOnClickListener(v -> {
+            countryPicker.dismiss();
+            countryPicker.showDialog(getActivity());
         });
 
         privateFrameLayout = view.findViewById(R.id.stakeholder_private_shareholder);

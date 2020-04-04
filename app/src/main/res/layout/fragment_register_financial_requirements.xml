@@ -20,144 +20,145 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/registration_profile_progress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-        android:layout_marginTop="@dimen/inputFormVerticalMargin"
-        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+            <LinearLayout
+                android:id="@+id/registration_profile_progress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+                android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
-    </LinearLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/text_financial_information"
-        style="@style/FragmentTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/register_financial_information_text"
-        app:layout_constraintBottom_toTopOf="@+id/register_financial_type"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registration_profile_progress"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintVertical_chainStyle="packed" />
+            <TextView
+                android:id="@+id/text_financial_information"
+                style="@style/FragmentTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_financial_information_text"
+                app:layout_constraintBottom_toTopOf="@+id/register_financial_type"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registration_profile_progress"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/register_financial_type"
-        style="@style/TextInputExposedDropdownMenuTheme"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-        android:hint="@string/register_financial_type"
-        app:layout_constraintBottom_toTopOf="@+id/register_startup_financial_scope"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_financial_information">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/register_financial_type"
+                style="@style/TextInputExposedDropdownMenuTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/register_financial_type"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_financial_scope"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_financial_information">
 
-        <AutoCompleteTextView
-            android:id="@+id/register_input_financial_type"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/inputFormHeight"/>
-    </com.google.android.material.textfield.TextInputLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/register_input_financial_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:focusable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/register_startup_financial_scope"
-        style="@style/TextInputLayoutTheme"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-        android:hint="@string/register_financial_scope_"
-        app:layout_constraintBottom_toTopOf="@+id/register_financial_valuation"
-        app:layout_constraintEnd_toEndOf="@+id/register_financial_type"
-        app:layout_constraintStart_toStartOf="@+id/register_financial_type"
-        app:layout_constraintTop_toBottomOf="@+id/register_financial_type">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/register_startup_financial_scope"
+                style="@style/TextInputLayoutTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/register_financial_scope_"
+                app:layout_constraintBottom_toTopOf="@+id/register_financial_valuation"
+                app:layout_constraintEnd_toEndOf="@+id/register_financial_type"
+                app:layout_constraintStart_toStartOf="@+id/register_financial_type"
+                app:layout_constraintTop_toBottomOf="@+id/register_financial_type">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/register_input_startup_financial_scope"
-            android:inputType="numberDecimal"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/inputFormHeight" />
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/register_input_startup_financial_scope"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/register_financial_valuation"
-        style="@style/TextInputLayoutTheme"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-        android:hint="@string/register_financial_valuation"
-        app:layout_constraintBottom_toTopOf="@+id/register_financial_closing_time"
-        app:layout_constraintEnd_toEndOf="@+id/register_financial_type"
-        app:layout_constraintStart_toStartOf="@+id/register_financial_type"
-        app:layout_constraintTop_toBottomOf="@+id/register_startup_financial_scope"
-        app:layout_constraintVertical_bias="0.51">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/register_financial_valuation"
+                style="@style/TextInputLayoutTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                android:hint="@string/register_financial_valuation"
+                app:layout_constraintBottom_toTopOf="@+id/register_financial_closing_time"
+                app:layout_constraintEnd_toEndOf="@+id/register_financial_type"
+                app:layout_constraintStart_toStartOf="@+id/register_financial_type"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_financial_scope"
+                app:layout_constraintVertical_bias="0.51">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/register_input_financial_valuation"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/inputFormHeight"
-            android:inputType="numberDecimal" />
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/register_input_financial_valuation"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/register_financial_closing_time"
-        style="@style/TextInputLayoutTheme"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/register_financial_closing_time"
-        app:layout_constraintBottom_toTopOf="@+id/register_financial_completed"
-        app:layout_constraintEnd_toEndOf="@+id/register_financial_type"
-        app:layout_constraintStart_toStartOf="@+id/register_financial_type"
-        app:layout_constraintTop_toBottomOf="@+id/register_financial_valuation">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/register_financial_closing_time"
+                style="@style/TextInputLayoutTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_financial_closing_time"
+                app:layout_constraintBottom_toTopOf="@+id/register_financial_completed"
+                app:layout_constraintEnd_toEndOf="@+id/register_financial_type"
+                app:layout_constraintStart_toStartOf="@+id/register_financial_type"
+                app:layout_constraintTop_toBottomOf="@+id/register_financial_valuation">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/register_input_financial_closing_time"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/inputFormHeight"
-            android:focusableInTouchMode="false" />
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/register_input_financial_closing_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:focusable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/register_financial_completed"
