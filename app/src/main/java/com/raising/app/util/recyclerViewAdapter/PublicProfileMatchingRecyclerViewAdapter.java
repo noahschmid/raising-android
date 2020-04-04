@@ -10,13 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.raising.app.R;
+import com.raising.app.models.MatchingCriterion;
 
 import java.util.ArrayList;
 
 public class PublicProfileMatchingRecyclerViewAdapter extends RecyclerView.Adapter<PublicProfileMatchingRecyclerViewAdapter.ViewHolder> {
-    private ArrayList recyclerItems;
+    private ArrayList<MatchingCriterion> recyclerItems;
 
-    public PublicProfileMatchingRecyclerViewAdapter(ArrayList recyclerItems) {
+    public PublicProfileMatchingRecyclerViewAdapter(ArrayList<MatchingCriterion> recyclerItems) {
         this.recyclerItems = recyclerItems;
     }
 
@@ -31,8 +32,9 @@ public class PublicProfileMatchingRecyclerViewAdapter extends RecyclerView.Adapt
 
     @Override
     public void onBindViewHolder(@NonNull PublicProfileMatchingRecyclerViewAdapter.ViewHolder holder, int position) {
-        //TODO: set values to matchingCriteriaIcon, matchingCriteriaText
-
+        // TODO: replace with actual icon
+        holder.matchingCriterionIcon.setImageResource(R.drawable.ic_android_24dp);
+        holder.matchingCriterionText.setText(recyclerItems.get(position).getTitle());
     }
 
     @Override
@@ -41,14 +43,14 @@ public class PublicProfileMatchingRecyclerViewAdapter extends RecyclerView.Adapt
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView matchingCriteriaIcon;
-        private TextView matchingCriteriaText;
+        private ImageView matchingCriterionIcon;
+        private TextView matchingCriterionText;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            matchingCriteriaIcon = itemView.findViewById(R.id.public_profile_matching_icon);
-            matchingCriteriaText = itemView.findViewById(R.id.public_profile_matching_text);
+            matchingCriterionIcon = itemView.findViewById(R.id.public_profile_matching_icon);
+            matchingCriterionText = itemView.findViewById(R.id.public_profile_matching_text);
         }
     }
 }

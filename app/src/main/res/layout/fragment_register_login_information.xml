@@ -87,16 +87,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/register_password"
+        app:endIconMode="password_toggle"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/register_first_name"
-        app:layout_constraintStart_toStartOf="@+id/register_first_name"
+        app:layout_constraintEnd_toEndOf="@+id/register_email"
+        app:layout_constraintStart_toStartOf="@+id/register_email"
         app:layout_constraintTop_toBottomOf="@+id/register_email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/register_input_password"
             android:layout_width="match_parent"
             android:layout_height="@dimen/inputFormHeight"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
