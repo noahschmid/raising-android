@@ -32,9 +32,10 @@ public class PublicProfileMatchingRecyclerViewAdapter extends RecyclerView.Adapt
 
     @Override
     public void onBindViewHolder(@NonNull PublicProfileMatchingRecyclerViewAdapter.ViewHolder holder, int position) {
+        MatchingCriterion recyclerItem = recyclerItems.get(position);
         // TODO: replace with actual icon
         holder.matchingCriterionIcon.setImageResource(R.drawable.ic_android_24dp);
-        holder.matchingCriterionText.setText(recyclerItems.get(position).getTitle());
+        holder.matchingCriterionText.setText(recyclerItem.getTitle());
     }
 
     @Override

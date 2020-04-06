@@ -83,6 +83,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         //TODO: fill texts with startup data
 
         profileWebsite = view.findViewById(R.id.text_startup_public_profile_website);
+        //TODO:  if(startup.getWebsite() == 0) { profileWebsite.setVisibility(VIEW:GONE); }
         profileWebsite.setOnClickListener(v -> {
             //TODO: replace with actual website
             String website = "";

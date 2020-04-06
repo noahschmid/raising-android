@@ -25,11 +25,9 @@ import com.android.volley.VolleyError;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.gson.Gson;
 import com.raising.app.R;
-import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Image;
-import com.raising.app.models.Investor;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
 
@@ -39,7 +37,6 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.function.Function;
 
