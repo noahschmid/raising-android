@@ -20,6 +20,7 @@
     <string name="general_dialog_error_text"> Something went wrong. Please try again </string>
 
     <!-- Strings used for profile -->
+    <string name="myProfile_watch_public_profile"> See my public profile </string>
     <string name="myProfile_apply_changes"> Apply Changes </string>
     <string name="startup_profile_key_figures"> Key Figures </string>
     <string name="public_profile_website"> Read more on their website </string>

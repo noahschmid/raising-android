@@ -29,8 +29,9 @@ import com.raising.app.util.RegistrationHandler;
 public class MyProfileFragment extends RaisingFragment implements View.OnClickListener {
     private FrameLayout startUpLayout, investorLayout;
     private Button startUpCompanyInformation, startUpMatching, startUpPitch,
-            startUpImages, startUpFinancial, startUpStakeholder,
-            investorProfileInformation, investorMatching, investorPitch, investorImages;
+            startUpImages, startUpFinancial, startUpStakeholder, startupPublicProfile,
+            investorProfileInformation, investorMatching, investorPitch,
+            investorImages, investorPublicProfile;
 
     private final boolean IS_PROFILE_FRAGMENT = true;
 
@@ -75,6 +76,9 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
         startUpStakeholder = view.findViewById(R.id.button_myProfile_startup_stakeholders);
         startUpStakeholder.setOnClickListener(this);
 
+        startupPublicProfile = view.findViewById(R.id.button_myProfile_startup_public_profile);
+        startupPublicProfile.setOnClickListener(this);
+
         investorProfileInformation = view.findViewById(R.id.button_myProfile_investor_profile_information);
         investorProfileInformation.setOnClickListener(this);
 
@@ -86,6 +90,9 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
 
         investorImages = view.findViewById(R.id.button_myProfile_investor_pitch);
         investorImages.setOnClickListener(this);
+
+        investorPublicProfile = view.findViewById(R.id.button_myProfile_investor_public_profile);
+        investorPublicProfile.setOnClickListener(this);
 
     }
 
@@ -117,6 +124,10 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 fragment.setArguments(bundle);
                 break;
 
+            case R.id.button_myProfile_startup_public_profile:
+                fragment = new StartupPublicProfileFragment();
+                break;
+
             case R.id.button_myProfile_startup_stakeholders:
                 fragment = new RegisterStakeholderFragment();
                 fragment.setArguments(bundle);
@@ -140,6 +151,10 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
             case R.id.button_myProfile_investor_images:
                 fragment = new RegisterInvestorImagesFragment();
                 fragment.setArguments(bundle);
+                break;
+
+            case R.id.button_myProfile_investor_public_profile:
+                fragment = new InvestorPublicProfileFragment();
                 break;
         }
         changeFragment(fragment);
