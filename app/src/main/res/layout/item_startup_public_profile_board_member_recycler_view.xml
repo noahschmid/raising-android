@@ -21,19 +21,18 @@
         android:id="@+id/text_startup_board_member_name"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
         android:hint="Name"
         android:textColorHint="@color/raisingPrimaryTextColor"
         android:textSize="@dimen/raisingTextFontSize"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_board_position"
-        app:layout_constraintStart_toEndOf="@+id/text_startup_board_position"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_startup_board_position" />
 
     <TextView
         android:id="@+id/text_startup_board_member_since_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/register_stakeholder_member_since"
+        android:hint="@string/startup_public_profile_member_since"
         android:textColorHint="@color/raisingPrimaryTextColor"
         android:textSize="@dimen/raisingTextFontSize"
         android:textStyle="bold"
@@ -44,19 +43,18 @@
         android:id="@+id/text_startup_board_member_since"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
         android:hint="Member Since"
         android:textColorHint="@color/raisingPrimaryTextColor"
         android:textSize="@dimen/raisingTextFontSize"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_board_member_since_title"
-        app:layout_constraintStart_toEndOf="@+id/text_startup_board_member_since_title"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_startup_board_member_since_title" />
 
     <TextView
         android:id="@+id/text_startup_board_profession_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/register_stakeholder_profession"
+        android:hint="@string/startup_public_profile_profession"
         android:textColorHint="@color/raisingPrimaryTextColor"
         android:textSize="@dimen/raisingTextFontSize"
         android:textStyle="bold"
@@ -67,19 +65,18 @@
         android:id="@+id/text_startup_board_profession"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
         android:hint="Profession"
         android:textColorHint="@color/raisingPrimaryTextColor"
         android:textSize="@dimen/raisingTextFontSize"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_board_profession_title"
-        app:layout_constraintStart_toEndOf="@+id/text_startup_board_profession_title"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_startup_board_profession_title" />
 
     <TextView
         android:id="@+id/text_startup_board_edicatuon_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/register_stakeholder_education"
+        android:hint="@string/startup_public_profile_education"
         android:textColorHint="@color/raisingPrimaryTextColor"
         android:textSize="@dimen/raisingTextFontSize"
         android:textStyle="bold"
@@ -90,11 +87,10 @@
         android:id="@+id/text_startup_board_education"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
         android:hint="Education"
         android:textColorHint="@color/raisingPrimaryTextColor"
         android:textSize="@dimen/raisingTextFontSize"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_board_edicatuon_title"
-        app:layout_constraintStart_toEndOf="@+id/text_startup_board_edicatuon_title"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_startup_board_edicatuon_title" />
 </androidx.constraintlayout.widget.ConstraintLayout>

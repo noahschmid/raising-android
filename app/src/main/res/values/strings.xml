@@ -28,6 +28,9 @@
     <string name="public_profile_matching_title"> Matching Information </string>
 
     <string name="startup_public_profile_founder"> Founders </string>
+    <string name="startup_public_profile_education"> Education </string>
+    <string name="startup_public_profile_profession"> Profession </string>
+    <string name="startup_public_profile_member_since"> Member Since </string>
     <string name="startup_public_profile_board_member"> Members of the board </string>
 
     <string name="investor_matching_scope"> Investment Scope </string>
