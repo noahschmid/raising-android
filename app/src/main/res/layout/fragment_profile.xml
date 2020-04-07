@@ -31,12 +31,24 @@
                        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
                        android:drawableLeft="@drawable/ic_person_24dp"
                        android:hint="@string/register_company_information_text"
-                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_matching_criteria"
+                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_company_figures"
                        app:layout_constraintEnd_toEndOf="parent"
                        app:layout_constraintStart_toStartOf="parent"
                        app:layout_constraintTop_toTopOf="parent"
                        app:layout_constraintVertical_bias="0.0"
                        app:layout_constraintVertical_chainStyle="packed" />
+
+                   <Button
+                       android:id="@+id/button_myProfile_startup_company_figures"
+                       style="@style/myProfileButtonStyle"
+                       android:layout_width="0dp"
+                       android:layout_height="@dimen/myProfileButtonHeight"
+                       android:hint="@string/register_company_figures_information_text"
+                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_matching_criteria"
+                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_company_information"
+                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_company_information"
+                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_company_information" />
+
 
                    <Button
                        android:id="@+id/button_myProfile_startup_matching_criteria"
@@ -46,9 +58,9 @@
                        android:drawableLeft="@drawable/ic_puzzle_24dp"
                        android:hint="@string/register_matching_information_text"
                        app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_pitch"
-                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_company_information"
-                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_company_information"
-                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_company_information" />
+                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_company_figures"
+                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_company_figures"
+                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_company_figures" />
 
                    <Button
                        android:id="@+id/button_myProfile_startup_pitch"
@@ -57,10 +69,21 @@
                        android:layout_height="@dimen/myProfileButtonHeight"
                        android:drawableLeft="@drawable/ic_conversation_24dp"
                        android:hint="@string/register_pitch_information_text"
-                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_images"
+                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_labels"
                        app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_matching_criteria"
                        app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_matching_criteria"
                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_matching_criteria" />
+
+                   <Button
+                       android:id="@+id/button_myProfile_startup_labels"
+                       style="@style/myProfileButtonStyle"
+                       android:layout_width="0dp"
+                       android:layout_height="@dimen/myProfileButtonHeight"
+                       android:hint="@string/register_pitch_label_information_text"
+                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_images"
+                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_pitch"
+                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_pitch"
+                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_pitch" />
 
                    <Button
                        android:id="@+id/button_myProfile_startup_images"
@@ -69,10 +92,21 @@
                        android:layout_height="@dimen/myProfileButtonHeight"
                        android:drawableLeft="@drawable/ic_myprofile_images_24dp"
                        android:hint="@string/register_images_information_text"
+                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_video"
+                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_labels"
+                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_labels"
+                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_labels" />
+
+                   <Button
+                       android:id="@+id/button_myProfile_startup_video"
+                       style="@style/myProfileButtonStyle"
+                       android:layout_width="0dp"
+                       android:layout_height="@dimen/myProfileButtonHeight"
+                       android:hint="@string/register_video_information_text"
                        app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_financial_requirements"
-                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_pitch"
-                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_pitch"
-                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_pitch" />
+                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_images"
+                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_images"
+                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_images" />
 
                    <Button
                        android:id="@+id/button_myProfile_startup_financial_requirements"
@@ -82,9 +116,9 @@
                        android:drawableLeft="@drawable/ic_myprofile_financial_requirements_24dp"
                        android:hint="@string/register_financial_information_text"
                        app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_stakeholders"
-                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_images"
-                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_images"
-                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_images" />
+                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_video"
+                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_video"
+                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_video" />
 
                    <Button
                        android:id="@+id/button_myProfile_startup_stakeholders"

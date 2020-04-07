@@ -57,9 +57,6 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         pitchLayout = view.findViewById(R.id.register_investor_pitch_pitch);
         pitchInput = view.findViewById(R.id.register_input_investor_pitch_pitch);
 
-        prepareSentenceLayout();
-        preparePitchLayout();
-
         Button btnInvestorPitch = view.findViewById(R.id.button_investor_pitch);
         btnInvestorPitch.setOnClickListener(this);
 
@@ -73,6 +70,9 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         }
         pitchInput.setText(investor.getPitch());
         sentenceInput.setText(investor.getDescription());
+
+        prepareSentenceLayout(investor.getDescription());
+        preparePitchLayout(investor.getPitch());
     }
 
     @Override
@@ -123,20 +123,22 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
     }
 
     /**
-     * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int)}
+     * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int, String)}
      *
+     * @param currentText The text, that is currently in this text view
      * @author Lorenz Caliezi 18.03.2020
      */
-    private void prepareSentenceLayout() {
-        prepareRestrictedTextLayout(sentenceLayout, sentenceInput, getResources().getInteger(R.integer.pitch_sentence_max_word));
+    private void prepareSentenceLayout(String currentText) {
+        prepareRestrictedTextLayout(sentenceLayout, sentenceInput, getResources().getInteger(R.integer.pitch_sentence_max_word), currentText);
     }
 
     /**
-     * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int)}
+     * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int, String)}
      *
+     * @param currentText The text, that is currently in this text view
      * @author Lorenz Caliezi 18.03.2020
      */
-    private void preparePitchLayout() {
-        prepareRestrictedTextLayout(pitchLayout, pitchInput, getResources().getInteger(R.integer.pitch_pitch_max_word));
+    private void preparePitchLayout(String currentText) {
+        prepareRestrictedTextLayout(pitchLayout, pitchInput, getResources().getInteger(R.integer.pitch_pitch_max_word), currentText);
     }
 }

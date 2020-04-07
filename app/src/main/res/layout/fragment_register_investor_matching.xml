@@ -20,59 +20,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:id="@+id/registration_profile_progress"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                    android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_information"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/progress_circle_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_circle_full_darkgrey_24dp" />
-
-                    <ImageView
-                        android:id="@+id/progress_circle_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_circle_full_darkgrey_24dp" />
-
-                    <ImageView
-                        android:id="@+id/progress_circle_3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
-
-                    <ImageView
-                        android:id="@+id/progress_circle_4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
-                </LinearLayout>
-
                 <TextView
                     android:id="@+id/text_investor_matching_information"
+                    style="@style/FragmentTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                    android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                     android:hint="@string/register_matching_information_text"
-                    android:textSize="@dimen/fragmentTitleFontSize"
-                    android:textStyle="bold"
-                    android:textColorHint="@color/raisingPrimaryTextColor"
                     app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_ticket"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/registration_profile_progress" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/text_investor_matching_ticket"
@@ -186,24 +143,54 @@
                     android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                     android:hint="@string/register_matching_geographics_input"
-                    app:layout_constraintBottom_toTopOf="@+id/button_investor_matching"
+                    app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_support_layout">
                 </Button>
+
+                <LinearLayout
+                    android:id="@+id/registration_profile_progress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@+id/button_investor_matching"
+                    app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_geographics_button"
+                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_geographics_button">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/button_investor_matching"
                     style="@style/ButtonConfirmRegistration"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/authenticationButtonHeight"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                     android:hint="@string/register_button_text"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintEnd_toEndOf="@+id/registration_profile_progress"
+                    app:layout_constraintStart_toStartOf="@+id/registration_profile_progress" />
 
                 <LinearLayout
                     android:id="@+id/register_investor_matching_industry_layout"

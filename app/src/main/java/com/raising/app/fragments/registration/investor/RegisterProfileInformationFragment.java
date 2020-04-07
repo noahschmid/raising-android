@@ -69,7 +69,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
             editMode = true;
             Log.d("RegisterProfileInformation", "editMode = ON");
         } else {
-            investor = (Investor)RegistrationHandler.getAccount();
+            investor = RegistrationHandler.getInvestor();
             contactDetails = RegistrationHandler.getContactDetails();
             Log.d("RegisterProfileInformation", "editMode = OFF");
         }

@@ -334,7 +334,6 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             Log.d("debugMessage", e.toString());
         }
         Log.d("debugMessage", ApiRequestHandler.parseVolleyError(response));
-        finishButton.setEnabled(true);
         return null;
     };
 }

@@ -9,12 +9,10 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -24,7 +22,6 @@ import com.raising.app.fragments.registration.startup.stakeholderInputs.viewMode
 import com.raising.app.models.CorporateBody;
 import com.raising.app.models.stakeholder.Shareholder;
 import com.raising.app.util.NoFilterArrayAdapter;
-import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
@@ -181,7 +178,7 @@ public class ShareholderInputFragment extends RaisingFragment {
                 leaveShareholderFragment();
             }
         });
-        Button btnAddShareholder = view.findViewById(R.id.floating_button_add_shareholder);
+        Button btnAddShareholder = view.findViewById(R.id.button_add_shareholder);
         btnAddShareholder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

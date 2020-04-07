@@ -299,7 +299,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder" />
 
             <Button
-                android:id="@+id/floating_button_add_shareholder"
+                android:id="@+id/button_add_shareholder"
                 style="@style/ButtonConfirmRegistration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

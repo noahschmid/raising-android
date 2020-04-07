@@ -12,26 +12,30 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.registration.investor.RegisterInvestorImagesFragment;
 import com.raising.app.fragments.registration.investor.RegisterInvestorMatchingFragment;
 import com.raising.app.fragments.registration.investor.RegisterInvestorPitchFragment;
 import com.raising.app.fragments.registration.investor.RegisterProfileInformationFragment;
+import com.raising.app.fragments.registration.startup.RegisterCompanyFiguresFragment;
 import com.raising.app.fragments.registration.startup.RegisterCompanyInformationFragment;
 import com.raising.app.fragments.registration.startup.RegisterFinancialRequirementsFragment;
 import com.raising.app.fragments.registration.startup.RegisterStakeholderFragment;
 import com.raising.app.fragments.registration.startup.RegisterStartupImagesFragment;
+import com.raising.app.fragments.registration.startup.RegisterStartupLabelsFragment;
 import com.raising.app.fragments.registration.startup.RegisterStartupMatchingFragment;
 import com.raising.app.fragments.registration.startup.RegisterStartupPitchFragment;
 
+import com.raising.app.fragments.registration.startup.RegisterStartupVideoFragment;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
 
 public class MyProfileFragment extends RaisingFragment implements View.OnClickListener {
     private FrameLayout startUpLayout, investorLayout;
-    private Button startUpCompanyInformation, startUpMatching, startUpPitch,
-            startUpImages, startUpFinancial, startUpStakeholder, startupPublicProfile,
+    private Button startUpCompanyInformation, startupCompanyFigures, startUpMatching, startUpPitch, startupLabels,
+            startUpImages, startupVideo, startUpFinancial, startUpStakeholder, startupPublicProfile,
             investorProfileInformation, investorMatching, investorPitch,
             investorImages, investorPublicProfile;
 
@@ -59,14 +63,23 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
         startUpCompanyInformation = view.findViewById(R.id.button_myProfile_startup_company_information);
         startUpCompanyInformation.setOnClickListener(this);
 
+        startupCompanyFigures = view.findViewById(R.id.button_myProfile_startup_company_figures);
+        startupCompanyFigures.setOnClickListener(this);
+
         startUpMatching = view.findViewById(R.id.button_myProfile_startup_matching_criteria);
         startUpMatching.setOnClickListener(this);
 
         startUpPitch = view.findViewById(R.id.button_myProfile_startup_pitch);
         startUpPitch.setOnClickListener(this);
 
+        startupLabels = view.findViewById(R.id.button_myProfile_startup_labels);
+        startupLabels.setOnClickListener(this);
+
         startUpImages = view.findViewById(R.id.button_myProfile_startup_images);
         startUpImages.setOnClickListener(this);
+
+        startupVideo = view.findViewById(R.id.button_myProfile_startup_video);
+        startupVideo.setOnClickListener(this);
 
         startUpFinancial = view.findViewById(R.id.button_myProfile_startup_financial_requirements);
         startUpFinancial.setOnClickListener(this);
@@ -103,6 +116,10 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 fragment = new RegisterCompanyInformationFragment();
                 fragment.setArguments(bundle);
                 break;
+            case R.id.button_myProfile_startup_company_figures:
+                fragment = new RegisterCompanyFiguresFragment();
+                fragment.setArguments(bundle);
+                break;
             case R.id.button_myProfile_startup_matching_criteria:
                 fragment = new RegisterStartupMatchingFragment();
                 fragment.setArguments(bundle);
@@ -111,45 +128,45 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 fragment = new RegisterStartupPitchFragment();
                 fragment.setArguments(bundle);
                 break;
+            case R.id.button_myProfile_startup_labels:
+                fragment = new RegisterStartupLabelsFragment();
+                fragment.setArguments(bundle);
+                break;
             case R.id.button_myProfile_startup_images:
                 fragment = new RegisterStartupImagesFragment();
                 fragment.setArguments(bundle);
                 break;
-
+            case R.id.button_myProfile_startup_video:
+                fragment = new RegisterStartupVideoFragment();
+                fragment.setArguments(bundle);
+                break;
             case R.id.button_myProfile_startup_financial_requirements:
                 fragment = new RegisterFinancialRequirementsFragment();
                 fragment.setArguments(bundle);
                 break;
-
             case R.id.button_myProfile_startup_public_profile:
                 fragment = new StartupPublicProfileFragment();
                 break;
-
             case R.id.button_myProfile_startup_stakeholders:
                 fragment = new RegisterStakeholderFragment();
                 fragment.setArguments(bundle);
                 break;
-
             case R.id.button_myProfile_investor_profile_information:
                 fragment = new RegisterProfileInformationFragment();
                 fragment.setArguments(bundle);
                 break;
-
             case R.id.button_myProfile_investor_matching_criteria:
                 fragment = new RegisterInvestorMatchingFragment();
                 fragment.setArguments(bundle);
                 break;
-
             case R.id.button_myProfile_investor_pitch:
                 fragment = new RegisterInvestorPitchFragment();
                 fragment.setArguments(bundle);
                 break;
-
             case R.id.button_myProfile_investor_images:
                 fragment = new RegisterInvestorImagesFragment();
                 fragment.setArguments(bundle);
                 break;
-
             case R.id.button_myProfile_investor_public_profile:
                 fragment = new InvestorPublicProfileFragment();
                 break;

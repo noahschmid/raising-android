@@ -124,11 +124,19 @@ public class RaisingFragment extends Fragment {
      * @param textLayout The layout that has the limiter
      * @param textInput The input of the layout with the limiter
      * @param WORD_MAXIMUM The limit of words, that the layout allows
+     * @param currentText The current text of the text view
      *
      * @author Lorenz Caliezi 18.03.2020
      */
-    public void prepareRestrictedTextLayout(final TextInputLayout textLayout, final EditText textInput, final int WORD_MAXIMUM ) {
-        textLayout.setHelperText(0 + "/" + WORD_MAXIMUM);
+    public void prepareRestrictedTextLayout(final TextInputLayout textLayout, final EditText textInput, final int WORD_MAXIMUM, String currentText ) {
+        if(currentText == null || currentText.equals(" ")) {
+            textLayout.setHelperText(0 + "/" + WORD_MAXIMUM);
+        } else {
+            currentText.replace("\n", " ");
+            String [] currentTextArray = currentText.split(" ");
+            textLayout.setHelperText(currentTextArray.length + "/" + WORD_MAXIMUM);
+        }
+
         textInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}

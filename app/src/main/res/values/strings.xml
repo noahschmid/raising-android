@@ -85,14 +85,16 @@
     <string name="register_company_information_text"> Company Information </string>
     <string name="register_company_name"> Company* </string>
     <string name="register_company_uid"> UID* </string>
+    <string name="register_company_phone"> Phone Number </string>
+    <string name="register_company_website"> Website </string>
+    <string name="register_company_country"> Country* </string>
+
+    <string name="register_company_figures_information_text"> Facts and Figures </string>
     <string name="register_company_revenue"> Revenue* </string>
     <string name="register_company_breakeven"> Break-Even Year* </string>
     <string name="register_company_fte"> FTE* </string>
     <string name="register_company_markets"> Current Markets* </string>
     <string name="register_company_founding_year"> Founding Year* </string>
-    <string name="register_company_phone"> Phone Number </string>
-    <string name="register_company_website"> Website </string>
-    <string name="register_company_country"> Country* </string>
 
     <string name="register_address_information_text"> Address Information</string>
     <string name="register_address_country"> Country </string>

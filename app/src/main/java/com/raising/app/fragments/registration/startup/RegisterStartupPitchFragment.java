@@ -10,9 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
@@ -20,19 +18,14 @@ import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.ResourcesManager;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class RegisterStartupPitchFragment extends RaisingFragment implements View.OnClickListener {
+public class RegisterStartupPitchFragment extends RaisingFragment {
     private TextInputLayout sentenceLayout, pitchLayout;
     private EditText sentenceInput, pitchInput;
-    private LinearLayout labelsLayout;
     private Startup startup;
     private boolean editMode = false;
-
-    private CheckBox checkSef4Kmu, checkVentureKick, checkInnosuisse, checkUpscaler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,9 +43,9 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
         super.onViewCreated(view, savedInstanceState);
 
         Button btnStartupPitch = view.findViewById(R.id.button_startup_pitch);
-        btnStartupPitch.setOnClickListener(this);
+        btnStartupPitch.setOnClickListener(v -> processInputs());
 
-        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
+        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
             btnStartupPitch.setHint(getString(R.string.myProfile_apply_changes));
             startup = (Startup)AccountService.getAccount();
@@ -66,22 +59,12 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
 
         pitchLayout = view.findViewById(R.id.register_startup_pitch_pitch);
         pitchInput = view.findViewById(R.id.register_input_startup_pitch);
-        labelsLayout = view.findViewById(R.id.register_startup_pitch_labels);
 
         pitchInput.setText(startup.getPitch());
         sentenceInput.setText(startup.getDescription());
 
-        prepareSentenceLayout();
-        preparePitchLayout();
-
-        ResourcesManager.getLabels().forEach(label -> {
-            CheckBox cb = new CheckBox(getContext());
-            cb.setText(label.getName());
-            cb.setContentDescription(String.valueOf(label.getId()));
-            labelsLayout.addView(cb);
-        });
-
-        startup.getLabels().forEach(label -> tickCheckbox(labelsLayout, label));
+        prepareSentenceLayout(startup.getDescription());
+        preparePitchLayout(startup.getPitch());
     }
 
 
@@ -90,17 +73,6 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
         super.onDestroyView();
 
         hideBottomNavigation(false);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.button_startup_pitch:
-                processInputs();
-                break;
-            default:
-                break;
-        }
     }
 
     /**
@@ -116,22 +88,13 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
             return;
         }
 
-        ArrayList<Long> labels = new ArrayList<>();
-        for (int i = 0; i < labelsLayout.getChildCount(); ++i) {
-            View v = labelsLayout.getChildAt(i);
-            if(((CheckBox)v).isChecked() && ((String)((CheckBox)v).getContentDescription()).length() > 0) {
-                labels.add(Long.parseLong((String)((CheckBox)v).getContentDescription()));
-            }
-        }
-
         startup.setPitch(pitch);
         startup.setDescription(description);
-        startup.setLabels(labels);
 
         try {
             if(!editMode) {
                 RegistrationHandler.saveStartup(startup);
-                changeFragment(new RegisterStartupImagesFragment());
+                changeFragment(new RegisterStartupLabelsFragment());
             } else {
                 popCurrentFragment(this);
             }
@@ -142,20 +105,22 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
     }
 
     /**
-     * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int)}
+     * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int, String)}
      *
+     * @param currentText The text, that is currently in this text view
      * @author Lorenz Caliezi 18.03.2020
      */
-    private void prepareSentenceLayout() {
-        prepareRestrictedTextLayout(sentenceLayout, sentenceInput, getResources().getInteger(R.integer.pitch_sentence_max_word));
+    private void prepareSentenceLayout(String currentText) {
+        prepareRestrictedTextLayout(sentenceLayout, sentenceInput, getResources().getInteger(R.integer.pitch_sentence_max_word), currentText);
     }
 
     /**
-     * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int)}
+     * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int, String)}
      *
+     * @param currentText The text, that is currently in this text view
      * @author Lorenz Caliezi 18.03.2020
      */
-    private void preparePitchLayout() {
-        prepareRestrictedTextLayout(pitchLayout, pitchInput, getResources().getInteger(R.integer.pitch_pitch_max_word));
+    private void preparePitchLayout(String currentText) {
+        prepareRestrictedTextLayout(pitchLayout, pitchInput, getResources().getInteger(R.integer.pitch_pitch_max_word), currentText);
     }
 }

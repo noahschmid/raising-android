@@ -124,7 +124,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         setupBoardMemberRecyclerView(view);
         setupShareholderRecyclerView(view);
 
-        Button btnAddFounder = view.findViewById(R.id.floating_button_add_founder);
+        Button btnAddFounder = view.findViewById(R.id.button_add_founder);
         btnAddFounder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,7 +133,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         });
 
         Button btnAddBoardMember
-                = view.findViewById(R.id.floating_button_add_board_member);
+                = view.findViewById(R.id.button_add_board_member);
         btnAddBoardMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,7 +142,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         });
 
         Button btnAddShareholder
-                = view.findViewById(R.id.floating_button_add_shareholder);
+                = view.findViewById(R.id.button_add_shareholder);
         btnAddShareholder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
