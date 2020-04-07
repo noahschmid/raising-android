@@ -20,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -239,12 +240,17 @@ public class AccountService {
      * Update account of logged in user
      */
     public static void updateAccount(Account update, Function<JSONObject, Void> callback) {
-        Gson gson = new Gson();
-
         String endpoint = null;
         String accountString = null;
 
-        account.setEmail(contactDetails.getEmail());
+        update.setEmail(contactDetails.getEmail());
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Startup.class,
+                Serializer.StartupUpdateSerializer);
+        gsonBuilder.registerTypeAdapter(Investor.class,
+                Serializer.InvestorUpdateSerializer);
+        Gson gson = gsonBuilder.create();
 
         if(AuthenticationHandler.isStartup()) {
             endpoint = "startup/" + AuthenticationHandler.getId();
@@ -256,7 +262,11 @@ public class AccountService {
 
         try {
             ApiRequestHandler.performPatchRequest(endpoint,
-                    callback, ApiRequestHandler.errorHandler,
+                    v -> {
+                        loadAccount();
+                        callback.apply(v);
+                    return null;
+                    }, ApiRequestHandler.errorHandler,
                     new JSONObject(accountString));
         } catch (JSONException e) {
             Log.e("AccountService", "Error while performing patch request: " +

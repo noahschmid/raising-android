@@ -49,11 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(!AuthenticationHandler.isLoggedIn()) {
                 hideBottomNavigation(true);
-<<<<<<< HEAD
                 fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
-=======
-                fragmentTransaction.replace(R.id.fragment_container, new RegisterStakeholderFragment());
->>>>>>> 0ffaacd9df61ddcc2e92fd4608a5a34a13192eba
             } else {
                 if(!AccountService.loadContactDetails()) {
                     hideBottomNavigation(true);

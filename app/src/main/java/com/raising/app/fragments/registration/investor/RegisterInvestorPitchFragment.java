@@ -63,8 +63,6 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         Button btnInvestorPitch = view.findViewById(R.id.button_investor_pitch);
         btnInvestorPitch.setOnClickListener(this);
 
-        Investor investor;
-
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
             btnInvestorPitch.setHint(getString(R.string.myProfile_apply_changes));
@@ -105,8 +103,8 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
             return;
         }
 
-        investor.setPitch(sentenceInput.getText().toString());
-        investor.setDescription(pitchInput.getText().toString());
+        investor.setDescription(sentenceInput.getText().toString());
+        investor.setPitch(pitchInput.getText().toString());
 
         try {
             if(editMode) {
