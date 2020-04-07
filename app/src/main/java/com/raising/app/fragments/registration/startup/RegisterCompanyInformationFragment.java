@@ -267,8 +267,6 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
                 companyRevenueInput.getText().length() == 0 ||
                 companyFoundingInput.getText().length() == 0 ||
                 countrySelected == null ||
-                companyWebsiteInput.getText().length() == 0 ||
-                companyPhoneInput.getText().length() == 0 ||
                 revenueMinId == -1 || revenueMaxId == -1) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));

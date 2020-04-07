@@ -1,4 +1,4 @@
-package com.raising.app.util;
+package com.raising.app.util.recyclerViewAdapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +15,11 @@ import com.raising.app.models.stakeholder.StakeholderItem;
 import java.util.ArrayList;
 
 public class StakeholderRecyclerViewAdapter extends RecyclerView.Adapter<StakeholderRecyclerViewAdapter.ViewHolder> {
-    private ArrayList<StakeholderItem> founderRecyclerItems;
+    private ArrayList<StakeholderItem> recyclerItems;
     private OnClickListener clickListener;
 
     public StakeholderRecyclerViewAdapter(ArrayList<StakeholderItem> recyclerItems) {
-        this.founderRecyclerItems = recyclerItems;
+        this.recyclerItems = recyclerItems;
     }
 
     @NonNull
@@ -32,7 +32,7 @@ public class StakeholderRecyclerViewAdapter extends RecyclerView.Adapter<Stakeho
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        StakeholderItem recyclerItem = founderRecyclerItems.get(position);
+        StakeholderItem recyclerItem = recyclerItems.get(position);
 
         holder.stakeholderRecyclerTitle.setText(recyclerItem.getTitle());
 
@@ -40,7 +40,7 @@ public class StakeholderRecyclerViewAdapter extends RecyclerView.Adapter<Stakeho
 
     @Override
     public int getItemCount() {
-        return founderRecyclerItems.size();
+        return recyclerItems.size();
     }
 
     public interface OnClickListener {

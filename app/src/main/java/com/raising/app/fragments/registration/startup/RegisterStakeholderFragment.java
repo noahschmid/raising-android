@@ -15,13 +15,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.android.volley.VolleyError;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.raising.app.R;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.BoardMemberInputFragment;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.FounderInputFragment;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.ShareholderInputFragment;
@@ -36,7 +34,7 @@ import com.raising.app.models.stakeholder.StakeholderItem;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.StakeholderRecyclerViewAdapter;
+import com.raising.app.util.recyclerViewAdapter.StakeholderRecyclerViewAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;

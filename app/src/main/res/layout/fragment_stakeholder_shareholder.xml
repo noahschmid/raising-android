@@ -127,7 +127,8 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_shareholder_country"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/inputFormHeight" />
+                            android:layout_height="@dimen/inputFormHeight"
+                            android:focusable="false" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -137,10 +138,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                         android:hint="@string/register_stakeholder_shareholder_equity"
+                        app:layout_constraintBottom_toTopOf="@+id/text_shareholder_type"
                         app:layout_constraintEnd_toEndOf="@+id/shareholder_first_name"
                         app:layout_constraintStart_toStartOf="@+id/shareholder_first_name"
-                        app:layout_constraintTop_toBottomOf="@+id/shareholder_country"
-                        app:layout_constraintBottom_toTopOf="@+id/text_shareholder_type">
+                        app:layout_constraintTop_toBottomOf="@+id/shareholder_country">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_shareholder_equity_share"
@@ -160,7 +161,7 @@
                         app:layout_constraintBottom_toTopOf="@+id/shareholder_first_name"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/shareholder_equity_share"></TextView>
+                        app:layout_constraintTop_toBottomOf="@+id/shareholder_equity_share"/>
 
                     <RadioGroup
                         android:id="@+id/private_shareholder_type"
@@ -224,7 +225,8 @@
                         <AutoCompleteTextView
                             android:id="@+id/input_shareholder_corporate_body"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/inputFormHeight" />
+                            android:layout_height="@dimen/inputFormHeight"
+                            android:focusable="false" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -252,10 +254,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                         android:hint="@string/register_stakeholder_shareholder_equity"
+                        app:layout_constraintBottom_toTopOf="@+id/shareholder_corporate_country"
                         app:layout_constraintEnd_toEndOf="@+id/shareholder_name"
                         app:layout_constraintStart_toStartOf="@+id/shareholder_name"
-                        app:layout_constraintTop_toBottomOf="@+id/shareholder_website"
-                        app:layout_constraintBottom_toTopOf="@+id/shareholder_corporate_country">
+                        app:layout_constraintTop_toBottomOf="@+id/shareholder_website">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_shareholder_corporate_equity_share"
@@ -279,7 +281,8 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_shareholder_corporate_country"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/inputFormHeight" />
+                            android:layout_height="@dimen/inputFormHeight"
+                            android:focusable="false" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </FrameLayout>
@@ -293,7 +296,7 @@
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:hint="@string/cancel_text"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_select_type_of_shareholder"
-                app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder"/>
+                app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder" />
 
             <Button
                 android:id="@+id/floating_button_add_shareholder"

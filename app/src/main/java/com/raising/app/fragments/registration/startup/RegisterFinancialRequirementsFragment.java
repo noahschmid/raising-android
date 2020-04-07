@@ -221,7 +221,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 Objects.requireNonNull(getView()).getContext(),
-                R.style.DialogTheme, dateSetListener, year, month, day);
+                R.style.DatePickerStyle, dateSetListener, year, month, day);
         datePickerDialog.show();
     }
 }

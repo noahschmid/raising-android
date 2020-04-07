@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.raising.app.fragments.HandshakesFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.SettingsFragment;
@@ -17,6 +18,9 @@ import com.raising.app.fragments.profile.ContactDetailsInput;
 import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
+import com.raising.app.fragments.registration.startup.RegisterCompanyInformationFragment;
+import com.raising.app.fragments.registration.startup.RegisterFinancialRequirementsFragment;
+import com.raising.app.fragments.registration.startup.RegisterStakeholderFragment;
 import com.raising.app.models.Investor;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
@@ -45,7 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
             if(!AuthenticationHandler.isLoggedIn()) {
                 hideBottomNavigation(true);
+<<<<<<< HEAD
                 fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
+=======
+                fragmentTransaction.replace(R.id.fragment_container, new RegisterStakeholderFragment());
+>>>>>>> 0ffaacd9df61ddcc2e92fd4608a5a34a13192eba
             } else {
                 if(!AccountService.loadContactDetails()) {
                     hideBottomNavigation(true);
@@ -82,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.nav_matches:
                                 selected = new MatchesFragment();
+                                break;
+                            case R.id.nav_handshakes:
+                                selected = new HandshakesFragment();
                                 break;
                             case R.id.nav_profile:
                                 selected = new MyProfileFragment();

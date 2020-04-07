@@ -14,7 +14,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -78,8 +79,6 @@
                 style="@style/FragmentTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_stakeholder_information_text"
                 app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_founder"
                 app:layout_constraintEnd_toEndOf="@+id/registration_profile_progress"
@@ -103,11 +102,9 @@
                 android:id="@+id/stakeholder_founder_recycler_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
                 app:layout_constraintBottom_toTopOf="@+id/floating_button_add_founder"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/registration_profile_progress"
+                app:layout_constraintStart_toStartOf="@+id/registration_profile_progress"
                 app:layout_constraintTop_toBottomOf="@+id/text_stakeholder_founder" />
 
             <Button
@@ -121,7 +118,7 @@
                 android:hint="@string/register_stakeholder_founder_add"
                 android:shadowColor="@color/raisingWhite"
                 android:textColorHint="@color/raisingPrimaryTextColor"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_board_member"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_founder_recycler_view"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_founder_recycler_view" />
@@ -159,7 +156,7 @@
                 android:hint="@string/register_stakeholder_board_member_add"
                 android:shadowColor="@color/raisingWhite"
                 android:textColorHint="@color/raisingPrimaryTextColor"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_shareholder"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_board_member_recycler_view"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_board_member_recycler_view" />
@@ -197,7 +194,7 @@
                 android:hint="@string/register_stakeholder_shareholder_add"
                 android:shadowColor="@color/raisingWhite"
                 android:textColorHint="@color/raisingPrimaryTextColor"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/button_stakeholder"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_shareholder_recycler_view"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_shareholder_recycler_view" />

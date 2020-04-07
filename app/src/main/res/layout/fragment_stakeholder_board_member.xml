@@ -95,7 +95,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/board_member_position"
-                style="@style/TextInputExposedDropdownMenuTheme"
+                style="@style/TextInputLayoutTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
@@ -105,7 +105,7 @@
                 app:layout_constraintStart_toStartOf="@+id/board_member_profession"
                 app:layout_constraintTop_toBottomOf="@+id/board_member_profession">
 
-                <AutoCompleteTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_board_member_position"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"/>
@@ -127,7 +127,7 @@
                     android:id="@+id/input_board_member_member_since"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"
-                    android:inputType="numberDecimal"/>
+                    android:focusable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -163,7 +163,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_board_member_country"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight"/>
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:focusable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

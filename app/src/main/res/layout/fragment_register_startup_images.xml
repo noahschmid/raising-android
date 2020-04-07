@@ -278,7 +278,7 @@
                 android:id="@+id/button_startup_images"
                 style="@style/ButtonConfirmRegistration"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
