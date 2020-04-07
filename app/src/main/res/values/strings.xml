@@ -192,4 +192,11 @@
     <string name="register_images_add_video_text">Add a video pitch</string>
     <string name="register_video_information_text">Video Pitch</string>
     <string name="register_stakeholder_shareholder_type">Investor Type</string>
+    <string name="not_logged_in_title">Login needed</string>
+    <string name="not_logged_in_text">You are not logged in!</string>
+    <string name="no_profile_text">Looks like you have no profile yet!</string>
+    <string name="contact_input_title">Complete your profile</string>
+    <string name="contact_input_description">Seems like we\'ve lost some information about you! Please fill in the missing details so you can continue using Raising.</string>
+    <string name="continue_text">CONTINUE</string>
+    <string name="save_text">SAVE</string>
 </resources>

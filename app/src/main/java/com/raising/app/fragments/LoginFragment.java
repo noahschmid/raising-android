@@ -1,5 +1,6 @@
 package com.raising.app.fragments;
 
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import android.service.autofill.FieldClassification;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +20,9 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.raising.app.fragments.profile.ContactDetailsInput;
 import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
 
@@ -129,11 +133,31 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            Log.d("LoginFragment", "login successful.");
                             try {
-                                AuthenticationHandler.login(response.getString("token"),
-                                        response.getLong("id"), getContext());
-                                // getActivitiesFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                                changeFragment(new MatchesFragment(), "MatchesFragment");
+                                boolean isStartup = response.getBoolean("startup");
+                                if(!isStartup && !response.getBoolean("investor")) {
+                                    showSimpleDialog(getString(R.string.generic_error_title),
+                                            getString(R.string.no_profile_text));
+                                    return;
+                                }
+
+                                if(AccountService.loadContactDetails()) {
+                                    AuthenticationHandler.login(email,
+                                            response.getString("token"),
+                                            response.getLong("id"), isStartup);
+                                    clearBackstackAndReplace(new MatchesFragment());
+                                } else {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putBoolean("isStartup", isStartup);
+                                    bundle.putString("email", email);
+                                    bundle.putString("token", response.getString("token"));
+                                    bundle.putLong("id", response.getLong("id"));
+                                    Fragment fragment = new ContactDetailsInput();
+                                    fragment.setArguments(bundle);
+                                    changeFragment(fragment);
+                                }
+
                             } catch(Exception e) {
                                 showSimpleDialog(getString(R.string.generic_error_title),
                                         e.getMessage());

@@ -116,7 +116,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
             Log.d("debugMessage", "sending request...");
 
             ApiRequestHandler.performPostRequest("account/valid",
-                    callback, errorHandler, new JSONObject(params), getContext());
+                    callback, errorHandler, new JSONObject(params));
         } catch(Exception e) {
             Log.d("debugMessage", e.getMessage());
             Log.d("debugMessage", e.toString());

@@ -3,84 +3,113 @@ package com.raising.app.util;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.raising.app.models.Account;
+import com.raising.app.models.Investor;
+import com.raising.app.models.ContactDetails;
+import com.raising.app.models.Startup;
+
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.function.Function;
 
 public class AuthenticationHandler {
-    private static long accountId;
+    private static long accountId = -1;
     private static String token;
+    private static String email;
+    private static boolean loggedIn = false;
+    private static boolean isStartup = false;
+
 
     /**
      * Save the given access token and accountId in internal storage
      * @param token the access token (received from backend on login)
      * @param accountId the accountId
-     * @param context the application context
+     * @param isStartup indicating whether the account belongs to startup or investor
      * @throws Exception if something went wrong while writing to the internal storage
      */
-    public static void login(String token, long accountId, Context context) throws Exception {
+    public static void login(String email, String token, long accountId,
+                             boolean isStartup) throws Exception {
         FileOutputStream outputStream;
 
-        outputStream = context.openFileOutput("token", Context.MODE_PRIVATE);
-        String saveString = token + "\n" + String.valueOf(accountId);
+        outputStream = ResourcesManager.getContext().openFileOutput("token",
+                Context.MODE_PRIVATE);
+        String saveString = token + "\n" + email + "\n" + accountId;
         outputStream.write(saveString.getBytes());
         outputStream.flush();
         outputStream.close();
 
         AuthenticationHandler.token = token;
         AuthenticationHandler.accountId = accountId;
+        AuthenticationHandler.isStartup = isStartup;
+        AuthenticationHandler.email = email;
+        loggedIn = true;
+
+        AccountService.loadAccount();
     }
 
+    public static String getToken() { return token; }
 
-    public static String getToken() {
-        return AuthenticationHandler.token;
-    }
+    public static boolean isStartup() { return isStartup; }
 
     /**
      * Get accountId
      * @return accountId as long
      */
     public static long getId() {
-        return AuthenticationHandler.accountId;
+        return accountId;
     }
+
+    /**
+     * Get email of logged in user
+     * @return email as string
+     */
+    public static String getEmail() { return email; }
 
     /**
      * Delete saved token and accountId
-     * @param context the application context
      */
-    public static void logout(Context context) {
-        context.deleteFile("token");
+    public static void logout() {
+        ResourcesManager.getContext().deleteFile("token");
 
-        Log.d("debugMessage", "logged out");
+        Log.d("AuthenticationHandler", "logged out");
 
         AuthenticationHandler.token = null;
         AuthenticationHandler.accountId = -1;
+        loggedIn = false;
     }
 
     /**
-     * Check if token is saved in internal storage
-     * @param context the application context
+     * Check if there's a token file and if so, read contents
      * @return true if user is currently logged in, false otherwise
      */
-    public static boolean isLoggedIn(Context context) {
-        File file = context.getFileStreamPath("token");
+    public static void init() {
+        File file = ResourcesManager.getContext().getFileStreamPath("token");
         if(!file.exists())
-            return false;
+            return;
 
         try {
-            FileInputStream fis = context.openFileInput("token");
+            FileInputStream fis = ResourcesManager.getContext().openFileInput("token");
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader bufferedReader = new BufferedReader(isr);
 
             AuthenticationHandler.token = bufferedReader.readLine();
+            AuthenticationHandler.email = bufferedReader.readLine();
             AuthenticationHandler.accountId = Long.parseLong(bufferedReader.readLine());
-        } catch(Exception e) {
-            Log.d("debugMessage", e.getMessage());
-            return false;
-        }
+            loggedIn = true;
 
-        return true;
+            Log.i("AuthenticationHandler", "Auto login with accountId " + accountId);
+        } catch(Exception e) {
+            Log.e("AuthenticationHandler", "Error while initializing: " +  e.getMessage());
+        }
     }
+
+    public static boolean isLoggedIn() { return loggedIn; }
 }

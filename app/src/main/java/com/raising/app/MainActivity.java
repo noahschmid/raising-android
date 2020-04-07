@@ -13,10 +13,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.SettingsFragment;
+import com.raising.app.fragments.profile.ContactDetailsInput;
 import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.Investor;
+import com.raising.app.util.AccountService;
+import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.ResourcesManager;
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ResourcesManager.init(getApplicationContext(), getSupportFragmentManager());
-        InternalStorageHandler.init(getApplicationContext());
+        AuthenticationHandler.init();
         ResourcesManager.loadAll();
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -40,15 +43,27 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-            if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
+            if(!AuthenticationHandler.isLoggedIn()) {
                 hideBottomNavigation(true);
-                fragmentTransaction.replace(R.id.fragment_container, new InvestorPublicProfileFragment());
+                fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
             } else {
-                hideBottomNavigation(false);
-                fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
+                if(!AccountService.loadContactDetails()) {
+                    hideBottomNavigation(true);
+                    Bundle bundle = new Bundle();
+                    bundle.putBoolean("isStartup", AuthenticationHandler.isStartup());
+                    bundle.putString("email", AuthenticationHandler.getEmail());
+                    bundle.putString("token", AuthenticationHandler.getToken());
+                    bundle.putLong("id", AuthenticationHandler.getId());
+                    Fragment fragment = new ContactDetailsInput();
+                    fragment.setArguments(bundle);
+                    fragmentTransaction.replace(R.id.fragment_container, fragment);
+                } else {
+                    AccountService.loadAccount();
+                    hideBottomNavigation(false);
+                    fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
+                }
             }
             fragmentTransaction.commit();
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -57,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                     Fragment selected = null;
-                    if(!AuthenticationHandler.isLoggedIn(getApplicationContext())) {
+                    if(!AuthenticationHandler.isLoggedIn()) {
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.fragment_container, new LoginFragment())

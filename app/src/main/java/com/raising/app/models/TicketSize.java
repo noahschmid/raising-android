@@ -5,10 +5,12 @@ import java.io.Serializable;
 import lombok.Data;
 
 @Data
-public class TicketSize implements Serializable {
+public class TicketSize implements Serializable, Model {
     private long id;
     private int ticketSize;
 
+    public String getName() { return toString("CHF", new String[] {"k", "M", "B"}); }
+    public void setName(String name) { }
     public String toString(String currency, String[] units) {
         String unit = "";
         int val = ticketSize;
@@ -21,5 +23,19 @@ public class TicketSize implements Serializable {
         }
 
         return currency + " " + val + unit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof TicketSize)) {
+            return false;
+        }
+
+        TicketSize c = (TicketSize) o;
+        return c.getId() == this.getId();
     }
 }

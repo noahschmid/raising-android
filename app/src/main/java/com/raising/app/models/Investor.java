@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class Investor extends Account implements Serializable {
     private long investorTypeId = -1;
-    private List<InvestmentPhase> investmentPhases;
+    private List<Long> investmentPhases;
 
     public Investor() {
         investmentPhases = new ArrayList<>();
@@ -17,7 +17,7 @@ public class Investor extends Account implements Serializable {
 
     public void clearInvestmentPhases() { investmentPhases.clear(); }
 
-    public void addInvestmentPhase(InvestmentPhase investmentPhase) {
-        investmentPhases.add(investmentPhase);
+    public void addInvestmentPhase(Long id) {
+        investmentPhases.add(id);
     }
 }

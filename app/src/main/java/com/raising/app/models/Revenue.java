@@ -7,12 +7,15 @@ import java.io.Serializable;
 import lombok.Data;
 
 @Data
-public class Revenue implements Serializable {
-    private int id;
+public class Revenue implements Serializable, Model {
+    private long id;
     private int revenueMinId;
     private int revenueMaxId;
     private int revenueMin;
     private int revenueMax;
+
+    public String getName() { return toString("CHF", new String[]{"k", "M", "B"}); }
+    public void setName(String name) { }
 
     public String toString(String currency, String[] units) {
         int min = revenueMin;
@@ -40,5 +43,19 @@ public class Revenue implements Serializable {
         }
 
         return currency + " " + min + minUnit + " - " + max + maxUnit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof Revenue)) {
+            return false;
+        }
+
+        Revenue c = (Revenue) o;
+        return c.getId() == this.getId();
     }
 }

@@ -24,14 +24,14 @@ import com.raising.app.fragments.registration.startup.RegisterStakeholderFragmen
 import com.raising.app.fragments.registration.startup.RegisterStartupImagesFragment;
 import com.raising.app.fragments.registration.startup.RegisterStartupMatchingFragment;
 import com.raising.app.fragments.registration.startup.RegisterStartupPitchFragment;
+import com.raising.app.util.AccountService;
+import com.raising.app.util.AuthenticationHandler;
 
 public class MyProfileFragment extends RaisingFragment implements View.OnClickListener {
     private FrameLayout startUpLayout, investorLayout;
     private Button startUpCompanyInformation, startUpMatching, startUpPitch,
             startUpImages, startUpFinancial, startUpStakeholder,
             investorProfileInformation, investorMatching, investorPitch, investorImages;
-
-    private final boolean IS_PROFILE_FRAGMENT = true;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -46,15 +46,13 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
         startUpLayout = view.findViewById(R.id.myProfile_startUp_layout);
         investorLayout = view.findViewById(R.id.myProfile_investor_layout);
 
-        /*
-        if(RegistrationHandler.getAccountType().equals("startup")) {
+        if(AccountService.isStartup()) {
             startUpLayout.setVisibility(View.VISIBLE);
             investorLayout.setVisibility(View.GONE);
-        } else if (RegistrationHandler.getAccountType().equals("investor")) {
+        } else {
             startUpLayout.setVisibility(View.GONE);
             investorLayout.setVisibility(View.VISIBLE);
         }
-         */
 
         startUpCompanyInformation = view.findViewById(R.id.button_myProfile_startup_company_information);
         startUpCompanyInformation.setOnClickListener(this);
@@ -85,14 +83,13 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
 
         investorImages = view.findViewById(R.id.button_myProfile_investor_pitch);
         investorImages.setOnClickListener(this);
-
     }
 
     @Override
     public void onClick(View v) {
-        Fragment fragment = new MyProfileFragment();
+        Fragment fragment = null;
         Bundle bundle = new Bundle();
-        bundle.putBoolean("isProfileFragment", IS_PROFILE_FRAGMENT);
+        bundle.putBoolean("editMode", true);
         switch (v.getId()) {
             case R.id.button_myProfile_startup_company_information:
                 fragment = new RegisterCompanyInformationFragment();
@@ -141,7 +138,10 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 fragment.setArguments(bundle);
                 break;
         }
-        changeFragment(fragment);
+
+        if(fragment != null) {
+            changeFragment(fragment);
+        }
     }
 
     @Override

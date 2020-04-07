@@ -14,7 +14,7 @@
     <dimen name="inputFormInformationTextMargin"> 16dp </dimen>
 
     <dimen name="inputOneSentenceDescriptionHeight"> 80dp </dimen>
-    <dimen name="inputPitchHeight"> 300dp </dimen>
+    <dimen name="inputPitchHeight"> 150dp </dimen>
 
     <dimen name="fragmentTitleFontSize"> 20sp </dimen>
     <dimen name="fragmentSubtitleFontSize"> 18sp </dimen>

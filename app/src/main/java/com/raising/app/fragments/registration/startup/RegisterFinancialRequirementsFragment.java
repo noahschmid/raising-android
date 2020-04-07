@@ -23,6 +23,7 @@ import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.FinanceType;
 import com.raising.app.models.Startup;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.NoFilterArrayAdapter;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.ResourcesManager;
@@ -41,6 +42,8 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private Calendar selectedDate;
     private int financialTypeId = -1;
+    private boolean editMode = false;
+    private Startup startup;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,7 +97,13 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         completedInput = view.findViewById(R.id.register_input_financial_completed);
 
-        Startup startup = RegistrationHandler.getStartup();
+        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
+            btnFinancialRequirements.setHint(getString(R.string.myProfile_apply_changes));
+            startup = (Startup)AccountService.getAccount();
+        } else {
+            startup = RegistrationHandler.getStartup();
+        }
 
         if(startup.getClosingTime() != null) {
             try {
@@ -106,7 +115,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
                         + "." + (selectedDate.get(Calendar.MONTH) + 1 + "."
                                 + selectedDate.get(Calendar.YEAR)));
             } catch (ParseException e) {
-                Log.d("debugMessage", "error parsing date!");
+                Log.d("RegisterFinancialRequirements", "error parsing date!");
             }
         }
         if(startup.getScope() > 0)
@@ -137,12 +146,6 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
                selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             }
         };
-
-        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
-            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
-            btnFinancialRequirements.setHint(getString(R.string.myProfile_apply_changes));
-            btnFinancialRequirements.setOnClickListener(v -> popCurrentFragment(this));
-        }
     }
 
     @Override
@@ -191,12 +194,19 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
             completed = Integer.parseInt(completedInput.getText().toString());
         }
 
+        startup.setFinanceTypeId(financialTypeId);
+        startup.setPreMoneyValuation((int)valuation);
+        startup.setScope((int)scope);
+        startup.setRaised(completed);
+        startup.setClosingTime(selectedDate.get(Calendar.YEAR) + "-" +
+                            (selectedDate.get(Calendar.MONTH) + 1 + "-" +
+                            selectedDate.get(Calendar.DAY_OF_MONTH)));
+
         try {
-            RegistrationHandler.saveFinancialRequirements(financialTypeId, valuation, selectedDate, scope,
-                    completed);
+            RegistrationHandler.saveStartup(startup);
             changeFragment(new RegisterStakeholderFragment());
         } catch (IOException e) {
-            Log.d("debugMessage", e.getMessage());
+            Log.e("RegisterFinancialRequirements", "Error in processInputs: " + e.getMessage());
         }
     }
 

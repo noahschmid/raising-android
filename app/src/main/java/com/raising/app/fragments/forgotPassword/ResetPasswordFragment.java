@@ -84,9 +84,7 @@ public class ResetPasswordFragment extends RaisingFragment implements View.OnCli
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-                                AuthenticationHandler.login(response.getString("token"),
-                                        response.getLong("id"), getContext());
-                                changeFragment(new MatchesFragment(), "MatchesFragment");
+                                changeFragment(new MatchesFragment(), "LoginFragment");
                             } catch(Exception e) {
                                 showSimpleDialog(getString(R.string.generic_error_title),
                                         e.getMessage());

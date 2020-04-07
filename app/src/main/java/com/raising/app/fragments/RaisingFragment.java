@@ -217,6 +217,11 @@ public class RaisingFragment extends Fragment {
     }
 
 
+    /**
+     * Get selected checkboxes of a layout
+     * @param layout
+     * @return
+     */
     protected ArrayList<Long> getSelectedCheckboxIds(LinearLayout layout) {
         ArrayList<Long> results = new ArrayList<>();
         for (int i = 0; i < layout.getChildCount(); ++i) {

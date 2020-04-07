@@ -6,7 +6,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.raising.app.models.Account;
-import com.raising.app.models.PrivateProfile;
+import com.raising.app.models.ContactDetails;
 import com.raising.app.util.RegistrationHandler;
 
 import org.junit.Before;
@@ -50,7 +50,7 @@ public class RegistrationHandlerTest {
 
     @Test
     public void testSaveAndLoadProfile() {
-        PrivateProfile profile = new PrivateProfile();
+        ContactDetails profile = new ContactDetails();
         profile.setPhone("0123456789");
         profile.setCompany("company");
         profile.setWebsite("website");
@@ -62,7 +62,7 @@ public class RegistrationHandlerTest {
         } catch (IOException e) {
             fail();
         }
-        PrivateProfile loaded = RegistrationHandler.loadPrivateProfile();
+        ContactDetails loaded = RegistrationHandler.loadPrivateProfile();
 
         assertEquals(profile.getCompany(), loaded.getCompany());
         assertEquals(profile.getCountry(), loaded.getCountry());

@@ -20,7 +20,9 @@ import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.models.Account;
 import com.raising.app.models.Investor;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.RegistrationHandler;
 
 import org.json.JSONException;
@@ -32,6 +34,8 @@ import java.util.function.Function;
 public class RegisterInvestorPitchFragment extends RaisingFragment implements View.OnClickListener {
     private EditText sentenceInput, pitchInput;
     private TextInputLayout sentenceLayout, pitchLayout;
+    private Investor investor;
+    private boolean editMode = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,13 +63,16 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         Button btnInvestorPitch = view.findViewById(R.id.button_investor_pitch);
         btnInvestorPitch.setOnClickListener(this);
 
-        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
+        Investor investor;
+
+        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
             btnInvestorPitch.setHint(getString(R.string.myProfile_apply_changes));
-            btnInvestorPitch.setOnClickListener(v -> popCurrentFragment(this));
+            investor = (Investor) AccountService.getAccount();
+            editMode = true;
+        } else {
+            investor = RegistrationHandler.getInvestor();
         }
-
-        Investor investor = RegistrationHandler.getInvestor();
         pitchInput.setText(investor.getPitch());
         sentenceInput.setText(investor.getDescription());
     }
@@ -98,12 +105,22 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
             return;
         }
 
+        investor.setPitch(sentenceInput.getText().toString());
+        investor.setDescription(pitchInput.getText().toString());
+
         try {
-            RegistrationHandler.savePitch(sentenceInput.getText().toString(),
-                    pitchInput.getText().toString());
-            changeFragment(new RegisterInvestorImagesFragment());
+            if(editMode) {
+                AccountService.updateAccount(investor, v -> {
+                    popCurrentFragment(this);
+                    return null;
+                });
+            } else {
+                RegistrationHandler.saveInvestor(investor);
+                changeFragment(new RegisterInvestorImagesFragment());
+            }
         } catch (IOException e) {
-            Log.d("debugMessage", e.getMessage());
+            Log.d("RegisterInvestorPitchFragment", "Error in processInputs: " +
+                    e.getMessage());
         }
     }
 

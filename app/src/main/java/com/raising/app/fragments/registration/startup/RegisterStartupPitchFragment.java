@@ -18,6 +18,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Startup;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.ResourcesManager;
 
@@ -28,6 +29,8 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
     private TextInputLayout sentenceLayout, pitchLayout;
     private EditText sentenceInput, pitchInput;
     private LinearLayout labelsLayout;
+    private Startup startup;
+    private boolean editMode = false;
 
     private CheckBox checkSef4Kmu, checkVentureKick, checkInnosuisse, checkUpscaler;
 
@@ -46,6 +49,18 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Button btnStartupPitch = view.findViewById(R.id.button_startup_pitch);
+        btnStartupPitch.setOnClickListener(this);
+
+        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
+            btnStartupPitch.setHint(getString(R.string.myProfile_apply_changes));
+            startup = (Startup)AccountService.getAccount();
+            editMode = true;
+        } else {
+            startup = RegistrationHandler.getStartup();
+        }
+
         sentenceLayout = view.findViewById(R.id.register_startup_pitch_sentence);
         sentenceInput = view.findViewById(R.id.register_input_startup_pitch_sentence);
 
@@ -53,7 +68,6 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
         pitchInput = view.findViewById(R.id.register_input_startup_pitch);
         labelsLayout = view.findViewById(R.id.register_startup_pitch_labels);
 
-        Startup startup = RegistrationHandler.getStartup();
         pitchInput.setText(startup.getPitch());
         sentenceInput.setText(startup.getDescription());
 
@@ -67,16 +81,7 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
             labelsLayout.addView(cb);
         });
 
-        startup.getLabels().forEach(label -> tickCheckbox(labelsLayout, label.getId()));
-
-        Button btnStartupPitch = view.findViewById(R.id.button_startup_pitch);
-        btnStartupPitch.setOnClickListener(this);
-
-        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
-            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
-            btnStartupPitch.setHint(getString(R.string.myProfile_apply_changes));
-            btnStartupPitch.setOnClickListener(v -> popCurrentFragment(this));
-        }
+        startup.getLabels().forEach(label -> tickCheckbox(labelsLayout, label));
     }
 
 
@@ -119,11 +124,20 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Vie
             }
         }
 
+        startup.setPitch(pitch);
+        startup.setDescription(description);
+        startup.setLabels(labels);
+
         try {
-            RegistrationHandler.saveStartupPitch(pitch, description, labels);
-            changeFragment(new RegisterStartupImagesFragment());
+            if(!editMode) {
+                RegistrationHandler.saveStartup(startup);
+                changeFragment(new RegisterStartupImagesFragment());
+            } else {
+                popCurrentFragment(this);
+            }
+
         } catch(IOException e) {
-            Log.d("debugMessage", "Error while saving startup pitch");
+            Log.e("RegisterStartupPitch", "Error while saving startup pitch");
         }
     }
 

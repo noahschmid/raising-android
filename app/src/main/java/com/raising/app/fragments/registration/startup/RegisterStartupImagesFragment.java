@@ -32,6 +32,8 @@ import com.raising.app.R;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Image;
+import com.raising.app.models.Startup;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
 
@@ -57,6 +59,8 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
     private LayoutInflater inflater;
     private VideoView videoPitch;
     private Uri videoUri;
+    private Startup startup;
+    private boolean editMode = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,6 +83,15 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
         Button finishButton = view.findViewById(R.id.button_startup_images);
         finishButton.setOnClickListener(v -> processInputs());
+
+        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
+            view.findViewById(R.id.registration_images_progress).setVisibility(View.GONE);
+            finishButton.setHint(getString(R.string.myProfile_apply_changes));
+            editMode = true;
+            startup = (Startup) AccountService.getAccount();
+        } else {
+            startup = RegistrationHandler.getStartup();
+        }
 
         galleryLayout = view.findViewById(R.id.register_startup_images_gallery);
         profileImageOverlay = view.findViewById(R.id.register_profile_image_overlay);
@@ -159,12 +172,6 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                 showImageMenu(addGalleryImage, false);
             }
         });
-
-        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
-            view.findViewById(R.id.registration_images_progress).setVisibility(View.GONE);
-            finishButton.setHint(getString(R.string.myProfile_apply_changes));
-            finishButton.setOnClickListener(v -> popCurrentFragment(this));
-        }
     }
 
     @Override
@@ -322,11 +329,19 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             }
         }
 
+        startup.setProfilePicture(logo);
+        startup.setGallery(gallery);
+
         try {
-            RegistrationHandler.setImages(logo, gallery);
-            changeFragment(new RegisterFinancialRequirementsFragment());
+            if(!editMode) {
+                RegistrationHandler.saveStartup(startup);
+                changeFragment(new RegisterFinancialRequirementsFragment());
+            } else {
+                popCurrentFragment(this);
+            }
+
         } catch (IOException e) {
-            Log.d("StartupImages", e.getMessage());
+            Log.e("StartupImages", "Error in processInputs: " + e.getMessage());
         }
     }
 

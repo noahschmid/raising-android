@@ -17,12 +17,14 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.android.material.slider.Slider;
+import com.google.gson.Gson;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Continent;
 import com.raising.app.models.Country;
 import com.raising.app.models.Investor;
 import com.raising.app.models.Model;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
@@ -30,6 +32,7 @@ import com.raising.app.util.customPicker.PickerItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class RegisterInvestorMatchingFragment extends RaisingFragment
         implements View.OnClickListener {
@@ -45,10 +48,13 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
     private View fragmentView;
     private long investorType = -1;
     public ArrayList<PickerItem> pickerItems;
+    private Investor investor;
 
     private int minimumTicketSize, maximumTicketSize;
     private int [] ticketSizeSteps;
     private String [] ticketSizeStrings;
+
+    private boolean editMode = false;
 
 
     @Override
@@ -72,7 +78,19 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
         ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
 
-        Investor investor = RegistrationHandler.getInvestor();
+        Button btnInvestorMatching = view.findViewById(R.id.button_investor_matching);
+        btnInvestorMatching.setOnClickListener(this);
+
+        investor = null;
+
+        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
+            btnInvestorMatching.setHint(getString(R.string.myProfile_apply_changes));
+            investor = (Investor) AccountService.getAccount();
+            editMode = true;
+        } else {
+            investor = RegistrationHandler.getInvestor();
+        }
 
         pickerItems = new ArrayList<>();
         pickerItems.addAll(ResourcesManager.getContinents());
@@ -123,15 +141,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
         setupLists();
         restoreLists();
-
-        Button btnInvestorMatching = view.findViewById(R.id.button_investor_matching);
-        btnInvestorMatching.setOnClickListener(this);
-
-        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
-            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
-            btnInvestorMatching.setHint(getString(R.string.myProfile_apply_changes));
-            btnInvestorMatching.setOnClickListener(v -> popCurrentFragment(this));
-        }
     }
 
     /**
@@ -145,20 +154,23 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
     }
 
     /**
-     * Restore values of lists from previous entered data (saved in RegistrationHandler)
+     * Restore values of lists from previous entered data
      */
     private void restoreLists() {
-        Investor investor = RegistrationHandler.getInvestor();
         investorType = investor.getInvestorTypeId();
-        investor.getInvestmentPhases().forEach(phase ->
-                tickCheckbox(investmentPhaseLayout, phase.getId()));
+        ResourcesManager.getInvestmentPhases().forEach(phase ->
+                Log.d("RegisterInvestor1", phase.getId() + ""));
+        investor.getInvestmentPhases().forEach(phase -> {
+            tickCheckbox(investmentPhaseLayout, phase);
+            Log.d("RegisterInvestor2", phase + "");
+        });
         investor.getIndustries().forEach(industry ->
-                tickCheckbox(industryLayout, industry.getId()));
+                tickCheckbox(industryLayout, industry));
 
         tickRadioButton(investorTypeGroup, investor.getInvestorTypeId());
 
         investor.getSupport().forEach(support ->
-                tickCheckbox(supportLayout, support.getId()));
+                tickCheckbox(supportLayout, support));
     }
 
 
@@ -190,24 +202,24 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             return;
         }
 
-        int ticketSizeMinId =  (int)ResourcesManager.getTicketSizes().get(
-                (int)ticketSize.getMinimumValue() - 1).getId();
+        investor.setTicketMinId((int)ResourcesManager.getTicketSizes().get(
+                (int)ticketSize.getMinimumValue() - 1).getId());
 
-        int ticketSizeMaxId =  (int)ResourcesManager.getTicketSizes().get(
-                (int)ticketSize.getMaximumValue() - 1).getId();
+        investor.setTicketMaxId((int)ResourcesManager.getTicketSizes().get(
+                (int)ticketSize.getMaximumValue() - 1).getId());
 
         ArrayList<Long> industries = getSelectedCheckboxIds(industryLayout);
         ArrayList<Long> investmentPhases = getSelectedCheckboxIds(investmentPhaseLayout);
         ArrayList<Long> support = getSelectedCheckboxIds(supportLayout);
 
-        ArrayList<Country> countries = new ArrayList<>();
-        ArrayList<Continent> continents = new ArrayList<>();
+        ArrayList<Long> countries = new ArrayList<>();
+        ArrayList<Long> continents = new ArrayList<>();
 
         // only add child objects (countries) if parent object (continent) isn't selected
         // otherwise only add parent object
         pickerItems.forEach(item -> {
             if(item instanceof Continent && item.isChecked()) {
-                continents.add((Continent)item);
+                continents.add(item.getId());
                 pickerItems.forEach(i -> {
                     if(i instanceof Country) {
                         i.setChecked(false);
@@ -216,7 +228,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             }
 
             if(item instanceof Country && item.isChecked()) {
-                countries.add((Country)item);
+                countries.add(item.getId());
             }
         });
 
@@ -227,13 +239,42 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             return;
         }
 
+        investor.setInvestmentPhases(investmentPhases);
+        investor.setIndustries(industries);
+        investor.setSupport(support);
+        investor.setContinents(continents);
+        investor.setCountries(countries);
+
         try {
-            RegistrationHandler.saveInvestorMatchingFragment(ticketSizeMinId, ticketSizeMaxId,
-                    investorType, investmentPhases, industries, support, countries, continents);
-            changeFragment(new RegisterInvestorPitchFragment(),
-                    "RegisterInvestorPitchFragment");
-        } catch (IOException e) {
-            Log.d("debugMessage", e.getMessage());
+            if(!editMode) {
+                RegistrationHandler.saveInvestor(investor);
+                changeFragment(new RegisterInvestorPitchFragment(),
+                        "RegisterInvestorPitchFragment");
+            } else {
+               /* AccountService.updateAccount(investor, res -> {
+                    popCurrentFragment(this);
+                    return null;
+                });*/
+
+                AccountService.updateList(investor.getInvestmentPhases(),
+                        ((Investor)AccountService.getAccount()).getInvestmentPhases(),
+                        "investor/investmentphase");
+               /* AccountService.updateList(investor.getIndustries(),
+                        ((Investor)AccountService.getAccount()).getIndustries(),
+                        "account/industry");
+                AccountService.updateList(investor.getSupport(),
+                        ((Investor)AccountService.getAccount()).getSupport(),
+                        "investor/support");
+                AccountService.updateList(investor.getContinents(),
+                        ((Investor)AccountService.getAccount()).getContinents(),
+                        "investor/continent");
+                AccountService.updateList(investor.getCountries(),
+                        ((Investor)AccountService.getAccount()).getCountries(),
+                        "investor/country");*/
+            }
+        } catch (Exception e) {
+            Log.d("RegisterInvestorMatchingFragment",
+                    "Error while saving data: " + e.getMessage());
         }
     }
 

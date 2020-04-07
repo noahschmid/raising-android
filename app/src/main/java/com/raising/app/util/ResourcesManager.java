@@ -16,7 +16,6 @@ import com.raising.app.models.InvestmentPhase;
 import com.raising.app.models.InvestorType;
 import com.raising.app.models.Label;
 import com.raising.app.models.Model;
-import com.raising.app.models.PrivateProfile;
 import com.raising.app.models.Revenue;
 import com.raising.app.models.Support;
 import com.raising.app.models.TicketSize;
@@ -25,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.function.Function;
@@ -34,25 +34,36 @@ public class ResourcesManager implements Serializable {
     private static int responsesGot = 0;
     private static boolean loadingSuccessful = false;
 
-    private static ArrayList<Country> countries = new ArrayList<>();
-    private static ArrayList<Continent> continents = new ArrayList<>();
-    private static ArrayList<Support> supports = new ArrayList<>();
-    private static ArrayList<InvestorType> investorTypes = new ArrayList<>();
-    private static ArrayList<Label> labels = new ArrayList<>();
-    private static ArrayList<Industry> industries = new ArrayList<>();
-    private static ArrayList<InvestmentPhase> investmentPhases = new ArrayList<>();
-    private static ArrayList<Revenue> revenues = new ArrayList<>();
-    private static ArrayList<FinanceType> financeTypes = new ArrayList<>();
-    private static ArrayList<CorporateBody> corporateBodies = new ArrayList<>();
-    private static ArrayList<TicketSize> ticketSizes = new ArrayList<>();
+    private static Resources resources = new Resources();
 
     private static Context context;
     private static FragmentManager fragmentManager;
 
+    /**
+     * Set context and fragment manager and load cached resources if existing
+     * @param ctx
+     * @param fManager
+     */
     public static void init(Context ctx, FragmentManager fManager) {
         fragmentManager = fManager;
         context = ctx;
+
+        try {
+            if(InternalStorageHandler.exists("resources")) {
+                resources = (Resources) InternalStorageHandler.loadObject("resources");
+            }
+        } catch (Exception e) {
+            SimpleMessageDialog dialog =
+                    new SimpleMessageDialog().newInstance(context.getString(R.string.generic_error_title),
+                            context.getString(R.string.generic_error_text));
+            dialog.show(fragmentManager, "resources_error");
+            Log.e("ResourcesManager", "Error while loading cached resources: " + e.getMessage());
+        }
     }
+
+    public static Context getContext() { return context; }
+
+    public static FragmentManager getFragmentManager() { return fragmentManager; }
 
     /**
      * Get model from list by id
@@ -60,7 +71,7 @@ public class ResourcesManager implements Serializable {
      * @param list where to search in
      * @return search result, null if not found
      */
-    public static Model findById(int id, ArrayList<? extends Model> list) {
+    public static Model findById(long id, ArrayList<? extends Model> list) {
         for(Model item : list) {
             if(item.getId() == id)
                 return item;
@@ -78,58 +89,61 @@ public class ResourcesManager implements Serializable {
         loadingSuccessful = true;
 
         ApiRequestHandler.performArrayGetRequest("public/country", loadCountries,
-                errorHandler, context);
+                errorHandler);
         ApiRequestHandler.performArrayGetRequest("public/continent", loadContinents,
-                errorHandler, context);
+                errorHandler);
         ApiRequestHandler.performArrayGetRequest("public/support", loadSupport,
-                errorHandler, context);
+                errorHandler);
         ApiRequestHandler.performArrayGetRequest("public/investmentphase", loadInvestmentPhases,
-                errorHandler, context);
+                errorHandler);
         ApiRequestHandler.performArrayGetRequest("public/investortype", loadInvestorTypes,
-                errorHandler, context);
+                errorHandler);
         ApiRequestHandler.performArrayGetRequest("public/label", loadLabels,
-                errorHandler, context);
+                errorHandler);
         ApiRequestHandler.performArrayGetRequest("public/industry", loadIndustries,
-                errorHandler, context);
+                errorHandler);
         ApiRequestHandler.performArrayGetRequest("public/revenue", loadRevenues,
-                errorHandler, context);
+                errorHandler);
         ApiRequestHandler.performArrayGetRequest("public/financetype", loadFinanceTypes,
-                errorHandler, context);
+                errorHandler);
         ApiRequestHandler.performArrayGetRequest("public/corporatebody", loadCorporateBodies,
-                errorHandler, context);
+                errorHandler);
         ApiRequestHandler.performArrayGetRequest("public/ticketsize", loadTicketSizes,
-                errorHandler, context);
+                errorHandler);
     }
 
-    public static ArrayList<Country> getCountries() { return countries; }
-    public static ArrayList<Continent> getContinents() { return continents; }
-    public static ArrayList<Industry> getIndustries() { return industries; }
-    public static ArrayList<InvestmentPhase> getInvestmentPhases() { return investmentPhases; }
-    public static ArrayList<InvestorType> getInvestorTypes() { return investorTypes; }
-    public static ArrayList<Label> getLabels() { return labels; }
-    public static ArrayList<Support> getSupports() { return supports; }
-    public static ArrayList<Revenue> getRevenues() { return revenues; }
-    public static ArrayList<FinanceType> getFinanceTypes() { return financeTypes; }
-    public static ArrayList<CorporateBody> getCorporateBodies() { return corporateBodies; }
-    public static ArrayList<TicketSize> getTicketSizes() { return ticketSizes; }
+    public static ArrayList<Country> getCountries() { return resources.getCountries(); }
+    public static ArrayList<Continent> getContinents() { return resources.getContinents(); }
+    public static ArrayList<Industry> getIndustries() { return resources.getIndustries(); }
+    public static ArrayList<InvestmentPhase> getInvestmentPhases() { return resources.getInvestmentPhases(); }
+    public static ArrayList<InvestorType> getInvestorTypes() { return resources.getInvestorTypes(); }
+    public static ArrayList<Label> getLabels() { return resources.getLabels(); }
+    public static ArrayList<Support> getSupports() { return resources.getSupports(); }
+    public static ArrayList<Revenue> getRevenues() { return resources.getRevenues(); }
+    public static ArrayList<FinanceType> getFinanceTypes() { return resources.getFinanceTypes(); }
+    public static ArrayList<CorporateBody> getCorporateBodies() { return resources.getCorporateBodies(); }
+    public static ArrayList<TicketSize> getTicketSizes() { return resources.getTicketSizes(); }
 
     public static String[] getTicketSizeStrings(String currency, String[] units) {
         ArrayList<String> result = new ArrayList();
-        ticketSizes.forEach(size -> result.add(size.toString(currency, units)));
+        resources.getTicketSizes().forEach(size -> result.add(size.toString(currency, units)));
         return result.toArray(new String[0]);
     }
 
     public static int[] getTicketSizeValues() {
         ArrayList<Integer> result = new ArrayList();
-        ticketSizes.forEach(size -> result.add(size.getTicketSize()));
+        resources.getTicketSizes().forEach(size -> result.add(size.getTicketSize()));
         return result.stream().mapToInt(Integer::valueOf).toArray();
     }
 
-    public static Country getCountry(int id) { return (Country)findById(id, countries); }
-    public static Continent getContinent(int id) { return (Continent)findById(id, continents); }
-    public static InvestorType getInvestorType(int id) { return (InvestorType)findById(id, investorTypes); }
+    public static Country getCountry(long id) { return (Country)findById(id, resources.getCountries()); }
+    public static Continent getContinent(long id) { return (Continent)findById(id, resources.getContinents()); }
+    public static InvestorType getInvestorType(long id) {
+        return (InvestorType)findById(id, resources.getInvestorTypes());
+    }
+
     public static Revenue getRevenue(int minId) {
-        for(Revenue rev : revenues) {
+        for(Revenue rev : resources.getRevenues()) {
             if(rev.getRevenueMinId() == minId)
                 return rev;
         }
@@ -137,7 +151,7 @@ public class ResourcesManager implements Serializable {
     }
 
     public static CorporateBody getCorporateBody(int id) {
-        for(CorporateBody body : corporateBodies) {
+        for(CorporateBody body : resources.getCorporateBodies()) {
             if(body.getId() == id)
                 return body;
         }
@@ -165,6 +179,17 @@ public class ResourcesManager implements Serializable {
                     new SimpleMessageDialog().newInstance(context.getString(R.string.server_error),
                             context.getString(R.string.server_error_msg_rsc));
             dialog.show(fragmentManager, "server_error");
+            Log.e("ResourcesManager", "Error while fetching resources from server!");
+        } else {
+            try {
+                InternalStorageHandler.saveObject(resources, "resources");
+            } catch(IOException e) {
+                SimpleMessageDialog dialog =
+                        new SimpleMessageDialog().newInstance(context.getString(R.string.generic_error_title),
+                                context.getString(R.string.generic_error_text));
+                dialog.show(fragmentManager, "resources_error");
+                Log.e("ResourcesManager", "Error while caching resources: " + e.getMessage());
+            }
         }
     }
 
@@ -175,7 +200,7 @@ public class ResourcesManager implements Serializable {
         ++responsesGot;
         loadingSuccessful = false;
         handleProcess();
-        Log.d("debugMessage", "Volley error: " +
+        Log.e("ResourcesManager", "Volley error: " +
                 ApiRequestHandler.parseVolleyError(volleyError));
         return null;
     };
@@ -185,6 +210,7 @@ public class ResourcesManager implements Serializable {
      */
     static Function<JSONArray, Void> loadCountries = response -> {
         try {
+            ArrayList<Country> countries = new ArrayList<Country>();
             for (int i = 0; i < response.length(); i++) {
                 JSONObject jresponse = response.getJSONObject(i);
                 Country country = new Country();
@@ -196,11 +222,14 @@ public class ResourcesManager implements Serializable {
                     countries.add(country);
             }
 
-            if(countries.isEmpty())
+            if(countries.isEmpty()) {
                 loadingSuccessful = false;
-
+                Log.e("ResourcesManager", "Fetched an empty array in getCountries");
+            } else {
+                resources.setCountries(countries);
+            }
         } catch (JSONException e) {
-            Log.d("debugMessage", "Error while parsing countries: " + e.getMessage());
+            Log.e("debugMessage", "Error while parsing countries: " + e.getMessage());
             loadingSuccessful = false;
         }
 
@@ -214,6 +243,7 @@ public class ResourcesManager implements Serializable {
      */
     static Function<JSONArray, Void> loadContinents = response -> {
         try {
+            ArrayList<Continent> continents = new ArrayList<>();
             for (int i = 0; i < response.length(); i++) {
                 JSONObject jresponse = response.getJSONObject(i);
                 Continent continent = new Continent();
@@ -224,12 +254,14 @@ public class ResourcesManager implements Serializable {
             }
 
             if(continents.isEmpty()) {
-                Log.d("debugMessage", "Fetched an empty array in loadContinents");
+                Log.e("ResourcesManager", "Fetched an empty array in loadContinents");
                 loadingSuccessful = false;
+            } else {
+                resources.setContinents(continents);
             }
         } catch (JSONException e) {
             loadingSuccessful = false;
-            Log.d("debugMessage", "Error while parsing continents: " + e.getMessage());
+            Log.e("ResourcesManager", "Error while parsing continents: " + e.getMessage());
         }
 
         ++responsesGot;
@@ -242,6 +274,7 @@ public class ResourcesManager implements Serializable {
      */
     static Function<JSONArray, Void> loadInvestorTypes = response -> {
         try {
+            ArrayList<InvestorType> investorTypes = new ArrayList<>();
             for (int i = 0; i < response.length(); i++) {
                 JSONObject jresponse = response.getJSONObject(i);
                 InvestorType investorType = new InvestorType();
@@ -252,13 +285,15 @@ public class ResourcesManager implements Serializable {
             }
 
             if(investorTypes.isEmpty()) {
-                Log.d("debugMessage", "Fetched an empty array in loadInvestorTypes");
+                Log.e("ResourcesManager", "Fetched an empty array in loadInvestorTypes");
                 loadingSuccessful = false;
+            } else {
+                resources.setInvestorTypes(investorTypes);
             }
 
         } catch (JSONException e) {
             loadingSuccessful = false;
-            Log.d("debugMessage", "Error while parsing investor types: " + e.getMessage());
+            Log.e("ResourcesManager", "Error while parsing investor types: " + e.getMessage());
         }
 
         ++responsesGot;
@@ -271,6 +306,7 @@ public class ResourcesManager implements Serializable {
      */
     static Function<JSONArray, Void> loadSupport = response -> {
         try {
+            ArrayList<Support> supports = new ArrayList<>();
             for (int i = 0; i < response.length(); i++) {
                 JSONObject jresponse = response.getJSONObject(i);
                 Support support = new Support();
@@ -281,13 +317,15 @@ public class ResourcesManager implements Serializable {
             }
 
             if(supports.isEmpty()) {
-                Log.d("debugMessage", "Fetched an empty array in loadSupports");
+                Log.e("ResourcesManager", "Fetched an empty array in loadSupports");
                 loadingSuccessful = false;
+            } else {
+                resources.setSupports(supports);
             }
 
         } catch (JSONException e) {
             loadingSuccessful = false;
-            Log.d("debugMessage", "Error while parsing support types: " + e.getMessage());
+            Log.e("ResourcesManager", "Error while parsing support types: " + e.getMessage());
         }
 
         ++responsesGot;
@@ -300,6 +338,7 @@ public class ResourcesManager implements Serializable {
      */
     static Function<JSONArray, Void> loadInvestmentPhases = response -> {
         try {
+            ArrayList<InvestmentPhase> investmentPhases = new ArrayList<>();
             for (int i = 0; i < response.length(); i++) {
                 JSONObject jresponse = response.getJSONObject(i);
                 InvestmentPhase investmentPhase = new InvestmentPhase();
@@ -311,12 +350,14 @@ public class ResourcesManager implements Serializable {
 
             if(investmentPhases.isEmpty()) {
                 loadingSuccessful = false;
-                Log.d("debugMessage", "Fetched an empty array in loadInvestmentPhases");
+                Log.e("ResourcesManager", "Fetched an empty array in loadInvestmentPhases");
+            } else {
+                resources.setInvestmentPhases(investmentPhases);
             }
 
         } catch (JSONException e) {
             loadingSuccessful = false;
-            Log.d("debugMessage", "Error while parsing investment phases: " + e.getMessage());
+            Log.e("ResourcesManager", "Error while parsing investment phases: " + e.getMessage());
         }
 
         ++responsesGot;
@@ -329,6 +370,7 @@ public class ResourcesManager implements Serializable {
      */
     static Function<JSONArray, Void> loadIndustries = response -> {
         try {
+            ArrayList<Industry> industries = new ArrayList<>();
             for (int i = 0; i < response.length(); i++) {
                 JSONObject jresponse = response.getJSONObject(i);
                 Industry industry = new Industry();
@@ -339,13 +381,15 @@ public class ResourcesManager implements Serializable {
             }
 
             if(industries.isEmpty()) {
-                Log.d("debugMessage", "Fetched an empty array in loadIndustries");
+                Log.e("ResourcesManager", "Fetched an empty array in loadIndustries");
                 loadingSuccessful = false;
+            } else {
+                resources.setIndustries(industries);
             }
 
         } catch (JSONException e) {
             loadingSuccessful = false;
-            Log.d("debugMessage", "Error while parsing industries: " + e.getMessage());
+            Log.e("ResourcesManager", "Error while parsing industries: " + e.getMessage());
         }
 
         ++responsesGot;
@@ -358,6 +402,7 @@ public class ResourcesManager implements Serializable {
      */
     static Function<JSONArray, Void> loadLabels = response -> {
         try {
+            ArrayList<Label> labels = new ArrayList<>();
             for (int i = 0; i < response.length(); i++) {
                 JSONObject jresponse = response.getJSONObject(i);
                 Label label = new Label();
@@ -368,13 +413,15 @@ public class ResourcesManager implements Serializable {
             }
 
             if(labels.isEmpty()) {
-                Log.d("debugMessage", "Fetched an empty array in loadLabels");
+                Log.e("ResourcesManager", "Fetched an empty array in loadLabels");
                 loadingSuccessful = false;
+            } else {
+                resources.setLabels(labels);
             }
 
         } catch (JSONException e) {
             loadingSuccessful = false;
-            Log.d("debugMessage", "Error while parsing labels: " + e.getMessage());
+            Log.e("ResourcesManager", "Error while parsing labels: " + e.getMessage());
         }
 
         ++responsesGot;
@@ -390,6 +437,7 @@ public class ResourcesManager implements Serializable {
             int lastId = 0;
             int lastValue = 0;
             Revenue revenue;
+            ArrayList<Revenue> revenues = new ArrayList<>();
             for (int i = 0; i < response.length(); i++) {
                 JSONObject jresponse = response.getJSONObject(i);
                 if(i > 0) {
@@ -406,13 +454,15 @@ public class ResourcesManager implements Serializable {
             }
 
             if(revenues.isEmpty()) {
-                Log.d("debugMessage", "Fetched an empty array in loadRevenues");
+                Log.e("ResourcesManager", "Fetched an empty array in loadRevenues");
                 loadingSuccessful = false;
+            } else {
+                resources.setRevenues(revenues);
             }
 
         } catch (JSONException e) {
             loadingSuccessful = false;
-            Log.d("debugMessage", "Error while parsing revenues: " + e.getMessage());
+            Log.d("ResourcesManager", "Error while parsing revenues: " + e.getMessage());
         }
 
         ++responsesGot;
@@ -425,6 +475,7 @@ public class ResourcesManager implements Serializable {
      */
     static Function<JSONArray, Void> loadFinanceTypes = response -> {
         try {
+            ArrayList<FinanceType> financeTypes = new ArrayList<>();
             for (int i = 0; i < response.length(); i++) {
                 JSONObject jresponse = response.getJSONObject(i);
                 FinanceType financeType = new FinanceType();
@@ -434,13 +485,15 @@ public class ResourcesManager implements Serializable {
             }
 
             if(financeTypes.isEmpty()) {
-                Log.d("debugMessage", "Fetched an empty array in loadFinanceTypes");
+                Log.e("ResourcesManager", "Fetched an empty array in loadFinanceTypes");
                 loadingSuccessful = false;
+            } else {
+                resources.setFinanceTypes(financeTypes);
             }
 
         } catch (JSONException e) {
             loadingSuccessful = false;
-            Log.d("debugMessage", "Error while parsing finance types: " + e.getMessage());
+            Log.e("ResourcesManager", "Error while parsing finance types: " + e.getMessage());
         }
 
         ++responsesGot;
@@ -453,6 +506,7 @@ public class ResourcesManager implements Serializable {
      */
     static Function<JSONArray, Void> loadCorporateBodies = response -> {
         try {
+            ArrayList<CorporateBody> corporateBodies = new ArrayList<>();
             for (int i = 0; i < response.length(); i++) {
                 JSONObject jresponse = response.getJSONObject(i);
                 CorporateBody corporateBody = new CorporateBody();
@@ -462,13 +516,15 @@ public class ResourcesManager implements Serializable {
             }
 
             if(corporateBodies.isEmpty()) {
-                Log.d("debugMessage", "Fetched an empty array in loadCorporateBodies");
+                Log.e("ResourcesManager", "Fetched an empty array in loadCorporateBodies");
                 loadingSuccessful = false;
+            } else {
+                resources.setCorporateBodies(corporateBodies);
             }
 
         } catch (JSONException e) {
             loadingSuccessful = false;
-            Log.d("debugMessage", "Error while parsing corporate bodies: " + e.getMessage());
+            Log.e("ResourcesManager", "Error while parsing corporate bodies: " + e.getMessage());
         }
 
         ++responsesGot;
@@ -481,6 +537,7 @@ public class ResourcesManager implements Serializable {
      */
     public static Function<JSONArray, Void> loadTicketSizes = response -> {
         try {
+            ArrayList<TicketSize> ticketSizes = new ArrayList<>();
             for (int i = 0; i < response.length(); i++) {
                 JSONObject jresponse = response.getJSONObject(i);
                 TicketSize ticketSize = new TicketSize();
@@ -490,13 +547,15 @@ public class ResourcesManager implements Serializable {
             }
 
             if(ticketSizes.isEmpty()) {
-                Log.d("debugMessage", "Fetched an empty array in loadTicketSizes");
+                Log.e("ResourcesManager", "Fetched an empty array in loadTicketSizes");
                 loadingSuccessful = false;
+            } else {
+                resources.setTicketSizes(ticketSizes);
             }
 
         } catch (JSONException e) {
             loadingSuccessful = false;
-            Log.d("debugMessage", "Error while parsing ticket sizes: " + e.getMessage());
+            Log.e("ResourcesManager", "Error while parsing ticket sizes: " + e.getMessage());
         }
 
         ++responsesGot;

@@ -11,4 +11,18 @@ public class Image implements Serializable {
     private String image;
 
     public Image(String image) { this.image = image; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof Image)) {
+            return false;
+        }
+
+        Image c = (Image) o;
+        return c.getId() == this.getId();
+    }
 }

@@ -21,6 +21,7 @@ import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Model;
 import com.raising.app.models.Startup;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.ResourcesManager;
 
@@ -37,6 +38,8 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
     private int minimumTicketSize, maximumTicketSize;
     private String [] ticketSizeStrings;
     private int [] ticketSizeSteps;
+    private Startup startup;
+    private boolean editMode = false;
 
 
     @Override
@@ -69,21 +72,24 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         investmentPhaseGroup = view.findViewById(R.id.register_startup_matching_radio_phase);
         industryLayout = view.findViewById(R.id.register_startup_matching_industry_layout);
 
-        Startup startup = RegistrationHandler.getStartup();
-        if(startup.getTicketMinId() != 0 && startup.getTicketMaxId() != 0)
-            ticketSize.setValues((float)startup.getTicketMinId(), (float)startup.getTicketMaxId());
-
-        setupLists();
-        restoreLists();
-
         Button btnStartUpMatching = view.findViewById(R.id.button_startup_matching);
         btnStartUpMatching.setOnClickListener(this);
 
         if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
             btnStartUpMatching.setHint(getString(R.string.myProfile_apply_changes));
-            btnStartUpMatching.setOnClickListener(v -> popCurrentFragment(this));
+            editMode = true;
+            startup = (Startup) AccountService.getAccount();
+        } else {
+            startup = RegistrationHandler.getStartup();
         }
+
+        if(startup.getTicketMinId() != 0 && startup.getTicketMaxId() != 0)
+            ticketSize.setValues((float)startup.getTicketMinId(), (float)startup.getTicketMaxId());
+
+        setupLists();
+        restoreLists();
+
     }
 
     /**
@@ -100,18 +106,16 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
      * Restore values of lists from previous entered data (saved in RegistrationHandler)
      */
     private void restoreLists() {
-        Startup startup = RegistrationHandler.getStartup();
-
         startup.getInvestorTypes().forEach(type ->
-                tickCheckbox(investorTypeLayout, type.getId()));
+                tickCheckbox(investorTypeLayout, type));
 
         startup.getIndustries().forEach(industry ->
-                tickCheckbox(industryLayout, industry.getId()));
+                tickCheckbox(industryLayout, industry));
 
         tickRadioButton(investmentPhaseGroup, startup.getInvestmentPhaseId());
 
         startup.getSupport().forEach(support ->
-                tickCheckbox(supportLayout, support.getId()));
+                tickCheckbox(supportLayout, support));
     }
 
 
@@ -140,13 +144,12 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
     private void processMatchingInformation() {
         ArrayList<Long> industries = getSelectedCheckboxIds(industryLayout);
 
-        ArrayList<Long> investmentPhases = new ArrayList<>();
-        investmentPhases.add(getSelectedRadioId(investmentPhaseGroup));
+        long investmentPhaseId = getSelectedRadioId(investmentPhaseGroup);
 
         ArrayList<Long> support = getSelectedCheckboxIds(supportLayout);
         ArrayList<Long> investorTypes = getSelectedCheckboxIds(investorTypeLayout);
 
-        if(industries.size() == 0 || investmentPhases.size() == 0 || support.size() == 0 ||
+        if(industries.size() == 0 || investmentPhaseId == -1 || support.size() == 0 ||
         investorTypes.size() == 0) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
@@ -159,14 +162,20 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         int ticketSizeMaxId =  (int)ResourcesManager.getTicketSizes().get(
                 (int)ticketSize.getMaximumValue() - 1).getId();
 
-        try {
-            RegistrationHandler.saveStartupMatchingFragment(ticketSizeMinId, ticketSizeMaxId,
-                    investorTypes, investmentPhases, industries, support);
+        startup.setTicketMaxId(ticketSizeMaxId);
+        startup.setTicketMinId(ticketSizeMinId);
+        startup.setInvestorTypes(investorTypes);
+        startup.setIndustries(industries);
+        startup.setSupport(support);
+        startup.setInvestmentPhaseId(investmentPhaseId);
 
+        try {
+            RegistrationHandler.saveStartup(startup);
             changeFragment(new RegisterStartupPitchFragment(),
                     "RegisterStartupPitchFragment");
         } catch (IOException e) {
-            Log.d("debugMessage", e.getMessage());
+            Log.e("RegisterStartupMatching",
+                    "Error in processInputs: " + e.getMessage());
         }
     }
 

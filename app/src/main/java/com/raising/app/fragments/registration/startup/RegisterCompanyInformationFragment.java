@@ -10,25 +10,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.models.ContactDetails;
 import com.raising.app.models.Continent;
 import com.raising.app.models.Country;
-import com.raising.app.models.PrivateProfile;
 import com.raising.app.models.Revenue;
 import com.raising.app.models.Startup;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.NoFilterArrayAdapter;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
-import com.whiteelephant.monthpicker.MonthPickerDialog;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,6 +43,9 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
     private int revenueMinId = -1;
     private int revenueMaxId = -1;
     private Country countrySelected = null;
+    private Startup startup;
+    private ContactDetails contactDetails;
+    private boolean editMode = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,13 +102,16 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
         Button btnCompanyInformation = view.findViewById(R.id.button_company_information);
         btnCompanyInformation.setOnClickListener(this);
 
-        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
+        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
             btnCompanyInformation.setHint(getString(R.string.myProfile_apply_changes));
-            btnCompanyInformation.setOnClickListener(v -> popCurrentFragment(this));
+            editMode = true;
+            startup = (Startup)AccountService.getAccount();
+            contactDetails = AccountService.getContactDetails();
+        } else {
+            startup = RegistrationHandler.getStartup();
+            contactDetails = RegistrationHandler.getContactDetails();
         }
-
-        Startup startup = RegistrationHandler.getStartup();
 
         if(startup.getRevenueMinId() > -1) {
             revenueMinId = startup.getRevenueMinId();
@@ -135,7 +140,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
             companyCountryInput.setText(ResourcesManager.getCountry(startup.getCountryId()).getName());
         companyUidInput.setText(startup.getUId());
         companyWebsiteInput.setText(startup.getWebsite());
-        companyPhoneInput.setText(RegistrationHandler.getPrivateProfile().getPhone());
+        companyPhoneInput.setText(contactDetails.getPhone());
         countrySelected = ResourcesManager.getCountry(startup.getCountryId());
 
         companyBreakevenInput.setOnClickListener(new View.OnClickListener() {
@@ -270,16 +275,6 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
             return;
         }
 
-        int breakevenYear = Integer.parseInt(companyBreakevenInput.getText().toString());
-        int fte = Integer.parseInt(companyFteInput.getText().toString());
-        String companyName = companyNameInput.getText().toString();
-        String companyUid = companyUidInput.getText().toString();
-        String revenue = companyRevenueInput.getText().toString();
-        String phone = companyPhoneInput.getText().toString();
-        String website = companyWebsiteInput.getText().toString();
-
-        int foundingYear = Integer.parseInt(companyFoundingInput.getText().toString());
-
         ArrayList<Country> countries = new ArrayList<>();
         ArrayList<Continent> continents = new ArrayList<>();
 
@@ -306,14 +301,37 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
             return;
         }
 
+        startup.setBreakEvenYear(Integer.parseInt(
+                companyBreakevenInput.getText().toString()));
+        startup.setNumberOfFte(Integer.parseInt(companyFteInput.getText().toString()));
+        startup.setCompany(companyNameInput.getText().toString());
+        startup.setUId(companyUidInput.getText().toString());
+        startup.setRevenueMinId(revenueMinId);
+        startup.setRevenueMaxId(revenueMaxId);
+
+        contactDetails.setPhone(companyPhoneInput.getText().toString());
+        startup.setWebsite(companyWebsiteInput.getText().toString());
+        startup.setFoundingYear(Integer.parseInt(companyFoundingInput.getText().toString()));
+        startup.setCountryId(countrySelected.getId());
+
         try {
-            RegistrationHandler.saveCompanyInformation(breakevenYear, fte, companyName, companyUid,
-                    revenueMinId, revenueMaxId, foundingYear, countries, continents,
-                    countrySelected, phone, website);
-            changeFragment(new RegisterStartupMatchingFragment(),
-                    "RegisterStartupMatchingFragment");
+
+            if(!editMode) {
+                RegistrationHandler.saveStartup(startup);
+                RegistrationHandler.saveContactDetails(contactDetails);
+                changeFragment(new RegisterStartupMatchingFragment(),
+                        "RegisterStartupMatchingFragment");
+            } else {
+                AccountService.saveContactDetails(contactDetails);
+                AccountService.updateAccount(startup, v -> {
+                    popCurrentFragment(this);
+                    return null;
+                });
+            }
+
         } catch (IOException e) {
-            Log.d("debugMessage", e.getMessage());
+            Log.d("RegisterCompanyInformationFragment", "Error while processing inputs: "
+                    + e.getMessage());
         }
     }
 }

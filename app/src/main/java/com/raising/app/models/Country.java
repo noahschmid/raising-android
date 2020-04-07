@@ -30,4 +30,18 @@ public class Country implements Serializable, Model, PickerItem {
         continentId = id;
         parentId = id;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof Country)) {
+            return false;
+        }
+
+        Country c = (Country) o;
+        return c.getId() == this.getId();
+    }
 }

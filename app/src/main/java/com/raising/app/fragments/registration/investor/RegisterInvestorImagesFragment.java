@@ -30,7 +30,9 @@ import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Image;
 import com.raising.app.models.Investor;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.RegistrationHandler;
 
 import org.json.JSONException;
@@ -54,6 +56,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     FlexboxLayout galleryLayout;
     LayoutInflater inflater;
     Button finishButton;
+    Investor investor;
+    boolean editMode = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -102,10 +106,13 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         Button finishButton = view.findViewById(R.id.button_investor_images);
         finishButton.setOnClickListener(v -> { processInputs(); finishButton.setEnabled(false);});
 
-        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
+        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_images_progress).setVisibility(View.GONE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
-            finishButton.setOnClickListener(v -> popCurrentFragment(this));
+            investor = (Investor)AccountService.getAccount();
+            editMode = true;
+        } else {
+            investor = RegistrationHandler.getInvestor();
         }
     }
 
@@ -260,15 +267,25 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             }
         }
 
+        //investor.setProfilePicture(logo);
+        //investor.setGallery(gallery);
+
         try {
-            RegistrationHandler.setImages(logo, gallery);
-            Gson gson = new Gson();
-            String investor = gson.toJson(RegistrationHandler.getInvestor());
-            ApiRequestHandler.performPostRequest("investor/register", registerCallback,
-                    errorCallback, new JSONObject(investor), getContext());
-            Log.d("debugMessage", investor);
+            if(editMode) {
+                AccountService.updateAccount(investor, v -> {
+                    popCurrentFragment(this);
+                    return null;
+                });
+            } else {
+                RegistrationHandler.saveInvestor(investor);
+                Gson gson = new Gson();
+                String investor = gson.toJson(RegistrationHandler.getInvestor());
+                ApiRequestHandler.performPostRequest("investor/register", registerCallback,
+                        errorCallback, new JSONObject(investor));
+                Log.d("RegisterInvestorImagesFragment", investor);
+            }
         } catch (JSONException | IOException e) {
-            Log.d("debugMessage", e.getMessage());
+            Log.d("RegisterInvestorImagesFragment","Error in process inputs: " + e.getMessage());
         }
     }
 
@@ -293,14 +310,13 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     Function<JSONObject, Void> registerCallback = response -> {
         try {
             RegistrationHandler.finish(response.getLong("id"),
-                    response.getString("token"));
+                    response.getString("token"), false);
             clearBackstackAndReplace(new MatchesFragment());
         } catch (Exception e) {
             Log.d("InvestorImagesFragment", e.getMessage());
             showSimpleDialog(getString(R.string.generic_error_title),
                     getString(R.string.generic_error_text));
         }
-        finishButton.setEnabled(true);
         return null;
     };
 

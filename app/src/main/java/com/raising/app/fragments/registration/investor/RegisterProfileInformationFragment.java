@@ -15,8 +15,12 @@ import android.widget.EditText;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.profile.MyProfileFragment;
 import com.raising.app.models.Account;
-import com.raising.app.models.PrivateProfile;
+import com.raising.app.models.ContactDetails;
+import com.raising.app.models.Investor;
+import com.raising.app.util.AccountService;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
@@ -27,6 +31,9 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
     private EditText profileCompanyInput, profileWebsiteInput, profilePhoneInput, profileCountryInput;
     private CustomPicker customPicker;
     private int countryId = -1;
+    private boolean editMode = false;
+    private ContactDetails contactDetails;
+    private Investor investor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,18 +43,64 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
 
         profileCountryInput = view.findViewById(R.id.register_input_profile_countries);
 
+        setupCountryPicker();
+
+        hideBottomNavigation(true);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        profileCompanyInput = view.findViewById(R.id.register_input_profile_company);
+        profileWebsiteInput = view.findViewById(R.id.register_input_profile_website);
+        profilePhoneInput = view.findViewById(R.id.register_input_profile_phone);
+        profileCountryInput = view.findViewById(R.id.register_input_profile_countries);
+
+        Button btnProfileInformation = view.findViewById(R.id.button_profile_information);
+        btnProfileInformation.setOnClickListener(this);
+
+        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
+            btnProfileInformation.setHint(getString(R.string.myProfile_apply_changes));
+            investor = (Investor)AccountService.getAccount();
+            contactDetails = AccountService.getContactDetails();
+            editMode = true;
+            Log.d("RegisterProfileInformation", "editMode = ON");
+        } else {
+            investor = (Investor)RegistrationHandler.getAccount();
+            contactDetails = RegistrationHandler.getContactDetails();
+            Log.d("RegisterProfileInformation", "editMode = OFF");
+        }
+
+        profileCompanyInput.setText(investor.getCompany());
+        profileWebsiteInput.setText(contactDetails.getWebsite());
+
+        if(ResourcesManager.getCountry(contactDetails.getCountryId()) != null)
+            profileCountryInput.setText(
+                    ResourcesManager.getCountry(contactDetails.getCountryId()).getName());
+
+        profilePhoneInput.setText(contactDetails.getPhone());
+
+        profileCountryInput.setShowSoftInputOnFocus(false);
+        if(contactDetails.getCountryId() != -1)
+            countryId = contactDetails.getCountryId();
+    }
+
+    private void setupCountryPicker() {
         CustomPicker.Builder builder =
                 new CustomPicker.Builder()
                         .with(getContext())
                         .canSearch(true)
-                .listener(new OnCustomPickerListener() {
-                    @Override
-                    public void onSelectItem(PickerItem country) {
-                        profileCountryInput.setText(country.getName());
-                        countryId = (int)country.getId();
-                    }
-                })
-                .setItems(ResourcesManager.getCountries());
+                        .listener(new OnCustomPickerListener() {
+                            @Override
+                            public void onSelectItem(PickerItem country) {
+                                profileCountryInput.setText(country.getName());
+                                countryId = (int)country.getId();
+                            }
+                        })
+                        .setItems(ResourcesManager.getCountries());
 
         customPicker = builder.build();
 
@@ -70,41 +123,6 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
                 customPicker.showDialog(getActivity());
             }
         });
-
-        hideBottomNavigation(true);
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        profileCompanyInput = view.findViewById(R.id.register_input_profile_company);
-        profileWebsiteInput = view.findViewById(R.id.register_input_profile_website);
-        profilePhoneInput = view.findViewById(R.id.register_input_profile_phone);
-        profileCountryInput = view.findViewById(R.id.register_input_profile_countries);
-
-        PrivateProfile profile = RegistrationHandler.getPrivateProfile();
-        Account account = RegistrationHandler.getAccount();
-        profileCompanyInput.setText(account.getCompany());
-        profileWebsiteInput.setText(profile.getWebsite());
-        if(ResourcesManager.getCountry(profile.getCountryId()) != null)
-            profileCountryInput.setText(
-                    ResourcesManager.getCountry(profile.getCountryId()).getName());
-        profilePhoneInput.setText(profile.getPhone());
-
-        profileCountryInput.setShowSoftInputOnFocus(false);
-        if(profile.getCountryId() != -1)
-            countryId = profile.getCountryId();
-
-        Button btnProfileInformation = view.findViewById(R.id.button_profile_information);
-        btnProfileInformation.setOnClickListener(this);
-
-        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
-            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
-            btnProfileInformation.setHint(getString(R.string.myProfile_apply_changes));
-            btnProfileInformation.setOnClickListener(v -> popCurrentFragment(this));
-        }
     }
 
     @Override
@@ -130,24 +148,40 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
      * switch to next fragment
      */
     private void processProfileInformation() {
-        String company = profileCompanyInput.getText().toString();
-        String phone = profilePhoneInput.getText().toString();
-        String website = profileWebsiteInput.getText().toString();
+        String companyName = profileCompanyInput.getText().toString();
+        contactDetails.setPhone(profilePhoneInput.getText().toString());
+        contactDetails.setWebsite(profileWebsiteInput.getText().toString());
 
-        //TODO: also test country for length == 0
-        if(countryId == -1 || phone.length() == 0) {
+        if(countryId == -1 || contactDetails.getPhone().length() == 0) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
-        try {
-            RegistrationHandler.saveProfileInformation(company, phone, website, countryId);
-            changeFragment(new RegisterInvestorMatchingFragment(),
-                    "RegisterInvestorMatchingFragment");
+        contactDetails.setCountryId(countryId);
+        investor.setCompany(companyName);
 
+        try {
+            if(!editMode) {
+                RegistrationHandler.saveContactDetails(contactDetails);
+                RegistrationHandler.saveInvestor(investor);
+                changeFragment(new RegisterInvestorMatchingFragment(),
+                        "RegisterInvestorMatchingFragment");
+            } else {
+                if(AccountService.saveContactDetails(contactDetails)) {
+                    AccountService.updateAccount(investor, response -> {
+                        clearBackstackAndReplace(new MyProfileFragment());
+                        return null;
+                    });
+                } else {
+                    showSimpleDialog(getString(R.string.generic_error_title),
+                            getString(R.string.generic_error_text));
+                }
+
+            }
         } catch (Exception e) {
-            Log.d("debugMessage", e.getMessage());
+            Log.d("RegisterProfileInformation",
+                    "Error while updating profile information: " + e.getMessage());
         }
     }
 }

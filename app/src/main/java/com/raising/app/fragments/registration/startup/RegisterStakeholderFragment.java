@@ -28,10 +28,12 @@ import com.raising.app.fragments.registration.startup.stakeholderInputs.Sharehol
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.BoardMemberViewModel;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.FounderViewModel;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.ShareholderViewModel;
+import com.raising.app.models.Startup;
 import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.models.stakeholder.Shareholder;
 import com.raising.app.models.stakeholder.StakeholderItem;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.StakeholderRecyclerViewAdapter;
@@ -50,7 +52,9 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     private ShareholderViewModel shareholderViewModel;
     Button finishButton;
 
-    boolean EditMode = false;
+    private boolean editMode = false;
+    private Startup startup;
+
     int editedIndex;
 
     // hold references to the respective recycler views
@@ -83,12 +87,25 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Button btnFinishRegistration = view.findViewById(R.id.button_stakeholder);
+        btnFinishRegistration.setOnClickListener(this);
+
+        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
+            btnFinishRegistration.setHint(getString(R.string.myProfile_apply_changes));
+            startup = (Startup) AccountService.getAccount();
+            editMode = true;
+        } else {
+            startup = RegistrationHandler.getStartup();
+        }
+
         if (getArguments().getString("founderList") == null
                 && getArguments().getString("boardMemberList") == null
                 && getArguments().getString("shareholderList") == null) {
-            founderList = new ArrayList<>();
-            boardMemberList = new ArrayList<>();
-            shareholderList = new ArrayList<>();
+            founderList.addAll(startup.getFounders());
+            boardMemberList.addAll(startup.getBoardMembers());
+            shareholderList.addAll(startup.getPrivateShareholders());
+            shareholderList.addAll(startup.getCorporateShareholders());
         } else {
             Gson gson = new Gson();
             Type founderListType = new TypeToken<ArrayList<Founder>>() {
@@ -134,15 +151,6 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                 changeFragment(new ShareholderInputFragment());
             }
         });
-
-        Button btnFinishRegistration = view.findViewById(R.id.button_stakeholder);
-        btnFinishRegistration.setOnClickListener(this);
-
-        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
-            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
-            btnFinishRegistration.setHint(getString(R.string.myProfile_apply_changes));
-            btnFinishRegistration.setOnClickListener(v -> popCurrentFragment(this));
-        }
     }
 
     @Override
@@ -339,9 +347,10 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                 Shareholder selectedShareholder = ((Shareholder) shareholderList.get(position));
                 shareholderFragment.passShareholder(selectedShareholder);
                 changeFragment(shareholderFragment);
-
-                getArguments().putBoolean("editShareholder", true);
-                getArguments().putInt("editIndex", position);
+                if(getArguments() != null) {
+                    getArguments().putBoolean("editShareholder", true);
+                    getArguments().putInt("editIndex", position);
+                }
             }
 
             @Override
@@ -376,17 +385,20 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         }
 
         try {
-            RegistrationHandler.saveStakeholder(shareholderList, boardMemberList, founderList);
-
-            Gson gson = new Gson();
-            String startup = gson.toJson(RegistrationHandler.getStartup());
-            JSONObject jsonStartup = new JSONObject(startup);
-            ApiRequestHandler.performPostRequest("startup/register", registerCallback,
-                    errorCallback, jsonStartup, getContext());
-            Log.d("debugMessage", startup);
+            if(!editMode) {
+                RegistrationHandler.saveStartup(startup);
+                Gson gson = new Gson();
+                String startup = gson.toJson(RegistrationHandler.getStartup());
+                JSONObject jsonStartup = new JSONObject(startup);
+                ApiRequestHandler.performPostRequest("startup/register", registerCallback,
+                        errorCallback, jsonStartup);
+                Log.d("RegistrationString", startup);
+            } else {
+                popCurrentFragment(this);
+            }
         } catch (IOException | JSONException e) {
-            //TODO: Proper exception handling
-            Log.d("debugMessage", e.getMessage());
+            Log.e("RegisterStakeholderFragment", "Error in processInputs: " +
+                    e.getMessage());
         }
     }
 
@@ -395,15 +407,14 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
      */
     Function<JSONObject, Void> registerCallback = response -> {
         try {
-            RegistrationHandler.finish(response.getLong("id"), response.getString("token"));
+            RegistrationHandler.finish(response.getLong("id"),
+                    response.getString("token"), true);
             clearBackstackAndReplace(new MatchesFragment());
         } catch (Exception e ){
             showSimpleDialog(getString(R.string.generic_error_title),
                     getString(R.string.generic_error_text));
-            Log.d("StartupStakeholder", e.getMessage());
+            Log.d("StartupStakeholder", "" + e.getMessage());
         }
-
-        finishButton.setEnabled(true);
         return null;
     };
 
@@ -415,7 +426,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                 Log.d("StartupImages", body.getString("message"));
             }
         } catch(Exception e) {
-            Log.d("InvestorImagesErrorException", e.getMessage());
+            Log.d("InvestorImagesErrorException", "" + e.getMessage());
         }
 
         showSimpleDialog(getString(R.string.generic_error_title),

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 @Data
-public class PrivateProfile implements Serializable {
+public class ContactDetails implements Serializable {
     private boolean isStartup;
     private int countryId = -1;
     private String phone;

@@ -24,26 +24,26 @@ public class Account implements Serializable, Model {
     private Image profilePicture;
     private List<Image> gallery;
 
-    private List<Country> countries = new ArrayList<>();
-    private List<Continent> continents = new ArrayList<>();
-    private List<Support> support = new ArrayList<>();
-    private List<Industry> industries = new ArrayList<>();
+    private List<Long> countries = new ArrayList<>();
+    private List<Long> continents = new ArrayList<>();
+    private List<Long> support = new ArrayList<>();
+    private List<Long> industries = new ArrayList<>();
 
     public void clearSupport() { support.clear(); }
     public void clearIndustries() { industries.clear(); }
     public void clearCountries() { countries.clear(); }
     public void clearContinents() { continents.clear(); }
 
-    public void addCountry(Country country) {
+    public void addCountry(Long country) {
         countries.add(country);
     }
-    public void addContinent(Continent continent) {
+    public void addContinent(Long continent) {
         continents.add(continent);
     }
-    public void addIndustry(Industry industry) {
+    public void addIndustry(Long industry) {
         industries.add(industry);
     }
-    public void addSupport(Support spprt) {
+    public void addSupport(Long spprt) {
         support.add(spprt);
     }
 }
