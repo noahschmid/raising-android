@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 
 import lombok.Data;
@@ -15,6 +16,13 @@ public class Image implements Serializable {
     private String image;
 
     public Image(String image) { this.image = image; }
+
+    public Image(Bitmap image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        this.image = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -35,8 +43,9 @@ public class Image implements Serializable {
      * @return decoded bitmap
      */
     public Bitmap getBitmap() {
-        byte[] decodedString = Base64.decode(image, Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        return decodedByte;
+        byte[] decodedBytes = Base64.decode(image, 0);
+        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes,
+                0, decodedBytes.length);
+        return decodedBitmap;
     }
 }

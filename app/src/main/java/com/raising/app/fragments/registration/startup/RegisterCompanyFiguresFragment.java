@@ -32,6 +32,7 @@ import com.raising.app.util.customPicker.PickerItem;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class RegisterCompanyFiguresFragment extends RaisingFragment {
     private AutoCompleteTextView companyRevenueInput;
@@ -145,6 +146,21 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
             marketsPicker.showDialog(getActivity());
         });
 
+
+        // restore selected markets
+        ArrayList<Long> selected = new ArrayList<>();
+
+        if(startup.getContinents().size() > 0) {
+            selected.addAll(startup.getContinents());
+        }
+
+        if(startup.getCountries().size() > 0) {
+            selected.addAll(startup.getCountries());
+        }
+
+        if(selected.size() > 0) {
+            marketsPicker.setSelectedById(selected);
+        }
     }
 
     @Override
@@ -165,12 +181,12 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
             return;
         }
 
-        ArrayList<Country> countries = new ArrayList<>();
-        ArrayList<Continent> continents = new ArrayList<>();
+        ArrayList<Long> countries = new ArrayList<>();
+        ArrayList<Long> continents = new ArrayList<>();
 
         marketItems.forEach(item -> {
             if(item instanceof Continent && item.isChecked()) {
-                continents.add((Continent)item);
+                continents.add(((Continent)item).getId());
                 marketItems.forEach(i -> {
                     if(i instanceof Country) {
                         i.setChecked(false);
@@ -179,7 +195,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
             }
 
             if(item instanceof Country && item.isChecked()) {
-                countries.add((Country)item);
+                countries.add(((Country)item).getId());
             }
         });
 
@@ -189,6 +205,8 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
             return;
         }
 
+        startup.setCountries(countries);
+        startup.setContinents(continents);
         startup.setBreakEvenYear(Integer.parseInt(
                 companyBreakevenInput.getText().toString()));
         startup.setNumberOfFte(Integer.parseInt(companyFteInput.getText().toString()));

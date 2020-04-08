@@ -11,7 +11,7 @@ public class Shareholder extends StakeholderItem implements Serializable {
     private String lastName;
     private String corpName;
     private int corporateBodyId;
-    private long investortypeId;
+    private long investorTypeId;
     private String website;
     private String equityShare;
     private long countryId;
@@ -32,7 +32,7 @@ public class Shareholder extends StakeholderItem implements Serializable {
         this.corporateBodyId = corporateBody;
         this.website = website;
         this.equityShare = equityShare;
-        this.investortypeId = investorTypeId;
+        this.investorTypeId = investorTypeId;
     }
 
     public void updateTitle() {

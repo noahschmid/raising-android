@@ -33,7 +33,7 @@ public class InvestorDeserializer implements JsonDeserializer<Investor> {
 
         investor.setId(jsonObject.get("accountId").getAsLong());
         investor.setName(jsonObject.get("name").getAsString());
-        investor.setCompany(jsonObject.get("company").getAsString());
+        investor.setCompanyName(jsonObject.get("company").getAsString());
         investor.setPitch(jsonObject.get("pitch").getAsString());
         investor.setDescription(jsonObject.get("description").getAsString());
         investor.setTicketMinId(jsonObject.get("ticketMinId").getAsInt());

@@ -16,6 +16,7 @@ import android.widget.Button;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.raising.app.R;
 import com.raising.app.fragments.MatchesFragment;
@@ -34,6 +35,7 @@ import com.raising.app.models.stakeholder.StakeholderItem;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
+import com.raising.app.util.Serializer;
 import com.raising.app.util.recyclerViewAdapter.StakeholderRecyclerViewAdapter;
 
 import org.json.JSONException;
@@ -85,12 +87,12 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button btnFinishRegistration = view.findViewById(R.id.button_stakeholder);
-        btnFinishRegistration.setOnClickListener(this);
+        finishButton = view.findViewById(R.id.button_stakeholder);
+        finishButton.setOnClickListener(this);
 
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
-            btnFinishRegistration.setHint(getString(R.string.myProfile_apply_changes));
+            finishButton.setHint(getString(R.string.myProfile_apply_changes));
             startup = (Startup) AccountService.getAccount();
             editMode = true;
         } else {
@@ -100,6 +102,9 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         if (getArguments().getString("founderList") == null
                 && getArguments().getString("boardMemberList") == null
                 && getArguments().getString("shareholderList") == null) {
+            founderList = new ArrayList<>();
+            boardMemberList = new ArrayList<>();
+            shareholderList = new ArrayList<>();
             founderList.addAll(startup.getFounders());
             boardMemberList.addAll(startup.getBoardMembers());
             shareholderList.addAll(startup.getPrivateShareholders());
@@ -363,8 +368,8 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_stakeholder:
-                processInputs();
                 finishButton.setEnabled(false);
+                processInputs();
                 break;
             default:
                 break;
@@ -384,8 +389,32 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
         try {
             if(!editMode) {
+                startup.clearFounders();
+                startup.clearCorporateShareholders();
+                startup.clearPrivateShareholders();
+                startup.clearBoardMembers();
+
+                founderList.forEach(founder -> {
+                    startup.addFounder((Founder)founder);
+                });
+
+                boardMemberList.forEach(boardMember -> {
+                    startup.addBoardMember((BoardMember)boardMember);
+                });
+
+                shareholderList.forEach(shareholder -> {
+                    if(((Shareholder)shareholder).isPrivateShareholder()) {
+                        startup.addPrivateShareholder((Shareholder)shareholder);
+                    } else {
+                        startup.addCorporateShareholder((Shareholder)shareholder);
+                    }
+                });
+
                 RegistrationHandler.saveStartup(startup);
-                Gson gson = new Gson();
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.registerTypeAdapter(Startup.class,
+                        Serializer.StartupRegisterSerializer);
+                Gson gson = gsonBuilder.create();
                 String startup = gson.toJson(RegistrationHandler.getStartup());
                 JSONObject jsonStartup = new JSONObject(startup);
                 ApiRequestHandler.performPostRequest("startup/register", registerCallback,

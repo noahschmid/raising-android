@@ -129,6 +129,10 @@ public class ResourcesManager implements Serializable {
         return (TicketSize) findById(id, getTicketSizes());
     }
 
+    public static FinanceType getFinanceType(long id) {
+        return (FinanceType) findById(id, getFinanceTypes());
+    }
+
     public static Industry getIndustry(long id) {
         return (Industry) findById(id, getIndustries());
     }

@@ -82,9 +82,10 @@ public class AccountService {
         }
 
         Function<JSONObject, Void> middleware = response -> {
-            Gson gson = new Gson();
-            Type startupType = new TypeToken<Startup>() {}.getType();
-            Startup startup = gson.fromJson(response.toString(), startupType);
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(Startup.class, new StartupDeserializer());
+            Gson gson = gsonBuilder.create();
+            Startup startup = gson.fromJson(response.toString(), Startup.class);
             callback.apply(startup);
             return null;
         };
@@ -112,7 +113,6 @@ public class AccountService {
             InvestorDeserializer deserializer = new InvestorDeserializer();
             gsonBuilder.registerTypeAdapter(Investor.class, deserializer);
             Gson gson = gsonBuilder.create();
-            Type investorType = new TypeToken<Investor>() {}.getType();
             Log.d("AccountJSON", response.toString());
             Investor investor = gson.fromJson(response.toString(), Investor.class);
             callback.apply(investor);

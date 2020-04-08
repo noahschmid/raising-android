@@ -136,6 +136,21 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             customPicker.showDialog(getActivity());
         });
 
+        // restore selected countries/continents
+        ArrayList<Long> selected = new ArrayList<>();
+
+        if(investor.getContinents().size() > 0) {
+            selected.addAll(investor.getContinents());
+        }
+
+        if(investor.getCountries().size() > 0) {
+            selected.addAll(investor.getCountries());
+        }
+
+        if(selected.size() > 0) {
+            customPicker.setSelectedById(selected);
+        }
+
         setupLists();
         restoreLists();
     }

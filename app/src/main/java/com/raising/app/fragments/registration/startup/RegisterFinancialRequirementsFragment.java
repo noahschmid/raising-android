@@ -107,13 +107,14 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         if(startup.getClosingTime() != null) {
             try {
-                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 Date date = formatter.parse(startup.getClosingTime());
                 selectedDate = Calendar.getInstance();
                 selectedDate.setTime(date);
-                financialClosingTimeInput.setText(selectedDate.get(Calendar.DAY_OF_MONTH)
-                        + "." + (selectedDate.get(Calendar.MONTH) + 1 + "."
-                                + selectedDate.get(Calendar.YEAR)));
+
+                formatter = new SimpleDateFormat("dd.MM.yyyy");
+
+                financialClosingTimeInput.setText(formatter.format(date));
             } catch (ParseException e) {
                 Log.d("RegisterFinancialRequirements", "error parsing date!");
             }
@@ -126,6 +127,13 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         if(startup.getRaised() > 0)
             completedInput.setText(String.valueOf(startup.getRaised()));
+
+        if(startup.getFinanceTypeId() != -1) {
+            financialTypeInput.setText(ResourcesManager.getFinanceType(
+                    startup.getFinanceTypeId()
+            ).getName());
+            financialTypeId = (int)startup.getFinanceTypeId();
+        }
 
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             /**
@@ -198,9 +206,9 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         startup.setPreMoneyValuation((int)valuation);
         startup.setScope((int)scope);
         startup.setRaised(completed);
-        startup.setClosingTime(selectedDate.get(Calendar.YEAR) + "-" +
-                            (selectedDate.get(Calendar.MONTH) + 1 + "-" +
-                            selectedDate.get(Calendar.DAY_OF_MONTH)));
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        startup.setClosingTime(formatter.format(selectedDate));
 
         try {
             RegistrationHandler.saveStartup(startup);

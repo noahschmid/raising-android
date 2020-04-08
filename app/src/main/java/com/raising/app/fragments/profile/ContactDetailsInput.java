@@ -45,9 +45,11 @@ public class ContactDetailsInput extends RaisingFragment {
 
         contactDetails = new ContactDetails();
         contactDetails.setEmail(this.getArguments().getString("email"));
-        contactDetails.setStartup(this.getArguments().getBoolean("isStartup"));
+        isStartup = this.getArguments().getBoolean("isStartup");
         token = this.getArguments().getString("token");
         accountId = this.getArguments().getLong("id");
+
+        contactDetails.setStartup(isStartup);
 
         phoneNumberInput = view.findViewById(R.id.contact_input_phone);
         websiteInput = view.findViewById(R.id.contact_input_website);
@@ -56,7 +58,7 @@ public class ContactDetailsInput extends RaisingFragment {
 
         countryInput.setShowSoftInputOnFocus(false);
 
-        if(contactDetails.isStartup()) {
+        if(isStartup) {
             countryInput.setVisibility(View.GONE);
             websiteInput.setVisibility(View.GONE);
         }
@@ -138,10 +140,10 @@ public class ContactDetailsInput extends RaisingFragment {
         }
 
         try {
+            contactDetails.setStartup(isStartup);
             AccountService.saveContactDetails(contactDetails);
             AuthenticationHandler.login(contactDetails.getEmail(),
                     token, accountId, isStartup);
-            AccountService.loadAccount();
             hideBottomNavigation(false);
             clearBackstackAndReplace(new MatchesFragment());
         } catch (Exception e) {

@@ -31,6 +31,7 @@ import com.raising.app.fragments.registration.startup.RegisterStartupPitchFragme
 
 import com.raising.app.fragments.registration.startup.RegisterStartupVideoFragment;
 import com.raising.app.models.Investor;
+import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
 
@@ -166,7 +167,9 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 fragment.setArguments(bundle);
                 break;
             case R.id.button_myProfile_startup_public_profile:
+                bundle.putSerializable("startup", (Startup)AccountService.getAccount());
                 fragment = new StartupPublicProfileFragment();
+                fragment.setArguments(bundle);
                 break;
             case R.id.button_myProfile_startup_subscription:
             case R.id.button_myProfile_investor_subscription:

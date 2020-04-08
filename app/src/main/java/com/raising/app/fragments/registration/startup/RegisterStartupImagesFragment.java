@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -103,6 +104,23 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
         addGalleryImage = view.findViewById(R.id.gallery_add);
         addGalleryImage.setOnClickListener(v -> showImageMenu(addGalleryImage, false));
+
+        loadImages();
+
+    }
+
+    private void loadImages() {
+        if(startup.getProfilePicture() != null) {
+            profileImage.setImageBitmap(startup.getProfilePicture().getBitmap());
+            profileImageOverlay.setVisibility(View.GONE);
+            deleteProfileImageButton.setEnabled(true);
+        }
+
+        if(startup.getGallery() != null) {
+            startup.getGallery().forEach(image -> {
+                addImageToGallery(image.getBitmap());
+            });
+        }
     }
 
     @Override
@@ -214,17 +232,19 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             return;
         }
         //encode image to base64 string
-        Image logo = imageViewToImageInstance(profileImage);
 
+        Bitmap logo =((BitmapDrawable)profileImage.getDrawable()).getBitmap();
         ArrayList<Image> gallery = new ArrayList<>();
         for(int i = 0; i < galleryLayout.getChildCount(); ++i) {
             View view = galleryLayout.getChildAt(i);
             if(view.getId() != R.id.gallery_add) {
-                gallery.add(imageViewToImageInstance(view.findViewById(R.id.gallery_image)));
+                ImageView img = view.findViewById(R.id.gallery_image);
+                Bitmap galleryImg = ((BitmapDrawable)(img).getDrawable()).getBitmap();
+                gallery.add(new Image(galleryImg));
             }
         }
 
-        startup.setProfilePicture(logo);
+        startup.setProfilePicture(new Image(logo));
         startup.setGallery(gallery);
 
         try {
@@ -238,20 +258,5 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         } catch (IOException e) {
             Log.e("StartupImages", "Error in processInputs: " + e.getMessage());
         }
-    }
-
-    /**
-     * Get image of imageView and convert it to a base64 encoded string, then create a new image
-     * object and return the result
-     * @param imageView Instance of an ImageView
-     * @return Instance of Image class
-     */
-    private Image imageViewToImageInstance(ImageView imageView) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Bitmap bitmap = Bitmap.createBitmap(imageView.getDrawable().getIntrinsicWidth(),
-                imageView.getDrawable().getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
-        byte[] imageBytes = baos.toByteArray();
-        return new Image(Base64.encodeToString(imageBytes, Base64.DEFAULT));
     }
 }

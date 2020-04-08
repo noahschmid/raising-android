@@ -76,7 +76,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
         }
 
         companyUidInput.setText(startup.getUId());
-        companyNameInput.setText(startup.getName());
+        companyNameInput.setText(startup.getCompanyName());
 
         if(ResourcesManager.getCountry(startup.getCountryId()) != null)
             companyCountryInput.setText(ResourcesManager.getCountry(startup.getCountryId()).getName());
@@ -130,7 +130,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
             return;
         }
 
-        startup.setCompany(companyNameInput.getText().toString());
+        startup.setCompanyName(companyNameInput.getText().toString());
         startup.setUId(companyUidInput.getText().toString());
 
         contactDetails.setPhone(companyPhoneInput.getText().toString());

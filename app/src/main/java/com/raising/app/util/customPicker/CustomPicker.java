@@ -98,6 +98,36 @@ public class CustomPicker implements LifecycleObserver, BottomSheetInteractionLi
       dialog.dismiss();
   }
 
+  /**
+   * Set checked items by a list
+   * @param selected
+   */
+  public void setSelected(List<PickerItem> selected) {
+    selected.forEach(sel -> {
+      for (PickerItem item : items) {
+        if(sel.getId() == item.getId()) {
+          item.setChecked(true);
+          break;
+        }
+      }
+    });
+  }
+
+  /**
+   * Set checked items by a list
+   * @param selectedIds
+   */
+  public void setSelectedById(List<Long> selectedIds) {
+    selectedIds.forEach(sel -> {
+      for (PickerItem item : items) {
+        if(sel == item.getId()) {
+          item.setChecked(true);
+          break;
+        }
+      }
+    });
+  }
+
   // region Utility Methods
   public void showDialog(@NonNull FragmentActivity activity) {
       activity.getLifecycle().addObserver(this);

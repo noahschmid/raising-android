@@ -74,7 +74,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
             Log.d("RegisterProfileInformation", "editMode = OFF");
         }
 
-        profileCompanyInput.setText(investor.getCompany());
+        profileCompanyInput.setText(investor.getCompanyName());
         profileWebsiteInput.setText(contactDetails.getWebsite());
 
         if(ResourcesManager.getCountry(contactDetails.getCountryId()) != null)
@@ -159,7 +159,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         }
 
         contactDetails.setCountryId(countryId);
-        investor.setCompany(companyName);
+        investor.setCompanyName(companyName);
 
         try {
             if(!editMode) {

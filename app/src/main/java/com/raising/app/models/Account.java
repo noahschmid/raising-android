@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 public class Account implements Serializable, Model {
     protected long id = -1L;
-    protected String company;
+    protected String companyName;
     protected String name;
     private String firstName;
     private String lastName;

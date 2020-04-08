@@ -106,6 +106,14 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         minTicketSize = view.findViewById(R.id.text_investor_public_profile_min_ticket);
         maxTicketSize = view.findViewById(R.id.text_investor_public_profile_max_ticket);
 
+        initRecyclerViews(view);
+
+        if(investor != null) {
+            loadData(investor);
+        }
+    }
+
+    private void initRecyclerViews(View view) {
         investorTypes = new ArrayList<Model>();
         typeAdapter = new PublicProfileMatchingRecyclerViewAdapter(investorTypes);
         recyclerInvestorType = view.findViewById(R.id.investor_public_profile_investor_type_list);
@@ -129,10 +137,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         recyclerInvolvement = view.findViewById(R.id.investor_public_profile_involvement_list);
         recyclerInvolvement.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerInvolvement.setAdapter(supportAdapter);
-
-        if(investor != null) {
-            loadData(investor);
-        }
     }
 
     private void manageHandshakeButtons() {

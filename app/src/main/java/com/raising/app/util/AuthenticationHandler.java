@@ -41,7 +41,7 @@ public class AuthenticationHandler {
 
         outputStream = ResourcesManager.getContext().openFileOutput("token",
                 Context.MODE_PRIVATE);
-        String saveString = token + "\n" + email + "\n" + accountId;
+        String saveString = token + "\n" + email + "\n" + isStartup + "\n" + accountId;
         outputStream.write(saveString.getBytes());
         outputStream.flush();
         outputStream.close();
@@ -102,6 +102,7 @@ public class AuthenticationHandler {
 
             AuthenticationHandler.token = bufferedReader.readLine();
             AuthenticationHandler.email = bufferedReader.readLine();
+            AuthenticationHandler.isStartup = Boolean.parseBoolean(bufferedReader.readLine());
             AuthenticationHandler.accountId = Long.parseLong(bufferedReader.readLine());
             loggedIn = true;
 

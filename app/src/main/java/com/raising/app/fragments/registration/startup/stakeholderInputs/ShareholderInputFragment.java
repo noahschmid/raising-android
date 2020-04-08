@@ -144,7 +144,7 @@ public class ShareholderInputFragment extends RaisingFragment {
                 privateFirstNameInput.setText(shareholder.getFirstName());
                 privateLastNameInput.setText(shareholder.getLastName());
 
-                tickRadioButton(privateTypeGroup, shareholder.getInvestortypeId());
+                tickRadioButton(privateTypeGroup, shareholder.getInvestorTypeId());
 
                 privateCountryInput.setText(ResourcesManager.getCountry((int)shareholder
                         .getCountryId()).getName());

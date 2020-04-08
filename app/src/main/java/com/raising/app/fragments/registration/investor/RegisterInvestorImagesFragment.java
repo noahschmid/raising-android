@@ -3,6 +3,7 @@ package com.raising.app.fragments.registration.investor;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -24,6 +25,7 @@ import android.widget.PopupMenu;
 import com.android.volley.VolleyError;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.raising.app.R;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
@@ -33,6 +35,7 @@ import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.RegistrationHandler;
+import com.raising.app.util.Serializer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -111,6 +114,20 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             editMode = true;
         } else {
             investor = RegistrationHandler.getInvestor();
+        }
+
+        loadImages();
+    }
+
+    private void loadImages() {
+        if(investor.getProfilePicture() != null) {
+            profileImage.setImageBitmap(investor.getProfilePicture().getBitmap());
+        }
+
+        if(investor.getGallery() != null) {
+            investor.getGallery().forEach(image -> {
+                addImageToGallery(image.getBitmap());
+            });
         }
     }
 
@@ -255,18 +272,19 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             return;
         }
         //encode image to base64 string
-        Image logo = imageViewToImageInstance(profileImage);
+        Bitmap logo =((BitmapDrawable)profileImage.getDrawable()).getBitmap();
 
         ArrayList<Image> gallery = new ArrayList<>();
         for(int i = 0; i < galleryLayout.getChildCount(); ++i) {
             View view = galleryLayout.getChildAt(i);
             if(view.getId() != R.id.gallery_add) {
-                gallery.add(imageViewToImageInstance(view.findViewById(R.id.gallery_image)));
-            }
+                ImageView img = view.findViewById(R.id.gallery_image);
+                Bitmap galleryImg = ((BitmapDrawable)(img).getDrawable()).getBitmap();
+                gallery.add(new Image(galleryImg));            }
         }
 
-        //investor.setProfilePicture(logo);
-        //investor.setGallery(gallery);
+        investor.setProfilePicture(new Image(logo));
+        investor.setGallery(gallery);
 
         try {
             if(editMode) {
@@ -276,7 +294,10 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                 });
             } else {
                 RegistrationHandler.saveInvestor(investor);
-                Gson gson = new Gson();
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.registerTypeAdapter(Investor.class,
+                        Serializer.InvestorRegisterSerializer);
+                Gson gson = gsonBuilder.create();
                 String investor = gson.toJson(RegistrationHandler.getInvestor());
                 ApiRequestHandler.performPostRequest("investor/register", registerCallback,
                         errorCallback, new JSONObject(investor));
@@ -285,21 +306,6 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         } catch (JSONException | IOException e) {
             Log.d("RegisterInvestorImagesFragment","Error in process inputs: " + e.getMessage());
         }
-    }
-
-    /**
-     * Get image of imageView and convert it to a base64 encoded string, then create a new image
-     * object and return the result
-     * @param imageView Instance of an ImageView
-     * @return Instance of Image class
-     */
-    private Image imageViewToImageInstance(ImageView imageView) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Bitmap bitmap = Bitmap.createBitmap(imageView.getDrawable().getIntrinsicWidth(),
-                imageView.getDrawable().getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
-        return new Image(Base64.encodeToString(imageBytes, Base64.DEFAULT));
     }
 
     /**

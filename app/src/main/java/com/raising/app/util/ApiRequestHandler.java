@@ -27,13 +27,19 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class ApiRequestHandler {
-    private static final boolean CONNECT_TO_DEV_SERVER = false;
+    // -- CHOOSE SERVER --
+    private static final boolean CONNECT_TO_DEV_SERVER = true;
+
     private static ApiRequestHandler instance;
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;
     private static Context context;
     private static String domain = "https://33383.hostserv.eu:";
 
+    /**
+     * Get domain of backend server
+     * @return string holding the domain address
+     */
     public static String getDomain() {
         if(CONNECT_TO_DEV_SERVER)
             return domain + "8081/";
