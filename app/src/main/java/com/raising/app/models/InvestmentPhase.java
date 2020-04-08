@@ -1,5 +1,7 @@
 package com.raising.app.models;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 import lombok.Data;
@@ -8,6 +10,7 @@ import lombok.Data;
 public class InvestmentPhase implements Serializable, Model {
     private String name;
     private long id;
+    private Bitmap image;
 
     public InvestmentPhase() {}
     public InvestmentPhase(long id) { this.id = id; }

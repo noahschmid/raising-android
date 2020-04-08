@@ -1,5 +1,7 @@
 package com.raising.app.models;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,5 +47,10 @@ public class Account implements Serializable, Model {
     }
     public void addSupport(Long spprt) {
         support.add(spprt);
+    }
+
+    @Override
+    public Bitmap getImage() {
+        return null;
     }
 }

@@ -1,5 +1,7 @@
 package com.raising.app.models;
 
+import android.graphics.Bitmap;
+
 import com.raising.app.R;
 
 import java.io.Serializable;
@@ -16,6 +18,11 @@ public class Revenue implements Serializable, Model {
 
     public String getName() { return toString("CHF", new String[]{"k", "M", "B"}); }
     public void setName(String name) { }
+
+    @Override
+    public Bitmap getImage() {
+        return null;
+    }
 
     public String toString(String currency, String[] units) {
         int min = revenueMin;

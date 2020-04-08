@@ -1,5 +1,7 @@
 package com.raising.app.models;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 import lombok.Data;
@@ -10,6 +12,12 @@ public class TicketSize implements Serializable, Model {
     private int ticketSize;
 
     public String getName() { return toString("CHF", new String[] {"k", "M", "B"}); }
+
+    @Override
+    public Bitmap getImage() {
+        return null;
+    }
+
     public void setName(String name) { }
     public String toString(String currency, String[] units) {
         String unit = "";

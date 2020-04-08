@@ -1,5 +1,7 @@
 package com.raising.app.models;
 
+import android.graphics.Bitmap;
+
 import com.raising.app.util.customPicker.PickerItem;
 
 import java.io.Serializable;
@@ -15,6 +17,12 @@ public class Continent implements Serializable, Model, PickerItem {
 
     public Continent() {}
     public Continent(long id) { this.id = id; this.parentId = id; }
+
+    @Override
+    public Bitmap getImage() {
+        return null;
+    }
+
     public void setId(long id) { this.id = id; this.parentId = id; }
 
     @Override

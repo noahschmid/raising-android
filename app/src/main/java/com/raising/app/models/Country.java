@@ -1,5 +1,7 @@
 package com.raising.app.models;
 
+import android.graphics.Bitmap;
+
 import com.raising.app.util.customPicker.PickerItem;
 
 import java.io.Serializable;
@@ -29,6 +31,11 @@ public class Country implements Serializable, Model, PickerItem {
     public void setContinentId(long id) {
         continentId = id;
         parentId = id;
+    }
+
+    @Override
+    public Bitmap getImage() {
+        return null;
     }
 
     @Override

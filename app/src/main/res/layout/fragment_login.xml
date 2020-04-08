@@ -26,7 +26,7 @@
             android:id="@+id/login_input_email"
             android:layout_width="match_parent"
             android:layout_height="@dimen/inputFormHeight"
-            android:inputType="textEmailAddress"/>
+            android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -45,7 +45,7 @@
             android:id="@+id/login_input_password"
             android:layout_width="match_parent"
             android:layout_height="@dimen/inputFormHeight"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -67,9 +67,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/login_welcome_text"
+        android:textColorHint="@color/raisingPrimaryTextColor"
         android:textSize="@dimen/loginScreenFontSize"
         android:textStyle="bold"
-        android:textColorHint="@color/raisingPrimaryTextColor"
         app:layout_constraintBottom_toTopOf="@+id/login_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,23 +85,24 @@
         android:shadowColor="@color/raisingWhite"
         android:textColorHint="@color/raisingPrimaryTextColor"
         android:textSize="@dimen/fragmentSubtitleFontSize"
-        app:layout_constraintBottom_toTopOf="@+id/button_login_goTo_register"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_password"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/button_login_goTo_register"
+        app:layout_constraintStart_toStartOf="@+id/button_login_goTo_register"
+        app:layout_constraintTop_toBottomOf="@+id/button_login_goTo_register" />
 
     <Button
         android:id="@+id/button_login_goTo_register"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/login_register_text"
-        android:textSize="@dimen/fragmentSubtitleFontSize"
         android:backgroundTint="@color/raisingWhite"
+        android:hint="@string/login_register_text"
         android:textColorHint="@color/raisingPrimaryTextColor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/button_login_forgot_password"
-        app:layout_constraintStart_toStartOf="@+id/button_login_forgot_password"
-        app:layout_constraintTop_toBottomOf="@+id/button_login_forgot_password" />
+        android:textSize="@dimen/fragmentSubtitleFontSize"
+        app:layout_constraintBottom_toTopOf="@+id/button_login_forgot_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_login"
+        app:layout_constraintVertical_bias="0.40"
+        app:layout_constraintVertical_chainStyle="packed" />
 </androidx.constraintlayout.widget.ConstraintLayout>

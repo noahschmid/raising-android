@@ -1,5 +1,7 @@
 package com.raising.app.models;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 import lombok.Data;
@@ -11,6 +13,11 @@ public class Label implements Serializable, Model {
 
     public Label() {}
     public Label(long id) { this.id = id; }
+
+    @Override
+    public Bitmap getImage() {
+        return null;
+    }
 
     @Override
     public boolean equals(Object o) {

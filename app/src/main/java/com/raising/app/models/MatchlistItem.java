@@ -7,10 +7,10 @@ public class MatchlistItem {
     private String name;
     private String attribute;
     private String sentence;
-    private String image;
+    private Image image;
     private int matchingPercent;
 
-    public MatchlistItem(String name, String attribute, String sentence, String image, int matchingPercent) {
+    public MatchlistItem(String name, String attribute, String sentence, Image image, int matchingPercent) {
         this.name = name;
         this.attribute = attribute;
         this.sentence = sentence;
