@@ -1,5 +1,6 @@
 package com.raising.app.util.recyclerViewAdapter;
 
+/*
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,7 @@ public class MatchlistAdapter extends RecyclerView.Adapter<MatchlistAdapter.View
         holder.matchingPercent.setText(recyclerItem.getMatchingPercentString());
         //TODO: replace with actual image
         holder.profileImage.setImageResource(R.drawable.ic_android_24dp);
-
+/*
         List<PieEntry> pieEntries = new ArrayList<>();
         pieEntries.add(new PieEntry((float) recyclerItem.getMatchingPercent(), "MatchingPercent"));
         float remainder = (float) (100 - recyclerItem.getMatchingPercent());
@@ -79,4 +80,4 @@ public class MatchlistAdapter extends RecyclerView.Adapter<MatchlistAdapter.View
             matchingPercentGraphic = itemView.findViewById(R.id.item_matchlist_chart);
         }
     }
-}
+}*/

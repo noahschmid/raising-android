@@ -166,16 +166,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/investor_public_profile_matching_summary" />
 
             <TextView
-                android:id="@+id/text_investor_public_profile_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Location"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textColor="@color/raisingPrimaryTextColor"
-                app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_name"
-                app:layout_constraintTop_toBottomOf="@+id/text_investor_public_profile_name" />
-
-            <TextView
                 android:id="@+id/text_investor_public_profile_pitch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -185,8 +175,8 @@
                 android:textColor="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_location"
-                app:layout_constraintTop_toBottomOf="@+id/text_investor_public_profile_location" />
+                app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_name"
+                app:layout_constraintTop_toBottomOf="@+id/text_investor_public_profile_name" />
 
             <TextView
                 android:id="@+id/button_investor_public_profile_website"
@@ -230,7 +220,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/inputFormVerticalMargin"
                     android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
-                    android:drawableLeft="@drawable/ic_price_tag_24dp"
                     android:drawablePadding="@dimen/inputFormVerticalMarginSmall"
                     android:drawableTint="@color/raisingPrimaryTextColor"
                     android:hint="@string/investor_matching_scope"
@@ -295,7 +284,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                    android:drawableLeft="@drawable/ic_chess_horse_24dp"
                     android:drawablePadding="@dimen/inputFormVerticalMarginSmall"
                     android:drawableTint="@color/raisingPrimaryTextColor"
                     android:hint="@string/investor_matching_investor_type"
@@ -323,7 +311,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                    android:drawableLeft="@drawable/ic_stairs_24dp"
                     android:drawablePadding="@dimen/inputFormVerticalMarginSmall"
                     android:drawableTint="@color/raisingPrimaryTextColor"
                     android:hint="@string/investor_matching_phase"
@@ -351,7 +338,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                    android:drawableLeft="@drawable/ic_gear_24dp"
                     android:drawablePadding="@dimen/inputFormVerticalMarginSmall"
                     android:drawableTint="@color/raisingPrimaryTextColor"
                     android:hint="@string/investor_matching_industry"
@@ -379,7 +365,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                    android:drawableLeft="@drawable/ic_conversation_24dp"
                     android:drawablePadding="@dimen/inputFormVerticalMarginSmall"
                     android:drawableTint="@color/raisingPrimaryTextColor"
                     android:hint="@string/investor_matching_involvement"

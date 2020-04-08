@@ -34,13 +34,14 @@
     <string name="startup_public_profile_member_since"> Member Since </string>
     <string name="startup_public_profile_board_member"> Members of the board </string>
 
+    <!-- Used in investor public profile -->
     <string name="investor_matching_scope"> Investment Scope </string>
     <string name="investor_matching_min_ticket"> Minimal Ticket Size </string>
     <string name="investor_matching_max_ticket"> Maximal Ticket Size </string>
-    <string name="investor_matching_investor_type"> Interested in these investors </string>
-    <string name="investor_matching_phase"> Currently in this investment phase </string>
-    <string name="investor_matching_industry"> Operates in these industries </string>
-    <string name="investor_matching_involvement"> Desired form of involvement </string>
+    <string name="investor_matching_investor_type"> Investor Type </string>
+    <string name="investor_matching_phase"> Preferred Investment Phases </string>
+    <string name="investor_matching_industry"> Interested in these Industries </string>
+    <string name="investor_matching_involvement"> Desired Form of Involvement </string>
 
     <!-- Strings used in LoginScreen -->
     <string name="login_welcome_text"> Welcome to Raising </string>

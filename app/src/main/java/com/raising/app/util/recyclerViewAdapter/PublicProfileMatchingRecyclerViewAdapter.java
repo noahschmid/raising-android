@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.raising.app.R;
 import com.raising.app.models.MatchingCriterion;
+import com.raising.app.models.Model;
 
 import java.util.ArrayList;
 
 public class PublicProfileMatchingRecyclerViewAdapter extends RecyclerView.Adapter<PublicProfileMatchingRecyclerViewAdapter.ViewHolder> {
-    private ArrayList<MatchingCriterion> recyclerItems;
+    private ArrayList<? extends Model> recyclerItems;
 
-    public PublicProfileMatchingRecyclerViewAdapter(ArrayList<MatchingCriterion> recyclerItems) {
+    public PublicProfileMatchingRecyclerViewAdapter(ArrayList<? extends Model> recyclerItems) {
         this.recyclerItems = recyclerItems;
     }
 
@@ -32,10 +33,10 @@ public class PublicProfileMatchingRecyclerViewAdapter extends RecyclerView.Adapt
 
     @Override
     public void onBindViewHolder(@NonNull PublicProfileMatchingRecyclerViewAdapter.ViewHolder holder, int position) {
-        MatchingCriterion recyclerItem = recyclerItems.get(position);
+        Model recyclerItem = recyclerItems.get(position);
         // TODO: replace with actual icon
         holder.matchingCriterionIcon.setImageResource(R.drawable.ic_android_24dp);
-        holder.matchingCriterionText.setText(recyclerItem.getTitle());
+        holder.matchingCriterionText.setText(recyclerItem.getName());
     }
 
     @Override

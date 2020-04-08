@@ -158,11 +158,8 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
      */
     private void restoreLists() {
         investorType = investor.getInvestorTypeId();
-        ResourcesManager.getInvestmentPhases().forEach(phase ->
-                Log.d("RegisterInvestor1", phase.getId() + ""));
         investor.getInvestmentPhases().forEach(phase -> {
             tickCheckbox(investmentPhaseLayout, phase);
-            Log.d("RegisterInvestor2", phase + "");
         });
         investor.getIndustries().forEach(industry ->
                 tickCheckbox(industryLayout, industry));
@@ -244,6 +241,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         investor.setSupport(support);
         investor.setContinents(continents);
         investor.setCountries(countries);
+        investor.setInvestorTypeId(investorType);
 
         try {
             if(!editMode) {

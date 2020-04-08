@@ -8,6 +8,8 @@ import lombok.Data;
 public class InvestorType implements Serializable, Model {
     private long id;
     private String name;
+    private String description;
+    private Image image;
 
     public InvestorType() {}
     public InvestorType(long id) { this.id = id; }

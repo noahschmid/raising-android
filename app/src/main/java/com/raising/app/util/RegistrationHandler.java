@@ -127,6 +127,7 @@ public class RegistrationHandler {
         context.deleteFile("rgstr");
         context.deleteFile("rgstr_startup");
         context.deleteFile("rgstr_investor");
+
     }
 
     /**

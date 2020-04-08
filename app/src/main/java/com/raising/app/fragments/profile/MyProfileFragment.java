@@ -29,6 +29,7 @@ import com.raising.app.fragments.registration.startup.RegisterStartupMatchingFra
 import com.raising.app.fragments.registration.startup.RegisterStartupPitchFragment;
 
 import com.raising.app.fragments.registration.startup.RegisterStartupVideoFragment;
+import com.raising.app.models.Investor;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
 
@@ -168,7 +169,9 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 fragment.setArguments(bundle);
                 break;
             case R.id.button_myProfile_investor_public_profile:
+                bundle.putSerializable("investor", (Investor)AccountService.getAccount());
                 fragment = new InvestorPublicProfileFragment();
+                fragment.setArguments(bundle);
                 break;
         }
 
