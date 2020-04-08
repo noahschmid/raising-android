@@ -206,8 +206,9 @@ public class RaisingFragment extends Fragment {
     protected void tickCheckbox(LinearLayout layout, long id) {
         for (int i = 0; i < layout.getChildCount(); ++i) {
             CheckBox cb = (CheckBox) layout.getChildAt(i);
-            if(Long.parseLong((String) cb.getContentDescription()) == id)
+            if(Long.parseLong((String) cb.getContentDescription()) == id) {
                 cb.setChecked(true);
+            }
         }
     }
 
@@ -219,8 +220,9 @@ public class RaisingFragment extends Fragment {
     protected void tickRadioButton(RadioGroup group, long id) {
         for (int i = 0; i < group.getChildCount(); ++i) {
             RadioButton rb = (RadioButton) group.getChildAt(i);
-            if(Long.parseLong((String) rb.getContentDescription()) == id)
+            if(Long.parseLong((String) rb.getContentDescription()) == id) {
                 rb.setChecked(true);
+            }
         }
     }
 

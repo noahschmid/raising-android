@@ -13,6 +13,7 @@ import com.raising.app.models.Country;
 import com.raising.app.models.FinanceType;
 import com.raising.app.models.Industry;
 import com.raising.app.models.InvestmentPhase;
+import com.raising.app.models.Investor;
 import com.raising.app.models.InvestorType;
 import com.raising.app.models.Label;
 import com.raising.app.models.Model;
@@ -123,6 +124,22 @@ public class ResourcesManager implements Serializable {
     public static ArrayList<FinanceType> getFinanceTypes() { return resources.getFinanceTypes(); }
     public static ArrayList<CorporateBody> getCorporateBodies() { return resources.getCorporateBodies(); }
     public static ArrayList<TicketSize> getTicketSizes() { return resources.getTicketSizes(); }
+
+    public static TicketSize getTicketSize(long id) {
+        return (TicketSize) findById(id, getTicketSizes());
+    }
+
+    public static Industry getIndustry(long id) {
+        return (Industry) findById(id, getIndustries());
+    }
+
+    public static Support getSupport(long id) {
+        return (Support) findById(id, getSupports());
+    }
+
+    public static InvestmentPhase getInvestmentPhase(long id) {
+        return (InvestmentPhase)findById(id, getInvestmentPhases());
+    }
 
     public static String[] getTicketSizeStrings(String currency, String[] units) {
         ArrayList<String> result = new ArrayList();

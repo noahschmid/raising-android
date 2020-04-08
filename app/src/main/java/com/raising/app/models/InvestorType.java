@@ -11,6 +11,7 @@ public class InvestorType implements Serializable, Model {
     private long id;
     private String name;
     private Bitmap image;
+    private String description;
 
     public InvestorType() {}
     public InvestorType(long id) { this.id = id; }

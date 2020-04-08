@@ -1,6 +1,9 @@
 package com.raising.app.fragments.profile;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -9,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,27 +24,37 @@ import android.widget.TextView;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.models.Industry;
+import com.raising.app.models.InvestmentPhase;
 import com.raising.app.models.Investor;
+import com.raising.app.models.InvestorType;
+import com.raising.app.models.Model;
 import com.raising.app.models.stakeholder.Founder;
+import com.raising.app.util.AccountService;
+import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
 import com.raising.app.util.recyclerViewAdapter.StartupProfileFounderRecyclerViewAdapter;
 
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class InvestorPublicProfileFragment extends RaisingFragment {
     private TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch, profileWebsite;
     private TextView minTicketSize, maxTicketSize;
     private ImageButton profileAccept, profileDecline;
-    private Investor profileInvestor;
+    private Investor investor;
     private ImageSwitcher imageSwitcher;
+    private ArrayList<Model> investorTypes, industries, investmentPhases, supports;
+    private PublicProfileMatchingRecyclerViewAdapter typeAdapter, industryAdapter, phaseAdapter,
+            supportAdapter;
 
     private RecyclerView recyclerInvestorType, recyclerPhase, recyclerIndustry, recyclerInvolvement;
 
-    // this is a placeholder array with image resources, replace with actual images
-    private int[] images = {R.drawable.ic_person_24dp,
-            R.drawable.ic_edit_blue_32dp,
-            R.drawable.ic_trash_can_red_32dp};
+    ArrayList<Bitmap> pictures;
     private int currentImageIndex = 0;
 
     @Override
@@ -48,8 +63,21 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         View view = inflater.inflate(R.layout.fragment_investor_public_profile,
                 container, false);
 
-        //TODO @noah : store investor for this profile in following line
-        // profileInvestor = (Investor) getArguments().get("investor");
+        if(getArguments() == null) {
+            return view;
+        }
+
+        if(getArguments().getSerializable("investor") != null) {
+            Log.d("InvestorPublicProfile", "name: " + ((Investor)getArguments()
+                    .getSerializable("investor")).getName());
+            investor = (Investor)getArguments().getSerializable("investor");
+        } else {
+            AccountService.getInvestorAccount(getArguments().getLong("id"), investor -> {
+                this.investor = investor;
+                loadData(investor);
+                return null;
+            });
+        }
         return view;
     }
 
@@ -58,6 +86,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
         imageIndex = view.findViewById(R.id.text_investor_profile_gallery_image_index);
 
+        pictures = new ArrayList<Bitmap>();
         prepareImageSwitcher(view);
 
         profileAccept = view.findViewById(R.id.button_investor_public_profile_accept);
@@ -66,15 +95,14 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         // setup general investor information
         matchingPercent = view.findViewById(R.id.text_investor_public_profile_matching_percent);
         profileName = view.findViewById(R.id.text_investor_public_profile_name);
-        profileLocation = view.findViewById(R.id.text_investor_public_profile_location);
         profilePitch = view.findViewById(R.id.text_investor_public_profile_pitch);
-        //TODO: fill with investors data
 
         profileWebsite = view.findViewById(R.id.button_investor_public_profile_website);
-        //TODO:  if(investor.getWebsite() == 0) { profileWebsite.setVisibility(VIEW:GONE); }
         profileWebsite.setOnClickListener(v -> {
             //TODO: replace with actual website
-            String website = "https://www.google.com";
+            if(profileWebsite.getText().length() == 0)
+                return;
+            String website = profileWebsite.getText().toString();
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
             startActivity(browserIntent);
         });
@@ -82,27 +110,75 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         // setup matching criteria
         minTicketSize = view.findViewById(R.id.text_investor_public_profile_min_ticket);
         maxTicketSize = view.findViewById(R.id.text_investor_public_profile_max_ticket);
-        //TODO: fill texts with investors data
 
-        ArrayList investorsInvestmentType = new ArrayList();
+        investorTypes = new ArrayList<Model>();
+        typeAdapter = new PublicProfileMatchingRecyclerViewAdapter(investorTypes);
         recyclerInvestorType = view.findViewById(R.id.investor_public_profile_investor_type_list);
         recyclerInvestorType.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerInvestorType.setAdapter(new PublicProfileMatchingRecyclerViewAdapter(investorsInvestmentType));
+        recyclerInvestorType.setAdapter(typeAdapter);
 
-        ArrayList investorsPhase = new ArrayList();
+        investmentPhases = new ArrayList<Model>();
+        phaseAdapter = new PublicProfileMatchingRecyclerViewAdapter(investmentPhases);
         recyclerPhase = view.findViewById(R.id.investor_public_profile_phase_list);
         recyclerPhase.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerPhase.setAdapter(new PublicProfileMatchingRecyclerViewAdapter(investorsPhase));
+        recyclerPhase.setAdapter(phaseAdapter);
 
-        ArrayList investorsIndustries = new ArrayList();
+        industries = new ArrayList<Model>();
+        industryAdapter = new PublicProfileMatchingRecyclerViewAdapter(industries);
         recyclerIndustry = view.findViewById(R.id.investor_public_profile_industry_list);
         recyclerIndustry.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerIndustry.setAdapter(new PublicProfileMatchingRecyclerViewAdapter(investorsIndustries));
+        recyclerIndustry.setAdapter(industryAdapter);
 
-        ArrayList investorsInvolvement = new ArrayList();
+        supports = new ArrayList<Model>();
+        supportAdapter = new PublicProfileMatchingRecyclerViewAdapter(supports);
         recyclerInvolvement = view.findViewById(R.id.investor_public_profile_involvement_list);
         recyclerInvolvement.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerInvolvement.setAdapter(new PublicProfileMatchingRecyclerViewAdapter(investorsInvolvement));
+        recyclerInvolvement.setAdapter(supportAdapter);
+
+        if(investor != null) {
+            loadData(investor);
+        }
+    }
+
+    private void loadData(Investor investor) {
+        minTicketSize.setText(ResourcesManager.getTicketSize(investor.getTicketMinId())
+                .toString(getString(R.string.currency),
+                        getResources().getStringArray(R.array.revenue_units)));
+        maxTicketSize.setText(ResourcesManager.getTicketSize(investor.getTicketMaxId())
+                .toString(getString(R.string.currency),
+                        getResources().getStringArray(R.array.revenue_units)));
+       profileName.setText(investor.getName());
+       profilePitch.setText(investor.getPitch());
+       profileWebsite.setText("website");
+       matchingPercent.setText("80% MATCH");
+
+       investorTypes.add((Model)ResourcesManager.getInvestorType(investor.getInvestorTypeId()));
+       investor.getIndustries().forEach(industry -> {
+           industries.add(ResourcesManager.getIndustry(industry));
+       });
+       investor.getInvestmentPhases().forEach(phase -> {
+           investmentPhases.add(ResourcesManager.getInvestmentPhase(phase));
+       });
+       investor.getSupport().forEach(support -> {
+           supports.add(ResourcesManager.getSupport(support));
+       });
+       typeAdapter.notifyDataSetChanged();
+       phaseAdapter.notifyDataSetChanged();
+       industryAdapter.notifyDataSetChanged();
+       supportAdapter.notifyDataSetChanged();
+       if(investor.getWebsite() == null) {
+           profileWebsite.setVisibility(View.GONE);
+       }
+
+       if(investor.getProfilePicture() != null) {
+           pictures.add(investor.getProfilePicture().getBitmap());
+       }
+
+       if(investor.getGallery() != null) {
+           investor.getGallery().forEach(image -> {
+               pictures.add(image.getBitmap());
+           });
+       }
     }
 
     /**
@@ -118,7 +194,12 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             imageView.setLayoutParams(new ImageSwitcher.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
-            imageView.setImageResource(images[currentImageIndex]);
+            if(pictures.size() == 0) {
+                imageView.setImageDrawable(getResources()
+                        .getDrawable(R.drawable.ic_person_24dp));
+            } else {
+                imageView.setImageBitmap(pictures.get(currentImageIndex));
+            }
             imageIndex.setText(currentIndexToString(currentImageIndex));
             return imageView;
         });
@@ -132,28 +213,54 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
 
          */
         ImageButton btnPrevious = view.findViewById(R.id.button_investor_gallery_previous);
+        ImageButton btnNext = view.findViewById(R.id.button_investor_gallery_next);
+
+        if(currentImageIndex == 0) {
+            btnPrevious.setVisibility(View.GONE);
+        }
+        if(pictures.size() < 2) {
+            btnNext.setVisibility(View.GONE);
+        }
         btnPrevious.setOnClickListener(v -> {
+            if(currentImageIndex == 0) {
+                btnPrevious.setVisibility(View.GONE);
+            }
+
+            if(currentImageIndex < pictures.size() - 1) {
+                btnNext.setVisibility(View.VISIBLE);
+            }
+
+            if(pictures.size() == 0)
+                return;
             currentImageIndex--;
             if(currentImageIndex == -1) {
-                currentImageIndex = images.length - 1;
-                imageSwitcher.setImageResource(images[currentImageIndex]);
-            } else {
-                imageSwitcher.setImageResource(images[currentImageIndex]);
+                currentImageIndex = pictures.size() - 1;
             }
+            imageSwitcher.setImageDrawable(new
+                    BitmapDrawable(pictures.get(currentImageIndex)));
             imageIndex.setText(currentIndexToString(currentImageIndex));
         });
-        ImageButton btnNext = view.findViewById(R.id.button_investor_gallery_next);
+
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(currentImageIndex == pictures.size() - 1) {
+                    btnNext.setVisibility(View.GONE);
+                }
+
+                if(currentImageIndex > 0) {
+                    btnPrevious.setVisibility(View.VISIBLE);
+                }
+
+                if(pictures.size() == 0)
+                    return;
                 currentImageIndex ++;
-                if (currentImageIndex == images.length){
+                if (currentImageIndex == pictures.size()) {
                     currentImageIndex = 0;
-                    imageSwitcher.setImageResource(images[currentImageIndex]);
                 }
-                else {
-                    imageSwitcher.setImageResource(images[currentImageIndex]);
-                }
+                imageSwitcher.setImageDrawable(new
+                        BitmapDrawable(pictures.get(currentImageIndex)));
+
                 imageIndex.setText(currentIndexToString(currentImageIndex));
             }
         });
@@ -165,6 +272,8 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
      * @return The string representation of the current index
      */
     private String currentIndexToString(int index) {
-        return ((index + 1) + " / " + images.length);
+        if(pictures.size() == 0)
+            return " ";
+        return ((index + 1) + " / " + pictures.size());
     }
 }
