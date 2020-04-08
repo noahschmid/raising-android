@@ -82,7 +82,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         finishButton.setOnClickListener(v -> processInputs());
 
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
-            view.findViewById(R.id.registration_images_progress).setVisibility(View.GONE);
+            view.findViewById(R.id.registration_images_progress).setVisibility(View.INVISIBLE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
             startup = (Startup) AccountService.getAccount();

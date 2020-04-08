@@ -75,8 +75,8 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         Button btnStartUpMatching = view.findViewById(R.id.button_startup_matching);
         btnStartUpMatching.setOnClickListener(this);
 
-        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
-            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
+        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartUpMatching.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
             startup = (Startup) AccountService.getAccount();

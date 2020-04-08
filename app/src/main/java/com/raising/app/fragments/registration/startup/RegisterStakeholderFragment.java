@@ -89,7 +89,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         btnFinishRegistration.setOnClickListener(this);
 
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
-            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnFinishRegistration.setHint(getString(R.string.myProfile_apply_changes));
             startup = (Startup) AccountService.getAccount();
             editMode = true;

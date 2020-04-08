@@ -98,7 +98,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         completedInput = view.findViewById(R.id.register_input_financial_completed);
 
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
-            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnFinancialRequirements.setHint(getString(R.string.myProfile_apply_changes));
             startup = (Startup)AccountService.getAccount();
         } else {

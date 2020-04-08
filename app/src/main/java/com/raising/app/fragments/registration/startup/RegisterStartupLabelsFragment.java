@@ -49,8 +49,8 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
         Button btnStartupLabels = view.findViewById(R.id.button_startup_labels);
         btnStartupLabels.setOnClickListener(v -> processInformation());
 
-        if(this.getArguments() != null && this.getArguments().getBoolean("isProfileFragment")) {
-            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
+        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupLabels.setHint(getString(R.string.myProfile_apply_changes));
             startup = (Startup) AccountService.getAccount();
             editMode = true;

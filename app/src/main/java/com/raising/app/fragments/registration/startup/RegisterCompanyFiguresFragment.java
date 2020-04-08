@@ -98,7 +98,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
         btnCompanyFigures.setOnClickListener(v -> processInformation());
 
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
-            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnCompanyFigures.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
             startup = (Startup) AccountService.getAccount();

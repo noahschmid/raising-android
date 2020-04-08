@@ -61,7 +61,7 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         btnInvestorPitch.setOnClickListener(this);
 
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
-            view.findViewById(R.id.registration_profile_progress).setVisibility(View.GONE);
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnInvestorPitch.setHint(getString(R.string.myProfile_apply_changes));
             investor = (Investor) AccountService.getAccount();
             editMode = true;
