@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.fragments.registration.investor.RegisterInvestorImagesFragment;
 import com.raising.app.fragments.registration.investor.RegisterInvestorMatchingFragment;
 import com.raising.app.fragments.registration.investor.RegisterInvestorPitchFragment;
@@ -35,10 +36,12 @@ import com.raising.app.util.AuthenticationHandler;
 
 public class MyProfileFragment extends RaisingFragment implements View.OnClickListener {
     private FrameLayout startUpLayout, investorLayout;
-    private Button startUpCompanyInformation, startupCompanyFigures, startUpMatching, startUpPitch, startupLabels,
-            startUpImages, startupVideo, startUpFinancial, startUpStakeholder, startupPublicProfile,
-            investorProfileInformation, investorMatching, investorPitch,
-            investorImages, investorPublicProfile;
+    private Button
+            startupAccountInformation, startUpCompanyInformation, startupCompanyFigures,
+            startUpMatching, startUpPitch, startupLabels, startUpImages, startupVideo,
+            startUpFinancial, startUpStakeholder, startupSubscription, startupPublicProfile,
+            investorAccountInformation, investorProfileInformation, investorMatching, investorPitch,
+            investorImages, investorSubscription, investorPublicProfile;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -60,6 +63,9 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
             startUpLayout.setVisibility(View.GONE);
             investorLayout.setVisibility(View.VISIBLE);
         }
+
+        startupAccountInformation = view.findViewById(R.id.button_myProfile_startup_account_information);
+        startupAccountInformation.setOnClickListener(this);
 
         startUpCompanyInformation = view.findViewById(R.id.button_myProfile_startup_company_information);
         startUpCompanyInformation.setOnClickListener(this);
@@ -88,8 +94,14 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
         startUpStakeholder = view.findViewById(R.id.button_myProfile_startup_stakeholders);
         startUpStakeholder.setOnClickListener(this);
 
+        startupSubscription = view.findViewById(R.id.button_myProfile_startup_subscription);
+        startupSubscription.setOnClickListener(this);
+
         startupPublicProfile = view.findViewById(R.id.button_myProfile_startup_public_profile);
         startupPublicProfile.setOnClickListener(this);
+
+        investorAccountInformation = view.findViewById(R.id.button_myProfile_investor_account_information);
+        investorAccountInformation.setOnClickListener(this);
 
         investorProfileInformation = view.findViewById(R.id.button_myProfile_investor_profile_information);
         investorProfileInformation.setOnClickListener(this);
@@ -103,6 +115,9 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
         investorImages = view.findViewById(R.id.button_myProfile_investor_pitch);
         investorImages.setOnClickListener(this);
 
+        investorSubscription = view.findViewById(R.id.button_myProfile_investor_subscription);
+        investorSubscription.setOnClickListener(this);
+
         investorPublicProfile = view.findViewById(R.id.button_myProfile_investor_public_profile);
         investorPublicProfile.setOnClickListener(this);
     }
@@ -113,6 +128,11 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
         Bundle bundle = new Bundle();
         bundle.putBoolean("editMode", true);
         switch (v.getId()) {
+            case R.id.button_myProfile_startup_account_information:
+            case R.id.button_myProfile_investor_account_information:
+                fragment = new RegisterLoginInformationFragment();
+                fragment.setArguments(bundle);
+                break;
             case R.id.button_myProfile_startup_company_information:
                 fragment = new RegisterCompanyInformationFragment();
                 fragment.setArguments(bundle);
@@ -147,6 +167,10 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 break;
             case R.id.button_myProfile_startup_public_profile:
                 fragment = new StartupPublicProfileFragment();
+                break;
+            case R.id.button_myProfile_startup_subscription:
+            case R.id.button_myProfile_investor_subscription:
+                //TODO: insert fragment
                 break;
             case R.id.button_myProfile_startup_stakeholders:
                 fragment = new RegisterStakeholderFragment();

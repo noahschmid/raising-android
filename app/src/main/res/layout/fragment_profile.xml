@@ -22,7 +22,7 @@
                    android:layout_height="wrap_content">
 
                    <Button
-                       android:id="@+id/button_myProfile_startup_company_information"
+                       android:id="@+id/button_myProfile_startup_account_information"
                        style="@style/myProfileButtonStyle"
                        android:layout_width="0dp"
                        android:layout_height="@dimen/myProfileButtonHeight"
@@ -30,13 +30,24 @@
                        android:layout_marginTop="@dimen/inputFormVerticalMargin"
                        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
                        android:drawableLeft="@drawable/ic_person_24dp"
-                       android:hint="@string/register_company_information_text"
-                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_company_figures"
+                       android:hint="@string/myProfile_account_information"
+                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_company_information"
                        app:layout_constraintEnd_toEndOf="parent"
                        app:layout_constraintStart_toStartOf="parent"
                        app:layout_constraintTop_toTopOf="parent"
                        app:layout_constraintVertical_bias="0.0"
                        app:layout_constraintVertical_chainStyle="packed" />
+
+                   <Button
+                       android:id="@+id/button_myProfile_startup_company_information"
+                       style="@style/myProfileButtonStyle"
+                       android:layout_width="0dp"
+                       android:layout_height="@dimen/myProfileButtonHeight"
+                       android:hint="@string/register_company_information_text"
+                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_company_figures"
+                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_account_information"
+                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_account_information"
+                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_account_information" />
 
                    <Button
                        android:id="@+id/button_myProfile_startup_company_figures"
@@ -125,13 +136,23 @@
                        style="@style/myProfileButtonStyle"
                        android:layout_width="0dp"
                        android:layout_height="@dimen/myProfileButtonHeight"
-                       android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                        android:drawableLeft="@drawable/ic_myprofile_stakeholder_24dp"
                        android:hint="@string/register_stakeholder_information_text"
-                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_public_profile"
+                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_subscription"
                        app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_financial_requirements"
                        app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_financial_requirements"
                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_financial_requirements" />
+
+                   <Button
+                       android:id="@+id/button_myProfile_startup_subscription"
+                       style="@style/myProfileButtonStyle"
+                       android:layout_width="0dp"
+                       android:layout_height="@dimen/myProfileButtonHeight"
+                       android:hint="@string/myProfile_subscription_plan"
+                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_public_profile"
+                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_stakeholders"
+                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_stakeholders"
+                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_stakeholders" />
 
                    <Button
                        android:id="@+id/button_myProfile_startup_public_profile"
@@ -140,9 +161,9 @@
                        android:layout_height="@dimen/myProfileButtonHeight"
                        android:layout_marginTop="@dimen/inputFormVerticalMargin"
                        android:hint="@string/myProfile_watch_public_profile"
-                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_stakeholders"
-                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_stakeholders"
-                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_stakeholders"
+                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_subscription"
+                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_subscription"
+                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_subscription"
                        app:layout_constraintBottom_toBottomOf="parent"/>
                </androidx.constraintlayout.widget.ConstraintLayout>
            </FrameLayout>
@@ -157,21 +178,32 @@
                    android:layout_height="wrap_content">
 
                    <Button
-                       android:id="@+id/button_myProfile_investor_profile_information"
+                       android:id="@+id/button_myProfile_investor_account_information"
                        style="@style/myProfileButtonStyle"
                        android:layout_width="0dp"
                        android:layout_height="@dimen/myProfileButtonHeight"
                        android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                        android:layout_marginTop="@dimen/inputFormVerticalMargin"
                        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                       android:drawableLeft="@drawable/ic_person_24dp"
-                       android:hint="@string/register_profile_information_text"
-                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_matching_criteria"
+                       android:hint="@string/myProfile_account_information"
+                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_profile_information"
                        app:layout_constraintEnd_toEndOf="parent"
                        app:layout_constraintStart_toStartOf="parent"
                        app:layout_constraintTop_toTopOf="parent"
                        app:layout_constraintVertical_bias="0.0"
                        app:layout_constraintVertical_chainStyle="packed" />
+
+                   <Button
+                       android:id="@+id/button_myProfile_investor_profile_information"
+                       style="@style/myProfileButtonStyle"
+                       android:layout_width="0dp"
+                       android:layout_height="@dimen/myProfileButtonHeight"
+                       android:drawableLeft="@drawable/ic_person_24dp"
+                       android:hint="@string/register_profile_information_text"
+                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_matching_criteria"
+                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_account_information"
+                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_account_information"
+                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_account_information" />
 
                    <Button
                        android:id="@+id/button_myProfile_investor_matching_criteria"
@@ -202,13 +234,23 @@
                        style="@style/myProfileButtonStyle"
                        android:layout_width="0dp"
                        android:layout_height="@dimen/myProfileButtonHeight"
-                       android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                        android:drawableLeft="@drawable/ic_myprofile_images_24dp"
                        android:hint="@string/register_images_information_text"
-                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_public_profile"
+                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_subscription"
                        app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_pitch"
                        app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_pitch"
                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_pitch" />
+
+                   <Button
+                       android:id="@+id/button_myProfile_investor_subscription"
+                       style="@style/myProfileButtonStyle"
+                       android:layout_width="0dp"
+                       android:layout_height="@dimen/myProfileButtonHeight"
+                       android:hint="@string/myProfile_subscription_plan"
+                       app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_public_profile"
+                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_images"
+                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_images"
+                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_images" />
 
                    <Button
                        android:id="@+id/button_myProfile_investor_public_profile"
@@ -217,9 +259,9 @@
                        android:layout_height="@dimen/myProfileButtonHeight"
                        android:layout_marginTop="@dimen/inputFormVerticalMargin"
                        android:hint="@string/myProfile_watch_public_profile"
-                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_images"
-                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_images"
-                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_images"
+                       app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_subscription"
+                       app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_subscription"
+                       app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_subscription"
                        app:layout_constraintBottom_toBottomOf="parent"/>
                </androidx.constraintlayout.widget.ConstraintLayout>
            </FrameLayout>

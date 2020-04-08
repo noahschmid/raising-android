@@ -16,6 +16,9 @@ import com.android.volley.VolleyError;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Account;
+import com.raising.app.models.Investor;
+import com.raising.app.models.Startup;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
 
@@ -28,6 +31,9 @@ import java.util.function.Function;
 public class RegisterLoginInformationFragment extends RaisingFragment implements View.OnClickListener {
     private EditText firstNameInput, lastNameInput, emailInput, passwordInput;
     private boolean load = false;
+    private boolean editMode = false;
+    private Startup startup;
+    private Investor investor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,9 +61,24 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         emailInput.setText(account.getEmail());
         passwordInput.setText(account.getPassword());
 
-
         Button btnLoginInformation = view.findViewById(R.id.button_login_information);
         btnLoginInformation.setOnClickListener(this);
+
+        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            btnLoginInformation.setHint(getString(R.string.myProfile_apply_changes));
+            editMode = true;
+            if(AccountService.isStartup()) {
+                startup = (Startup) AccountService.getAccount();
+            } else {
+                investor = (Investor) AccountService.getAccount();
+            }
+        } else {
+            if(AccountService.isStartup()) {
+                startup = RegistrationHandler.getStartup();
+            } else {
+                investor = RegistrationHandler.getInvestor();
+            }
+        }
     }
 
     @Override
