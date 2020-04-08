@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/raisingPrimary</item>
         <item name="colorPrimaryDark">@color/raisingPrimaryDark</item>
         <item name="colorAccent">@color/raisingPrimaryAccent</item>
-        <item name="android:navigationBarColor"> @color/raisingPrimary</item>
+        <item name="android:navigationBarColor"> @color/raisingBlack</item>
     </style>
 
     <style name="DialogTheme" parent="Theme.MaterialComponents.Light.Dialog.MinWidth" />
@@ -69,7 +69,7 @@
         <item name="android:layout_marginBottom">@dimen/inputFormVerticalMarginSmall</item>
         <item name="android:drawablePadding">@dimen/inputFormVerticalMarginSmall</item>
         <item name="android:drawableTint">@color/raisingPrimaryTextColor</item>
-        <item name="android:textSize">@dimen/fragmentSubtitleFontSize</item>
+        <item name="android:textSize">@dimen/raisingSubtitleFontSize</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColorHint">@color/raisingPrimaryTextColor</item>
     </style>
@@ -77,7 +77,7 @@
     <style name="FragmentTitle">
         <item name="android:layout_marginTop">@dimen/inputFormInformationTextMargin</item>
         <item name="android:layout_marginBottom">@dimen/inputFormInformationTextMargin</item>
-        <item name="android:textSize">@dimen/fragmentTitleFontSize</item>
+        <item name="android:textSize">@dimen/raisingTitleFontSize</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColorHint">@color/raisingPrimaryTextColor</item>
     </style>

@@ -32,7 +32,7 @@
             android:layout_marginTop="@dimen/inputFormVerticalMarginSmall"
             android:hint="Name"
             android:textColorHint="@color/raisingPrimaryTextColor"
-            android:textSize="@dimen/fragmentSubtitleFontSize"
+            android:textSize="@dimen/raisingSubtitleFontSize"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/item_matchlist_attributes"
             app:layout_constraintEnd_toEndOf="parent"

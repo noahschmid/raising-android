@@ -2,17 +2,17 @@ package com.raising.app.fragments.profile;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,33 +24,26 @@ import android.widget.TextView;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.Industry;
-import com.raising.app.models.InvestmentPhase;
 import com.raising.app.models.Investor;
-import com.raising.app.models.InvestorType;
 import com.raising.app.models.Model;
-import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
-import com.raising.app.util.recyclerViewAdapter.StartupProfileFounderRecyclerViewAdapter;
 
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.function.Function;
 
 public class InvestorPublicProfileFragment extends RaisingFragment {
-    private TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch, profileWebsite;
+    private TextView imageIndex, matchingPercent, profileName, profilePitch, profileSentence, profileWebsite;
     private TextView minTicketSize, maxTicketSize;
-    private ImageButton profileAccept, profileDecline;
+    private ImageButton profileRequest, profileDecline;
     private Investor investor;
     private ImageSwitcher imageSwitcher;
     private ArrayList<Model> investorTypes, industries, investmentPhases, supports;
     private PublicProfileMatchingRecyclerViewAdapter typeAdapter, industryAdapter, phaseAdapter,
             supportAdapter;
+
+    private boolean handshakeRequest, handshakeDecline;
 
     private RecyclerView recyclerInvestorType, recyclerPhase, recyclerIndustry, recyclerInvolvement;
 
@@ -89,20 +82,21 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         pictures = new ArrayList<Bitmap>();
         prepareImageSwitcher(view);
 
-        profileAccept = view.findViewById(R.id.button_investor_public_profile_accept);
+        profileRequest = view.findViewById(R.id.button_investor_public_profile_request);
         profileDecline = view.findViewById(R.id.button_investor_public_profile_decline);
+        manageHandshakeButtons();
 
         // setup general investor information
         matchingPercent = view.findViewById(R.id.text_investor_public_profile_matching_percent);
         profileName = view.findViewById(R.id.text_investor_public_profile_name);
         profilePitch = view.findViewById(R.id.text_investor_public_profile_pitch);
+        profileSentence = view.findViewById(R.id.text_investor_public_profile_sentence);
 
         profileWebsite = view.findViewById(R.id.button_investor_public_profile_website);
         profileWebsite.setOnClickListener(v -> {
-            //TODO: replace with actual website
-            if(profileWebsite.getText().length() == 0)
+            String website = investor.getWebsite();
+            if(website.length() == 0)
                 return;
-            String website = profileWebsite.getText().toString();
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
             startActivity(browserIntent);
         });
@@ -140,6 +134,44 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         }
     }
 
+    private void manageHandshakeButtons() {
+        handshakeRequest = false;
+        profileRequest.setOnClickListener(v -> {
+            handshakeRequest = !handshakeRequest;
+            Drawable profileRequestDrawable = profileRequest.getBackground();
+            profileRequestDrawable = DrawableCompat.wrap(profileRequestDrawable);
+            if(handshakeRequest) {
+                profileRequestDrawable.setTint(profileRequest.getContext()
+                        .getResources().getColor(R.color.raisingPositive, null));
+                profileRequest.setBackground(profileRequestDrawable);
+                profileDecline.setEnabled(false);
+            } else {
+                profileRequestDrawable.setTint(profileRequest.getContext()
+                        .getResources().getColor(R.color.raisingWhite, null));
+                profileRequest.setBackground(profileRequestDrawable);
+                profileDecline.setEnabled(true);
+            }
+        });
+
+        handshakeDecline = false;
+        profileDecline.setOnClickListener(v -> {
+            handshakeDecline = !handshakeDecline;
+            Drawable profileDeclineDrawable = profileDecline.getBackground();
+            profileDeclineDrawable = DrawableCompat.wrap(profileDeclineDrawable);
+            if(handshakeDecline) {
+                profileDeclineDrawable.setTint(profileDecline.getContext()
+                        .getResources().getColor(R.color.raisingNegative, null));
+                profileDecline.setBackground(profileDeclineDrawable);
+                profileRequest.setEnabled(false);
+            } else {
+                profileDeclineDrawable.setTint(profileDecline.getContext()
+                        .getResources().getColor(R.color.raisingWhite, null));
+                profileDecline.setBackground(profileDeclineDrawable);
+                profileRequest.setEnabled(true);
+            }
+        });
+    }
+
     private void loadData(Investor investor) {
         minTicketSize.setText(ResourcesManager.getTicketSize(investor.getTicketMinId())
                 .toString(getString(R.string.currency),
@@ -149,7 +181,8 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                         getResources().getStringArray(R.array.revenue_units)));
        profileName.setText(investor.getName());
        profilePitch.setText(investor.getPitch());
-       profileWebsite.setText("website");
+       profileSentence.setText(investor.getDescription());
+       //TODO: change to actual value
        matchingPercent.setText("80% MATCH");
 
        investorTypes.add((Model)ResourcesManager.getInvestorType(investor.getInvestorTypeId()));

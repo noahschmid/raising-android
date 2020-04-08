@@ -7,9 +7,10 @@
 
     <ImageView
         android:id="@+id/public_profile_matching_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/public_profile_matching_information_icon_size"
+        android:layout_height="@dimen/public_profile_matching_information_icon_size"
         android:layout_marginStart="@dimen/inputFormVerticalMarginSmall"
+        android:layout_marginTop="@dimen/inputFormVerticalMarginSmall"
         android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

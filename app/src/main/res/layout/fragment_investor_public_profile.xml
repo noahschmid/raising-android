@@ -88,9 +88,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-                        android:hint="Percent"
-                        android:textColorHint="@color/raisingWhite"
-                        android:textSize="@dimen/fragmentTitleFontSize"
+                        android:text="Percent"
+                        android:textColor="@color/raisingWhite"
+                        android:textSize="@dimen/raisingTitleFontSize"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -106,7 +106,7 @@
                         android:backgroundTint="@color/raisingWhite"
                         android:src="@drawable/ic_not_interested_40dp"
                         app:layout_constraintBottom_toTopOf="@+id/text_investor_decline"
-                        app:layout_constraintEnd_toStartOf="@+id/button_investor_public_profile_accept"
+                        app:layout_constraintEnd_toStartOf="@+id/button_investor_public_profile_request"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_chainStyle="packed" />
 
@@ -124,7 +124,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/button_investor_public_profile_decline" />
 
                     <ImageButton
-                        android:id="@+id/button_investor_public_profile_accept"
+                        android:id="@+id/button_investor_public_profile_request"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/inputFormVerticalMarginSmall"
@@ -132,23 +132,23 @@
                         android:background="@drawable/btn_public_profile_round"
                         android:backgroundTint="@color/raisingWhite"
                         android:src="@drawable/ic_check_40dp"
-                        app:layout_constraintBottom_toTopOf="@+id/text_investor_accept"
+                        app:layout_constraintBottom_toTopOf="@+id/text_investor_request"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_chainStyle="packed" />
 
                     <TextView
-                        android:id="@+id/text_investor_accept"
+                        android:id="@+id/text_investor_request"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
-                        android:hint="@string/accept_text"
+                        android:hint="@string/request_text"
                         android:textColorHint="@color/raisingWhite"
                         android:textSize="@dimen/raisingSmallTextFontSize"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/button_investor_public_profile_accept"
-                        app:layout_constraintStart_toStartOf="@+id/button_investor_public_profile_accept"
-                        app:layout_constraintTop_toBottomOf="@+id/button_investor_public_profile_accept" />
+                        app:layout_constraintEnd_toEndOf="@+id/button_investor_public_profile_request"
+                        app:layout_constraintStart_toStartOf="@+id/button_investor_public_profile_request"
+                        app:layout_constraintTop_toBottomOf="@+id/button_investor_public_profile_request" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -159,11 +159,24 @@
                 android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:text="Name"
-                android:textColor="@color/raisingPrimaryTextColor"
-                android:textSize="@dimen/fragmentTitleFontSize"
+                android:textColor="@color/raisingPrimary"
+                android:textSize="@dimen/raisingLargeTitleFontSize"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/investor_public_profile_matching_summary" />
+
+            <TextView
+                android:id="@+id/text_investor_public_profile_sentence"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/inputFormVerticalMargin"
+                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                android:text="Sentence"
+                android:textColor="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_name"
+                app:layout_constraintTop_toBottomOf="@+id/text_investor_public_profile_name" />
 
             <TextView
                 android:id="@+id/text_investor_public_profile_pitch"
@@ -175,8 +188,8 @@
                 android:textColor="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_name"
-                app:layout_constraintTop_toBottomOf="@+id/text_investor_public_profile_name" />
+                app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_sentence"
+                app:layout_constraintTop_toBottomOf="@+id/text_investor_public_profile_sentence" />
 
             <TextView
                 android:id="@+id/button_investor_public_profile_website"
@@ -187,6 +200,7 @@
                 android:hint="@string/public_profile_website"
                 android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/investor_public_profile_matching_information"
                 app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_pitch"
                 app:layout_constraintTop_toBottomOf="@+id/text_investor_public_profile_pitch" />
@@ -195,7 +209,6 @@
                 android:id="@+id/investor_public_profile_matching_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/raisingPrimaryAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/button_investor_public_profile_website">
 
@@ -206,9 +219,9 @@
                     android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                     android:layout_marginTop="@dimen/inputFormVerticalMargin"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                    android:hint="@string/register_matching_information_text"
-                    android:textColorHint="@color/raisingPrimaryTextColor"
-                    android:textSize="@dimen/fragmentTitleFontSize"
+                    android:hint="@string/public_profile_matching_information"
+                    android:textColorHint="@color/raisingPrimary"
+                    android:textSize="@dimen/raisingSubtitleFontSize"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/text_investor_public_profile_scope"
                     app:layout_constraintStart_toStartOf="@+id/investor_public_profile_matching_information"
@@ -218,13 +231,10 @@
                     android:id="@+id/text_investor_public_profile_scope"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/inputFormVerticalMargin"
                     android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
-                    android:drawablePadding="@dimen/inputFormVerticalMarginSmall"
-                    android:drawableTint="@color/raisingPrimaryTextColor"
                     android:hint="@string/investor_matching_scope"
-                    android:textColorHint="@color/raisingPrimaryTextColor"
-                    android:textSize="@dimen/fragmentSubtitleFontSize"
+                    android:textColorHint="@color/raisingPrimary"
+                    android:textSize="@dimen/raisingTextFontSize"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/text_investor_public_profile_min_ticket_title"
                     app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_matching"
@@ -284,11 +294,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                    android:drawablePadding="@dimen/inputFormVerticalMarginSmall"
-                    android:drawableTint="@color/raisingPrimaryTextColor"
                     android:hint="@string/investor_matching_investor_type"
-                    android:textColorHint="@color/raisingPrimaryTextColor"
-                    android:textSize="@dimen/fragmentSubtitleFontSize"
+                    android:textColorHint="@color/raisingPrimary"
+                    android:textSize="@dimen/raisingTextFontSize"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/investor_public_profile_investor_type_list"
                     app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_max_ticket_title"
@@ -311,11 +319,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                    android:drawablePadding="@dimen/inputFormVerticalMarginSmall"
-                    android:drawableTint="@color/raisingPrimaryTextColor"
                     android:hint="@string/investor_matching_phase"
-                    android:textColorHint="@color/raisingPrimaryTextColor"
-                    android:textSize="@dimen/fragmentSubtitleFontSize"
+                    android:textColorHint="@color/raisingPrimary"
+                    android:textSize="@dimen/raisingTextFontSize"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/investor_public_profile_phase_list"
                     app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_type_of_investor"
@@ -338,11 +344,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                    android:drawablePadding="@dimen/inputFormVerticalMarginSmall"
-                    android:drawableTint="@color/raisingPrimaryTextColor"
                     android:hint="@string/investor_matching_industry"
-                    android:textColorHint="@color/raisingPrimaryTextColor"
-                    android:textSize="@dimen/fragmentSubtitleFontSize"
+                    android:textColorHint="@color/raisingPrimary"
+                    android:textSize="@dimen/raisingTextFontSize"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/investor_public_profile_industry_list"
                     app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_investment_phase"
@@ -365,11 +369,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                    android:drawablePadding="@dimen/inputFormVerticalMarginSmall"
-                    android:drawableTint="@color/raisingPrimaryTextColor"
                     android:hint="@string/investor_matching_involvement"
-                    android:textColorHint="@color/raisingPrimaryTextColor"
-                    android:textSize="@dimen/fragmentSubtitleFontSize"
+                    android:textColorHint="@color/raisingPrimary"
+                    android:textSize="@dimen/raisingTextFontSize"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/investor_public_profile_involvement_list"
                     app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_industry"
@@ -381,13 +383,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                     android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                    android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

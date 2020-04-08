@@ -129,14 +129,11 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
         customPicker = builder.build();
 
-        geographicsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(customPicker.instanceRunning())
-                    customPicker.dismiss();
+        geographicsButton.setOnClickListener(v -> {
+            if(customPicker.instanceRunning())
+                customPicker.dismiss();
 
-                customPicker.showDialog(getActivity());
-            }
+            customPicker.showDialog(getActivity());
         });
 
         setupLists();

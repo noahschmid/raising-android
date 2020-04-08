@@ -10,6 +10,8 @@
     <dimen name="matchlist_picture_size"> 100dp </dimen>
     <dimen name="matchlist_percent_chart_size"> 50dp </dimen>
 
+    <dimen name="public_profile_matching_information_icon_size"> 32dp </dimen>
+
     <dimen name="inputFormHorizontalMarginSmall"> 16dp </dimen>
     <dimen name="inputFormHorizontalMargin"> 32dp </dimen>
     <dimen name="inputFormVerticalMarginSmall"> 8dp </dimen>
@@ -19,14 +21,13 @@
     <dimen name="inputOneSentenceDescriptionHeight"> 80dp </dimen>
     <dimen name="inputPitchHeight"> 150dp </dimen>
 
-    <dimen name="fragmentTitleFontSize"> 20sp </dimen>
-    <dimen name="fragmentSubtitleFontSize"> 18sp </dimen>
-
-    <dimen name="raisingTextFontSize"> 14sp </dimen>
+    <dimen name="raisingLargeTitleFontSize"> 22sp </dimen>
+    <dimen name="raisingTitleFontSize"> 20sp </dimen>
+    <dimen name="raisingSubtitleFontSize"> 18sp </dimen>
+    <dimen name="raisingTextFontSize"> 16sp </dimen>
     <dimen name="raisingSmallTextFontSize"> 12sp </dimen>
 
     <dimen name="buttonFontSize"> 18sp </dimen>
-    <dimen name="fragmentTextFontSize"> 16sp </dimen>
     <dimen name="loginScreenFontSize"> 30sp </dimen>
 
 

@@ -27,7 +27,7 @@
                 android:layout_marginTop="@dimen/inputFormInformationTextMargin"
                 android:layout_marginBottom="@dimen/inputFormInformationTextMargin"
                 android:hint="@string/register_stakeholder_board_member_information_text"
-                android:textSize="@dimen/fragmentTitleFontSize"
+                android:textSize="@dimen/raisingTitleFontSize"
                 android:textStyle="bold"
                 android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/board_member_first_name"
