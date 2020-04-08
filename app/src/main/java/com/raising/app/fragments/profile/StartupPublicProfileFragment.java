@@ -185,10 +185,12 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         startupFte.setText(String.valueOf(startup.getNumberOfFte()));
         startupInvestmentType.setText(ResourcesManager.getFinanceType(
                 startup.getFinanceTypeId()).getName());
-        DateFormat formatter = new SimpleDateFormat("MM.dd.yyyy");
-        Date date = new Date(startup.getClosingTime());
-        startupClosingTime.setText(formatter.format(date));
+        DateFormat toFormat = new SimpleDateFormat("MM.dd.yyyy");
+     //   DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date closing = new Date(Long.parseLong(startup.getClosingTime()));
+        startupClosingTime.setText(toFormat.format(closing));
         startupCompleted.setText(String.valueOf(startup.getRaised()));
+        profileLocation.setText(ResourcesManager.getCountry(startup.getCountryId()).getName());
 
         //TODO: change to actual value
         matchingPercent.setText("80% MATCH");
