@@ -33,7 +33,7 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
         Startup startup = new Startup();
 
         startup.setId(jsonObject.get("accountId").getAsLong());
-        if(!jsonObject.get("name").isJsonNull()) {
+        if(jsonObject.get("name") != null) {
             startup.setName(jsonObject.get("name").getAsString());
         }
         startup.setCompanyName(jsonObject.get("companyName").getAsString());
@@ -42,20 +42,20 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
         startup.setTicketMinId(jsonObject.get("ticketMinId").getAsInt());
         startup.setTicketMaxId(jsonObject.get("ticketMaxId").getAsInt());
         startup.setInvestmentPhaseId(jsonObject.get("investmentPhaseId").getAsInt());
-        if(!jsonObject.get("firstName").isJsonNull()) {
+        if(jsonObject.get("firstName") != null) {
             startup.setFirstName(jsonObject.get("firstName").getAsString());
         }
-        if(!jsonObject.get("lastName").isJsonNull()) {
+        if(jsonObject.get("lastName") != null) {
             startup.setLastName(jsonObject.get("lastName").getAsString());
         }
         startup.setClosingTime(jsonObject.get("closingTime").getAsString());
         startup.setBreakEvenYear(jsonObject.get("breakEvenYear").getAsInt());
         startup.setScope(jsonObject.get("scope").getAsInt());
         startup.setFinanceTypeId(jsonObject.get("financeTypeId").getAsInt());
-        if(!jsonObject.get("turnover").isJsonNull()) {
+        if(jsonObject.get("turnover") != null) {
             startup.setTurnover(jsonObject.get("turnover").getAsInt());
         }
-        if(!jsonObject.get("raised").isJsonNull()) {
+        if(jsonObject.get("raised") != null) {
             startup.setRaised(jsonObject.get("raised").getAsInt());
         }
         startup.setRevenueMaxId(jsonObject.get("revenueMaxId").getAsInt());
@@ -64,10 +64,10 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
         startup.setFoundingYear(jsonObject.get("foundingYear").getAsInt());
         startup.setUId(jsonObject.get("uid").getAsString());
 
-        if(!jsonObject.get("website").isJsonNull()) {
+        if(jsonObject.get("website") != null) {
             startup.setWebsite(jsonObject.get("website").getAsString());
         }
-        if(!jsonObject.get("countryId").isJsonNull()) {
+        if(jsonObject.get("countryId") != null) {
             startup.setCountryId(jsonObject.get("countryId").getAsLong());
         }
 
