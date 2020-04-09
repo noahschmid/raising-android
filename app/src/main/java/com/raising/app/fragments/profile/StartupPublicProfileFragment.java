@@ -3,11 +3,14 @@ package com.raising.app.fragments.profile;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,10 +18,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -28,14 +31,12 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.Investor;
 import com.raising.app.models.Model;
 import com.raising.app.models.Startup;
 import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.models.stakeholder.Shareholder;
 import com.raising.app.util.AccountService;
-import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
 import com.raising.app.util.recyclerViewAdapter.StartupProfileBoardMemberRecyclerViewAdapter;
@@ -49,12 +50,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class StartupPublicProfileFragment extends RaisingFragment {
-    private Startup profileStartup;
     private ImageSwitcher imageSwitcher;
-    private ImageButton profileAccept, profileDecline;
+    private ImageButton profileRequest, profileDecline;
     private TextView imageIndex, matchingPercent, profileName, profileLocation, profileSentence,
             profilePitch, profileWebsite;
-    private TextView scope, minTicket, maxTicket;
+    private LinearLayout labelsLayout;
+    private TextView startupScope, startupMinTicket, startupMaxTicket;
     private RecyclerView recyclerInvestorType, recyclerPhase, recyclerIndustry, recyclerInvolvement;
     private ArrayList<Model> investorTypes, industries, investmentPhases, supports;
     private PublicProfileMatchingRecyclerViewAdapter typeAdapter, industryAdapter, phaseAdapter,
@@ -63,6 +64,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             startupInvestmentType, startupValuation, startupValuationTitle, startupClosingTime, startupCompleted;
 
     private Startup startup;
+
+    private boolean handshakeRequest, handshakeDecline;
 
     ArrayList<Bitmap> pictures;
     private int currentImageIndex = 0;
@@ -82,6 +85,9 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             Log.d("StartupPublicProfile", "name: " + ((Startup)getArguments()
                     .getSerializable("startup")).getName());
             startup = (Startup) getArguments().getSerializable("startup");
+            // hide matching summary, if user accesses own public profile
+            CardView matchingSummary = view.findViewById(R.id.startup_public_profile_matching_summary);
+            matchingSummary.setVisibility(View.GONE);
         } else {
             AccountService.getStartupAccount(getArguments().getLong("id"), startup -> {
                 this.startup = startup;
@@ -101,12 +107,14 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         prepareImageSwitcher(view);
 
-        profileAccept = view.findViewById(R.id.button_startup_public_profile_accept);
+        profileRequest = view.findViewById(R.id.button_startup_public_profile_accept);
         profileDecline = view.findViewById(R.id.button_startup_public_profile_decline);
+        manageHandshakeButtons();
 
         // setup general startup information
         matchingPercent = view.findViewById(R.id.text_startup_public_profile_matching_percent);
         profileName = view.findViewById(R.id.text_startup_public_profile_name);
+        labelsLayout = view.findViewById(R.id.layout_startup_public_profile_labels);
         profileLocation = view.findViewById(R.id.text_startup_public_profile_location);
         profileSentence = view.findViewById(R.id.text_startup_public_profile_sentence);
         profilePitch = view.findViewById(R.id.text_startup_public_profile_pitch);
@@ -133,9 +141,9 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         this.startupInvestmentType = view.findViewById(R.id.text_profile_investment_type);
         startupValuation = view.findViewById(R.id.text_profile_valuation);
         startupValuationTitle = view.findViewById(R.id.text_profile_valuation_title);
-        scope = view.findViewById(R.id.text_startup_public_profile_actual_scope);
-        minTicket = view.findViewById(R.id.text_startup_public_profile_min_ticket);
-        maxTicket = view.findViewById(R.id.text_startup_public_profile_max_ticket);
+        startupScope = view.findViewById(R.id.text_startup_public_profile_actual_scope);
+        startupMinTicket = view.findViewById(R.id.text_startup_public_profile_min_ticket);
+        startupMaxTicket = view.findViewById(R.id.text_startup_public_profile_max_ticket);
         startupClosingTime = view.findViewById(R.id.text_profile_closing_time);
         startupCompleted = view.findViewById(R.id.text_profile_completed);
 
@@ -167,11 +175,11 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     }
 
     private void loadData() {
-        scope.setText(ResourcesManager.amountToString(startup.getScope()));
-        minTicket.setText(ResourcesManager.getTicketSize(startup.getTicketMinId())
+        startupScope.setText(ResourcesManager.amountToString(startup.getScope()));
+        startupMinTicket.setText(ResourcesManager.getTicketSize(startup.getTicketMinId())
                 .toString(getString(R.string.currency),
                         getResources().getStringArray(R.array.revenue_units)));
-        maxTicket.setText(ResourcesManager.getTicketSize(startup.getTicketMaxId())
+        startupMaxTicket.setText(ResourcesManager.getTicketSize(startup.getTicketMaxId())
                 .toString(getString(R.string.currency),
                         getResources().getStringArray(R.array.revenue_units)));
         profileName.setText(startup.getName());
@@ -182,7 +190,9 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         startupBreakEven.setText(String.valueOf(startup.getBreakEvenYear()));
         startupFoundingYear.setText(String.valueOf(startup.getFoundingYear()));
         startupFte.setText(String.valueOf(startup.getNumberOfFte()));
-        //TODO: store current markets
+
+        //TODO: display current markets
+
         startupInvestmentType.setText(ResourcesManager.getFinanceType(
                 startup.getFinanceTypeId()).getName());
         DateFormat toFormat = new SimpleDateFormat("MM.dd.yyyy");
@@ -194,6 +204,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         //TODO: change to actual value
         matchingPercent.setText("80% MATCH");
+
+        //TODO: add labels to labelsLayout
 
         startup.getInvestorTypes().forEach(type -> {
             investorTypes.add((Model)ResourcesManager.getInvestorType(type));
@@ -262,6 +274,46 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         recyclerInvolvement.setAdapter(supportAdapter);
     }
 
+    private void manageHandshakeButtons() {
+        //TODO: add action after button is pressed
+
+        handshakeRequest = false;
+        profileRequest.setOnClickListener(v -> {
+            handshakeRequest = !handshakeRequest;
+            Drawable profileRequestDrawable = profileRequest.getBackground();
+            profileRequestDrawable = DrawableCompat.wrap(profileRequestDrawable);
+            if(handshakeRequest) {
+                profileRequestDrawable.setTint(profileRequest.getContext()
+                        .getResources().getColor(R.color.raisingPositive, null));
+                profileRequest.setBackground(profileRequestDrawable);
+                profileDecline.setEnabled(false);
+            } else {
+                profileRequestDrawable.setTint(profileRequest.getContext()
+                        .getResources().getColor(R.color.raisingWhite, null));
+                profileRequest.setBackground(profileRequestDrawable);
+                profileDecline.setEnabled(true);
+            }
+        });
+
+        handshakeDecline = false;
+        profileDecline.setOnClickListener(v -> {
+            handshakeDecline = !handshakeDecline;
+            Drawable profileDeclineDrawable = profileDecline.getBackground();
+            profileDeclineDrawable = DrawableCompat.wrap(profileDeclineDrawable);
+            if(handshakeDecline) {
+                profileDeclineDrawable.setTint(profileDecline.getContext()
+                        .getResources().getColor(R.color.raisingNegative, null));
+                profileDecline.setBackground(profileDeclineDrawable);
+                profileRequest.setEnabled(false);
+            } else {
+                profileDeclineDrawable.setTint(profileDecline.getContext()
+                        .getResources().getColor(R.color.raisingWhite, null));
+                profileDecline.setBackground(profileDeclineDrawable);
+                profileRequest.setEnabled(true);
+            }
+        });
+    }
+
     /**
      * Prepares the image switcher for usage, also set onClickListeners to previous and next buttons
      * @param view The view in which the image switcher lies
@@ -323,32 +375,31 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             imageIndex.setText(currentIndexToString(currentImageIndex));
         });
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(currentImageIndex == pictures.size() - 1) {
-                    btnNext.setVisibility(View.GONE);
-                }
-
-                if(currentImageIndex > 0) {
-                    btnPrevious.setVisibility(View.VISIBLE);
-                }
-
-                if(pictures.size() == 0)
-                    return;
-                currentImageIndex ++;
-                if (currentImageIndex == pictures.size()) {
-                    currentImageIndex = 0;
-                }
-                imageSwitcher.setImageDrawable(new
-                        BitmapDrawable(pictures.get(currentImageIndex)));
-
-                imageIndex.setText(currentIndexToString(currentImageIndex));
+        btnNext.setOnClickListener(v -> {
+            if(currentImageIndex == pictures.size() - 1) {
+                btnNext.setVisibility(View.GONE);
             }
+
+            if(currentImageIndex > 0) {
+                btnPrevious.setVisibility(View.VISIBLE);
+            }
+
+            if(pictures.size() == 0)
+                return;
+            currentImageIndex ++;
+            if (currentImageIndex == pictures.size()) {
+                currentImageIndex = 0;
+            }
+            imageSwitcher.setImageDrawable(new
+                    BitmapDrawable(pictures.get(currentImageIndex)));
+
+            imageIndex.setText(currentIndexToString(currentImageIndex));
         });
     }
 
     private void setupShareholderPieChart(View view) {
+        //TODO: style pie chart
+
         PieChart pieChart = view.findViewById(R.id.stakeholder_equity_chart);
         List<PieEntry> pieEntries = new ArrayList<>();
 
@@ -356,17 +407,14 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         shareholders.addAll(startup.getCorporateShareholders());
 
         //add all shareholders to pieEntries list
-        for (Shareholder shareholder : shareholders) {
+        shareholders.forEach(shareholder -> {
             // extract the chart name and value for every shareholder
-            /*
-            String investorType = ResourcesManager.getInvestorType(shareholder.getInvestortypeId()).toString();
+            String investorType = ResourcesManager.getInvestorType(shareholder.getInvestorTypeId()).toString();
             String chartTitle = shareholder.getTitle() + ", " + investorType;
             String equityShareString = shareholder.getEquityShare();
             float equityShare = Float.parseFloat(equityShareString.substring(0, equityShareString.length() - 2));
             pieEntries.add(new PieEntry(equityShare, chartTitle));
-
-             */
-        }
+        });
 
         PieDataSet pieDataSet = new PieDataSet(pieEntries, getString(R.string.startup_shareholder_chart_title));
         pieDataSet.setColors(populateColorArray());

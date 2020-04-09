@@ -23,6 +23,7 @@
                 android:id="@+id/startup_gallery_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/element_underline_black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -539,10 +540,10 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="100dp"
                 android:layout_height="0dp"
-                android:layout_marginEnd="@dimen/inputFormVerticalMargin"
+                android:layout_marginEnd="@dimen/inputFormHorizontalMarginSmall"
                 android:progressTint="@color/raisingPrimary"
                 app:layout_constraintBottom_toBottomOf="@+id/text_profile_completed"
-                app:layout_constraintEnd_toStartOf="@+id/text_profile_closing_time"
+                app:layout_constraintEnd_toStartOf="@+id/text_profile_completed"
                 app:layout_constraintTop_toTopOf="@+id/text_profile_completed" />
 
             <TextView
@@ -734,6 +735,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_shareholder" />
+
+            <LinearLayout
+                android:id="@+id/layout_startup_public_profile_labels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                android:gravity="center|end"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/text_startup_public_profile_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_startup_public_profile_name"></LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
