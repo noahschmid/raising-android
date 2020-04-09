@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import com.raising.app.R;
 import com.raising.app.models.Account;
 import com.raising.app.models.ContactDetails;
+import com.raising.app.models.Image;
 import com.raising.app.models.Investor;
 import com.raising.app.models.Model;
 import com.raising.app.models.Startup;
@@ -195,6 +196,38 @@ public class AccountService {
 
                 return null;
             });
+        }
+
+        if(account instanceof Investor) {
+            Log.d("AccountService", "is investor");
+        } else if(account instanceof Startup) {
+            Log.d("AccountService", "is startup");
+        } else {
+            Log.d("AccountService", "is nothing");
+        }
+    }
+
+    public static void updateProfilePicture(Image image) {
+        JSONObject params = new JSONObject();
+        final Image lastImage = account.getProfilePicture();
+        account.setProfilePicture(image);
+        Log.d("AccountService", image.getImage());
+        try {
+            params.put("media", image.getImage());
+            ApiRequestHandler.performPostRequest("account/profilepicture",
+                    v -> {
+                Log.d("AccountService", "Successfully updated profile picture");
+                        return null;
+                    }, err -> {
+                        account.setProfilePicture(lastImage);
+                        NotificationHandler.displayGenericError();
+                        Log.e("AccountService", "Error while updating profile picture: "
+                        + ApiRequestHandler.parseVolleyError(err));
+                        return null;
+                    }, params);
+        } catch (Exception e) {
+            Log.e("AccountService", "Error while updating profile picture: " +
+                    e.getMessage());
         }
     }
 

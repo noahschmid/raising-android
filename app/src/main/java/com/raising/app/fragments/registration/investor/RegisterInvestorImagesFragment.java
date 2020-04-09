@@ -283,15 +283,12 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                 gallery.add(new Image(galleryImg));            }
         }
 
-        investor.setProfilePicture(new Image(logo));
         investor.setGallery(gallery);
 
         try {
             if(editMode) {
-                AccountService.updateAccount(investor, v -> {
-                    popCurrentFragment(this);
-                    return null;
-                });
+                AccountService.updateProfilePicture(new Image(logo));
+                popCurrentFragment(this);
             } else {
                 RegistrationHandler.saveInvestor(investor);
                 GsonBuilder gsonBuilder = new GsonBuilder();

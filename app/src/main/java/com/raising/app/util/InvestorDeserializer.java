@@ -32,8 +32,13 @@ public class InvestorDeserializer implements JsonDeserializer<Investor> {
         Investor investor = new Investor();
 
         investor.setId(jsonObject.get("accountId").getAsLong());
-        investor.setName(jsonObject.get("name").getAsString());
-        investor.setCompanyName(jsonObject.get("company").getAsString());
+        if(!jsonObject.get("firstName").isJsonNull()) {
+            investor.setFirstName(jsonObject.get("firstName").getAsString());
+        }
+        if(!jsonObject.get("lastName").isJsonNull()) {
+            investor.setLastName(jsonObject.get("lastName").getAsString());
+        }
+        investor.setCompanyName(jsonObject.get("companyName").getAsString());
         investor.setPitch(jsonObject.get("pitch").getAsString());
         investor.setDescription(jsonObject.get("description").getAsString());
         investor.setTicketMinId(jsonObject.get("ticketMinId").getAsInt());
@@ -43,13 +48,18 @@ public class InvestorDeserializer implements JsonDeserializer<Investor> {
         if(!jsonObject.get("profilePicture").isJsonNull()) {
             investor.setProfilePicture(new Image(jsonObject.get("profilePicture").getAsString()));
         }
+
+        for(JsonElement el : jsonObject.get("gallery").getAsJsonArray()) {
+            JsonObject obj = el.getAsJsonObject();
+            investor.addToGallery(new Image(obj.get("image").getAsString()));
+        }
+
         for(JsonElement el : jsonObject.get("countries").getAsJsonArray()) {
             JsonObject obj = el.getAsJsonObject();
             investor.addCountry(obj.get("id").getAsLong());
         }
 
         for(JsonElement el : jsonObject.get("continents").getAsJsonArray()) {
-            Log.d("InvestorDeserializer", el.toString());
             JsonObject obj = el.getAsJsonObject();
             investor.addContinent(obj.get("id").getAsLong());
         }

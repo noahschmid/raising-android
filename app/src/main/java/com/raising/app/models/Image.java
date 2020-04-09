@@ -19,7 +19,7 @@ public class Image implements Serializable {
 
     public Image(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        image.compress(Bitmap.CompressFormat.JPEG, 70, baos);
         byte[] imageBytes = baos.toByteArray();
         this.image = Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }

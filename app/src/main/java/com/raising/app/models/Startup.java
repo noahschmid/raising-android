@@ -37,7 +37,6 @@ public class Startup extends Account implements Serializable {
     private List<Founder> founders;
     private List<Shareholder> privateShareholders;
     private List<Shareholder> corporateShareholders;
-    private long countryId;
 
     public Startup() {
         investorTypes = new ArrayList<>();

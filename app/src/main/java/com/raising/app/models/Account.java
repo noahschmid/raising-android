@@ -25,6 +25,7 @@ public class Account implements Serializable, Model {
     private int ticketMaxId = -1;
     private Image profilePicture;
     private List<Image> gallery;
+    private long countryId = -1l;
 
     private List<Long> countries = new ArrayList<>();
     private List<Long> continents = new ArrayList<>();
@@ -48,6 +49,7 @@ public class Account implements Serializable, Model {
     public void addSupport(Long spprt) {
         support.add(spprt);
     }
+    public void addToGallery(Image image) { gallery.add(image); }
 
     @Override
     public Bitmap getImage() {
