@@ -21,7 +21,7 @@ public class Serializer {
                                      JsonSerializationContext context) {
             JsonObject jsonInvestor = new JsonObject();
 
-            jsonInvestor.addProperty("email", src.getEmail());
+            jsonInvestor.addProperty("email", AuthenticationHandler.getEmail());
             jsonInvestor.addProperty("ticketMinId", src.getTicketMinId());
             jsonInvestor.addProperty("ticketMaxId", src.getTicketMaxId());
             jsonInvestor.addProperty("investorTypeId", src.getInvestorTypeId());
@@ -48,6 +48,7 @@ public class Serializer {
             jsonInvestor.addProperty("investorTypeId", src.getInvestorTypeId());
             jsonInvestor.addProperty("companyName", src.getCompanyName());
             jsonInvestor.addProperty("pitch", src.getPitch());
+            jsonInvestor.addProperty("password", src.getPassword());
             jsonInvestor.addProperty("name", src.getName());
             jsonInvestor.addProperty("firstName", src.getFirstName());
             jsonInvestor.addProperty("lastName", src.getLastName());
