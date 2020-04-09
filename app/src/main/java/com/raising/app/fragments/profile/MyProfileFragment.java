@@ -125,6 +125,11 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+        // if data not yet loaded don't proceed
+        if(!(AccountService.getAccount() instanceof Startup) &&
+        !(AccountService.getAccount() instanceof Investor)) {
+            return;
+        }
         Fragment fragment = null;
         Bundle bundle = new Bundle();
         bundle.putBoolean("editMode", true);
