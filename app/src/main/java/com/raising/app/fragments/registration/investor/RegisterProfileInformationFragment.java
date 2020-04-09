@@ -75,17 +75,17 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         }
 
         profileCompanyInput.setText(investor.getCompanyName());
-        profileWebsiteInput.setText(contactDetails.getWebsite());
+        profileWebsiteInput.setText(investor.getWebsite());
 
-        if(ResourcesManager.getCountry(contactDetails.getCountryId()) != null)
+        if(ResourcesManager.getCountry(investor.getCountryId()) != null)
             profileCountryInput.setText(
-                    ResourcesManager.getCountry(contactDetails.getCountryId()).getName());
+                    ResourcesManager.getCountry(investor.getCountryId()).getName());
 
         profilePhoneInput.setText(contactDetails.getPhone());
 
         profileCountryInput.setShowSoftInputOnFocus(false);
-        if(contactDetails.getCountryId() != -1)
-            countryId = contactDetails.getCountryId();
+        if(investor.getCountryId() != -1)
+            countryId = (int)investor.getCountryId();
     }
 
     private void setupCountryPicker() {
@@ -150,7 +150,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
     private void processProfileInformation() {
         String companyName = profileCompanyInput.getText().toString();
         contactDetails.setPhone(profilePhoneInput.getText().toString());
-        contactDetails.setWebsite(profileWebsiteInput.getText().toString());
+        investor.setWebsite(profileWebsiteInput.getText().toString());
 
         if(countryId == -1 || contactDetails.getPhone().length() == 0) {
             showSimpleDialog(getString(R.string.register_dialog_title),
@@ -158,7 +158,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
             return;
         }
 
-        contactDetails.setCountryId(countryId);
+        investor.setCountryId(countryId);
         investor.setCompanyName(companyName);
 
         try {

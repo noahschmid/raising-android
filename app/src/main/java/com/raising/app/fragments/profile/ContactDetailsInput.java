@@ -25,9 +25,8 @@ import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
 
 public class ContactDetailsInput extends RaisingFragment {
-    private EditText phoneNumberInput, countryInput, websiteInput;
+    private EditText phoneNumberInput;
     private ContactDetails contactDetails;
-    private CustomPicker countryPicker;
     private Button saveButton;
     private boolean isStartup;
     private String token;
@@ -49,64 +48,12 @@ public class ContactDetailsInput extends RaisingFragment {
         token = this.getArguments().getString("token");
         accountId = this.getArguments().getLong("id");
 
-        contactDetails.setStartup(isStartup);
-
         phoneNumberInput = view.findViewById(R.id.contact_input_phone);
-        websiteInput = view.findViewById(R.id.contact_input_website);
-        countryInput = view.findViewById(R.id.contact_input_country);
         saveButton = view.findViewById(R.id.contact_input_save_button);
 
-        countryInput.setShowSoftInputOnFocus(false);
-
-        if(isStartup) {
-            countryInput.setVisibility(View.GONE);
-            websiteInput.setVisibility(View.GONE);
-        }
-
-        setupCountryPicker();
         setupButton();
 
         hideBottomNavigation(true);
-    }
-
-    /**
-     * Set up the country picker
-     */
-    private void setupCountryPicker() {
-        CustomPicker.Builder builder =
-                new CustomPicker.Builder()
-                        .with(getContext())
-                        .canSearch(true)
-                        .listener(new OnCustomPickerListener() {
-                            @Override
-                            public void onSelectItem(PickerItem country) {
-                                countryInput.setText(country.getName());
-                                contactDetails.setCountryId((int)country.getId());
-                            }
-                        })
-                        .setItems(ResourcesManager.getCountries());
-
-        countryPicker = builder.build();
-
-        countryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    if(!countryPicker.instanceRunning())
-                        countryPicker.showDialog(getActivity());
-                }
-            }
-        });
-
-        countryInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(countryPicker.instanceRunning())
-                    countryPicker.dismiss();
-
-                countryPicker.showDialog(getActivity());
-            }
-        });
     }
 
     /**
@@ -126,8 +73,7 @@ public class ContactDetailsInput extends RaisingFragment {
      * proceed to matching fragment
      */
     private void processInputs() {
-        if((contactDetails.getCountryId() == -1 && !contactDetails.isStartup() ) ||
-                phoneNumberInput.getText().length() == 0) {
+        if(phoneNumberInput.getText().length() == 0) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
@@ -135,12 +81,7 @@ public class ContactDetailsInput extends RaisingFragment {
 
         contactDetails.setPhone(phoneNumberInput.getText().toString());
 
-        if(websiteInput.getText().length() > 0) {
-            contactDetails.setWebsite(websiteInput.getText().toString());
-        }
-
         try {
-            contactDetails.setStartup(isStartup);
             AccountService.saveContactDetails(contactDetails);
             AuthenticationHandler.login(contactDetails.getEmail(),
                     token, accountId, isStartup);

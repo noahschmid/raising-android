@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ public class CustomPickerAdapter extends
   private Context context;
   private int textColor;
   private boolean multiSelect;
+  private boolean onBind;
 
   public CustomPickerAdapter(Context context, List<? extends PickerItem> items,
                              OnItemClickListener listener, int textColor, boolean multiSelect) {
@@ -48,6 +50,7 @@ public class CustomPickerAdapter extends
 
   @Override
   public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    onBind = true;
     final PickerItem item = items.get(position);
     holder.itemNameText.setText(item.getName());
 
@@ -70,32 +73,42 @@ public class CustomPickerAdapter extends
       }
     }
 
-    holder.rootView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
+    holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(onBind)
+          return;
+
+        item.setChecked(isChecked);
+
         if(item.getParentId() == item.getId()) {
-          item.setChecked(!item.isChecked());
           for(PickerItem it : items) {
             if(it.getParentId() == item.getId()) {
-              it.setChecked(item.isChecked());
-              notifyDataSetChanged();
+              it.setChecked(isChecked);
             }
           }
         } else {
-          item.setChecked(!item.isChecked());
-          holder.checkBox.setChecked(item.isChecked());
-          if(!item.isChecked()) {
-              for(PickerItem it : items) {
-                if(it.getId() == item.getParentId()) {
-                  it.setChecked(false);
-                  break;
-                }
+          if(!isChecked) {
+            for(PickerItem it : items) {
+              if(it.getId() == item.getParentId()) {
+                it.setChecked(false);
+                break;
               }
+            }
           }
-          listener.onItemClicked(item);
-          notifyDataSetChanged();
         }
+        notifyDataSetChanged();
+        listener.onItemClicked(item);
       }
     });
+
+    holder.rootView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        holder.checkBox.setChecked(!holder.checkBox.isChecked());
+      }
+    });
+
+    onBind = false;
   }
 
   @Override public int getItemCount() {

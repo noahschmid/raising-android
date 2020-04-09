@@ -36,31 +36,11 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/contact_input_description"
-                app:layout_constraintBottom_toTopOf="@+id/contact_input_country_layout"
+                app:layout_constraintBottom_toTopOf="@+id/contact_input_phone_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/contact_input_title" />
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/contact_input_country_layout"
-                style="@style/TextInputLayoutTheme"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                android:hint="@string/register_profile_country"
-                app:layout_constraintBottom_toTopOf="@+id/contact_input_phone_layout"
-                app:layout_constraintEnd_toEndOf="@+id/contact_input_description_text"
-                app:layout_constraintStart_toStartOf="@+id/contact_input_description_text"
-                app:layout_constraintTop_toBottomOf="@+id/contact_input_description_text">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/contact_input_country"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight"
-                    android:inputType="none"
-                    app:endIconMode="none" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/contact_input_phone_layout"
@@ -69,34 +49,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/register_profile_phone"
-                app:layout_constraintBottom_toTopOf="@+id/contact_input_website_layout"
-                app:layout_constraintEnd_toEndOf="@id/contact_input_country_layout"
-                app:layout_constraintStart_toStartOf="@id/contact_input_country_layout"
-                app:layout_constraintTop_toBottomOf="@+id/contact_input_country_layout">
+                app:layout_constraintBottom_toTopOf="@+id/contact_input_save_button"
+                app:layout_constraintEnd_toEndOf="@id/contact_input_description_text"
+                app:layout_constraintStart_toStartOf="@id/contact_input_description_text"
+                app:layout_constraintTop_toBottomOf="@+id/contact_input_description_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/contact_input_phone"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"
                     android:inputType="numberDecimal" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/contact_input_website_layout"
-                style="@style/TextInputLayoutTheme"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
-                android:hint="@string/register_profile_website"
-                app:layout_constraintBottom_toTopOf="@+id/contact_input_phone_layout"
-                app:layout_constraintEnd_toEndOf="@+id/contact_input_phone_layout"
-                app:layout_constraintStart_toStartOf="@+id/contact_input_phone_layout"
-                app:layout_constraintTop_toBottomOf="@+id/contact_input_phone_layout">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/contact_input_website"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -106,9 +68,9 @@
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:text="@string/save_text"
-                app:layout_constraintEnd_toEndOf="@+id/contact_input_website_layout"
-                app:layout_constraintStart_toStartOf="@+id/contact_input_website_layout"
-                app:layout_constraintTop_toBottomOf="@id/contact_input_website_layout" />
+                app:layout_constraintEnd_toEndOf="@+id/contact_input_phone_layout"
+                app:layout_constraintStart_toStartOf="@+id/contact_input_phone_layout"
+                app:layout_constraintTop_toBottomOf="@id/contact_input_phone_layout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </FrameLayout>

@@ -6,9 +6,6 @@ import lombok.Data;
 
 @Data
 public class ContactDetails implements Serializable {
-    private boolean isStartup;
-    private int countryId = -1;
     private String phone;
     private String email;
-    private String website;
 }

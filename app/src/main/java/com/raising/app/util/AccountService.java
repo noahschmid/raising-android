@@ -207,11 +207,16 @@ public class AccountService {
         }
     }
 
+
+    /**
+     * Update the profile picture for the current account
+     * @param image
+     */
     public static void updateProfilePicture(Image image) {
-        JSONObject params = new JSONObject();
+        HashMap<String, String> params = new HashMap<>();
         final Image lastImage = account.getProfilePicture();
         account.setProfilePicture(image);
-        Log.d("AccountService", image.getImage());
+
         try {
             params.put("media", image.getImage());
             ApiRequestHandler.performPostRequest("account/profilepicture",
@@ -224,10 +229,23 @@ public class AccountService {
                         Log.e("AccountService", "Error while updating profile picture: "
                         + ApiRequestHandler.parseVolleyError(err));
                         return null;
-                    }, params);
+                    }, new JSONObject(params));
         } catch (Exception e) {
             Log.e("AccountService", "Error while updating profile picture: " +
                     e.getMessage());
+        }
+    }
+
+    public static void log(String message) {
+        // Split by line, then ensure each line can fit into Log's maximum length.
+        for (int i = 0, length = message.length(); i < length; i++) {
+            int newline = message.indexOf('\n', i);
+            newline = newline != -1 ? newline : length;
+            do {
+                int end = Math.min(newline, i + 999);
+                Log.d("AccountService", message.substring(i, end));
+                i = end;
+            } while (i < newline);
         }
     }
 

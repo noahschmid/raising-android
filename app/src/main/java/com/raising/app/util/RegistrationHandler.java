@@ -42,6 +42,7 @@ public class RegistrationHandler {
     private static boolean inProgress = false;
     private static Context context;
     private static boolean cancelAllowed = false;
+    private static boolean isStartup = false;
 
     private static String accountType;
     private static Account account = new Account();
@@ -72,8 +73,8 @@ public class RegistrationHandler {
             startup.setName(account.getName());
             startup.setEmail(account.getEmail());
             startup.setPassword(account.getPassword());
-            contactDetails.setStartup(true);
             contactDetails.setEmail(account.getEmail());
+            isStartup = true;
             InternalStorageHandler.saveObject(contactDetails, "rgstr_startup");
         }
         else{
@@ -82,15 +83,15 @@ public class RegistrationHandler {
             investor.setName(account.getName());
             investor.setEmail(account.getEmail());
             investor.setPassword(account.getPassword());
-            contactDetails.setStartup(false);
             contactDetails.setEmail(account.getEmail());
+            isStartup = false;
             InternalStorageHandler.saveObject(contactDetails, "rgstr_investor");
         }
         saveRegistrationState();
         InternalStorageHandler.saveObject(contactDetails, "rgstr_contact");
     }
     public static String getAccountType() { return accountType; }
-    public static boolean isStartup() { return contactDetails.isStartup(); }
+    public static boolean isStartup() { return isStartup; }
 
     /**
      * Save login information to internal storage until registration gets submitted
