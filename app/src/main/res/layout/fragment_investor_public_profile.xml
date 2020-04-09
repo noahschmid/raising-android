@@ -24,6 +24,7 @@
                 android:id="@+id/investor_gallery_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/element_underline_black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -184,9 +185,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:text="Pitch"
                 android:textColor="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
+                app:layout_constraintBottom_toTopOf="@+id/button_investor_public_profile_website"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_sentence"
                 app:layout_constraintTop_toBottomOf="@+id/text_investor_public_profile_sentence" />
@@ -195,8 +198,6 @@
                 android:id="@+id/button_investor_public_profile_website"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
                 android:hint="@string/public_profile_website"
                 android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
@@ -209,6 +210,7 @@
                 android:id="@+id/investor_public_profile_matching_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/button_investor_public_profile_website">
 
@@ -309,6 +311,7 @@
                     android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                     android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                    android:nestedScrollingEnabled="false"
                     app:layout_constraintBottom_toTopOf="@+id/text_investor_public_profile_investment_phase"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -334,6 +337,7 @@
                     android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                     android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                    android:nestedScrollingEnabled="false"
                     app:layout_constraintBottom_toTopOf="@+id/text_investor_public_profile_industry"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -359,6 +363,7 @@
                     android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                     android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                    android:nestedScrollingEnabled="false"
                     app:layout_constraintBottom_toTopOf="@+id/text_investor_public_profile_involvement"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -384,6 +389,7 @@
                     android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                     android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
                     android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                    android:nestedScrollingEnabled="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />

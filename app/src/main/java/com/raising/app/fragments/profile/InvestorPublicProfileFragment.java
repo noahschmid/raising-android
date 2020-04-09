@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -64,6 +65,9 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             Log.d("InvestorPublicProfile", "name: " + ((Investor)getArguments()
                     .getSerializable("investor")).getName());
             investor = (Investor)getArguments().getSerializable("investor");
+            // hide matching summary, if user accesses own public profile
+            CardView matchingSummary = view.findViewById(R.id.investor_public_profile_matching_summary);
+            matchingSummary.setVisibility(View.GONE);
         } else {
             AccountService.getInvestorAccount(getArguments().getLong("id"), investor -> {
                 this.investor = investor;
@@ -204,7 +208,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
        phaseAdapter.notifyDataSetChanged();
        industryAdapter.notifyDataSetChanged();
        supportAdapter.notifyDataSetChanged();
-       if(investor.getWebsite() == null) {
+       if(investor.getWebsite() == null || investor.getWebsite().equals("")) {
            profileWebsite.setVisibility(View.GONE);
        }
 

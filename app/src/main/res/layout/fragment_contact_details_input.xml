@@ -100,15 +100,15 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                style="@style/ButtonConfirmRegistration"
                 android:id="@+id/contact_input_save_button"
+                style="@style/ButtonConfirmRegistration"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/authenticationButtonHeight"
+                android:layout_marginTop="@dimen/inputFormVerticalMargin"
                 android:text="@string/save_text"
                 app:layout_constraintEnd_toEndOf="@+id/contact_input_website_layout"
                 app:layout_constraintStart_toStartOf="@+id/contact_input_website_layout"
                 app:layout_constraintTop_toBottomOf="@id/contact_input_website_layout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
 </FrameLayout>
