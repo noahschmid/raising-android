@@ -188,6 +188,24 @@ public class ResourcesManager implements Serializable {
     }
 
     /**
+     * Creates an easy to read string representation of large numbers
+     * @param amount The number, that should be converted to the easier string
+     * @return The string representation of the number
+     */
+    public static String amountToString(int amount) {
+        String unit = "";
+        String[] units = getContext().getResources().getStringArray(R.array.revenue_units);
+        String currency = getContext().getResources().getString(R.string.currency);
+        int i = 0;
+        while(Math.log10(amount) >= 3 && i < units.length) {
+            amount /= 1000;
+            unit = units[i];
+            ++i;
+        }
+        return currency + " " + amount +  unit;
+    }
+
+    /**
      * Check whether all backend requests have returned and if so, check whether they were
      * all successful or not. If not, notify main activity
      */

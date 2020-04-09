@@ -52,14 +52,15 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     private Startup profileStartup;
     private ImageSwitcher imageSwitcher;
     private ImageButton profileAccept, profileDecline;
-    private TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch, profileWebsite;
+    private TextView imageIndex, matchingPercent, profileName, profileLocation, profileSentence,
+            profilePitch, profileWebsite;
     private TextView scope, minTicket, maxTicket;
     private RecyclerView recyclerInvestorType, recyclerPhase, recyclerIndustry, recyclerInvolvement;
     private ArrayList<Model> investorTypes, industries, investmentPhases, supports;
     private PublicProfileMatchingRecyclerViewAdapter typeAdapter, industryAdapter, phaseAdapter,
             supportAdapter;
     private TextView startupRevenue, startupBreakEven, startupFoundingYear, startupMarkets, startupFte,
-            startupInvestmentType, startupValuation, startupClosingTime, startupCompleted;
+            startupInvestmentType, startupValuation, startupValuationTitle, startupClosingTime, startupCompleted;
 
     private Startup startup;
 
@@ -70,7 +71,6 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // TODO: store this profiles startup with the following line
         View view =  inflater.inflate(R.layout.fragment_startup_public_profile,
                 container, false);
 
@@ -85,6 +85,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         } else {
             AccountService.getStartupAccount(getArguments().getLong("id"), startup -> {
                 this.startup = startup;
+                Log.i("startup", startup.toString());
                 loadData();
                 return null;
             });
@@ -107,55 +108,51 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         matchingPercent = view.findViewById(R.id.text_startup_public_profile_matching_percent);
         profileName = view.findViewById(R.id.text_startup_public_profile_name);
         profileLocation = view.findViewById(R.id.text_startup_public_profile_location);
+        profileSentence = view.findViewById(R.id.text_startup_public_profile_sentence);
         profilePitch = view.findViewById(R.id.text_startup_public_profile_pitch);
-        //TODO: fill texts with startup data
 
         profileWebsite = view.findViewById(R.id.text_startup_public_profile_website);
-        //TODO:  if(startup.getWebsite() == 0) { profileWebsite.setVisibility(VIEW:GONE); }
         profileWebsite.setOnClickListener(v -> {
-            //TODO: replace with actual website
-            String website = "";
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+            String website = startup.getWebsite();
+            if(website.length() == 0)
+                return;
+            String uri = "https://" + website;
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
             startActivity(browserIntent);
         });
-
-        // setup matching criteria
-        scope = view.findViewById(R.id.text_startup_public_profile_actual_scope);
-        minTicket = view.findViewById(R.id.text_startup_public_profile_min_ticket);
-        maxTicket = view.findViewById(R.id.text_startup_public_profile_max_ticket);
-
 
         initRecyclerViews(view);
 
         // setup startup specific information
-        startupRevenue = view.findViewById(R.id.text_profile_revenue_title);
-        startupBreakEven = view.findViewById(R.id.text_profile_breakeven_title);
-        startupFoundingYear = view.findViewById(R.id.text_profile_founding_year_title);
-        startupMarkets = view.findViewById(R.id.text_profile_current_markets_title);
-        startupFte = view.findViewById(R.id.text_profile_fte_title);
+        startupRevenue = view.findViewById(R.id.text_profile_revenue);
+        startupBreakEven = view.findViewById(R.id.text_profile_breakeven);
+        startupFoundingYear = view.findViewById(R.id.text_profile_founding_year);
+        startupMarkets = view.findViewById(R.id.text_profile_current_markets);
+        startupFte = view.findViewById(R.id.text_profile_fte);
 
-        this.startupInvestmentType = view.findViewById(R.id.text_profile_investment_type_title);
-        startupValuation = view.findViewById(R.id.text_profile_valuation_title);
-        startupClosingTime = view.findViewById(R.id.text_profile_closing_time_title);
-        startupCompleted = view.findViewById(R.id.text_profile_completed_title);
-        //TODO: fill texts with startup data
+        this.startupInvestmentType = view.findViewById(R.id.text_profile_investment_type);
+        startupValuation = view.findViewById(R.id.text_profile_valuation);
+        startupValuationTitle = view.findViewById(R.id.text_profile_valuation_title);
+        scope = view.findViewById(R.id.text_startup_public_profile_actual_scope);
+        minTicket = view.findViewById(R.id.text_startup_public_profile_min_ticket);
+        maxTicket = view.findViewById(R.id.text_startup_public_profile_max_ticket);
+        startupClosingTime = view.findViewById(R.id.text_profile_closing_time);
+        startupCompleted = view.findViewById(R.id.text_profile_completed);
 
         ProgressBar completed = view.findViewById(R.id.progress_profile_completed);
         completed.setMax(getResources().getInteger(R.integer.maxPercent));
-        //TODO: set actual progress
-        completed.setProgress(75);
+        int completedPercentage = (100 / startup.getScope()) * startup.getRaised();
+        completed.setProgress(completedPercentage);
 
         // setup recycler views for founders and board members
-        //TODO: fill array list with founder
-        ArrayList<Founder> founderList = new ArrayList<>();
+        ArrayList<Founder> founderList = new ArrayList<>(startup.getFounders());
         RecyclerView founderRecyclerView = view.findViewById(R.id.startup_profile_founder_list);
         founderRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         StartupProfileFounderRecyclerViewAdapter founderListAdapter
                 = new StartupProfileFounderRecyclerViewAdapter(founderList);
         founderRecyclerView.setAdapter(founderListAdapter);
 
-        //TODO: fill array list with board member
-        ArrayList<BoardMember> boardMemberList = new ArrayList<>();
+        ArrayList<BoardMember> boardMemberList = new ArrayList<>(startup.getBoardMembers());
         RecyclerView boardMemberRecyclerView = view.findViewById(R.id.startup_profile_board_member_list);
         boardMemberRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         StartupProfileBoardMemberRecyclerViewAdapter boardMemberListAdapter
@@ -170,6 +167,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     }
 
     private void loadData() {
+        scope.setText(ResourcesManager.amountToString(startup.getScope()));
         minTicket.setText(ResourcesManager.getTicketSize(startup.getTicketMinId())
                 .toString(getString(R.string.currency),
                         getResources().getStringArray(R.array.revenue_units)));
@@ -177,12 +175,14 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 .toString(getString(R.string.currency),
                         getResources().getStringArray(R.array.revenue_units)));
         profileName.setText(startup.getName());
+        profileSentence.setText(startup.getDescription());
         profilePitch.setText(startup.getPitch());
         startupRevenue.setText(ResourcesManager.getRevenueString(
                 startup.getRevenueMinId()));
         startupBreakEven.setText(String.valueOf(startup.getBreakEvenYear()));
         startupFoundingYear.setText(String.valueOf(startup.getFoundingYear()));
         startupFte.setText(String.valueOf(startup.getNumberOfFte()));
+        //TODO: store current markets
         startupInvestmentType.setText(ResourcesManager.getFinanceType(
                 startup.getFinanceTypeId()).getName());
         DateFormat toFormat = new SimpleDateFormat("MM.dd.yyyy");
@@ -213,7 +213,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         industryAdapter.notifyDataSetChanged();
         supportAdapter.notifyDataSetChanged();
 
-        if(startup.getWebsite() == null) {
+        if(startup.getWebsite() == null || startup.getWebsite().equals("")) {
             profileWebsite.setVisibility(View.GONE);
         }
 
@@ -225,6 +225,14 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             startup.getGallery().forEach(image -> {
                 pictures.add(image.getBitmap());
             });
+        }
+
+        // hide valuation fields, if they are empty
+        if(startup.getPreMoneyValuation() < 0) {
+            startupValuation.setText(ResourcesManager.amountToString(startup.getPreMoneyValuation()));
+        } else {
+            startupValuationTitle.setVisibility(View.GONE);
+            startupValuation.setVisibility(View.GONE);
         }
     }
 
@@ -344,8 +352,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         PieChart pieChart = view.findViewById(R.id.stakeholder_equity_chart);
         List<PieEntry> pieEntries = new ArrayList<>();
 
-        //TODO: store shareholders in this array list
-        ArrayList<Shareholder> shareholders = new ArrayList<>();
+        ArrayList<Shareholder> shareholders = new ArrayList<>(startup.getPrivateShareholders());
+        shareholders.addAll(startup.getCorporateShareholders());
 
         //add all shareholders to pieEntries list
         for (Shareholder shareholder : shareholders) {

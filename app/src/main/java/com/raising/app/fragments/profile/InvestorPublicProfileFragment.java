@@ -204,7 +204,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
        phaseAdapter.notifyDataSetChanged();
        industryAdapter.notifyDataSetChanged();
        supportAdapter.notifyDataSetChanged();
-       if(investor.getWebsite() == null) {
+       if(investor.getWebsite() == null || investor.getWebsite().equals("")) {
            profileWebsite.setVisibility(View.GONE);
        }
 

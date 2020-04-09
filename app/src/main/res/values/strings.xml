@@ -26,19 +26,14 @@
     <string name="myProfile_watch_public_profile"> See my public profile </string>
     <string name="myProfile_apply_changes"> Apply Changes </string>
     <string name="startup_profile_key_figures"> Key Figures </string>
+
+
+
+
+    <!-- Strings used in public profile -->
     <string name="public_profile_website"> Read more on their website </string>
     <string name="public_profile_matching_information"> Matching Information </string>
 
-    <string name="startup_shareholder_chart_title"> Shareholder Equity Shares </string>
-    <string name="public_profile_matching_title"> Matching Information </string>
-
-    <string name="startup_public_profile_founder"> Founders </string>
-    <string name="startup_public_profile_education"> Education </string>
-    <string name="startup_public_profile_profession"> Profession </string>
-    <string name="startup_public_profile_member_since"> Member Since </string>
-    <string name="startup_public_profile_board_member"> Members of the board </string>
-
-    <!-- Used in investor public profile -->
     <string name="investor_matching_scope"> Investment Scope </string>
     <string name="investor_matching_min_ticket"> Minimal Ticket Size </string>
     <string name="investor_matching_max_ticket"> Maximal Ticket Size </string>
@@ -46,6 +41,23 @@
     <string name="investor_matching_phase"> Preferred Investment Phases </string>
     <string name="investor_matching_industry"> Interested in these Industries </string>
     <string name="investor_matching_involvement"> Desired Form of Involvement </string>
+
+    <string name="startup_public_profile_revenue"> Revenue </string>
+    <string name="startup_public_profile_break_even"> Break-Even Year </string>
+    <string name="startup_public_profile_founding_year"> Founding Year </string>
+    <string name="startup_public_profile_markets"> Current Markets </string>
+    <string name="startup_public_profile_fte"> FTE </string>
+    <string name="startup_public_profile_type"> Type of investment </string>
+    <string name="startup_public_profile_valuation"> Pre Money Valuation </string>
+    <string name="startup_public_profile_closing_time"> Closing Time </string>
+    <string name="startup_public_profile_completed"> Completed </string>
+    <string name="startup_public_profile_founder"> Founders </string>
+    <string name="startup_public_profile_education"> Education </string>
+    <string name="startup_public_profile_profession"> Profession </string>
+    <string name="startup_public_profile_member_since"> Member Since </string>
+    <string name="startup_public_profile_board_member"> Members of the board </string>
+
+    <string name="startup_shareholder_chart_title"> Shareholder Equity Shares </string>
 
     <!-- Strings used in LoginScreen -->
     <string name="login_welcome_text"> Welcome to Raising </string>

@@ -54,6 +54,12 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // if data not yet loaded don't proceed
+        if(!(AccountService.getAccount() instanceof Startup) &&
+                !(AccountService.getAccount() instanceof Investor)) {
+            return;
+        }
+
         startUpLayout = view.findViewById(R.id.myProfile_startUp_layout);
         investorLayout = view.findViewById(R.id.myProfile_investor_layout);
 
