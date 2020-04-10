@@ -19,6 +19,9 @@ import com.raising.app.models.InvestmentPhase;
 import com.raising.app.models.Investor;
 import com.raising.app.models.Startup;
 import com.raising.app.models.Support;
+import com.raising.app.models.stakeholder.BoardMember;
+import com.raising.app.models.stakeholder.Founder;
+import com.raising.app.models.stakeholder.Shareholder;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -38,6 +41,7 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
         }
         startup.setCompanyName(jsonObject.get("companyName").getAsString());
         startup.setPitch(jsonObject.get("pitch").getAsString());
+        startup.setPreMoneyValuation(jsonObject.get("preMoneyValuation").getAsInt());
         startup.setDescription(jsonObject.get("description").getAsString());
         startup.setTicketMinId(jsonObject.get("ticketMinId").getAsInt());
         startup.setTicketMaxId(jsonObject.get("ticketMaxId").getAsInt());
@@ -102,6 +106,65 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
         for(JsonElement el : jsonObject.get("labels").getAsJsonArray()) {
             JsonObject obj = el.getAsJsonObject();
             startup.addLabel(obj.get("id").getAsLong());
+        }
+
+        for(JsonElement el : jsonObject.get("founders").getAsJsonArray()) {
+            JsonObject obj = el.getAsJsonObject();
+            Founder founder = new Founder();
+            founder.setFirstName(obj.get("firstName").getAsString());
+            founder.setLastName(obj.get("lastName").getAsString());
+            founder.setCountryId(obj.get("countryId").getAsInt());
+            founder.setEducation(obj.get("education").getAsString());
+            founder.setPosition(obj.get("position").getAsString());
+
+            founder.setTitle(founder.getFirstName() + " " +
+                    founder.getLastName());
+            startup.addFounder(founder);
+        }
+
+        for(JsonElement el : jsonObject.get("boardmembers").getAsJsonArray()) {
+            JsonObject obj = el.getAsJsonObject();
+            BoardMember boardMember = new BoardMember();
+            boardMember.setBoardPosition(obj.get("position").getAsString());
+            boardMember.setCountryId(obj.get("countryId").getAsInt());
+            boardMember.setEducation(obj.get("education").getAsString());
+            boardMember.setFirstName(obj.get("firstName").getAsString());
+            boardMember.setLastName(obj.get("lastName").getAsString());
+            boardMember.setProfession(obj.get("profession").getAsString());
+            boardMember.setMemberSince(obj.get("memberSince").getAsString());
+            boardMember.setTitle(boardMember.getFirstName() + " " +
+                    boardMember.getLastName());
+            startup.addBoardMember(boardMember);
+        }
+
+        for(JsonElement el : jsonObject.get("privateShareholders").getAsJsonArray()) {
+            JsonObject obj = el.getAsJsonObject();
+            Shareholder privateShareholder = new Shareholder();
+            privateShareholder.setPrivateShareholder(true);
+            privateShareholder.setFirstName(obj.get("firstName").getAsString());
+            privateShareholder.setLastName(obj.get("lastName").getAsString());
+            privateShareholder.setInvestorTypeId(obj.get("investorTypeId").getAsInt());
+            privateShareholder.setCountryId(obj.get("countryId").getAsInt());
+            privateShareholder.setEquityShare(obj.get("equityShare").getAsString());
+            privateShareholder.setTitle(privateShareholder.getFirstName() + " " +
+                    privateShareholder.getLastName());
+            startup.addPrivateShareholder(privateShareholder);
+        }
+
+        for(JsonElement el : jsonObject.get("corporateShareholders").getAsJsonArray()) {
+            JsonObject obj = el.getAsJsonObject();
+            Shareholder corporateShareholder = new Shareholder();
+            corporateShareholder.setPrivateShareholder(false);
+            corporateShareholder.setFirstName(obj.get("firstName").getAsString());
+            corporateShareholder.setLastName(obj.get("lastName").getAsString());
+            corporateShareholder.setCorporateBodyId(obj.get("corporateBodyId").getAsInt());
+            corporateShareholder.setCountryId(obj.get("countryId").getAsInt());
+            corporateShareholder.setEquityShare(obj.get("equityShare").getAsString());
+            corporateShareholder.setCorpName(obj.get("corpName").getAsString());
+            corporateShareholder.setWebsite(obj.get("website").getAsString());
+            corporateShareholder.setTitle(corporateShareholder.getFirstName() + " "
+            + corporateShareholder.getLastName());
+            startup.addCorporateShareholder(corporateShareholder);
         }
 
         return startup;

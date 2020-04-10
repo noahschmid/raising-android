@@ -67,11 +67,9 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
             investor = (Investor)AccountService.getAccount();
             contactDetails = AccountService.getContactDetails();
             editMode = true;
-            Log.d("RegisterProfileInformation", "editMode = ON");
         } else {
             investor = RegistrationHandler.getInvestor();
             contactDetails = RegistrationHandler.getContactDetails();
-            Log.d("RegisterProfileInformation", "editMode = OFF");
         }
 
         profileCompanyInput.setText(investor.getCompanyName());
