@@ -62,6 +62,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             supportAdapter;
     private TextView startupRevenue, startupBreakEven, startupFoundingYear, startupMarkets, startupFte,
             startupInvestmentType, startupValuation, startupValuationTitle, startupClosingTime, startupCompleted;
+    private ProgressBar completedProgress;
 
     private Startup startup;
 
@@ -85,6 +86,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             Log.d("StartupPublicProfile", "name: " + ((Startup)getArguments()
                     .getSerializable("startup")).getName());
             startup = (Startup) getArguments().getSerializable("startup");
+            Log.i("startup", startup.toString());
             // hide matching summary, if user accesses own public profile
             CardView matchingSummary = view.findViewById(R.id.startup_public_profile_matching_summary);
             matchingSummary.setVisibility(View.GONE);
@@ -124,7 +126,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             String website = startup.getWebsite();
             if(website.length() == 0)
                 return;
-            String uri = "https://" + website;
+            String uri = "http://" + website;
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
             startActivity(browserIntent);
         });
@@ -147,10 +149,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         startupClosingTime = view.findViewById(R.id.text_profile_closing_time);
         startupCompleted = view.findViewById(R.id.text_profile_completed);
 
-        ProgressBar completed = view.findViewById(R.id.progress_profile_completed);
-        completed.setMax(getResources().getInteger(R.integer.maxPercent));
-        int completedPercentage = (100 / startup.getScope()) * startup.getRaised();
-        completed.setProgress(completedPercentage);
+        completedProgress = view.findViewById(R.id.progress_profile_completed);
 
         // setup recycler views for founders and board members
         ArrayList<Founder> founderList = new ArrayList<>(startup.getFounders());
@@ -199,7 +198,11 @@ public class StartupPublicProfileFragment extends RaisingFragment {
      //   DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date closing = new Date(Long.parseLong(startup.getClosingTime()));
         startupClosingTime.setText(toFormat.format(closing));
-        startupCompleted.setText(String.valueOf(startup.getRaised()));
+        startupCompleted.setText(ResourcesManager.amountToString(startup.getRaised()));
+        completedProgress.setMax(getResources().getInteger(R.integer.maxPercent));
+        int completedPercentage = (100 / startup.getScope()) * startup.getRaised();
+        completedProgress.setProgress(completedPercentage);
+
         profileLocation.setText(ResourcesManager.getCountry(startup.getCountryId()).getName());
 
         //TODO: change to actual value
