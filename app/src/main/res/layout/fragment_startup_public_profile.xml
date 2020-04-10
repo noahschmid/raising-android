@@ -164,6 +164,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/startup_public_profile_matching_summary" />
 
+            <LinearLayout
+                android:id="@+id/layout_startup_public_profile_labels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
+                android:gravity="center|end"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/text_startup_public_profile_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_startup_public_profile_name" />
+
             <TextView
                 android:id="@+id/text_startup_public_profile_location"
                 android:layout_width="wrap_content"
@@ -729,23 +740,29 @@
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/stakeholder_equity_chart"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="@dimen/public_profile_equity_chart_size"
+                android:layout_height="@dimen/public_profile_equity_chart_size"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                app:layout_constraintBottom_toTopOf="@+id/stakeholder_equity_chart_legend"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_shareholder" />
 
-            <LinearLayout
-                android:id="@+id/layout_startup_public_profile_labels"
-                android:layout_width="wrap_content"
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/stakeholder_equity_chart_legend"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
                 android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                android:gravity="center|end"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@+id/text_startup_public_profile_name"
+                android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                app:alignContent="stretch"
+                app:alignItems="stretch"
+                app:flexWrap="wrap"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_startup_public_profile_name"></LinearLayout>
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/stakeholder_equity_chart" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

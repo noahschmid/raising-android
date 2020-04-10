@@ -147,7 +147,7 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
             privateShareholder.setCountryId(obj.get("countryId").getAsInt());
             privateShareholder.setEquityShare(obj.get("equityShare").getAsString());
             privateShareholder.setTitle(privateShareholder.getFirstName() + " " +
-                    privateShareholder.getLastName() + ", " + privateShareholder.getEquityShare());
+                    privateShareholder.getLastName() + ", " + privateShareholder.getEquityShare() + "%");
             startup.addPrivateShareholder(privateShareholder);
         }
 
@@ -163,7 +163,7 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
             corporateShareholder.setCorpName(obj.get("corpName").getAsString());
             corporateShareholder.setWebsite(obj.get("website").getAsString());
             corporateShareholder.setTitle(corporateShareholder.getCorpName() + ", "
-            + corporateShareholder.getEquityShare());
+            + corporateShareholder.getEquityShare() + "%");
             startup.addCorporateShareholder(corporateShareholder);
         }
 

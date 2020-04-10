@@ -27,9 +27,6 @@
     <string name="myProfile_apply_changes"> Apply Changes </string>
     <string name="startup_profile_key_figures"> Key Figures </string>
 
-
-
-
     <!-- Strings used in public profile -->
     <string name="public_profile_website"> Read more on their website </string>
     <string name="public_profile_matching_information"> Matching Information </string>

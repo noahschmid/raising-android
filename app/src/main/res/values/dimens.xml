@@ -10,6 +10,9 @@
     <dimen name="matchlist_picture_size"> 100dp </dimen>
     <dimen name="matchlist_percent_chart_size"> 50dp </dimen>
 
+    <dimen name="public_profile_equity_chart_size"> 225dp </dimen>
+    <dimen name="public_profile_equity_chart_legend_color_view_size"> 30dp </dimen>
+
     <dimen name="public_profile_matching_information_icon_size"> 32dp </dimen>
 
     <dimen name="inputFormHorizontalMarginSmall"> 16dp </dimen>

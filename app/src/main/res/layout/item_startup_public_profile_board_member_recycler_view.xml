@@ -91,7 +91,7 @@
         android:layout_height="0dp"
         android:gravity="center|end"
         android:text="Education"
-        android:textColorHint="@color/raisingPrimaryTextColor"
+        android:textColor="@color/raisingPrimaryTextColor"
         android:textSize="@dimen/raisingTextFontSize"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_board_edicatuon_title"
         app:layout_constraintEnd_toEndOf="parent"

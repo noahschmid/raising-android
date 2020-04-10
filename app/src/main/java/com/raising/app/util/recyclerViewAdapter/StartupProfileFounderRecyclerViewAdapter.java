@@ -35,7 +35,8 @@ public class StartupProfileFounderRecyclerViewAdapter extends RecyclerView.Adapt
         Founder recyclerItem = recyclerItems.get(position);
 
         holder.founderPosition.setText(recyclerItem.getPosition());
-        holder.founderName.setText(recyclerItem.getTitle());
+        String name = recyclerItem.getFirstName() + " " + recyclerItem.getLastName();
+        holder.founderName.setText(name);
         holder.founderEducation.setText(recyclerItem.getEducation());
     }
 
