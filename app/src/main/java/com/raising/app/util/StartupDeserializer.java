@@ -155,15 +155,12 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
             JsonObject obj = el.getAsJsonObject();
             Shareholder corporateShareholder = new Shareholder();
             corporateShareholder.setPrivateShareholder(false);
-            corporateShareholder.setFirstName(obj.get("firstName").getAsString());
-            corporateShareholder.setLastName(obj.get("lastName").getAsString());
             corporateShareholder.setCorporateBodyId(obj.get("corporateBodyId").getAsInt());
             corporateShareholder.setCountryId(obj.get("countryId").getAsInt());
             corporateShareholder.setEquityShare(obj.get("equityShare").getAsString());
             corporateShareholder.setCorpName(obj.get("corpName").getAsString());
             corporateShareholder.setWebsite(obj.get("website").getAsString());
-            corporateShareholder.setTitle(corporateShareholder.getFirstName() + " "
-            + corporateShareholder.getLastName());
+            corporateShareholder.setTitle(corporateShareholder.getCorpName());
             startup.addCorporateShareholder(corporateShareholder);
         }
 
