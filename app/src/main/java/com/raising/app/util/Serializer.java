@@ -72,7 +72,6 @@ public class Serializer {
                                      JsonSerializationContext context) {
             JsonObject jsonStartup = new JsonObject();
 
-            jsonStartup.addProperty("email", src.getEmail());
             jsonStartup.addProperty("ticketMinId", src.getTicketMinId());
             jsonStartup.addProperty("ticketMaxId", src.getTicketMaxId());
             jsonStartup.addProperty("investmentPhaseId", src.getInvestmentPhaseId());

@@ -54,10 +54,12 @@ public class AccountService {
             Log.e("AuthenticationHandler", "ERROR: fetching account " +
                     "whithout being logged in!");
         }
-        if(AuthenticationHandler.isStartup()) {
+        if(account instanceof Startup) {
             return (Startup)account;
+        } else if (account instanceof Investor) {
+            return (Investor)account;
         }
-        return (Investor)account;
+        return account;
     }
 
     /**
