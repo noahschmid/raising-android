@@ -207,8 +207,9 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         startup.setScope((int)scope);
         startup.setRaised(completed);
 
+        Date completedDate = selectedDate.getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        startup.setClosingTime(formatter.format(selectedDate));
+        startup.setClosingTime(formatter.format(completedDate));
 
         try {
             RegistrationHandler.saveStartup(startup);
