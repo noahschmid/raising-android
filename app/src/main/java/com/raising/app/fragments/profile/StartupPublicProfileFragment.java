@@ -409,7 +409,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         ArrayList<Shareholder> shareholders = new ArrayList<>(startup.getPrivateShareholders());
         shareholders.addAll(startup.getCorporateShareholders());
 
-        //add all shareholders to pieEntries list
+        /*add all shareholders to pieEntries list
         shareholders.forEach(shareholder -> {
             // extract the chart name and value for every shareholder
             String investorType = ResourcesManager.getInvestorType(shareholder.getInvestorTypeId()).toString();
@@ -418,6 +418,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             float equityShare = Float.parseFloat(equityShareString.substring(0, equityShareString.length() - 2));
             pieEntries.add(new PieEntry(equityShare, chartTitle));
         });
+        */
 
         PieDataSet pieDataSet = new PieDataSet(pieEntries, getString(R.string.startup_shareholder_chart_title));
         pieDataSet.setColors(populateColorArray());
