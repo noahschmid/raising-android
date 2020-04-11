@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.models.Account;
 import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.RegistrationHandler;
@@ -86,7 +87,6 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
             }
         }
 
-        //TODO
         if(labels.size() == 0) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
@@ -100,12 +100,13 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
                 RegistrationHandler.saveStartup(startup);
                 changeFragment(new RegisterStartupImagesFragment());
             } else {
-                popCurrentFragment(this);
+                AccountService.updateAccount(startup, v -> {
+                    popCurrentFragment(this);
+                    return null;
+                });
             }
-
         } catch(IOException e) {
             Log.e("RegisterStartupLabels", "Error while saving startup labels");
         }
-
     }
 }

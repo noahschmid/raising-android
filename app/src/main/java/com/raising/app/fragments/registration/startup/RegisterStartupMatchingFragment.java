@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.ResourcesManager;
+import com.raising.app.viewModels.AccountViewModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,6 +42,8 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
     private int [] ticketSizeSteps;
     private Startup startup;
     private boolean editMode = false;
+
+    private AccountViewModel accountViewModel;
 
 
     @Override
@@ -60,6 +64,8 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
         ticketSizeSteps = ResourcesManager.getTicketSizeValues();
         ticketSizeStrings = ResourcesManager.getTicketSizeStrings(getString(R.string.currency),
@@ -170,9 +176,18 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         startup.setInvestmentPhaseId(investmentPhaseId);
 
         try {
-            RegistrationHandler.saveStartup(startup);
-            changeFragment(new RegisterStartupPitchFragment(),
-                    "RegisterStartupPitchFragment");
+            if(!editMode) {
+                RegistrationHandler.saveStartup(startup);
+                changeFragment(new RegisterStartupPitchFragment(),
+                        "RegisterStartupPitchFragment");
+            } else {
+
+                AccountService.updateAccount(startup, v -> {
+                    popCurrentFragment(this);
+                    return null;
+                });
+            }
+
         } catch (IOException e) {
             Log.e("RegisterStartupMatching",
                     "Error in processInputs: " + e.getMessage());

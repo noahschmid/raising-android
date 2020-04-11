@@ -231,8 +231,19 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
             @Override
             public void onClickDelete(int position) {
-                founderList.remove(position);
-                founderAdapter.notifyItemRemoved(position);
+                if(editMode) {
+                    ApiRequestHandler.performDeleteRequest("startup/founder/" +
+                                    founderList.get(position).getId(),
+                            result -> {
+                                founderList.remove(position);
+                                founderAdapter.notifyItemRemoved(position);
+                                return null;
+                            },
+                            ApiRequestHandler.errorHandler);
+                } else {
+                    founderList.remove(position);
+                    founderAdapter.notifyItemRemoved(position);
+                }
             }
         });
     }
@@ -287,8 +298,19 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
             @Override
             public void onClickDelete(int position) {
-                boardMemberList.remove(position);
-                boardMemberAdapter.notifyItemRemoved(position);
+                if(editMode) {
+                    ApiRequestHandler.performDeleteRequest("startup/boardmember/" +
+                            boardMemberList.get(position).getId(),
+                            result -> {
+                                boardMemberList.remove(position);
+                                boardMemberAdapter.notifyItemRemoved(position);
+                        return null;
+                            },
+                            ApiRequestHandler.errorHandler);
+                } else {
+                    boardMemberList.remove(position);
+                    boardMemberAdapter.notifyItemRemoved(position);
+                }
             }
         });
     }
@@ -343,8 +365,19 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
             @Override
             public void onClickDelete(int position) {
-                shareholderList.remove(position);
-                shareholderAdapter.notifyItemRemoved(position);
+                if(editMode) {
+                    ApiRequestHandler.performDeleteRequest("startup/shareholder/" +
+                                    shareholderList.get(position).getId(),
+                            result -> {
+                                shareholderList.remove(position);
+                                shareholderAdapter.notifyItemRemoved(position);
+                                return null;
+                            },
+                            ApiRequestHandler.errorHandler);
+                } else {
+                    shareholderList.remove(position);
+                    shareholderAdapter.notifyItemRemoved(position);
+                }
             }
         });
     }

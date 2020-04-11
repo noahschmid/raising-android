@@ -224,7 +224,6 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         startupCompleted.setText(ResourcesManager.amountToString(startup.getRaised()));
         completedProgress.setMax(startup.getScope());
         completedProgress.setProgress(startup.getRaised());
-
         profileLocation.setText(ResourcesManager.getCountry(startup.getCountryId()).getName());
 
         //TODO: change to actual value

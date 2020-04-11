@@ -228,7 +228,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
                 });
             }
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.d("RegisterCompanyFiguresFragment", "Error while processing inputs: "
                     + e.getMessage());
         }

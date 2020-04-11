@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -28,8 +29,10 @@ import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.RegistrationHandler;
+import com.raising.app.viewModels.AccountViewModel;
 
 public class MainActivity extends AppCompatActivity {
+    AccountViewModel accountViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         RegistrationHandler.setContext(getApplicationContext());
+
+        accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 

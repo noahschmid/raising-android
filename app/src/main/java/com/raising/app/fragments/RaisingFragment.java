@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,7 +24,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.MainActivity;
 import com.raising.app.R;
 import com.raising.app.models.Model;
+import com.raising.app.models.ViewState;
 import com.raising.app.util.SimpleMessageDialog;
+import com.raising.app.viewModels.AccountViewModel;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
 import java.util.ArrayList;
@@ -31,12 +34,31 @@ import java.util.Calendar;
 
 public class RaisingFragment extends Fragment {
     protected View loadingPanel;
+    protected FrameLayout overlayLayout;
+    AccountViewModel accountViewModel;
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO: add observer observing AccountViewModel
+        loadingPanel = getLayoutInflater().inflate(R.layout.view_loading_panel, null);
+        overlayLayout = getView().findViewById(R.id.overlay_layout);
+        overlayLayout.setFocusable(false);
+        overlayLayout.setClickable(false);
+
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
+        accountViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
+            switch (viewState) {
+                case LOADING:
+                    showLoadingPanel();
+                case RESULT:
+                    dismissLoadingPanel();
+                    break;
+                case ERROR:
+                    break;
+            }
+        });
     }
 
     /**
@@ -306,18 +328,23 @@ public class RaisingFragment extends Fragment {
     }
 
     protected void showLoadingPanel() {
-        loadingPanel = getLayoutInflater().inflate(R.layout.view_loading_panel, null);
-        FrameLayout loginFrameLayout = getView().findViewById(R.id.overlay_layout);
-        loginFrameLayout.setFocusable(false);
-        loginFrameLayout.setClickable(false);
-        if(loginFrameLayout == null) {
+        if(overlayLayout == null) {
             Log.e("RaisingFragment", "No overlay layout found!");
             return;
         }
-        loginFrameLayout.addView(loadingPanel);
+
+        getView().setClickable(false);
+        getView().setFocusable(false);
+        overlayLayout.addView(loadingPanel);
     }
 
     protected void dismissLoadingPanel() {
+        if(loadingPanel == null) {
+            return;
+        }
+
+        getView().setClickable(true);
+        getView().setFocusable(true);
         loadingPanel.setVisibility(View.GONE);
     }
 }
