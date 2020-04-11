@@ -170,6 +170,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    dismissLoadingPanel();
                     try {
                         if(error.networkResponse.statusCode == 403) {
                             showSimpleDialog(

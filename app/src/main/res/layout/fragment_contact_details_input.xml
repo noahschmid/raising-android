@@ -2,13 +2,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/overlay_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.profile.ContactDetailsInput">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -18,27 +20,26 @@
                 android:id="@+id/contact_input_title"
                 style="@style/FragmentTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="24dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:text="@string/contact_input_title"
                 app:layout_constraintBottom_toTopOf="@+id/contact_input_description_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
                 android:id="@+id/contact_input_description_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:text="@string/contact_input_description"
                 app:layout_constraintBottom_toTopOf="@+id/contact_input_phone_layout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/contact_input_phone_layout"
+                app:layout_constraintStart_toStartOf="@+id/contact_input_phone_layout"
                 app:layout_constraintTop_toBottomOf="@+id/contact_input_title" />
 
 
@@ -47,11 +48,12 @@
                 style="@style/TextInputLayoutTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:hint="@string/register_profile_phone"
                 app:layout_constraintBottom_toTopOf="@+id/contact_input_save_button"
-                app:layout_constraintEnd_toEndOf="@id/contact_input_description_text"
-                app:layout_constraintStart_toStartOf="@id/contact_input_description_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/contact_input_description_text">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -66,11 +68,11 @@
                 style="@style/ButtonConfirmRegistration"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:text="@string/save_text"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/contact_input_phone_layout"
-                app:layout_constraintStart_toStartOf="@+id/contact_input_phone_layout"
-                app:layout_constraintTop_toBottomOf="@id/contact_input_phone_layout" />
+                app:layout_constraintStart_toStartOf="@+id/contact_input_phone_layout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </FrameLayout>
