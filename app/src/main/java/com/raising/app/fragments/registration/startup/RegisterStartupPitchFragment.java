@@ -88,6 +88,22 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
             return;
         }
 
+        // check if sentence is too long
+        if(splitStringIntoWords(description).length
+                > getResources().getInteger(R.integer.pitch_sentence_max_word)) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_pitch_error_long_sentence));
+            return;
+        }
+
+        // check if pitch is too long
+        if(splitStringIntoWords(pitch).length
+                > getResources().getInteger(R.integer.pitch_pitch_max_word)) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_pitch_error_long_pitch));
+            return;
+        }
+
         startup.setPitch(pitch);
         startup.setDescription(description);
 

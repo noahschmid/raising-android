@@ -199,22 +199,36 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
             }
         });
 
+        // check for countries and continents
         if(countries.isEmpty() && continents.isEmpty()) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
+        // check if FTE-input is valid
+        if(Integer.parseInt(companyFteInput.getText().toString()) < 1) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_company_error_fte));
+            return;
+        }
+
+        // check if break-even year input is valid
+        if(Integer.parseInt(companyBreakevenInput.getText().toString())
+                < Integer.parseInt(companyFoundingInput.getText().toString())) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_company_error_break_even));
+            return;
+        }
+
         startup.setCountries(countries);
         startup.setContinents(continents);
-        startup.setBreakEvenYear(Integer.parseInt(
-                companyBreakevenInput.getText().toString()));
+        startup.setBreakEvenYear(Integer.parseInt(companyBreakevenInput.getText().toString()));
+        startup.setFoundingYear(Integer.parseInt(companyFoundingInput.getText().toString()));
         startup.setNumberOfFte(Integer.parseInt(companyFteInput.getText().toString()));
 
         startup.setRevenueMinId(revenueMinId);
         startup.setRevenueMaxId(revenueMaxId);
-
-        startup.setFoundingYear(Integer.parseInt(companyFoundingInput.getText().toString()));
 
         try {
             if(!editMode) {

@@ -398,7 +398,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
      * Process given inputs
      */
     private void processInputs() {
-        if (founderList.isEmpty()) {
+        if (founderList.isEmpty() || boardMemberList.isEmpty() ||shareholderList.isEmpty()) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             finishButton.setEnabled(true);
