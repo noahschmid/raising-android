@@ -2,6 +2,7 @@ package com.raising.app.viewModels;
 
 import android.app.Application;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -68,6 +69,14 @@ public class AccountViewModel extends AndroidViewModel {
                         return null;
                     });
         }
+    }
+
+    /**
+     * Get the current view state
+     * @return
+     */
+    public LiveData<ViewState> getViewState() {
+        return viewState;
     }
 
 
