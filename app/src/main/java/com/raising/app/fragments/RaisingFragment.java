@@ -12,7 +12,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -35,7 +37,7 @@ import java.util.Calendar;
 public class RaisingFragment extends Fragment {
     protected View loadingPanel;
     protected FrameLayout overlayLayout;
-    AccountViewModel accountViewModel;
+    protected AccountViewModel accountViewModel;
 
 
     @Override
@@ -44,9 +46,10 @@ public class RaisingFragment extends Fragment {
 
         loadingPanel = getLayoutInflater().inflate(R.layout.view_loading_panel, null);
         overlayLayout = getView().findViewById(R.id.overlay_layout);
-        overlayLayout.setFocusable(false);
-        overlayLayout.setClickable(false);
-
+        if(overlayLayout != null) {
+            overlayLayout.setFocusable(false);
+            overlayLayout.setClickable(false);
+        }
         accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
         accountViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
             switch (viewState) {
@@ -333,6 +336,9 @@ public class RaisingFragment extends Fragment {
             return;
         }
 
+        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
         getView().setClickable(false);
         getView().setFocusable(false);
         overlayLayout.addView(loadingPanel);
@@ -342,6 +348,8 @@ public class RaisingFragment extends Fragment {
         if(loadingPanel == null) {
             return;
         }
+
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
         getView().setClickable(true);
         getView().setFocusable(true);
