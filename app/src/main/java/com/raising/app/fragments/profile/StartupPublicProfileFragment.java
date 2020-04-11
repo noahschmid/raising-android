@@ -441,7 +441,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         }
 
         legendItems.forEach(legendItem -> {
-            pieEntries.add(new PieEntry(legendItem.getEquityShare(), legendItem.getTitle()));
+            pieEntries.add(new PieEntry(legendItem.getEquityShare(), legendItem.getEquityShareString()));
 
         });
 
@@ -462,12 +462,13 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         pieDataSet.setColors(pieChartColors);
 
         PieData pieData = new PieData(pieDataSet);
-        pieData.setValueTextSize(16f);
+        pieData.setDrawValues(false);
         pieData.setValueTextColor(getResources().getColor(R.color.raisingWhite, null));
+
         pieChart.setData(pieData);
         pieChart.getDescription().setEnabled(false);
         pieChart.getLegend().setEnabled(false);
-        pieChart.setDrawEntryLabels(false);
+        pieChart.setEntryLabelTextSize(16f);
         pieChart.setHoleRadius(0f);
         pieChart.setTransparentCircleRadius(0f);
         pieChart.invalidate();

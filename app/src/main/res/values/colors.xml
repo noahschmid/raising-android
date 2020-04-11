@@ -12,7 +12,10 @@
     <color name="raisingPrimaryDark"> #6B1318 </color>
     <color name="raisingPrimaryAccent"> #DEADAF </color>
 
+    <color name="raisingSecondary"> #707F91 </color>
+    <color name="raisingSecondaryLight"> #97ABC4 </color>
     <color name="raisingSecondaryDark"> #586473 </color>
+    <color name="raisingSecondaryAccent"> #CCD6D9 </color>
 
     <color name="raisingWhite">#ffffff</color>
     <color name="raisingBlack"> #000000 </color>

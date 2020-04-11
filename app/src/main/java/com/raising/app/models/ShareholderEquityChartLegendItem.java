@@ -22,4 +22,8 @@ public class ShareholderEquityChartLegendItem {
         }
         this.color = color;
     }
+
+    public String getEquityShareString() {
+        return equityShare + "%";
+    }
 }

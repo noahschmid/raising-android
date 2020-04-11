@@ -7,19 +7,21 @@
     <dimen name="authenticationButtonHeight"> 60dp </dimen>
     <dimen name="myProfileButtonHeight"> 75dp </dimen>
 
-    <dimen name="matchlist_picture_size"> 100dp </dimen>
-    <dimen name="matchlist_percent_chart_size"> 50dp </dimen>
+    <dimen name="matchlistPictureSize"> 100dp </dimen>
+    <dimen name="matchlistPercentChartSize"> 50dp </dimen>
 
-    <dimen name="public_profile_equity_chart_size"> 225dp </dimen>
-    <dimen name="public_profile_equity_chart_legend_color_view_size"> 30dp </dimen>
+    <dimen name="publicProfileEquityChartSize"> 225dp </dimen>
+    <dimen name="publicProfileEquityLegendColorSize"> 30dp </dimen>
 
-    <dimen name="public_profile_matching_information_icon_size"> 32dp </dimen>
+    <dimen name="publicProfileMatchingInformationIconSize"> 32dp </dimen>
 
-    <dimen name="inputFormHorizontalMarginSmall"> 16dp </dimen>
-    <dimen name="inputFormHorizontalMargin"> 32dp </dimen>
-    <dimen name="inputFormVerticalMarginSmall"> 8dp </dimen>
-    <dimen name="inputFormVerticalMargin"> 16dp </dimen>
-    <dimen name="inputFormInformationTextMargin"> 16dp </dimen>
+    <dimen name="standardHorizontalMarginSmall"> 16dp </dimen>
+    <dimen name="standardHorizontalMargin"> 32dp </dimen>
+    <dimen name="standardVerticalMarginSmall"> 8dp </dimen>
+    <dimen name="standardVerticalMargin"> 16dp </dimen>
+    <dimen name="standardFragmentTitleMargin"> 16dp </dimen>
+
+    <dimen name="myProfileButtonMargin"> 4dp </dimen>
 
     <dimen name="inputOneSentenceDescriptionHeight"> 80dp </dimen>
     <dimen name="inputPitchHeight"> 150dp </dimen>
@@ -32,9 +34,6 @@
 
     <dimen name="buttonFontSize"> 18sp </dimen>
     <dimen name="loginScreenFontSize"> 30sp </dimen>
-
-
-
 
     <dimen name="inputDropdownItemPadding"> 16dp </dimen>
 

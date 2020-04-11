@@ -19,8 +19,8 @@
         android:id="@+id/item_legend_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
-        android:layout_marginTop="@dimen/inputFormVerticalMarginSmall"
+        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+        android:layout_marginTop="@dimen/standardVerticalMarginSmall"
         android:text="TextView"
         android:textColor="@color/raisingPrimaryTextColor"
         android:textSize="@dimen/raisingTextFontSize"
@@ -29,8 +29,8 @@
 
     <View
         android:id="@+id/item_legend_color"
-        android:layout_width="@dimen/public_profile_equity_chart_legend_color_view_size"
-        android:layout_height="@dimen/public_profile_equity_chart_legend_color_view_size"
+        android:layout_width="@dimen/publicProfileEquityLegendColorSize"
+        android:layout_height="@dimen/publicProfileEquityLegendColorSize"
         app:layout_constraintBottom_toBottomOf="@+id/item_legend_investor_type"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/item_legend_title" />
