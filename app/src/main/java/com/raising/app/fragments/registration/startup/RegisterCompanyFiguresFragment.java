@@ -236,10 +236,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
                 changeFragment(new RegisterStartupMatchingFragment(),
                         "RegisterStartupMatchingFragment");
             } else {
-                AccountService.updateAccount(startup, v -> {
-                    popCurrentFragment(this);
-                    return null;
-                });
+                accountViewModel.update(startup);
             }
 
         } catch (Exception e) {
