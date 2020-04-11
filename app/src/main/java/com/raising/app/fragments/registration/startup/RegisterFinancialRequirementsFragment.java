@@ -208,11 +208,19 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         startup.setRaised(completed);
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
         startup.setClosingTime(formatter.format(selectedDate));
 
         try {
-            RegistrationHandler.saveStartup(startup);
-            changeFragment(new RegisterStakeholderFragment());
+            if(!editMode) {
+                RegistrationHandler.saveStartup(startup);
+                changeFragment(new RegisterStakeholderFragment());
+            } else {
+                AccountService.updateAccount(startup, v -> {
+                    popCurrentFragment(this);
+                    return null;
+                });
+            }
         } catch (IOException e) {
             Log.e("RegisterFinancialRequirements", "Error in processInputs: " + e.getMessage());
         }

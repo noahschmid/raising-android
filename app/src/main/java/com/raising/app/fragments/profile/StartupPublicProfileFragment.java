@@ -196,9 +196,13 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         startupInvestmentType.setText(ResourcesManager.getFinanceType(
                 startup.getFinanceTypeId()).getName());
         DateFormat toFormat = new SimpleDateFormat("MM.dd.yyyy");
-     //   DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date closing = new Date(Long.parseLong(startup.getClosingTime()));
-        startupClosingTime.setText(toFormat.format(closing));
+        DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date closing = fromFormat.parse(startup.getClosingTime());
+            startupClosingTime.setText(toFormat.format(closing));
+        } catch (Exception e) {
+            startupClosingTime.setText("");
+        }
         startupCompleted.setText(String.valueOf(startup.getRaised()));
         profileLocation.setText(ResourcesManager.getCountry(startup.getCountryId()).getName());
 
@@ -411,7 +415,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             // extract the chart name and value for every shareholder
             String investorType = ResourcesManager.getInvestorType(shareholder.getInvestorTypeId()).toString();
             String chartTitle = shareholder.getTitle() + ", " + investorType;
-            String equityShareString = shareholder.getEquityShare();
+            String equityShareString = "" + shareholder.getEquityShare();
             float equityShare = Float.parseFloat(equityShareString.substring(0, equityShareString.length() - 2));
             pieEntries.add(new PieEntry(equityShare, chartTitle));
         });

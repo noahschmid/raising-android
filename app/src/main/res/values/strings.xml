@@ -236,4 +236,5 @@
     <string name="contact_input_description">Seems like we\'ve lost some information about you! Please fill in the missing details so you can continue using Raising.</string>
     <string name="continue_text">CONTINUE</string>
     <string name="save_text">SAVE</string>
+    <string name="submit">Submit</string>
 </resources>

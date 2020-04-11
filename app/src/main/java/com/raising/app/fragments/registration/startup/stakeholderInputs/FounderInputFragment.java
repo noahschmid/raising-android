@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +15,21 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.FounderViewModel;
 import com.raising.app.models.stakeholder.Founder;
+import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.NoFilterArrayAdapter;
+import com.raising.app.util.NotificationHandler;
 import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,15 +69,6 @@ public class FounderInputFragment extends RaisingFragment {
         founderEducationInput = view.findViewById(R.id.input_founder_education);
         founderCompanyPositionInput = view.findViewById(R.id.input_founder_poistion);
 
-        if(founder == null) {
-            founder = new Founder();
-        } else {
-            founderFirstNameInput.setText(founder.getFirstName());
-            founderLastNameInput.setText(founder.getLastName());
-            founderCompanyPositionInput.setText(founder.getPosition());
-            founderEducationInput.setText(founder.getEducation());
-        }
-
         Button btnCancelFounder = view.findViewById(R.id.button_cancel_founder);
         btnCancelFounder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,11 +92,56 @@ public class FounderInputFragment extends RaisingFragment {
                             getString(R.string.register_dialog_text_empty_credentials));
                     return;
                 }
-                Founder founder = new Founder(firstName, lastName, companyPosition,
-                        education, countryId);
 
-                founderViewModel.select(founder);
-                leaveFounderFragment();
+                founder.setFirstName(firstName);
+                founder.setLastName(lastName);
+                founder.setPosition(companyPosition);
+                founder.setEducation(education);
+                founder.setCountryId(countryId);
+                founder.setTitle(firstName + " " + lastName + ", " + companyPosition);
+
+                if(founder.getId() != -1) {
+                    try {
+                        Gson gson = new Gson();
+                        JSONObject params = new JSONObject(gson.toJson(founder));
+                        ApiRequestHandler.performPatchRequest("startup/founder/" +
+                                        founder.getId(), result -> {
+                                    founderViewModel.select(founder);
+                                    leaveFounderFragment();
+                                    return null;
+                                },
+                                ApiRequestHandler.errorHandler,
+                                params);
+                    } catch (Exception e) {
+                        Log.e("founderInput",
+                                "Error while updating board member: " +
+                                        e.getMessage());
+                    }
+                } else {
+                    if(AuthenticationHandler.isLoggedIn()) {
+                        Gson gson = new Gson();
+                        try {
+                            JSONObject params = new JSONObject(gson.toJson(founder));
+                            params.put("startupId", AuthenticationHandler.getId());
+                            Log.d("founderInput", "params: " + params.toString());
+                            ApiRequestHandler.performPostRequest("startup/founder",
+                                    result -> {
+                                        founderViewModel.select(founder);
+                                        leaveFounderFragment();
+                                        return null;
+                                    },
+                                    ApiRequestHandler.errorHandler,
+                                    params);
+                        } catch (Exception e) {
+                            NotificationHandler.displayGenericError();
+                            Log.e("FounderInput",
+                                    "Could not add founder: " + e.getMessage());
+                        }
+                    } else {
+                        founderViewModel.select(founder);
+                        leaveFounderFragment();
+                    }
+                }
             }
         });
 
@@ -126,6 +169,20 @@ public class FounderInputFragment extends RaisingFragment {
                 countryPicker.showDialog(getActivity());
             }
         });
+
+        if(founder == null) {
+            founder = new Founder();
+        } else {
+            btnAddFounder.setText(getString(R.string.submit));
+            founderFirstNameInput.setText(founder.getFirstName());
+            founderLastNameInput.setText(founder.getLastName());
+            founderCompanyPositionInput.setText(founder.getPosition());
+            founderEducationInput.setText(founder.getEducation());
+            countryId = founder.getCountryId();
+            if (countryId != -1) {
+                founderCountryInput.setText(ResourcesManager.getCountry(countryId).getName());
+            }
+        }
     }
 
     @Override

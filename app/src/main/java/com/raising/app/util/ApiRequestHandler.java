@@ -249,6 +249,43 @@ public class ApiRequestHandler {
     }
 
     /**
+     * Perform a simple delete request
+     * @param endpoint the backend endpoint
+     * @param callback the function to call when request was successful
+     * @param errorCallback the function to call when there was an error
+     */
+    public static void performDeleteRequest(String endpoint, Function<JSONObject, Void> callback,
+                                         Function<VolleyError, Void> errorCallback) {
+        GenericRequest jsonObjectRequest = new GenericRequest
+                (Request.Method.DELETE, getDomain() + endpoint, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        callback.apply(response);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        errorCallback.apply(error);
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                if (AuthenticationHandler.isLoggedIn()) {
+                    headers.put("Authorization", "Bearer " + AuthenticationHandler.getToken());
+                }
+                return headers;
+            }
+        };
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                1, 1.0f));
+
+        getInstance(ResourcesManager.getContext())
+                .addToRequestQueue(jsonObjectRequest);
+    }
+
+    /**
      * Perform a simple get request with jsonarray as response
      * @param endpoint the backend endpoint
      * @param callback the function to call when request was successful
