@@ -16,9 +16,9 @@
     <style name="TextInputExposedDropdownMenuTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu" />
 
     <style name="myProfileButtonStyle">
-        <item name="android:drawableTint"> @color/raisingPrimaryTextColor </item>
-        <item name="android:textColorHint"> @color/raisingPrimaryTextColor </item>
-        <item name="android:backgroundTint"> @color/colorPrimaryLight </item>
+        <item name="android:drawableTint"> @color/raisingWhite </item>
+        <item name="android:textColorHint"> @color/raisingWhite </item>
+        <item name="android:backgroundTint"> @color/raisingPrimaryTextColor </item>
         <item name="android:gravity"> center|start </item>
         <item name="android:layout_marginBottom"> @dimen/inputFormVerticalMarginSmall</item>
     </style>
