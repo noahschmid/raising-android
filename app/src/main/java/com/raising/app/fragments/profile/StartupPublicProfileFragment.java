@@ -1,5 +1,6 @@
 package com.raising.app.fragments.profile;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -26,23 +27,32 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.google.android.flexbox.FlexboxLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Model;
+import com.raising.app.models.ShareholderEquityChartLegendItem;
 import com.raising.app.models.Startup;
 import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.models.stakeholder.Shareholder;
 import com.raising.app.util.AccountService;
+import com.raising.app.util.Resources;
 import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
 import com.raising.app.util.recyclerViewAdapter.StartupProfileBoardMemberRecyclerViewAdapter;
 import com.raising.app.util.recyclerViewAdapter.StartupProfileFounderRecyclerViewAdapter;
 
+import org.w3c.dom.Text;
+
+import java.lang.reflect.Array;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,6 +72,9 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             supportAdapter;
     private TextView startupRevenue, startupBreakEven, startupFoundingYear, startupMarkets, startupFte,
             startupInvestmentType, startupValuation, startupValuationTitle, startupClosingTime, startupCompleted;
+    private ProgressBar completedProgress;
+
+    private LayoutInflater inflater;
 
     private Startup startup;
 
@@ -85,6 +98,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             Log.d("StartupPublicProfile", "name: " + ((Startup)getArguments()
                     .getSerializable("startup")).getName());
             startup = (Startup) getArguments().getSerializable("startup");
+            Log.i("startup", startup.toString());
             // hide matching summary, if user accesses own public profile
             CardView matchingSummary = view.findViewById(R.id.startup_public_profile_matching_summary);
             matchingSummary.setVisibility(View.GONE);
@@ -103,6 +117,11 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        inflater = (LayoutInflater)getContext().getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
+
+
         imageIndex = view.findViewById(R.id.text_startup_profile_gallery_image_index);
 
         prepareImageSwitcher(view);
@@ -124,7 +143,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             String website = startup.getWebsite();
             if(website.length() == 0)
                 return;
-            String uri = "https://" + website;
+            String uri = "http://" + website;
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
             startActivity(browserIntent);
         });
@@ -147,10 +166,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         startupClosingTime = view.findViewById(R.id.text_profile_closing_time);
         startupCompleted = view.findViewById(R.id.text_profile_completed);
 
-        ProgressBar completed = view.findViewById(R.id.progress_profile_completed);
-        completed.setMax(getResources().getInteger(R.integer.maxPercent));
-        int completedPercentage = (100 / startup.getScope()) * startup.getRaised();
-        completed.setProgress(completedPercentage);
+        completedProgress = view.findViewById(R.id.progress_profile_completed);
 
         // setup recycler views for founders and board members
         ArrayList<Founder> founderList = new ArrayList<>(startup.getFounders());
@@ -200,10 +216,14 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         try {
             Date closing = fromFormat.parse(startup.getClosingTime());
             startupClosingTime.setText(toFormat.format(closing));
-        } catch (Exception e) {
+        } catch (ParseException e) {
             startupClosingTime.setText("");
+            Log.e("StartupPublicProfile", "Error while parsing closing time: " +
+                    e.getMessage());
         }
-        startupCompleted.setText(String.valueOf(startup.getRaised()));
+        startupCompleted.setText(ResourcesManager.amountToString(startup.getRaised()));
+        completedProgress.setMax(startup.getScope());
+        completedProgress.setProgress(startup.getRaised());
         profileLocation.setText(ResourcesManager.getCountry(startup.getCountryId()).getName());
 
         //TODO: change to actual value
@@ -404,30 +424,59 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     private void setupShareholderPieChart(View view) {
         //TODO: style pie chart
 
+        //stores the colors used in the pie chart
+        ArrayList<Integer> pieChartColors = populateColorArray();
+
+        //stores the shareholders combined with their respective chart color
+        ArrayList<ShareholderEquityChartLegendItem> legendItems = new ArrayList<>();
+
         PieChart pieChart = view.findViewById(R.id.stakeholder_equity_chart);
         List<PieEntry> pieEntries = new ArrayList<>();
 
         ArrayList<Shareholder> shareholders = new ArrayList<>(startup.getPrivateShareholders());
         shareholders.addAll(startup.getCorporateShareholders());
 
-        //add all shareholders to pieEntries list
-        shareholders.forEach(shareholder -> {
-            // extract the chart name and value for every shareholder
-            String investorType = ResourcesManager.getInvestorType(shareholder.getInvestorTypeId()).toString();
-            String chartTitle = shareholder.getTitle() + ", " + investorType;
-            String equityShareString = "" + shareholder.getEquityShare();
-            float equityShare = Float.parseFloat(equityShareString.substring(0, equityShareString.length() - 2));
-            pieEntries.add(new PieEntry(equityShare, chartTitle));
+        int offset = 0;
+        for(int i = 0; i < shareholders.size(); i++) {
+            int colorIndex = (i + offset) % (pieChartColors.size() - 1);
+            if(i % shareholders.size() == 0 && i != 0) {
+                offset = offset == 0 ? 1 : 0;
+            }
+            int shareholderColor = pieChartColors.get(colorIndex);
+            legendItems.add(new ShareholderEquityChartLegendItem(shareholderColor, shareholders.get(i)));
+        }
+
+        legendItems.forEach(legendItem -> {
+            pieEntries.add(new PieEntry(legendItem.getEquityShare(), legendItem.getEquityShareString()));
+
+        });
+
+        FlexboxLayout pieChartLegend = view.findViewById(R.id.stakeholder_equity_chart_legend);
+        legendItems.forEach(legendItem -> {
+            final View legendItemView = inflater.inflate(R.layout.item_startup_public_profile_equity_chart_legend, null);
+            TextView title = legendItemView.findViewById(R.id.item_legend_title);
+            title.setText(legendItem.getTitle());
+            TextView type = legendItemView.findViewById(R.id.item_legend_investor_type);
+            type.setText(legendItem.getTypeString());
+            View colorView = legendItemView.findViewById(R.id.item_legend_color);
+            colorView.setBackgroundColor(legendItem.getColor());
+
+            pieChartLegend.addView(legendItemView);
         });
 
         PieDataSet pieDataSet = new PieDataSet(pieEntries, getString(R.string.startup_shareholder_chart_title));
-        pieDataSet.setColors(populateColorArray());
-        pieDataSet.setSliceSpace(1f);
+        pieDataSet.setColors(pieChartColors);
 
         PieData pieData = new PieData(pieDataSet);
+        pieData.setDrawValues(false);
+        pieData.setValueTextColor(getResources().getColor(R.color.raisingWhite, null));
+
         pieChart.setData(pieData);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.getLegend().setEnabled(false);
+        pieChart.setEntryLabelTextSize(16f);
         pieChart.setHoleRadius(0f);
-        pieChart.animateY(1000);
+        pieChart.setTransparentCircleRadius(0f);
         pieChart.invalidate();
     }
 

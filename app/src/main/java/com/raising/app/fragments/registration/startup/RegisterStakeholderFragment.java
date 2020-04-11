@@ -130,30 +130,15 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         setupShareholderRecyclerView(view);
 
         Button btnAddFounder = view.findViewById(R.id.button_add_founder);
-        btnAddFounder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeFragment(new FounderInputFragment());
-            }
-        });
+        btnAddFounder.setOnClickListener(v -> changeFragment(new FounderInputFragment()));
 
         Button btnAddBoardMember
                 = view.findViewById(R.id.button_add_board_member);
-        btnAddBoardMember.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeFragment(new BoardMemberInputFragment());
-            }
-        });
+        btnAddBoardMember.setOnClickListener(v -> changeFragment(new BoardMemberInputFragment()));
 
         Button btnAddShareholder
                 = view.findViewById(R.id.button_add_shareholder);
-        btnAddShareholder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeFragment(new ShareholderInputFragment());
-            }
-        });
+        btnAddShareholder.setOnClickListener(v -> changeFragment(new ShareholderInputFragment()));
     }
 
     @Override

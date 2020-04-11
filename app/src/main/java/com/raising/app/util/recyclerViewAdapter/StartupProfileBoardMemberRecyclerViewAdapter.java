@@ -35,7 +35,8 @@ public class StartupProfileBoardMemberRecyclerViewAdapter extends RecyclerView.A
         BoardMember recyclerItem = recyclerItems.get(position);
 
         holder.boardPosition.setText(recyclerItem.getBoardPosition());
-        holder.boardName.setText(recyclerItem.getTitle());
+        String name = recyclerItem.getFirstName() + " " + recyclerItem.getLastName();
+        holder.boardName.setText(name);
         holder.boardMemberSince.setText(recyclerItem.getMemberSince());
         holder.boardProfession.setText(recyclerItem.getProfession());
         holder.boardEducation.setText(recyclerItem.getEducation());

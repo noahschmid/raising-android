@@ -5,7 +5,7 @@
     style="@style/OutlinedMaterialCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall">
+    android:layout_marginBottom="@dimen/standardVerticalMarginSmall">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,8 +16,8 @@
             android:id="@+id/register_stakeholder_recycler_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
-            android:padding="@dimen/inputFormVerticalMarginSmall"
+            android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+            android:padding="@dimen/standardVerticalMarginSmall"
             android:text="Title"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,7 @@
             android:id="@+id/stakeholder_recycler_button_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/inputFormHorizontalMarginSmall"
+            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
             android:background="@color/raisingWhite"
             android:src="@drawable/ic_edit_blue_32dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -38,7 +38,7 @@
             android:id="@+id/stakeholder_recycler_button_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/inputFormHorizontalMarginSmall"
+            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
             android:src="@drawable/ic_trash_can_red_32dp"
             android:background="@color/raisingWhite"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -105,7 +105,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         });
 
         finishButton = view.findViewById(R.id.button_investor_images);
-        finishButton.setOnClickListener(v -> { processInputs(); finishButton.setEnabled(false);});
+        finishButton.setOnClickListener(v -> { finishButton.setEnabled(false); processInputs(); });
 
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_images_progress).setVisibility(View.INVISIBLE);

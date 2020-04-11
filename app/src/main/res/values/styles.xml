@@ -1,12 +1,11 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/raisingPrimary</item>
         <item name="colorPrimaryDark">@color/raisingPrimaryDark</item>
         <item name="colorAccent">@color/raisingPrimaryAccent</item>
-        <item name="android:navigationBarColor"> @color/raisingBlack</item>
+        <item name="android:navigationBarColor">@color/raisingBlack</item>
     </style>
 
     <style name="DialogTheme" parent="Theme.MaterialComponents.Light.Dialog.MinWidth" />
@@ -16,11 +15,11 @@
     <style name="TextInputExposedDropdownMenuTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu" />
 
     <style name="myProfileButtonStyle">
-        <item name="android:drawableTint"> @color/raisingPrimaryTextColor </item>
-        <item name="android:textColorHint"> @color/raisingPrimaryTextColor </item>
-        <item name="android:backgroundTint"> @color/colorPrimaryLight </item>
-        <item name="android:gravity"> center|start </item>
-        <item name="android:layout_marginBottom"> @dimen/inputFormVerticalMarginSmall</item>
+        <item name="android:layout_height">@dimen/myProfileButtonHeight</item>
+        <item name="android:drawableTint">@color/raisingSecondaryDark</item>
+        <item name="android:textColorHint">@color/raisingSecondaryDark</item>
+        <item name="android:backgroundTint"> @color/raisingSecondaryLight </item>
+        <item name="android:gravity">center|start</item>
     </style>
 
     <style name="DialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
@@ -29,16 +28,16 @@
     </style>
 
     <style name="DatePickerStyle" parent="Theme.MaterialComponents.Light.Dialog">
-        <item name="colorAccent"> @color/raisingPrimaryLight</item>
-        <item name="colorPrimary"> @color/raisingWhite </item>
-        <item name="colorPrimaryDark"> @color/raisingPrimaryDark</item>
-        <item name="android:buttonBarNegativeButtonStyle"> @style/DatePickerButtonStyle </item>
-        <item name="android:buttonBarPositiveButtonStyle"> @style/DatePickerButtonStyle</item>
+        <item name="colorAccent">@color/raisingPrimaryLight</item>
+        <item name="colorPrimary">@color/raisingWhite</item>
+        <item name="colorPrimaryDark">@color/raisingPrimaryDark</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/DatePickerButtonStyle</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/DatePickerButtonStyle</item>
     </style>
 
     <style name="DatePickerButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor"> @color/raisingPrimary </item>
-        <item name="background"> @color/raisingWhite </item>
+        <item name="android:textColor">@color/raisingPrimary</item>
+        <item name="background">@color/raisingWhite</item>
     </style>
 
     <style name="MaterialDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
@@ -57,7 +56,7 @@
     </style>
 
     <style name="ButtonConfirmRegistration">
-        <item name="android:layout_marginBottom">@dimen/inputFormVerticalMargin</item>
+        <item name="android:layout_marginBottom">@dimen/standardVerticalMargin</item>
         <item name="android:textSize">@dimen/buttonFontSize</item>
         <item name="android:backgroundTint">@color/raisingPrimaryButton</item>
         <item name="android:textColorHint">@color/raisingButtonTextLight</item>
@@ -65,9 +64,9 @@
 
     <style name="SubtitleTextWithLeftIcon">
         <item name="android:gravity">center|start</item>
-        <item name="android:layout_marginTop">@dimen/inputFormVerticalMargin</item>
-        <item name="android:layout_marginBottom">@dimen/inputFormVerticalMarginSmall</item>
-        <item name="android:drawablePadding">@dimen/inputFormVerticalMarginSmall</item>
+        <item name="android:layout_marginTop">@dimen/standardVerticalMargin</item>
+        <item name="android:layout_marginBottom">@dimen/standardVerticalMarginSmall</item>
+        <item name="android:drawablePadding">@dimen/standardVerticalMarginSmall</item>
         <item name="android:drawableTint">@color/raisingPrimaryTextColor</item>
         <item name="android:textSize">@dimen/raisingSubtitleFontSize</item>
         <item name="android:textStyle">bold</item>
@@ -75,36 +74,29 @@
     </style>
 
     <style name="FragmentTitle">
-        <item name="android:layout_marginTop">@dimen/inputFormInformationTextMargin</item>
-        <item name="android:layout_marginBottom">@dimen/inputFormInformationTextMargin</item>
+        <item name="android:layout_marginTop">@dimen/standardFragmentTitleMargin</item>
+        <item name="android:layout_marginBottom">@dimen/standardFragmentTitleMargin</item>
         <item name="android:textSize">@dimen/raisingTitleFontSize</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColorHint">@color/raisingPrimaryTextColor</item>
     </style>
 
-    <style name="RoundIconFloatingButton" parent="Widget.AppCompat.Button.Borderless">
-        <item name="fabSize">mini</item>
-        <item name="backgroundTint">@color/raisingPrimaryLight</item>
-        <item name="android:clickable">true</item>
-        <item name="android:focusable">true</item>
-    </style>
-
     <style name="PrimaryOutlineButton">
-        <item name="strokeWidth"> @dimen/outlinedButtonStrokeWidth </item>
-        <item name="strokeColor"> @color/raisingPrimary </item>
-        <item name="android:textSize">@dimen/popupButtonFontSize </item>
-        <item name="android:textColorHint"> @color/raisingPrimary </item>
-        <item name="backgroundTint"> @color/raisingWhite </item>
+        <item name="strokeWidth">@dimen/outlinedButtonStrokeWidth</item>
+        <item name="strokeColor">@color/raisingPrimary</item>
+        <item name="android:textSize">@dimen/popupButtonFontSize</item>
+        <item name="android:textColorHint">@color/raisingPrimary</item>
+        <item name="backgroundTint">@color/raisingWhite</item>
     </style>
 
     <style name="OutlinedMaterialCardView">
-        <item name="cardCornerRadius"> 2dp </item>
-        <item name="strokeWidth"> 1dp </item>
-        <item name="strokeColor"> @color/raisingPrimary </item>
+        <item name="cardCornerRadius">2dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/raisingPrimary</item>
     </style>
 
     <style name="PublicProfileRoundButton">
-        <item name="backgroundTint"> @color/raisingWhite </item>
-        <item name="android:radius"> 20dp </item>
+        <item name="backgroundTint">@color/raisingWhite</item>
+        <item name="android:radius">20dp</item>
     </style>
 </resources>

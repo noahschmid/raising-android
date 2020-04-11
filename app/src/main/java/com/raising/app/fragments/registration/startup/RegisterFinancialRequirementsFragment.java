@@ -57,7 +57,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         ArrayList<String> values = new ArrayList<>();
         financeTypes.forEach(type -> values.add(type.getName()));
 
-        NoFilterArrayAdapter<String> adapterType = new NoFilterArrayAdapter( getContext(),
+        NoFilterArrayAdapter<String> adapterType = new NoFilterArrayAdapter(getContext(),
                 R.layout.item_dropdown_menu, values);
 
         financialTypeInput = view.findViewById(R.id.register_input_financial_type);
@@ -66,11 +66,11 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         financialTypeInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String itemName = (String)adapterType.getItem(i);
+                String itemName = (String) adapterType.getItem(i);
 
                 for (FinanceType type : financeTypes) {
                     if (type.getName().equals(itemName)) {
-                        financialTypeId = (int)type.getId();
+                        financialTypeId = (int) type.getId();
                         break;
                     }
                 }
@@ -97,15 +97,16 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         completedInput = view.findViewById(R.id.register_input_financial_completed);
 
-        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+        if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnFinancialRequirements.setHint(getString(R.string.myProfile_apply_changes));
-            startup = (Startup)AccountService.getAccount();
+            editMode = true;
+            startup = (Startup) AccountService.getAccount();
         } else {
             startup = RegistrationHandler.getStartup();
         }
 
-        if(startup.getClosingTime() != null) {
+        if (startup.getClosingTime() != null) {
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 Date date = formatter.parse(startup.getClosingTime());
@@ -119,20 +120,20 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
                 Log.d("RegisterFinancialRequirements", "error parsing date!");
             }
         }
-        if(startup.getScope() > 0)
+        if (startup.getScope() > 0)
             scopeInput.setText(String.valueOf(startup.getScope()));
 
-        if(startup.getPreMoneyValuation() > 0)
+        if (startup.getPreMoneyValuation() > 0)
             financialValuationInput.setText(String.valueOf(startup.getPreMoneyValuation()));
 
-        if(startup.getRaised() > 0)
+        if (startup.getRaised() > 0)
             completedInput.setText(String.valueOf(startup.getRaised()));
 
-        if(startup.getFinanceTypeId() != -1) {
+        if (startup.getFinanceTypeId() != -1) {
             financialTypeInput.setText(ResourcesManager.getFinanceType(
                     startup.getFinanceTypeId()
             ).getName());
-            financialTypeId = (int)startup.getFinanceTypeId();
+            financialTypeId = (int) startup.getFinanceTypeId();
         }
 
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -145,13 +146,13 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
              */
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-               String selected = dayOfMonth + "." + (month + 1) + "." + year;
-               financialClosingTimeInput.setText(selected);
+                String selected = dayOfMonth + "." + (month + 1) + "." + year;
+                financialClosingTimeInput.setText(selected);
 
-               selectedDate = Calendar.getInstance();
-               selectedDate.set(Calendar.YEAR, year);
-               selectedDate.set(Calendar.MONTH, month);
-               selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                selectedDate = Calendar.getInstance();
+                selectedDate.set(Calendar.YEAR, year);
+                selectedDate.set(Calendar.MONTH, month);
+                selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             }
         };
     }
@@ -166,7 +167,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.button_financial_requirements){
+        if (view.getId() == R.id.button_financial_requirements) {
             processInputs();
         }
     }
@@ -177,7 +178,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void processInputs() {
         Log.d("debugMessage", "processInputs");
-        if(scopeInput.getText().length() == 0 || selectedDate == null ||
+        if (scopeInput.getText().length() == 0 || selectedDate == null ||
                 financialTypeId == -1 ||
                 Integer.parseInt(scopeInput.getText().toString()) == 0) {
             showSimpleDialog(getString(R.string.register_dialog_title),
@@ -187,10 +188,10 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         float valuation = 0;
 
-        if(financialValuationInput.getText().length() > 0)
+        if (financialValuationInput.getText().length() > 0)
             valuation = Float.parseFloat(financialValuationInput.getText().toString());
 
-        if(selectedDate.before(Calendar.getInstance())) {
+        if (selectedDate.before(Calendar.getInstance())) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_invalid_date));
             return;
@@ -198,21 +199,21 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         float scope = Float.parseFloat(scopeInput.getText().toString());
         int completed = 0;
-        if(completedInput.getText().length() != 0) {
+        if (completedInput.getText().length() != 0) {
             completed = Integer.parseInt(completedInput.getText().toString());
         }
 
         startup.setFinanceTypeId(financialTypeId);
-        startup.setPreMoneyValuation((int)valuation);
-        startup.setScope((int)scope);
+        startup.setPreMoneyValuation((int) valuation);
+        startup.setScope((int) scope);
         startup.setRaised(completed);
 
+        Date completedDate = selectedDate.getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
-        startup.setClosingTime(formatter.format(selectedDate));
+        startup.setClosingTime(formatter.format(completedDate));
 
         try {
-            if(!editMode) {
+            if (!editMode) {
                 RegistrationHandler.saveStartup(startup);
                 changeFragment(new RegisterStakeholderFragment());
             } else {

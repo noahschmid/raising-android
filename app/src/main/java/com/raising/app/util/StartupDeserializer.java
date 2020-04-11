@@ -120,7 +120,7 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
             founder.setPosition(obj.get("position").getAsString());
 
             founder.setTitle(founder.getFirstName() + " " +
-                    founder.getLastName());
+                    founder.getLastName() + ", " + founder.getPosition());
             founder.setId(obj.get("id").getAsLong());
             startup.addFounder(founder);
         }
@@ -136,7 +136,7 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
             boardMember.setProfession(obj.get("profession").getAsString());
             boardMember.setMemberSince(obj.get("memberSince").getAsString());
             boardMember.setTitle(boardMember.getFirstName() + " " +
-                    boardMember.getLastName());
+                    boardMember.getLastName() + ", " + boardMember.getBoardPosition());
             boardMember.setId(obj.get("id").getAsLong());
             startup.addBoardMember(boardMember);
         }
@@ -151,7 +151,7 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
             privateShareholder.setCountryId(obj.get("countryId").getAsInt());
             privateShareholder.setEquityShare(obj.get("equityShare").getAsFloat());
             privateShareholder.setTitle(privateShareholder.getFirstName() + " " +
-                    privateShareholder.getLastName());
+                    privateShareholder.getLastName() + ", " + privateShareholder.getEquityShare() + "%");
             privateShareholder.setId(obj.get("id").getAsLong());
             startup.addPrivateShareholder(privateShareholder);
         }
@@ -166,7 +166,8 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
             corporateShareholder.setCorpName(obj.get("corpName").getAsString());
             corporateShareholder.setWebsite(obj.get("website").getAsString());
             corporateShareholder.setId(obj.get("id").getAsLong());
-            corporateShareholder.setTitle(corporateShareholder.getCorpName());
+            corporateShareholder.setTitle(corporateShareholder.getCorpName() + ", " +
+                    corporateShareholder.getEquityShare() + "%");
             startup.addCorporateShareholder(corporateShareholder);
         }
 
