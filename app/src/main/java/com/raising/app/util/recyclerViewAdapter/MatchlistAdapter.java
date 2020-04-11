@@ -52,10 +52,10 @@ public class MatchlistAdapter extends RecyclerView.Adapter<MatchlistAdapter.View
         //TODO: replace with actual image
         holder.profileImage.setImageBitmap(recyclerItem.getBitmap());
 
-        setupMatchingPercentGraphic(holder, recyclerItem);
+        setupMatchingPercentGraphic(holder.matchingPercentGraphic, recyclerItem);
     }
 
-    private void setupMatchingPercentGraphic(MatchlistAdapter.ViewHolder holder, MatchlistItem recyclerItem) {
+    private void setupMatchingPercentGraphic(PieChart percentChart, MatchlistItem recyclerItem) {
         List<PieEntry> pieEntries = new ArrayList<>();
         pieEntries.add(new PieEntry(recyclerItem.getMatchingPercent(), "MatchingPercent"));
         float remainder = 100 - recyclerItem.getMatchingPercent();
@@ -63,21 +63,23 @@ public class MatchlistAdapter extends RecyclerView.Adapter<MatchlistAdapter.View
 
         PieDataSet dataSet = new PieDataSet(pieEntries, "Matching Percentage");
         dataSet.setColors(colors);
-        dataSet.setSliceSpace(1f);
 
         PieData pieData = new PieData(dataSet);
-        holder.matchingPercentGraphic.setData(pieData);
-        holder.matchingPercentGraphic.setHoleRadius(0f);
-        holder.matchingPercentGraphic.animateY(1000);
-        holder.matchingPercentGraphic.invalidate();
+        //disable values
+        pieData.setDrawValues(false);
 
-        //disable chart description
-        Description description = holder.matchingPercentGraphic.getDescription();
-        description.setEnabled(false);
+        percentChart.setData(pieData);
+        //disable entry labels
+        percentChart.setDrawEntryLabels(false);
+        //disable center hole
+        percentChart.setHoleRadius(0f);
+        percentChart.setTransparentCircleRadius(0f);
+        //disable legend and description
+        percentChart.getDescription().setEnabled(false);
+        percentChart.getLegend().setEnabled(false);
 
-        //disable legend
-        Legend legend = holder.matchingPercentGraphic.getLegend();
-        legend.setEnabled(false);
+        percentChart.animateY(1000);
+        percentChart.invalidate();
     }
 
     @Override
