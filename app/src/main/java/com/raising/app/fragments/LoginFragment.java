@@ -1,20 +1,19 @@
 package com.raising.app.fragments;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import android.service.autofill.FieldClassification;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
@@ -61,6 +60,13 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                 changeFragment(new RegisterLoginInformationFragment(),
                         "RegisterLoginInformationFragment");
         }
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         emailInput = view.findViewById(R.id.login_input_email);
         passwordInput = view.findViewById(R.id.login_input_password);
 
@@ -70,8 +76,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
         btnRegister.setOnClickListener(this);
         Button btnForgot = view.findViewById(R.id.button_login_forgot_password);
         btnForgot.setOnClickListener(this);
-
-        return view;
     }
 
     @Override
@@ -128,6 +132,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
             HashMap<String, String> params = new HashMap<>();
             params.put("email", email);
             params.put("password", password);
+            showLoadingPanel();
             JsonObjectRequest loginRequest = new JsonObjectRequest(
                     loginEndpoint, new JSONObject(params),
                     new Response.Listener<JSONObject>() {
@@ -157,7 +162,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                                     fragment.setArguments(bundle);
                                     changeFragment(fragment);
                                 }
-
                             } catch(Exception e) {
                                 showSimpleDialog(getString(R.string.generic_error_title),
                                         e.getMessage());
