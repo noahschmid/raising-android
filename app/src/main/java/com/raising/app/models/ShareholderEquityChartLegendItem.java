@@ -14,7 +14,7 @@ public class ShareholderEquityChartLegendItem {
 
     public ShareholderEquityChartLegendItem(int color, Shareholder shareholder) {
         title = shareholder.getTitle();
-        equityShare = Float.parseFloat(shareholder.getEquityShare());
+        equityShare = shareholder.getEquityShare();
         if(shareholder.isPrivateShareholder()) {
             typeString = ResourcesManager.getInvestorType(shareholder.getInvestorTypeId()).getName();
         } else {

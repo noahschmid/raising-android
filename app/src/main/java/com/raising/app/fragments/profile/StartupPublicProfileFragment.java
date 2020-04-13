@@ -52,6 +52,7 @@ import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -211,13 +212,18 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         startupInvestmentType.setText(ResourcesManager.getFinanceType(
                 startup.getFinanceTypeId()).getName());
         DateFormat toFormat = new SimpleDateFormat("MM.dd.yyyy");
-     //   DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date closing = new Date(Long.parseLong(startup.getClosingTime()));
-        startupClosingTime.setText(toFormat.format(closing));
+        DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date closing = fromFormat.parse(startup.getClosingTime());
+            startupClosingTime.setText(toFormat.format(closing));
+        } catch (ParseException e) {
+            startupClosingTime.setText("");
+            Log.e("StartupPublicProfile", "Error while parsing closing time: " +
+                    e.getMessage());
+        }
         startupCompleted.setText(ResourcesManager.amountToString(startup.getRaised()));
         completedProgress.setMax(startup.getScope());
         completedProgress.setProgress(startup.getRaised());
-
         profileLocation.setText(ResourcesManager.getCountry(startup.getCountryId()).getName());
 
         //TODO: change to actual value

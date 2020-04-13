@@ -102,7 +102,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnCompanyFigures.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
-            startup = (Startup) AccountService.getAccount();
+            startup = (Startup)accountViewModel.getAccount().getValue();
         } else {
             startup = RegistrationHandler.getStartup();
         }
@@ -164,6 +164,12 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
     }
 
     @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
 
@@ -184,8 +190,8 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
         ArrayList<Long> countries = new ArrayList<>();
         ArrayList<Long> continents = new ArrayList<>();
 
-        marketItems.forEach(item -> {
-            if(item instanceof Continent && item.isChecked()) {
+        marketsPicker.getResult().forEach(item -> {
+            if(item instanceof Continent) {
                 continents.add(((Continent)item).getId());
                 marketItems.forEach(i -> {
                     if(i instanceof Country) {
@@ -194,27 +200,41 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
                 });
             }
 
-            if(item instanceof Country && item.isChecked()) {
+            if(item instanceof Country) {
                 countries.add(((Country)item).getId());
             }
         });
 
+        // check for countries and continents
         if(countries.isEmpty() && continents.isEmpty()) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
+        // check if FTE-input is valid
+        if(Integer.parseInt(companyFteInput.getText().toString()) < 1) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_company_error_fte));
+            return;
+        }
+
+        // check if break-even year input is valid
+        if(Integer.parseInt(companyBreakevenInput.getText().toString())
+                < Integer.parseInt(companyFoundingInput.getText().toString())) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_company_error_break_even));
+            return;
+        }
+
         startup.setCountries(countries);
         startup.setContinents(continents);
-        startup.setBreakEvenYear(Integer.parseInt(
-                companyBreakevenInput.getText().toString()));
+        startup.setBreakEvenYear(Integer.parseInt(companyBreakevenInput.getText().toString()));
+        startup.setFoundingYear(Integer.parseInt(companyFoundingInput.getText().toString()));
         startup.setNumberOfFte(Integer.parseInt(companyFteInput.getText().toString()));
 
         startup.setRevenueMinId(revenueMinId);
         startup.setRevenueMaxId(revenueMaxId);
-
-        startup.setFoundingYear(Integer.parseInt(companyFoundingInput.getText().toString()));
 
         try {
             if(!editMode) {
@@ -222,13 +242,10 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
                 changeFragment(new RegisterStartupMatchingFragment(),
                         "RegisterStartupMatchingFragment");
             } else {
-                AccountService.updateAccount(startup, v -> {
-                    popCurrentFragment(this);
-                    return null;
-                });
+                accountViewModel.update(startup);
             }
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.d("RegisterCompanyFiguresFragment", "Error while processing inputs: "
                     + e.getMessage());
         }

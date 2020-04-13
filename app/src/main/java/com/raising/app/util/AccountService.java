@@ -238,19 +238,6 @@ public class AccountService {
         }
     }
 
-    public static void log(String message) {
-        // Split by line, then ensure each line can fit into Log's maximum length.
-        for (int i = 0, length = message.length(); i < length; i++) {
-            int newline = message.indexOf('\n', i);
-            newline = newline != -1 ? newline : length;
-            do {
-                int end = Math.min(newline, i + 999);
-                Log.d("AccountService", message.substring(i, end));
-                i = end;
-            } while (i < newline);
-        }
-    }
-
     /**
      * Load contact details from internal storage
      * @return true if process was successful, else false

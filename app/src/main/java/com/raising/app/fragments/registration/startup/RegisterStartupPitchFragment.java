@@ -48,7 +48,7 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupPitch.setHint(getString(R.string.myProfile_apply_changes));
-            startup = (Startup)AccountService.getAccount();
+            startup = (Startup)accountViewModel.getAccount().getValue();
             editMode = true;
         } else {
             startup = RegistrationHandler.getStartup();
@@ -75,6 +75,12 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
         hideBottomNavigation(false);
     }
 
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
+    }
+
     /**
      * Process given inputs
      */
@@ -88,6 +94,22 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
             return;
         }
 
+        // check if sentence is too long
+        if(splitStringIntoWords(description).length
+                > getResources().getInteger(R.integer.pitch_sentence_max_word)) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_pitch_error_long_sentence));
+            return;
+        }
+
+        // check if pitch is too long
+        if(splitStringIntoWords(pitch).length
+                > getResources().getInteger(R.integer.pitch_pitch_max_word)) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_pitch_error_long_pitch));
+            return;
+        }
+
         startup.setPitch(pitch);
         startup.setDescription(description);
 
@@ -96,7 +118,7 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
                 RegistrationHandler.saveStartup(startup);
                 changeFragment(new RegisterStartupLabelsFragment());
             } else {
-                popCurrentFragment(this);
+                accountViewModel.update(startup);
             }
 
         } catch(IOException e) {

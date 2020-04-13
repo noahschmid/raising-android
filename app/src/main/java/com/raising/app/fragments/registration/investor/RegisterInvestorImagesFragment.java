@@ -110,7 +110,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_images_progress).setVisibility(View.INVISIBLE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
-            investor = (Investor)AccountService.getAccount();
+            investor = (Investor) accountViewModel.getAccount().getValue();
             editMode = true;
         } else {
             investor = RegistrationHandler.getInvestor();

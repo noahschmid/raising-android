@@ -86,7 +86,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             view.findViewById(R.id.registration_images_progress).setVisibility(View.INVISIBLE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
-            startup = (Startup) AccountService.getAccount();
+            startup = (Startup)accountViewModel.getAccount().getValue();
         } else {
             startup = RegistrationHandler.getStartup();
         }
@@ -219,6 +219,12 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         });
         popupMenu.inflate(R.menu.image_floating_menu);
         popupMenu.show();
+    }
+
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
     }
 
     private void processInputs() {

@@ -64,7 +64,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnProfileInformation.setHint(getString(R.string.myProfile_apply_changes));
-            investor = (Investor)AccountService.getAccount();
+            investor = (Investor) accountViewModel.getAccount().getValue();
             contactDetails = AccountService.getContactDetails();
             editMode = true;
         } else {
@@ -141,6 +141,12 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         }
     }
 
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
+    }
+
     /**
      * Check whether information is valid, then save profile information and
      * switch to next fragment
@@ -167,10 +173,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
                         "RegisterInvestorMatchingFragment");
             } else {
                 if(AccountService.saveContactDetails(contactDetails)) {
-                    AccountService.updateAccount(investor, response -> {
-                        clearBackstackAndReplace(new MyProfileFragment());
-                        return null;
-                    });
+                    accountViewModel.update(investor);
                 } else {
                     showSimpleDialog(getString(R.string.generic_error_title),
                             getString(R.string.generic_error_text));

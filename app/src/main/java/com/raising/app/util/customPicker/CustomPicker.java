@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -64,8 +65,17 @@ public class CustomPicker implements LifecycleObserver, BottomSheetInteractionLi
   private List<PickerItem> searchResults;
   private Dialog dialog;
   private boolean multiSelect;
+  private Button cancelButton, okButton;
+  private List<PickerItem> result;
 
   private CustomPicker() {
+  }
+
+  public List<PickerItem> getResult() {
+    if(result == null) {
+      return new ArrayList<>();
+    }
+    return result;
   }
 
   CustomPicker(Builder builder) {
@@ -138,6 +148,35 @@ public class CustomPicker implements LifecycleObserver, BottomSheetInteractionLi
       setSearchEditText();
       setupRecyclerView(dialogView);
       dialog.setContentView(dialogView);
+
+      okButton = dialogView.findViewById(R.id.picker_ok);
+      cancelButton = dialogView.findViewById(R.id.picker_cancel);
+
+      if(!multiSelect) {
+        okButton.setVisibility(View.GONE);
+        cancelButton.setVisibility(View.GONE);
+      }
+
+      cancelButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          dismiss();
+        }
+      });
+
+      okButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          result = new ArrayList<>();
+          items.forEach(item -> {
+            if(item.isChecked()) {
+              result.add(item);
+            }
+          });
+          dismiss();
+        }
+      });
+
       if (dialog.getWindow() != null) {
         WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
         params.width = LinearLayout.LayoutParams.MATCH_PARENT;

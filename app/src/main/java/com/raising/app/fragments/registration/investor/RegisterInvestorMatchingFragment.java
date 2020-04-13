@@ -86,7 +86,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnInvestorMatching.setHint(getString(R.string.myProfile_apply_changes));
-            investor = (Investor) AccountService.getAccount();
+            investor = (Investor) accountViewModel.getAccount().getValue();
             editMode = true;
         } else {
             investor = RegistrationHandler.getInvestor();
@@ -201,6 +201,12 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         }
     }
 
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
+    }
+
     /**
      * Check if all information is valid and save it
      */
@@ -226,8 +232,8 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
         // only add child objects (countries) if parent object (continent) isn't selected
         // otherwise only add parent object
-        pickerItems.forEach(item -> {
-            if(item instanceof Continent && item.isChecked()) {
+        customPicker.getResult().forEach(item -> {
+            if(item instanceof Continent) {
                 continents.add(item.getId());
                 pickerItems.forEach(i -> {
                     if(i instanceof Country) {
@@ -236,7 +242,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                 });
             }
 
-            if(item instanceof Country && item.isChecked()) {
+            if(item instanceof Country) {
                 countries.add(item.getId());
             }
         });
@@ -261,26 +267,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                 changeFragment(new RegisterInvestorPitchFragment(),
                         "RegisterInvestorPitchFragment");
             } else {
-               /* AccountService.updateAccount(investor, res -> {
-                    popCurrentFragment(this);
-                    return null;
-                });*/
-
-                AccountService.updateList(investor.getInvestmentPhases(),
-                        ((Investor)AccountService.getAccount()).getInvestmentPhases(),
-                        "investor/investmentphase");
-               /* AccountService.updateList(investor.getIndustries(),
-                        ((Investor)AccountService.getAccount()).getIndustries(),
-                        "account/industry");
-                AccountService.updateList(investor.getSupport(),
-                        ((Investor)AccountService.getAccount()).getSupport(),
-                        "investor/support");
-                AccountService.updateList(investor.getContinents(),
-                        ((Investor)AccountService.getAccount()).getContinents(),
-                        "investor/continent");
-                AccountService.updateList(investor.getCountries(),
-                        ((Investor)AccountService.getAccount()).getCountries(),
-                        "investor/country");*/
+               accountViewModel.update(investor);
             }
         } catch (Exception e) {
             Log.d("RegisterInvestorMatchingFragment",

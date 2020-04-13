@@ -134,13 +134,10 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
             HashMap<String, String> params = new HashMap<>();
             params.put("email", email);
 
-            Log.d("debugMessage", "sending request...");
-
             ApiRequestHandler.performPostRequest("account/valid",
                     callback, errorHandler, new JSONObject(params));
         } catch(Exception e) {
-            Log.d("debugMessage", e.getMessage());
-            Log.d("debugMessage", e.toString());
+            Log.e("RegisterLoginInformation", "" + e.getMessage());
             return;
         }
     }
@@ -152,13 +149,12 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         final String password = passwordInput.getText().toString();
 
         try {
-            Log.d("debugMessage", "successful response");
             RegistrationHandler.saveLoginInformation(firstName, lastName, email, password);
             changeFragment(new RegisterSelectTypeFragment(),
                     "RegisterSelectTypeFragment");
         } catch (IOException e) {
-            // TODO: Display error message
-            Log.d("debugMessage", e.getMessage());
+            Log.e("RegisterLoginInformation","Error while saving login informaion: "
+                    + e.getMessage());
         }
         return null;
     };
@@ -176,8 +172,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
                     getString(R.string.login_dialog_server_error_title),
                     getString(R.string.login_dialog_server_error_text)
             );
-            Log.d("debugMessage", e.toString());
-            Log.d("debugMessage", error.toString());
+            Log.e("RegisterLoginInformation", "" + e.toString());
         }
         return null;
     };

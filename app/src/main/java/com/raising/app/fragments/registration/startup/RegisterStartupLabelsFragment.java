@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.models.Account;
 import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.RegistrationHandler;
@@ -52,7 +53,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupLabels.setHint(getString(R.string.myProfile_apply_changes));
-            startup = (Startup) AccountService.getAccount();
+            startup = (Startup)currentAccount;
             editMode = true;
         } else {
             startup = RegistrationHandler.getStartup();
@@ -86,13 +87,6 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
             }
         }
 
-        //TODO
-        if(labels.size() == 0) {
-            showSimpleDialog(getString(R.string.register_dialog_title),
-                    getString(R.string.register_dialog_text_empty_credentials));
-            return;
-        }
-
         startup.setLabels(labels);
 
         try {
@@ -100,12 +94,16 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
                 RegistrationHandler.saveStartup(startup);
                 changeFragment(new RegisterStartupImagesFragment());
             } else {
-                popCurrentFragment(this);
+                accountViewModel.update(startup);
             }
-
         } catch(IOException e) {
             Log.e("RegisterStartupLabels", "Error while saving startup labels");
         }
+    }
 
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
     }
 }
