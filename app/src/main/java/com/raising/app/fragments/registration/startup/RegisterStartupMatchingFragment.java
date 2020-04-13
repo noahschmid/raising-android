@@ -85,7 +85,7 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartUpMatching.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
-            startup = (Startup) AccountService.getAccount();
+            startup = (Startup)currentAccount;
         } else {
             startup = RegistrationHandler.getStartup();
         }
@@ -96,6 +96,12 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         setupLists();
         restoreLists();
 
+    }
+
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
     }
 
     /**
@@ -182,10 +188,7 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
                         "RegisterStartupPitchFragment");
             } else {
 
-                AccountService.updateAccount(startup, v -> {
-                    popCurrentFragment(this);
-                    return null;
-                });
+                accountViewModel.update(startup);
             }
 
         } catch (IOException e) {

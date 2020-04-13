@@ -53,7 +53,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupLabels.setHint(getString(R.string.myProfile_apply_changes));
-            startup = (Startup) AccountService.getAccount();
+            startup = (Startup)currentAccount;
             editMode = true;
         } else {
             startup = RegistrationHandler.getStartup();
@@ -100,13 +100,16 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
                 RegistrationHandler.saveStartup(startup);
                 changeFragment(new RegisterStartupImagesFragment());
             } else {
-                AccountService.updateAccount(startup, v -> {
-                    popCurrentFragment(this);
-                    return null;
-                });
+                accountViewModel.update(startup);
             }
         } catch(IOException e) {
             Log.e("RegisterStartupLabels", "Error while saving startup labels");
         }
+    }
+
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
     }
 }

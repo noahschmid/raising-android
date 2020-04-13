@@ -151,6 +151,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                                     AuthenticationHandler.login(email,
                                             response.getString("token"),
                                             response.getLong("id"), isStartup);
+                                    dismissLoadingPanel();
                                     clearBackstackAndReplace(new MatchesFragment());
                                 } else {
                                     Bundle bundle = new Bundle();
@@ -163,6 +164,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                                     changeFragment(fragment);
                                 }
                             } catch(Exception e) {
+                                dismissLoadingPanel();
                                 showSimpleDialog(getString(R.string.generic_error_title),
                                         e.getMessage());
                             }
@@ -170,6 +172,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    dismissLoadingPanel();
                     try {
                         if(error.networkResponse.statusCode == 403) {
                             showSimpleDialog(

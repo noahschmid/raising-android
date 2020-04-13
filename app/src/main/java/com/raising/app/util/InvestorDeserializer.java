@@ -21,6 +21,7 @@ import com.raising.app.models.Support;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class InvestorDeserializer implements JsonDeserializer<Investor> {
     @Override
@@ -55,28 +56,23 @@ public class InvestorDeserializer implements JsonDeserializer<Investor> {
         }
 
         for(JsonElement el : jsonObject.get("countries").getAsJsonArray()) {
-            JsonObject obj = el.getAsJsonObject();
-            investor.addCountry(obj.get("id").getAsLong());
+            investor.addCountry(el.getAsLong());
         }
 
         for(JsonElement el : jsonObject.get("continents").getAsJsonArray()) {
-            JsonObject obj = el.getAsJsonObject();
-            investor.addContinent(obj.get("id").getAsLong());
+            investor.addContinent(el.getAsLong());
         }
 
         for(JsonElement el : jsonObject.get("investmentPhases").getAsJsonArray()) {
-            JsonObject obj = el.getAsJsonObject();
-            investor.addInvestmentPhase(obj.get("id").getAsLong());
+            investor.addInvestmentPhase(el.getAsLong());
         }
 
         for(JsonElement el : jsonObject.get("industries").getAsJsonArray()) {
-            JsonObject obj = el.getAsJsonObject();
-            investor.addIndustry(obj.get("id").getAsLong());
+            investor.addIndustry(el.getAsLong());
         }
 
         for(JsonElement el : jsonObject.get("support").getAsJsonArray()) {
-            JsonObject obj = el.getAsJsonObject();
-            investor.addSupport(obj.get("id").getAsLong());
+            investor.addSupport(el.getAsLong());
         }
 
         return investor;

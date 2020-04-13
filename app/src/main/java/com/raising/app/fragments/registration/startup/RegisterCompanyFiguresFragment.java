@@ -102,7 +102,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnCompanyFigures.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
-            startup = (Startup) AccountService.getAccount();
+            startup = (Startup)currentAccount;
         } else {
             startup = RegistrationHandler.getStartup();
         }
@@ -164,6 +164,12 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
     }
 
     @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
 
@@ -184,8 +190,8 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
         ArrayList<Long> countries = new ArrayList<>();
         ArrayList<Long> continents = new ArrayList<>();
 
-        marketItems.forEach(item -> {
-            if(item instanceof Continent && item.isChecked()) {
+        marketsPicker.getResult().forEach(item -> {
+            if(item instanceof Continent) {
                 continents.add(((Continent)item).getId());
                 marketItems.forEach(i -> {
                     if(i instanceof Country) {
@@ -194,7 +200,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
                 });
             }
 
-            if(item instanceof Country && item.isChecked()) {
+            if(item instanceof Country) {
                 countries.add(((Country)item).getId());
             }
         });

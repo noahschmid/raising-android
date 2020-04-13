@@ -112,7 +112,7 @@ public class ApiRequestHandler {
                     return headers;
                 }
             };
-            request.setRetryPolicy(new DefaultRetryPolicy(10000, 1, 1.0f));
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1.0f));
 
             ApiRequestHandler.getInstance(ResourcesManager.getContext())
                     .addToRequestQueue(request);
@@ -157,7 +157,7 @@ public class ApiRequestHandler {
                     return headers;
                 }
             };
-            request.setRetryPolicy(new DefaultRetryPolicy(10000, 1, 1.0f));
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1.0f));
 
             ApiRequestHandler.getInstance(ResourcesManager.getContext())
                     .addToRequestQueue(request);
@@ -201,7 +201,7 @@ public class ApiRequestHandler {
                     return headers;
                 }
             };
-            request.setRetryPolicy(new DefaultRetryPolicy(10000, 1, 1.0f));
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1.0f));
 
             ApiRequestHandler.getInstance(ResourcesManager.getContext())
                     .addToRequestQueue(request);
@@ -242,7 +242,7 @@ public class ApiRequestHandler {
                     }
                 };
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
-                1, 1.0f));
+                0, 1.0f));
 
         getInstance(ResourcesManager.getContext())
                 .addToRequestQueue(jsonObjectRequest);
@@ -279,7 +279,7 @@ public class ApiRequestHandler {
             }
         };
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
-                1, 1.0f));
+                0, 1.0f));
 
         getInstance(ResourcesManager.getContext())
                 .addToRequestQueue(jsonObjectRequest);
@@ -316,7 +316,7 @@ public class ApiRequestHandler {
                     }
                 };
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
-                1, 1.0f));
+                0, 1.0f));
         getInstance(ResourcesManager.getContext())
                 .addToRequestQueue(jsonObjectRequest);
     }

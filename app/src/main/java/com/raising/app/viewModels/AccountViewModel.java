@@ -35,11 +35,16 @@ public class AccountViewModel extends AndroidViewModel {
         loadAccount();
     }
 
+    public void updateCompleted() {
+        viewState.setValue(ViewState.RESULT);
+    }
+
     /**
      * Get account of logged in user from backend
      */
     public void loadAccount() {
         if(!AuthenticationHandler.isLoggedIn()) {
+            viewState.setValue(ViewState.ERROR);
             Log.e("AccountViewModel", "Trying to fetch account without being logged in!");
             return;
         }
@@ -150,12 +155,19 @@ public class AccountViewModel extends AndroidViewModel {
 
 
     /**
-     * Send patch request to account to update
+     * Send patch request to backend to update account
      * @param update the new account instance
      */
     public void update(Account update) {
         String endpoint = null;
         String accountString = null;
+
+        if(!(update instanceof Investor) && !(update instanceof Startup)) {
+            Log.e("RegistrationHandler", "update: invalid account instance");
+            return;
+        }
+
+        viewState.setValue(ViewState.LOADING);
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Startup.class,
@@ -175,11 +187,21 @@ public class AccountViewModel extends AndroidViewModel {
         try {
             ApiRequestHandler.performPatchRequest(endpoint,
                     v -> {
-                        currentAccount.setValue(update);
+                        if(update instanceof Startup) {
+                            currentAccount.setValue((Startup)update);
+                        } else if(update instanceof Investor) {
+                            currentAccount.setValue((Investor)update);
+                        } else {
+                            viewState.setValue(ViewState.ERROR);
+                            return null;
+                        }
+
+                        viewState.setValue(ViewState.UPDATED);
                         return null;
                     }, ApiRequestHandler.errorHandler,
                     new JSONObject(accountString));
         } catch (JSONException e) {
+            viewState.setValue(ViewState.ERROR);
             Log.e("AccountViewModel", "Error while performing patch request: " +
                     e.getMessage());
         }

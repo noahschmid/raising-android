@@ -30,9 +30,11 @@ import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.viewModels.AccountViewModel;
+import com.raising.app.viewModels.ResourcesViewModel;
 
 public class MainActivity extends AppCompatActivity {
     AccountViewModel accountViewModel;
+    ResourcesViewModel resourcesViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         RegistrationHandler.setContext(getApplicationContext());
 
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
+        resourcesViewModel = new ViewModelProvider(this).get(ResourcesViewModel.class);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 

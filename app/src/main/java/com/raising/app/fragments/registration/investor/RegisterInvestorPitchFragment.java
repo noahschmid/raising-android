@@ -63,7 +63,7 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnInvestorPitch.setHint(getString(R.string.myProfile_apply_changes));
-            investor = (Investor) AccountService.getAccount();
+            investor = (Investor) currentAccount;
             editMode = true;
         } else {
             investor = RegistrationHandler.getInvestor();
@@ -73,6 +73,12 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
 
         prepareSentenceLayout(investor.getDescription());
         preparePitchLayout(investor.getPitch());
+    }
+
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
     }
 
     @Override
@@ -108,10 +114,7 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
 
         try {
             if(editMode) {
-                AccountService.updateAccount(investor, v -> {
-                    popCurrentFragment(this);
-                    return null;
-                });
+                accountViewModel.update(investor);
             } else {
                 RegistrationHandler.saveInvestor(investor);
                 changeFragment(new RegisterInvestorImagesFragment());

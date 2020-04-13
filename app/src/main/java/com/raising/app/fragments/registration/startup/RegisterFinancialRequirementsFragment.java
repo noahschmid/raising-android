@@ -101,7 +101,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnFinancialRequirements.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
-            startup = (Startup) AccountService.getAccount();
+            startup = (Startup)currentAccount;
         } else {
             startup = RegistrationHandler.getStartup();
         }
@@ -172,6 +172,12 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         }
     }
 
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
+    }
+
     /**
      * Process inputs and submit registration
      */
@@ -217,10 +223,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
                 RegistrationHandler.saveStartup(startup);
                 changeFragment(new RegisterStakeholderFragment());
             } else {
-                AccountService.updateAccount(startup, v -> {
-                    popCurrentFragment(this);
-                    return null;
-                });
+                accountViewModel.update(startup);
             }
         } catch (IOException e) {
             Log.e("RegisterFinancialRequirements", "Error in processInputs: " + e.getMessage());

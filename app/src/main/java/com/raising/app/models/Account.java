@@ -26,6 +26,7 @@ public class Account implements Serializable, Model {
     private Image profilePicture;
     private List<Image> gallery;
     private long countryId = -1l;
+    private String phone;
 
     private List<Long> countries = new ArrayList<>();
     private List<Long> continents = new ArrayList<>();

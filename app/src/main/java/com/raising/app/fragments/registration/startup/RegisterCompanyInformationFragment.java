@@ -68,7 +68,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnCompanyInformation.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
-            startup = (Startup)AccountService.getAccount();
+            startup = (Startup)currentAccount;
             contactDetails = AccountService.getContactDetails();
         } else {
             startup = RegistrationHandler.getStartup();
@@ -112,6 +112,15 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
     }
 
     @Override
+    protected void onAccountUpdated() {
+        if(!editMode)
+            return;
+
+        AccountService.saveContactDetails(contactDetails);
+        popCurrentFragment(this);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
 
@@ -144,11 +153,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
                 changeFragment(new RegisterCompanyFiguresFragment(),
                         "RegisterCompanyFiguresFragment");
             } else {
-                AccountService.saveContactDetails(contactDetails);
-                AccountService.updateAccount(startup, v -> {
-                    popCurrentFragment(this);
-                    return null;
-                });
+                accountViewModel.update(startup);
             }
 
         } catch (IOException e) {

@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -25,20 +26,31 @@ import android.widget.RadioGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.MainActivity;
 import com.raising.app.R;
+import com.raising.app.models.Account;
 import com.raising.app.models.Model;
 import com.raising.app.models.ViewState;
+import com.raising.app.util.Resources;
 import com.raising.app.util.SimpleMessageDialog;
 import com.raising.app.viewModels.AccountViewModel;
+import com.raising.app.viewModels.ResourcesViewModel;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import javax.security.auth.login.LoginException;
+
 public class RaisingFragment extends Fragment {
     protected View loadingPanel;
     protected FrameLayout overlayLayout;
     protected AccountViewModel accountViewModel;
+    protected ResourcesViewModel resourcesViewModel;
+    protected Resources resources;
+    protected Account currentAccount;
+    private boolean loading = false;
 
+    protected void onAccountUpdated() {
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -49,8 +61,13 @@ public class RaisingFragment extends Fragment {
         if(overlayLayout != null) {
             overlayLayout.setFocusable(false);
             overlayLayout.setClickable(false);
+            overlayLayout.addView(loadingPanel);
+            loadingPanel.setVisibility(View.GONE);
         }
         accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
+        accountViewModel.getAccount().observe(getViewLifecycleOwner(), account -> {
+            currentAccount = account;
+        });
         accountViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
             switch (viewState) {
                 case LOADING:
@@ -58,7 +75,24 @@ public class RaisingFragment extends Fragment {
                 case RESULT:
                     dismissLoadingPanel();
                     break;
+                case UPDATED:
+                    onAccountUpdated();
+                    break;
                 case ERROR:
+                    break;
+            }
+        });
+
+        resourcesViewModel = ViewModelProviders.of(getActivity()).get(ResourcesViewModel.class);
+        resourcesViewModel.getResources().observe(getViewLifecycleOwner(), resources -> {
+            this.resources = resources;
+        });
+        resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
+            switch (viewState) {
+                case LOADING:
+                    showLoadingPanel();
+                case RESULT:
+                    dismissLoadingPanel();
                     break;
             }
         });
@@ -78,7 +112,7 @@ public class RaisingFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         } catch (NullPointerException e) {
-            Log.d("debugMessage", e.getMessage());
+            Log.e("RaisingFragment", "Error while changing Fragment: " + e.getMessage());
         }
     }
 
@@ -96,7 +130,8 @@ public class RaisingFragment extends Fragment {
                     .addToBackStack(name)
                     .commit();
         } catch (NullPointerException e) {
-            Log.d("debugMessage", e.getMessage());
+            Log.e("RaisingFragment", "Error while changing Fragment: " +
+                    e.getMessage());
         }
     }
 
@@ -113,6 +148,24 @@ public class RaisingFragment extends Fragment {
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
         transaction.commit();
+    }
+
+    /**
+     * Creates an easy to read string representation of large numbers
+     * @param amount The number, that should be converted to the easier string
+     * @return The string representation of the number
+     */
+    public String amountToString(int amount) {
+        String unit = "";
+        String[] units = getResources().getStringArray(R.array.revenue_units);
+        String currency =getResources().getString(R.string.currency);
+        int i = 0;
+        while(Math.log10(amount) >= 3 && i < units.length) {
+            amount /= 1000;
+            unit = units[i];
+            ++i;
+        }
+        return currency + " " + amount +  unit;
     }
 
 
@@ -139,7 +192,8 @@ public class RaisingFragment extends Fragment {
         try {
             return getParentFragmentManager();
         } catch (NullPointerException e) {
-            Log.d("debugMessage", e.toString());
+            Log.e("RaisingFragment", "Could not get activities fragment manager: " +
+                    e.toString());
         }
         return null;
     }
@@ -264,7 +318,6 @@ public class RaisingFragment extends Fragment {
         }
     }
 
-
     /**
      * Get selected checkboxes of a layout
      * @param layout
@@ -298,6 +351,12 @@ public class RaisingFragment extends Fragment {
         }
 
         return -1l;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        dismissLoadingPanel();
     }
 
     /**
@@ -336,23 +395,30 @@ public class RaisingFragment extends Fragment {
             return;
         }
 
-        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
-        getView().setClickable(false);
-        getView().setFocusable(false);
-        overlayLayout.addView(loadingPanel);
-    }
-
-    protected void dismissLoadingPanel() {
-        if(loadingPanel == null) {
+        if(loading) {
             return;
         }
 
+        loading = true;
+
+        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+        loadingPanel.setVisibility(View.VISIBLE);
+
+        getView().setClickable(false);
+        getView().setFocusable(false);
+    }
+
+    protected void dismissLoadingPanel() {
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        if(loadingPanel == null || !loading) {
+            return;
+        }
 
         getView().setClickable(true);
         getView().setFocusable(true);
         loadingPanel.setVisibility(View.GONE);
+        loading = false;
     }
 }
