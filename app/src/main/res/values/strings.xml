@@ -17,6 +17,8 @@
     <string name="decline_text"> Decline </string>
     <string name="request_text"> Request </string>
 
+    <string name="simple_dialog_invalid_input_title">Invalid inputs</string>
+
     <string name="general_dialog_error_title"> Error occurred! </string>
     <string name="general_dialog_error_text"> Something went wrong. Please try again </string>
 
@@ -82,7 +84,6 @@
     <string name="reset_code_input_placeholder"> Reset Code</string>
     <string name="reset_button_text"> Reset Password </string>
 
-    <string name="reset_dialog_title_no_input">Invalid inputs</string>
     <string name="reset_dialog_text_no_input">You have to enter a code and a new password!</string>
 
     <!-- Strings used in Registration -->
@@ -109,6 +110,8 @@
     <string name="register_company_fte"> FTE* </string>
     <string name="register_company_markets"> Current Markets* </string>
     <string name="register_company_founding_year"> Founding Year* </string>
+    <string name="register_company_error_fte">FTE should be greater than 0</string>
+    <string name="register_company_error_break_even"> Break-Even Year should be after the Founding Year </string>
 
     <string name="register_address_information_text"> Address Information</string>
     <string name="register_address_country"> Country </string>
@@ -145,6 +148,9 @@
     <string name="register_pitch_sentence"> One sentence description </string>
     <string name="register_pitch"> Your pitch </string>
     <string name="register_pitch_label_information_text"> Labels </string>
+    <string name="register_pitch_error_long_sentence"> One sentence should not exceed the given maximum length </string>
+    <string name="register_pitch_error_long_pitch"> Pitch should not exceed the given maximum length</string>
+
     <string name="register_label_sef4kmu"> SEF4KMU </string>
     <string name="register_label_venture_kick"> Venture Kick </string>
     <string name="register_label_innosuisse"> Innosuisse </string>
@@ -158,6 +164,7 @@
     <string name="register_financial_scope"> Scope </string>
     <string name="register_financial_scope_"> Scope* </string>
     <string name="register_financial_completed">Completed</string>
+    <string name="register_financial_error_completed"> Completed should not be greater than Scope </string>
 
     <string name="register_stakeholder_information_text"> Stakeholders </string>
     <string name="register_stakeholder_founder_add"> Add Founder</string>

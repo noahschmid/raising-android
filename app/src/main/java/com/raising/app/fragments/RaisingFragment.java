@@ -58,6 +58,7 @@ public class RaisingFragment extends Fragment {
 
         loadingPanel = getLayoutInflater().inflate(R.layout.view_loading_panel, null);
         overlayLayout = getView().findViewById(R.id.overlay_layout);
+        
         if(overlayLayout != null) {
             overlayLayout.setFocusable(false);
             overlayLayout.setClickable(false);
@@ -224,8 +225,7 @@ public class RaisingFragment extends Fragment {
         if(currentText == null || currentText.equals(" ")) {
             textLayout.setHelperText(0 + "/" + WORD_MAXIMUM);
         } else {
-            currentText.replace("\n", " ");
-            String [] currentTextArray = currentText.split(" ");
+            String [] currentTextArray = splitStringIntoWords(currentText);
             textLayout.setHelperText(currentTextArray.length + "/" + WORD_MAXIMUM);
         }
 
@@ -236,8 +236,7 @@ public class RaisingFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String text = textInput.getText().toString();
-                text.replace("\n", " ");
-                String [] textArray = text.split(" ");
+                String [] textArray = splitStringIntoWords(text);
                 textLayout.setHelperText(textArray.length + "/" + WORD_MAXIMUM);
 
                 if(textArray.length > WORD_MAXIMUM) {
@@ -247,6 +246,16 @@ public class RaisingFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {}
         });
+    }
+
+    /**
+     * Creates a String array containing seperate words from a given String
+     * @param text The text that should be split into words
+     * @return The array containing the words
+     */
+    protected String [] splitStringIntoWords(String text) {
+        text.replace("\n", " ");
+        return text.split(" ");
     }
 
     /**

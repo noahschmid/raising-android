@@ -45,6 +45,8 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
     private boolean editMode = false;
     private Startup startup;
 
+    final private String TAG = "RegisterFinancialRequirementsFragment";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -197,6 +199,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         if (financialValuationInput.getText().length() > 0)
             valuation = Float.parseFloat(financialValuationInput.getText().toString());
 
+        // check if closing time is after current date
         if (selectedDate.before(Calendar.getInstance())) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_invalid_date));
@@ -207,6 +210,13 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         int completed = 0;
         if (completedInput.getText().length() != 0) {
             completed = Integer.parseInt(completedInput.getText().toString());
+        }
+
+        // check if completed is smaller than scope
+        if(completed > (int) scope) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_financial_error_completed));
+            return;
         }
 
         startup.setFinanceTypeId(financialTypeId);
