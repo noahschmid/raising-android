@@ -4,12 +4,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.raising.app.R;
 import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
@@ -23,7 +25,8 @@ import java.util.ArrayList;
 
 public class MatchesFragment extends RaisingFragment {
     private RecyclerView matchlist;
-    private boolean isStartup = false;
+    private LinearLayout matchlistLayout;
+    private ConstraintLayout emptyMatchlistLayout;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -35,10 +38,18 @@ public class MatchesFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        isStartup = AccountService.isStartup();
+        matchlistLayout = view.findViewById(R.id.matchlist_layout);
+        emptyMatchlistLayout = view.findViewById(R.id.empty_matchlist_layout);
 
         //TODO: store matchlist items in following arraylist
         ArrayList<MatchlistItem> matchlistItems = new ArrayList<>();
+
+        if(matchlistItems.size() == 0) {
+            matchlistLayout.setVisibility(View.GONE);
+        } else {
+            emptyMatchlistLayout.setVisibility(View.GONE);
+        }
+
         //helper array to define colors of the pie chart in the matchlist
         int [] colors = {
                 getResources().getColor(R.color.raisingPrimary, null),
@@ -51,7 +62,7 @@ public class MatchesFragment extends RaisingFragment {
             long id = matchlistItems.get(position).getId();
             Bundle args = new Bundle();
             args.putLong("id", id);
-            if(isStartup) {
+            if(matchlistItems.get(position).isStartup()) {
                 InvestorPublicProfileFragment publicProfile = new InvestorPublicProfileFragment();
                 publicProfile.setArguments(args);
                 changeFragment(publicProfile);
@@ -60,6 +71,7 @@ public class MatchesFragment extends RaisingFragment {
                 publicProfile.setArguments(args);
                 changeFragment(publicProfile);
             }
+            matchlistItems.remove(position);
         });
     }
 
