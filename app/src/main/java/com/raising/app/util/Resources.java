@@ -41,12 +41,27 @@ public class Resources implements Serializable {
      * @param list where to search in
      * @return search result, null if not found
      */
-    public static Model findById(long id, ArrayList<? extends Model> list) {
+    public Model findById(long id, ArrayList<? extends Model> list) {
         for(Model item : list) {
             if(item.getId() == id)
                 return item;
         }
         return null;
+    }
+
+    public String formatMoneyAmount(int amount) {
+        int i = 0;
+        String[] units = InternalStorageHandler.getContext().getResources()
+                .getStringArray(R.array.revenue_units);
+        String unit = "", currency = InternalStorageHandler.getContext().getString(R.string.currency);
+
+        while(Math.log10(amount) >= 3 && i < units.length) {
+            amount /= 1000;
+            unit = units[i];
+            ++i;
+        }
+
+        return  currency + amount + unit;
     }
 
     public TicketSize getTicketSize(long id) {
@@ -79,6 +94,14 @@ public class Resources implements Serializable {
         ArrayList<Integer> result = new ArrayList();
         getTicketSizes().forEach(size -> result.add(size.getTicketSize()));
         return result.stream().mapToInt(Integer::valueOf).toArray();
+    }
+
+    public String getRevenueString(int minId) {
+        Revenue rev = getRevenue(minId);
+        if(rev == null)
+            return "";
+        return rev.toString(InternalStorageHandler.getContext().getString(R.string.currency),
+                InternalStorageHandler.getContext().getResources().getStringArray(R.array.revenue_units));
     }
 
     public Country getCountry(long id) { return (Country)findById(id, getCountries()); }

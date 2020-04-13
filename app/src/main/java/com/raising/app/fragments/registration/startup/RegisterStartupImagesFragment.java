@@ -258,11 +258,19 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                 RegistrationHandler.saveStartup(startup);
                 changeFragment(new RegisterStartupVideoFragment());
             } else {
+                accountViewModel.updateProfilePicture(new Image(logo));
                 popCurrentFragment(this);
             }
 
         } catch (IOException e) {
             Log.e("StartupImages", "Error in processInputs: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        hideBottomNavigation(false);
     }
 }

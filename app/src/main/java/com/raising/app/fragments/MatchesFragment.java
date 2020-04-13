@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,17 +17,21 @@ import android.widget.LinearLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
-import com.raising.app.models.MatchlistItem;
+import com.raising.app.models.MatchListItem;
 import com.raising.app.util.AccountService;
-import com.raising.app.util.recyclerViewAdapter.MatchlistAdapter;
+import com.raising.app.util.recyclerViewAdapter.MatchListAdapter;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
+import com.raising.app.viewModels.AccountViewModel;
+import com.raising.app.viewModels.MatchListViewModel;
 
 import java.util.ArrayList;
 
 public class MatchesFragment extends RaisingFragment {
-    private RecyclerView matchlist;
-    private LinearLayout matchlistLayout;
-    private ConstraintLayout emptyMatchlistLayout;
+    private RecyclerView matchList;
+    private LinearLayout matchListLayout;
+    private ConstraintLayout emptyMatchListLayout;
+    private ArrayList<MatchListItem> matchListItems;
+    private MatchListViewModel matchListViewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -38,31 +43,36 @@ public class MatchesFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        matchlistLayout = view.findViewById(R.id.matchlist_layout);
-        emptyMatchlistLayout = view.findViewById(R.id.empty_matchlist_layout);
+        matchListLayout = view.findViewById(R.id.matchList_layout);
+        emptyMatchListLayout = view.findViewById(R.id.empty_matchList_layout);
 
-        //TODO: store matchlist items in following arraylist
-        ArrayList<MatchlistItem> matchlistItems = new ArrayList<>();
+        //TODO: store matchList items in following arraylist
+        matchListViewModel  = new ViewModelProvider(this)
+                .get(MatchListViewModel .class);
+        matchListItems = matchListViewModel.getMatchList().getValue();
+        matchListViewModel.getMatchList().observe(getViewLifecycleOwner(), matches -> {
+            matchListItems = matches;
+        });
 
-        if(matchlistItems.size() == 0) {
-            matchlistLayout.setVisibility(View.GONE);
+        if(matchListItems.size() == 0) {
+            matchListLayout.setVisibility(View.GONE);
         } else {
-            emptyMatchlistLayout.setVisibility(View.GONE);
+            emptyMatchListLayout.setVisibility(View.GONE);
         }
 
-        //helper array to define colors of the pie chart in the matchlist
+        //helper array to define colors of the pie chart in the matchList
         int [] colors = {
                 getResources().getColor(R.color.raisingPrimary, null),
                 getResources().getColor(R.color.raisingWhite, null)};
-        matchlist = view.findViewById(R.id.matchlist);
-        matchlist.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        MatchlistAdapter matchlistAdapter = new MatchlistAdapter(matchlistItems, colors);
-        matchlist.setAdapter(matchlistAdapter);
-        matchlistAdapter.setOnItemClickListener(position -> {
-            long id = matchlistItems.get(position).getId();
+        matchList = view.findViewById(R.id.matchList);
+        matchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        MatchListAdapter matchListAdapter = new MatchListAdapter(matchListItems, colors);
+        matchList.setAdapter(matchListAdapter);
+        matchListAdapter.setOnItemClickListener(position -> {
+            long id = matchListItems.get(position).getId();
             Bundle args = new Bundle();
             args.putLong("id", id);
-            if(matchlistItems.get(position).isStartup()) {
+            if(matchListItems.get(position).isStartup()) {
                 InvestorPublicProfileFragment publicProfile = new InvestorPublicProfileFragment();
                 publicProfile.setArguments(args);
                 changeFragment(publicProfile);
@@ -71,7 +81,7 @@ public class MatchesFragment extends RaisingFragment {
                 publicProfile.setArguments(args);
                 changeFragment(publicProfile);
             }
-            matchlistItems.remove(position);
+           // matchListItems.remove(position);
         });
     }
 

@@ -47,7 +47,7 @@ public class RaisingFragment extends Fragment {
     protected ResourcesViewModel resourcesViewModel;
     protected Resources resources;
     protected Account currentAccount;
-    private boolean loading = false;
+    private int processesLoading = 0;
 
     protected void onAccountUpdated() {
     }
@@ -69,11 +69,13 @@ public class RaisingFragment extends Fragment {
         accountViewModel.getAccount().observe(getViewLifecycleOwner(), account -> {
             currentAccount = account;
         });
+        currentAccount = accountViewModel.getAccount().getValue();
         accountViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
             switch (viewState) {
                 case LOADING:
                     showLoadingPanel();
                 case RESULT:
+                case CACHED:
                     dismissLoadingPanel();
                     break;
                 case UPDATED:
@@ -93,10 +95,12 @@ public class RaisingFragment extends Fragment {
                 case LOADING:
                     showLoadingPanel();
                 case RESULT:
+                case CACHED:
                     dismissLoadingPanel();
                     break;
             }
         });
+        resources = resourcesViewModel.getResources().getValue();
     }
 
     /**
@@ -115,6 +119,14 @@ public class RaisingFragment extends Fragment {
         } catch (NullPointerException e) {
             Log.e("RaisingFragment", "Error while changing Fragment: " + e.getMessage());
         }
+    }
+
+    /**
+     * Display a generic "oops something went wrong" message
+     */
+    public void displayGenericError() {
+        showSimpleDialog(getString(R.string.generic_error_title),
+                getString(R.string.generic_error_text));
     }
 
     /**
@@ -209,7 +221,7 @@ public class RaisingFragment extends Fragment {
     protected void showSimpleDialog(String dialogTitle, String dialogMessage) {
         SimpleMessageDialog dialog =
                 new SimpleMessageDialog().newInstance(dialogTitle, dialogMessage);
-        dialog.show(getActivitiesFragmentManager(), "loginDialog");
+        dialog.show(getActivitiesFragmentManager(), "dialog");
     }
 
     /**
@@ -404,11 +416,11 @@ public class RaisingFragment extends Fragment {
             return;
         }
 
-        if(loading) {
+        ++processesLoading;
+
+        if(processesLoading > 1) {
             return;
         }
-
-        loading = true;
 
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -421,13 +433,15 @@ public class RaisingFragment extends Fragment {
 
     protected void dismissLoadingPanel() {
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-        if(loadingPanel == null || !loading) {
+        --processesLoading;
+        if(loadingPanel == null || processesLoading != 0) {
+            if(processesLoading < 0)
+                processesLoading = 0;
             return;
         }
 
         getView().setClickable(true);
         getView().setFocusable(true);
         loadingPanel.setVisibility(View.GONE);
-        loading = false;
     }
 }

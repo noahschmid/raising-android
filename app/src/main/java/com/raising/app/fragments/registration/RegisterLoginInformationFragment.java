@@ -20,6 +20,7 @@ import com.raising.app.models.Investor;
 import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.RegistrationHandler;
 
 import org.json.JSONObject;
@@ -67,10 +68,10 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             btnLoginInformation.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
-            if(AccountService.isStartup()) {
-                startup = (Startup) AccountService.getAccount();
+            if(AuthenticationHandler.isStartup()) {
+                startup = (Startup) currentAccount;
             } else {
-                investor = (Investor) AccountService.getAccount();
+                investor = (Investor) currentAccount;
             }
         } else {
             if(AccountService.isStartup()) {

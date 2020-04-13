@@ -11,20 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.android.material.slider.Slider;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.Model;
 import com.raising.app.models.Startup;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.ResourcesManager;
 import com.raising.app.viewModels.AccountViewModel;
 
 import java.io.IOException;
@@ -67,8 +62,8 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
 
         accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
-        ticketSizeSteps = ResourcesManager.getTicketSizeValues();
-        ticketSizeStrings = ResourcesManager.getTicketSizeStrings(getString(R.string.currency),
+        ticketSizeSteps = resources.getTicketSizeValues();
+        ticketSizeStrings = resources.getTicketSizeStrings(getString(R.string.currency),
                 getResources().getStringArray(R.array.revenue_units));
 
         prepareTicketSizeSlider(view);
@@ -108,10 +103,10 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
      * Load all necessary items into list
      */
     private void setupLists() {
-        setupRadioGroup(ResourcesManager.getInvestmentPhases(), investmentPhaseGroup);
-        setupCheckboxes(ResourcesManager.getIndustries(), industryLayout);
-        setupCheckboxes(ResourcesManager.getInvestorTypes(), investorTypeLayout);
-        setupCheckboxes(ResourcesManager.getSupports(), supportLayout);
+        setupRadioGroup(resources.getInvestmentPhases(), investmentPhaseGroup);
+        setupCheckboxes(resources.getIndustries(), industryLayout);
+        setupCheckboxes(resources.getInvestorTypes(), investorTypeLayout);
+        setupCheckboxes(resources.getSupports(), supportLayout);
     }
 
     /**
@@ -168,10 +163,10 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
             return;
         }
 
-        int ticketSizeMinId =  (int)ResourcesManager.getTicketSizes().get(
+        int ticketSizeMinId =  (int)resources.getTicketSizes().get(
                 (int)ticketSize.getMinimumValue() - 1).getId();
 
-        int ticketSizeMaxId =  (int)ResourcesManager.getTicketSizes().get(
+        int ticketSizeMaxId =  (int)resources.getTicketSizes().get(
                 (int)ticketSize.getMaximumValue() - 1).getId();
 
         startup.setTicketMaxId(ticketSizeMaxId);

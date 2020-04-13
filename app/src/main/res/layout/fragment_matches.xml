@@ -13,19 +13,19 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/matchlist_layout"
+            android:id="@+id/matchList_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/matchlist"
+                android:id="@+id/matchList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/empty_matchlist_layout"
+            android:id="@+id/empty_matchList_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:text="@string/empty_matchlist_text_2"
+                android:text="@string/empty_matchList_text_2"
                 android:textColor="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTitleFontSize"
                 android:textStyle="bold"
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:text="@string/empty_matchlist_text"
+                android:text="@string/empty_matchList_text"
                 android:textColor="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingTitleFontSize"
                 android:textStyle="bold"

@@ -54,12 +54,6 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // if data not yet loaded don't proceed
-        if(!(AccountService.getAccount() instanceof Startup) &&
-                !(AccountService.getAccount() instanceof Investor)) {
-            return;
-        }
-
         startUpLayout = view.findViewById(R.id.myProfile_startUp_layout);
         investorLayout = view.findViewById(R.id.myProfile_investor_layout);
 
@@ -132,8 +126,8 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         // if data not yet loaded don't proceed
-        if(!(AccountService.getAccount() instanceof Startup) &&
-        !(AccountService.getAccount() instanceof Investor)) {
+        if(!(currentAccount instanceof Startup) &&
+        !(currentAccount instanceof Investor)) {
             return;
         }
         Fragment fragment = null;
@@ -178,7 +172,7 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 fragment.setArguments(bundle);
                 break;
             case R.id.button_myProfile_startup_public_profile:
-                bundle.putSerializable("startup", (Startup)AccountService.getAccount());
+                bundle.putSerializable("startup", (Startup)currentAccount);
                 fragment = new StartupPublicProfileFragment();
                 fragment.setArguments(bundle);
                 break;
@@ -207,7 +201,7 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 fragment.setArguments(bundle);
                 break;
             case R.id.button_myProfile_investor_public_profile:
-                bundle.putSerializable("investor", (Investor)AccountService.getAccount());
+                bundle.putSerializable("investor", (Investor)currentAccount);
                 fragment = new InvestorPublicProfileFragment();
                 fragment.setArguments(bundle);
                 break;

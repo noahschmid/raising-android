@@ -10,29 +10,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.android.material.slider.Slider;
-import com.google.gson.Gson;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Continent;
 import com.raising.app.models.Country;
 import com.raising.app.models.Investor;
-import com.raising.app.models.Model;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class RegisterInvestorMatchingFragment extends RaisingFragment
         implements View.OnClickListener {
@@ -93,13 +86,13 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         }
 
         pickerItems = new ArrayList<>();
-        pickerItems.addAll(ResourcesManager.getContinents());
-        pickerItems.addAll(ResourcesManager.getCountries());
+        pickerItems.addAll(resources.getContinents());
+        pickerItems.addAll(resources.getCountries());
 
-        ticketSizeStrings = ResourcesManager.getTicketSizeStrings(getString(R.string.currency),
+        ticketSizeStrings = resources.getTicketSizeStrings(getString(R.string.currency),
                 getResources().getStringArray(R.array.revenue_units));
 
-        ticketSizeSteps = ResourcesManager.getTicketSizeValues();
+        ticketSizeSteps = resources.getTicketSizeValues();
 
         prepareTicketSizeSlider(view);
 
@@ -159,10 +152,10 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
      * Load all necessary items into list
      */
     private void setupLists() {
-        setupCheckboxes(ResourcesManager.getInvestmentPhases(), investmentPhaseLayout);
-        setupCheckboxes(ResourcesManager.getIndustries(), industryLayout);
-        setupRadioGroup(ResourcesManager.getInvestorTypes(), investorTypeGroup);
-        setupCheckboxes(ResourcesManager.getSupports(), supportLayout);
+        setupCheckboxes(resources.getInvestmentPhases(), investmentPhaseLayout);
+        setupCheckboxes(resources.getIndustries(), industryLayout);
+        setupRadioGroup(resources.getInvestorTypes(), investorTypeGroup);
+        setupCheckboxes(resources.getSupports(), supportLayout);
     }
 
     /**
@@ -217,10 +210,10 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             return;
         }
 
-        investor.setTicketMinId((int)ResourcesManager.getTicketSizes().get(
+        investor.setTicketMinId((int)resources.getTicketSizes().get(
                 (int)ticketSize.getMinimumValue() - 1).getId());
 
-        investor.setTicketMaxId((int)ResourcesManager.getTicketSizes().get(
+        investor.setTicketMaxId((int)resources.getTicketSizes().get(
                 (int)ticketSize.getMaximumValue() - 1).getId());
 
         ArrayList<Long> industries = getSelectedCheckboxIds(industryLayout);

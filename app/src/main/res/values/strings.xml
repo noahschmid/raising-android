@@ -58,9 +58,9 @@
 
     <string name="startup_shareholder_chart_title"> Shareholder Equity Shares </string>
 
-    <!-- Strings used for Matchlist and Handshake Screens -->
-    <string name="empty_matchlist_text"> You are done! </string>
-    <string name="empty_matchlist_text_2"> Enjoy the rest of your week! </string>
+    <!-- Strings used for MatchList and Handshake Screens -->
+    <string name="empty_matchList_text"> You are done! </string>
+    <string name="empty_matchList_text_2"> Enjoy the rest of your week! </string>
 
     <!-- Strings used in LoginScreen -->
     <string name="login_welcome_text"> Welcome to Raising </string>

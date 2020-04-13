@@ -10,8 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -22,17 +20,11 @@ import com.raising.app.fragments.registration.startup.stakeholderInputs.viewMode
 import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
-import com.raising.app.util.NoFilterArrayAdapter;
-import com.raising.app.util.NotificationHandler;
-import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
 
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class FounderInputFragment extends RaisingFragment {
     private FounderViewModel founderViewModel;
@@ -133,7 +125,7 @@ public class FounderInputFragment extends RaisingFragment {
                                     ApiRequestHandler.errorHandler,
                                     params);
                         } catch (Exception e) {
-                            NotificationHandler.displayGenericError();
+                            displayGenericError();
                             Log.e("FounderInput",
                                     "Could not add founder: " + e.getMessage());
                         }
@@ -159,7 +151,7 @@ public class FounderInputFragment extends RaisingFragment {
                                 countryId = (int)country.getId();
                             }
                         })
-                        .setItems(ResourcesManager.getCountries());
+                        .setItems(resources.getCountries());
 
         countryPicker = builder.build();
 
@@ -180,7 +172,7 @@ public class FounderInputFragment extends RaisingFragment {
             founderEducationInput.setText(founder.getEducation());
             countryId = founder.getCountryId();
             if (countryId != -1) {
-                founderCountryInput.setText(ResourcesManager.getCountry(countryId).getName());
+                founderCountryInput.setText(resources.getCountry(countryId).getName());
             }
         }
     }

@@ -287,7 +287,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
         try {
             if(editMode) {
-                AccountService.updateProfilePicture(new Image(logo));
+                accountViewModel.updateProfilePicture(new Image(logo));
                 popCurrentFragment(this);
             } else {
                 RegistrationHandler.saveInvestor(investor);

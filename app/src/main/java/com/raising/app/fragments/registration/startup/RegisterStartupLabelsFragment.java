@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,11 +15,8 @@ import android.widget.LinearLayout;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.Account;
 import com.raising.app.models.Startup;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.ResourcesManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,7 +57,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
 
         labelsLayout = view.findViewById(R.id.register_startup_pitch_labels);
 
-        ResourcesManager.getLabels().forEach(label -> {
+        resources.getLabels().forEach(label -> {
             CheckBox cb = new CheckBox(getContext());
             cb.setText(label.getName());
             cb.setContentDescription(String.valueOf(label.getId()));

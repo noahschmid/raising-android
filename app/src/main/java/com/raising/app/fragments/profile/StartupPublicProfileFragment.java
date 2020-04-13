@@ -27,8 +27,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -36,21 +34,16 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Model;
-import com.raising.app.models.ShareholderEquityChartLegendItem;
+import com.raising.app.models.EquityChartLegendItem;
 import com.raising.app.models.Startup;
 import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.models.stakeholder.Shareholder;
 import com.raising.app.util.AccountService;
-import com.raising.app.util.Resources;
-import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
 import com.raising.app.util.recyclerViewAdapter.StartupProfileBoardMemberRecyclerViewAdapter;
 import com.raising.app.util.recyclerViewAdapter.StartupProfileFounderRecyclerViewAdapter;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -191,17 +184,17 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     }
 
     private void loadData() {
-        startupScope.setText(ResourcesManager.amountToString(startup.getScope()));
-        startupMinTicket.setText(ResourcesManager.getTicketSize(startup.getTicketMinId())
+        startupScope.setText(resources.formatMoneyAmount(startup.getScope()));
+        startupMinTicket.setText(resources.getTicketSize(startup.getTicketMinId())
                 .toString(getString(R.string.currency),
                         getResources().getStringArray(R.array.revenue_units)));
-        startupMaxTicket.setText(ResourcesManager.getTicketSize(startup.getTicketMaxId())
+        startupMaxTicket.setText(resources.getTicketSize(startup.getTicketMaxId())
                 .toString(getString(R.string.currency),
                         getResources().getStringArray(R.array.revenue_units)));
         profileName.setText(startup.getName());
         profileSentence.setText(startup.getDescription());
         profilePitch.setText(startup.getPitch());
-        startupRevenue.setText(ResourcesManager.getRevenueString(
+        startupRevenue.setText(resources.getRevenueString(
                 startup.getRevenueMinId()));
         startupBreakEven.setText(String.valueOf(startup.getBreakEvenYear()));
         startupFoundingYear.setText(String.valueOf(startup.getFoundingYear()));
@@ -209,7 +202,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         //TODO: display current markets
 
-        startupInvestmentType.setText(ResourcesManager.getFinanceType(
+        startupInvestmentType.setText(resources.getFinanceType(
                 startup.getFinanceTypeId()).getName());
         DateFormat toFormat = new SimpleDateFormat("MM.dd.yyyy");
         DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -221,10 +214,10 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             Log.e("StartupPublicProfile", "Error while parsing closing time: " +
                     e.getMessage());
         }
-        startupCompleted.setText(ResourcesManager.amountToString(startup.getRaised()));
+        startupCompleted.setText(resources.formatMoneyAmount(startup.getRaised()));
         completedProgress.setMax(startup.getScope());
         completedProgress.setProgress(startup.getRaised());
-        profileLocation.setText(ResourcesManager.getCountry(startup.getCountryId()).getName());
+        profileLocation.setText(resources.getCountry(startup.getCountryId()).getName());
 
         //TODO: change to actual value
         matchingPercent.setText("80% MATCH");
@@ -232,16 +225,16 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         //TODO: add labels to labelsLayout
 
         startup.getInvestorTypes().forEach(type -> {
-            investorTypes.add((Model)ResourcesManager.getInvestorType(type));
+            investorTypes.add((Model)resources.getInvestorType(type));
         });
 
         startup.getIndustries().forEach(industry -> {
-            industries.add(ResourcesManager.getIndustry(industry));
+            industries.add(resources.getIndustry(industry));
         });
 
-        investmentPhases.add(ResourcesManager.getInvestmentPhase(startup.getInvestmentPhaseId()));
+        investmentPhases.add(resources.getInvestmentPhase(startup.getInvestmentPhaseId()));
         startup.getSupport().forEach(support -> {
-            supports.add(ResourcesManager.getSupport(support));
+            supports.add(resources.getSupport(support));
         });
 
         typeAdapter.notifyDataSetChanged();
@@ -265,7 +258,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         // hide valuation fields, if they are empty
         if(startup.getPreMoneyValuation() < 0) {
-            startupValuation.setText(ResourcesManager.amountToString(startup.getPreMoneyValuation()));
+            startupValuation.setText(resources.formatMoneyAmount(startup.getPreMoneyValuation()));
         } else {
             startupValuationTitle.setVisibility(View.GONE);
             startupValuation.setVisibility(View.GONE);
@@ -428,7 +421,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         ArrayList<Integer> pieChartColors = populateColorArray();
 
         //stores the shareholders combined with their respective chart color
-        ArrayList<ShareholderEquityChartLegendItem> legendItems = new ArrayList<>();
+        ArrayList<EquityChartLegendItem> legendItems = new ArrayList<>();
 
         PieChart pieChart = view.findViewById(R.id.stakeholder_equity_chart);
         List<PieEntry> pieEntries = new ArrayList<>();
@@ -443,7 +436,10 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 offset = offset == 0 ? 1 : 0;
             }
             int shareholderColor = pieChartColors.get(colorIndex);
-            legendItems.add(new ShareholderEquityChartLegendItem(shareholderColor, shareholders.get(i)));
+            Shareholder tmp = shareholders.get(i);
+            legendItems.add(new EquityChartLegendItem(shareholderColor,
+                    resources.getInvestorType(tmp.getInvestorTypeId()).getName(),
+                    tmp.getTitle(), tmp.getEquityShare()));
         }
 
         legendItems.forEach(legendItem -> {

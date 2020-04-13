@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.raising.app.R;
 import com.raising.app.models.Continent;
 import com.raising.app.models.CorporateBody;
@@ -21,8 +23,10 @@ import com.raising.app.models.Support;
 import com.raising.app.models.TicketSize;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.Resources;
+import com.raising.app.util.ResourcesDeserializer;
 
 import java.util.ArrayList;
 
@@ -47,7 +51,13 @@ public class ResourcesViewModel extends AndroidViewModel{
             viewState.setValue(ViewState.LOADING);
         }
 
-        ApiRequestHandler.performArrayGetRequest("public", result -> {
+        ApiRequestHandler.performGetRequest("public/", result -> {
+                    GsonBuilder gsonBuilder = new GsonBuilder();
+                    gsonBuilder.registerTypeAdapter(Resources.class, new ResourcesDeserializer());
+                    Gson gson = gsonBuilder.create();
+                    resources.setValue(gson.fromJson(result.toString(), Resources.class));
+                    viewState.setValue(ViewState.RESULT);
+                    Log.d(TAG, "loadResources: resources successfuly loaded");
                     return null;
                 },
                 error -> {
@@ -69,6 +79,19 @@ public class ResourcesViewModel extends AndroidViewModel{
         }
 
         return null;
+    }
+
+    /**
+     * Save current account to internal storage
+     */
+    private void cacheResources() {
+        try {
+            InternalStorageHandler.saveObject(resources.getValue(),
+                    "resources");
+            Log.d(TAG, "cacheResources: loading cached resources successful");
+        } catch(Exception e) {
+            Log.e(TAG, "error caching resources: " + e.getMessage());
+        }
     }
 
     public MutableLiveData<Resources> getResources() { return resources; }

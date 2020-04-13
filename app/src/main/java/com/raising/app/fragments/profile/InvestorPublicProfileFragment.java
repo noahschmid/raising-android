@@ -28,7 +28,6 @@ import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Investor;
 import com.raising.app.models.Model;
 import com.raising.app.util.AccountService;
-import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -182,10 +181,10 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     }
 
     private void loadData(Investor investor) {
-        minTicketSize.setText(ResourcesManager.getTicketSize(investor.getTicketMinId())
+        minTicketSize.setText(resources.getTicketSize(investor.getTicketMinId())
                 .toString(getString(R.string.currency),
                         getResources().getStringArray(R.array.revenue_units)));
-        maxTicketSize.setText(ResourcesManager.getTicketSize(investor.getTicketMaxId())
+        maxTicketSize.setText(resources.getTicketSize(investor.getTicketMaxId())
                 .toString(getString(R.string.currency),
                         getResources().getStringArray(R.array.revenue_units)));
        profileName.setText(investor.getName());
@@ -194,15 +193,15 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
        //TODO: change to actual value
        matchingPercent.setText("80% MATCH");
 
-       investorTypes.add((Model)ResourcesManager.getInvestorType(investor.getInvestorTypeId()));
+       investorTypes.add((Model)resources.getInvestorType(investor.getInvestorTypeId()));
        investor.getIndustries().forEach(industry -> {
-           industries.add(ResourcesManager.getIndustry(industry));
+           industries.add(resources.getIndustry(industry));
        });
        investor.getInvestmentPhases().forEach(phase -> {
-           investmentPhases.add(ResourcesManager.getInvestmentPhase(phase));
+           investmentPhases.add(resources.getInvestmentPhase(phase));
        });
        investor.getSupport().forEach(support -> {
-           supports.add(ResourcesManager.getSupport(support));
+           supports.add(resources.getSupport(support));
        });
        typeAdapter.notifyDataSetChanged();
        phaseAdapter.notifyDataSetChanged();

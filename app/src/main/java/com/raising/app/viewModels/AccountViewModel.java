@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.raising.app.models.Account;
+import com.raising.app.models.Image;
 import com.raising.app.models.Investor;
 import com.raising.app.models.Startup;
 import com.raising.app.models.ViewState;
@@ -25,14 +26,16 @@ import com.raising.app.util.Serializer;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 public class AccountViewModel extends AndroidViewModel {
-    private MutableLiveData<Account> currentAccount
-            = new MutableLiveData<>();
+    private MutableLiveData<Account> currentAccount = new MutableLiveData<>();
     private MutableLiveData<ViewState> viewState = new MutableLiveData<ViewState>();
+
+    private final String TAG = "accountViewModel";
 
     public AccountViewModel(@NonNull Application application) {
         super(application);
-        loadAccount();
     }
 
     public void updateCompleted() {
@@ -206,5 +209,32 @@ public class AccountViewModel extends AndroidViewModel {
                     e.getMessage());
         }
         Log.d("AccountViewModel", "patch request: " + accountString);
+    }
+
+    /**
+     * Update the profile picture for the current account
+     * @param image
+     */
+    public void updateProfilePicture(Image image) {
+        HashMap<String, String> params = new HashMap<>();
+        final Image lastImage = currentAccount.getValue().getProfilePicture();
+        currentAccount.getValue().setProfilePicture(image);
+
+        try {
+            params.put("media", image.getImage());
+            ApiRequestHandler.performPostRequest("account/profilepicture",
+                    v -> {
+                        Log.d(TAG, "Successfully updated profile picture");
+                        return null;
+                    }, err -> {
+                        currentAccount.getValue().setProfilePicture(lastImage);
+                        Log.e(TAG, "Error while updating profile picture: "
+                                + ApiRequestHandler.parseVolleyError(err));
+                        return null;
+                    }, new JSONObject(params));
+        } catch (Exception e) {
+            Log.e(TAG, "Error while updating profile picture: " +
+                    e.getMessage());
+        }
     }
 }

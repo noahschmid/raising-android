@@ -7,43 +7,39 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.raising.app.R;
-import com.raising.app.models.MatchlistItem;
+import com.raising.app.models.MatchListItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchlistAdapter extends RecyclerView.Adapter<MatchlistAdapter.ViewHolder> {
-    private ArrayList<MatchlistItem> recyclerItems;
+public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.ViewHolder> {
+    private ArrayList<MatchListItem> recyclerItems;
     private int[] colors;
     private OnItemClickListener clickListener;
 
-    public MatchlistAdapter(ArrayList<MatchlistItem> recyclerItems, int[] colors) {
+    public MatchListAdapter(ArrayList<MatchListItem> recyclerItems, int[] colors) {
         this.recyclerItems = recyclerItems;
         this.colors = colors.clone();
     }
 
     @NonNull
     @Override
-    public MatchlistAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_matchlist,
+    public MatchListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_match_list,
                 parent, false);
         return new ViewHolder(view, clickListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MatchlistAdapter.ViewHolder holder, int position) {
-        MatchlistItem recyclerItem = recyclerItems.get(position);
+    public void onBindViewHolder(@NonNull MatchListAdapter.ViewHolder holder, int position) {
+        MatchListItem recyclerItem = recyclerItems.get(position);
 
         holder.name.setText(recyclerItem.getName());
         holder.attribute.setText(recyclerItem.getAttribute());
@@ -55,7 +51,7 @@ public class MatchlistAdapter extends RecyclerView.Adapter<MatchlistAdapter.View
         setupMatchingPercentGraphic(holder.matchingPercentGraphic, recyclerItem);
     }
 
-    private void setupMatchingPercentGraphic(PieChart percentChart, MatchlistItem recyclerItem) {
+    private void setupMatchingPercentGraphic(PieChart percentChart, MatchListItem recyclerItem) {
         List<PieEntry> pieEntries = new ArrayList<>();
         pieEntries.add(new PieEntry(recyclerItem.getMatchingPercent(), "MatchingPercent"));
         float remainder = 100 - recyclerItem.getMatchingPercent();
@@ -103,12 +99,12 @@ public class MatchlistAdapter extends RecyclerView.Adapter<MatchlistAdapter.View
         public ViewHolder(@NonNull View itemView, OnItemClickListener clickListener) {
             super(itemView);
 
-            name = itemView.findViewById(R.id.item_matchlist_name);
-            attribute = itemView.findViewById(R.id.item_matchlist_attributes);
-            sentence = itemView.findViewById(R.id.item_matchlist_sentence);
-            matchingPercent = itemView.findViewById(R.id.item_matchlist_match_percent);
-            profileImage = itemView.findViewById(R.id.item_matchlist_profile_image);
-            matchingPercentGraphic = itemView.findViewById(R.id.item_matchlist_chart);
+            name = itemView.findViewById(R.id.item_matchList_name);
+            attribute = itemView.findViewById(R.id.item_matchList_attributes);
+            sentence = itemView.findViewById(R.id.item_matchList_sentence);
+            matchingPercent = itemView.findViewById(R.id.item_matchList_match_percent);
+            profileImage = itemView.findViewById(R.id.item_matchList_profile_image);
+            matchingPercentGraphic = itemView.findViewById(R.id.item_matchList_chart);
 
             itemView.setOnClickListener(v -> {
                 if(clickListener != null) {

@@ -15,14 +15,10 @@ import android.widget.EditText;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.fragments.profile.MyProfileFragment;
-import com.raising.app.models.Account;
 import com.raising.app.models.ContactDetails;
 import com.raising.app.models.Investor;
 import com.raising.app.util.AccountService;
-import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
@@ -75,9 +71,9 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         profileCompanyInput.setText(investor.getCompanyName());
         profileWebsiteInput.setText(investor.getWebsite());
 
-        if(ResourcesManager.getCountry(investor.getCountryId()) != null)
+        if(resources.getCountry(investor.getCountryId()) != null)
             profileCountryInput.setText(
-                    ResourcesManager.getCountry(investor.getCountryId()).getName());
+                    resources.getCountry(investor.getCountryId()).getName());
 
         profilePhoneInput.setText(contactDetails.getPhone());
 
@@ -98,7 +94,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
                                 countryId = (int)country.getId();
                             }
                         })
-                        .setItems(ResourcesManager.getCountries());
+                        .setItems(resources.getCountries());
 
         customPicker = builder.build();
 

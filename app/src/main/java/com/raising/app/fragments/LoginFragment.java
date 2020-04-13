@@ -152,6 +152,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                                             response.getString("token"),
                                             response.getLong("id"), isStartup);
                                     dismissLoadingPanel();
+                                    accountViewModel.loadAccount();
                                     clearBackstackAndReplace(new MatchesFragment());
                                 } else {
                                     Bundle bundle = new Bundle();
