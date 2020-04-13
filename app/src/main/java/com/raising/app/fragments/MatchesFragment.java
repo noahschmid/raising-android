@@ -17,9 +17,7 @@ import com.raising.app.R;
 import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.MatchlistItem;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.recyclerViewAdapter.MatchlistAdapter;
-import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
 
 import java.util.ArrayList;
 

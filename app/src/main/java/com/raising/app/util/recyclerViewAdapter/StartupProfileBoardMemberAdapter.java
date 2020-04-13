@@ -13,16 +13,16 @@ import com.raising.app.models.stakeholder.BoardMember;
 
 import java.util.ArrayList;
 
-public class StartupProfileBoardMemberRecyclerViewAdapter extends RecyclerView.Adapter<StartupProfileBoardMemberRecyclerViewAdapter.ViewHolder> {
+public class StartupProfileBoardMemberAdapter extends RecyclerView.Adapter<StartupProfileBoardMemberAdapter.ViewHolder> {
     private ArrayList<BoardMember> recyclerItems;
 
-    public StartupProfileBoardMemberRecyclerViewAdapter(ArrayList<BoardMember> recyclerItems) {
+    public StartupProfileBoardMemberAdapter(ArrayList<BoardMember> recyclerItems) {
         this.recyclerItems = recyclerItems;
     }
 
     @NonNull
     @Override
-    public StartupProfileBoardMemberRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public StartupProfileBoardMemberAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_startup_public_profile_board_member_recycler_view,
                         parent, false);
@@ -30,7 +30,7 @@ public class StartupProfileBoardMemberRecyclerViewAdapter extends RecyclerView.A
     }
 
     @Override
-    public void onBindViewHolder(@NonNull StartupProfileBoardMemberRecyclerViewAdapter.ViewHolder holder,
+    public void onBindViewHolder(@NonNull StartupProfileBoardMemberAdapter.ViewHolder holder,
                                  int position) {
         BoardMember recyclerItem = recyclerItems.get(position);
 

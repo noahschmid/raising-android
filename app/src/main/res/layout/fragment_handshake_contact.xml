@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/overlay_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.handshake.HandshakeContactFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/handshake_contact_information_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/handshake_contact_information_text"
+                android:textColorHint="@color/raisingSecondaryDark"
+                android:textSize="@dimen/raisingTitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/handshake_contact_coffee"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/handshake_contact_coffee"
+                style="@style/HandshakeContactCardView"
+                android:layout_width="0dp"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                app:layout_constraintBottom_toTopOf="@+id/handshake_contact_businessplan"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/handshake_contact_information_text">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/handshake_contact_coffee_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        android:hint="@string/handshake_contact_coffee"
+                        android:textColorHint="@color/raisingSecondaryDark"
+                        android:textSize="@dimen/raisingTextFontSize"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/handshake_contact_coffee_icon"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/button_handshake_contact_coffee"
+                        style="@style/GeneralButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                        android:backgroundTint="@color/raisingSecondaryDark"
+                        android:hint="@string/request_text"
+                        android:textSize="@dimen/raisingTextFontSize"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/handshake_contact_businessplan"
+                style="@style/HandshakeContactCardView"
+                android:layout_width="0dp"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                app:layout_constraintBottom_toTopOf="@+id/handshake_contact_call"
+                app:layout_constraintEnd_toEndOf="@+id/handshake_contact_coffee"
+                app:layout_constraintStart_toStartOf="@+id/handshake_contact_coffee"
+                app:layout_constraintTop_toBottomOf="@+id/handshake_contact_coffee">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/handshake_contact_businessplan_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        android:hint="@string/handshake_contact_businessplan"
+                        android:textColorHint="@color/raisingSecondaryDark"
+                        android:textSize="@dimen/raisingTextFontSize"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/handshake_contact_businessplan_icon"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/button_handshake_contact_businessplan"
+                        style="@style/GeneralButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                        android:backgroundTint="@color/raisingSecondaryDark"
+                        android:hint="@string/request_text"
+                        android:textSize="@dimen/raisingTextFontSize"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/handshake_contact_call"
+                style="@style/HandshakeContactCardView"
+                android:layout_width="0dp"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                app:layout_constraintBottom_toTopOf="@+id/handshake_contact_email"
+                app:layout_constraintEnd_toEndOf="@+id/handshake_contact_businessplan"
+                app:layout_constraintStart_toStartOf="@+id/handshake_contact_businessplan"
+                app:layout_constraintTop_toBottomOf="@+id/handshake_contact_businessplan">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/handshake_contact_phone_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        android:src="@drawable/ic_phone_24dp"
+                        android:tint="@color/raisingSecondaryDark"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        android:hint="@string/handshake_contact_phone"
+                        android:textColorHint="@color/raisingSecondaryDark"
+                        android:textSize="@dimen/raisingTextFontSize"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/handshake_contact_phone_icon"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/button_handshake_contact_phone"
+                        style="@style/GeneralButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                        android:backgroundTint="@color/raisingSecondaryDark"
+                        android:hint="@string/request_text"
+                        android:textSize="@dimen/raisingTextFontSize"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/handshake_contact_email"
+                style="@style/HandshakeContactCardView"
+                android:layout_width="0dp"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                app:layout_constraintBottom_toTopOf="@+id/handshake_contact_video"
+                app:layout_constraintEnd_toEndOf="@+id/handshake_contact_call"
+                app:layout_constraintStart_toStartOf="@+id/handshake_contact_call"
+                app:layout_constraintTop_toBottomOf="@+id/handshake_contact_call">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/handshake_contact_email_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        android:src="@drawable/ic_email_24dp"
+                        android:tint="@color/raisingSecondaryDark"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        android:hint="@string/handshake_contact_email"
+                        android:textColorHint="@color/raisingSecondaryDark"
+                        android:textSize="@dimen/raisingTextFontSize"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/handshake_contact_email_icon"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/button_handshake_contact_email"
+                        style="@style/GeneralButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                        android:backgroundTint="@color/raisingSecondaryDark"
+                        android:hint="@string/request_text"
+                        android:textSize="@dimen/raisingTextFontSize"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/handshake_contact_video"
+                style="@style/HandshakeContactCardView"
+                android:layout_width="0dp"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/handshake_contact_email"
+                app:layout_constraintStart_toStartOf="@+id/handshake_contact_email"
+                app:layout_constraintTop_toBottomOf="@+id/handshake_contact_email">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/handshake_contact_video_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        android:src="@drawable/ic_video_call_24dp"
+                        android:tint="@color/raisingSecondaryDark"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        android:hint="@string/handshake_contact_video"
+                        android:textColorHint="@color/raisingSecondaryDark"
+                        android:textSize="@dimen/raisingTextFontSize"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/handshake_contact_video_icon"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/button_handshake_contact_video"
+                        style="@style/GeneralButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                        android:backgroundTint="@color/raisingSecondaryDark"
+                        android:hint="@string/request_text"
+                        android:textSize="@dimen/raisingTextFontSize"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</FrameLayout>

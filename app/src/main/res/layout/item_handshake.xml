@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/item_handshake_profile_image"
+            android:layout_width="@dimen/matchlistPictureSize"
+            android:layout_height="@dimen/matchlistPictureSize"
+            android:layout_marginStart="@dimen/standardHorizontalMargin"
+            android:layout_marginTop="@dimen/standardVerticalMargin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_handshake_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+            android:text="Name"
+            android:textColor="@color/raisingPrimaryTextColor"
+            android:textSize="@dimen/raisingSubtitleFontSize"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/item_handshake_attributes"
+            app:layout_constraintStart_toEndOf="@+id/item_handshake_profile_image"
+            app:layout_constraintTop_toTopOf="@+id/item_handshake_profile_image"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <ImageView
+            android:id="@+id/item_handshake_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_warning_24dp"
+            android:tint="@color/raisingWarning"
+            app:layout_constraintEnd_toStartOf="@+id/item_handshake_match_percent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@+id/item_handshake_profile_image"
+            app:layout_constraintTop_toBottomOf="@+id/item_handshake_profile_image" />
+
+        <TextView
+            android:id="@+id/item_handshake_attributes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Attribut"
+            android:textColor="@color/raisingPrimaryTextColor"
+            android:textSize="@dimen/raisingTextFontSize"
+            app:layout_constraintBottom_toBottomOf="@+id/item_handshake_profile_image"
+            app:layout_constraintStart_toStartOf="@+id/item_handshake_name"
+            app:layout_constraintTop_toBottomOf="@+id/item_handshake_name" />
+
+        <TextView
+            android:id="@+id/item_handshake_sentence"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standardVerticalMargin"
+            android:layout_marginEnd="@dimen/standardHorizontalMargin"
+            android:text="Sentence"
+            android:textColor="@color/raisingPrimaryTextColor"
+            android:textSize="@dimen/raisingTextFontSize"
+            app:layout_constraintBottom_toTopOf="@+id/button_handshake_interact"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/item_handshake_profile_image"
+            app:layout_constraintTop_toBottomOf="@+id/item_handshake_match_percent" />
+
+        <ImageView
+            android:id="@+id/item_handshake_status_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standardVerticalMargin"
+            android:layout_marginEnd="@dimen/standardHorizontalMargin"
+            android:src="@drawable/ic_check_40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_handshake_match_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center|left"
+            android:text="Percent"
+            android:textColor="@color/raisingPrimaryTextColor"
+            android:textSize="@dimen/raisingTextFontSize"
+            app:layout_constraintBottom_toBottomOf="@+id/item_handshake_warning"
+            app:layout_constraintEnd_toEndOf="@+id/item_handshake_profile_image"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/item_handshake_warning"
+            app:layout_constraintTop_toTopOf="@+id/item_handshake_warning" />
+
+        <Button
+            android:id="@+id/button_handshake_interact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standardVerticalMargin"
+            android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+            android:backgroundTint="@color/raisingSecondary"
+            android:hint="@string/handshake_get_in_touch"
+            android:textColorHint="@color/raisingWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_handshake_sentence" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -27,8 +27,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -42,15 +40,11 @@ import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.models.stakeholder.Shareholder;
 import com.raising.app.util.AccountService;
-import com.raising.app.util.Resources;
 import com.raising.app.util.ResourcesManager;
-import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
-import com.raising.app.util.recyclerViewAdapter.StartupProfileBoardMemberRecyclerViewAdapter;
-import com.raising.app.util.recyclerViewAdapter.StartupProfileFounderRecyclerViewAdapter;
+import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingAdapter;
+import com.raising.app.util.recyclerViewAdapter.StartupProfileBoardMemberAdapter;
+import com.raising.app.util.recyclerViewAdapter.StartupProfileFounderAdapter;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -68,7 +62,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     private TextView startupScope, startupMinTicket, startupMaxTicket;
     private RecyclerView recyclerInvestorType, recyclerPhase, recyclerIndustry, recyclerInvolvement;
     private ArrayList<Model> investorTypes, industries, investmentPhases, supports;
-    private PublicProfileMatchingRecyclerViewAdapter typeAdapter, industryAdapter, phaseAdapter,
+    private PublicProfileMatchingAdapter typeAdapter, industryAdapter, phaseAdapter,
             supportAdapter;
     private TextView startupRevenue, startupBreakEven, startupFoundingYear, startupMarkets, startupFte,
             startupInvestmentType, startupValuation, startupValuationTitle, startupClosingTime, startupCompleted;
@@ -172,15 +166,15 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         ArrayList<Founder> founderList = new ArrayList<>(startup.getFounders());
         RecyclerView founderRecyclerView = view.findViewById(R.id.startup_profile_founder_list);
         founderRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        StartupProfileFounderRecyclerViewAdapter founderListAdapter
-                = new StartupProfileFounderRecyclerViewAdapter(founderList);
+        StartupProfileFounderAdapter founderListAdapter
+                = new StartupProfileFounderAdapter(founderList);
         founderRecyclerView.setAdapter(founderListAdapter);
 
         ArrayList<BoardMember> boardMemberList = new ArrayList<>(startup.getBoardMembers());
         RecyclerView boardMemberRecyclerView = view.findViewById(R.id.startup_profile_board_member_list);
         boardMemberRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        StartupProfileBoardMemberRecyclerViewAdapter boardMemberListAdapter
-                = new StartupProfileBoardMemberRecyclerViewAdapter(boardMemberList);
+        StartupProfileBoardMemberAdapter boardMemberListAdapter
+                = new StartupProfileBoardMemberAdapter(boardMemberList);
         boardMemberRecyclerView.setAdapter(boardMemberListAdapter);
 
         setupShareholderPieChart(view);
@@ -274,25 +268,25 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
     private void initRecyclerViews(View view) {
         investorTypes = new ArrayList<Model>();
-        typeAdapter = new PublicProfileMatchingRecyclerViewAdapter(investorTypes);
+        typeAdapter = new PublicProfileMatchingAdapter(investorTypes);
         recyclerInvestorType = view.findViewById(R.id.startup_public_profile_investor_type_list);
         recyclerInvestorType.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerInvestorType.setAdapter(typeAdapter);
 
         investmentPhases = new ArrayList<Model>();
-        phaseAdapter = new PublicProfileMatchingRecyclerViewAdapter(investmentPhases);
+        phaseAdapter = new PublicProfileMatchingAdapter(investmentPhases);
         recyclerPhase = view.findViewById(R.id.startup_public_profile_phase_list);
         recyclerPhase.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerPhase.setAdapter(phaseAdapter);
 
         industries = new ArrayList<Model>();
-        industryAdapter = new PublicProfileMatchingRecyclerViewAdapter(industries);
+        industryAdapter = new PublicProfileMatchingAdapter(industries);
         recyclerIndustry = view.findViewById(R.id.startup_public_profile_industry_list);
         recyclerIndustry.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerIndustry.setAdapter(industryAdapter);
 
         supports = new ArrayList<Model>();
-        supportAdapter = new PublicProfileMatchingRecyclerViewAdapter(supports);
+        supportAdapter = new PublicProfileMatchingAdapter(supports);
         recyclerInvolvement = view.findViewById(R.id.startup_public_profile_involvement_list);
         recyclerInvolvement.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerInvolvement.setAdapter(supportAdapter);

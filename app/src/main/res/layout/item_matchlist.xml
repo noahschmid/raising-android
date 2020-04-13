@@ -80,7 +80,5 @@
             app:layout_constraintBottom_toBottomOf="@+id/item_matchlist_chart"
             app:layout_constraintEnd_toStartOf="@+id/item_matchlist_chart"
             app:layout_constraintTop_toTopOf="@+id/item_matchlist_chart" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </com.google.android.material.card.MaterialCardView>

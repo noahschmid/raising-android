@@ -14,16 +14,16 @@ import com.raising.app.models.Model;
 
 import java.util.ArrayList;
 
-public class PublicProfileMatchingRecyclerViewAdapter extends RecyclerView.Adapter<PublicProfileMatchingRecyclerViewAdapter.ViewHolder> {
+public class PublicProfileMatchingAdapter extends RecyclerView.Adapter<PublicProfileMatchingAdapter.ViewHolder> {
     private ArrayList<? extends Model> recyclerItems;
 
-    public PublicProfileMatchingRecyclerViewAdapter(ArrayList<? extends Model> recyclerItems) {
+    public PublicProfileMatchingAdapter(ArrayList<? extends Model> recyclerItems) {
         this.recyclerItems = recyclerItems;
     }
 
     @NonNull
     @Override
-    public PublicProfileMatchingRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PublicProfileMatchingAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_public_profile_matching_criteria,
                         parent, false);
@@ -31,7 +31,7 @@ public class PublicProfileMatchingRecyclerViewAdapter extends RecyclerView.Adapt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PublicProfileMatchingRecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PublicProfileMatchingAdapter.ViewHolder holder, int position) {
         Model recyclerItem = recyclerItems.get(position);
         // TODO: replace with actual icon
         holder.matchingCriterionIcon.setImageResource(R.drawable.ic_android_24dp);

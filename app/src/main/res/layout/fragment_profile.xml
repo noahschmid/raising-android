@@ -28,7 +28,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_startup_account_information"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:layout_marginStart="@dimen/standardHorizontalMargin"
                         android:layout_marginTop="@dimen/standardVerticalMargin"
@@ -44,7 +44,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_startup_company_information"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:hint="@string/register_company_information_text"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_company_figures"
@@ -54,7 +54,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_startup_company_figures"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:hint="@string/register_company_figures_information_text"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_matching_criteria"
@@ -65,7 +65,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_startup_matching_criteria"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:drawableLeft="@drawable/ic_puzzle_24dp"
                         android:hint="@string/register_matching_information_text"
@@ -76,7 +76,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_startup_pitch"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:drawableLeft="@drawable/ic_conversation_24dp"
                         android:hint="@string/register_pitch_information_text"
@@ -87,7 +87,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_startup_labels"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:hint="@string/register_pitch_label_information_text"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_images"
@@ -97,7 +97,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_startup_images"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:drawableLeft="@drawable/ic_myprofile_images_24dp"
                         android:hint="@string/register_images_information_text"
@@ -108,7 +108,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_startup_video"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:hint="@string/register_video_information_text"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_financial_requirements"
@@ -118,7 +118,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_startup_financial_requirements"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:drawableLeft="@drawable/ic_myprofile_financial_requirements_24dp"
                         android:hint="@string/register_financial_information_text"
@@ -129,7 +129,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_startup_stakeholders"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:drawableLeft="@drawable/ic_myprofile_stakeholder_24dp"
                         android:hint="@string/register_stakeholder_information_text"
@@ -140,7 +140,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_startup_subscription"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:hint="@string/myProfile_subscription_plan"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_public_profile"
@@ -150,7 +150,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_startup_public_profile"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:layout_marginTop="@dimen/standardVerticalMargin"
                         android:hint="@string/myProfile_watch_public_profile"
@@ -173,7 +173,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_investor_account_information"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:layout_marginStart="@dimen/standardHorizontalMargin"
                         android:layout_marginTop="@dimen/standardVerticalMargin"
@@ -188,7 +188,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_investor_profile_information"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:drawableLeft="@drawable/ic_person_24dp"
                         android:hint="@string/register_profile_information_text"
@@ -199,7 +199,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_investor_matching_criteria"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:drawableLeft="@drawable/ic_puzzle_24dp"
                         android:hint="@string/register_matching_information_text"
@@ -210,7 +210,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_investor_pitch"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:drawableLeft="@drawable/ic_conversation_24dp"
                         android:hint="@string/register_pitch_information_text"
@@ -221,7 +221,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_investor_images"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:drawableLeft="@drawable/ic_myprofile_images_24dp"
                         android:hint="@string/register_images_information_text"
@@ -232,7 +232,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_investor_subscription"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:hint="@string/myProfile_subscription_plan"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_public_profile"
@@ -242,7 +242,7 @@
 
                     <Button
                         android:id="@+id/button_myProfile_investor_public_profile"
-                        style="@style/myProfileButtonStyle"
+                        style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:layout_marginTop="@dimen/standardVerticalMargin"
                         android:hint="@string/myProfile_watch_public_profile"

@@ -22,6 +22,7 @@
     <color name="raisingBlack"> #000000 </color>
     <color name="raisingPositive"> #128700 </color>
     <color name="raisingNegative"> #ff0000 </color>
+    <color name="raisingWarning"> #FFB200</color>
 
     <color name="raisingPrimaryButton"> #707F91 </color>
     <color name="raisingPrimaryTextColor"> #586473 </color>

@@ -36,7 +36,7 @@ import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.Serializer;
-import com.raising.app.util.recyclerViewAdapter.StakeholderRecyclerViewAdapter;
+import com.raising.app.util.recyclerViewAdapter.StakeholderAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +61,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     private RecyclerView founderRecyclerView, boardMemberRecyclerView, shareholderRecyclerView;
 
     // hold references to the respective recycler view adapters
-    private StakeholderRecyclerViewAdapter founderAdapter, boardMemberAdapter, shareholderAdapter;
+    private StakeholderAdapter founderAdapter, boardMemberAdapter, shareholderAdapter;
 
     // the lists, that are displayed in the respective recycler views
     private ArrayList<StakeholderItem> founderList,
@@ -214,9 +214,9 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     private void createFounderRecyclerView(View view) {
         founderRecyclerView = view.findViewById(R.id.stakeholder_founder_recycler_view);
         founderRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        founderAdapter = new StakeholderRecyclerViewAdapter(founderList);
+        founderAdapter = new StakeholderAdapter(founderList);
         founderRecyclerView.setAdapter(founderAdapter);
-        founderAdapter.setOnClickListener(new StakeholderRecyclerViewAdapter.OnClickListener() {
+        founderAdapter.setOnClickListener(new StakeholderAdapter.OnClickListener() {
             @Override
             public void onClickEdit(int position) {
                 FounderInputFragment founderFragment = new FounderInputFragment();
@@ -282,9 +282,9 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     private void createBoardMemberRecyclerView(View view) {
         boardMemberRecyclerView = view.findViewById(R.id.stakeholder_board_member_recycler_view);
         boardMemberRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        boardMemberAdapter = new StakeholderRecyclerViewAdapter(boardMemberList);
+        boardMemberAdapter = new StakeholderAdapter(boardMemberList);
         boardMemberRecyclerView.setAdapter(boardMemberAdapter);
-        boardMemberAdapter.setOnClickListener(new StakeholderRecyclerViewAdapter.OnClickListener() {
+        boardMemberAdapter.setOnClickListener(new StakeholderAdapter.OnClickListener() {
             @Override
             public void onClickEdit(int position) {
                 BoardMemberInputFragment boardMemberFragment = new BoardMemberInputFragment();
@@ -348,9 +348,9 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     private void createShareholderRecyclerView(View view) {
         shareholderRecyclerView = view.findViewById(R.id.stakeholder_shareholder_recycler_view);
         shareholderRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        shareholderAdapter = new StakeholderRecyclerViewAdapter(shareholderList);
+        shareholderAdapter = new StakeholderAdapter(shareholderList);
         shareholderRecyclerView.setAdapter(shareholderAdapter);
-        shareholderAdapter.setOnClickListener(new StakeholderRecyclerViewAdapter.OnClickListener() {
+        shareholderAdapter.setOnClickListener(new StakeholderAdapter.OnClickListener() {
             @Override
             public void onClickEdit(int position) {
                 ShareholderInputFragment shareholderFragment = new ShareholderInputFragment();
