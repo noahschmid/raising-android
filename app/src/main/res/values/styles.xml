@@ -62,17 +62,6 @@
         <item name="android:textColorHint">@color/raisingButtonTextLight</item>
     </style>
 
-    <style name="SubtitleTextWithLeftIcon">
-        <item name="android:gravity">center|start</item>
-        <item name="android:layout_marginTop">@dimen/standardVerticalMargin</item>
-        <item name="android:layout_marginBottom">@dimen/standardVerticalMarginSmall</item>
-        <item name="android:drawablePadding">@dimen/standardVerticalMarginSmall</item>
-        <item name="android:drawableTint">@color/raisingPrimaryTextColor</item>
-        <item name="android:textSize">@dimen/raisingSubtitleFontSize</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColorHint">@color/raisingPrimaryTextColor</item>
-    </style>
-
     <style name="FragmentTitle">
         <item name="android:layout_marginTop">@dimen/standardFragmentTitleMargin</item>
         <item name="android:layout_marginBottom">@dimen/standardFragmentTitleMargin</item>

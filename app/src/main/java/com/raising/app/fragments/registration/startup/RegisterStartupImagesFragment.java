@@ -109,6 +109,13 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        hideBottomNavigation(false);
+    }
+
     private void loadImages() {
         if(startup.getProfilePicture() != null) {
             profileImage.setImageBitmap(startup.getProfilePicture().getBitmap());

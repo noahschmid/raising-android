@@ -43,6 +43,8 @@
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_company_fte"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_info_outline_24dp"
                 app:layout_constraintBottom_toTopOf="@+id/register_company_revenue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

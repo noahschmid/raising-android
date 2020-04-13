@@ -16,6 +16,7 @@
     <string name="accept_text"> Accept </string>
     <string name="decline_text"> Decline </string>
     <string name="request_text"> Request </string>
+    <string name="got_it_text"> Got it</string>
 
     <string name="general_dialog_error_title"> Error occurred! </string>
     <string name="general_dialog_error_text"> Something went wrong. Please try again </string>
@@ -103,6 +104,9 @@
     <string name="register_company_information_text"> Company Information </string>
     <string name="register_company_name"> Company* </string>
     <string name="register_company_uid"> UID* </string>
+    <string name="register_uid_snackbar_find"> Find UID</string>
+    <string name="register_uid_link"> https://www.bfs.admin.ch/bfs/en/home/register/unternehmensregister/unternehmens-identifikationsnummer.html </string>
+    <string name="register_uid_helper_text"> UID is a national identification number for all companies. </string>
     <string name="register_company_phone"> Phone Number </string>
     <string name="register_company_website"> Website </string>
     <string name="register_company_country"> Country* </string>
@@ -111,6 +115,7 @@
     <string name="register_company_revenue"> Revenue* </string>
     <string name="register_company_breakeven"> Break-Even Year* </string>
     <string name="register_company_fte"> FTE* </string>
+    <string name="register_fte_helper_text"> FTE stands for Full Time Employees</string>
     <string name="register_company_markets"> Current Markets* </string>
     <string name="register_company_founding_year"> Founding Year* </string>
 
