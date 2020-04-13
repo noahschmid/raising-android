@@ -64,7 +64,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnProfileInformation.setHint(getString(R.string.myProfile_apply_changes));
-            investor = (Investor) currentAccount;
+            investor = (Investor) accountViewModel.getAccount().getValue();
             contactDetails = AccountService.getContactDetails();
             editMode = true;
         } else {

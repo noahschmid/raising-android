@@ -34,6 +34,10 @@ public class ResourcesViewModel extends AndroidViewModel{
 
     public ResourcesViewModel(@NonNull Application application) {
         super(application);
+        loadResources();
+    }
+
+    public void loadResources() {
         Resources cachedResources = getCachedResources();
 
         if(cachedResources != null) {
@@ -44,13 +48,13 @@ public class ResourcesViewModel extends AndroidViewModel{
         }
 
         ApiRequestHandler.performArrayGetRequest("public", result -> {
-            return null;
+                    return null;
                 },
                 error -> {
-            if(viewState.getValue() != ViewState.CACHED) {
-                viewState.setValue(ViewState.ERROR);
-            }
-            return null;
+                    if(viewState.getValue() != ViewState.CACHED) {
+                        viewState.setValue(ViewState.ERROR);
+                    }
+                    return null;
                 });
     }
 

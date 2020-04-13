@@ -48,7 +48,7 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupPitch.setHint(getString(R.string.myProfile_apply_changes));
-            startup = (Startup)currentAccount;
+            startup = (Startup)accountViewModel.getAccount().getValue();
             editMode = true;
         } else {
             startup = RegistrationHandler.getStartup();
