@@ -1,15 +1,24 @@
 package com.raising.app.fragments;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -17,14 +26,82 @@ import android.widget.RadioGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.MainActivity;
 import com.raising.app.R;
+import com.raising.app.models.Account;
 import com.raising.app.models.Model;
+import com.raising.app.models.ViewState;
+import com.raising.app.util.Resources;
 import com.raising.app.util.SimpleMessageDialog;
+import com.raising.app.viewModels.AccountViewModel;
+import com.raising.app.viewModels.ResourcesViewModel;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import javax.security.auth.login.LoginException;
+
 public class RaisingFragment extends Fragment {
+    protected View loadingPanel;
+    protected FrameLayout overlayLayout;
+    protected AccountViewModel accountViewModel;
+    protected ResourcesViewModel resourcesViewModel;
+    protected Resources resources;
+    protected Account currentAccount;
+    private int processesLoading = 0;
+
+    protected void onAccountUpdated() {
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        loadingPanel = getLayoutInflater().inflate(R.layout.view_loading_panel, null);
+        overlayLayout = getView().findViewById(R.id.overlay_layout);
+        
+        if(overlayLayout != null) {
+            overlayLayout.setFocusable(false);
+            overlayLayout.setClickable(false);
+            overlayLayout.addView(loadingPanel);
+            loadingPanel.setVisibility(View.GONE);
+        }
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
+        accountViewModel.getAccount().observe(getViewLifecycleOwner(), account -> {
+            currentAccount = account;
+        });
+        currentAccount = accountViewModel.getAccount().getValue();
+        accountViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
+            switch (viewState) {
+                case LOADING:
+                    showLoadingPanel();
+                case RESULT:
+                case CACHED:
+                    dismissLoadingPanel();
+                    break;
+                case UPDATED:
+                    onAccountUpdated();
+                    break;
+                case ERROR:
+                    break;
+            }
+        });
+
+        resourcesViewModel = ViewModelProviders.of(getActivity()).get(ResourcesViewModel.class);
+        resourcesViewModel.getResources().observe(getViewLifecycleOwner(), resources -> {
+            this.resources = resources;
+        });
+        resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
+            switch (viewState) {
+                case LOADING:
+                    showLoadingPanel();
+                case RESULT:
+                case CACHED:
+                    dismissLoadingPanel();
+                    break;
+            }
+        });
+        resources = resourcesViewModel.getResources().getValue();
+    }
 
     /**
      * Change from the current fragment to the next
@@ -32,7 +109,7 @@ public class RaisingFragment extends Fragment {
      *
      * @author Lorenz Caliezi 09.03.2020
      */
-    public void changeFragment(Fragment fragment) {
+    protected void changeFragment(Fragment fragment) {
         try {
             getActivitiesFragmentManager()
                     .beginTransaction()
@@ -40,8 +117,16 @@ public class RaisingFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         } catch (NullPointerException e) {
-            Log.d("debugMessage", e.getMessage());
+            Log.e("RaisingFragment", "Error while changing Fragment: " + e.getMessage());
         }
+    }
+
+    /**
+     * Display a generic "oops something went wrong" message
+     */
+    public void displayGenericError() {
+        showSimpleDialog(getString(R.string.generic_error_title),
+                getString(R.string.generic_error_text));
     }
 
     /**
@@ -50,7 +135,7 @@ public class RaisingFragment extends Fragment {
      * @param name The transaction name
      * @author Lorenz Caliezi 09.03.2020
      */
-    public void changeFragment(Fragment fragment, String name) {
+    protected void changeFragment(Fragment fragment, String name) {
         try {
             getActivitiesFragmentManager()
                     .beginTransaction()
@@ -58,7 +143,8 @@ public class RaisingFragment extends Fragment {
                     .addToBackStack(name)
                     .commit();
         } catch (NullPointerException e) {
-            Log.d("debugMessage", e.getMessage());
+            Log.e("RaisingFragment", "Error while changing Fragment: " +
+                    e.getMessage());
         }
     }
 
@@ -66,7 +152,7 @@ public class RaisingFragment extends Fragment {
      * Clear all fragments on the backstack and replace fragment container with new fragment
      * @param fragment the fragment to display next
      */
-    public void clearBackstackAndReplace(RaisingFragment fragment) {
+    protected void clearBackstackAndReplace(RaisingFragment fragment) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
             fm.popBackStack();
@@ -77,6 +163,24 @@ public class RaisingFragment extends Fragment {
         transaction.commit();
     }
 
+    /**
+     * Creates an easy to read string representation of large numbers
+     * @param amount The number, that should be converted to the easier string
+     * @return The string representation of the number
+     */
+    public String amountToString(int amount) {
+        String unit = "";
+        String[] units = getResources().getStringArray(R.array.revenue_units);
+        String currency =getResources().getString(R.string.currency);
+        int i = 0;
+        while(Math.log10(amount) >= 3 && i < units.length) {
+            amount /= 1000;
+            unit = units[i];
+            ++i;
+        }
+        return currency + " " + amount +  unit;
+    }
+
 
     /**
      * Call {@link com.raising.app.MainActivity#hideBottomNavigation(boolean)}
@@ -85,7 +189,7 @@ public class RaisingFragment extends Fragment {
      *
      * @author Lorenz Caliezi 06.03.2020
      */
-    public void hideBottomNavigation(boolean isHidden) {
+    protected void hideBottomNavigation(boolean isHidden) {
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null)
             activity.hideBottomNavigation(isHidden);
@@ -97,11 +201,12 @@ public class RaisingFragment extends Fragment {
      *
      * @author Lorenz Caliezi 09.03.2020
      */
-    public FragmentManager getActivitiesFragmentManager() {
+    protected FragmentManager getActivitiesFragmentManager() {
         try {
             return getParentFragmentManager();
         } catch (NullPointerException e) {
-            Log.d("debugMessage", e.toString());
+            Log.e("RaisingFragment", "Could not get activities fragment manager: " +
+                    e.toString());
         }
         return null;
     }
@@ -113,10 +218,10 @@ public class RaisingFragment extends Fragment {
      *
      * @author Lorenz Caliezi 09.03.2020
      */
-    public void showSimpleDialog(String dialogTitle, String dialogMessage) {
+    protected void showSimpleDialog(String dialogTitle, String dialogMessage) {
         SimpleMessageDialog dialog =
                 new SimpleMessageDialog().newInstance(dialogTitle, dialogMessage);
-        dialog.show(getActivitiesFragmentManager(), "loginDialog");
+        dialog.show(getActivitiesFragmentManager(), "dialog");
     }
 
     /**
@@ -128,12 +233,11 @@ public class RaisingFragment extends Fragment {
      *
      * @author Lorenz Caliezi 18.03.2020
      */
-    public void prepareRestrictedTextLayout(final TextInputLayout textLayout, final EditText textInput, final int WORD_MAXIMUM, String currentText ) {
+    protected void prepareRestrictedTextLayout(final TextInputLayout textLayout, final EditText textInput, final int WORD_MAXIMUM, String currentText ) {
         if(currentText == null || currentText.equals(" ")) {
             textLayout.setHelperText(0 + "/" + WORD_MAXIMUM);
         } else {
-            currentText.replace("\n", " ");
-            String [] currentTextArray = currentText.split(" ");
+            String [] currentTextArray = splitStringIntoWords(currentText);
             textLayout.setHelperText(currentTextArray.length + "/" + WORD_MAXIMUM);
         }
 
@@ -144,8 +248,7 @@ public class RaisingFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String text = textInput.getText().toString();
-                text.replace("\n", " ");
-                String [] textArray = text.split(" ");
+                String [] textArray = splitStringIntoWords(text);
                 textLayout.setHelperText(textArray.length + "/" + WORD_MAXIMUM);
 
                 if(textArray.length > WORD_MAXIMUM) {
@@ -158,13 +261,23 @@ public class RaisingFragment extends Fragment {
     }
 
     /**
+     * Creates a String array containing seperate words from a given String
+     * @param text The text that should be split into words
+     * @return The array containing the words
+     */
+    protected String [] splitStringIntoWords(String text) {
+        text.replace("\n", " ");
+        return text.split(" ");
+    }
+
+    /**
      * Leaves the currentFragment and removes currentFragment from the backstack
      * Currently only works, if currentFragment is on top of the stack
      * @param currentFragment The fragment that is to be removed
      *
      * @author Lorenz Caliezi 23.03.2020
      */
-    public void popCurrentFragment(Fragment currentFragment) {
+    protected void popCurrentFragment(Fragment currentFragment) {
         FragmentManager fragmentManager = getActivitiesFragmentManager();
         fragmentManager.beginTransaction().remove(currentFragment);
         fragmentManager.popBackStackImmediate();
@@ -226,7 +339,6 @@ public class RaisingFragment extends Fragment {
         }
     }
 
-
     /**
      * Get selected checkboxes of a layout
      * @param layout
@@ -262,6 +374,12 @@ public class RaisingFragment extends Fragment {
         return -1l;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        dismissLoadingPanel();
+    }
+
     /**
      * Show year picker
      * @param title title of the picker
@@ -290,5 +408,40 @@ public class RaisingFragment extends Fragment {
                 .show();
 
         inputField.setText(String.valueOf(today.get(Calendar.YEAR)));
+    }
+
+    protected void showLoadingPanel() {
+        if(overlayLayout == null) {
+            Log.e("RaisingFragment", "No overlay layout found!");
+            return;
+        }
+
+        ++processesLoading;
+
+        if(processesLoading > 1) {
+            return;
+        }
+
+        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+        loadingPanel.setVisibility(View.VISIBLE);
+
+        getView().setClickable(false);
+        getView().setFocusable(false);
+    }
+
+    protected void dismissLoadingPanel() {
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        --processesLoading;
+        if(loadingPanel == null || processesLoading != 0) {
+            if(processesLoading < 0)
+                processesLoading = 0;
+            return;
+        }
+
+        getView().setClickable(true);
+        getView().setFocusable(true);
+        loadingPanel.setVisibility(View.GONE);
     }
 }

@@ -13,6 +13,11 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class InternalStorageHandler {
+    private static Context context;
+
+    public static void setContext(Context context) { InternalStorageHandler.context = context; }
+
+    public static Context getContext() { return context; }
     /**
      * Load object from internal storage
      * @param filename the file to load from
@@ -20,7 +25,7 @@ public class InternalStorageHandler {
      * @throws Exception
      */
     public static Object loadObject(String filename) throws Exception {
-        FileInputStream fis = ResourcesManager.getContext().openFileInput(filename);
+        FileInputStream fis = context.openFileInput(filename);
         ObjectInputStream ois = new ObjectInputStream (fis);
         Object obj = ois.readObject();
         ois.close();
@@ -35,7 +40,7 @@ public class InternalStorageHandler {
      * @throws IOException
      */
     public static void saveObject(Object object, String filename) throws IOException {
-        FileOutputStream outputStream = ResourcesManager.getContext()
+        FileOutputStream outputStream = context
                 .openFileOutput(filename, Context.MODE_PRIVATE);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
         objectOutputStream.writeObject(object);
@@ -49,7 +54,7 @@ public class InternalStorageHandler {
      * @return true if file exists, false otherwise
      */
     public static boolean exists(String filename) {
-        File file = ResourcesManager.getContext().getFileStreamPath(filename);
+        File file = context.getFileStreamPath(filename);
         return file.exists();
     }
 
@@ -61,7 +66,7 @@ public class InternalStorageHandler {
      */
     public static void saveString(String string, String filename) throws IOException {
         FileOutputStream outputStream;
-        outputStream = ResourcesManager.getContext()
+        outputStream = context
                 .openFileOutput(filename, Context.MODE_PRIVATE);
         outputStream.write(string.getBytes());
         outputStream.flush();
@@ -75,7 +80,7 @@ public class InternalStorageHandler {
      * @throws IOException
      */
     public static ArrayList<String> loadStrings(String filename) throws IOException {
-        FileInputStream fis = ResourcesManager.getContext()
+        FileInputStream fis = context
                 .openFileInput(filename);
         InputStreamReader isr = new InputStreamReader(fis);
         BufferedReader bufferedReader = new BufferedReader(isr);

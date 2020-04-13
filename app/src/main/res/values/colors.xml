@@ -18,6 +18,7 @@
     <color name="raisingSecondaryAccent"> #CCD6D9 </color>
 
     <color name="raisingWhite">#ffffff</color>
+    <color name="raisingWhiteTransparent">#88FFFFFF</color>
     <color name="raisingBlack"> #000000 </color>
     <color name="raisingPositive"> #128700 </color>
     <color name="raisingNegative"> #ff0000 </color>

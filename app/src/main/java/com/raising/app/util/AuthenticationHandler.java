@@ -39,7 +39,7 @@ public class AuthenticationHandler {
                              boolean isStartup) throws Exception {
         FileOutputStream outputStream;
 
-        outputStream = ResourcesManager.getContext().openFileOutput("token",
+        outputStream = InternalStorageHandler.getContext().openFileOutput("token",
                 Context.MODE_PRIVATE);
         String saveString = token + "\n" + email + "\n" + isStartup + "\n" + accountId;
         outputStream.write(saveString.getBytes());
@@ -51,8 +51,6 @@ public class AuthenticationHandler {
         AuthenticationHandler.isStartup = isStartup;
         AuthenticationHandler.email = email;
         loggedIn = true;
-
-        AccountService.loadAccount();
     }
 
     public static String getToken() { return token; }
@@ -77,7 +75,7 @@ public class AuthenticationHandler {
      * Delete saved token and accountId
      */
     public static void logout() {
-        ResourcesManager.getContext().deleteFile("token");
+        InternalStorageHandler.getContext().deleteFile("token");
 
         Log.d("AuthenticationHandler", "logged out");
 
@@ -91,12 +89,12 @@ public class AuthenticationHandler {
      * @return true if user is currently logged in, false otherwise
      */
     public static void init() {
-        File file = ResourcesManager.getContext().getFileStreamPath("token");
+        File file = InternalStorageHandler.getContext().getFileStreamPath("token");
         if(!file.exists())
             return;
 
         try {
-            FileInputStream fis = ResourcesManager.getContext().openFileInput("token");
+            FileInputStream fis = InternalStorageHandler.getContext().openFileInput("token");
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader bufferedReader = new BufferedReader(isr);
 

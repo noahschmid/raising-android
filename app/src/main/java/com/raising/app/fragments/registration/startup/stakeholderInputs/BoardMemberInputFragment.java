@@ -6,26 +6,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.BoardMemberViewModel;
 import com.raising.app.models.stakeholder.BoardMember;
-import com.raising.app.util.NoFilterArrayAdapter;
-import com.raising.app.util.ResourcesManager;
+import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import org.json.JSONObject;
 
 public class BoardMemberInputFragment extends RaisingFragment {
     private BoardMemberViewModel boardMemberViewModel;
@@ -34,6 +33,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
     private BoardMember boardMember;
     private CustomPicker countryPicker;
     private int countryId = -1;
+    private boolean editMode = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,24 +76,11 @@ public class BoardMemberInputFragment extends RaisingFragment {
                                 countryId = (int) country.getId();
                             }
                         })
-                        .setItems(ResourcesManager.getCountries());
+                        .setItems(resources.getCountries());
 
         countryPicker = builder.build();
 
         countryInput.setOnClickListener(v -> countryPicker.showDialog(getActivity()));
-
-        if (boardMember == null) {
-            boardMember = new BoardMember();
-        } else {
-            boardFirstNameInput.setText(boardMember.getFirstName());
-            boardLastNameInput.setText(boardMember.getLastName());
-            boardProfessionInput.setText(boardMember.getProfession());
-            boardPositionInput.setText(boardMember.getBoardPosition());
-            memberSinceInput.setText(String.valueOf(boardMember.getMemberSince()));
-            boardEducationInput.setText(boardMember.getEducation());
-            if (boardMember.getCountryId() != -1)
-                countryInput.setText(ResourcesManager.getCountry(boardMember.getCountryId()).getName());
-        }
 
         Button btnCancelBoardMember = view.findViewById(R.id.button_cancel_board_member);
         btnCancelBoardMember.setOnClickListener(new View.OnClickListener() {
@@ -120,14 +107,76 @@ public class BoardMemberInputFragment extends RaisingFragment {
                             getString(R.string.register_dialog_text_empty_credentials));
                     return;
                 }
-                BoardMember boardMember = new BoardMember(
-                        firstName, lastName, profession, boardPosition,
-                        memberSince, education, countryId);
 
-                boardMemberViewModel.select(boardMember);
-                leaveBoardMemberFragment();
+                boardMember.setCountryId(countryId);
+                boardMember.setFirstName(firstName);
+                boardMember.setLastName(lastName);
+                boardMember.setMemberSince(memberSince);
+                boardMember.setProfession(profession);
+                boardMember.setBoardPosition(boardPosition);
+                boardMember.setEducation(education);
+                boardMember.setTitle(firstName + " " + lastName + ", " + boardPosition);
+
+                if(boardMember.getId() != -1) {
+                    try {
+                        Gson gson = new Gson();
+                        JSONObject params = new JSONObject(gson.toJson(boardMember));
+                        ApiRequestHandler.performPatchRequest("startup/boardmember/" +
+                                        boardMember.getId(), result -> {
+                                    boardMemberViewModel.select(boardMember);
+                                    leaveBoardMemberFragment();
+                                    return null;
+                                },
+                                ApiRequestHandler.errorHandler,
+                                params);
+                    } catch (Exception e) {
+                        Log.e("BoardMemberInput",
+                                "Error while updating board member: " +
+                                        e.getMessage());
+                    }
+                } else {
+                    if(AuthenticationHandler.isLoggedIn()) {
+                        Gson gson = new Gson();
+                        try {
+                            JSONObject params = new JSONObject(gson.toJson(boardMember));
+                            params.put("startupId", AuthenticationHandler.getId());
+                            Log.d("BoardmemberInput", "params: " + params.toString());
+                            ApiRequestHandler.performPostRequest("startup/boardmember",
+                                    result -> {
+                                        boardMemberViewModel.select(boardMember);
+                                        leaveBoardMemberFragment();
+                                        return null;
+                                    },
+                                    ApiRequestHandler.errorHandler,
+                                    params);
+                        } catch (Exception e) {
+                            displayGenericError();
+                            Log.e("BoardMemberInput",
+                                    "Could not add boardmember: " + e.getMessage());
+                        }
+                    } else {
+                        boardMemberViewModel.select(boardMember);
+                        leaveBoardMemberFragment();
+                    }
+                }
             }
         });
+
+        if (boardMember == null) {
+            boardMember = new BoardMember();
+        } else {
+            editMode = true;
+            btnAddBoardMember.setText(getString(R.string.submit));
+            countryId = boardMember.getCountryId();
+            boardFirstNameInput.setText(boardMember.getFirstName());
+            boardLastNameInput.setText(boardMember.getLastName());
+            boardProfessionInput.setText(boardMember.getProfession());
+            boardPositionInput.setText(boardMember.getBoardPosition());
+            memberSinceInput.setText(String.valueOf(boardMember.getMemberSince()));
+            boardEducationInput.setText(boardMember.getEducation());
+            if (boardMember.getCountryId() != -1)
+                countryInput.setText(resources.getCountry(boardMember.getCountryId()).getName());
+        }
 
         memberSinceInput.setOnClickListener(v -> showYearPicker("Select year", memberSinceInput));
     }

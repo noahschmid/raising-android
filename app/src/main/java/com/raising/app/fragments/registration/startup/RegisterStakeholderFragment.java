@@ -93,7 +93,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
-            startup = (Startup) AccountService.getAccount();
+            startup = (Startup)accountViewModel.getAccount().getValue();
             editMode = true;
         } else {
             startup = RegistrationHandler.getStartup();
@@ -231,8 +231,19 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
             @Override
             public void onClickDelete(int position) {
-                founderList.remove(position);
-                founderAdapter.notifyItemRemoved(position);
+                if(editMode) {
+                    ApiRequestHandler.performDeleteRequest("startup/founder/" +
+                                    founderList.get(position).getId(),
+                            result -> {
+                                founderList.remove(position);
+                                founderAdapter.notifyItemRemoved(position);
+                                return null;
+                            },
+                            ApiRequestHandler.errorHandler);
+                } else {
+                    founderList.remove(position);
+                    founderAdapter.notifyItemRemoved(position);
+                }
             }
         });
     }
@@ -287,11 +298,23 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
             @Override
             public void onClickDelete(int position) {
-                boardMemberList.remove(position);
-                boardMemberAdapter.notifyItemRemoved(position);
+                if(editMode) {
+                    ApiRequestHandler.performDeleteRequest("startup/boardmember/" +
+                            boardMemberList.get(position).getId(),
+                            result -> {
+                                boardMemberList.remove(position);
+                                boardMemberAdapter.notifyItemRemoved(position);
+                        return null;
+                            },
+                            ApiRequestHandler.errorHandler);
+                } else {
+                    boardMemberList.remove(position);
+                    boardMemberAdapter.notifyItemRemoved(position);
+                }
             }
         });
     }
+
 
     /**
      * Delegate creating of ShareholderRecycler view and create observer for ShareholderViewModel
@@ -343,8 +366,19 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
             @Override
             public void onClickDelete(int position) {
-                shareholderList.remove(position);
-                shareholderAdapter.notifyItemRemoved(position);
+                if(editMode) {
+                    ApiRequestHandler.performDeleteRequest("startup/shareholder/" +
+                                    shareholderList.get(position).getId(),
+                            result -> {
+                                shareholderList.remove(position);
+                                shareholderAdapter.notifyItemRemoved(position);
+                                return null;
+                            },
+                            ApiRequestHandler.errorHandler);
+                } else {
+                    shareholderList.remove(position);
+                    shareholderAdapter.notifyItemRemoved(position);
+                }
             }
         });
     }
@@ -365,7 +399,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
      * Process given inputs
      */
     private void processInputs() {
-        if (founderList.isEmpty()) {
+        if (founderList.isEmpty() || boardMemberList.isEmpty() ||shareholderList.isEmpty()) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             finishButton.setEnabled(true);

@@ -63,7 +63,7 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnInvestorPitch.setHint(getString(R.string.myProfile_apply_changes));
-            investor = (Investor) AccountService.getAccount();
+            investor = (Investor) accountViewModel.getAccount().getValue();
             editMode = true;
         } else {
             investor = RegistrationHandler.getInvestor();
@@ -73,6 +73,12 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
 
         prepareSentenceLayout(investor.getDescription());
         preparePitchLayout(investor.getPitch());
+    }
+
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
     }
 
     @Override
@@ -103,15 +109,28 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
             return;
         }
 
+        // check if sentence is too long
+        if(splitStringIntoWords(sentenceInput.getText().toString()).length
+                > getResources().getInteger(R.integer.pitch_sentence_max_word)) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_pitch_error_long_sentence));
+            return;
+        }
+
+        // check if pitch is too long
+        if(splitStringIntoWords(pitchInput.getText().toString()).length
+                > getResources().getInteger(R.integer.pitch_pitch_max_word)) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_pitch_error_long_pitch));
+            return;
+        }
+
         investor.setDescription(sentenceInput.getText().toString());
         investor.setPitch(pitchInput.getText().toString());
 
         try {
             if(editMode) {
-                AccountService.updateAccount(investor, v -> {
-                    popCurrentFragment(this);
-                    return null;
-                });
+                accountViewModel.update(investor);
             } else {
                 RegistrationHandler.saveInvestor(investor);
                 changeFragment(new RegisterInvestorImagesFragment());

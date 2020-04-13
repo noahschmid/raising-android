@@ -21,7 +21,6 @@ public class Serializer {
                                      JsonSerializationContext context) {
             JsonObject jsonInvestor = new JsonObject();
 
-            jsonInvestor.addProperty("email", AuthenticationHandler.getEmail());
             jsonInvestor.addProperty("ticketMinId", src.getTicketMinId());
             jsonInvestor.addProperty("ticketMaxId", src.getTicketMaxId());
             jsonInvestor.addProperty("investorTypeId", src.getInvestorTypeId());
@@ -95,6 +94,17 @@ public class Serializer {
             jsonStartup.addProperty("description", src.getDescription());
             jsonStartup.addProperty("countryId", src.getCountryId());
 
+            if(src.getEmail() != null && !src.getEmail().equals(AuthenticationHandler.getEmail())) {
+                jsonStartup.addProperty("email", src.getEmail());
+            }
+
+            jsonStartup.add("countries", toJsonArray(src.getCountries()));
+            jsonStartup.add("continents", toJsonArray(src.getContinents()));
+            jsonStartup.add("labels", toJsonArray(src.getLabels()));
+            jsonStartup.add("support", toJsonArray(src.getSupport()));
+            jsonStartup.add("industries", toJsonArray(src.getIndustries()));
+            jsonStartup.add("investorTypes", toJsonArray(src.getInvestorTypes()));
+
             return jsonStartup;
         }
     };
@@ -166,7 +176,6 @@ public class Serializer {
             });
 
             jsonStartup.add("boardmembers", boardMembers);
-
 
             // -- PRIVATE SHAREHOLDERS --
             JsonArray privateShareholders = new JsonArray();

@@ -112,9 +112,9 @@ public class ApiRequestHandler {
                     return headers;
                 }
             };
-            request.setRetryPolicy(new DefaultRetryPolicy(10000, 1, 1.0f));
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1.0f));
 
-            ApiRequestHandler.getInstance(ResourcesManager.getContext())
+            ApiRequestHandler.getInstance(InternalStorageHandler.getContext())
                     .addToRequestQueue(request);
         } catch (Exception e) {
             Log.e("ApiRequestHandler", "Error while sending POST request to " +
@@ -157,9 +157,9 @@ public class ApiRequestHandler {
                     return headers;
                 }
             };
-            request.setRetryPolicy(new DefaultRetryPolicy(10000, 1, 1.0f));
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1.0f));
 
-            ApiRequestHandler.getInstance(ResourcesManager.getContext())
+            ApiRequestHandler.getInstance(InternalStorageHandler.getContext())
                     .addToRequestQueue(request);
         } catch (Exception e) {
             Log.e("ApiRequestHandler", "Error while sending POST request to " +
@@ -201,9 +201,9 @@ public class ApiRequestHandler {
                     return headers;
                 }
             };
-            request.setRetryPolicy(new DefaultRetryPolicy(10000, 1, 1.0f));
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1.0f));
 
-            ApiRequestHandler.getInstance(ResourcesManager.getContext())
+            ApiRequestHandler.getInstance(InternalStorageHandler.getContext())
                     .addToRequestQueue(request);
         } catch (Exception e) {
             Log.e("ApiRequestHandler", "Error while sending PATCH request to " +
@@ -242,9 +242,46 @@ public class ApiRequestHandler {
                     }
                 };
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
-                1, 1.0f));
+                0, 1.0f));
 
-        getInstance(ResourcesManager.getContext())
+        getInstance(InternalStorageHandler.getContext())
+                .addToRequestQueue(jsonObjectRequest);
+    }
+
+    /**
+     * Perform a simple delete request
+     * @param endpoint the backend endpoint
+     * @param callback the function to call when request was successful
+     * @param errorCallback the function to call when there was an error
+     */
+    public static void performDeleteRequest(String endpoint, Function<JSONObject, Void> callback,
+                                         Function<VolleyError, Void> errorCallback) {
+        GenericRequest jsonObjectRequest = new GenericRequest
+                (Request.Method.DELETE, getDomain() + endpoint, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        callback.apply(response);
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        errorCallback.apply(error);
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                if (AuthenticationHandler.isLoggedIn()) {
+                    headers.put("Authorization", "Bearer " + AuthenticationHandler.getToken());
+                }
+                return headers;
+            }
+        };
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                0, 1.0f));
+
+        getInstance(InternalStorageHandler.getContext())
                 .addToRequestQueue(jsonObjectRequest);
     }
 
@@ -279,8 +316,8 @@ public class ApiRequestHandler {
                     }
                 };
         jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
-                1, 1.0f));
-        getInstance(ResourcesManager.getContext())
+                0, 1.0f));
+        getInstance(InternalStorageHandler.getContext())
                 .addToRequestQueue(jsonObjectRequest);
     }
 
@@ -312,11 +349,6 @@ public class ApiRequestHandler {
      * Default error handler
      */
     public static Function<VolleyError, Void> errorHandler = error -> {
-        SimpleMessageDialog dialog =
-                new SimpleMessageDialog().newInstance(
-                        ResourcesManager.getContext().getString(R.string.generic_error_title),
-                        ResourcesManager.getContext().getString(R.string.generic_error_text));
-        dialog.show(ResourcesManager.getFragmentManager(), "errorDialog");
         Log.e("ApiRequestHandler", "Error while performing request: " +
                 parseVolleyError(error) );
         return null;

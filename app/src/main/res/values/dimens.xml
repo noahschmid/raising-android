@@ -7,8 +7,8 @@
     <dimen name="authenticationButtonHeight"> 60dp </dimen>
     <dimen name="myProfileButtonHeight"> 75dp </dimen>
 
-    <dimen name="matchlistPictureSize"> 70dp </dimen>
-    <dimen name="matchlistPercentChartSize"> 50dp </dimen>
+    <dimen name="matchListPictureSize"> 70dp </dimen>
+    <dimen name="matchListPercentChartSize"> 50dp </dimen>
 
     <dimen name="publicProfileEquityChartSize"> 225dp </dimen>
     <dimen name="publicProfileEquityLegendColorSize"> 30dp </dimen>

@@ -32,6 +32,7 @@ import java.util.function.Function;
 public class AccountService {
     private static ContactDetails contactDetails = new ContactDetails();
     private static Account account = new Account();
+    private final static String TAG = "AccountService";
 
     /**
      * Get private contact details of logged in user
@@ -43,23 +44,6 @@ public class AccountService {
                     "ERROR: fetching contact details without being logged in");
         }
         return contactDetails;
-    }
-
-    /**
-     * Get account of logged in user
-     * @return
-     */
-    public static Account getAccount() {
-        if(!AuthenticationHandler.isLoggedIn()) {
-            Log.e("AuthenticationHandler", "ERROR: fetching account " +
-                    "whithout being logged in!");
-        }
-        if(account instanceof Startup) {
-            return (Startup)account;
-        } else if (account instanceof Investor) {
-            return (Investor)account;
-        }
-        return account;
     }
 
     /**
@@ -77,10 +61,7 @@ public class AccountService {
      */
     public static void getStartupAccount(long id, Function<Startup, Void> callback) {
         if(!AuthenticationHandler.isLoggedIn()) {
-            SimpleMessageDialog dialog =
-                    new SimpleMessageDialog().newInstance(ResourcesManager.getContext().getString(R.string.not_logged_in_title),
-                            ResourcesManager.getContext().getString(R.string.not_logged_in_text));
-            dialog.show(ResourcesManager.getFragmentManager(), "errorDialog");
+            Log.e(TAG, "getStartupAccount: You are not logged in!");
             return;
         }
 
@@ -104,10 +85,7 @@ public class AccountService {
      */
     public static void getInvestorAccount(long id, Function<Investor, Void> callback) {
         if(!AuthenticationHandler.isLoggedIn()) {
-            SimpleMessageDialog dialog =
-                    new SimpleMessageDialog().newInstance(ResourcesManager.getContext().getString(R.string.not_logged_in_title),
-                            ResourcesManager.getContext().getString(R.string.not_logged_in_text));
-            dialog.show(ResourcesManager.getFragmentManager(), "errorDialog");
+            Log.e(TAG, "getInvestorAccount: You are not logged in!");
             return;
         }
 
@@ -130,126 +108,10 @@ public class AccountService {
      * Error callback function
      */
     private static Function<VolleyError, Void> errorCallback = error -> {
-        SimpleMessageDialog dialog =
-                new SimpleMessageDialog().newInstance(
-                        ResourcesManager.getContext().getString(R.string.generic_error_title),
-                        ResourcesManager.getContext().getString(R.string.generic_error_text));
-        dialog.show(ResourcesManager.getFragmentManager(), "errorDialog");
-        Log.e("ProfileService", "Error while fetching profile: " + ApiRequestHandler.parseVolleyError(error));
+        Log.e(TAG, "Error while fetching profile: " +
+                ApiRequestHandler.parseVolleyError(error));
         return null;
     };
-
-    /**
-     * Load the current users account
-     */
-    public static void loadAccount() {
-        if(InternalStorageHandler.exists("account_" +
-                AuthenticationHandler.getId())) {
-            try {
-                if(AuthenticationHandler.isStartup()) {
-                    account = (Startup) InternalStorageHandler.loadObject("account_" +
-                            AuthenticationHandler.getId());
-                } else {
-                    account = (Investor) InternalStorageHandler.loadObject("account_" +
-                            AuthenticationHandler.getId());
-                }
-
-                account.setEmail(null);
-                account.setPassword(null);
-            } catch(Exception e) {
-                Log.e("AccountService", "Error loading cached account details: " +
-                        e.getMessage());
-            }
-        }
-
-        if(AuthenticationHandler.isStartup()) {
-            getStartupAccount(AuthenticationHandler.getId(), startup -> {
-                account = new Startup();
-                account = startup;
-                account.setEmail(null);
-                account.setPassword(null);
-                account.setId(AuthenticationHandler.getId());
-
-                try {
-                    InternalStorageHandler.saveObject((Startup)account, "account_" +
-                            AuthenticationHandler.getId());
-                } catch(Exception e) {
-                    Log.e("AccountService", "Error caching account: " + e.getMessage());
-                }
-                return null;
-            });
-        } else {
-            AccountService.getInvestorAccount(AuthenticationHandler.getId(), investor -> {
-                account = new Investor();
-                account = investor;
-                account.setEmail(null);
-                account.setPassword(null);
-                account.setId(AuthenticationHandler.getId());
-
-                try {
-                    Gson gson = new Gson();
-                    InternalStorageHandler.saveObject((Investor)account, "account_" +
-                            AuthenticationHandler.getId());
-
-                    Log.d("AccountService", "saved: " + gson.toJson((Investor)account));
-                } catch(Exception e) {
-                    Log.e("AccountService", "Error caching account: " + e.getMessage());
-                }
-
-                return null;
-            });
-        }
-
-        if(account instanceof Investor) {
-            Log.d("AccountService", "is investor");
-        } else if(account instanceof Startup) {
-            Log.d("AccountService", "is startup");
-        } else {
-            Log.d("AccountService", "is nothing");
-        }
-    }
-
-
-    /**
-     * Update the profile picture for the current account
-     * @param image
-     */
-    public static void updateProfilePicture(Image image) {
-        HashMap<String, String> params = new HashMap<>();
-        final Image lastImage = account.getProfilePicture();
-        account.setProfilePicture(image);
-
-        try {
-            params.put("media", image.getImage());
-            ApiRequestHandler.performPostRequest("account/profilepicture",
-                    v -> {
-                Log.d("AccountService", "Successfully updated profile picture");
-                        return null;
-                    }, err -> {
-                        account.setProfilePicture(lastImage);
-                        NotificationHandler.displayGenericError();
-                        Log.e("AccountService", "Error while updating profile picture: "
-                        + ApiRequestHandler.parseVolleyError(err));
-                        return null;
-                    }, new JSONObject(params));
-        } catch (Exception e) {
-            Log.e("AccountService", "Error while updating profile picture: " +
-                    e.getMessage());
-        }
-    }
-
-    public static void log(String message) {
-        // Split by line, then ensure each line can fit into Log's maximum length.
-        for (int i = 0, length = message.length(); i < length; i++) {
-            int newline = message.indexOf('\n', i);
-            newline = newline != -1 ? newline : length;
-            do {
-                int end = Math.min(newline, i + 999);
-                Log.d("AccountService", message.substring(i, end));
-                i = end;
-            } while (i < newline);
-        }
-    }
 
     /**
      * Load contact details from internal storage
@@ -287,101 +149,5 @@ public class AccountService {
             return false;
         }
         return true;
-    }
-
-    /**
-     * Update account of logged in user
-     */
-    public static void updateAccount(Account update, Function<JSONObject, Void> callback) {
-        String endpoint = null;
-        String accountString = null;
-
-        update.setEmail(contactDetails.getEmail());
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Startup.class,
-                Serializer.StartupUpdateSerializer);
-        gsonBuilder.registerTypeAdapter(Investor.class,
-                Serializer.InvestorUpdateSerializer);
-        Gson gson = gsonBuilder.create();
-
-        if(AuthenticationHandler.isStartup()) {
-            endpoint = "startup/" + AuthenticationHandler.getId();
-            accountString = gson.toJson((Startup)update);
-        } else {
-            endpoint = "investor/" + AuthenticationHandler.getId();
-            accountString = gson.toJson((Investor)update);
-        }
-
-        try {
-            ApiRequestHandler.performPatchRequest(endpoint,
-                    v -> {
-                        loadAccount();
-                        callback.apply(v);
-                    return null;
-                    }, ApiRequestHandler.errorHandler,
-                    new JSONObject(accountString));
-        } catch (JSONException e) {
-            Log.e("AccountService", "Error while performing patch request: " +
-                    e.getMessage());
-        }
-        Log.d("AccountService", "patch request: " + accountString);
-    }
-
-
-    /**
-     *
-     * @param original
-     * @param update
-     * @param endpoint
-     * @throws JSONException
-     */
-    public static void updateList(List<Long> original,
-                                   List<Long> update,
-                                   String endpoint) throws JSONException {
-        boolean found;
-
-        JSONArray delete = new JSONArray();
-        JSONArray add = new JSONArray();
-
-        for(Long o : original) {
-            found = false;
-            for(Long u : update) {
-                if(u.equals(o)) {
-                    update.remove(u);
-                    found = true;
-                    break;
-                }
-            }
-
-            if(!found) {
-                JSONObject tmp = new JSONObject();
-                tmp.put("id", o);
-                delete.put(tmp);
-            }
-        }
-
-        for(Long u : update) {
-            JSONObject tmp = new JSONObject();
-            tmp.put("id", u);
-            add.put(tmp);
-        }
-
-        if(delete.length() > 0) {
-            ApiRequestHandler.performPostRequest(endpoint + "/delete", v -> {
-                Log.d("AccountService", "List delete successful");
-                return null;
-            }, ApiRequestHandler.errorHandler, delete);
-        }
-
-        if(add.length() > 0) {
-            ApiRequestHandler.performPostRequest(endpoint, v -> {
-                Log.d("AccountService", "List add successful");
-                return null;
-            }, ApiRequestHandler.errorHandler, delete);
-        }
-
-        Log.d("AccountService", "delete: " +  delete.toString());
-        Log.d("AccountService", "add: " + add.toString());
     }
 }

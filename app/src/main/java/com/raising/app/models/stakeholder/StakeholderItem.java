@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class StakeholderItem implements Serializable {
     private String title;
+    private long id = -1l;
 
     public StakeholderItem() {
         this.title = "";

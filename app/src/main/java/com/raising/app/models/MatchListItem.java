@@ -2,10 +2,12 @@ package com.raising.app.models;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 @Data
-public class MatchlistItem {
+public class MatchListItem implements Serializable {
     private long id;
     private boolean isStartup;
     private String name;
@@ -14,7 +16,7 @@ public class MatchlistItem {
     private Image image;
     private float matchingPercent;
 
-    public MatchlistItem(long id, boolean isStartup, String name, String attribute, String sentence,
+    public MatchListItem(long id, boolean isStartup, String name, String attribute, String sentence,
                          Image image, float matchingPercent) {
         this.id = id;
         this.isStartup = isStartup;

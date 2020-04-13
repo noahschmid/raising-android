@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,22 +20,16 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.ContactDetails;
 import com.raising.app.models.Continent;
 import com.raising.app.models.Country;
 import com.raising.app.models.Revenue;
 import com.raising.app.models.Startup;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.NoFilterArrayAdapter;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 public class RegisterCompanyFiguresFragment extends RaisingFragment {
     private AutoCompleteTextView companyRevenueInput;
@@ -58,7 +51,30 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
         View view = inflater.inflate(R.layout.fragment_register_company_figures,
                 container, false);
 
-        ArrayList<Revenue> revenues = ResourcesManager.getRevenues();
+        hideBottomNavigation(true);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        TextInputLayout companyFteLayout = view.findViewById(R.id.register_company_fte);
+        companyFteLayout.setEndIconOnClickListener(v -> {
+            final Snackbar snackbar = Snackbar.make(companyFteLayout,
+                    R.string.register_fte_helper_text, Snackbar.LENGTH_LONG);
+            snackbar.setAction(getString(R.string.got_it_text), v12 -> snackbar.dismiss());
+            snackbar.setDuration(5000)
+                    .show();
+        });
+
+        companyFteInput = view.findViewById(R.id.register_input_company_fte);
+        companyBreakevenInput = view.findViewById(R.id.register_input_company_breakeven);
+        companyMarketsButton = view.findViewById(R.id.register_button_company_markets);
+        companyFoundingInput = view.findViewById(R.id.register_input_company_founding_year);
+
+        ArrayList<Revenue> revenues = resources.getRevenues();
         ArrayList<String> values = new ArrayList<>();
         revenues.forEach(rev -> values.add(rev.toString(getString(R.string.currency),
                 getResources().getStringArray(R.array.revenue_units))));
@@ -84,30 +100,6 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
                 }
             }
         });
-
-        hideBottomNavigation(true);
-
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        TextInputLayout companyFteLayout = view.findViewById(R.id.register_company_fte);
-        companyFteLayout.setEndIconOnClickListener(v -> {
-            final Snackbar snackbar = Snackbar.make(companyFteLayout,
-                    R.string.register_fte_helper_text, Snackbar.LENGTH_LONG);
-            snackbar.setAction(getString(R.string.got_it_text), v12 -> snackbar.dismiss());
-            snackbar.setDuration(5000)
-                    .show();
-        });
-
-        companyFteInput = view.findViewById(R.id.register_input_company_fte);
-        companyBreakevenInput = view.findViewById(R.id.register_input_company_breakeven);
-        companyMarketsButton = view.findViewById(R.id.register_button_company_markets);
-        companyFoundingInput = view.findViewById(R.id.register_input_company_founding_year);
-
         Button btnCompanyFigures = view.findViewById(R.id.button_company_figures);
         btnCompanyFigures.setOnClickListener(v -> processInformation());
 
@@ -115,7 +107,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnCompanyFigures.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
-            startup = (Startup) AccountService.getAccount();
+            startup = (Startup)accountViewModel.getAccount().getValue();
         } else {
             startup = RegistrationHandler.getStartup();
         }
@@ -124,7 +116,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
             revenueMinId = startup.getRevenueMinId();
             revenueMaxId = startup.getRevenueMaxId();
 
-            companyRevenueInput.setText(ResourcesManager
+            companyRevenueInput.setText(resources
                     .getRevenueString(startup.getRevenueMinId()), false);
         }
 
@@ -140,8 +132,8 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
 
         // Markets picker
         marketItems = new ArrayList<>();
-        marketItems.addAll(ResourcesManager.getContinents());
-        marketItems.addAll(ResourcesManager.getCountries());
+        marketItems.addAll(resources.getContinents());
+        marketItems.addAll(resources.getCountries());
 
         CustomPicker.Builder builder =
                 new CustomPicker.Builder()
@@ -177,6 +169,12 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
     }
 
     @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
 
@@ -197,9 +195,9 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
         ArrayList<Long> countries = new ArrayList<>();
         ArrayList<Long> continents = new ArrayList<>();
 
-        marketItems.forEach(item -> {
-            if (item instanceof Continent && item.isChecked()) {
-                continents.add(((Continent) item).getId());
+        marketsPicker.getResult().forEach(item -> {
+            if(item instanceof Continent) {
+                continents.add(((Continent)item).getId());
                 marketItems.forEach(i -> {
                     if (i instanceof Country) {
                         i.setChecked(false);
@@ -207,27 +205,41 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
                 });
             }
 
-            if (item instanceof Country && item.isChecked()) {
-                countries.add(((Country) item).getId());
+            if(item instanceof Country) {
+                countries.add(((Country)item).getId());
             }
         });
 
-        if (countries.isEmpty() && continents.isEmpty()) {
+        // check for countries and continents
+        if(countries.isEmpty() && continents.isEmpty()) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
+        // check if FTE-input is valid
+        if(Integer.parseInt(companyFteInput.getText().toString()) < 1) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_company_error_fte));
+            return;
+        }
+
+        // check if break-even year input is valid
+        if(Integer.parseInt(companyBreakevenInput.getText().toString())
+                < Integer.parseInt(companyFoundingInput.getText().toString())) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_company_error_break_even));
+            return;
+        }
+
         startup.setCountries(countries);
         startup.setContinents(continents);
-        startup.setBreakEvenYear(Integer.parseInt(
-                companyBreakevenInput.getText().toString()));
+        startup.setBreakEvenYear(Integer.parseInt(companyBreakevenInput.getText().toString()));
+        startup.setFoundingYear(Integer.parseInt(companyFoundingInput.getText().toString()));
         startup.setNumberOfFte(Integer.parseInt(companyFteInput.getText().toString()));
 
         startup.setRevenueMinId(revenueMinId);
         startup.setRevenueMaxId(revenueMaxId);
-
-        startup.setFoundingYear(Integer.parseInt(companyFoundingInput.getText().toString()));
 
         try {
             if (!editMode) {
@@ -235,13 +247,10 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
                 changeFragment(new RegisterStartupMatchingFragment(),
                         "RegisterStartupMatchingFragment");
             } else {
-                AccountService.updateAccount(startup, v -> {
-                    popCurrentFragment(this);
-                    return null;
-                });
+                accountViewModel.update(startup);
             }
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.d("RegisterCompanyFiguresFragment", "Error while processing inputs: "
                     + e.getMessage());
         }

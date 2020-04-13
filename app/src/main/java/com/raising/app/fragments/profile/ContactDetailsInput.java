@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,10 +18,6 @@ import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.ContactDetails;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
-import com.raising.app.util.ResourcesManager;
-import com.raising.app.util.customPicker.CustomPicker;
-import com.raising.app.util.customPicker.PickerItem;
-import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
 
 public class ContactDetailsInput extends RaisingFragment {
     private EditText phoneNumberInput;

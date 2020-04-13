@@ -15,14 +15,10 @@ import android.widget.EditText;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.fragments.profile.MyProfileFragment;
-import com.raising.app.models.Account;
 import com.raising.app.models.ContactDetails;
 import com.raising.app.models.Investor;
 import com.raising.app.util.AccountService;
-import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
@@ -43,8 +39,6 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
 
         profileCountryInput = view.findViewById(R.id.register_input_profile_countries);
 
-        setupCountryPicker();
-
         hideBottomNavigation(true);
         return view;
     }
@@ -64,7 +58,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnProfileInformation.setHint(getString(R.string.myProfile_apply_changes));
-            investor = (Investor)AccountService.getAccount();
+            investor = (Investor) accountViewModel.getAccount().getValue();
             contactDetails = AccountService.getContactDetails();
             editMode = true;
         } else {
@@ -72,12 +66,14 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
             contactDetails = RegistrationHandler.getContactDetails();
         }
 
+        setupCountryPicker();
+
         profileCompanyInput.setText(investor.getCompanyName());
         profileWebsiteInput.setText(investor.getWebsite());
 
-        if(ResourcesManager.getCountry(investor.getCountryId()) != null)
+        if(resources.getCountry(investor.getCountryId()) != null)
             profileCountryInput.setText(
-                    ResourcesManager.getCountry(investor.getCountryId()).getName());
+                    resources.getCountry(investor.getCountryId()).getName());
 
         profilePhoneInput.setText(contactDetails.getPhone());
 
@@ -98,7 +94,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
                                 countryId = (int)country.getId();
                             }
                         })
-                        .setItems(ResourcesManager.getCountries());
+                        .setItems(resources.getCountries());
 
         customPicker = builder.build();
 
@@ -141,6 +137,12 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         }
     }
 
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
+    }
+
     /**
      * Check whether information is valid, then save profile information and
      * switch to next fragment
@@ -167,10 +169,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
                         "RegisterInvestorMatchingFragment");
             } else {
                 if(AccountService.saveContactDetails(contactDetails)) {
-                    AccountService.updateAccount(investor, response -> {
-                        clearBackstackAndReplace(new MyProfileFragment());
-                        return null;
-                    });
+                    accountViewModel.update(investor);
                 } else {
                     showSimpleDialog(getString(R.string.generic_error_title),
                             getString(R.string.generic_error_text));

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -15,35 +16,33 @@ import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.SettingsFragment;
 import com.raising.app.fragments.profile.ContactDetailsInput;
-import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
-import com.raising.app.fragments.profile.StartupPublicProfileFragment;
-import com.raising.app.fragments.registration.startup.RegisterCompanyInformationFragment;
-import com.raising.app.fragments.registration.startup.RegisterFinancialRequirementsFragment;
-import com.raising.app.fragments.registration.startup.RegisterStakeholderFragment;
-import com.raising.app.models.Investor;
 import com.raising.app.util.AccountService;
-import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
-import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.RegistrationHandler;
+import com.raising.app.viewModels.AccountViewModel;
+import com.raising.app.viewModels.ResourcesViewModel;
 
 public class MainActivity extends AppCompatActivity {
+    AccountViewModel accountViewModel;
+    ResourcesViewModel resourcesViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ResourcesManager.init(getApplicationContext(), getSupportFragmentManager());
+        InternalStorageHandler.setContext(getApplicationContext());
         AuthenticationHandler.init();
-        ResourcesManager.loadAll();
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         RegistrationHandler.setContext(getApplicationContext());
+
+        accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
+        resourcesViewModel = new ViewModelProvider(this).get(ResourcesViewModel.class);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                     fragment.setArguments(bundle);
                     fragmentTransaction.replace(R.id.fragment_container, fragment);
                 } else {
-                    AccountService.loadAccount();
+                    accountViewModel.loadAccount();
                     hideBottomNavigation(false);
                     fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
                 }
