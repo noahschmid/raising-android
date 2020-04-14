@@ -154,8 +154,10 @@
     </string-array>
 
     <string name="register_pitch_information_text"> Pitch </string>
-    <string name="register_pitch_sentence"> One sentence description </string>
-    <string name="register_pitch"> Your pitch </string>
+    <string name="register_pitch_sentence"> Description </string>
+    <string name="register_sentence_helper_text"> Describe yourself in one sentence.</string>
+    <string name="register_pitch"> Pitch </string>
+    <string name="register_pitch_helper_text"> Write a pitch in less than 250 words.</string>
     <string name="register_pitch_label_information_text"> Labels </string>
     <string name="register_pitch_error_long_sentence"> One sentence should not exceed the given maximum length </string>
     <string name="register_pitch_error_long_pitch"> Pitch should not exceed the given maximum length</string>
@@ -173,6 +175,7 @@
     <string name="register_financial_scope"> Scope </string>
     <string name="register_financial_scope_"> Scope* </string>
     <string name="register_financial_completed">Completed</string>
+    <string name="register_completed_helper_text"> Here you can enter, if you have already raised some of your target scope.</string>
     <string name="register_financial_error_completed"> Completed should not be greater than Scope </string>
 
     <string name="register_stakeholder_information_text"> Stakeholders </string>
@@ -203,9 +206,9 @@
     <string name="register_images_add_profile_text"> Add a profile picture* </string>
     <string name="register_images_add_gallery"> Add a picture to your gallery </string>
     <string name="register_images_video_information_text"> Video Pitch </string>
-    <string name="image_floating_menu_select_image"> Import image </string>
-    <string name="image_floating_menu_take_image"> Take image </string>
-    <string name="gallery_floating_menu_delete_image"> Delete </string>
+    <string name="image_action_dialog_title"> Select an Option </string>
+    <string name="image_action_dialog_choose"> Choose from Gallery </string>
+    <string name="image_action_dialog_take"> Take Picture </string>
 
     <string name="register_button_text"> CONTINUE </string>
     <string name="register_button_finish_text"> FINISH </string>

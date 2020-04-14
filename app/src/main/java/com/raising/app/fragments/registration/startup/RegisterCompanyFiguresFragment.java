@@ -65,7 +65,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
             final Snackbar snackbar = Snackbar.make(companyFteLayout,
                     R.string.register_fte_helper_text, Snackbar.LENGTH_LONG);
             snackbar.setAction(getString(R.string.got_it_text), v12 -> snackbar.dismiss());
-            snackbar.setDuration(5000)
+            snackbar.setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
                     .show();
         });
 

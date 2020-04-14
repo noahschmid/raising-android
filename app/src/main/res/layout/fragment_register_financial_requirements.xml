@@ -114,6 +114,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_financial_completed"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_info_outline_24dp"
                 app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
                 app:layout_constraintEnd_toEndOf="@+id/register_financial_closing_time"
                 app:layout_constraintStart_toStartOf="@+id/register_financial_closing_time"

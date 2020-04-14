@@ -1,11 +1,22 @@
 <resources>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+        <!-- Define primary colors -->
         <item name="colorPrimary">@color/raisingPrimary</item>
         <item name="colorPrimaryDark">@color/raisingPrimaryDark</item>
         <item name="colorAccent">@color/raisingPrimaryAccent</item>
+        <!-- Define styling for Android soft navigation -->
         <item name="android:navigationBarColor">@color/raisingBlack</item>
+        <!-- Define styling for snackbar -->
+        <item name="snackbarStyle"> @style/snackbar_style </item>
+        <item name="snackbarTextViewStyle"> @style/snackbar_text_style</item>
+    </style>
+
+    <style name="snackbar_style" parent="Widget.MaterialComponents.Snackbar">
+        <item name="android:layout_marginBottom"> @dimen/standardVerticalMargin</item>
+    </style>
+    <style name="snackbar_text_style" parent="Widget.MaterialComponents.Snackbar.TextView">
+        <item name="android:textSize"> @dimen/raisingSmallTextFontSize </item>
     </style>
 
     <style name="DialogTheme" parent="Theme.MaterialComponents.Light.Dialog.MinWidth" />
@@ -45,7 +56,6 @@
         <item name="android:windowSoftInputMode">adjustResize</item>
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
     </style>
-
 
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/ic_bottomsheet_new_background</item>

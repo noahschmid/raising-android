@@ -60,7 +60,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW,
                             Uri.parse(getString(R.string.register_uid_link)));
                     startActivity(browserIntent);
-                }).setDuration(5000)
+                }).setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
                 .show());
 
 
