@@ -67,19 +67,16 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
         startup.setNumberOfFte(jsonObject.get("numberOfFte").getAsInt());
         startup.setFoundingYear(jsonObject.get("foundingYear").getAsInt());
         startup.setUId(jsonObject.get("uid").getAsString());
+        startup.setProfilePictureId(jsonObject.get("profilePictureId").getAsInt());
 
         if(jsonObject.get("website") != null) {
             startup.setWebsite(jsonObject.get("website").getAsString());
         }
+
         if(jsonObject.get("countryId") != null) {
             startup.setCountryId(jsonObject.get("countryId").getAsLong());
         }
 
-        if(jsonObject.get("profilePicture") != null) {
-            if (!jsonObject.get("profilePicture").isJsonNull()) {
-                startup.setProfilePicture(new Image(jsonObject.get("profilePicture").getAsString()));
-            }
-        }
         for(JsonElement el : jsonObject.get("countries").getAsJsonArray()) {
             startup.addCountry(el.getAsLong());
         }

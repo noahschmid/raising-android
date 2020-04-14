@@ -18,6 +18,7 @@ import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.ContactDetails;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.InternalStorageHandler;
 
 public class ContactDetailsInput extends RaisingFragment {
     private EditText phoneNumberInput;
@@ -77,9 +78,11 @@ public class ContactDetailsInput extends RaisingFragment {
         contactDetails.setPhone(phoneNumberInput.getText().toString());
 
         try {
-            AccountService.saveContactDetails(contactDetails);
+            InternalStorageHandler.saveObject(contactDetails, "contact_" +
+                    accountId);
             AuthenticationHandler.login(contactDetails.getEmail(),
                     token, accountId, isStartup);
+            accountViewModel.loadAccount();
             hideBottomNavigation(false);
             clearBackstackAndReplace(new MatchesFragment());
         } catch (Exception e) {

@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.gson.Gson;
 import com.raising.app.R;
@@ -40,6 +41,7 @@ import com.raising.app.models.Image;
 import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.ImageRotator;
 import com.raising.app.util.RegistrationHandler;
 
 import org.json.JSONException;
@@ -121,10 +123,16 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
     }
 
     private void loadImages() {
-        if(startup.getProfilePicture() != null) {
-            profileImage.setImageBitmap(startup.getProfilePicture().getBitmap());
+        if(startup.getProfilePictureId() != -1) {
+                Glide
+                .with(this)
+                .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                        startup.getProfilePictureId())
+                .centerCrop()
+                .placeholder(R.drawable.ic_person_24dp)
+                .into(profileImage);
             profileImageOverlay.setVisibility(View.GONE);
-            deleteProfileImageButton.setEnabled(true);
+            deleteProfileImageButton.setVisibility(View.VISIBLE);
         }
 
         if(startup.getGallery() != null) {
@@ -177,10 +185,10 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
     private void setProfileImage(Bitmap image) {
         try {
-            profileImage.setImageBitmap(image);
+            profileImage.setImageBitmap(ImageRotator.rotateImage(image));
             deleteProfileImageButton.setVisibility(View.VISIBLE);
             profileImageOverlay.setVisibility(View.GONE);
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             Log.d("StartupImages", e.getMessage());
         }
     }

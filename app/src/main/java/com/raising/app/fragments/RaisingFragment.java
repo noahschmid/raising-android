@@ -9,7 +9,13 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -36,6 +42,9 @@ import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -91,22 +100,32 @@ public class RaisingFragment extends Fragment {
             }
         });
 
+
+
         resourcesViewModel = ViewModelProviders.of(getActivity()).get(ResourcesViewModel.class);
         resourcesViewModel.getResources().observe(getViewLifecycleOwner(), resources -> {
             this.resources = resources;
         });
         resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
-            switch (viewState) {
-                case LOADING:
-                    showLoadingPanel();
-                    break;
-                case RESULT:
-                case CACHED:
-                    dismissLoadingPanel();
-                    break;
-            }
+            processViewState(viewState);
         });
         resources = resourcesViewModel.getResources().getValue();
+
+        processViewState(resourcesViewModel.getViewState().getValue());
+        processViewState(accountViewModel.getViewState().getValue());
+    }
+
+
+    protected void processViewState(ViewState viewState) {
+        switch (viewState) {
+            case LOADING:
+                showLoadingPanel();
+                break;
+            case RESULT:
+            case CACHED:
+                dismissLoadingPanel();
+                break;
+        }
     }
 
     /**
@@ -434,13 +453,14 @@ public class RaisingFragment extends Fragment {
     }
 
     protected void dismissLoadingPanel() {
-        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         --processesLoading;
         if(loadingPanel == null || processesLoading != 0) {
             if (processesLoading < 0)
                 processesLoading = 0;
             return;
         }
+
         loadingPanel.setVisibility(View.GONE);
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 }
