@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
         android:text="TextView"
-        android:textColor="@color/raisingPrimaryTextColor"
+        android:textColor="@color/raisingTextColor"
         android:textSize="@dimen/raisingTextFontSize"
         app:layout_constraintBottom_toBottomOf="@+id/public_profile_matching_icon"
         app:layout_constraintStart_toEndOf="@+id/public_profile_matching_icon"

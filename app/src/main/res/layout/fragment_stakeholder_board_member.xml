@@ -29,7 +29,7 @@
                 android:hint="@string/register_stakeholder_board_member_information_text"
                 android:textSize="@dimen/raisingTitleFontSize"
                 android:textStyle="bold"
-                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textColorHint="@color/raisingTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/board_member_first_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

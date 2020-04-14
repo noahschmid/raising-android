@@ -27,7 +27,7 @@
                 android:layout_marginTop="@dimen/standardFragmentTitleMargin"
                 android:layout_marginBottom="@dimen/standardFragmentTitleMargin"
                 android:hint="@string/register_stakeholder_shareholder_information_text"
-                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingTitleFontSize"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_select_type_of_shareholder"

@@ -28,7 +28,6 @@ import java.util.ArrayList;
 
 public class MatchesFragment extends RaisingFragment {
     private RecyclerView matchList;
-    private LinearLayout matchListLayout;
     private ConstraintLayout emptyMatchListLayout;
     private ArrayList<MatchListItem> matchListItems;
     private MatchListViewModel matchListViewModel;
@@ -43,7 +42,6 @@ public class MatchesFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        matchListLayout = view.findViewById(R.id.matchList_layout);
         emptyMatchListLayout = view.findViewById(R.id.empty_matchList_layout);
 
         //TODO: store matchList items in following arraylist
@@ -55,8 +53,6 @@ public class MatchesFragment extends RaisingFragment {
         });
 
         if(matchListItems.size() == 0) {
-            matchListLayout.setVisibility(View.GONE);
-        } else {
             emptyMatchListLayout.setVisibility(View.GONE);
         }
 

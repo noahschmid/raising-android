@@ -181,6 +181,11 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         if(startup != null) {
             loadData();
         }
+
+        // hide current markets, until a good layout was found
+        TextView marketsTitle = view.findViewById(R.id.text_profile_current_markets_title);
+        marketsTitle.setVisibility(View.GONE);
+        startupMarkets.setVisibility(View.GONE);
     }
 
     private void loadData() {
@@ -257,7 +262,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         }
 
         // hide valuation fields, if they are empty
-        if(startup.getPreMoneyValuation() < 0) {
+        if(startup.getPreMoneyValuation() > 0) {
             startupValuation.setText(resources.formatMoneyAmount(startup.getPreMoneyValuation()));
         } else {
             startupValuationTitle.setVisibility(View.GONE);
@@ -437,9 +442,15 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             }
             int shareholderColor = pieChartColors.get(colorIndex);
             Shareholder tmp = shareholders.get(i);
-            legendItems.add(new EquityChartLegendItem(shareholderColor,
-                    resources.getInvestorType(tmp.getInvestorTypeId()).getName(),
-                    tmp.getTitle(), tmp.getEquityShare()));
+            if(tmp.isPrivateShareholder()) {
+                legendItems.add(new EquityChartLegendItem(shareholderColor,
+                        resources.getInvestorType(tmp.getInvestorTypeId()).getName(),
+                        tmp.getTitle(), tmp.getEquityShare()));
+            } else {
+                legendItems.add(new EquityChartLegendItem(shareholderColor,
+                        resources.getCorporateBody(tmp.getCorporateBodyId()).getName(),
+                        tmp.getTitle(), tmp.getEquityShare()));
+            }
         }
 
         legendItems.forEach(legendItem -> {
@@ -485,8 +496,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         pieChartColors.add(getResources().getColor(R.color.raisingPrimaryLight, null));
         pieChartColors.add(getResources().getColor(R.color.raisingPrimaryDark, null));
         pieChartColors.add(getResources().getColor(R.color.raisingPrimaryAccent, null));
-        pieChartColors.add(getResources().getColor(R.color.raisingPrimaryTextColor, null));
-        pieChartColors.add(getResources().getColor(R.color.raisingPrimaryButton, null));
+        pieChartColors.add(getResources().getColor(R.color.raisingTextColor, null));
+        pieChartColors.add(getResources().getColor(R.color.raisingButtonBackgroundColor, null));
 
         return pieChartColors;
     }

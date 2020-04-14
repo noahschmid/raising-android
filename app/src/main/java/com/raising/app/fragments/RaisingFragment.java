@@ -1,5 +1,6 @@
 package com.raising.app.fragments;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -41,6 +42,8 @@ import java.util.Calendar;
 import javax.security.auth.login.LoginException;
 
 public class RaisingFragment extends Fragment {
+    final private String TAG ="RaisingFragment";
+
     protected View loadingPanel;
     protected FrameLayout overlayLayout;
     protected AccountViewModel accountViewModel;
@@ -57,7 +60,7 @@ public class RaisingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         loadingPanel = getLayoutInflater().inflate(R.layout.view_loading_panel, null);
-        overlayLayout = getView().findViewById(R.id.overlay_layout);
+        overlayLayout = view.findViewById(R.id.overlay_layout);
         
         if(overlayLayout != null) {
             overlayLayout.setFocusable(false);
@@ -71,9 +74,11 @@ public class RaisingFragment extends Fragment {
         });
         currentAccount = accountViewModel.getAccount().getValue();
         accountViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
+            Log.d(TAG, "onViewCreated: ViewState: " + viewState.toString());
             switch (viewState) {
                 case LOADING:
                     showLoadingPanel();
+                    break;
                 case RESULT:
                 case CACHED:
                     dismissLoadingPanel();
@@ -94,6 +99,7 @@ public class RaisingFragment extends Fragment {
             switch (viewState) {
                 case LOADING:
                     showLoadingPanel();
+                    break;
                 case RESULT:
                 case CACHED:
                     dismissLoadingPanel();
@@ -415,7 +421,6 @@ public class RaisingFragment extends Fragment {
             Log.e("RaisingFragment", "No overlay layout found!");
             return;
         }
-
         ++processesLoading;
 
         if(processesLoading > 1) {
@@ -426,22 +431,16 @@ public class RaisingFragment extends Fragment {
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
         loadingPanel.setVisibility(View.VISIBLE);
-
-        getView().setClickable(false);
-        getView().setFocusable(false);
     }
 
     protected void dismissLoadingPanel() {
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         --processesLoading;
         if(loadingPanel == null || processesLoading != 0) {
-            if(processesLoading < 0)
+            if (processesLoading < 0)
                 processesLoading = 0;
             return;
         }
-
-        getView().setClickable(true);
-        getView().setFocusable(true);
         loadingPanel.setVisibility(View.GONE);
     }
 }

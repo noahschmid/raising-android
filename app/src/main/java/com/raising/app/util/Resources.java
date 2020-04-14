@@ -61,7 +61,7 @@ public class Resources implements Serializable {
             ++i;
         }
 
-        return  currency + amount + unit;
+        return  currency + " " + amount + unit;
     }
 
     public TicketSize getTicketSize(long id) {

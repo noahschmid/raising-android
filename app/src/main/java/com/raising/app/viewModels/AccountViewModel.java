@@ -32,7 +32,7 @@ public class AccountViewModel extends AndroidViewModel {
     private MutableLiveData<Account> currentAccount = new MutableLiveData<>();
     private MutableLiveData<ViewState> viewState = new MutableLiveData<ViewState>();
 
-    private final String TAG = "accountViewModel";
+    private final String TAG = "AccountViewModel";
 
     public AccountViewModel(@NonNull Application application) {
         super(application);
@@ -46,25 +46,29 @@ public class AccountViewModel extends AndroidViewModel {
      * Get account of logged in user from backend
      */
     public void loadAccount() {
-        if(!AuthenticationHandler.isLoggedIn()) {
+        if (!AuthenticationHandler.isLoggedIn()) {
             viewState.setValue(ViewState.ERROR);
+            Log.d(TAG, "loadAccountE1: ViewState" + getViewState().getValue().toString());
             Log.e("AccountViewModel", "Trying to fetch account without being logged in!");
             return;
         }
 
         Account account = getCachedAccount();
-        if(account != null) {
+        if (account != null) {
             currentAccount.setValue(account);
             viewState.setValue(ViewState.CACHED);
+            Log.d(TAG, "loadAccountC1: ViewState" + getViewState().getValue().toString());
         } else {
             viewState.setValue(ViewState.LOADING);
+            Log.d(TAG, "loadAccountL1: ViewState" + getViewState().getValue().toString());
         }
 
-        if(AuthenticationHandler.isStartup()) {
+        if (AuthenticationHandler.isStartup()) {
             AccountService.getStartupAccount(AuthenticationHandler.getId(),
                     startup -> {
                         currentAccount.setValue(startup);
                         viewState.setValue(ViewState.RESULT);
+                        Log.d(TAG, "loadAccountR1: ViewState" + getViewState().getValue().toString());
                         cacheAccount();
                         return null;
                     });
@@ -73,6 +77,7 @@ public class AccountViewModel extends AndroidViewModel {
                     investor -> {
                         currentAccount.setValue(investor);
                         viewState.setValue(ViewState.RESULT);
+                        Log.d(TAG, "loadAccountR2: ViewState" + getViewState().getValue().toString());
                         cacheAccount();
                         return null;
                     });
@@ -81,6 +86,7 @@ public class AccountViewModel extends AndroidViewModel {
 
     /**
      * Get the current view state
+     *
      * @return
      */
     public LiveData<ViewState> getViewState() {
@@ -90,6 +96,7 @@ public class AccountViewModel extends AndroidViewModel {
 
     /**
      * Retrieve the currently stored account of the logged in user
+     *
      * @return The account currently stored
      */
     public LiveData<Account> getAccount() {
@@ -106,14 +113,15 @@ public class AccountViewModel extends AndroidViewModel {
 
     /**
      * Get account saved in internal storage
+     *
      * @return
      */
     private Account getCachedAccount() {
         Account account = null;
-        if(InternalStorageHandler.exists("account_" +
+        if (InternalStorageHandler.exists("account_" +
                 AuthenticationHandler.getId())) {
             try {
-                if(AuthenticationHandler.isStartup()) {
+                if (AuthenticationHandler.isStartup()) {
                     account = (Startup) InternalStorageHandler.loadObject("account_" +
                             AuthenticationHandler.getId());
                 } else {
@@ -122,7 +130,7 @@ public class AccountViewModel extends AndroidViewModel {
                 }
 
                 account.setEmail(AuthenticationHandler.getEmail());
-            } catch(Exception e) {
+            } catch (Exception e) {
                 Log.e("AccountViewModel", "Error loading cached account: " +
                         e.getMessage());
                 account = null;
@@ -137,20 +145,20 @@ public class AccountViewModel extends AndroidViewModel {
      * Save current account to internal storage
      */
     private void cacheAccount() {
-        if(AuthenticationHandler.isStartup()) {
+        if (AuthenticationHandler.isStartup()) {
             try {
-                InternalStorageHandler.saveObject((Startup)currentAccount.getValue(),
+                InternalStorageHandler.saveObject((Startup) currentAccount.getValue(),
                         "account_" + AuthenticationHandler.getId());
-            } catch(Exception e) {
+            } catch (Exception e) {
                 Log.e("AccountViewModel", "Error caching account: " + e.getMessage());
             }
         } else {
             try {
                 Gson gson = new Gson();
-                InternalStorageHandler.saveObject((Investor)currentAccount.getValue(),
+                InternalStorageHandler.saveObject((Investor) currentAccount.getValue(),
                         "account_" + AuthenticationHandler.getId());
 
-            } catch(Exception e) {
+            } catch (Exception e) {
                 Log.e("AccountViewModel", "Error caching account: " + e.getMessage());
             }
         }
@@ -159,18 +167,20 @@ public class AccountViewModel extends AndroidViewModel {
 
     /**
      * Send patch request to backend to update account
+     *
      * @param update the new account instance
      */
     public void update(Account update) {
         String endpoint = null;
         String accountString = null;
 
-        if(!(update instanceof Investor) && !(update instanceof Startup)) {
+        if (!(update instanceof Investor) && !(update instanceof Startup)) {
             Log.e("RegistrationHandler", "update: invalid account instance");
             return;
         }
 
         viewState.setValue(ViewState.LOADING);
+        Log.d(TAG, "update: ViewState" + getViewState().getValue().toString());
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Startup.class,
@@ -179,32 +189,36 @@ public class AccountViewModel extends AndroidViewModel {
                 Serializer.InvestorUpdateSerializer);
         Gson gson = gsonBuilder.create();
 
-        if(AuthenticationHandler.isStartup()) {
+        if (AuthenticationHandler.isStartup()) {
             endpoint = "startup/" + AuthenticationHandler.getId();
-            accountString = gson.toJson((Startup)update);
+            accountString = gson.toJson((Startup) update);
         } else {
             endpoint = "investor/" + AuthenticationHandler.getId();
-            accountString = gson.toJson((Investor)update);
+            accountString = gson.toJson((Investor) update);
         }
 
         try {
             ApiRequestHandler.performPatchRequest(endpoint,
                     v -> {
-                        if(update instanceof Startup) {
-                            currentAccount.setValue((Startup)update);
-                        } else if(update instanceof Investor) {
-                            currentAccount.setValue((Investor)update);
+                        if (update instanceof Startup) {
+                            currentAccount.setValue((Startup) update);
+                        } else if (update instanceof Investor) {
+                            currentAccount.setValue((Investor) update);
                         } else {
                             viewState.setValue(ViewState.ERROR);
+                            Log.d(TAG, "update: ViewState" + getViewState().getValue().toString());
                             return null;
                         }
-
                         viewState.setValue(ViewState.UPDATED);
+                        Log.d(TAG, "update: ViewState" + getViewState().getValue().toString());
                         return null;
-                    }, ApiRequestHandler.errorHandler,
-                    new JSONObject(accountString));
+                    }, error -> {
+                        viewState.setValue(ViewState.ERROR);
+                        return null;
+                    }, new JSONObject(accountString));
         } catch (JSONException e) {
             viewState.setValue(ViewState.ERROR);
+            Log.d(TAG, "update: ViewState" + getViewState().getValue().toString());
             Log.e("AccountViewModel", "Error while performing patch request: " +
                     e.getMessage());
         }
@@ -213,6 +227,7 @@ public class AccountViewModel extends AndroidViewModel {
 
     /**
      * Update the profile picture for the current account
+     *
      * @param image
      */
     public void updateProfilePicture(Image image) {

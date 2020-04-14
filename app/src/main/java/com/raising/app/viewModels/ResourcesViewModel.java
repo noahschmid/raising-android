@@ -47,8 +47,10 @@ public class ResourcesViewModel extends AndroidViewModel{
         if(cachedResources != null) {
             resources.setValue(cachedResources);
             viewState.setValue(ViewState.CACHED);
+            Log.d(TAG, "loadResources: ViewState" + getViewState().getValue().toString());
         } else {
             viewState.setValue(ViewState.LOADING);
+            Log.d(TAG, "loadResources: ViewState" + getViewState().getValue().toString());
         }
 
         ApiRequestHandler.performGetRequest("public/", result -> {
@@ -57,12 +59,14 @@ public class ResourcesViewModel extends AndroidViewModel{
                     Gson gson = gsonBuilder.create();
                     resources.setValue(gson.fromJson(result.toString(), Resources.class));
                     viewState.setValue(ViewState.RESULT);
+                    Log.d(TAG, "loadResources: ViewState" + getViewState().getValue().toString());
                     Log.d(TAG, "loadResources: resources successfuly loaded");
                     return null;
                 },
                 error -> {
                     if(viewState.getValue() != ViewState.CACHED) {
                         viewState.setValue(ViewState.ERROR);
+                        Log.d(TAG, "loadResources: ViewState" + getViewState().getValue().toString());
                     }
                     return null;
                 });
@@ -75,6 +79,7 @@ public class ResourcesViewModel extends AndroidViewModel{
             }
         } catch (Exception e) {
             viewState.setValue(ViewState.ERROR);
+            Log.d(TAG, "getCachedResources: ViewState" + getViewState().getValue().toString());
             Log.e(TAG, "Error while loading cached resources: " + e.getMessage());
         }
 
