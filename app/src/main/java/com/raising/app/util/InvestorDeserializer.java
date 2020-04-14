@@ -46,8 +46,8 @@ public class InvestorDeserializer implements JsonDeserializer<Investor> {
         investor.setTicketMaxId(jsonObject.get("ticketMaxId").getAsInt());
         investor.setInvestorTypeId(jsonObject.get("investorTypeId").getAsInt());
 
-        if(!jsonObject.get("profilePicture").isJsonNull()) {
-            investor.setProfilePicture(new Image(jsonObject.get("profilePicture").getAsString()));
+        if(jsonObject.get("profilePictureId") != null) {
+            investor.setProfilePictureId(jsonObject.get("profilePictureId").getAsInt());
         }
 
         for(JsonElement el : jsonObject.get("gallery").getAsJsonArray()) {

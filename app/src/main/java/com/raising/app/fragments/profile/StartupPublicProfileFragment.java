@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -40,6 +41,7 @@ import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.models.stakeholder.Shareholder;
 import com.raising.app.util.AccountService;
+import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
 import com.raising.app.util.recyclerViewAdapter.StartupProfileBoardMemberRecyclerViewAdapter;
 import com.raising.app.util.recyclerViewAdapter.StartupProfileFounderRecyclerViewAdapter;
@@ -191,7 +193,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         startupMaxTicket.setText(resources.getTicketSize(startup.getTicketMaxId())
                 .toString(getString(R.string.currency),
                         getResources().getStringArray(R.array.revenue_units)));
-        profileName.setText(startup.getName());
+        profileName.setText(startup.getCompanyName());
         profileSentence.setText(startup.getDescription());
         profilePitch.setText(startup.getPitch());
         startupRevenue.setText(resources.getRevenueString(
@@ -345,12 +347,23 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             imageView.setLayoutParams(new ImageSwitcher.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
+            if(startup.getProfilePictureId() != -1) {
+                Glide
+                    .with(this)
+                    .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                            startup.getProfilePictureId())
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_person_24dp)
+                    .into(imageView);
+            }
+
+            /*
             if(pictures.size() == 0) {
                 imageView.setImageDrawable(getResources()
                         .getDrawable(R.drawable.ic_person_24dp));
             } else {
                 imageView.setImageBitmap(pictures.get(currentImageIndex));
-            }
+            }*/
             imageIndex.setText(currentIndexToString(currentImageIndex));
             return imageView;
         });
@@ -437,9 +450,15 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             }
             int shareholderColor = pieChartColors.get(colorIndex);
             Shareholder tmp = shareholders.get(i);
-            legendItems.add(new EquityChartLegendItem(shareholderColor,
-                    resources.getInvestorType(tmp.getInvestorTypeId()).getName(),
-                    tmp.getTitle(), tmp.getEquityShare()));
+            if(tmp.isPrivateShareholder()) {
+                legendItems.add(new EquityChartLegendItem(shareholderColor,
+                        resources.getInvestorType(tmp.getInvestorTypeId()).getName(),
+                        tmp.getTitle(), tmp.getEquityShare()));
+            } else {
+                legendItems.add(new EquityChartLegendItem(shareholderColor,
+                        resources.getCorporateBody(tmp.getCorporateBodyId()).getName(),
+                        tmp.getTitle(), tmp.getEquityShare()));
+            }
         }
 
         legendItems.forEach(legendItem -> {
