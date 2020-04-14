@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_circle_full_darkgrey_24dp" />
+        app:srcCompat="@drawable/ic_circle_full_darkgrey_16dp" />
 
     <TextView
         android:id="@+id/public_profile_matching_text"
