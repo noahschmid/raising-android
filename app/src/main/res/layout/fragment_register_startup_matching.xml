@@ -29,11 +29,14 @@
 
             <TextView
                 android:id="@+id/text_investor_matching_ticket"
-                style="@style/SubtitleTextWithLeftIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_matching_ticket_size"
-                android:drawableLeft="@drawable/ic_price_tag_24dp"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_information" />
@@ -59,17 +62,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_investor"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
-                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_ticket_size"
-                app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_investor" />
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_ticket_size" />
 
             <TextView
                 android:id="@+id/text_startup_matching_investor"
-                style="@style/SubtitleTextWithLeftIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_matching_investor"
-                android:drawableLeft="@drawable/ic_chess_horse_24dp"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/text_investor_matching_ticket"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_ticket_size_text" />
 
@@ -86,37 +92,38 @@
 
             <TextView
                 android:id="@+id/text_startup_matching_phase"
-                style="@style/SubtitleTextWithLeftIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_matching_phase"
-                android:drawableLeft="@drawable/ic_stairs_24dp"
-                app:layout_constraintTop_toBottomOf="@+id/register_startup_investor_type_layout"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_radio_phase"
-                app:layout_constraintStart_toStartOf="@+id/text_startup_matching_investor" />
+                app:layout_constraintStart_toStartOf="@+id/text_startup_matching_investor"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_investor_type_layout" />
 
             <RadioGroup
                 android:id="@+id/register_startup_matching_radio_phase"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_ticket_size"
-                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_industry"
-                app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_phase">
-            </RadioGroup>
+                app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_ticket_size"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_phase"/>
 
             <TextView
                 android:id="@+id/text_startup_matching_industry"
-                style="@style/SubtitleTextWithLeftIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_matching_industry"
+                android:textColorHint="@color/raisingPrimaryTextColor"
                 android:textSize="@dimen/raisingSubtitleFontSize"
                 android:textStyle="bold"
-                android:textColorHint="@color/raisingPrimaryTextColor"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_industry_layout"
-                android:drawableLeft="@drawable/ic_gear_24dp"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_matching_phase"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_radio_phase" />
 
@@ -124,22 +131,24 @@
                 android:id="@+id/register_startup_matching_industry_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:layout_marginTop="@dimen/standardVerticalMarginSmall"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_support"
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
-                app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_support"
-                app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_industry">
-            </LinearLayout>
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_industry"/>
 
             <TextView
                 android:id="@+id/text_startup_matching_support"
-                style="@style/SubtitleTextWithLeftIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_matching_support"
-                android:drawableLeft="@drawable/ic_conversation_24dp"
+                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_matching_industry"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_industry_layout" />
 
@@ -154,66 +163,65 @@
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_support"
-                app:layout_constraintVertical_bias="0.0"/>
+                app:layout_constraintVertical_bias="0.0" />
 
             <LinearLayout
                 android:id="@+id/registration_profile_progress"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/button_startup_matching"
-                app:layout_constraintEnd_toEndOf="@+id/register_support_matching_support_layout"
-                app:layout_constraintStart_toStartOf="@+id/register_support_matching_support_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/register_support_matching_support_layout">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
             </LinearLayout>
 
             <Button
@@ -221,11 +229,13 @@
                 style="@style/ButtonConfirmRegistration"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:hint="@string/register_button_text"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/registration_profile_progress"
-                app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_ticket_size"
-                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registration_profile_progress" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

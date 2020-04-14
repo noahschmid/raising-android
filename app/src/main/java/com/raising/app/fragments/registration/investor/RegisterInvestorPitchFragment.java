@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.raising.app.R;
@@ -52,9 +53,25 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         super.onViewCreated(view, savedInstanceState);
 
         sentenceLayout = view.findViewById(R.id.register_investor_pitch_sentence);
+        sentenceLayout.setEndIconOnClickListener(v -> {
+            final Snackbar snackbar = Snackbar.make(sentenceLayout,
+                    R.string.register_sentence_helper_text, Snackbar.LENGTH_LONG);
+            snackbar.setAction(getString(R.string.got_it_text), v12 -> snackbar.dismiss());
+            snackbar.setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
+                    .show();
+        });
+
         sentenceInput = view.findViewById(R.id.register_input_investor_pitch_sentence);
 
         pitchLayout = view.findViewById(R.id.register_investor_pitch_pitch);
+        pitchLayout.setEndIconOnClickListener(v -> {
+            final Snackbar snackbar = Snackbar.make(pitchLayout,
+                    R.string.register_pitch_helper_text, Snackbar.LENGTH_LONG);
+            snackbar.setAction(getString(R.string.got_it_text), v12 -> snackbar.dismiss());
+            snackbar.setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
+                    .show();
+        });
+
         pitchInput = view.findViewById(R.id.register_input_investor_pitch_pitch);
 
         Button btnInvestorPitch = view.findViewById(R.id.button_investor_pitch);

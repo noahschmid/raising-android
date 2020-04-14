@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
@@ -42,23 +43,39 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        sentenceLayout = view.findViewById(R.id.register_startup_pitch_sentence);
+        sentenceLayout.setEndIconOnClickListener(v -> {
+            final Snackbar snackbar = Snackbar.make(sentenceLayout,
+                    R.string.register_sentence_helper_text, Snackbar.LENGTH_LONG);
+            snackbar.setAction(getString(R.string.got_it_text), v12 -> snackbar.dismiss());
+            snackbar.setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
+                    .show();
+        });
+
+        sentenceInput = view.findViewById(R.id.register_input_startup_pitch_sentence);
+
+        pitchLayout = view.findViewById(R.id.register_startup_pitch_pitch);
+        pitchLayout.setEndIconOnClickListener(v -> {
+            final Snackbar snackbar = Snackbar.make(pitchLayout,
+                    R.string.register_pitch_helper_text, Snackbar.LENGTH_LONG);
+            snackbar.setAction(getString(R.string.got_it_text), v12 -> snackbar.dismiss());
+            snackbar.setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
+                    .show();
+        });
+
+        pitchInput = view.findViewById(R.id.register_input_startup_pitch);
+
         Button btnStartupPitch = view.findViewById(R.id.button_startup_pitch);
         btnStartupPitch.setOnClickListener(v -> processInputs());
 
-        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+        if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupPitch.setHint(getString(R.string.myProfile_apply_changes));
-            startup = (Startup)accountViewModel.getAccount().getValue();
+            startup = (Startup) accountViewModel.getAccount().getValue();
             editMode = true;
         } else {
             startup = RegistrationHandler.getStartup();
         }
-
-        sentenceLayout = view.findViewById(R.id.register_startup_pitch_sentence);
-        sentenceInput = view.findViewById(R.id.register_input_startup_pitch_sentence);
-
-        pitchLayout = view.findViewById(R.id.register_startup_pitch_pitch);
-        pitchInput = view.findViewById(R.id.register_input_startup_pitch);
 
         pitchInput.setText(startup.getPitch());
         sentenceInput.setText(startup.getDescription());
@@ -88,14 +105,14 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
         String pitch = pitchInput.getText().toString();
         String description = sentenceInput.getText().toString();
 
-        if(pitch.length() == 0 || description.length() == 0) {
+        if (pitch.length() == 0 || description.length() == 0) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
         // check if sentence is too long
-        if(splitStringIntoWords(description).length
+        if (splitStringIntoWords(description).length
                 > getResources().getInteger(R.integer.pitch_sentence_max_word)) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_pitch_error_long_sentence));
@@ -103,7 +120,7 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
         }
 
         // check if pitch is too long
-        if(splitStringIntoWords(pitch).length
+        if (splitStringIntoWords(pitch).length
                 > getResources().getInteger(R.integer.pitch_pitch_max_word)) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_pitch_error_long_pitch));
@@ -114,14 +131,14 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
         startup.setDescription(description);
 
         try {
-            if(!editMode) {
+            if (!editMode) {
                 RegistrationHandler.saveStartup(startup);
                 changeFragment(new RegisterStartupLabelsFragment());
             } else {
                 accountViewModel.update(startup);
             }
 
-        } catch(IOException e) {
+        } catch (IOException e) {
             Log.e("RegisterStartupPitch", "Error while saving startup pitch");
         }
     }

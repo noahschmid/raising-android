@@ -1,5 +1,7 @@
 package com.raising.app.fragments.registration.startup;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.ContactDetails;
@@ -48,6 +52,19 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        TextInputLayout companyUidLayout = view.findViewById(R.id.register_company_uid);
+        companyUidLayout.setEndIconOnClickListener(v -> Snackbar.make(companyUidLayout,
+                R.string.register_uid_helper_text, Snackbar.LENGTH_LONG)
+                .setAction(getString(R.string.register_uid_snackbar_find), v1 -> {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(getString(R.string.register_uid_link)));
+                    startActivity(browserIntent);
+                }).setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
+                .show());
+
+
+
         companyCountryInput = view.findViewById(R.id.register_input_company_countries);
         companyPhoneInput = view.findViewById(R.id.register_input_company_phone);
         companyWebsiteInput = view.findViewById(R.id.register_input_company_website);

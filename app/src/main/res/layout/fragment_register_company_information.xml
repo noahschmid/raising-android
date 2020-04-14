@@ -96,6 +96,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_company_uid"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_info_outline_24dp"
                 app:layout_constraintBottom_toTopOf="@+id/register_company_country"
                 app:layout_constraintEnd_toEndOf="@+id/register_company_website"
                 app:layout_constraintStart_toStartOf="@+id/register_company_website"
@@ -141,47 +143,47 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
             </LinearLayout>
 
             <Button

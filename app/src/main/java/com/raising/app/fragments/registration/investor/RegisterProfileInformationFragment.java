@@ -39,8 +39,6 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
 
         profileCountryInput = view.findViewById(R.id.register_input_profile_countries);
 
-        setupCountryPicker();
-
         hideBottomNavigation(true);
         return view;
     }
@@ -67,6 +65,8 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
             investor = RegistrationHandler.getInvestor();
             contactDetails = RegistrationHandler.getContactDetails();
         }
+
+        setupCountryPicker();
 
         profileCompanyInput.setText(investor.getCompanyName());
         profileWebsiteInput.setText(investor.getWebsite());

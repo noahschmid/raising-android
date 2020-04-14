@@ -18,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.FinanceType;
@@ -58,6 +60,15 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        TextInputLayout financialCompletedLayout = view.findViewById(R.id.register_financial_completed);
+        financialCompletedLayout.setEndIconOnClickListener(v -> {
+            final Snackbar snackbar = Snackbar.make(financialCompletedLayout,
+                    R.string.register_completed_helper_text, Snackbar.LENGTH_LONG);
+            snackbar.setAction(getString(R.string.got_it_text), v12 -> snackbar.dismiss());
+            snackbar.setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
+                    .show();
+        });
 
         financialTypeInput.setShowSoftInputOnFocus(false);
 

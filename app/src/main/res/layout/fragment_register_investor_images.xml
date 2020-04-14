@@ -144,25 +144,25 @@
                     android:id="@+id/progress_circle_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:id="@+id/progress_circle_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:id="@+id/progress_circle_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:id="@+id/progress_circle_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
             </LinearLayout>
 
             <Button
@@ -173,8 +173,8 @@
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_button_finish_text"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/registration_images_progress"
-                app:layout_constraintStart_toStartOf="@+id/registration_images_progress" />
+                app:layout_constraintEnd_toEndOf="@+id/register_investor_images_gallery"
+                app:layout_constraintStart_toStartOf="@+id/register_investor_images_gallery" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </FrameLayout>

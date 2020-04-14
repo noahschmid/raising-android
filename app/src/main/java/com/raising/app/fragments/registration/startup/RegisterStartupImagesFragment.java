@@ -1,9 +1,11 @@
 package com.raising.app.fragments.registration.startup;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
 
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -24,6 +27,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.android.volley.VolleyError;
@@ -79,7 +83,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                 (Context.LAYOUT_INFLATER_SERVICE);
 
         profileImage = view.findViewById(R.id.register_startup_profile_image);
-        profileImage.setOnClickListener(v -> showImageMenu(profileImage, true));
+        profileImage.setOnClickListener(v -> showImageMenu(true));
 
         Button finishButton = view.findViewById(R.id.button_startup_images);
         finishButton.setOnClickListener(v -> processInputs());
@@ -105,10 +109,17 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         });
 
         addGalleryImage = view.findViewById(R.id.gallery_add);
-        addGalleryImage.setOnClickListener(v -> showImageMenu(addGalleryImage, false));
+        addGalleryImage.setOnClickListener(v -> showImageMenu(false));
 
         loadImages();
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        hideBottomNavigation(false);
     }
 
     private void loadImages() {
@@ -197,36 +208,44 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         galleryLayout.addView(galleryObject);
     }
 
-    private void showImageMenu(View view, boolean profileImage) {
-        PopupMenu popupMenu = new PopupMenu(this.getContext(), view);
-        popupMenu.setGravity(Gravity.END);
-        popupMenu.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.select_image:
-                    // lets user choose picture from gallery
-                    Intent openGalleryIntent = new Intent(
-                            Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                    if (openGalleryIntent.resolveActivity(
-                            Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
-                        startActivityForResult(openGalleryIntent, profileImage ? REQUEST_IMAGE_FETCH :
-                                REQUEST_GALLERY_FETCH);
-                    }
-                    return true;
-                case R.id.take_image:
-                    // lets user take a picture
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (takePictureIntent.resolveActivity(
-                            Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
-                        startActivityForResult(takePictureIntent, profileImage ? REQUEST_IMAGE_CAPTURE :
-                                REQUEST_GALLERY_CAPTURE);
-                    }
-                    return true;
-                default:
-                    return false;
+    private void showImageMenu(boolean profileImage) {
+        final String [] options = {getString(R.string.image_action_dialog_take),
+                getString(R.string.image_action_dialog_choose), getString(R.string.cancel_text)};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+
+        //prepare custom title view
+        TextView titleView = new TextView(this.getContext());
+        titleView.setText(getString(R.string.image_action_dialog_title));
+        titleView.setTextSize(32f);
+        titleView.setTypeface(Typeface.DEFAULT_BOLD);
+        titleView.setPadding(50, 20, 0, 20);
+        titleView.setBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.raisingPrimary));
+        titleView.setTextColor(ContextCompat.getColor(this.getContext(), R.color.raisingWhite));
+        builder.setCustomTitle(titleView);
+
+        builder.setItems(options, (dialog, item) -> {
+            if (options[item].equals(getString(R.string.image_action_dialog_take))) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(
+                        Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, profileImage ? REQUEST_IMAGE_CAPTURE :
+                            REQUEST_GALLERY_CAPTURE);
+                }
+
+            } else if (options[item].equals(getString(R.string.image_action_dialog_choose))) {
+                Intent openGalleryIntent = new Intent(
+                        Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                if (openGalleryIntent.resolveActivity(
+                        Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
+                    startActivityForResult(openGalleryIntent, profileImage ? REQUEST_IMAGE_FETCH :
+                            REQUEST_GALLERY_FETCH);
+                }
+            } else if (options[item].equals(getString(R.string.cancel_text))) {
+                dialog.dismiss();
             }
         });
-        popupMenu.inflate(R.menu.image_floating_menu);
-        popupMenu.show();
+        builder.show();
     }
 
     @Override
@@ -273,12 +292,5 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         } catch (IOException e) {
             Log.e("StartupImages", "Error in processInputs: " + e.getMessage());
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        hideBottomNavigation(false);
     }
 }
