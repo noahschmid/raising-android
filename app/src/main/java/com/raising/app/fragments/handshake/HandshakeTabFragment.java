@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
+import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.HandshakeItem;
 import com.raising.app.models.HandshakeState;
 import com.raising.app.util.recyclerViewAdapter.HandshakeAdapter;
@@ -26,6 +28,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class HandshakeTabFragment extends RaisingFragment {
+    private HandshakeState stateEnum;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,14 +40,49 @@ public class HandshakeTabFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // check if this handshake tab is the closed tab
+        if(getArguments() != null) {
+            stateEnum = (HandshakeState) getArguments().getSerializable("handshakeState");
+        }
+
         //TODO: store items in this array list and handshake state in enum below
         ArrayList<HandshakeItem> handshakeItems = new ArrayList<>();
-        Enum<HandshakeState> stateEnum;
 
         RecyclerView recyclerView = view.findViewById(R.id.handshake_tab_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         HandshakeAdapter handshakeAdapter
                 = new HandshakeAdapter(handshakeItems, stateEnum);
         recyclerView.setAdapter(handshakeAdapter);
-}
+
+        // set click listener for interaction button
+        handshakeAdapter.setOnClickListener(position -> {
+            // TODO: show alert dialog, if recyclerItem has changed their profile
+
+            if(stateEnum.equals(HandshakeState.CLOSED)) {
+                //TODO: implement action for closed leads
+            } else {
+                Bundle args = new Bundle();
+                args.putLong("id", handshakeItems.get(position).getId());
+                Fragment contactFragment = new HandshakeContactFragment();
+                contactFragment.setArguments(args);
+                changeFragment(contactFragment, "HandshakeContactFragment");
+            }
+        });
+
+        // set click listener for item
+        handshakeAdapter.setOnItemClickListener(position -> {
+            Bundle args = new Bundle();
+            args.putLong("id", handshakeItems.get(position).getId());
+            if(handshakeItems.get(position).isStartup()) {
+                StartupPublicProfileFragment publicProfile = new StartupPublicProfileFragment();
+                publicProfile.setArguments(args);
+                changeFragment(publicProfile);
+            } else {
+                InvestorPublicProfileFragment publicProfile = new InvestorPublicProfileFragment();
+                publicProfile.setArguments(args);
+                changeFragment(publicProfile);
+            }
+
+        });
+    }
 }

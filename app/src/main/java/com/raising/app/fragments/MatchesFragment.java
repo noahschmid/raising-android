@@ -56,9 +56,8 @@ public class MatchesFragment extends RaisingFragment {
         MatchListAdapter matchListAdapter = new MatchListAdapter(matchListItems);
         matchList.setAdapter(matchListAdapter);
         matchListAdapter.setOnItemClickListener(position -> {
-            long id = matchListItems.get(position).getId();
             Bundle args = new Bundle();
-            args.putLong("id", id);
+            args.putLong("id", matchListItems.get(position).getId());
             if(matchListItems.get(position).isStartup()) {
                 StartupPublicProfileFragment publicProfile = new StartupPublicProfileFragment();
                 publicProfile.setArguments(args);

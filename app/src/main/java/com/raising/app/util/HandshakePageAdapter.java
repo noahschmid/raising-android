@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.raising.app.fragments.handshake.HandshakeTabFragment;
+import com.raising.app.models.HandshakeState;
 
 public class HandshakePageAdapter extends FragmentPagerAdapter {
     private int numberOfItems;
@@ -24,12 +25,15 @@ public class HandshakePageAdapter extends FragmentPagerAdapter {
         Bundle args = new Bundle();
         switch (position) {
             case 0:
+                args.putSerializable("handshakeState", HandshakeState.YOUR_TURN);
+                fragment.setArguments(args);
+                break;
             case 1:
-                args.putBoolean("closed", false);
+                args.putSerializable("handshakeState", HandshakeState.PENDING);
                 fragment.setArguments(args);
                 break;
             case 2:
-                args.putBoolean("closed", true);
+                args.putSerializable("handshakeState", HandshakeState.CLOSED);
                 fragment.setArguments(args);
                 break;
         }
