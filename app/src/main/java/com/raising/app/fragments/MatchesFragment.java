@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,8 @@ public class MatchesFragment extends RaisingFragment {
     private ArrayList<MatchListItem> matchListItems;
     private MatchesViewModel matchesViewModel;
     private MatchListAdapter matchListAdapter;
+
+    private final String TAG = "MatchesFragment";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -75,6 +78,7 @@ public class MatchesFragment extends RaisingFragment {
                             match.getInvestorTypeId()).getName());
                     matchItem.setName(match.getFirstName() + " " + match.getLastName());
                 }
+                matchListItems.add(matchItem);
             });
         }
 
@@ -102,6 +106,10 @@ public class MatchesFragment extends RaisingFragment {
                     }
 
                     matchListItems.add(matchItem);
+                });
+
+                matchListItems.forEach(item -> {
+                    Log.d(TAG, "onViewCreated: " + item.getName());
                 });
 
                 matchListAdapter.notifyDataSetChanged();

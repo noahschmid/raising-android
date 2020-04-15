@@ -55,14 +55,18 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
         holder.attribute.setText(recyclerItem.getAttribute());
         holder.sentence.setText(recyclerItem.getDescription());
         holder.matchingPercent.setText(recyclerItem.getScore() + "%");
-        Glide
-                .with(InternalStorageHandler.getContext())
-                .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
-                        recyclerItem.getPictureId())
-                .centerCrop()
-                .placeholder(R.drawable.ic_person_24dp)
-                .into(holder.profileImage);
-
+        if(recyclerItem.getPictureId() != -1) {
+            Glide
+                    .with(InternalStorageHandler.getContext())
+                    .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                            recyclerItem.getPictureId())
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_person_24dp)
+                    .into(holder.profileImage);
+        } else {
+            holder.profileImage.setImageDrawable(InternalStorageHandler.getContext()
+                    .getResources().getDrawable(R.drawable.ic_person_24dp));
+        }
         setupMatchingPercentGraphic(holder.matchingPercentGraphic, recyclerItem);
     }
 

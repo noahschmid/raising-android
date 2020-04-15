@@ -50,7 +50,6 @@ public class AccountViewModel extends AndroidViewModel {
      */
     public void loadAccount() {
         if (!AuthenticationHandler.isLoggedIn()) {
-            viewState.setValue(ViewState.ERROR);
             Log.d(TAG, "loadAccountE1: ViewState" + getViewState().getValue().toString());
             Log.e("AccountViewModel", "Trying to fetch account without being logged in!");
             return;

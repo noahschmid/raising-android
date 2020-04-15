@@ -33,10 +33,10 @@ public class InvestorDeserializer implements JsonDeserializer<Investor> {
         Investor investor = new Investor();
 
         investor.setId(jsonObject.get("accountId").getAsLong());
-        if(!jsonObject.get("firstName").isJsonNull()) {
+        if(jsonObject.get("firstName") != null) {
             investor.setFirstName(jsonObject.get("firstName").getAsString());
         }
-        if(!jsonObject.get("lastName").isJsonNull()) {
+        if(jsonObject.get("lastName") != null) {
             investor.setLastName(jsonObject.get("lastName").getAsString());
         }
         investor.setCompanyName(jsonObject.get("companyName").getAsString());
