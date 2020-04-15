@@ -175,6 +175,7 @@
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:hint="@string/cancel_text"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/board_member_education"
                 app:layout_constraintTop_toBottomOf="@+id/board_member_country" />
 

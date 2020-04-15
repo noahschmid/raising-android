@@ -64,8 +64,6 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
                 }).setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
                 .show());
 
-
-
         companyCountryInput = view.findViewById(R.id.register_input_company_countries);
         companyPhoneInput = view.findViewById(R.id.register_input_company_phone);
         companyWebsiteInput = view.findViewById(R.id.register_input_company_website);

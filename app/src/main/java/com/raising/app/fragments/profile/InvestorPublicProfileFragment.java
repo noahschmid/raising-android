@@ -43,7 +43,8 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     private PublicProfileMatchingRecyclerViewAdapter typeAdapter, industryAdapter, phaseAdapter,
             supportAdapter;
 
-    private boolean handshakeRequest, handshakeDecline;
+    private boolean handshakeRequest = false;
+    private boolean handshakeDecline = false;
 
     private RecyclerView recyclerInvestorType, recyclerPhase, recyclerIndustry, recyclerInvolvement;
 
@@ -143,41 +144,33 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     }
 
     private void manageHandshakeButtons() {
-        handshakeRequest = false;
         profileRequest.setOnClickListener(v -> {
-            handshakeRequest = !handshakeRequest;
-            Drawable profileRequestDrawable = profileRequest.getBackground();
-            profileRequestDrawable = DrawableCompat.wrap(profileRequestDrawable);
-            if(handshakeRequest) {
-                profileRequestDrawable.setTint(profileRequest.getContext()
-                        .getResources().getColor(R.color.raisingPositive, null));
-                profileRequest.setBackground(profileRequestDrawable);
-                profileDecline.setEnabled(false);
-            } else {
-                profileRequestDrawable.setTint(profileRequest.getContext()
-                        .getResources().getColor(R.color.raisingWhite, null));
-                profileRequest.setBackground(profileRequestDrawable);
-                profileDecline.setEnabled(true);
-            }
+            handshakeRequest = true;
+            handshakeDecline = false;
+            //TODO: change handshake status in backend
+            //TODO: remove investor from matchlist
+            popCurrentFragment(this);
         });
 
-        handshakeDecline = false;
         profileDecline.setOnClickListener(v -> {
-            handshakeDecline = !handshakeDecline;
-            Drawable profileDeclineDrawable = profileDecline.getBackground();
-            profileDeclineDrawable = DrawableCompat.wrap(profileDeclineDrawable);
-            if(handshakeDecline) {
-                profileDeclineDrawable.setTint(profileDecline.getContext()
-                        .getResources().getColor(R.color.raisingNegative, null));
-                profileDecline.setBackground(profileDeclineDrawable);
-                profileRequest.setEnabled(false);
-            } else {
-                profileDeclineDrawable.setTint(profileDecline.getContext()
-                        .getResources().getColor(R.color.raisingWhite, null));
-                profileDecline.setBackground(profileDeclineDrawable);
-                profileRequest.setEnabled(true);
-            }
+            handshakeDecline = true;
+            handshakeRequest = false;
+            //TODO: change handshake status in backend
+            //TODO: remove investor from matchlist
+            popCurrentFragment(this);
         });
+    }
+
+    /**
+     * Set the needed color for the handshake buttons
+     * @param button The button where the color should change
+     * @param color The new color of the button
+     */
+    private void toggleHandshakeButtonBackground(View button, int color) {
+        Drawable drawable = button.getBackground();
+        drawable = DrawableCompat.wrap(drawable);
+        drawable.setTint(color);
+        button.setBackground(drawable);
     }
 
     private void loadData(Investor investor) {

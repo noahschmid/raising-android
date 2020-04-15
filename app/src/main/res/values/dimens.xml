@@ -23,8 +23,10 @@
 
     <dimen name="myProfileButtonMargin"> 4dp </dimen>
 
-    <dimen name="inputOneSentenceDescriptionHeight"> 80dp </dimen>
+    <dimen name="inputOneSentenceDescriptionHeight"> 100dp </dimen>
     <dimen name="inputPitchHeight"> 150dp </dimen>
+    <dimen name="inputPitchMaxHeight"> 400dp </dimen>
+
 
     <dimen name="raisingLargeTitleFontSize"> 22sp </dimen>
     <dimen name="raisingTitleFontSize"> 20sp </dimen>
