@@ -1,5 +1,6 @@
 package com.raising.app.fragments;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -50,6 +51,8 @@ import java.util.Calendar;
 import javax.security.auth.login.LoginException;
 
 public class RaisingFragment extends Fragment {
+    final private String TAG = "RaisingFragment";
+
     protected View loadingPanel;
     protected FrameLayout overlayLayout;
     protected AccountViewModel accountViewModel;
@@ -66,9 +69,9 @@ public class RaisingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         loadingPanel = getLayoutInflater().inflate(R.layout.view_loading_panel, null);
-        overlayLayout = getView().findViewById(R.id.overlay_layout);
-        
-        if(overlayLayout != null) {
+        overlayLayout = view.findViewById(R.id.overlay_layout);
+
+        if (overlayLayout != null) {
             overlayLayout.setFocusable(false);
             overlayLayout.setClickable(false);
             overlayLayout.addView(loadingPanel);
@@ -80,6 +83,7 @@ public class RaisingFragment extends Fragment {
         });
         currentAccount = accountViewModel.getAccount().getValue();
         accountViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
+            Log.d(TAG, "onViewCreated: ViewState: " + viewState.toString());
             switch (viewState) {
                 case LOADING:
                     showLoadingPanel();
@@ -97,7 +101,6 @@ public class RaisingFragment extends Fragment {
                     break;
             }
         });
-
 
 
         resourcesViewModel = ViewModelProviders.of(getActivity()).get(ResourcesViewModel.class);
@@ -132,8 +135,8 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Change from the current fragment to the next
-     * @param fragment The fragment, that should be displayed next
      *
+     * @param fragment The fragment, that should be displayed next
      * @author Lorenz Caliezi 09.03.2020
      */
     protected void changeFragment(Fragment fragment) {
@@ -158,8 +161,9 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Change from the current fragment to the next
+     *
      * @param fragment The fragment, that should be displayed next
-     * @param name The transaction name
+     * @param name     The transaction name
      * @author Lorenz Caliezi 09.03.2020
      */
     protected void changeFragment(Fragment fragment, String name) {
@@ -177,11 +181,12 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Clear all fragments on the backstack and replace fragment container with new fragment
+     *
      * @param fragment the fragment to display next
      */
     protected void clearBackstackAndReplace(RaisingFragment fragment) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+        for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
             fm.popBackStack();
         }
 
@@ -192,28 +197,29 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Creates an easy to read string representation of large numbers
+     *
      * @param amount The number, that should be converted to the easier string
      * @return The string representation of the number
      */
     public String amountToString(int amount) {
         String unit = "";
         String[] units = getResources().getStringArray(R.array.revenue_units);
-        String currency =getResources().getString(R.string.currency);
+        String currency = getResources().getString(R.string.currency);
         int i = 0;
-        while(Math.log10(amount) >= 3 && i < units.length) {
+        while (Math.log10(amount) >= 3 && i < units.length) {
             amount /= 1000;
             unit = units[i];
             ++i;
         }
-        return currency + " " + amount +  unit;
+        return currency + " " + amount + unit;
     }
 
 
     /**
      * Call {@link com.raising.app.MainActivity#hideBottomNavigation(boolean)}
+     *
      * @param isHidden if true, the bottomNavigation should be invisible,
      *                 if false, the bottomNavigation should be visible
-     *
      * @author Lorenz Caliezi 06.03.2020
      */
     protected void hideBottomNavigation(boolean isHidden) {
@@ -224,8 +230,8 @@ public class RaisingFragment extends Fragment {
 
     /**
      * This methods retrieves an instance the SupportFragmentManager of the underlying activity
-     * @return Instance of SupportFragmentManager of used Activity
      *
+     * @return Instance of SupportFragmentManager of used Activity
      * @author Lorenz Caliezi 09.03.2020
      */
     protected FragmentManager getActivitiesFragmentManager() {
@@ -240,9 +246,9 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Opens a simple dialog, which can only be accepted
-     * @param dialogTitle The title of the simple message dialog
-     * @param dialogMessage The message, that is to be displayed
      *
+     * @param dialogTitle   The title of the simple message dialog
+     * @param dialogMessage The message, that is to be displayed
      * @author Lorenz Caliezi 09.03.2020
      */
     protected void showSimpleDialog(String dialogTitle, String dialogMessage) {
@@ -253,46 +259,50 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Prepares the TextInputLayouts where a word limiter is needed
-     * @param textLayout The layout that has the limiter
-     * @param textInput The input of the layout with the limiter
-     * @param WORD_MAXIMUM The limit of words, that the layout allows
-     * @param currentText The current text of the text view
      *
+     * @param textLayout   The layout that has the limiter
+     * @param textInput    The input of the layout with the limiter
+     * @param WORD_MAXIMUM The limit of words, that the layout allows
+     * @param currentText  The current text of the text view
      * @author Lorenz Caliezi 18.03.2020
      */
-    protected void prepareRestrictedTextLayout(final TextInputLayout textLayout, final EditText textInput, final int WORD_MAXIMUM, String currentText ) {
-        if(currentText == null || currentText.equals(" ")) {
+    protected void prepareRestrictedTextLayout(final TextInputLayout textLayout, final EditText textInput, final int WORD_MAXIMUM, String currentText) {
+        if (currentText == null || currentText.equals(" ")) {
             textLayout.setHelperText(0 + "/" + WORD_MAXIMUM);
         } else {
-            String [] currentTextArray = splitStringIntoWords(currentText);
+            String[] currentTextArray = splitStringIntoWords(currentText);
             textLayout.setHelperText(currentTextArray.length + "/" + WORD_MAXIMUM);
         }
 
         textInput.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String text = textInput.getText().toString();
-                String [] textArray = splitStringIntoWords(text);
+                String[] textArray = splitStringIntoWords(text);
                 textLayout.setHelperText(textArray.length + "/" + WORD_MAXIMUM);
 
-                if(textArray.length > WORD_MAXIMUM) {
+                if (textArray.length > WORD_MAXIMUM) {
                     textLayout.setError(getString(R.string.register_error_word_limit_overflow));
                 }
             }
+
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
 
     /**
      * Creates a String array containing seperate words from a given String
+     *
      * @param text The text that should be split into words
      * @return The array containing the words
      */
-    protected String [] splitStringIntoWords(String text) {
+    protected String[] splitStringIntoWords(String text) {
         text.replace("\n", " ");
         return text.split(" ");
     }
@@ -300,8 +310,8 @@ public class RaisingFragment extends Fragment {
     /**
      * Leaves the currentFragment and removes currentFragment from the backstack
      * Currently only works, if currentFragment is on top of the stack
-     * @param currentFragment The fragment that is to be removed
      *
+     * @param currentFragment The fragment that is to be removed
      * @author Lorenz Caliezi 23.03.2020
      */
     protected void popCurrentFragment(Fragment currentFragment) {
@@ -312,7 +322,8 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Create checkbox group out of array list
-     * @param list the items to add
+     *
+     * @param list   the items to add
      * @param layout where to add to
      */
     protected void setupCheckboxes(ArrayList<? extends Model> list, LinearLayout layout) {
@@ -326,7 +337,8 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Add radio boxes to radio group out of array list
-     * @param list the items to add
+     *
+     * @param list  the items to add
      * @param group where to add to
      */
     protected void setupRadioGroup(ArrayList<? extends Model> list, RadioGroup group) {
@@ -340,13 +352,14 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Tick checkbox with given id
+     *
      * @param layout
      * @param id
      */
     protected void tickCheckbox(LinearLayout layout, long id) {
         for (int i = 0; i < layout.getChildCount(); ++i) {
             CheckBox cb = (CheckBox) layout.getChildAt(i);
-            if(Long.parseLong((String) cb.getContentDescription()) == id) {
+            if (Long.parseLong((String) cb.getContentDescription()) == id) {
                 cb.setChecked(true);
             }
         }
@@ -354,13 +367,14 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Tick radio button with given id
+     *
      * @param group
      * @param id
      */
     protected void tickRadioButton(RadioGroup group, long id) {
         for (int i = 0; i < group.getChildCount(); ++i) {
             RadioButton rb = (RadioButton) group.getChildAt(i);
-            if(Long.parseLong((String) rb.getContentDescription()) == id) {
+            if (Long.parseLong((String) rb.getContentDescription()) == id) {
                 rb.setChecked(true);
             }
         }
@@ -368,6 +382,7 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Get selected checkboxes of a layout
+     *
      * @param layout
      * @return
      */
@@ -375,8 +390,8 @@ public class RaisingFragment extends Fragment {
         ArrayList<Long> results = new ArrayList<>();
         for (int i = 0; i < layout.getChildCount(); ++i) {
             View v = layout.getChildAt(i);
-            if(((CheckBox)v).isChecked() && ((String)((CheckBox)v).getContentDescription()).length() > 0) {
-                results.add(Long.parseLong((String)((CheckBox)v).getContentDescription()));
+            if (((CheckBox) v).isChecked() && ((String) ((CheckBox) v).getContentDescription()).length() > 0) {
+                results.add(Long.parseLong((String) ((CheckBox) v).getContentDescription()));
             }
         }
 
@@ -385,6 +400,7 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Get selected radio button item and return id of the element
+     *
      * @param group the radio group
      * @return id of the selected element
      */
@@ -392,9 +408,9 @@ public class RaisingFragment extends Fragment {
         ArrayList<Long> results = new ArrayList<>();
         for (int i = 0; i < group.getChildCount(); ++i) {
             View v = group.getChildAt(i);
-            if(((RadioButton)v).isChecked() &&
-                    ((String)((RadioButton)v).getContentDescription()).length() > 0) {
-                return Long.parseLong((String)((RadioButton)v).getContentDescription());
+            if (((RadioButton) v).isChecked() &&
+                    ((String) ((RadioButton) v).getContentDescription()).length() > 0) {
+                return Long.parseLong((String) ((RadioButton) v).getContentDescription());
             }
         }
 
@@ -409,7 +425,8 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Show year picker
-     * @param title title of the picker
+     *
+     * @param title      title of the picker
      * @param inputField the field to print the output to
      */
     protected void showYearPicker(String title, EditText inputField) {
@@ -418,7 +435,8 @@ public class RaisingFragment extends Fragment {
                 new MonthPickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(int selectedMonth, int selectedYear) { // on date set }
-                    }}, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
+                    }
+                }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
 
         builder.setActivatedMonth(Calendar.JULY).setMinYear(1900)
                 .setActivatedYear(today.get(Calendar.YEAR))
@@ -430,7 +448,8 @@ public class RaisingFragment extends Fragment {
                     @Override
                     public void onYearChanged(int selectedYear) {
                         inputField.setText(String.valueOf(selectedYear));
-                    }})
+                    }
+                })
                 .build()
                 .show();
 
@@ -438,14 +457,13 @@ public class RaisingFragment extends Fragment {
     }
 
     protected void showLoadingPanel() {
-        if(overlayLayout == null) {
+        if (overlayLayout == null) {
             Log.e("RaisingFragment", "No overlay layout found!");
             return;
         }
-
         ++processesLoading;
 
-        if(processesLoading > 1) {
+        if (processesLoading > 1) {
             return;
         }
 
@@ -457,8 +475,8 @@ public class RaisingFragment extends Fragment {
 
     protected void dismissLoadingPanel() {
         --processesLoading;
-        if(loadingPanel == null || processesLoading != 0) {
-            if(processesLoading < 0)
+        if (loadingPanel == null || processesLoading != 0) {
+            if (processesLoading < 0)
                 processesLoading = 0;
             return;
         }

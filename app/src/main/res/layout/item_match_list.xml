@@ -2,14 +2,14 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_matchList_card"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/element_underline_black">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        android:background="@drawable/element_underline_black">
 
         <ImageView
             android:id="@+id/item_matchList_profile_image"
@@ -24,9 +24,9 @@
             android:id="@+id/item_matchList_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+            android:layout_marginStart="@dimen/standardHorizontalMargin"
             android:text="Name"
-            android:textColor="@color/raisingPrimaryTextColor"
+            android:textColor="@color/raisingTextColor"
             android:textSize="@dimen/raisingSubtitleFontSize"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/item_matchList_attributes"
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Attribut"
-            android:textColor="@color/raisingPrimaryTextColor"
+            android:textColor="@color/raisingTextColor"
             android:textSize="@dimen/raisingTextFontSize"
             app:layout_constraintBottom_toBottomOf="@+id/item_matchList_profile_image"
             app:layout_constraintStart_toStartOf="@+id/item_matchList_name"
@@ -49,15 +49,16 @@
             android:id="@+id/item_matchList_sentence"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
             android:layout_marginTop="@dimen/standardVerticalMargin"
-            android:layout_marginEnd="@dimen/standardHorizontalMargin"
+            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
             android:layout_marginBottom="@dimen/standardVerticalMargin"
             android:text="Sentence"
-            android:textColor="@color/raisingPrimaryTextColor"
+            android:textColor="@color/raisingTextColor"
             android:textSize="@dimen/raisingTextFontSize"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/item_matchList_profile_image"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/item_matchList_profile_image" />
 
         <com.github.mikephil.charting.charts.PieChart
@@ -73,9 +74,10 @@
             android:id="@+id/item_matchList_match_percent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center|left"
+            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+            android:gravity="center|right"
             android:text="Percent"
-            android:textColor="@color/raisingPrimaryTextColor"
+            android:textColor="@color/raisingTextColor"
             android:textSize="@dimen/raisingTextFontSize"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/item_matchList_chart"

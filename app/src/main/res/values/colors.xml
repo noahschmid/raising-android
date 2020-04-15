@@ -23,13 +23,9 @@
     <color name="raisingPositive"> #128700 </color>
     <color name="raisingNegative"> #ff0000 </color>
 
-    <color name="raisingPrimaryButton"> #707F91 </color>
-    <color name="raisingPrimaryTextColor"> #586473 </color>
+    <color name="raisingButtonBackgroundColor">@color/raisingSecondary </color>
 
-    <color name="primaryTextColor"> #000000 </color>
-    <color name="raisingButtonTextLight"> #ffffff </color>
-
-    <!-- Colors used in LoginScreen -->
-    <color name="borderLoginFormBorder">#000000</color>
-
+    <color name="raisingTextColor">@color/raisingSecondaryDark </color>
+    <color name="raisingTextColorDark">@color/raisingBlack </color>
+    <color name="raisingTextColorLight"> @color/raisingWhite </color>
 </resources>

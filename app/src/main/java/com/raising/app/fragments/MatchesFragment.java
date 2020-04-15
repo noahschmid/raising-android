@@ -28,7 +28,6 @@ import java.util.ArrayList;
 
 public class MatchesFragment extends RaisingFragment {
     private RecyclerView matchList;
-    private LinearLayout matchListLayout;
     private ConstraintLayout emptyMatchListLayout;
     private ArrayList<MatchListItem> matchListItems;
     private MatchListViewModel matchListViewModel;
@@ -43,10 +42,8 @@ public class MatchesFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        matchListLayout = view.findViewById(R.id.matchList_layout);
         emptyMatchListLayout = view.findViewById(R.id.empty_matchList_layout);
 
-        //TODO: store matchList items in following arraylist
         matchListViewModel  = new ViewModelProvider(this)
                 .get(MatchListViewModel .class);
         matchListItems = matchListViewModel.getMatchList().getValue();
@@ -55,33 +52,26 @@ public class MatchesFragment extends RaisingFragment {
         });
 
         if(matchListItems.size() == 0) {
-            matchListLayout.setVisibility(View.GONE);
-        } else {
-            emptyMatchListLayout.setVisibility(View.GONE);
+            emptyMatchListLayout.setVisibility(View.VISIBLE);
         }
 
-        //helper array to define colors of the pie chart in the matchList
-        int [] colors = {
-                getResources().getColor(R.color.raisingPrimary, null),
-                getResources().getColor(R.color.raisingWhite, null)};
         matchList = view.findViewById(R.id.matchList);
         matchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        MatchListAdapter matchListAdapter = new MatchListAdapter(matchListItems, colors);
+        MatchListAdapter matchListAdapter = new MatchListAdapter(matchListItems);
         matchList.setAdapter(matchListAdapter);
         matchListAdapter.setOnItemClickListener(position -> {
             long id = matchListItems.get(position).getId();
             Bundle args = new Bundle();
             args.putLong("id", id);
             if(matchListItems.get(position).isStartup()) {
-                InvestorPublicProfileFragment publicProfile = new InvestorPublicProfileFragment();
-                publicProfile.setArguments(args);
-                changeFragment(publicProfile);
-            } else {
                 StartupPublicProfileFragment publicProfile = new StartupPublicProfileFragment();
                 publicProfile.setArguments(args);
                 changeFragment(publicProfile);
+            } else {
+                InvestorPublicProfileFragment publicProfile = new InvestorPublicProfileFragment();
+                publicProfile.setArguments(args);
+                changeFragment(publicProfile);
             }
-           // matchListItems.remove(position);
         });
     }
 

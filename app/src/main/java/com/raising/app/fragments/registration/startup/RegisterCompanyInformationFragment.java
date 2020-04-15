@@ -21,6 +21,7 @@ import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.ContactDetails;
 import com.raising.app.models.Country;
 import com.raising.app.models.Startup;
+import com.raising.app.models.ViewState;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.customPicker.CustomPicker;

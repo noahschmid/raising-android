@@ -16,17 +16,25 @@
     <Button
         android:id="@+id/picker_cancel"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/authenticationButtonHeight"
+        android:layout_marginStart="@dimen/standardHorizontalMargin"
+        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
         android:text="@string/cancel_text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/picker_ok"
-        app:layout_constraintTop_toBottomOf="@id/countries_recycler_view" />
+        android:textSize="@dimen/raisingSubtitleFontSize"
+        android:textColor="@color/raisingTextColorLight"
+        android:backgroundTint="@color/raisingButtonBackgroundColor"
+        app:layout_constraintBottom_toBottomOf="@+id/picker_ok"
+        app:layout_constraintEnd_toStartOf="@+id/picker_ok"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/picker_ok" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/countries_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/standardVerticalMargin"
         app:layout_constraintBottom_toTopOf="@id/picker_ok"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -36,12 +44,18 @@
     <Button
         android:id="@+id/picker_ok"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/authenticationButtonHeight"
+        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+        android:layout_marginEnd="@dimen/standardHorizontalMargin"
+        android:layout_marginBottom="@dimen/standardVerticalMargin"
+        android:backgroundTint="@color/raisingButtonBackgroundColor"
         android:text="@string/ok_text"
+        android:textColor="@color/raisingTextColorLight"
+        android:textSize="@dimen/raisingSubtitleFontSize"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/picker_cancel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/countries_recycler_view" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/picker_cancel" />
 
     <EditText
         android:id="@+id/country_code_picker_search"

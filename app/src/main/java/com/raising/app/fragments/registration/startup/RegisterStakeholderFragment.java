@@ -406,6 +406,15 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             return;
         }
 
+        float totalEquity = 0;
+        for (StakeholderItem stakeholderItem : shareholderList) {
+            totalEquity += ((Shareholder) stakeholderItem).getEquityShare();
+        }
+        if(totalEquity > 100) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_stakeholder_error_equity));
+        }
+
         try {
             if(!editMode) {
                 startup.clearFounders();

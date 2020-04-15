@@ -40,7 +40,7 @@
         android:layout_marginEnd="@dimen/standardHorizontalMargin"
         android:gravity="center"
         android:hint="@string/register_select_type_text"
-        android:textColorHint="@color/raisingPrimaryTextColor"
+        android:textColorHint="@color/raisingTextColor"
         android:textSize="@dimen/raisingTextFontSize"
         app:layout_constraintBottom_toTopOf="@+id/button_register_as_startup"
         app:layout_constraintEnd_toEndOf="@+id/button_register_as_startup"

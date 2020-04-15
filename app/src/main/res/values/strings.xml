@@ -175,7 +175,7 @@
     <string name="register_financial_scope"> Scope </string>
     <string name="register_financial_scope_"> Scope* </string>
     <string name="register_financial_completed">Completed</string>
-    <string name="register_completed_helper_text"> Here you can enter, if you have already raised some of your target scope.</string>
+    <string name="register_completed_helper_text"> Have you completed some of your target scope? </string>
     <string name="register_financial_error_completed"> Completed should not be greater than Scope </string>
 
     <string name="register_stakeholder_information_text"> Stakeholders </string>
@@ -201,6 +201,7 @@
     <string name="register_stakeholder_shareholder_corporate"> Corporate Shareholder </string>
     <string name="register_stakeholder_shareholder_corporate_body"> Corporate Body* </string>
     <string name="register_stakeholder_shareholder_website"> Website </string>
+    <string name="register_stakeholder_error_equity"> Shareholders have more than 100% equity share.</string>
 
     <string name="register_images_information_text"> Images </string>
     <string name="register_images_add_profile_text"> Add a profile picture* </string>
