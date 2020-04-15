@@ -11,12 +11,15 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.raising.app.R;
 import com.raising.app.models.MatchListItem;
+import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.InternalStorageHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,17 +53,22 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
 
         holder.name.setText(recyclerItem.getName());
         holder.attribute.setText(recyclerItem.getAttribute());
-        holder.sentence.setText(recyclerItem.getSentence());
-        holder.matchingPercent.setText(recyclerItem.getMatchingPercentString());
-        //TODO: replace with actual image
-        holder.profileImage.setImageBitmap(recyclerItem.getBitmap());
+        holder.sentence.setText(recyclerItem.getDescription());
+        holder.matchingPercent.setText(recyclerItem.getScore() + "%");
+        Glide
+                .with(InternalStorageHandler.getContext())
+                .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                        recyclerItem.getPictureId())
+                .centerCrop()
+                .placeholder(R.drawable.ic_person_24dp)
+                .into(holder.profileImage);
 
         setupMatchingPercentGraphic(holder.matchingPercentGraphic, recyclerItem);
     }
 
     private void setupMatchingPercentGraphic(PieChart percentChart, MatchListItem recyclerItem) {
         List<PieEntry> pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry(recyclerItem.getMatchingPercent(), "MatchingPercent"));
+        pieEntries.add(new PieEntry(recyclerItem.getScore(), "MatchingPercent"));
         // float remainder = 100 - recyclerItem.getMatchingPercent();
         // pieEntries.add(new PieEntry(remainder, "Remainder"));
 

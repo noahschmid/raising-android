@@ -102,7 +102,6 @@ public class RaisingFragment extends Fragment {
             }
         });
 
-
         resourcesViewModel = ViewModelProviders.of(getActivity()).get(ResourcesViewModel.class);
         resourcesViewModel.getResources().observe(getViewLifecycleOwner(), resources -> {
             this.resources = resources;

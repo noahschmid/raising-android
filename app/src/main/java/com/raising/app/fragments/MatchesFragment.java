@@ -17,20 +17,24 @@ import android.widget.LinearLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
+import com.raising.app.models.Match;
 import com.raising.app.models.MatchListItem;
+import com.raising.app.models.ViewState;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.recyclerViewAdapter.MatchListAdapter;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
 import com.raising.app.viewModels.AccountViewModel;
-import com.raising.app.viewModels.MatchListViewModel;
+import com.raising.app.viewModels.MatchesViewModel;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MatchesFragment extends RaisingFragment {
     private RecyclerView matchList;
     private ConstraintLayout emptyMatchListLayout;
     private ArrayList<MatchListItem> matchListItems;
-    private MatchListViewModel matchListViewModel;
+    private MatchesViewModel matchesViewModel;
+    private MatchListAdapter matchListAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -44,23 +48,82 @@ public class MatchesFragment extends RaisingFragment {
 
         emptyMatchListLayout = view.findViewById(R.id.empty_matchList_layout);
 
-        matchListViewModel  = new ViewModelProvider(this)
-                .get(MatchListViewModel .class);
-        matchListItems = matchListViewModel.getMatchList().getValue();
-        matchListViewModel.getMatchList().observe(getViewLifecycleOwner(), matches -> {
-            matchListItems = matches;
+        matchesViewModel  = new ViewModelProvider(this)
+                .get(MatchesViewModel .class);
+
+        matchesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> processViewState(state));
+        processViewState(matchesViewModel.getViewState().getValue());
+        matchListItems = new ArrayList<>();
+
+        if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
+        resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
+            ArrayList<Match> matchList = matchesViewModel.getMatches().getValue();
+            matchListItems.clear();
+            matchList.forEach(match -> {
+                MatchListItem matchItem = new MatchListItem();
+                matchItem.setDescription(match.getDescription());
+                matchItem.setAccountId(match.getAccountId());
+                matchItem.setScore(match.getMatchingPercent());
+                matchItem.setStartup(match.isStartup());
+                matchItem.setPictureId(match.getProfilePictureId());
+                if (matchItem.isStartup()) {
+                    matchItem.setAttribute(resources.getInvestmentPhase(
+                            match.getInvestmentPhaseId()).getName());
+                    matchItem.setName(match.getCompanyName());
+                } else {
+                    matchItem.setAttribute(resources.getInvestorType(
+                            match.getInvestorTypeId()).getName());
+                    matchItem.setName(match.getFirstName() + " " + match.getLastName());
+                }
+            });
+        }
+
+        matchListAdapter = new MatchListAdapter(matchListItems);
+
+        matchesViewModel.getMatches().observe(getViewLifecycleOwner(), matches -> {
+            if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
+                    resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
+                matchListItems.clear();
+                matches.forEach(match -> {
+                    MatchListItem matchItem = new MatchListItem();
+                    matchItem.setDescription(match.getDescription());
+                    matchItem.setAccountId(match.getAccountId());
+                    matchItem.setScore(match.getMatchingPercent());
+                    matchItem.setStartup(match.isStartup());
+                    matchItem.setPictureId(match.getProfilePictureId());
+                    if (matchItem.isStartup()) {
+                        matchItem.setAttribute(resources.getInvestmentPhase(
+                                match.getInvestmentPhaseId()).getName());
+                        matchItem.setName(match.getCompanyName());
+                    } else {
+                        matchItem.setAttribute(resources.getInvestorType(
+                                match.getInvestorTypeId()).getName());
+                        matchItem.setName(match.getFirstName() + " " + match.getLastName());
+                    }
+
+                    matchListItems.add(matchItem);
+                });
+
+                matchListAdapter.notifyDataSetChanged();
+                if(matchListItems.size() == 0) {
+                    emptyMatchListLayout.setVisibility(View.VISIBLE);
+                } else {
+                    emptyMatchListLayout.setVisibility(View.INVISIBLE);
+                }
+            }
         });
 
         if(matchListItems.size() == 0) {
             emptyMatchListLayout.setVisibility(View.VISIBLE);
+        } else {
+            emptyMatchListLayout.setVisibility(View.INVISIBLE);
         }
 
         matchList = view.findViewById(R.id.matchList);
         matchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        MatchListAdapter matchListAdapter = new MatchListAdapter(matchListItems);
         matchList.setAdapter(matchListAdapter);
         matchListAdapter.setOnItemClickListener(position -> {
-            long id = matchListItems.get(position).getId();
+            long id = matchListItems.get(position).getAccountId();
             Bundle args = new Bundle();
             args.putLong("id", id);
             if(matchListItems.get(position).isStartup()) {

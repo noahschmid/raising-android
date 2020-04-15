@@ -140,6 +140,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                         public void onResponse(JSONObject response) {
                             Log.d("LoginFragment", "login successful.");
                             try {
+                                dismissLoadingPanel();
                                 boolean isStartup = response.getBoolean("startup");
                                 if(!isStartup && !response.getBoolean("investor")) {
                                     showSimpleDialog(getString(R.string.generic_error_title),
@@ -151,7 +152,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                                     AuthenticationHandler.login(email,
                                             response.getString("token"),
                                             response.getLong("id"), isStartup);
-                                    dismissLoadingPanel();
                                     accountViewModel.loadAccount();
                                     clearBackstackAndReplace(new MatchesFragment());
                                 } else {
