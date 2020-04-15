@@ -70,8 +70,6 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
                     .show();
         });
 
-        financialTypeInput.setShowSoftInputOnFocus(false);
-
         ArrayList<FinanceType> financeTypes = resources.getFinanceTypes();
         ArrayList<String> values = new ArrayList<>();
         financeTypes.forEach(type -> values.add(type.getName()));
@@ -80,7 +78,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
                 R.layout.item_dropdown_menu, values);
 
         financialTypeInput = view.findViewById(R.id.register_input_financial_type);
-        financialTypeInput.setAdapter(adapterType);
+        financialTypeInput.setShowSoftInputOnFocus(false);
 
         financialTypeInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

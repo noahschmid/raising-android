@@ -92,6 +92,8 @@ public class RaisingFragment extends Fragment {
                     onAccountUpdated();
                     break;
                 case ERROR:
+                    dismissLoadingPanel();
+                    displayGenericError();
                     break;
             }
         });
@@ -120,6 +122,10 @@ public class RaisingFragment extends Fragment {
             case RESULT:
             case CACHED:
                 dismissLoadingPanel();
+                break;
+            case ERROR:
+                dismissLoadingPanel();
+                displayGenericError();
                 break;
         }
     }
