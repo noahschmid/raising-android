@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -34,16 +35,16 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Model;
-import com.raising.app.models.ShareholderEquityChartLegendItem;
+import com.raising.app.models.EquityChartLegendItem;
 import com.raising.app.models.Startup;
 import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.models.stakeholder.Shareholder;
 import com.raising.app.util.AccountService;
-import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingAdapter;
 import com.raising.app.util.recyclerViewAdapter.StartupProfileBoardMemberAdapter;
 import com.raising.app.util.recyclerViewAdapter.StartupProfileFounderAdapter;
+import com.raising.app.util.ApiRequestHandler;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -182,20 +183,25 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         if(startup != null) {
             loadData();
         }
+
+        // hide current markets, until a good layout was found
+        TextView marketsTitle = view.findViewById(R.id.text_profile_current_markets_title);
+        marketsTitle.setVisibility(View.GONE);
+        startupMarkets.setVisibility(View.GONE);
     }
 
     private void loadData() {
-        startupScope.setText(ResourcesManager.amountToString(startup.getScope()));
-        startupMinTicket.setText(ResourcesManager.getTicketSize(startup.getTicketMinId())
+        startupScope.setText(resources.formatMoneyAmount(startup.getScope()));
+        startupMinTicket.setText(resources.getTicketSize(startup.getTicketMinId())
                 .toString(getString(R.string.currency),
                         getResources().getStringArray(R.array.revenue_units)));
-        startupMaxTicket.setText(ResourcesManager.getTicketSize(startup.getTicketMaxId())
+        startupMaxTicket.setText(resources.getTicketSize(startup.getTicketMaxId())
                 .toString(getString(R.string.currency),
                         getResources().getStringArray(R.array.revenue_units)));
-        profileName.setText(startup.getName());
+        profileName.setText(startup.getCompanyName());
         profileSentence.setText(startup.getDescription());
         profilePitch.setText(startup.getPitch());
-        startupRevenue.setText(ResourcesManager.getRevenueString(
+        startupRevenue.setText(resources.getRevenueString(
                 startup.getRevenueMinId()));
         startupBreakEven.setText(String.valueOf(startup.getBreakEvenYear()));
         startupFoundingYear.setText(String.valueOf(startup.getFoundingYear()));
@@ -203,7 +209,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         //TODO: display current markets
 
-        startupInvestmentType.setText(ResourcesManager.getFinanceType(
+        startupInvestmentType.setText(resources.getFinanceType(
                 startup.getFinanceTypeId()).getName());
         DateFormat toFormat = new SimpleDateFormat("MM.dd.yyyy");
         DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -215,10 +221,10 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             Log.e("StartupPublicProfile", "Error while parsing closing time: " +
                     e.getMessage());
         }
-        startupCompleted.setText(ResourcesManager.amountToString(startup.getRaised()));
+        startupCompleted.setText(resources.formatMoneyAmount(startup.getRaised()));
         completedProgress.setMax(startup.getScope());
         completedProgress.setProgress(startup.getRaised());
-        profileLocation.setText(ResourcesManager.getCountry(startup.getCountryId()).getName());
+        profileLocation.setText(resources.getCountry(startup.getCountryId()).getName());
 
         //TODO: change to actual value
         matchingPercent.setText("80% MATCH");
@@ -226,16 +232,16 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         //TODO: add labels to labelsLayout
 
         startup.getInvestorTypes().forEach(type -> {
-            investorTypes.add((Model)ResourcesManager.getInvestorType(type));
+            investorTypes.add((Model)resources.getInvestorType(type));
         });
 
         startup.getIndustries().forEach(industry -> {
-            industries.add(ResourcesManager.getIndustry(industry));
+            industries.add(resources.getIndustry(industry));
         });
 
-        investmentPhases.add(ResourcesManager.getInvestmentPhase(startup.getInvestmentPhaseId()));
+        investmentPhases.add(resources.getInvestmentPhase(startup.getInvestmentPhaseId()));
         startup.getSupport().forEach(support -> {
-            supports.add(ResourcesManager.getSupport(support));
+            supports.add(resources.getSupport(support));
         });
 
         typeAdapter.notifyDataSetChanged();
@@ -258,8 +264,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         }
 
         // hide valuation fields, if they are empty
-        if(startup.getPreMoneyValuation() < 0) {
-            startupValuation.setText(ResourcesManager.amountToString(startup.getPreMoneyValuation()));
+        if(startup.getPreMoneyValuation() > 0) {
+            startupValuation.setText(resources.formatMoneyAmount(startup.getPreMoneyValuation()));
         } else {
             startupValuationTitle.setVisibility(View.GONE);
             startupValuation.setVisibility(View.GONE);
@@ -346,12 +352,23 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             imageView.setLayoutParams(new ImageSwitcher.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
+            if(startup.getProfilePictureId() != -1) {
+                Glide
+                    .with(this)
+                    .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                            startup.getProfilePictureId())
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_person_24dp)
+                    .into(imageView);
+            }
+
+            /*
             if(pictures.size() == 0) {
                 imageView.setImageDrawable(getResources()
                         .getDrawable(R.drawable.ic_person_24dp));
             } else {
                 imageView.setImageBitmap(pictures.get(currentImageIndex));
-            }
+            }*/
             imageIndex.setText(currentIndexToString(currentImageIndex));
             return imageView;
         });
@@ -422,7 +439,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         ArrayList<Integer> pieChartColors = populateColorArray();
 
         //stores the shareholders combined with their respective chart color
-        ArrayList<ShareholderEquityChartLegendItem> legendItems = new ArrayList<>();
+        ArrayList<EquityChartLegendItem> legendItems = new ArrayList<>();
 
         PieChart pieChart = view.findViewById(R.id.stakeholder_equity_chart);
         List<PieEntry> pieEntries = new ArrayList<>();
@@ -437,7 +454,16 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 offset = offset == 0 ? 1 : 0;
             }
             int shareholderColor = pieChartColors.get(colorIndex);
-            legendItems.add(new ShareholderEquityChartLegendItem(shareholderColor, shareholders.get(i)));
+            Shareholder tmp = shareholders.get(i);
+            if(tmp.isPrivateShareholder()) {
+                legendItems.add(new EquityChartLegendItem(shareholderColor,
+                        resources.getInvestorType(tmp.getInvestorTypeId()).getName(),
+                        tmp.getTitle(), tmp.getEquityShare()));
+            } else {
+                legendItems.add(new EquityChartLegendItem(shareholderColor,
+                        resources.getCorporateBody(tmp.getCorporateBodyId()).getName(),
+                        tmp.getTitle(), tmp.getEquityShare()));
+            }
         }
 
         legendItems.forEach(legendItem -> {
@@ -483,8 +509,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         pieChartColors.add(getResources().getColor(R.color.raisingPrimaryLight, null));
         pieChartColors.add(getResources().getColor(R.color.raisingPrimaryDark, null));
         pieChartColors.add(getResources().getColor(R.color.raisingPrimaryAccent, null));
-        pieChartColors.add(getResources().getColor(R.color.raisingPrimaryTextColor, null));
-        pieChartColors.add(getResources().getColor(R.color.raisingPrimaryButton, null));
+        pieChartColors.add(getResources().getColor(R.color.raisingTextColor, null));
+        pieChartColors.add(getResources().getColor(R.color.raisingButtonBackgroundColor, null));
 
         return pieChartColors;
     }

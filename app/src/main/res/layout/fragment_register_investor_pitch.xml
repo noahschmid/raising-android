@@ -40,6 +40,8 @@
                 android:hint="@string/register_pitch_sentence"
                 app:errorEnabled="true"
                 app:helperTextEnabled="true"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_info_outline_24dp"
                 app:layout_constraintBottom_toTopOf="@+id/register_investor_pitch_pitch"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -62,6 +64,8 @@
                 android:hint="@string/register_pitch"
                 app:errorEnabled="true"
                 app:helperTextEnabled="true"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_info_outline_24dp"
                 app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
                 app:layout_constraintEnd_toEndOf="@+id/register_investor_pitch_sentence"
                 app:layout_constraintStart_toStartOf="@+id/register_investor_pitch_sentence"
@@ -89,25 +93,25 @@
                     android:id="@+id/progress_circle_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:id="@+id/progress_circle_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:id="@+id/progress_circle_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:id="@+id/progress_circle_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
             </LinearLayout>
 
             <Button

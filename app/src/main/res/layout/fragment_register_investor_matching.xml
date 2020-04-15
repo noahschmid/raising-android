@@ -7,231 +7,253 @@
     android:layout_height="match_parent"
     tools:context=".fragments.registration.investor.RegisterInvestorMatchingFragment">
 
-        <ScrollView
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/register_investor_matching_constraint"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/register_investor_matching_constraint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/text_investor_matching_information"
+                style="@style/FragmentTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_matching_information_text"
+                app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_ticket"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/text_investor_matching_information"
-                    style="@style/FragmentTitle"
+            <TextView
+                android:id="@+id/text_investor_matching_ticket"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                android:hint="@string/register_matching_ticket_size"
+                android:textColorHint="@color/raisingTextColor"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_ticket_size"
+                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_ticket_size"
+                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_information" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/register_investor_matching_ticket_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                android:stepSize="@integer/ticket_size_slider_step_size"
+                android:valueFrom="@integer/ticket_size_slider_min_value"
+                android:valueTo="@integer/ticket_size_slider_max_value"
+                app:labelBehavior="gone"
+                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_ticket_size_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_ticket" />
+
+            <TextView
+                android:id="@+id/register_investor_matching_ticket_size_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_investor"
+                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_ticket_size"
+                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_ticket_size" />
+
+            <TextView
+                android:id="@+id/text_investor_matching_investor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                android:hint="@string/register_matching_investor"
+                android:textColorHint="@color/raisingTextColor"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_radio_investor"
+                app:layout_constraintStart_toStartOf="@+id/text_investor_matching_ticket"
+                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_ticket_size_text" />
+
+            <RadioGroup
+                android:id="@+id/register_investor_matching_radio_investor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_phase"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+
+                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_investor" />
+
+            <TextView
+                android:id="@+id/text_investor_matching_phase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                android:hint="@string/register_matching_phase"
+                android:textColorHint="@color/raisingTextColor"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/text_investor_matching_investor"
+                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_radio_investor" />
+
+            <LinearLayout
+                android:id="@+id/register_investor_matching_phase_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_industry"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_phase"
+                app:layout_constraintVertical_bias="0.52" />
+
+            <TextView
+                android:id="@+id/text_investor_matching_industry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                android:hint="@string/register_matching_industry"
+                android:textColorHint="@color/raisingTextColor"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_phase_layout" />
+
+            <LinearLayout
+                android:id="@+id/register_investor_matching_industry_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geographics"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_industry"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/text_investor_matching_support"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                android:hint="@string/register_matching_support"
+                android:textColorHint="@color/raisingTextColor"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_industry_layout" />
+
+            <LinearLayout
+                android:id="@+id/register_investor_matching_support_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geographics"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_support" />
+
+            <TextView
+                android:id="@+id/text_investor_matching_geographics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                android:hint="@string/register_matching_geographics"
+                android:textColorHint="@color/raisingTextColor"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_geographics_button"
+                app:layout_constraintStart_toStartOf="@+id/text_investor_matching_support"
+                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_support_layout" />
+
+            <Button
+                android:id="@+id/register_investor_matching_geographics_button"
+                style="@style/PrimaryOutlineButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/authenticationButtonHeight"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/register_matching_geographics_input"
+                app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_geographics" />
+
+            <LinearLayout
+                android:id="@+id/registration_profile_progress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/standardVerticalMarginSmall"
+                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_geographics_button"
+                app:layout_constraintBottom_toTopOf="@+id/button_investor_matching"
+                app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_geographics_button"
+                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_geographics_button">
+
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/register_matching_information_text"
-                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_ticket"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
-                <TextView
-                    android:id="@+id/text_investor_matching_ticket"
-                    style="@style/SubtitleTextWithLeftIcon"
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/register_matching_ticket_size"
-                    android:drawableLeft="@drawable/ic_price_tag_24dp"
-                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_ticket_size"
-                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_ticket_size"
-                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_information" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/register_investor_matching_ticket_size"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/standardHorizontalMargin"
-                    android:layout_marginEnd="@dimen/standardHorizontalMargin"
-                    android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
-                    app:labelBehavior="gone"
-                    android:stepSize="@integer/ticket_size_slider_step_size"
-                    android:valueFrom="@integer/ticket_size_slider_min_value"
-                    android:valueTo="@integer/ticket_size_slider_max_value"
-                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_ticket_size_text"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_ticket" />
-
-                <TextView
-                    android:id="@+id/register_investor_matching_ticket_size_text"
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/standardVerticalMargin"
-                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_ticket_size"
-                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_ticket_size"
-                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_investor"/>
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
 
-                <TextView
-                    android:id="@+id/text_investor_matching_investor"
-                    style="@style/SubtitleTextWithLeftIcon"
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/register_matching_investor"
-                    android:drawableLeft="@drawable/ic_chess_horse_24dp"
-                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_radio_investor"
-                    app:layout_constraintStart_toStartOf="@+id/text_investor_matching_ticket"
-                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_ticket_size_text" />
 
-                <RadioGroup
-                    android:id="@+id/register_investor_matching_radio_investor"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_phase"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
+            </LinearLayout>
 
-                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_investor">
-                </RadioGroup>
+            <Button
+                android:id="@+id/button_investor_matching"
+                style="@style/ButtonConfirmRegistration"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/authenticationButtonHeight"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:hint="@string/register_button_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registration_profile_progress"/>
 
-                <TextView
-                    android:id="@+id/text_investor_matching_phase"
-                    style="@style/SubtitleTextWithLeftIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/register_matching_phase"
-                    android:drawableLeft="@drawable/ic_stairs_24dp"
-                    app:layout_constraintStart_toStartOf="@+id/text_investor_matching_investor"
-                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_radio_investor" />
-
-                <TextView
-                    android:id="@+id/text_investor_matching_industry"
-                    style="@style/SubtitleTextWithLeftIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:hint="@string/register_matching_industry"
-                    android:drawableLeft="@drawable/ic_gear_24dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_phase_layout" />
-
-                <TextView
-                    android:id="@+id/text_investor_matching_support"
-                    style="@style/SubtitleTextWithLeftIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:hint="@string/register_matching_support"
-                    android:drawableLeft="@drawable/ic_conversation_24dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_industry_layout" />
-
-                <TextView
-                    android:id="@+id/text_investor_matching_geographics"
-                    style="@style/SubtitleTextWithLeftIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/register_matching_geographics"
-                    android:drawableLeft="@drawable/ic_globe_24dp"
-                    app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_geographics_button"
-                    app:layout_constraintStart_toStartOf="@+id/text_investor_matching_support"
-                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_support_layout" />
-
-                <Button
-                    android:id="@+id/register_investor_matching_geographics_button"
-                    style="@style/PrimaryOutlineButton"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/authenticationButtonHeight"
-                    android:layout_marginStart="@dimen/standardHorizontalMargin"
-                    android:layout_marginEnd="@dimen/standardHorizontalMargin"
-                    android:layout_marginBottom="@dimen/standardVerticalMargin"
-                    android:hint="@string/register_matching_geographics_input"
-                    app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_support_layout">
-                </Button>
-
-                <LinearLayout
-                    android:id="@+id/registration_profile_progress"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/standardVerticalMargin"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toTopOf="@+id/button_investor_matching"
-                    app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_geographics_button"
-                    app:layout_constraintStart_toStartOf="@+id/register_investor_matching_geographics_button">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_circle_full_darkgrey_24dp" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_circle_full_darkgrey_24dp" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/button_investor_matching"
-                    style="@style/ButtonConfirmRegistration"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/authenticationButtonHeight"
-                    android:layout_marginBottom="@dimen/standardVerticalMargin"
-                    android:hint="@string/register_button_text"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/registration_profile_progress"
-                    app:layout_constraintStart_toStartOf="@+id/registration_profile_progress" />
-
-                <LinearLayout
-                    android:id="@+id/register_investor_matching_industry_layout"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="16dp"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geographics"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_industry"
-                    app:layout_constraintVertical_bias="0.0"/>
-
-                <LinearLayout
-                    android:id="@+id/register_investor_matching_phase_layout"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="16dp"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_industry"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_phase"
-                    app:layout_constraintVertical_bias="0.52"/>
-
-                <LinearLayout
-                    android:id="@+id/register_investor_matching_support_layout"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="16dp"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geographics"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_support"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </FrameLayout>

@@ -153,11 +153,12 @@
                         style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:layout_marginTop="@dimen/standardVerticalMargin"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
                         android:hint="@string/myProfile_watch_public_profile"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_subscription"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_subscription"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_subscription"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_subscription" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </FrameLayout>
@@ -245,11 +246,12 @@
                         style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:layout_marginTop="@dimen/standardVerticalMargin"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
                         android:hint="@string/myProfile_watch_public_profile"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_subscription"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_subscription"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_subscription"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_subscription" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </FrameLayout>
         </LinearLayout>

@@ -93,7 +93,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
-            startup = (Startup) AccountService.getAccount();
+            startup = (Startup)accountViewModel.getAccount().getValue();
             editMode = true;
         } else {
             startup = RegistrationHandler.getStartup();
@@ -315,6 +315,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         });
     }
 
+
     /**
      * Delegate creating of ShareholderRecycler view and create observer for ShareholderViewModel
      *
@@ -403,6 +404,15 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                     getString(R.string.register_dialog_text_empty_credentials));
             finishButton.setEnabled(true);
             return;
+        }
+
+        float totalEquity = 0;
+        for (StakeholderItem stakeholderItem : shareholderList) {
+            totalEquity += ((Shareholder) stakeholderItem).getEquityShare();
+        }
+        if(totalEquity > 100) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_stakeholder_error_equity));
         }
 
         try {

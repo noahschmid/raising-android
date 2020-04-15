@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,11 +15,8 @@ import android.widget.LinearLayout;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.Account;
 import com.raising.app.models.Startup;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.ResourcesManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,7 +49,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupLabels.setHint(getString(R.string.myProfile_apply_changes));
-            startup = (Startup) AccountService.getAccount();
+            startup = (Startup)currentAccount;
             editMode = true;
         } else {
             startup = RegistrationHandler.getStartup();
@@ -61,7 +57,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
 
         labelsLayout = view.findViewById(R.id.register_startup_pitch_labels);
 
-        ResourcesManager.getLabels().forEach(label -> {
+        resources.getLabels().forEach(label -> {
             CheckBox cb = new CheckBox(getContext());
             cb.setText(label.getName());
             cb.setContentDescription(String.valueOf(label.getId()));
@@ -94,13 +90,16 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
                 RegistrationHandler.saveStartup(startup);
                 changeFragment(new RegisterStartupImagesFragment());
             } else {
-                AccountService.updateAccount(startup, v -> {
-                    popCurrentFragment(this);
-                    return null;
-                });
+                accountViewModel.update(startup);
             }
         } catch(IOException e) {
             Log.e("RegisterStartupLabels", "Error while saving startup labels");
         }
+    }
+
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
     }
 }

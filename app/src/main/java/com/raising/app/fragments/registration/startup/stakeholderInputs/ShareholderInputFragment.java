@@ -26,8 +26,6 @@ import com.raising.app.models.stakeholder.Shareholder;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.NoFilterArrayAdapter;
-import com.raising.app.util.NotificationHandler;
-import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
@@ -79,7 +77,7 @@ public class ShareholderInputFragment extends RaisingFragment {
 
         privateTypeGroup = view.findViewById(R.id.private_shareholder_type);
 
-        setupRadioGroup(ResourcesManager.getInvestorTypes(), privateTypeGroup);
+        setupRadioGroup(resources.getInvestorTypes(), privateTypeGroup);
 
         corporateCountryInput.setOnClickListener(v -> {
             countryPicker.dismiss();
@@ -87,7 +85,7 @@ public class ShareholderInputFragment extends RaisingFragment {
         });
 
         ArrayList<String> bodies = new ArrayList<>();
-        ResourcesManager.getCorporateBodies().forEach(body -> bodies.add(body.getName()));
+        resources.getCorporateBodies().forEach(body -> bodies.add(body.getName()));
 
         NoFilterArrayAdapter<String> adapterCorporateBody = new NoFilterArrayAdapter<>( getContext(),
                 R.layout.item_dropdown_menu, bodies);
@@ -175,7 +173,7 @@ public class ShareholderInputFragment extends RaisingFragment {
                     Float corporateEquityShare = Float.parseFloat(corporateEquityInput.getText().toString());
 
                     int corporateBodyId = -1;
-                    for (CorporateBody body : ResourcesManager.getCorporateBodies()) {
+                    for (CorporateBody body : resources.getCorporateBodies()) {
                         if (body.getName().equals(corporateBody)) {
                             corporateBodyId = (int) body.getId();
                         }
@@ -237,7 +235,7 @@ public class ShareholderInputFragment extends RaisingFragment {
                                     ApiRequestHandler.errorHandler,
                                     params);
                         } catch (Exception e) {
-                            NotificationHandler.displayGenericError();
+                            displayGenericError();
                             Log.e("shareholderInput",
                                     "Could not add shareholder: " + e.getMessage());
                         }
@@ -268,7 +266,7 @@ public class ShareholderInputFragment extends RaisingFragment {
 
                 tickRadioButton(privateTypeGroup, shareholder.getInvestorTypeId());
 
-                privateCountryInput.setText(ResourcesManager.getCountry((int)shareholder
+                privateCountryInput.setText(resources.getCountry((int)shareholder
                         .getCountryId()).getName());
 
             } else {
@@ -282,13 +280,13 @@ public class ShareholderInputFragment extends RaisingFragment {
                 corporateFrameLayout.setVisibility(View.VISIBLE);
 
                 if(shareholder.getCorporateBodyId() != -1)
-                    corporateNameInput.setText(ResourcesManager.getCorporateBody(
+                    corporateNameInput.setText(resources.getCorporateBody(
                             shareholder.getCorporateBodyId()).getName());
                 corporateWebsiteInput.setText(shareholder.getWebsite());
-                corporateBodyInput.setText(ResourcesManager
+                corporateBodyInput.setText(resources
                         .getCorporateBody(shareholder.getCorporateBodyId()).getName());
 
-                corporateCountryInput.setText(ResourcesManager.getCountry((int)shareholder
+                corporateCountryInput.setText(resources.getCountry((int)shareholder
                         .getCountryId()).getName());
             }
         }
@@ -305,7 +303,7 @@ public class ShareholderInputFragment extends RaisingFragment {
                                 countryId = (int)country.getId();
                             }
                         })
-                        .setItems(ResourcesManager.getCountries());
+                        .setItems(resources.getCountries());
 
         countryPicker = builder.build();
     }

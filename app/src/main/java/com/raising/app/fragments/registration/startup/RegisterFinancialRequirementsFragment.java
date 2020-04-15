@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -19,14 +18,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.FinanceType;
 import com.raising.app.models.Startup;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.NoFilterArrayAdapter;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.ResourcesManager;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -55,7 +54,25 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         hideBottomNavigation(true);
 
-        ArrayList<FinanceType> financeTypes = ResourcesManager.getFinanceTypes();
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        TextInputLayout financialCompletedLayout = view.findViewById(R.id.register_financial_completed);
+        financialCompletedLayout.setEndIconOnClickListener(v -> {
+            final Snackbar snackbar = Snackbar.make(financialCompletedLayout,
+                    R.string.register_completed_helper_text, Snackbar.LENGTH_LONG);
+            snackbar.setAction(getString(R.string.got_it_text), v12 -> snackbar.dismiss());
+            snackbar.setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
+                    .show();
+        });
+
+        financialTypeInput.setShowSoftInputOnFocus(false);
+
+        ArrayList<FinanceType> financeTypes = resources.getFinanceTypes();
         ArrayList<String> values = new ArrayList<>();
         financeTypes.forEach(type -> values.add(type.getName()));
 
@@ -79,15 +96,6 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
             }
         });
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        financialTypeInput.setShowSoftInputOnFocus(false);
-
         scopeInput = view.findViewById(R.id.register_input_startup_financial_scope);
         financialValuationInput = view.findViewById(R.id.register_input_financial_valuation);
 
@@ -103,7 +111,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnFinancialRequirements.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
-            startup = (Startup) AccountService.getAccount();
+            startup = (Startup)accountViewModel.getAccount().getValue();
         } else {
             startup = RegistrationHandler.getStartup();
         }
@@ -132,7 +140,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
             completedInput.setText(String.valueOf(startup.getRaised()));
 
         if (startup.getFinanceTypeId() != -1) {
-            financialTypeInput.setText(ResourcesManager.getFinanceType(
+            financialTypeInput.setText(resources.getFinanceType(
                     startup.getFinanceTypeId()
             ).getName());
             financialTypeId = (int) startup.getFinanceTypeId();
@@ -172,6 +180,12 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         if (view.getId() == R.id.button_financial_requirements) {
             processInputs();
         }
+    }
+
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
     }
 
     /**
@@ -227,10 +241,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
                 RegistrationHandler.saveStartup(startup);
                 changeFragment(new RegisterStakeholderFragment());
             } else {
-                AccountService.updateAccount(startup, v -> {
-                    popCurrentFragment(this);
-                    return null;
-                });
+                accountViewModel.update(startup);
             }
         } catch (IOException e) {
             Log.e("RegisterFinancialRequirements", "Error in processInputs: " + e.getMessage());

@@ -1,9 +1,11 @@
 package com.raising.app.fragments.registration.startup;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
 
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -24,9 +27,11 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.gson.Gson;
 import com.raising.app.R;
@@ -36,6 +41,7 @@ import com.raising.app.models.Image;
 import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.ImageRotator;
 import com.raising.app.util.RegistrationHandler;
 
 import org.json.JSONException;
@@ -77,7 +83,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                 (Context.LAYOUT_INFLATER_SERVICE);
 
         profileImage = view.findViewById(R.id.register_startup_profile_image);
-        profileImage.setOnClickListener(v -> showImageMenu(profileImage, true));
+        profileImage.setOnClickListener(v -> showImageMenu(true));
 
         Button finishButton = view.findViewById(R.id.button_startup_images);
         finishButton.setOnClickListener(v -> processInputs());
@@ -86,7 +92,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             view.findViewById(R.id.registration_images_progress).setVisibility(View.INVISIBLE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
-            startup = (Startup) AccountService.getAccount();
+            startup = (Startup)accountViewModel.getAccount().getValue();
         } else {
             startup = RegistrationHandler.getStartup();
         }
@@ -103,17 +109,30 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         });
 
         addGalleryImage = view.findViewById(R.id.gallery_add);
-        addGalleryImage.setOnClickListener(v -> showImageMenu(addGalleryImage, false));
+        addGalleryImage.setOnClickListener(v -> showImageMenu(false));
 
         loadImages();
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        hideBottomNavigation(false);
+    }
+
     private void loadImages() {
-        if(startup.getProfilePicture() != null) {
-            profileImage.setImageBitmap(startup.getProfilePicture().getBitmap());
+        if(startup.getProfilePictureId() != -1) {
+                Glide
+                .with(this)
+                .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                        startup.getProfilePictureId())
+                .centerCrop()
+                .placeholder(R.drawable.ic_person_24dp)
+                .into(profileImage);
             profileImageOverlay.setVisibility(View.GONE);
-            deleteProfileImageButton.setEnabled(true);
+            deleteProfileImageButton.setVisibility(View.VISIBLE);
         }
 
         if(startup.getGallery() != null) {
@@ -166,10 +185,10 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
     private void setProfileImage(Bitmap image) {
         try {
-            profileImage.setImageBitmap(image);
+            profileImage.setImageBitmap(ImageRotator.rotateImage(image));
             deleteProfileImageButton.setVisibility(View.VISIBLE);
             profileImageOverlay.setVisibility(View.GONE);
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             Log.d("StartupImages", e.getMessage());
         }
     }
@@ -189,36 +208,50 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         galleryLayout.addView(galleryObject);
     }
 
-    private void showImageMenu(View view, boolean profileImage) {
-        PopupMenu popupMenu = new PopupMenu(this.getContext(), view);
-        popupMenu.setGravity(Gravity.END);
-        popupMenu.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.select_image:
-                    // lets user choose picture from gallery
-                    Intent openGalleryIntent = new Intent(
-                            Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                    if (openGalleryIntent.resolveActivity(
-                            Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
-                        startActivityForResult(openGalleryIntent, profileImage ? REQUEST_IMAGE_FETCH :
-                                REQUEST_GALLERY_FETCH);
-                    }
-                    return true;
-                case R.id.take_image:
-                    // lets user take a picture
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (takePictureIntent.resolveActivity(
-                            Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
-                        startActivityForResult(takePictureIntent, profileImage ? REQUEST_IMAGE_CAPTURE :
-                                REQUEST_GALLERY_CAPTURE);
-                    }
-                    return true;
-                default:
-                    return false;
+    private void showImageMenu(boolean profileImage) {
+        final String [] options = {getString(R.string.image_action_dialog_take),
+                getString(R.string.image_action_dialog_choose), getString(R.string.cancel_text)};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+
+        //prepare custom title view
+        TextView titleView = new TextView(this.getContext());
+        titleView.setText(getString(R.string.image_action_dialog_title));
+        titleView.setTextSize(32f);
+        titleView.setTypeface(Typeface.DEFAULT_BOLD);
+        titleView.setPadding(50, 20, 0, 20);
+        titleView.setBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.raisingPrimary));
+        titleView.setTextColor(ContextCompat.getColor(this.getContext(), R.color.raisingWhite));
+        builder.setCustomTitle(titleView);
+
+        builder.setItems(options, (dialog, item) -> {
+            if (options[item].equals(getString(R.string.image_action_dialog_take))) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(
+                        Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, profileImage ? REQUEST_IMAGE_CAPTURE :
+                            REQUEST_GALLERY_CAPTURE);
+                }
+
+            } else if (options[item].equals(getString(R.string.image_action_dialog_choose))) {
+                Intent openGalleryIntent = new Intent(
+                        Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                if (openGalleryIntent.resolveActivity(
+                        Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
+                    startActivityForResult(openGalleryIntent, profileImage ? REQUEST_IMAGE_FETCH :
+                            REQUEST_GALLERY_FETCH);
+                }
+            } else if (options[item].equals(getString(R.string.cancel_text))) {
+                dialog.dismiss();
             }
         });
-        popupMenu.inflate(R.menu.image_floating_menu);
-        popupMenu.show();
+        builder.show();
+    }
+
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
     }
 
     private void processInputs() {
@@ -252,6 +285,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                 RegistrationHandler.saveStartup(startup);
                 changeFragment(new RegisterStartupVideoFragment());
             } else {
+                accountViewModel.updateProfilePicture(new Image(logo));
                 popCurrentFragment(this);
             }
 

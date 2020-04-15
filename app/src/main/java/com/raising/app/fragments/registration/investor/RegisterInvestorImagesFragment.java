@@ -1,8 +1,11 @@
 package com.raising.app.fragments.registration.investor;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
 
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -21,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.google.android.flexbox.FlexboxLayout;
@@ -79,7 +84,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
         profileImage = view.findViewById(R.id.register_investor_profile_image);
         profileImage.setOnClickListener(v -> {
-            showImageMenu(profileImage, true);
+            showImageMenu(true);
         });
 
         profileImageOverlay = view.findViewById(R.id.register_profile_image_overlay);
@@ -100,7 +105,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         addGalleryImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showImageMenu(addGalleryImage, false);
+                showImageMenu(false);
             }
         });
 
@@ -110,7 +115,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_images_progress).setVisibility(View.INVISIBLE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
-            investor = (Investor)AccountService.getAccount();
+            investor = (Investor) accountViewModel.getAccount().getValue();
             editMode = true;
         } else {
             investor = RegistrationHandler.getInvestor();
@@ -221,40 +226,48 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     }
 
     /**
-     * Show popup menu where user can choose between taking a new photo or choosing an old one
-     * @param view
-     * @param profileImage
+     * Show menu where user can choose between taking a new photo or choosing an existing one
+     * @param profileImage true, if user adds profile picture
+     *                     false, if user adds picture to gallery
      */
-    private void showImageMenu(View view, boolean profileImage) {
-        PopupMenu popupMenu = new PopupMenu(this.getContext(), view);
-        popupMenu.setGravity(Gravity.END);
-        popupMenu.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.select_image:
-                    // lets user choose picture from gallery
-                    Intent openGalleryIntent = new Intent(
-                            Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                    if (openGalleryIntent.resolveActivity(
-                            Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
-                        startActivityForResult(openGalleryIntent, profileImage ? REQUEST_IMAGE_FETCH :
-                                REQUEST_GALLERY_FETCH);
-                    }
-                    return true;
-                case R.id.take_image:
-                    // lets user take a picture
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (takePictureIntent.resolveActivity(
-                            Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
-                        startActivityForResult(takePictureIntent, profileImage ? REQUEST_IMAGE_CAPTURE :
-                                REQUEST_GALLERY_CAPTURE);
-                    }
-                    return true;
-                default:
-                    return false;
+    private void showImageMenu(boolean profileImage) {
+        final String [] options = {getString(R.string.image_action_dialog_take),
+                getString(R.string.image_action_dialog_choose), getString(R.string.cancel_text)};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+
+        //prepare custom title view
+        TextView titleView = new TextView(this.getContext());
+        titleView.setText(getString(R.string.image_action_dialog_title));
+        titleView.setTextSize(32f);
+        titleView.setTypeface(Typeface.DEFAULT_BOLD);
+        titleView.setPadding(50, 20, 0, 20);
+        titleView.setBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.raisingPrimary));
+        titleView.setTextColor(ContextCompat.getColor(this.getContext(), R.color.raisingWhite));
+        builder.setCustomTitle(titleView);
+
+        builder.setItems(options, (dialog, item) -> {
+            if (options[item].equals(getString(R.string.image_action_dialog_take))) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(
+                        Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, profileImage ? REQUEST_IMAGE_CAPTURE :
+                            REQUEST_GALLERY_CAPTURE);
+                }
+
+            } else if (options[item].equals(getString(R.string.image_action_dialog_choose))) {
+                Intent openGalleryIntent = new Intent(
+                        Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                if (openGalleryIntent.resolveActivity(
+                        Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
+                    startActivityForResult(openGalleryIntent, profileImage ? REQUEST_IMAGE_FETCH :
+                            REQUEST_GALLERY_FETCH);
+                }
+            } else if (options[item].equals(getString(R.string.cancel_text))) {
+                dialog.dismiss();
             }
         });
-        popupMenu.inflate(R.menu.image_floating_menu);
-        popupMenu.show();
+        builder.show();
     }
 
     /**
@@ -287,7 +300,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
         try {
             if(editMode) {
-                AccountService.updateProfilePicture(new Image(logo));
+                accountViewModel.updateProfilePicture(new Image(logo));
                 popCurrentFragment(this);
             } else {
                 RegistrationHandler.saveInvestor(investor);

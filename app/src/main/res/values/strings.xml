@@ -16,6 +16,7 @@
     <string name="accept_text"> Accept </string>
     <string name="decline_text"> Decline </string>
     <string name="request_text"> Request </string>
+    <string name="got_it_text"> Got it</string>
 
     <string name="simple_dialog_invalid_input_title">Invalid inputs</string>
 
@@ -58,9 +59,9 @@
 
     <string name="startup_shareholder_chart_title"> Shareholder Equity Shares </string>
 
-    <!-- Strings used for Matchlist and Handshake Screens -->
-    <string name="empty_matchlist_text"> You are done! </string>
-    <string name="empty_matchlist_text_2"> Enjoy the rest of your week! </string>
+    <!-- Strings used for MatchList and Handshake Screens -->
+    <string name="empty_matchList_text"> You are done! </string>
+    <string name="empty_matchList_text_2"> Enjoy the rest of your week! </string>
 
     <string name="handshake_your_turn"> Your turn </string>
     <string name="handshake_pending"> Pending </string>
@@ -119,6 +120,9 @@
     <string name="register_company_information_text"> Company Information </string>
     <string name="register_company_name"> Company* </string>
     <string name="register_company_uid"> UID* </string>
+    <string name="register_uid_snackbar_find"> Find UID</string>
+    <string name="register_uid_link"> https://www.bfs.admin.ch/bfs/en/home/register/unternehmensregister/unternehmens-identifikationsnummer.html </string>
+    <string name="register_uid_helper_text"> UID is a national identification number for all companies. </string>
     <string name="register_company_phone"> Phone Number </string>
     <string name="register_company_website"> Website </string>
     <string name="register_company_country"> Country* </string>
@@ -127,6 +131,7 @@
     <string name="register_company_revenue"> Revenue* </string>
     <string name="register_company_breakeven"> Break-Even Year* </string>
     <string name="register_company_fte"> FTE* </string>
+    <string name="register_fte_helper_text"> FTE stands for Full Time Employees</string>
     <string name="register_company_markets"> Current Markets* </string>
     <string name="register_company_founding_year"> Founding Year* </string>
     <string name="register_company_error_fte">FTE should be greater than 0</string>
@@ -164,8 +169,10 @@
     </string-array>
 
     <string name="register_pitch_information_text"> Pitch </string>
-    <string name="register_pitch_sentence"> One sentence description </string>
-    <string name="register_pitch"> Your pitch </string>
+    <string name="register_pitch_sentence"> Description </string>
+    <string name="register_sentence_helper_text"> Describe yourself in one sentence.</string>
+    <string name="register_pitch"> Pitch </string>
+    <string name="register_pitch_helper_text"> Write a pitch in less than 250 words.</string>
     <string name="register_pitch_label_information_text"> Labels </string>
     <string name="register_pitch_error_long_sentence"> One sentence should not exceed the given maximum length </string>
     <string name="register_pitch_error_long_pitch"> Pitch should not exceed the given maximum length</string>
@@ -183,6 +190,7 @@
     <string name="register_financial_scope"> Scope </string>
     <string name="register_financial_scope_"> Scope* </string>
     <string name="register_financial_completed">Completed</string>
+    <string name="register_completed_helper_text"> Have you completed some of your target scope? </string>
     <string name="register_financial_error_completed"> Completed should not be greater than Scope </string>
 
     <string name="register_stakeholder_information_text"> Stakeholders </string>
@@ -208,14 +216,15 @@
     <string name="register_stakeholder_shareholder_corporate"> Corporate Shareholder </string>
     <string name="register_stakeholder_shareholder_corporate_body"> Corporate Body* </string>
     <string name="register_stakeholder_shareholder_website"> Website </string>
+    <string name="register_stakeholder_error_equity"> Shareholders have more than 100% equity share.</string>
 
     <string name="register_images_information_text"> Images </string>
     <string name="register_images_add_profile_text"> Add a profile picture* </string>
     <string name="register_images_add_gallery"> Add a picture to your gallery </string>
     <string name="register_images_video_information_text"> Video Pitch </string>
-    <string name="image_floating_menu_select_image"> Import image </string>
-    <string name="image_floating_menu_take_image"> Take image </string>
-    <string name="gallery_floating_menu_delete_image"> Delete </string>
+    <string name="image_action_dialog_title"> Select an Option </string>
+    <string name="image_action_dialog_choose"> Choose from Gallery </string>
+    <string name="image_action_dialog_take"> Take Picture </string>
 
     <string name="register_button_text"> CONTINUE </string>
     <string name="register_button_finish_text"> FINISH </string>

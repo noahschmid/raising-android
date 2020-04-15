@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_dialog_new_background"
+    android:orientation="vertical"
+    >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/picker_cancel"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/authenticationButtonHeight"
+        android:layout_marginStart="@dimen/standardHorizontalMargin"
+        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+        android:text="@string/cancel_text"
+        android:textSize="@dimen/raisingSubtitleFontSize"
+        android:textColor="@color/raisingTextColorLight"
+        android:backgroundTint="@color/raisingButtonBackgroundColor"
+        app:layout_constraintBottom_toBottomOf="@+id/picker_ok"
+        app:layout_constraintEnd_toStartOf="@+id/picker_ok"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/picker_ok" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/countries_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/standardVerticalMargin"
+        app:layout_constraintBottom_toTopOf="@id/picker_ok"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/country_code_picker_search" />
+
+    <Button
+        android:id="@+id/picker_ok"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/authenticationButtonHeight"
+        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+        android:layout_marginEnd="@dimen/standardHorizontalMargin"
+        android:layout_marginBottom="@dimen/standardVerticalMargin"
+        android:backgroundTint="@color/raisingButtonBackgroundColor"
+        android:text="@string/ok_text"
+        android:textColor="@color/raisingTextColorLight"
+        android:textSize="@dimen/raisingSubtitleFontSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/picker_cancel" />
+
+    <EditText
+        android:id="@+id/country_code_picker_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:drawableStart="@drawable/ic_search"
+        android:drawableLeft="@drawable/ic_search"
+        android:drawablePadding="8dp"
+        android:hint="@string/search"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"
+        android:padding="16dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/countries_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

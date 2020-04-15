@@ -67,47 +67,38 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
         startup.setNumberOfFte(jsonObject.get("numberOfFte").getAsInt());
         startup.setFoundingYear(jsonObject.get("foundingYear").getAsInt());
         startup.setUId(jsonObject.get("uid").getAsString());
+        startup.setProfilePictureId(jsonObject.get("profilePictureId").getAsInt());
 
         if(jsonObject.get("website") != null) {
             startup.setWebsite(jsonObject.get("website").getAsString());
         }
+
         if(jsonObject.get("countryId") != null) {
             startup.setCountryId(jsonObject.get("countryId").getAsLong());
         }
 
-        if(jsonObject.get("profilePicture") != null) {
-            if (!jsonObject.get("profilePicture").isJsonNull()) {
-                startup.setProfilePicture(new Image(jsonObject.get("profilePicture").getAsString()));
-            }
-        }
         for(JsonElement el : jsonObject.get("countries").getAsJsonArray()) {
-            JsonObject obj = el.getAsJsonObject();
-            startup.addCountry(obj.get("id").getAsLong());
+            startup.addCountry(el.getAsLong());
         }
 
         for(JsonElement el : jsonObject.get("continents").getAsJsonArray()) {
-            JsonObject obj = el.getAsJsonObject();
-            startup.addContinent(obj.get("id").getAsLong());
+            startup.addContinent(el.getAsLong());
         }
 
         for(JsonElement el : jsonObject.get("investorTypes").getAsJsonArray()) {
-            JsonObject obj = el.getAsJsonObject();
-            startup.addInvestorType(obj.get("id").getAsLong());
+            startup.addInvestorType(el.getAsLong());
         }
 
         for(JsonElement el : jsonObject.get("industries").getAsJsonArray()) {
-            JsonObject obj = el.getAsJsonObject();
-            startup.addIndustry(obj.get("id").getAsLong());
+            startup.addIndustry(el.getAsLong());
         }
 
         for(JsonElement el : jsonObject.get("support").getAsJsonArray()) {
-            JsonObject obj = el.getAsJsonObject();
-            startup.addSupport(obj.get("id").getAsLong());
+            startup.addSupport(el.getAsLong());
         }
 
         for(JsonElement el : jsonObject.get("labels").getAsJsonArray()) {
-            JsonObject obj = el.getAsJsonObject();
-            startup.addLabel(obj.get("id").getAsLong());
+            startup.addLabel(el.getAsLong());
         }
 
         for(JsonElement el : jsonObject.get("founders").getAsJsonArray()) {

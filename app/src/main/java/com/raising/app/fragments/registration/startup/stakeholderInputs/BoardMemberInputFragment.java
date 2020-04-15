@@ -10,8 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -22,17 +20,11 @@ import com.raising.app.fragments.registration.startup.stakeholderInputs.viewMode
 import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
-import com.raising.app.util.NoFilterArrayAdapter;
-import com.raising.app.util.NotificationHandler;
-import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
 
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class BoardMemberInputFragment extends RaisingFragment {
     private BoardMemberViewModel boardMemberViewModel;
@@ -84,7 +76,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
                                 countryId = (int) country.getId();
                             }
                         })
-                        .setItems(ResourcesManager.getCountries());
+                        .setItems(resources.getCountries());
 
         countryPicker = builder.build();
 
@@ -158,7 +150,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
                                     ApiRequestHandler.errorHandler,
                                     params);
                         } catch (Exception e) {
-                            NotificationHandler.displayGenericError();
+                            displayGenericError();
                             Log.e("BoardMemberInput",
                                     "Could not add boardmember: " + e.getMessage());
                         }
@@ -183,7 +175,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
             memberSinceInput.setText(String.valueOf(boardMember.getMemberSince()));
             boardEducationInput.setText(boardMember.getEducation());
             if (boardMember.getCountryId() != -1)
-                countryInput.setText(ResourcesManager.getCountry(boardMember.getCountryId()).getName());
+                countryInput.setText(resources.getCountry(boardMember.getCountryId()).getName());
         }
 
         memberSinceInput.setOnClickListener(v -> showYearPicker("Select year", memberSinceInput));

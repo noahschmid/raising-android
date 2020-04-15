@@ -10,29 +10,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.android.material.slider.Slider;
-import com.google.gson.Gson;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Continent;
 import com.raising.app.models.Country;
 import com.raising.app.models.Investor;
-import com.raising.app.models.Model;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class RegisterInvestorMatchingFragment extends RaisingFragment
         implements View.OnClickListener {
@@ -86,20 +79,20 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnInvestorMatching.setHint(getString(R.string.myProfile_apply_changes));
-            investor = (Investor) AccountService.getAccount();
+            investor = (Investor) accountViewModel.getAccount().getValue();
             editMode = true;
         } else {
             investor = RegistrationHandler.getInvestor();
         }
 
         pickerItems = new ArrayList<>();
-        pickerItems.addAll(ResourcesManager.getContinents());
-        pickerItems.addAll(ResourcesManager.getCountries());
+        pickerItems.addAll(resources.getContinents());
+        pickerItems.addAll(resources.getCountries());
 
-        ticketSizeStrings = ResourcesManager.getTicketSizeStrings(getString(R.string.currency),
+        ticketSizeStrings = resources.getTicketSizeStrings(getString(R.string.currency),
                 getResources().getStringArray(R.array.revenue_units));
 
-        ticketSizeSteps = ResourcesManager.getTicketSizeValues();
+        ticketSizeSteps = resources.getTicketSizeValues();
 
         prepareTicketSizeSlider(view);
 
@@ -159,10 +152,10 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
      * Load all necessary items into list
      */
     private void setupLists() {
-        setupCheckboxes(ResourcesManager.getInvestmentPhases(), investmentPhaseLayout);
-        setupCheckboxes(ResourcesManager.getIndustries(), industryLayout);
-        setupRadioGroup(ResourcesManager.getInvestorTypes(), investorTypeGroup);
-        setupCheckboxes(ResourcesManager.getSupports(), supportLayout);
+        setupCheckboxes(resources.getInvestmentPhases(), investmentPhaseLayout);
+        setupCheckboxes(resources.getIndustries(), industryLayout);
+        setupRadioGroup(resources.getInvestorTypes(), investorTypeGroup);
+        setupCheckboxes(resources.getSupports(), supportLayout);
     }
 
     /**
@@ -201,6 +194,12 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         }
     }
 
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
+    }
+
     /**
      * Check if all information is valid and save it
      */
@@ -211,10 +210,10 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             return;
         }
 
-        investor.setTicketMinId((int)ResourcesManager.getTicketSizes().get(
+        investor.setTicketMinId((int)resources.getTicketSizes().get(
                 (int)ticketSize.getMinimumValue() - 1).getId());
 
-        investor.setTicketMaxId((int)ResourcesManager.getTicketSizes().get(
+        investor.setTicketMaxId((int)resources.getTicketSizes().get(
                 (int)ticketSize.getMaximumValue() - 1).getId());
 
         ArrayList<Long> industries = getSelectedCheckboxIds(industryLayout);
@@ -226,8 +225,8 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
         // only add child objects (countries) if parent object (continent) isn't selected
         // otherwise only add parent object
-        pickerItems.forEach(item -> {
-            if(item instanceof Continent && item.isChecked()) {
+        customPicker.getResult().forEach(item -> {
+            if(item instanceof Continent) {
                 continents.add(item.getId());
                 pickerItems.forEach(i -> {
                     if(i instanceof Country) {
@@ -236,7 +235,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                 });
             }
 
-            if(item instanceof Country && item.isChecked()) {
+            if(item instanceof Country) {
                 countries.add(item.getId());
             }
         });
@@ -261,26 +260,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                 changeFragment(new RegisterInvestorPitchFragment(),
                         "RegisterInvestorPitchFragment");
             } else {
-               /* AccountService.updateAccount(investor, res -> {
-                    popCurrentFragment(this);
-                    return null;
-                });*/
-
-                AccountService.updateList(investor.getInvestmentPhases(),
-                        ((Investor)AccountService.getAccount()).getInvestmentPhases(),
-                        "investor/investmentphase");
-               /* AccountService.updateList(investor.getIndustries(),
-                        ((Investor)AccountService.getAccount()).getIndustries(),
-                        "account/industry");
-                AccountService.updateList(investor.getSupport(),
-                        ((Investor)AccountService.getAccount()).getSupport(),
-                        "investor/support");
-                AccountService.updateList(investor.getContinents(),
-                        ((Investor)AccountService.getAccount()).getContinents(),
-                        "investor/continent");
-                AccountService.updateList(investor.getCountries(),
-                        ((Investor)AccountService.getAccount()).getCountries(),
-                        "investor/country");*/
+               accountViewModel.update(investor);
             }
         } catch (Exception e) {
             Log.d("RegisterInvestorMatchingFragment",

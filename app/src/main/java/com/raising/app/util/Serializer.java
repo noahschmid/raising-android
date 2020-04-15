@@ -98,7 +98,6 @@ public class Serializer {
                 jsonStartup.addProperty("email", src.getEmail());
             }
 
-
             jsonStartup.add("countries", toJsonArray(src.getCountries()));
             jsonStartup.add("continents", toJsonArray(src.getContinents()));
             jsonStartup.add("labels", toJsonArray(src.getLabels()));

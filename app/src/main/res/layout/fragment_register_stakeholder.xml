@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_stakeholder_founder"
-                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingSubtitleFontSize"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_founder_recycler_view"
@@ -60,7 +60,7 @@
                 android:drawableLeft="@drawable/ic_add_circle_outline_24dp"
                 android:hint="@string/register_stakeholder_founder_add"
                 android:shadowColor="@color/raisingWhite"
-                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_board_member"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_founder_recycler_view"
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_stakeholder_board_member"
-                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingSubtitleFontSize"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_board_member_recycler_view"
@@ -98,7 +98,7 @@
                 android:drawableLeft="@drawable/ic_add_circle_outline_24dp"
                 android:hint="@string/register_stakeholder_board_member_add"
                 android:shadowColor="@color/raisingWhite"
-                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_shareholder"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_board_member_recycler_view"
@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_stakeholder_shareholder"
-                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingSubtitleFontSize"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_shareholder_recycler_view"
@@ -136,7 +136,7 @@
                 android:drawableLeft="@drawable/ic_add_circle_outline_24dp"
                 android:hint="@string/register_stakeholder_shareholder_add"
                 android:shadowColor="@color/raisingWhite"
-                android:textColorHint="@color/raisingPrimaryTextColor"
+                android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_shareholder_recycler_view"
@@ -161,47 +161,47 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
             </LinearLayout>
 
             <Button
