@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -90,6 +91,19 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
 
         prepareSentenceLayout(investor.getDescription());
         preparePitchLayout(investor.getPitch());
+
+        pitchInput.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                switch (event.getAction() & MotionEvent.ACTION_MASK ){
+                    case MotionEvent.ACTION_SCROLL:
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override

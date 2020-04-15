@@ -65,7 +65,7 @@
                     android:id="@+id/register_input_company_phone"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"
-                    android:inputType="numberDecimal"
+                    android:inputType="phone"
                     app:endIconMode="none" />
             </com.google.android.material.textfield.TextInputLayout>
 

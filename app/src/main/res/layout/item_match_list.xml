@@ -65,10 +65,10 @@
             android:id="@+id/item_matchList_chart"
             android:layout_width="@dimen/matchListPercentChartSize"
             android:layout_height="@dimen/matchListPercentChartSize"
-            android:layout_marginTop="@dimen/standardVerticalMargin"
             android:layout_marginEnd="@dimen/standardHorizontalMargin"
+            app:layout_constraintBottom_toBottomOf="@+id/item_matchList_profile_image"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/item_matchList_profile_image" />
 
         <TextView
             android:id="@+id/item_matchList_match_percent"
