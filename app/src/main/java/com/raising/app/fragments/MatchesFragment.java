@@ -44,7 +44,6 @@ public class MatchesFragment extends RaisingFragment {
 
         emptyMatchListLayout = view.findViewById(R.id.empty_matchList_layout);
 
-        //TODO: store matchList items in following arraylist
         matchListViewModel  = new ViewModelProvider(this)
                 .get(MatchListViewModel .class);
         matchListItems = matchListViewModel.getMatchList().getValue();
@@ -53,31 +52,26 @@ public class MatchesFragment extends RaisingFragment {
         });
 
         if(matchListItems.size() == 0) {
-            emptyMatchListLayout.setVisibility(View.GONE);
+            emptyMatchListLayout.setVisibility(View.VISIBLE);
         }
 
-        //helper array to define colors of the pie chart in the matchList
-        int [] colors = {
-                getResources().getColor(R.color.raisingPrimary, null),
-                getResources().getColor(R.color.raisingWhite, null)};
         matchList = view.findViewById(R.id.matchList);
         matchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        MatchListAdapter matchListAdapter = new MatchListAdapter(matchListItems, colors);
+        MatchListAdapter matchListAdapter = new MatchListAdapter(matchListItems);
         matchList.setAdapter(matchListAdapter);
         matchListAdapter.setOnItemClickListener(position -> {
             long id = matchListItems.get(position).getId();
             Bundle args = new Bundle();
             args.putLong("id", id);
             if(matchListItems.get(position).isStartup()) {
-                InvestorPublicProfileFragment publicProfile = new InvestorPublicProfileFragment();
-                publicProfile.setArguments(args);
-                changeFragment(publicProfile);
-            } else {
                 StartupPublicProfileFragment publicProfile = new StartupPublicProfileFragment();
                 publicProfile.setArguments(args);
                 changeFragment(publicProfile);
+            } else {
+                InvestorPublicProfileFragment publicProfile = new InvestorPublicProfileFragment();
+                publicProfile.setArguments(args);
+                changeFragment(publicProfile);
             }
-           // matchListItems.remove(position);
         });
     }
 

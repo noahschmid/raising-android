@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -21,12 +23,10 @@ import java.util.List;
 
 public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.ViewHolder> {
     private ArrayList<MatchListItem> recyclerItems;
-    private int[] colors;
     private OnItemClickListener clickListener;
 
-    public MatchListAdapter(ArrayList<MatchListItem> recyclerItems, int[] colors) {
+    public MatchListAdapter(ArrayList<MatchListItem> recyclerItems) {
         this.recyclerItems = recyclerItems;
-        this.colors = colors.clone();
     }
 
     @NonNull
@@ -41,6 +41,13 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
     public void onBindViewHolder(@NonNull MatchListAdapter.ViewHolder holder, int position) {
         MatchListItem recyclerItem = recyclerItems.get(position);
 
+        // array holding background colors of match list items
+        int [] cardBackground = {
+                ContextCompat.getColor(holder.card.getContext(), R.color.raisingSecondaryLight),
+                ContextCompat.getColor(holder.card.getContext(), R.color.raisingWhite)};
+
+        holder.card.setBackgroundColor(cardBackground[position % 2]);
+
         holder.name.setText(recyclerItem.getName());
         holder.attribute.setText(recyclerItem.getAttribute());
         holder.sentence.setText(recyclerItem.getSentence());
@@ -54,8 +61,13 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
     private void setupMatchingPercentGraphic(PieChart percentChart, MatchListItem recyclerItem) {
         List<PieEntry> pieEntries = new ArrayList<>();
         pieEntries.add(new PieEntry(recyclerItem.getMatchingPercent(), "MatchingPercent"));
-        float remainder = 100 - recyclerItem.getMatchingPercent();
-        pieEntries.add(new PieEntry(remainder, "Remainder"));
+        // float remainder = 100 - recyclerItem.getMatchingPercent();
+        // pieEntries.add(new PieEntry(remainder, "Remainder"));
+
+        // helper array to define colors of the pie chart
+        int [] colors = {
+                ContextCompat.getColor(percentChart.getContext(), R.color.raisingSecondaryDark),
+                ContextCompat.getColor(percentChart.getContext(), R.color.raisingWhite)};
 
         PieDataSet dataSet = new PieDataSet(pieEntries, "Matching Percentage");
         dataSet.setColors(colors);
@@ -73,6 +85,9 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
         //disable legend and description
         percentChart.getDescription().setEnabled(false);
         percentChart.getLegend().setEnabled(false);
+
+        percentChart.setUsePercentValues(true);
+        percentChart.setRotationEnabled(false);
 
         percentChart.animateY(1000);
         percentChart.invalidate();
@@ -92,12 +107,15 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        private CardView card;
         private TextView name, attribute, sentence, matchingPercent;
         private ImageView profileImage;
         private PieChart matchingPercentGraphic;
 
         public ViewHolder(@NonNull View itemView, OnItemClickListener clickListener) {
             super(itemView);
+
+            card = itemView.findViewById(R.id.item_matchList_card);
 
             name = itemView.findViewById(R.id.item_matchList_name);
             attribute = itemView.findViewById(R.id.item_matchList_attributes);

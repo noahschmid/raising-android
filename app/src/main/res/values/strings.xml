@@ -175,7 +175,7 @@
     <string name="register_financial_scope"> Scope </string>
     <string name="register_financial_scope_"> Scope* </string>
     <string name="register_financial_completed">Completed</string>
-    <string name="register_completed_helper_text"> Here you can enter, if you have already raised some of your target scope.</string>
+    <string name="register_completed_helper_text"> Have you completed some of your target scope? </string>
     <string name="register_financial_error_completed"> Completed should not be greater than Scope </string>
 
     <string name="register_stakeholder_information_text"> Stakeholders </string>
