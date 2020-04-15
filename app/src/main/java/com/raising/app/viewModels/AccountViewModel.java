@@ -38,7 +38,6 @@ public class AccountViewModel extends AndroidViewModel {
 
     public AccountViewModel(@NonNull Application application) {
         super(application);
-        viewState.setValue(ViewState.EMPTY);
     }
 
     public void updateCompleted() {

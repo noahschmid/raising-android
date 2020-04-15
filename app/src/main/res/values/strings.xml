@@ -23,8 +23,6 @@
     <string name="general_dialog_error_title"> Error occurred! </string>
     <string name="general_dialog_error_text"> Something went wrong. Please try again </string>
 
-    <string name="app_bar_login"> Login </string>
-
     <!-- Strings used for profile -->
     <string name="myProfile_account_information"> Account Information </string>
     <string name="myProfile_subscription_plan"> Subscription Plan </string>

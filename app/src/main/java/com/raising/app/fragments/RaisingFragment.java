@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -103,6 +102,7 @@ public class RaisingFragment extends Fragment {
             }
         });
 
+
         resourcesViewModel = ViewModelProviders.of(getActivity()).get(ResourcesViewModel.class);
         resourcesViewModel.getResources().observe(getViewLifecycleOwner(), resources -> {
             this.resources = resources;
@@ -118,7 +118,6 @@ public class RaisingFragment extends Fragment {
 
 
     protected void processViewState(ViewState viewState) {
-        Log.d(TAG, "processViewState: " + viewState.toString());
         switch (viewState) {
             case LOADING:
                 showLoadingPanel();
@@ -153,13 +152,20 @@ public class RaisingFragment extends Fragment {
     }
 
     /**
+     * Display a generic "oops something went wrong" message
+     */
+    public void displayGenericError() {
+        showSimpleDialog(getString(R.string.generic_error_title),
+                getString(R.string.generic_error_text));
+    }
+
+    /**
      * Change from the current fragment to the next
      *
      * @param fragment The fragment, that should be displayed next
      * @param name     The transaction name
      * @author Lorenz Caliezi 09.03.2020
      */
-
     protected void changeFragment(Fragment fragment, String name) {
         try {
             getActivitiesFragmentManager()
@@ -171,20 +177,6 @@ public class RaisingFragment extends Fragment {
             Log.e("RaisingFragment", "Error while changing Fragment: " +
                     e.getMessage());
         }
-    }
-
-    protected void customizeAppBar(String title, boolean showBackIcon) {
-        MainActivity activity = (MainActivity) getActivity();
-        if (activity != null)
-            activity.customizeAppBar(title, showBackIcon);
-    }
-
-    /**
-     * Display a generic "oops something went wrong" message
-     */
-    public void displayGenericError() {
-        showSimpleDialog(getString(R.string.generic_error_title),
-                getString(R.string.generic_error_text));
     }
 
     /**
@@ -491,6 +483,5 @@ public class RaisingFragment extends Fragment {
 
         loadingPanel.setVisibility(View.GONE);
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-        Log.d(TAG, "dismissLoadingPanel: LoadingPanel dismissed");
     }
 }

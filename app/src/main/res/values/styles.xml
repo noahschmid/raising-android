@@ -12,11 +12,6 @@
         <item name="snackbarTextViewStyle"> @style/snackbar_text_style</item>
     </style>
 
-    <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
-        <item name="titleTextColor"> @color/raisingWhite </item>
-        <item name="icon"> @color/raisingWhite </item>
-    </style>
-
     <style name="snackbar_style" parent="Widget.MaterialComponents.Snackbar">
         <item name="android:layout_marginBottom"> @dimen/standardVerticalMargin</item>
     </style>
