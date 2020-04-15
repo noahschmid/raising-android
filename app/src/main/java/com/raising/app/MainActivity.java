@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.raising.app.fragments.HandshakesFragment;
 import com.raising.app.fragments.LoginFragment;
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
         InternalStorageHandler.setContext(getApplicationContext());
         AuthenticationHandler.init();
+
+        MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
+        setSupportActionBar(toolbar);
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -114,5 +118,19 @@ public class MainActivity extends AppCompatActivity {
      */
     public void hideBottomNavigation(boolean isHidden) {
         findViewById(R.id.bottom_navigation).setVisibility(isHidden ? View.GONE : View.VISIBLE);
+    }
+
+    public void customizeAppBar(String title, boolean showBackIcon) {
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+            if(showBackIcon) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
+            } else {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                getSupportActionBar().setDisplayShowHomeEnabled(false);
+                // getSupportActionBar().setIcon(logo);
+            }
+        }
     }
 }
