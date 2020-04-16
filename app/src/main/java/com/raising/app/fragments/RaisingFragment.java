@@ -468,6 +468,7 @@ public class RaisingFragment extends Fragment {
     }
 
     protected void showLoadingPanel() {
+        Log.d(TAG, "showLoadingPanel: called");
         if (overlayLayout == null) {
             Log.e("RaisingFragment", "No overlay layout found!");
             return;
@@ -485,6 +486,7 @@ public class RaisingFragment extends Fragment {
     }
 
     protected void dismissLoadingPanel() {
+        Log.d(TAG, "dismissLoadingPanel: called");
         --processesLoading;
         if (loadingPanel == null || processesLoading != 0) {
             if (processesLoading < 0)

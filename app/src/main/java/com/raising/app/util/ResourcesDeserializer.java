@@ -1,5 +1,7 @@
 package com.raising.app.util;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -32,10 +34,18 @@ public class ResourcesDeserializer implements JsonDeserializer<Resources> {
 
 
         JsonArray ticketSizes = jsonObject.get("ticketSizes").getAsJsonArray();
+        ArrayList<TicketSize> tickets = new ArrayList<>();
         if(ticketSizes != null) {
-            resources.setTicketSizes(gson.fromJson(ticketSizes.toString(),
-                    new TypeToken<ArrayList<TicketSize>>(){}.getType()));
+            for (JsonElement el : ticketSizes) {
+                JsonObject obj = el.getAsJsonObject();
+                tickets.add(new TicketSize(obj.get("id").getAsLong(), obj.get("name").getAsInt()));
+            }
+            resources.setTicketSizes(tickets);
         }
+
+        resources.getTicketSizes().forEach(ticketSize -> Log.d("ResourcesDeserializer",
+                "deserialize: " + ticketSize.getName()));
+        Log.d("ResourcesDeserializer", "deserialize: " + resources.getTicketSizes().toString());
 
         JsonArray countries = jsonObject.get("countries").getAsJsonArray();
         if(countries != null) {

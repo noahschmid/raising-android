@@ -84,6 +84,10 @@ public class MatchesFragment extends RaisingFragment {
 
         matchListAdapter = new MatchListAdapter(matchListItems);
 
+        matchListItems.forEach(item -> {
+            Log.d(TAG, "matchListItems: " + + item.getAccountId() + " " + item.getAttribute() + item.getName());
+        });
+
         matchesViewModel.getMatches().observe(getViewLifecycleOwner(), matches -> {
             if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
                     resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
@@ -116,7 +120,7 @@ public class MatchesFragment extends RaisingFragment {
                 if(matchListItems.size() == 0) {
                     emptyMatchListLayout.setVisibility(View.VISIBLE);
                 } else {
-                    emptyMatchListLayout.setVisibility(View.INVISIBLE);
+                    emptyMatchListLayout.setVisibility(View.GONE);
                 }
             }
         });
@@ -124,7 +128,7 @@ public class MatchesFragment extends RaisingFragment {
         if(matchListItems.size() == 0) {
             emptyMatchListLayout.setVisibility(View.VISIBLE);
         } else {
-            emptyMatchListLayout.setVisibility(View.INVISIBLE);
+            emptyMatchListLayout.setVisibility(View.GONE);
         }
 
         matchList = view.findViewById(R.id.matchList);
