@@ -126,14 +126,14 @@ public class MatchesFragment extends RaisingFragment {
         } else {
             emptyMatchListLayout.setVisibility(View.GONE);
         }
-        
+
         matchList = view.findViewById(R.id.matchList);
         matchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         matchList.setAdapter(matchListAdapter);
         matchListAdapter.setOnItemClickListener(position -> {
-            long id = matchListItems.get(position).getAccountId();
             Bundle args = new Bundle();
-            args.putLong("id", id);
+            args.putLong("id", matchListItems.get(position).getAccountId());
+            args.putInt("score", matchListItems.get(position).getScore());
             if(matchListItems.get(position).isStartup()) {
                 StartupPublicProfileFragment publicProfile = new StartupPublicProfileFragment();
                 publicProfile.setArguments(args);

@@ -23,21 +23,20 @@ import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Investor;
 import com.raising.app.models.Model;
 import com.raising.app.util.AccountService;
-import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class InvestorPublicProfileFragment extends RaisingFragment {
-    private TextView imageIndex, matchingPercent, profileName, profilePitch, profileSentence, profileWebsite;
+    private TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch, profileSentence, profileWebsite;
     private TextView minTicketSize, maxTicketSize;
+    private ImageView locationPin;
     private ImageButton profileRequest, profileDecline;
     private Investor investor;
     private ImageSwitcher imageSwitcher;
@@ -47,6 +46,8 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
 
     private boolean handshakeRequest = false;
     private boolean handshakeDecline = false;
+
+    private int matchScore = 0;
 
     private RecyclerView recyclerInvestorType, recyclerPhase, recyclerIndustry, recyclerInvolvement;
 
@@ -72,6 +73,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             matchingSummary.setVisibility(View.GONE);
         } else {
             AccountService.getInvestorAccount(getArguments().getLong("id"), investor -> {
+                matchScore = getArguments().getInt("score");
                 this.investor = investor;
                 loadData(investor);
                 return null;
@@ -95,6 +97,8 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         // setup general investor information
         matchingPercent = view.findViewById(R.id.text_investor_public_profile_matching_percent);
         profileName = view.findViewById(R.id.text_investor_public_profile_name);
+        profileLocation = view.findViewById(R.id.text_investor_public_profile_location);
+        locationPin = view.findViewById(R.id.investor_public_profile_location_pin);
         profilePitch = view.findViewById(R.id.text_investor_public_profile_pitch);
         profileSentence = view.findViewById(R.id.text_investor_public_profile_sentence);
 
@@ -185,8 +189,15 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
        profileName.setText(investor.getFirstName() + " " + investor.getLastName());
        profilePitch.setText(investor.getPitch());
        profileSentence.setText(investor.getDescription());
-       //TODO: change to actual value
-       matchingPercent.setText("80% MATCH");
+       String matchingScore = matchScore + "% " + "Match";
+       matchingPercent.setText(matchingScore);
+
+       if(investor.getCountryId() > 0) {
+           profileLocation.setText(resources.getCountry(investor.getCountryId()).getName());
+       } else {
+           profileLocation.setVisibility(View.GONE);
+           locationPin.setVisibility(View.GONE);
+       }
 
        investorTypes.add((Model)resources.getInvestorType(investor.getInvestorTypeId()));
        investor.getIndustries().forEach(industry -> {

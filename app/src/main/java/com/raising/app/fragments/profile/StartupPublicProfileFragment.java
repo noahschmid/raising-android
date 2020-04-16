@@ -72,6 +72,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     private boolean handshakeRequest = false;
     private boolean handshakeDecline = false;
 
+    private int matchScore;
+
     private LayoutInflater inflater;
 
     private Startup startup;
@@ -100,6 +102,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             matchingSummary.setVisibility(View.GONE);
         } else {
             AccountService.getStartupAccount(getArguments().getLong("id"), startup -> {
+                matchScore = getArguments().getInt("score");
                 this.startup = startup;
                 Log.i("startup", startup.toString());
                 loadData();
@@ -227,8 +230,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         completedProgress.setProgress(startup.getRaised());
         profileLocation.setText(resources.getCountry(startup.getCountryId()).getName());
 
-        //TODO: change to actual value
-        matchingPercent.setText("80% MATCH");
+        String matchingScore = matchScore + "% " + "Match";
+        matchingPercent.setText(matchingScore);
 
         //TODO: add labels to labelsLayout
 
