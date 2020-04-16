@@ -79,7 +79,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
 
         hideBottomNavigation(true);
-        customizeAppBar("Stakeholders", true);
+        customizeAppBar(getString(R.string.toolbar_title_stakeholder), true);
 
         return view;
     }

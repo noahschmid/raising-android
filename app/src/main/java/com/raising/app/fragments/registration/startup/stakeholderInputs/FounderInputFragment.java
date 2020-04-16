@@ -43,7 +43,7 @@ public class FounderInputFragment extends RaisingFragment {
                 container, false);
 
         hideBottomNavigation(true);
-        customizeAppBar("Add Founder", true);
+        customizeAppBar(getString(R.string.toolbar_title_founder), true);
         return view;
     }
 
@@ -166,7 +166,7 @@ public class FounderInputFragment extends RaisingFragment {
         if(founder == null) {
             founder = new Founder();
         } else {
-            customizeAppBar("Edit Founder", true);
+            customizeAppBar(getString(R.string.toolbar_title_edit_founder), true);
             if(founder.getId() != -1) {
                 hideBottomNavigation(false);
             }

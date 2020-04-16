@@ -24,9 +24,11 @@ public class RegisterSelectTypeFragment extends RaisingFragment implements View.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_register_select_type, container, false);
+
         hideBottomNavigation(true);
-        customizeAppBar("Account Type", true);
+        customizeAppBar(getString(R.string.toolbar_title_account_type), true);
 
         return view;
     }

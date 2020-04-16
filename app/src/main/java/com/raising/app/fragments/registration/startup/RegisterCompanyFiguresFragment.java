@@ -52,7 +52,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
                 container, false);
 
         hideBottomNavigation(true);
-        customizeAppBar("Facts and Figures", true);
+        customizeAppBar(getString(R.string.toolbar_title_company_figures), true);
 
         return view;
     }

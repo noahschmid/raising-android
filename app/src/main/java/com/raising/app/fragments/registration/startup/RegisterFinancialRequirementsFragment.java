@@ -53,7 +53,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
                 container, false);
 
         hideBottomNavigation(true);
-        customizeAppBar("Financial Requirements", true);
+        customizeAppBar(getString(R.string.toolbar_title_financial_requirements), true);
 
         return view;
     }

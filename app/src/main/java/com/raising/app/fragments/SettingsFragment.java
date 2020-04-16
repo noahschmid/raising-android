@@ -28,7 +28,7 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
 
         Button btnLogout = view.findViewById(R.id.button_logout);
         btnLogout.setOnClickListener(this);
-        customizeAppBar("Settings", false);
+        customizeAppBar(getString(R.string.toolbar_title_settings), false);
 
         return view;
     }

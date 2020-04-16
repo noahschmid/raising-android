@@ -46,7 +46,7 @@ public class RegisterStartupVideoFragment extends RaisingFragment {
                 container, false);
 
         hideBottomNavigation(true);
-        customizeAppBar("Video", true);
+        customizeAppBar(getString(R.string.toolbar_title_video), true);
 
         return view;
     }

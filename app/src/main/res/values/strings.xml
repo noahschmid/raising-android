@@ -23,6 +23,63 @@
     <string name="general_dialog_error_title"> Error occurred! </string>
     <string name="general_dialog_error_text"> Something went wrong. Please try again </string>
 
+    <!-- Strings used for Login, ForgotPassword -->
+    <string name="toolbar_title_login"> Login </string>
+
+    <string name="toolbar_title_forgot_email"> Forgot Password</string>
+
+    <string name="toolbar_title_reset_password"> Reset Password </string>
+
+    <string name="toolbar_title_contact_details"> Complete your Profile </string>
+
+
+    <!-- Strings used for Registration -->
+    <string name="toolbar_title_login_information"> Login Information</string>
+
+    <string name="toolbar_title_account_type"> Type of Account </string>
+
+    <string name="toolbar_title_profile_information"> Profile Information</string>
+
+    <string name="toolbar_title_matching_criteria"> Matching Criteria</string>
+
+    <string name="toolbar_title_pitch"> Pitch </string>
+
+    <string name="toolbar_title_profile_images"> Images </string>
+
+    <string name="toolbar_title_company_information"> Company Information </string>
+
+    <string name="toolbar_title_company_figures"> Facts and Figures </string>
+    
+    <string name="toolbar_title_labels"> Labels </string>
+
+    <string name="toolbar_title_video"> Video </string>
+
+    <string name="toolbar_title_financial_requirements"> Financial Requirements </string>
+
+    <string name="toolbar_title_stakeholder"> Stakeholder </string>
+    <string name="toolbar_title_founder"> Add a Founder</string>
+    <string name="toolbar_title_edit_founder"> Edit Founder </string>
+    <string name="toolbar_title_board"> Add a Board Member</string>
+    <string name="toolbar_title_edit_board"> Edit Board Member </string>
+    <string name="toolbar_title_shareholder"> Add a Shareholder</string>
+    <string name="toolbar_title_edit_shareholder"> Edit Shareholder </string>
+
+    <!-- Strings used for Match List, Handshakes, Settings -->
+    <string name="toolbar_title_match_list"> Matches of the Week </string>
+
+    <string name="toolbar_title_handshakes"> Leads </string>
+
+    <string name="toolbar_title_settings"> Settings </string>
+
+    <!-- Strings used for Profile -->
+    <string name="toolbar_title_my_profile"> My Profile </string>
+
+
+
+
+
+
+
     <!-- Strings used for profile -->
     <string name="myProfile_account_information"> Account Information </string>
     <string name="myProfile_subscription_plan"> Subscription Plan </string>
