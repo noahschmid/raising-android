@@ -188,6 +188,8 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
        //TODO: change to actual value
        matchingPercent.setText("80% MATCH");
 
+       customizeAppBar(investor.getFirstName() + " " + investor.getLastName(), true);
+
        investorTypes.add((Model)resources.getInvestorType(investor.getInvestorTypeId()));
        investor.getIndustries().forEach(industry -> {
            industries.add(resources.getIndustry(industry));

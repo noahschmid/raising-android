@@ -35,6 +35,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
                 container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar("Labels", true);
 
         return view;
     }
@@ -50,6 +51,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupLabels.setHint(getString(R.string.myProfile_apply_changes));
             startup = (Startup)currentAccount;
+            hideBottomNavigation(false);
             editMode = true;
         } else {
             startup = RegistrationHandler.getStartup();

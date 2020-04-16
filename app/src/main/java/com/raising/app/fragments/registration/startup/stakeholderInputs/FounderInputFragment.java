@@ -43,6 +43,7 @@ public class FounderInputFragment extends RaisingFragment {
                 container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar("Add Founder", true);
         return view;
     }
 
@@ -165,6 +166,10 @@ public class FounderInputFragment extends RaisingFragment {
         if(founder == null) {
             founder = new Founder();
         } else {
+            customizeAppBar("Edit Founder", true);
+            if(founder.getId() != -1) {
+                hideBottomNavigation(false);
+            }
             btnAddFounder.setText(getString(R.string.submit));
             founderFirstNameInput.setText(founder.getFirstName());
             founderLastNameInput.setText(founder.getLastName());

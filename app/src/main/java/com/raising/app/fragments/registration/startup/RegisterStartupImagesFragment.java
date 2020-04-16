@@ -72,6 +72,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         View view = inflater.inflate(R.layout.fragment_register_startup_images, container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar("Images", true);
 
         return view;
     }
@@ -93,6 +94,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
             startup = (Startup)accountViewModel.getAccount().getValue();
+            hideBottomNavigation(false);
         } else {
             startup = RegistrationHandler.getStartup();
         }

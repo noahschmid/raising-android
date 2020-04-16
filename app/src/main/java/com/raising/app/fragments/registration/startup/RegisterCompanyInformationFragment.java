@@ -46,6 +46,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
         View view = inflater.inflate(R.layout.fragment_register_company_information, container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar("Company Information", true);
 
         return view;
     }
@@ -79,6 +80,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
             editMode = true;
             startup = (Startup)accountViewModel.getAccount().getValue();
             contactDetails = AccountService.getContactDetails();
+            hideBottomNavigation(false);
         } else {
             startup = RegistrationHandler.getStartup();
             contactDetails = RegistrationHandler.getContactDetails();

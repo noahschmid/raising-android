@@ -208,7 +208,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         startupFoundingYear.setText(String.valueOf(startup.getFoundingYear()));
         startupFte.setText(String.valueOf(startup.getNumberOfFte()));
 
-        //TODO: display current markets
+        customizeAppBar(startup.getCompanyName(), true);
 
         startupInvestmentType.setText(resources.getFinanceType(
                 startup.getFinanceTypeId()).getName());

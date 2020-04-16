@@ -46,6 +46,7 @@ public class RegisterStartupVideoFragment extends RaisingFragment {
                 container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar("Video", true);
 
         return view;
     }
@@ -62,6 +63,7 @@ public class RegisterStartupVideoFragment extends RaisingFragment {
             btnStartupVideo.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
             startup = (Startup)accountViewModel.getAccount().getValue();
+            hideBottomNavigation(false);
         } else {
             startup = RegistrationHandler.getStartup();
         }

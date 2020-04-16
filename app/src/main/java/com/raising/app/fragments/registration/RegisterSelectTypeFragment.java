@@ -26,6 +26,7 @@ public class RegisterSelectTypeFragment extends RaisingFragment implements View.
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_select_type, container, false);
         hideBottomNavigation(true);
+        customizeAppBar("Account Type", true);
 
         return view;
     }

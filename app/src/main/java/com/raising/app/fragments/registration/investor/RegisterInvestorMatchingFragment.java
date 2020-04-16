@@ -57,6 +57,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                 container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar("Matching Information", true);
 
         return view;
     }
@@ -81,6 +82,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             btnInvestorMatching.setHint(getString(R.string.myProfile_apply_changes));
             investor = (Investor) accountViewModel.getAccount().getValue();
             editMode = true;
+            hideBottomNavigation(false);
         } else {
             investor = RegistrationHandler.getInvestor();
         }

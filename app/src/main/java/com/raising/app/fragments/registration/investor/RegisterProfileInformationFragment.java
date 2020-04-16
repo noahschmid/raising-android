@@ -38,7 +38,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
                 container, false);
 
         profileCountryInput = view.findViewById(R.id.register_input_profile_countries);
-
+        customizeAppBar("Profile Information", true);
         hideBottomNavigation(true);
         return view;
     }
@@ -61,6 +61,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
             investor = (Investor) accountViewModel.getAccount().getValue();
             contactDetails = AccountService.getContactDetails();
             editMode = true;
+            hideBottomNavigation(false);
         } else {
             investor = RegistrationHandler.getInvestor();
             contactDetails = RegistrationHandler.getContactDetails();
