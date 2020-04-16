@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="gray">#F4F4F4</color>
+    <color name="gray">#FFC5C4C4</color>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorPrimaryLight"> #b3c4bf </color>
@@ -29,4 +29,6 @@
     <color name="raisingTextColor">@color/raisingSecondaryDark </color>
     <color name="raisingTextColorDark">@color/raisingBlack </color>
     <color name="raisingTextColorLight"> @color/raisingWhite </color>
+    <color name="raisingBackground">#D9DEE4</color>
+    <color name="green">#2A9200</color>
 </resources>

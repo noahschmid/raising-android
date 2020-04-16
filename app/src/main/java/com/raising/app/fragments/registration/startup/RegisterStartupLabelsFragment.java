@@ -35,7 +35,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
                 container, false);
 
         hideBottomNavigation(true);
-        customizeAppBar("Labels", true);
+        customizeAppBar(getString(R.string.toolbar_title_labels), true);
 
         return view;
     }

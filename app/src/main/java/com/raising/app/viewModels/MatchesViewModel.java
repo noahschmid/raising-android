@@ -23,6 +23,8 @@ import com.raising.app.util.MatchesDeserializer;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MatchesViewModel extends AndroidViewModel {
@@ -59,6 +61,14 @@ public class MatchesViewModel extends AndroidViewModel {
                     Gson gson = gsonBuilder.create();
                     ArrayList<Match> matchList = gson.fromJson(response.toString(),
                             new TypeToken<List<Match>>(){}.getType());
+                    Collections.sort(matchList, new Comparator<Match>() {
+                        @Override
+                        public int compare(Match lhs, Match rhs) {
+                            // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                            return lhs.getMatchingPercent() > rhs.getMatchingPercent() ?
+                                    -1 : (lhs.getMatchingPercent() < rhs.getMatchingPercent() ) ? 1 : 0;
+                        }
+                    });
                     matches.setValue(matchList);
                     Log.d(TAG, "loadMatches: fetched " + matchList.size() + " new matches");
                     viewState.setValue(ViewState.RESULT);

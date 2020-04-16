@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class StartupPublicProfileFragment extends RaisingFragment {
+    private static final String TAG = "StartupPublicProfile";
     private ImageSwitcher imageSwitcher;
     private ImageButton profileRequest, profileDecline;
     private TextView imageIndex, matchingPercent, profileName, profileLocation, profileSentence,
@@ -103,6 +104,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         } else {
             AccountService.getStartupAccount(getArguments().getLong("id"), startup -> {
                 matchScore = getArguments().getInt("score");
+                customizeAppBar(getArguments().getString("title"), true);
                 this.startup = startup;
                 Log.i("startup", startup.toString());
                 loadData();
@@ -167,7 +169,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         completedProgress = view.findViewById(R.id.progress_profile_completed);
 
         // setup recycler view for founders
-        ArrayList<Founder> founderList = new ArrayList<>(startup.getFounders());
+        ArrayList<Founder> founderList = new ArrayList<>();
+        founderList.addAll(startup.getFounders());
         RecyclerView founderRecyclerView = view.findViewById(R.id.startup_profile_founder_list);
         founderRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         StartupProfileFounderAdapter founderListAdapter
@@ -175,7 +178,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         founderRecyclerView.setAdapter(founderListAdapter);
 
         // setup recycler view for board members
-        ArrayList<BoardMember> boardMemberList = new ArrayList<>(startup.getBoardMembers());
+        ArrayList<BoardMember> boardMemberList = new ArrayList<>();
+        boardMemberList.addAll(startup.getBoardMembers());
         RecyclerView boardMemberRecyclerView = view.findViewById(R.id.startup_profile_board_member_list);
         boardMemberRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         StartupProfileBoardMemberAdapter boardMemberListAdapter
@@ -266,10 +270,6 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         if (startup.getWebsite() == null || startup.getWebsite().equals("")) {
             profileWebsite.setVisibility(View.GONE);
-        }
-
-        if (startup.getProfilePicture() != null) {
-            pictures.add(startup.getProfilePicture().getBitmap());
         }
 
         if (startup.getGallery() != null) {

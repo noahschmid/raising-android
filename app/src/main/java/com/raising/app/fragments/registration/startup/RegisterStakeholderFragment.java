@@ -32,7 +32,6 @@ import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.models.stakeholder.Shareholder;
 import com.raising.app.models.stakeholder.StakeholderItem;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.Serializer;
@@ -79,7 +78,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
 
         hideBottomNavigation(true);
-        customizeAppBar("Stakeholders", true);
+        customizeAppBar(getString(R.string.toolbar_title_stakeholder), true);
 
         return view;
     }

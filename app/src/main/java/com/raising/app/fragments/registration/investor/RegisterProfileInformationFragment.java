@@ -38,8 +38,10 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
                 container, false);
 
         profileCountryInput = view.findViewById(R.id.register_input_profile_countries);
-        customizeAppBar("Profile Information", true);
+
+        customizeAppBar(getString(R.string.toolbar_title_profile_information), true);
         hideBottomNavigation(true);
+
         return view;
     }
 

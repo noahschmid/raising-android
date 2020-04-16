@@ -18,30 +18,20 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/text_startup_video_information"
-                style="@style/FragmentTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_video_information_text"
-                app:layout_constraintBottom_toTopOf="@+id/text_startup_images_add_video_pitch"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="packed" />
-
-            <TextView
                 android:id="@+id/text_startup_images_add_video_pitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_images_add_video_text"
                 android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingSubtitleFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_video_pitch_layout"
-                app:layout_constraintEnd_toEndOf="@+id/text_startup_video_information"
-                app:layout_constraintStart_toStartOf="@+id/text_startup_video_information"
-                app:layout_constraintTop_toBottomOf="@+id/text_startup_video_information" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <RelativeLayout
                 android:id="@+id/register_startup_video_pitch_layout"

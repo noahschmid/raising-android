@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -47,6 +49,8 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     private ArrayList<Model> investorTypes, industries, investmentPhases, supports;
     private PublicProfileMatchingAdapter typeAdapter, industryAdapter, phaseAdapter,
             supportAdapter;
+    private ConstraintLayout profileLayout;
+    private ScrollView scrollView;
 
     private boolean handshakeRequest = false;
     private boolean handshakeDecline = false;
@@ -78,6 +82,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         } else {
             AccountService.getInvestorAccount(getArguments().getLong("id"), investor -> {
                 matchScore = getArguments().getInt("score");
+                customizeAppBar(getArguments().getString("title"), true);
                 this.investor = investor;
                 loadData(investor);
                 return null;
@@ -91,9 +96,11 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         imageIndex = view.findViewById(R.id.text_investor_profile_gallery_image_index);
-
+        profileLayout = view.findViewById(R.id.profile_layout);
+        profileLayout.setVisibility(View.INVISIBLE);
         pictures = new ArrayList<Bitmap>();
         prepareImageSwitcher(view);
+        scrollView = view.findViewById(R.id.scroll_layout);
 
         profileRequest = view.findViewById(R.id.button_investor_public_profile_request);
         profileDecline = view.findViewById(R.id.button_investor_public_profile_decline);
@@ -167,7 +174,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             handshakeDecline = false;
             //TODO: change handshake status in backend
             //TODO: remove investor from matchlist
-            popCurrentFragment(this);
+            //popCurrentFragment(this);
         });
 
         profileDecline.setOnClickListener(v -> {
@@ -175,7 +182,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             handshakeRequest = false;
             //TODO: change handshake status in backend
             //TODO: remove investor from matchlist
-            popCurrentFragment(this);
+           // popCurrentFragment(this);
         });
     }
 
@@ -213,8 +220,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
            profileLocation.setVisibility(View.GONE);
            locationPin.setVisibility(View.GONE);
        }
-
-       customizeAppBar(investor.getFirstName() + " " + investor.getLastName(), true);
 
        investorTypes.add((Model)resources.getInvestorType(investor.getInvestorTypeId()));
        investor.getIndustries().forEach(industry -> {
@@ -280,6 +285,10 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                        });
            });
        }
+
+        profileLayout.setVisibility(View.VISIBLE);
+       scrollView.scrollTo(0,0);
+       scrollView.smoothScrollTo(0, 0);
     }
 
     /**

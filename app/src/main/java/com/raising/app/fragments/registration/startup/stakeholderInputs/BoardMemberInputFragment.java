@@ -42,7 +42,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
                 container, false);
 
         hideBottomNavigation(true);
-        customizeAppBar("Add Board Member", true);
+        customizeAppBar(getString(R.string.toolbar_title_board), true);
 
         return view;
     }
@@ -166,7 +166,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
         if (boardMember == null) {
             boardMember = new BoardMember();
         } else {
-            customizeAppBar("Edit Board Member", true);
+            customizeAppBar(getString(R.string.toolbar_title_edit_board), true);
             if(boardMember.getId() != -1) {
                 hideBottomNavigation(false);
             }

@@ -53,7 +53,7 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
                 (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
 
         hideBottomNavigation(true);
-        customizeAppBar("Matching Information", true);
+        customizeAppBar(getString(R.string.toolbar_title_matching_criteria), true);
         return view;
     }
 

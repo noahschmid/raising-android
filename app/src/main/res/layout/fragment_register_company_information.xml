@@ -16,32 +16,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/text_company_information"
-                style="@style/FragmentTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_company_information_text"
-                app:layout_constraintBottom_toTopOf="@+id/register_company_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="packed" />
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/register_company_name"
                 style="@style/TextInputLayoutTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_profile_company"
                 app:layout_constraintBottom_toTopOf="@+id/register_company_phone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_company_information">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/register_input_company_name"
@@ -96,8 +86,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_company_uid"
-                app:endIconMode="custom"
                 app:endIconDrawable="@drawable/ic_info_outline_24dp"
+                app:endIconMode="custom"
                 app:layout_constraintBottom_toTopOf="@+id/register_company_country"
                 app:layout_constraintEnd_toEndOf="@+id/register_company_website"
                 app:layout_constraintStart_toStartOf="@+id/register_company_website"

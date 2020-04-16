@@ -37,7 +37,7 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
                 container, false);
 
         hideBottomNavigation(true);
-        customizeAppBar("Pitch", true);
+        customizeAppBar(getString(R.string.toolbar_title_pitch), true);
 
         return view;
     }

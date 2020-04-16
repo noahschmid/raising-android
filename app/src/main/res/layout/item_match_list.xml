@@ -25,11 +25,12 @@
             android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
             android:layout_marginEnd="@dimen/standardHorizontalMargin"
             android:text="Name"
+            android:fontFamily="sans-serif"
             android:textColor="@color/raisingTextColor"
             android:textSize="@dimen/raisingTextFontSize"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/item_matchList_attributes"
-            app:layout_constraintEnd_toStartOf="@+id/item_matchList_match_percent"
+            app:layout_constraintEnd_toStartOf="@+id/pie_layout"
             app:layout_constraintStart_toEndOf="@+id/item_matchList_profile_image"
             app:layout_constraintTop_toTopOf="@+id/item_matchList_profile_image"
             app:layout_constraintVertical_chainStyle="packed" />
@@ -39,6 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Attribut"
+            android:fontFamily="sans-serif-light"
             android:textColor="@color/raisingTextColor"
             android:textSize="@dimen/raisingTextFontSize"
             app:layout_constraintBottom_toBottomOf="@+id/item_matchList_profile_image"
@@ -61,26 +63,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/item_matchList_profile_image" />
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/item_matchList_chart"
+        <FrameLayout
+            android:id="@+id/pie_layout"
             android:layout_width="@dimen/matchListPercentChartSize"
             android:layout_height="@dimen/matchListPercentChartSize"
-            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
             app:layout_constraintBottom_toBottomOf="@+id/item_matchList_profile_image"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/item_matchList_profile_image" />
+            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+            app:layout_constraintTop_toTopOf="@+id/item_matchList_profile_image"
+            >
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/item_matchList_chart"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
 
-        <TextView
-            android:id="@+id/item_matchList_match_percent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center|right"
-            android:text="Percent"
-            android:textColor="@color/raisingTextColor"
-            android:textSize="@dimen/raisingTextFontSize"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/item_matchList_chart"
-            app:layout_constraintEnd_toStartOf="@+id/item_matchList_chart"
-            app:layout_constraintTop_toTopOf="@+id/item_matchList_chart" />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <TextView
+                    android:id="@+id/item_matchList_match_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="sans-serif"
+                    android:text="100%"
+                    android:textColor="@color/raisingTextColor"
+                    android:textSize="@dimen/raisingTextFontSize"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

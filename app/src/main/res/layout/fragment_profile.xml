@@ -27,18 +27,30 @@
                     android:layout_height="wrap_content">
 
                     <Button
+                        android:id="@+id/button_myProfile_startup_public_profile"
+                        style="@style/GeneralButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/standardVerticalMargin"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
+                        android:drawableLeft="@drawable/ic_visibility_black_24dp"
+                        android:hint="@string/myProfile_watch_public_profile"
+                        app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_account_information"
+                        app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_subscription"
+                        app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_subscription"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
                         android:id="@+id/button_myProfile_startup_account_information"
                         style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:layout_marginStart="@dimen/standardHorizontalMargin"
-                        android:layout_marginTop="@dimen/standardVerticalMargin"
                         android:layout_marginEnd="@dimen/standardHorizontalMargin"
                         android:drawableLeft="@drawable/ic_person_24dp"
                         android:hint="@string/myProfile_account_information"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_company_information"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_public_profile"
                         app:layout_constraintVertical_bias="0.0"
                         app:layout_constraintVertical_chainStyle="packed" />
 
@@ -46,6 +58,7 @@
                         android:id="@+id/button_myProfile_startup_company_information"
                         style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
+                        android:drawableLeft="@drawable/ic_business_black_24dp"
                         android:hint="@string/register_company_information_text"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_company_figures"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_account_information"
@@ -56,6 +69,7 @@
                         android:id="@+id/button_myProfile_startup_company_figures"
                         style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
+                        android:drawableLeft="@drawable/ic_content_paste_black_24dp"
                         android:hint="@string/register_company_figures_information_text"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_matching_criteria"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_company_information"
@@ -89,6 +103,7 @@
                         android:id="@+id/button_myProfile_startup_labels"
                         style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
+                        android:drawableLeft="@drawable/ic_bookmark_black_24dp"
                         android:hint="@string/register_pitch_label_information_text"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_images"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_pitch"
@@ -110,6 +125,7 @@
                         android:id="@+id/button_myProfile_startup_video"
                         style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
+                        android:drawableLeft="@drawable/ic_videocam_black_24dp"
                         android:hint="@string/register_video_information_text"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_financial_requirements"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_images"
@@ -142,24 +158,13 @@
                         android:id="@+id/button_myProfile_startup_subscription"
                         style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
+                        android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
                         android:hint="@string/myProfile_subscription_plan"
-                        app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_public_profile"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_stakeholders"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_stakeholders"
                         app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_stakeholders" />
-
-                    <Button
-                        android:id="@+id/button_myProfile_startup_public_profile"
-                        style="@style/GeneralButtonStyle"
-                        android:layout_width="0dp"
-                        android:layout_marginTop="@dimen/standardVerticalMargin"
-                        android:layout_marginBottom="@dimen/standardVerticalMargin"
-                        android:hint="@string/myProfile_watch_public_profile"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_subscription"
-                        app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_subscription"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_subscription" />
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </FrameLayout>
 
@@ -177,13 +182,12 @@
                         style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
                         android:layout_marginStart="@dimen/standardHorizontalMargin"
-                        android:layout_marginTop="@dimen/standardVerticalMargin"
                         android:layout_marginEnd="@dimen/standardHorizontalMargin"
                         android:hint="@string/myProfile_account_information"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_profile_information"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_public_profile"
                         app:layout_constraintVertical_bias="0.0"
                         app:layout_constraintVertical_chainStyle="packed" />
 
@@ -235,8 +239,9 @@
                         android:id="@+id/button_myProfile_investor_subscription"
                         style="@style/GeneralButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
                         android:hint="@string/myProfile_subscription_plan"
-                        app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_public_profile"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_images"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_images"
                         app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_images" />
@@ -248,10 +253,10 @@
                         android:layout_marginTop="@dimen/standardVerticalMargin"
                         android:layout_marginBottom="@dimen/standardVerticalMargin"
                         android:hint="@string/myProfile_watch_public_profile"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_account_information"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_subscription"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_subscription"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_subscription" />
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </FrameLayout>
         </LinearLayout>

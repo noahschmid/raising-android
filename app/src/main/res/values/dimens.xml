@@ -10,7 +10,7 @@
     <dimen name="handshakeContactCardHeight"> 65dp </dimen>
 
     <dimen name="matchListPictureSize"> 60dp </dimen>
-    <dimen name="matchListPercentChartSize"> 50dp </dimen>
+    <dimen name="matchListPercentChartSize"> 70dp </dimen>
 
     <dimen name="openRequestsPictureSize"> 40dp </dimen>
 

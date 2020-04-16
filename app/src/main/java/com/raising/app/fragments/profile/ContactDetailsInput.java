@@ -31,6 +31,8 @@ public class ContactDetailsInput extends RaisingFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        customizeAppBar(getString(R.string.toolbar_title_contact_details), false);
+
         return inflater.inflate(R.layout.fragment_contact_details_input, container, false);
     }
 
