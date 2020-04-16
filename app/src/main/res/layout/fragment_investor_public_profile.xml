@@ -162,6 +162,27 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/investor_public_profile_matching_summary" />
 
+            <ImageView
+                android:id="@+id/investor_public_profile_location_pin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardVerticalMarginSmall"
+                android:src="@drawable/ic_location_on_24dp"
+                android:tint="@color/raisingPrimary"
+                app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_name"
+                app:layout_constraintTop_toBottomOf="@+id/text_investor_public_profile_name" />
+
+            <TextView
+                android:id="@+id/text_investor_public_profile_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:textColor="@color/raisingTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                app:layout_constraintBottom_toBottomOf="@+id/investor_public_profile_location_pin"
+                app:layout_constraintStart_toEndOf="@+id/investor_public_profile_location_pin"
+                app:layout_constraintTop_toTopOf="@+id/investor_public_profile_location_pin" />
+
             <TextView
                 android:id="@+id/text_investor_public_profile_sentence"
                 android:layout_width="0dp"
@@ -172,14 +193,26 @@
                 android:textColor="@color/raisingTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_name"
-                app:layout_constraintTop_toBottomOf="@+id/text_investor_public_profile_name" />
+                app:layout_constraintStart_toStartOf="@+id/investor_public_profile_location_pin"
+                app:layout_constraintTop_toBottomOf="@+id/investor_public_profile_location_pin" />
+
+            <TextView
+                android:id="@+id/text_investor_pitch_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:hint="@string/public_profile_pitch"
+                android:textColorHint="@color/raisingTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_pitch"
+                app:layout_constraintTop_toBottomOf="@+id/text_investor_public_profile_sentence" />
 
             <TextView
                 android:id="@+id/text_investor_public_profile_pitch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:text="Pitch"
@@ -187,8 +220,8 @@
                 android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/button_investor_public_profile_website"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_sentence"
-                app:layout_constraintTop_toBottomOf="@+id/text_investor_public_profile_sentence" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_investor_pitch_title" />
 
             <TextView
                 android:id="@+id/button_investor_public_profile_website"

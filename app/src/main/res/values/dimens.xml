@@ -9,7 +9,7 @@
     <dimen name="handshakeTabHeight"> 60dp </dimen>
     <dimen name="handshakeContactCardHeight"> 65dp </dimen>
 
-    <dimen name="matchListPictureSize"> 70dp </dimen>
+    <dimen name="matchListPictureSize"> 60dp </dimen>
     <dimen name="matchListPercentChartSize"> 50dp </dimen>
 
     <dimen name="publicProfileEquityChartSize"> 225dp </dimen>
@@ -17,16 +17,20 @@
 
     <dimen name="publicProfileMatchingInformationIconSize"> 32dp </dimen>
 
-    <dimen name="standardHorizontalMarginSmall"> 16dp </dimen>
     <dimen name="standardHorizontalMargin"> 32dp </dimen>
+    <dimen name="standardHorizontalMarginSmall"> 16dp </dimen>
+    <dimen name="standardHorizontalMarginReallySmall"> 8dp</dimen>
+
     <dimen name="standardVerticalMarginSmall"> 8dp </dimen>
     <dimen name="standardVerticalMargin"> 16dp </dimen>
     <dimen name="standardFragmentTitleMargin"> 16dp </dimen>
 
     <dimen name="myProfileButtonMargin"> 4dp </dimen>
 
-    <dimen name="inputOneSentenceDescriptionHeight"> 80dp </dimen>
+    <dimen name="inputOneSentenceDescriptionHeight"> 100dp </dimen>
     <dimen name="inputPitchHeight"> 150dp </dimen>
+    <dimen name="inputPitchMaxHeight"> 400dp </dimen>
+
 
     <dimen name="raisingLargeTitleFontSize"> 22sp </dimen>
     <dimen name="raisingTitleFontSize"> 20sp </dimen>

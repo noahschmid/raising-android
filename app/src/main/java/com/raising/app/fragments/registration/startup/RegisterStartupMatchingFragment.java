@@ -53,6 +53,7 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
                 (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
 
         hideBottomNavigation(true);
+        customizeAppBar("Matching Information", true);
         return view;
     }
 
@@ -81,6 +82,7 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
             btnStartUpMatching.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
             startup = (Startup)accountViewModel.getAccount().getValue();
+            hideBottomNavigation(false);
         } else {
             startup = RegistrationHandler.getStartup();
         }

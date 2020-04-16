@@ -9,51 +9,60 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.raising.app.models.Account;
-import com.raising.app.models.MatchListItem;
+import com.raising.app.models.Match;
+import com.raising.app.models.Match;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
+import com.raising.app.util.MatchesDeserializer;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchListViewModel extends AndroidViewModel {
-    private MutableLiveData<ArrayList<MatchListItem>> matchList = new MutableLiveData<>();
+public class MatchesViewModel extends AndroidViewModel {
+    private MutableLiveData<ArrayList<Match>> matches = new MutableLiveData<>();
     private MutableLiveData<ViewState> viewState = new MutableLiveData<>();
 
-    private final String TAG = "MatchListViewModel";
+    private final String TAG = "MatchesViewModel";
 
-    public MatchListViewModel(@NonNull Application application) {
+    public MatchesViewModel(@NonNull Application application) {
         super(application);
-        matchList.setValue(new ArrayList<>());
+        matches.setValue(new ArrayList<>());
+        viewState.setValue(ViewState.EMPTY);
         loadMatches();
     }
 
-    public MutableLiveData<ArrayList<MatchListItem>> getMatchList() { return matchList; }
+    public MutableLiveData<ArrayList<Match>> getMatches() { return matches; }
+
+    public MutableLiveData<ViewState> getViewState() { return viewState; }
 
     public void loadMatches() {
-        ArrayList<MatchListItem> cachedMatchList = getCachedMatchList();
+        ArrayList<Match> cachedMatchList = getCachedMatches();
         if(cachedMatchList != null) {
             viewState.setValue(ViewState.CACHED);
-            matchList.setValue(cachedMatchList);
+            matches.setValue(cachedMatchList);
         } else {
             viewState.setValue(ViewState.LOADING);
-            matchList.setValue(new ArrayList<>());
+            matches.setValue(new ArrayList<>());
         }
 
-        ApiRequestHandler.performArrayGetRequest("matchList",
+        ApiRequestHandler.performArrayGetRequest("match",
                 response -> {
-                    Gson gson = new Gson();
-                    ArrayList<MatchListItem> matches = gson.fromJson(response.toString(),
-                            new TypeToken<List<MatchListItem>>(){}.getType());
-                    matchList.setValue(matches);
+                    GsonBuilder gsonBuilder = new GsonBuilder();
+                    gsonBuilder.registerTypeAdapter(Match.class, new MatchesDeserializer());
+                    Gson gson = gsonBuilder.create();
+                    ArrayList<Match> matchList = gson.fromJson(response.toString(),
+                            new TypeToken<List<Match>>(){}.getType());
+                    matches.setValue(matchList);
+                    Log.d(TAG, "loadMatches: fetched " + matchList.size() + " new matches");
                     viewState.setValue(ViewState.RESULT);
-                    cacheMatchList();
+                    cacheMatches();
                     return null;
                 },
                 err -> {
@@ -66,10 +75,11 @@ public class MatchListViewModel extends AndroidViewModel {
      * Load cached match list from internal storage
      * @return
      */
-    private ArrayList<MatchListItem> getCachedMatchList() {
+    private ArrayList<Match> getCachedMatches() {
         try {
             if(InternalStorageHandler.exists("matches_" + AuthenticationHandler.getId())) {
-                return (ArrayList<MatchListItem>) InternalStorageHandler.loadObject(
+                Log.d(TAG, "getCachedMatches: loaded cached matches");
+                return (ArrayList<Match>) InternalStorageHandler.loadObject(
                         "matches_" + AuthenticationHandler.getId());
             }
         } catch (Exception e) {
@@ -81,12 +91,12 @@ public class MatchListViewModel extends AndroidViewModel {
     }
 
     /**
-     * Save current match list to internal storage
+     * Save current matches to internal storage
      */
-    private void cacheMatchList() {
+    private void cacheMatches() {
         if(AuthenticationHandler.isStartup()) {
             try {
-                InternalStorageHandler.saveObject(matchList.getValue(),
+                InternalStorageHandler.saveObject(matches.getValue(),
                         "matches_" + AuthenticationHandler.getId());
             } catch(Exception e) {
                 Log.e(TAG, "Error caching matches: " + e.getMessage());
@@ -94,7 +104,7 @@ public class MatchListViewModel extends AndroidViewModel {
         } else {
             try {
                 Gson gson = new Gson();
-                InternalStorageHandler.saveObject(matchList.getValue(),
+                InternalStorageHandler.saveObject(matches.getValue(),
                         "matches_" + AuthenticationHandler.getId());
 
             } catch(Exception e) {

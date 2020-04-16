@@ -21,21 +21,27 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Investor;
 import com.raising.app.models.Model;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingAdapter;
+import com.raising.app.util.ApiRequestHandler;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class InvestorPublicProfileFragment extends RaisingFragment {
-    private TextView imageIndex, matchingPercent, profileName, profilePitch, profileSentence, profileWebsite;
+    private TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch, profileSentence, profileWebsite;
     private TextView minTicketSize, maxTicketSize;
+    private ImageView locationPin;
     private ImageButton profileRequest, profileDecline;
     private Investor investor;
     private ImageSwitcher imageSwitcher;
@@ -43,7 +49,12 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     private PublicProfileMatchingAdapter typeAdapter, industryAdapter, phaseAdapter,
             supportAdapter;
 
-    private boolean handshakeRequest, handshakeDecline;
+    private ScrollView scrollView;
+
+    private boolean handshakeRequest = false;
+    private boolean handshakeDecline = false;
+
+    private int matchScore = 0;
 
     private RecyclerView recyclerInvestorType, recyclerPhase, recyclerIndustry, recyclerInvolvement;
 
@@ -69,6 +80,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             matchingSummary.setVisibility(View.GONE);
         } else {
             AccountService.getInvestorAccount(getArguments().getLong("id"), investor -> {
+                matchScore = getArguments().getInt("score");
                 this.investor = investor;
                 loadData(investor);
                 return null;
@@ -80,6 +92,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         imageIndex = view.findViewById(R.id.text_investor_profile_gallery_image_index);
 
         pictures = new ArrayList<Bitmap>();
@@ -92,6 +105,8 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         // setup general investor information
         matchingPercent = view.findViewById(R.id.text_investor_public_profile_matching_percent);
         profileName = view.findViewById(R.id.text_investor_public_profile_name);
+        profileLocation = view.findViewById(R.id.text_investor_public_profile_location);
+        locationPin = view.findViewById(R.id.investor_public_profile_location_pin);
         profilePitch = view.findViewById(R.id.text_investor_public_profile_pitch);
         profileSentence = view.findViewById(R.id.text_investor_public_profile_sentence);
 
@@ -116,6 +131,10 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         }
     }
 
+    /**
+     * Prepare the recycler views used to display the matching criteria
+     * @param view The view in which the recycler views will be displayed
+     */
     private void initRecyclerViews(View view) {
         investorTypes = new ArrayList<Model>();
         typeAdapter = new PublicProfileMatchingAdapter(investorTypes);
@@ -142,44 +161,42 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         recyclerInvolvement.setAdapter(supportAdapter);
     }
 
+    /**
+     * Set click listeners to the buttons which start the handshake process
+     */
     private void manageHandshakeButtons() {
-        handshakeRequest = false;
         profileRequest.setOnClickListener(v -> {
-            handshakeRequest = !handshakeRequest;
-            Drawable profileRequestDrawable = profileRequest.getBackground();
-            profileRequestDrawable = DrawableCompat.wrap(profileRequestDrawable);
-            if(handshakeRequest) {
-                profileRequestDrawable.setTint(profileRequest.getContext()
-                        .getResources().getColor(R.color.raisingPositive, null));
-                profileRequest.setBackground(profileRequestDrawable);
-                profileDecline.setEnabled(false);
-            } else {
-                profileRequestDrawable.setTint(profileRequest.getContext()
-                        .getResources().getColor(R.color.raisingWhite, null));
-                profileRequest.setBackground(profileRequestDrawable);
-                profileDecline.setEnabled(true);
-            }
+            handshakeRequest = true;
+            handshakeDecline = false;
+            //TODO: change handshake status in backend
+            //TODO: remove investor from matchlist
+            popCurrentFragment(this);
         });
 
-        handshakeDecline = false;
         profileDecline.setOnClickListener(v -> {
-            handshakeDecline = !handshakeDecline;
-            Drawable profileDeclineDrawable = profileDecline.getBackground();
-            profileDeclineDrawable = DrawableCompat.wrap(profileDeclineDrawable);
-            if(handshakeDecline) {
-                profileDeclineDrawable.setTint(profileDecline.getContext()
-                        .getResources().getColor(R.color.raisingNegative, null));
-                profileDecline.setBackground(profileDeclineDrawable);
-                profileRequest.setEnabled(false);
-            } else {
-                profileDeclineDrawable.setTint(profileDecline.getContext()
-                        .getResources().getColor(R.color.raisingWhite, null));
-                profileDecline.setBackground(profileDeclineDrawable);
-                profileRequest.setEnabled(true);
-            }
+            handshakeDecline = true;
+            handshakeRequest = false;
+            //TODO: change handshake status in backend
+            //TODO: remove investor from matchlist
+            popCurrentFragment(this);
         });
     }
 
+    /**
+     * Set the needed color for the handshake buttons
+     * @param button The button where the color should change
+     * @param color The new color of the button
+     */
+    private void colorHandshakeButtonBackground(View button, int color) {
+        Drawable drawable = button.getBackground();
+        drawable = DrawableCompat.wrap(drawable);
+        drawable.setTint(color);
+        button.setBackground(drawable);
+    }
+
+    /**
+     * Load the investors data into the different views
+     */
     private void loadData(Investor investor) {
         minTicketSize.setText(resources.getTicketSize(investor.getTicketMinId())
                 .toString(getString(R.string.currency),
@@ -187,11 +204,20 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         maxTicketSize.setText(resources.getTicketSize(investor.getTicketMaxId())
                 .toString(getString(R.string.currency),
                         getResources().getStringArray(R.array.revenue_units)));
-       profileName.setText(investor.getName());
+       profileName.setText(investor.getFirstName() + " " + investor.getLastName());
        profilePitch.setText(investor.getPitch());
        profileSentence.setText(investor.getDescription());
-       //TODO: change to actual value
-       matchingPercent.setText("80% MATCH");
+       String matchingScore = matchScore + "% " + "Match";
+       matchingPercent.setText(matchingScore);
+
+       if(investor.getCountryId() > 0) {
+           profileLocation.setText(resources.getCountry(investor.getCountryId()).getName());
+       } else {
+           profileLocation.setVisibility(View.GONE);
+           locationPin.setVisibility(View.GONE);
+       }
+
+       customizeAppBar(investor.getFirstName() + " " + investor.getLastName(), true);
 
        investorTypes.add((Model)resources.getInvestorType(investor.getInvestorTypeId()));
        investor.getIndustries().forEach(industry -> {
@@ -220,6 +246,43 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                pictures.add(image.getBitmap());
            });
        }
+
+       Glide.with(this)
+                .asBitmap()
+                .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                        investor.getProfilePictureId())
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable
+                            Transition<? super Bitmap> transition) {
+                        pictures.add(resource);
+                        imageSwitcher.setImageDrawable(new BitmapDrawable(
+                                pictures.get(currentImageIndex)));
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
+                });
+
+       if(investor.getGalleryIds() != null) {
+           investor.getGalleryIds().forEach(galleryId -> {
+               Glide.with(this)
+                       .asBitmap()
+                       .load(ApiRequestHandler.getDomain() + "media/gallery/" +
+                               galleryId)
+                       .into(new CustomTarget<Bitmap>() {
+                           @Override
+                           public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                               pictures.add(resource);
+                           }
+
+                           @Override
+                           public void onLoadCleared(@Nullable Drawable placeholder) {
+                           }
+                       });
+           });
+       }
     }
 
     /**
@@ -231,7 +294,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         imageSwitcher.setFactory(() -> {
             ImageView imageView = new ImageView(
                     Objects.requireNonNull(getActivity()).getApplicationContext());
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setLayoutParams(new ImageSwitcher.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));

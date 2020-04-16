@@ -53,6 +53,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
                 container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar("Financial Requirements", true);
 
         return view;
     }
@@ -70,8 +71,6 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
                     .show();
         });
 
-        financialTypeInput.setShowSoftInputOnFocus(false);
-
         ArrayList<FinanceType> financeTypes = resources.getFinanceTypes();
         ArrayList<String> values = new ArrayList<>();
         financeTypes.forEach(type -> values.add(type.getName()));
@@ -80,7 +79,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
                 R.layout.item_dropdown_menu, values);
 
         financialTypeInput = view.findViewById(R.id.register_input_financial_type);
-        financialTypeInput.setAdapter(adapterType);
+        financialTypeInput.setShowSoftInputOnFocus(false);
 
         financialTypeInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -112,6 +111,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
             btnFinancialRequirements.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
             startup = (Startup)accountViewModel.getAccount().getValue();
+            hideBottomNavigation(false);
         } else {
             startup = RegistrationHandler.getStartup();
         }

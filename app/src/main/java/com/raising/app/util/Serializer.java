@@ -214,9 +214,7 @@ public class Serializer {
     private static JsonArray toJsonArray(List<Long> input) {
         JsonArray array = new JsonArray();
         input.forEach(id -> {
-            JsonObject object = new JsonObject();
-            object.addProperty("id", id);
-            array.add(object);
+            array.add(id);
         });
 
         return array;

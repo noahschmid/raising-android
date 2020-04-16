@@ -51,6 +51,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         hideBottomNavigation(true);
+        // customizeAppBar("Login", false);
 
         // if registration was in progress but user pressed back button, cancel it
         if (RegistrationHandler.isInProgress(getContext())) {
@@ -140,6 +141,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                         public void onResponse(JSONObject response) {
                             Log.d("LoginFragment", "login successful.");
                             try {
+                                dismissLoadingPanel();
                                 boolean isStartup = response.getBoolean("startup");
                                 if(!isStartup && !response.getBoolean("investor")) {
                                     showSimpleDialog(getString(R.string.generic_error_title),
@@ -151,7 +153,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                                     AuthenticationHandler.login(email,
                                             response.getString("token"),
                                             response.getLong("id"), isStartup);
-                                    dismissLoadingPanel();
                                     accountViewModel.loadAccount();
                                     clearBackstackAndReplace(new MatchesFragment());
                                 } else {

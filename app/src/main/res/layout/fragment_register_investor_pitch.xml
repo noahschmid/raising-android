@@ -76,7 +76,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
-                    android:minHeight="@dimen/inputPitchHeight" />
+                    android:minHeight="@dimen/inputPitchHeight"
+                    android:maxHeight="@dimen/inputPitchMaxHeight"
+                    android:overScrollMode="always"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollbars="vertical" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout

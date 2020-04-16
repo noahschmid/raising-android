@@ -42,6 +42,7 @@
     <string name="investor_matching_industry"> Interested in these Industries </string>
     <string name="investor_matching_involvement"> Desired Form of Involvement </string>
 
+    <string name="public_profile_pitch"> Pitch:</string>
     <string name="startup_public_profile_revenue"> Revenue </string>
     <string name="startup_public_profile_break_even"> Break-Even Year </string>
     <string name="startup_public_profile_founding_year"> Founding Year </string>

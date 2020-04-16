@@ -42,6 +42,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
                 container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar("Add Board Member", true);
 
         return view;
     }
@@ -165,6 +166,10 @@ public class BoardMemberInputFragment extends RaisingFragment {
         if (boardMember == null) {
             boardMember = new BoardMember();
         } else {
+            customizeAppBar("Edit Board Member", true);
+            if(boardMember.getId() != -1) {
+                hideBottomNavigation(false);
+            }
             editMode = true;
             btnAddBoardMember.setText(getString(R.string.submit));
             countryId = boardMember.getCountryId();

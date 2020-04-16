@@ -5,5 +5,6 @@ public enum ViewState {
     CACHED,
     ERROR,
     UPDATED,
-    RESULT
+    RESULT,
+    EMPTY
 }

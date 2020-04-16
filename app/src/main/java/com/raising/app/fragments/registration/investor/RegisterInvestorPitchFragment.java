@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -45,6 +46,7 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
                 container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar("Pitch", true);
         return view;
     }
 
@@ -82,6 +84,7 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
             btnInvestorPitch.setHint(getString(R.string.myProfile_apply_changes));
             investor = (Investor) accountViewModel.getAccount().getValue();
             editMode = true;
+            hideBottomNavigation(false);
         } else {
             investor = RegistrationHandler.getInvestor();
         }
@@ -90,6 +93,19 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
 
         prepareSentenceLayout(investor.getDescription());
         preparePitchLayout(investor.getPitch());
+
+        pitchInput.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                switch (event.getAction() & MotionEvent.ACTION_MASK ){
+                    case MotionEvent.ACTION_SCROLL:
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override

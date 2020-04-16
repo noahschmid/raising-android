@@ -52,6 +52,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
                 container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar("Facts and Figures", true);
 
         return view;
     }
@@ -108,6 +109,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
             btnCompanyFigures.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
             startup = (Startup)accountViewModel.getAccount().getValue();
+            hideBottomNavigation(false);
         } else {
             startup = RegistrationHandler.getStartup();
         }

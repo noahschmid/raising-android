@@ -1,5 +1,6 @@
 package com.raising.app.util.recyclerViewAdapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +12,15 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.raising.app.R;
 import com.raising.app.models.MatchListItem;
+import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.InternalStorageHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,24 +54,33 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
 
         holder.name.setText(recyclerItem.getName());
         holder.attribute.setText(recyclerItem.getAttribute());
-        holder.sentence.setText(recyclerItem.getSentence());
-        holder.matchingPercent.setText(recyclerItem.getMatchingPercentString());
-        //TODO: replace with actual image
-        holder.profileImage.setImageBitmap(recyclerItem.getBitmap());
-
+        holder.sentence.setText(recyclerItem.getDescription());
+        holder.matchingPercent.setText(recyclerItem.getScore() + "%");
+        if(recyclerItem.getPictureId() != -1) {
+            Glide
+                    .with(InternalStorageHandler.getContext())
+                    .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                            recyclerItem.getPictureId())
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_person_24dp)
+                    .into(holder.profileImage);
+        } else {
+            holder.profileImage.setImageDrawable(InternalStorageHandler.getContext()
+                    .getResources().getDrawable(R.drawable.ic_person_24dp));
+        }
         setupMatchingPercentGraphic(holder.matchingPercentGraphic, recyclerItem);
     }
 
     private void setupMatchingPercentGraphic(PieChart percentChart, MatchListItem recyclerItem) {
         List<PieEntry> pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry(recyclerItem.getMatchingPercent(), "MatchingPercent"));
-        // float remainder = 100 - recyclerItem.getMatchingPercent();
-        // pieEntries.add(new PieEntry(remainder, "Remainder"));
+        pieEntries.add(new PieEntry(recyclerItem.getScore(), "MatchingPercent"));
+        float remainder = 100 - recyclerItem.getScore();
+        pieEntries.add(new PieEntry(remainder, "Remainder"));
 
         // helper array to define colors of the pie chart
         int [] colors = {
                 ContextCompat.getColor(percentChart.getContext(), R.color.raisingSecondaryDark),
-                ContextCompat.getColor(percentChart.getContext(), R.color.raisingWhite)};
+                ContextCompat.getColor(percentChart.getContext(), android.R.color.transparent)};
 
         PieDataSet dataSet = new PieDataSet(pieEntries, "Matching Percentage");
         dataSet.setColors(colors);
@@ -89,7 +102,6 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
         percentChart.setUsePercentValues(true);
         percentChart.setRotationEnabled(false);
 
-        percentChart.animateY(1000);
         percentChart.invalidate();
     }
 

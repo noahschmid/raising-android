@@ -102,7 +102,6 @@ public class RaisingFragment extends Fragment {
             }
         });
 
-
         resourcesViewModel = ViewModelProviders.of(getActivity()).get(ResourcesViewModel.class);
         resourcesViewModel.getResources().observe(getViewLifecycleOwner(), resources -> {
             this.resources = resources;
@@ -226,6 +225,18 @@ public class RaisingFragment extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null)
             activity.hideBottomNavigation(isHidden);
+    }
+
+    /**
+     * Call {@link com.raising.app.MainActivity#customizeActionBar(String, boolean)}
+     * @param title The title of the action bar
+     * @param showBackButton true, if back button should be active
+     *                       false, if there is no back button
+     */
+    protected void customizeAppBar(String title, boolean showBackButton) {
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null)
+            activity.customizeActionBar(title, showBackButton);
     }
 
     /**
@@ -457,6 +468,7 @@ public class RaisingFragment extends Fragment {
     }
 
     protected void showLoadingPanel() {
+        Log.d(TAG, "showLoadingPanel: called");
         if (overlayLayout == null) {
             Log.e("RaisingFragment", "No overlay layout found!");
             return;
@@ -474,6 +486,7 @@ public class RaisingFragment extends Fragment {
     }
 
     protected void dismissLoadingPanel() {
+        Log.d(TAG, "dismissLoadingPanel: called");
         --processesLoading;
         if (loadingPanel == null || processesLoading != 0) {
             if (processesLoading < 0)
