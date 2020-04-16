@@ -34,7 +34,7 @@ import com.raising.app.models.Investor;
 import com.raising.app.models.Model;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
-import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
+import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingAdapter;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -47,7 +47,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     private Investor investor;
     private ImageSwitcher imageSwitcher;
     private ArrayList<Model> investorTypes, industries, investmentPhases, supports;
-    private PublicProfileMatchingRecyclerViewAdapter typeAdapter, industryAdapter, phaseAdapter,
+    private PublicProfileMatchingAdapter typeAdapter, industryAdapter, phaseAdapter,
             supportAdapter;
     private ConstraintLayout profileLayout;
     private ScrollView scrollView;
@@ -141,25 +141,25 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
      */
     private void initRecyclerViews(View view) {
         investorTypes = new ArrayList<Model>();
-        typeAdapter = new PublicProfileMatchingRecyclerViewAdapter(investorTypes);
+        typeAdapter = new PublicProfileMatchingAdapter(investorTypes);
         recyclerInvestorType = view.findViewById(R.id.investor_public_profile_investor_type_list);
         recyclerInvestorType.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerInvestorType.setAdapter(typeAdapter);
 
         investmentPhases = new ArrayList<Model>();
-        phaseAdapter = new PublicProfileMatchingRecyclerViewAdapter(investmentPhases);
+        phaseAdapter = new PublicProfileMatchingAdapter(investmentPhases);
         recyclerPhase = view.findViewById(R.id.investor_public_profile_phase_list);
         recyclerPhase.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerPhase.setAdapter(phaseAdapter);
 
         industries = new ArrayList<Model>();
-        industryAdapter = new PublicProfileMatchingRecyclerViewAdapter(industries);
+        industryAdapter = new PublicProfileMatchingAdapter(industries);
         recyclerIndustry = view.findViewById(R.id.investor_public_profile_industry_list);
         recyclerIndustry.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerIndustry.setAdapter(industryAdapter);
 
         supports = new ArrayList<Model>();
-        supportAdapter = new PublicProfileMatchingRecyclerViewAdapter(supports);
+        supportAdapter = new PublicProfileMatchingAdapter(supports);
         recyclerInvolvement = view.findViewById(R.id.investor_public_profile_involvement_list);
         recyclerInvolvement.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerInvolvement.setAdapter(supportAdapter);

@@ -14,11 +14,11 @@ import com.raising.app.models.stakeholder.StakeholderItem;
 
 import java.util.ArrayList;
 
-public class StakeholderRecyclerViewAdapter extends RecyclerView.Adapter<StakeholderRecyclerViewAdapter.ViewHolder> {
+public class StakeholderAdapter extends RecyclerView.Adapter<StakeholderAdapter.ViewHolder> {
     private ArrayList<StakeholderItem> recyclerItems;
     private OnClickListener clickListener;
 
-    public StakeholderRecyclerViewAdapter(ArrayList<StakeholderItem> recyclerItems) {
+    public StakeholderAdapter(ArrayList<StakeholderItem> recyclerItems) {
         this.recyclerItems = recyclerItems;
     }
 

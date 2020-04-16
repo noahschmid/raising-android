@@ -13,10 +13,10 @@ import com.raising.app.models.stakeholder.Founder;
 
 import java.util.ArrayList;
 
-public class StartupProfileFounderRecyclerViewAdapter extends RecyclerView.Adapter<StartupProfileFounderRecyclerViewAdapter.ViewHolder> {
+public class StartupProfileFounderAdapter extends RecyclerView.Adapter<StartupProfileFounderAdapter.ViewHolder> {
     private ArrayList<Founder> recyclerItems;
 
-    public StartupProfileFounderRecyclerViewAdapter(ArrayList<Founder> recyclerItems) {
+    public StartupProfileFounderAdapter(ArrayList<Founder> recyclerItems) {
         this.recyclerItems = recyclerItems;
     }
 
@@ -30,7 +30,7 @@ public class StartupProfileFounderRecyclerViewAdapter extends RecyclerView.Adapt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull StartupProfileFounderRecyclerViewAdapter.ViewHolder holder,
+    public void onBindViewHolder(@NonNull StartupProfileFounderAdapter.ViewHolder holder,
                                  int position) {
         Founder recyclerItem = recyclerItems.get(position);
 
