@@ -84,7 +84,6 @@ public class MatchesFragment extends RaisingFragment {
                 matchListItems.add(matchItem);
             });
         }
-
         matchListAdapter = new MatchListAdapter(matchListItems);
 
         matchListItems.forEach(item -> {
@@ -112,9 +111,9 @@ public class MatchesFragment extends RaisingFragment {
         matchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         matchList.setAdapter(matchListAdapter);
         matchListAdapter.setOnItemClickListener(position -> {
-            long id = matchListItems.get(position).getAccountId();
             Bundle args = new Bundle();
-            args.putLong("id", id);
+            args.putLong("id", matchListItems.get(position).getAccountId());
+            args.putInt("score", matchListItems.get(position).getScore());
             if(matchListItems.get(position).isStartup()) {
                 StartupPublicProfileFragment publicProfile = new StartupPublicProfileFragment();
                 publicProfile.setArguments(args);
