@@ -51,6 +51,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar("Login", false);
 
         // if registration was in progress but user pressed back button, cancel it
         if (RegistrationHandler.isInProgress(getContext())) {

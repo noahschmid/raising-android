@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.raising.app.fragments.HandshakesFragment;
 import com.raising.app.fragments.LoginFragment;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     AccountViewModel accountViewModel;
     ResourcesViewModel resourcesViewModel;
 
+    MaterialToolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+        toolbar = findViewById(R.id.raising_app_bar);
+        setSupportActionBar(toolbar);
 
         RegistrationHandler.setContext(getApplicationContext());
 
@@ -114,5 +120,34 @@ public class MainActivity extends AppCompatActivity {
      */
     public void hideBottomNavigation(boolean isHidden) {
         findViewById(R.id.bottom_navigation).setVisibility(isHidden ? View.GONE : View.VISIBLE);
+    }
+
+    /**
+     * Allow to set a title and icon to our top app bar
+     * @param title The title of the current app bar
+     * @param showBackButton true, if the app bar should contain a "back" arrow
+     *                       false, if app bar should not have this arrow
+     */
+    public void customizeActionBar(String title, boolean showBackButton ) {
+        toolbar.setTitle(title);
+        if (showBackButton) {
+            toolbar.setNavigationIcon(R.drawable.ic_arrow_back_32dp);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+        } else {
+            //TODO: add icon as icon, if back button is not wanted
+            toolbar.setNavigationIcon(null);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        getSupportFragmentManager().popBackStackImmediate();
     }
 }

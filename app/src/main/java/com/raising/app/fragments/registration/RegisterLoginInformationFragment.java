@@ -40,7 +40,9 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_login_information, container, false);
+
         hideBottomNavigation(true);
+        customizeAppBar("Login Information", true);
 
         RegistrationHandler.setCancelAllowed(true);
 

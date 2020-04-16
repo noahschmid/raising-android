@@ -228,6 +228,18 @@ public class RaisingFragment extends Fragment {
     }
 
     /**
+     * Call {@link com.raising.app.MainActivity#customizeActionBar(String, boolean)}
+     * @param title The title of the action bar
+     * @param showBackButton true, if back button should be active
+     *                       false, if there is no back button
+     */
+    protected void customizeAppBar(String title, boolean showBackButton) {
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null)
+            activity.customizeActionBar(title, showBackButton);
+    }
+
+    /**
      * This methods retrieves an instance the SupportFragmentManager of the underlying activity
      *
      * @return Instance of SupportFragmentManager of used Activity
