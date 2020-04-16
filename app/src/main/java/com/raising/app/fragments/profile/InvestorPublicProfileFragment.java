@@ -55,8 +55,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     private boolean handshakeRequest = false;
     private boolean handshakeDecline = false;
 
-    private ScrollView scrollView;
-
     private int matchScore = 0;
 
     private RecyclerView recyclerInvestorType, recyclerPhase, recyclerIndustry, recyclerInvolvement;
