@@ -1,5 +1,6 @@
 package com.raising.app.util.recyclerViewAdapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,13 +74,13 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
     private void setupMatchingPercentGraphic(PieChart percentChart, MatchListItem recyclerItem) {
         List<PieEntry> pieEntries = new ArrayList<>();
         pieEntries.add(new PieEntry(recyclerItem.getScore(), "MatchingPercent"));
-        // float remainder = 100 - recyclerItem.getMatchingPercent();
-        // pieEntries.add(new PieEntry(remainder, "Remainder"));
+        float remainder = 100 - recyclerItem.getScore();
+        pieEntries.add(new PieEntry(remainder, "Remainder"));
 
         // helper array to define colors of the pie chart
         int [] colors = {
                 ContextCompat.getColor(percentChart.getContext(), R.color.raisingSecondaryDark),
-                ContextCompat.getColor(percentChart.getContext(), R.color.raisingWhite)};
+                ContextCompat.getColor(percentChart.getContext(), android.R.color.transparent)};
 
         PieDataSet dataSet = new PieDataSet(pieEntries, "Matching Percentage");
         dataSet.setColors(colors);
