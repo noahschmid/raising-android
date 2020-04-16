@@ -84,6 +84,10 @@ public class MatchesFragment extends RaisingFragment {
 
         matchListAdapter = new MatchListAdapter(matchListItems);
 
+        matchListItems.forEach(item -> {
+            Log.d(TAG, "matchListItems: " + + item.getAccountId() + " " + item.getAttribute() + item.getName());
+        });
+
         matchesViewModel.getMatches().observe(getViewLifecycleOwner(), matches -> {
             if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
                     resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {

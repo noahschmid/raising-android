@@ -28,8 +28,12 @@ public class MatchesDeserializer implements JsonDeserializer<Match> {
             match.setInvestmentPhaseId(jsonObject.get("investmentPhaseId").getAsLong());
             match.setCompanyName(jsonObject.get("companyName").getAsString());
         } else {
-            match.setFirstName(jsonObject.get("firstName").getAsString());
-            match.setLastName(jsonObject.get("lastName").getAsString());
+            if(jsonObject.get("firstName") != null) {
+                match.setFirstName(jsonObject.get("firstName").getAsString());
+            }
+            if(jsonObject.get("lastName") != null) {
+                match.setLastName(jsonObject.get("lastName").getAsString());
+            }
             match.setInvestorTypeId(jsonObject.get("investorTypeId").getAsLong());
         }
 
