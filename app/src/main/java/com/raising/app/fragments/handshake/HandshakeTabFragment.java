@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
@@ -19,12 +20,9 @@ import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.HandshakeItem;
 import com.raising.app.models.HandshakeState;
+import com.raising.app.models.ViewState;
 import com.raising.app.util.recyclerViewAdapter.HandshakeAdapter;
-import com.raising.app.util.recyclerViewAdapter.StartupProfileFounderAdapter;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class HandshakeTabFragment extends RaisingFragment {
@@ -40,49 +38,65 @@ public class HandshakeTabFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // check if this handshake tab is the closed tab
-        if(getArguments() != null) {
+        // check for handshake state
+        if (getArguments() != null) {
             stateEnum = (HandshakeState) getArguments().getSerializable("handshakeState");
         }
 
-        //TODO: store items in this array list and handshake state in enum below
-        ArrayList<HandshakeItem> handshakeItems = new ArrayList<>();
+        // prepare open requests layout
+        ConstraintLayout openRequests = view.findViewById(R.id.handshake_open_requests);
+        if (stateEnum.equals(HandshakeState.YOUR_TURN)) {
+            ImageView image = view.findViewById(R.id.handshake_open_requests_image);
+            //TODO: insert image of uppermost open request
+            openRequests.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                     changeFragment(new HandshakeOpenRequestsFragment());
+                }
+            });
+        } else {
+            openRequests.setVisibility(View.GONE);
+        }
 
-        RecyclerView recyclerView = view.findViewById(R.id.handshake_tab_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        HandshakeAdapter handshakeAdapter
-                = new HandshakeAdapter(handshakeItems, stateEnum);
-        recyclerView.setAdapter(handshakeAdapter);
 
-        // set click listener for interaction button
-        handshakeAdapter.setOnClickListener(position -> {
-            // TODO: show alert dialog, if recyclerItem has changed their profile
+        // initialize the recycler view for all 'today'-handshakes
+        //TODO: store handshakes in below array list
+        ArrayList<HandshakeItem> handshakeItemsToday = new ArrayList<>();
 
-            if(stateEnum.equals(HandshakeState.CLOSED)) {
-                //TODO: implement action for closed leads
-            } else {
+        RecyclerView recyclerToday = view.findViewById(R.id.handshake_tab_recycler_today);
+        recyclerToday.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        HandshakeAdapter adapterToday = new HandshakeAdapter(handshakeItemsToday, stateEnum);
+        recyclerToday.setAdapter(adapterToday);
+
+        adapterToday.setOnItemClickListener(new HandshakeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
                 Bundle args = new Bundle();
-                args.putLong("id", handshakeItems.get(position).getId());
+                args.putLong("id", handshakeItemsToday.get(position).getId());
                 Fragment contactFragment = new HandshakeContactFragment();
                 contactFragment.setArguments(args);
                 changeFragment(contactFragment, "HandshakeContactFragment");
             }
         });
 
-        // set click listener for item
-        handshakeAdapter.setOnItemClickListener(position -> {
-            Bundle args = new Bundle();
-            args.putLong("id", handshakeItems.get(position).getId());
-            if(handshakeItems.get(position).isStartup()) {
-                StartupPublicProfileFragment publicProfile = new StartupPublicProfileFragment();
-                publicProfile.setArguments(args);
-                changeFragment(publicProfile);
-            } else {
-                InvestorPublicProfileFragment publicProfile = new InvestorPublicProfileFragment();
-                publicProfile.setArguments(args);
-                changeFragment(publicProfile);
-            }
+        // initialize the recycler view for all 'this week'-handshakes
+        //TODO: store handshakes in below array list
+        ArrayList<HandshakeItem> handshakeItemsWeek = new ArrayList<>();
 
+        RecyclerView recyclerWeek = view.findViewById(R.id.handshake_tab_recycler_week);
+        recyclerWeek.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        HandshakeAdapter adapterWeek = new HandshakeAdapter(handshakeItemsWeek, stateEnum);
+        recyclerWeek.setAdapter(adapterWeek);
+
+        adapterWeek.setOnItemClickListener(new HandshakeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Bundle args = new Bundle();
+                args.putLong("id", handshakeItemsToday.get(position).getId());
+                Fragment contactFragment = new HandshakeContactFragment();
+                contactFragment.setArguments(args);
+                changeFragment(contactFragment, "HandshakeContactFragment");
+            }
         });
     }
 }

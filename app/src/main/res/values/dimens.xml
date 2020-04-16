@@ -12,6 +12,8 @@
     <dimen name="matchListPictureSize"> 60dp </dimen>
     <dimen name="matchListPercentChartSize"> 50dp </dimen>
 
+    <dimen name="openRequestsPictureSize"> 40dp </dimen>
+
     <dimen name="publicProfileEquityChartSize"> 225dp </dimen>
     <dimen name="publicProfileEquityLegendColorSize"> 30dp </dimen>
 

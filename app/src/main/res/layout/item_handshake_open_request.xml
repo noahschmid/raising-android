@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_handshake_open_request_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/handshake_open_request_image"
+            android:layout_width="@dimen/openRequestsPictureSize"
+            android:layout_height="@dimen/openRequestsPictureSize"
+            android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+            android:layout_marginTop="@dimen/standardVerticalMargin"
+            android:layout_marginBottom="@dimen/standardVerticalMargin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/handshake_open_request_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+            android:text="Name"
+            android:textColor="@color/raisingTextColor"
+            android:textSize="@dimen/raisingTextFontSize"
+            app:layout_constraintBottom_toTopOf="@+id/handshake_open_request_attribute"
+            app:layout_constraintEnd_toStartOf="@+id/button_handshake_open_request_accept"
+            app:layout_constraintStart_toEndOf="@+id/handshake_open_request_image"
+            app:layout_constraintTop_toTopOf="@+id/handshake_open_request_image"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/handshake_open_request_attribute"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Attribute"
+            android:textColor="@color/raisingTextColor"
+            android:textSize="@dimen/raisingSmallTextFontSize"
+            app:layout_constraintBottom_toBottomOf="@+id/handshake_open_request_image"
+            app:layout_constraintEnd_toEndOf="@+id/handshake_open_request_name"
+            app:layout_constraintStart_toStartOf="@+id/handshake_open_request_name"
+            app:layout_constraintTop_toBottomOf="@+id/handshake_open_request_name" />
+
+        <Button
+            android:id="@+id/button_handshake_open_request_accept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+            android:hint="@string/accept_text"
+            android:textColorHint="@color/raisingWhite"
+            android:backgroundTint="@color/raisingSecondary"
+            android:textSize="@dimen/raisingTextFontSize"
+            app:layout_constraintBottom_toBottomOf="@+id/button_handshake_open_request_decline"
+            app:layout_constraintEnd_toStartOf="@+id/button_handshake_open_request_decline"
+            app:layout_constraintTop_toTopOf="@+id/button_handshake_open_request_decline" />
+
+        <Button
+            android:id="@+id/button_handshake_open_request_decline"
+            style="@style/OpenRequestDeclineButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+            android:hint="@string/decline_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

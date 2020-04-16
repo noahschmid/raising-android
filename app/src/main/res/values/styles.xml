@@ -33,7 +33,7 @@
         <item name="android:layout_height">@dimen/myProfileButtonHeight</item>
         <item name="android:drawableTint">@color/raisingWhite</item>
         <item name="android:textColorHint">@color/raisingWhite</item>
-        <item name="android:backgroundTint"> @color/raisingSecondaryLight </item>
+        <item name="android:backgroundTint"> @color/raisingButtonBackgroundColor </item>
         <item name="android:gravity">center|start</item>
     </style>
 
@@ -89,6 +89,14 @@
         <item name="strokeColor">@color/raisingPrimary</item>
         <item name="android:textSize">@dimen/popupButtonFontSize</item>
         <item name="android:textColorHint">@color/raisingPrimary</item>
+        <item name="backgroundTint">@color/raisingWhite</item>
+    </style>
+
+    <style name="OpenRequestDeclineButton">
+        <item name="strokeWidth">@dimen/outlinedButtonStrokeWidth</item>
+        <item name="strokeColor">@color/raisingSecondary</item>
+        <item name="android:textSize">@dimen/raisingTextFontSize</item>
+        <item name="android:textColorHint">@color/raisingSecondary</item>
         <item name="backgroundTint">@color/raisingWhite</item>
     </style>
 
