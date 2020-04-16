@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +50,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     private ArrayList<Model> investorTypes, industries, investmentPhases, supports;
     private PublicProfileMatchingRecyclerViewAdapter typeAdapter, industryAdapter, phaseAdapter,
             supportAdapter;
+    private ConstraintLayout profileLayout;
 
     private ScrollView scrollView;
 
@@ -82,6 +84,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         } else {
             AccountService.getInvestorAccount(getArguments().getLong("id"), investor -> {
                 matchScore = getArguments().getInt("score");
+                customizeAppBar(getArguments().getString("title"), true);
                 this.investor = investor;
                 loadData(investor);
                 return null;
@@ -95,9 +98,11 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         imageIndex = view.findViewById(R.id.text_investor_profile_gallery_image_index);
-
+        profileLayout = view.findViewById(R.id.profile_layout);
+        profileLayout.setVisibility(View.INVISIBLE);
         pictures = new ArrayList<Bitmap>();
         prepareImageSwitcher(view);
+        scrollView = view.findViewById(R.id.scroll_layout);
 
         profileRequest = view.findViewById(R.id.button_investor_public_profile_request);
         profileDecline = view.findViewById(R.id.button_investor_public_profile_decline);
@@ -218,8 +223,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
            locationPin.setVisibility(View.GONE);
        }
 
-       customizeAppBar(investor.getFirstName() + " " + investor.getLastName(), true);
-
        investorTypes.add((Model)resources.getInvestorType(investor.getInvestorTypeId()));
        investor.getIndustries().forEach(industry -> {
            industries.add(resources.getIndustry(industry));
@@ -284,6 +287,10 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                        });
            });
        }
+
+        profileLayout.setVisibility(View.VISIBLE);
+       scrollView.scrollTo(0,0);
+       scrollView.smoothScrollTo(0, 0);
     }
 
     /**

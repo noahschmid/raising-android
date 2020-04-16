@@ -23,6 +23,7 @@ import com.raising.app.models.Match;
 import com.raising.app.models.MatchListItem;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.recyclerViewAdapter.MatchListAdapter;
+import com.raising.app.util.recyclerViewAdapter.RecyclerViewMargin;
 import com.raising.app.viewModels.MatchesViewModel;
 
 import java.util.ArrayList;
@@ -110,10 +111,15 @@ public class MatchesFragment extends RaisingFragment {
         matchList = view.findViewById(R.id.matchList);
         matchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         matchList.setAdapter(matchListAdapter);
+        RecyclerViewMargin decoration = new RecyclerViewMargin(15);
+        matchList.addItemDecoration(decoration);
         matchListAdapter.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
-            args.putLong("id", matchListItems.get(position).getAccountId());
-            args.putInt("score", matchListItems.get(position).getScore());
+            MatchListItem item = matchListItems.get(position);
+            args.putLong("id", item.getAccountId());
+            args.putInt("score", item.getScore());
+            args.putString("title", item.getName());
+            customizeAppBar(item.getName(), true);
             if(matchListItems.get(position).isStartup()) {
                 StartupPublicProfileFragment publicProfile = new StartupPublicProfileFragment();
                 publicProfile.setArguments(args);

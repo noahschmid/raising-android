@@ -70,6 +70,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             btnLoginInformation.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
+            hideBottomNavigation(false);
             if(AuthenticationHandler.isStartup()) {
                 startup = (Startup) currentAccount;
             } else {
