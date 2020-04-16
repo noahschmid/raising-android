@@ -167,7 +167,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         completedProgress = view.findViewById(R.id.progress_profile_completed);
 
         // setup recycler view for founders
-        ArrayList<Founder> founderList = new ArrayList<>(startup.getFounders());
+        ArrayList<Founder> founderList = new ArrayList<>();
+        founderList.addAll(startup.getFounders());
         RecyclerView founderRecyclerView = view.findViewById(R.id.startup_profile_founder_list);
         founderRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         StartupProfileFounderRecyclerViewAdapter founderListAdapter
@@ -266,10 +267,6 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         if (startup.getWebsite() == null || startup.getWebsite().equals("")) {
             profileWebsite.setVisibility(View.GONE);
-        }
-
-        if (startup.getProfilePicture() != null) {
-            pictures.add(startup.getProfilePicture().getBitmap());
         }
 
         if (startup.getGallery() != null) {

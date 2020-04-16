@@ -33,8 +33,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     private EditText firstNameInput, lastNameInput, emailInput, passwordInput;
     private boolean load = false;
     private boolean editMode = false;
-    private Startup startup;
-    private Investor investor;
+    private Account account;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,12 +57,6 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         emailInput = view.findViewById(R.id.register_input_email);
         passwordInput = view.findViewById(R.id.register_input_password);
 
-        Account account = RegistrationHandler.getAccount();
-        firstNameInput.setText(account.getFirstName());
-        lastNameInput.setText(account.getLastName());
-        emailInput.setText(account.getEmail());
-        passwordInput.setText(account.getPassword());
-
         Button btnLoginInformation = view.findViewById(R.id.button_login_information);
         btnLoginInformation.setOnClickListener(this);
 
@@ -71,25 +64,29 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
             btnLoginInformation.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
             hideBottomNavigation(false);
-            if(AuthenticationHandler.isStartup()) {
-                startup = (Startup) currentAccount;
-            } else {
-                investor = (Investor) currentAccount;
-            }
+            account = currentAccount;
+            account.setEmail(AuthenticationHandler.getEmail());
+            view.findViewById(R.id.register_password).setVisibility(View.GONE);
         } else {
-            if(AccountService.isStartup()) {
-                startup = RegistrationHandler.getStartup();
-            } else {
-                investor = RegistrationHandler.getInvestor();
-            }
+            account = RegistrationHandler.getAccount();
         }
+
+        firstNameInput.setText(account.getFirstName());
+        lastNameInput.setText(account.getLastName());
+        emailInput.setText(account.getEmail());
+        passwordInput.setText(account.getPassword());
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         hideBottomNavigation(false);
+    }
+
+    @Override
+    public void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
     }
 
     @Override
@@ -116,7 +113,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
      */
     private void processLoginInformation(final String firstName, final String lastName, final String email, final String password) {
         if(firstName.length() == 0 || lastName.length() == 0  || email.length() == 0  ||
-                password.length() == 0 ) {
+                (password.length() == 0 && !editMode)) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
@@ -128,18 +125,25 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
             return;
         }
 
-        if(password.length() < 6) {
+        if(password.length() < 6 && !editMode) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_weak_password));
             return;
         }
 
         try {
-            HashMap<String, String> params = new HashMap<>();
-            params.put("email", email);
+            if(!email.equals(AuthenticationHandler.getEmail())) {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("email", email);
 
-            ApiRequestHandler.performPostRequest("account/valid",
-                    callback, errorHandler, new JSONObject(params));
+                ApiRequestHandler.performPostRequest("account/valid",
+                        callback, errorHandler, new JSONObject(params));
+            } else {
+                account.setFirstName(firstName);
+                account.setLastName(lastName);
+                account.setEmail(email);
+                accountViewModel.update(account);
+            }
         } catch(Exception e) {
             Log.e("RegisterLoginInformation", "" + e.getMessage());
             return;
@@ -153,9 +157,16 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         final String password = passwordInput.getText().toString();
 
         try {
-            RegistrationHandler.saveLoginInformation(firstName, lastName, email, password);
-            changeFragment(new RegisterSelectTypeFragment(),
-                    "RegisterSelectTypeFragment");
+            if(editMode) {
+                RegistrationHandler.saveLoginInformation(firstName, lastName, email, password);
+                changeFragment(new RegisterSelectTypeFragment(),
+                        "RegisterSelectTypeFragment");
+            } else {
+                account.setFirstName(firstName);
+                account.setLastName(lastName);
+                account.setEmail(email);
+                accountViewModel.update(account);
+            }
         } catch (IOException e) {
             Log.e("RegisterLoginInformation","Error while saving login informaion: "
                     + e.getMessage());

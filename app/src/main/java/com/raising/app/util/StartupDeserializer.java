@@ -162,6 +162,8 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
             startup.addCorporateShareholder(corporateShareholder);
         }
 
+        Log.d("StartupDeserializer", "boardmember size: " + startup.getBoardMembers().size());
+
         return startup;
     }
 }

@@ -80,18 +80,17 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
+
                 <TextView
                     android:id="@+id/item_matchList_match_percent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:fontFamily="sans-serif"
                     android:text="100%"
-                    android:textColor="@color/green"
+                    android:textColor="@color/raisingTextColor"
                     android:textSize="@dimen/raisingTextFontSize"
-                    android:textStyle="bold"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    />
+                    android:textStyle="bold" />
 
             </RelativeLayout>
         </FrameLayout>

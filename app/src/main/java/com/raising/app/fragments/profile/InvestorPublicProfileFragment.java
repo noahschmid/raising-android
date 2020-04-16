@@ -50,6 +50,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     private PublicProfileMatchingRecyclerViewAdapter typeAdapter, industryAdapter, phaseAdapter,
             supportAdapter;
     private ConstraintLayout profileLayout;
+    private ScrollView scrollView;
 
     private boolean handshakeRequest = false;
     private boolean handshakeDecline = false;
@@ -173,7 +174,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             handshakeDecline = false;
             //TODO: change handshake status in backend
             //TODO: remove investor from matchlist
-            popCurrentFragment(this);
+            //popCurrentFragment(this);
         });
 
         profileDecline.setOnClickListener(v -> {
@@ -181,7 +182,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             handshakeRequest = false;
             //TODO: change handshake status in backend
             //TODO: remove investor from matchlist
-            popCurrentFragment(this);
+           // popCurrentFragment(this);
         });
     }
 

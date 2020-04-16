@@ -29,7 +29,7 @@ public class GenericArrayRequest extends JsonArrayRequest {
     @Override
     protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
         try {
-            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+            String jsonString = new String(response.data, "UTF-8");
             if (jsonString.length() == 0) {
                 return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
             }
