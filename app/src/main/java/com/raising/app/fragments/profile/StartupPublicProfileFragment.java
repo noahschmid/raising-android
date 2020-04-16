@@ -120,7 +120,6 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         inflater = (LayoutInflater) getContext().getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
 
-
         imageIndex = view.findViewById(R.id.text_startup_profile_gallery_image_index);
 
         prepareImageSwitcher(view);
@@ -129,7 +128,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         profileDecline = view.findViewById(R.id.button_startup_public_profile_decline);
         manageHandshakeButtons();
 
-        // setup general startup information
+        // link general startup information
         matchingPercent = view.findViewById(R.id.text_startup_public_profile_matching_percent);
         profileName = view.findViewById(R.id.text_startup_public_profile_name);
         labelsLayout = view.findViewById(R.id.layout_startup_public_profile_labels);
@@ -149,7 +148,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         initRecyclerViews(view);
 
-        // setup startup specific information
+        // link startup specific information
         startupRevenue = view.findViewById(R.id.text_profile_revenue);
         startupBreakEven = view.findViewById(R.id.text_profile_breakeven);
         startupFoundingYear = view.findViewById(R.id.text_profile_founding_year);
@@ -167,7 +166,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         completedProgress = view.findViewById(R.id.progress_profile_completed);
 
-        // setup recycler views for founders and board members
+        // setup recycler view for founders
         ArrayList<Founder> founderList = new ArrayList<>(startup.getFounders());
         RecyclerView founderRecyclerView = view.findViewById(R.id.startup_profile_founder_list);
         founderRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -175,6 +174,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 = new StartupProfileFounderRecyclerViewAdapter(founderList);
         founderRecyclerView.setAdapter(founderListAdapter);
 
+        // setup recycler view for board members
         ArrayList<BoardMember> boardMemberList = new ArrayList<>(startup.getBoardMembers());
         RecyclerView boardMemberRecyclerView = view.findViewById(R.id.startup_profile_board_member_list);
         boardMemberRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -182,7 +182,15 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 = new StartupProfileBoardMemberRecyclerViewAdapter(boardMemberList);
         boardMemberRecyclerView.setAdapter(boardMemberListAdapter);
 
-        setupShareholderPieChart(view);
+        // check if startup has shareholders, if true load pie chart, if false, hide all views
+        if(startup.getCorporateShareholders().size() == 0
+                && startup.getPrivateShareholders().size() == 0) {
+            view.findViewById(R.id.text_profile_shareholder).setVisibility(View.GONE);
+            view.findViewById(R.id.stakeholder_equity_chart).setVisibility(View.GONE);
+            view.findViewById(R.id.stakeholder_equity_chart_legend).setVisibility(View.GONE);
+        } else {
+            setupShareholderPieChart(view);
+        }
 
         if (startup != null) {
             loadData();
@@ -194,6 +202,9 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         startupMarkets.setVisibility(View.GONE);
     }
 
+    /**
+     * Load the startups data into the different views
+     */
     private void loadData() {
         startupScope.setText(resources.formatMoneyAmount(startup.getScope()));
         startupMinTicket.setText(resources.getTicketSize(startup.getTicketMinId())
@@ -276,6 +287,10 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         }
     }
 
+    /**
+     * Prepare the recycler views used to display the matching criteria
+     * @param view The view in which the recycler views will be displayed
+     */
     private void initRecyclerViews(View view) {
         investorTypes = new ArrayList<Model>();
         typeAdapter = new PublicProfileMatchingRecyclerViewAdapter(investorTypes);
@@ -302,6 +317,9 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         recyclerInvolvement.setAdapter(supportAdapter);
     }
 
+    /**
+     * Set click listeners to the buttons which start the handshake process
+     */
     private void manageHandshakeButtons() {
         profileRequest.setOnClickListener(v -> {
             handshakeRequest = true;
@@ -427,9 +445,11 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         });
     }
 
+    /**
+     * Initializes and styles the pie chart used to display all shareholders
+     * @param view The view, in which the pie chart should be displayed
+     */
     private void setupShareholderPieChart(View view) {
-        //TODO: style pie chart
-
         //stores the colors used in the pie chart
         ArrayList<Integer> pieChartColors = populateColorArray();
 
@@ -496,7 +516,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     }
 
     /**
-     * Add colors to the pieChartColors array used for the shareholder pie chart
+     * Populates a color array, which is then used for the shareholder pie chart
+     * @return An array of color integers
      */
     private ArrayList<Integer> populateColorArray() {
         ArrayList<Integer> pieChartColors = new ArrayList<>();

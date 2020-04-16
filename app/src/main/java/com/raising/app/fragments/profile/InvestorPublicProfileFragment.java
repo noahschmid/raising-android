@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.raising.app.R;
@@ -43,6 +44,8 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     private ArrayList<Model> investorTypes, industries, investmentPhases, supports;
     private PublicProfileMatchingRecyclerViewAdapter typeAdapter, industryAdapter, phaseAdapter,
             supportAdapter;
+
+    private ScrollView scrollView;
 
     private boolean handshakeRequest = false;
     private boolean handshakeDecline = false;
@@ -85,6 +88,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         imageIndex = view.findViewById(R.id.text_investor_profile_gallery_image_index);
 
         pictures = new ArrayList<Bitmap>();
@@ -123,6 +127,10 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         }
     }
 
+    /**
+     * Prepare the recycler views used to display the matching criteria
+     * @param view The view in which the recycler views will be displayed
+     */
     private void initRecyclerViews(View view) {
         investorTypes = new ArrayList<Model>();
         typeAdapter = new PublicProfileMatchingRecyclerViewAdapter(investorTypes);
@@ -149,6 +157,9 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         recyclerInvolvement.setAdapter(supportAdapter);
     }
 
+    /**
+     * Set click listeners to the buttons which start the handshake process
+     */
     private void manageHandshakeButtons() {
         profileRequest.setOnClickListener(v -> {
             handshakeRequest = true;
@@ -172,13 +183,16 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
      * @param button The button where the color should change
      * @param color The new color of the button
      */
-    private void toggleHandshakeButtonBackground(View button, int color) {
+    private void colorHandshakeButtonBackground(View button, int color) {
         Drawable drawable = button.getBackground();
         drawable = DrawableCompat.wrap(drawable);
         drawable.setTint(color);
         button.setBackground(drawable);
     }
 
+    /**
+     * Load the investors data into the different views
+     */
     private void loadData(Investor investor) {
         minTicketSize.setText(resources.getTicketSize(investor.getTicketMinId())
                 .toString(getString(R.string.currency),

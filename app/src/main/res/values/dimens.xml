@@ -15,8 +15,10 @@
 
     <dimen name="publicProfileMatchingInformationIconSize"> 32dp </dimen>
 
-    <dimen name="standardHorizontalMarginSmall"> 16dp </dimen>
     <dimen name="standardHorizontalMargin"> 32dp </dimen>
+    <dimen name="standardHorizontalMarginSmall"> 16dp </dimen>
+    <dimen name="standardHorizontalMarginReallySmall"> 8dp</dimen>
+
     <dimen name="standardVerticalMarginSmall"> 8dp </dimen>
     <dimen name="standardVerticalMargin"> 16dp </dimen>
     <dimen name="standardFragmentTitleMargin"> 16dp </dimen>
