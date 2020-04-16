@@ -24,11 +24,16 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Investor;
 import com.raising.app.models.Model;
 import com.raising.app.util.AccountService;
+import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -242,6 +247,43 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                pictures.add(image.getBitmap());
            });
        }
+
+       Glide.with(this)
+                .asBitmap()
+                .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                        investor.getProfilePictureId())
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable
+                            Transition<? super Bitmap> transition) {
+                        pictures.add(resource);
+                        imageSwitcher.setImageDrawable(new BitmapDrawable(
+                                pictures.get(currentImageIndex)));
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
+                });
+
+       if(investor.getGalleryIds() != null) {
+           investor.getGalleryIds().forEach(galleryId -> {
+               Glide.with(this)
+                       .asBitmap()
+                       .load(ApiRequestHandler.getDomain() + "media/gallery/" +
+                               galleryId)
+                       .into(new CustomTarget<Bitmap>() {
+                           @Override
+                           public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                               pictures.add(resource);
+                           }
+
+                           @Override
+                           public void onLoadCleared(@Nullable Drawable placeholder) {
+                           }
+                       });
+           });
+       }
     }
 
     /**
@@ -253,7 +295,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         imageSwitcher.setFactory(() -> {
             ImageView imageView = new ImageView(
                     Objects.requireNonNull(getActivity()).getApplicationContext());
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setLayoutParams(new ImageSwitcher.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
@@ -263,17 +305,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             } else {
                 imageView.setImageBitmap(pictures.get(currentImageIndex));
             }
-            /*
-
-            if (investor.getProfilePictureId() != -1) {
-                Glide
-                        .with(this)
-                        .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
-                                investor.getProfilePictureId())
-                        .centerCrop()
-                        .placeholder(R.drawable.ic_person_24dp)
-                        .into(imageView);
-            }*/
             imageIndex.setText(currentIndexToString(currentImageIndex));
             return imageView;
         });
