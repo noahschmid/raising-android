@@ -15,7 +15,7 @@ public class HandshakesFragment extends RaisingFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        customizeAppBar("Interactions", false);
+        customizeAppBar("Leads", false);
         return inflater.inflate(R.layout.fragment_handshakes, container, false);
     }
 }
