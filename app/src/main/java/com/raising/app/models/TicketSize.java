@@ -13,6 +13,10 @@ public class TicketSize implements Serializable, Model {
 
     public String getName() { return toString("CHF", new String[] {"k", "M", "B"}); }
 
+    public TicketSize(long id, int ticketSize) {
+        this.id = id;
+        this.ticketSize = ticketSize;
+    }
     @Override
     public Bitmap getImage() {
         return null;

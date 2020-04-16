@@ -23,11 +23,13 @@ import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Investor;
 import com.raising.app.models.Model;
 import com.raising.app.util.AccountService;
+import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -180,7 +182,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         maxTicketSize.setText(resources.getTicketSize(investor.getTicketMaxId())
                 .toString(getString(R.string.currency),
                         getResources().getStringArray(R.array.revenue_units)));
-       profileName.setText(investor.getName());
+       profileName.setText(investor.getFirstName() + " " + investor.getLastName());
        profilePitch.setText(investor.getPitch());
        profileSentence.setText(investor.getDescription());
        //TODO: change to actual value
@@ -234,6 +236,17 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             } else {
                 imageView.setImageBitmap(pictures.get(currentImageIndex));
             }
+            /*
+
+            if (investor.getProfilePictureId() != -1) {
+                Glide
+                        .with(this)
+                        .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                                investor.getProfilePictureId())
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_person_24dp)
+                        .into(imageView);
+            }*/
             imageIndex.setText(currentIndexToString(currentImageIndex));
             return imageView;
         });

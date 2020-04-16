@@ -120,7 +120,7 @@ public class MatchesFragment extends RaisingFragment {
                 if(matchListItems.size() == 0) {
                     emptyMatchListLayout.setVisibility(View.VISIBLE);
                 } else {
-                    emptyMatchListLayout.setVisibility(View.INVISIBLE);
+                    emptyMatchListLayout.setVisibility(View.GONE);
                 }
             }
         });
@@ -128,7 +128,7 @@ public class MatchesFragment extends RaisingFragment {
         if(matchListItems.size() == 0) {
             emptyMatchListLayout.setVisibility(View.VISIBLE);
         } else {
-            emptyMatchListLayout.setVisibility(View.INVISIBLE);
+            emptyMatchListLayout.setVisibility(View.GONE);
         }
 
         matchList = view.findViewById(R.id.matchList);
