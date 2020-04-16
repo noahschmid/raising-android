@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_matchList_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/element_underline_black">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/item_matchList_profile_image"
             android:layout_width="@dimen/matchListPictureSize"
             android:layout_height="@dimen/matchListPictureSize"
-            android:layout_marginStart="@dimen/standardHorizontalMargin"
+            android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
             android:layout_marginTop="@dimen/standardVerticalMargin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -24,10 +22,10 @@
             android:id="@+id/item_matchList_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/standardHorizontalMargin"
+            android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
             android:text="Name"
             android:textColor="@color/raisingTextColor"
-            android:textSize="@dimen/raisingSubtitleFontSize"
+            android:textSize="@dimen/raisingTextFontSize"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/item_matchList_attributes"
             app:layout_constraintStart_toEndOf="@+id/item_matchList_profile_image"
@@ -50,7 +48,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-            android:layout_marginTop="@dimen/standardVerticalMargin"
+            android:layout_marginTop="@dimen/standardVerticalMarginSmall"
             android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
             android:layout_marginBottom="@dimen/standardVerticalMargin"
             android:text="Sentence"
@@ -65,7 +63,7 @@
             android:id="@+id/item_matchList_chart"
             android:layout_width="@dimen/matchListPercentChartSize"
             android:layout_height="@dimen/matchListPercentChartSize"
-            android:layout_marginEnd="@dimen/standardHorizontalMargin"
+            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
             app:layout_constraintBottom_toBottomOf="@+id/item_matchList_profile_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/item_matchList_profile_image" />
@@ -74,7 +72,6 @@
             android:id="@+id/item_matchList_match_percent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
             android:gravity="center|right"
             android:text="Percent"
             android:textColor="@color/raisingTextColor"

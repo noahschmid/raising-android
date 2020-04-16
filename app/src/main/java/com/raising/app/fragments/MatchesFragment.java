@@ -21,13 +21,9 @@ import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.Match;
 import com.raising.app.models.MatchListItem;
 import com.raising.app.models.ViewState;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.recyclerViewAdapter.MatchListAdapter;
-import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
-import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.MatchesViewModel;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MatchesFragment extends RaisingFragment {
@@ -51,6 +47,7 @@ public class MatchesFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         emptyMatchListLayout = view.findViewById(R.id.empty_matchList_layout);
+        emptyMatchListLayout.setVisibility(View.GONE);
 
         matchesViewModel  = new ViewModelProvider(this)
                 .get(MatchesViewModel .class);
