@@ -29,8 +29,17 @@ public class Serializer {
             jsonInvestor.addProperty("name", src.getName());
             jsonInvestor.addProperty("firstName", src.getFirstName());
             jsonInvestor.addProperty("lastName", src.getLastName());
+            if(src.getEmail() != null && !src.getEmail().equals(AuthenticationHandler.getEmail())) {
+                jsonInvestor.addProperty("email", src.getEmail());
+            }
             jsonInvestor.addProperty("description", src.getDescription());
             jsonInvestor.addProperty("countryId", src.getCountryId());
+
+            jsonInvestor.add("countries", toJsonArray(src.getCountries()));
+            jsonInvestor.add("continents", toJsonArray(src.getContinents()));
+            jsonInvestor.add("investmentPhases", toJsonArray(src.getInvestmentPhases()));
+            jsonInvestor.add("support", toJsonArray(src.getSupport()));
+            jsonInvestor.add("industries", toJsonArray(src.getIndustries()));
 
             return jsonInvestor;
         }
