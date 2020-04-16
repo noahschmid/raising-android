@@ -78,7 +78,6 @@ public class MatchesFragment extends RaisingFragment {
                 matchListItems.add(matchItem);
             });
         }
-
         matchListAdapter = new MatchListAdapter(matchListItems);
 
         matchListItems.forEach(item -> {
@@ -127,7 +126,7 @@ public class MatchesFragment extends RaisingFragment {
         } else {
             emptyMatchListLayout.setVisibility(View.GONE);
         }
-
+        
         matchList = view.findViewById(R.id.matchList);
         matchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         matchList.setAdapter(matchListAdapter);

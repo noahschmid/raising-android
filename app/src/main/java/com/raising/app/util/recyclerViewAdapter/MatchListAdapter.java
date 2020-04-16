@@ -102,7 +102,6 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
         percentChart.setUsePercentValues(true);
         percentChart.setRotationEnabled(false);
 
-        percentChart.animateY(1000);
         percentChart.invalidate();
     }
 
