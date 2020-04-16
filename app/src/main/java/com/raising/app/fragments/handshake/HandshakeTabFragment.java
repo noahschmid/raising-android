@@ -31,6 +31,7 @@ public class HandshakeTabFragment extends RaisingFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_handshake_tab, container, false);
     }
 

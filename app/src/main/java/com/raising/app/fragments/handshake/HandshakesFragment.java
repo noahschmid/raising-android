@@ -27,6 +27,9 @@ public class HandshakesFragment extends RaisingFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        customizeAppBar(getString(R.string.toolbar_title_handshakes), false);
+
         return inflater.inflate(R.layout.fragment_handshakes, container, false);
     }
 
@@ -44,6 +47,8 @@ public class HandshakesFragment extends RaisingFragment {
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
                 tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
+
+        viewPager.setCurrentItem(tabLayout.getSelectedTabPosition());
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
