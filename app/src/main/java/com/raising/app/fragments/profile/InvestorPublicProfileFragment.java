@@ -49,8 +49,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     private PublicProfileMatchingAdapter typeAdapter, industryAdapter, phaseAdapter,
             supportAdapter;
 
-    private ScrollView scrollView;
-
     private boolean handshakeRequest = false;
     private boolean handshakeDecline = false;
 

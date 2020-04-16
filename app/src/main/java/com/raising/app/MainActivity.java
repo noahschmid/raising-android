@@ -3,6 +3,7 @@ package com.raising.app;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -148,6 +149,16 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        getSupportFragmentManager().popBackStackImmediate();
+        FragmentManager manager = getSupportFragmentManager();
+
+        int currentEntryCount = manager.getBackStackEntryCount();
+        if(currentEntryCount == 1) {
+            return;
+        }
+        Fragment currentFragment = manager.findFragmentById(currentEntryCount - 1);
+        if(currentFragment != null) {
+            manager.beginTransaction().remove(currentFragment);
+            manager.popBackStackImmediate();
+        }
     }
 }
