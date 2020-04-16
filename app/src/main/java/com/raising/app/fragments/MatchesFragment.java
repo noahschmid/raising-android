@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import com.raising.app.util.recyclerViewAdapter.MatchListAdapter;
 import com.raising.app.viewModels.MatchesViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MatchesFragment extends RaisingFragment {
     private RecyclerView matchList;
@@ -32,6 +34,7 @@ public class MatchesFragment extends RaisingFragment {
     private ArrayList<MatchListItem> matchListItems;
     private MatchesViewModel matchesViewModel;
     private MatchListAdapter matchListAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private final String TAG = "MatchesFragment";
 
@@ -48,6 +51,8 @@ public class MatchesFragment extends RaisingFragment {
 
         emptyMatchListLayout = view.findViewById(R.id.empty_matchList_layout);
         emptyMatchListLayout.setVisibility(View.GONE);
+
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
 
         matchesViewModel  = new ViewModelProvider(this)
                 .get(MatchesViewModel .class);
@@ -87,39 +92,13 @@ public class MatchesFragment extends RaisingFragment {
         });
 
         matchesViewModel.getMatches().observe(getViewLifecycleOwner(), matches -> {
-            if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
-                    resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
-                matchListItems.clear();
-                matches.forEach(match -> {
-                    MatchListItem matchItem = new MatchListItem();
-                    matchItem.setDescription(match.getDescription());
-                    matchItem.setAccountId(match.getAccountId());
-                    matchItem.setScore(match.getMatchingPercent());
-                    matchItem.setStartup(match.isStartup());
-                    matchItem.setPictureId(match.getProfilePictureId());
-                    if (matchItem.isStartup()) {
-                        matchItem.setAttribute(resources.getInvestmentPhase(
-                                match.getInvestmentPhaseId()).getName());
-                        matchItem.setName(match.getCompanyName());
-                    } else {
-                        matchItem.setAttribute(resources.getInvestorType(
-                                match.getInvestorTypeId()).getName());
-                        matchItem.setName(match.getFirstName() + " " + match.getLastName());
-                    }
+            processItems(matches);
+        });
 
-                    matchListItems.add(matchItem);
-                });
-
-                matchListItems.forEach(item -> {
-                    Log.d(TAG, "onViewCreated: " + item.getName());
-                });
-
-                matchListAdapter.notifyDataSetChanged();
-                if(matchListItems.size() == 0) {
-                    emptyMatchListLayout.setVisibility(View.VISIBLE);
-                } else {
-                    emptyMatchListLayout.setVisibility(View.GONE);
-                }
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                matchesViewModel.loadMatches();
             }
         });
 
@@ -146,6 +125,40 @@ public class MatchesFragment extends RaisingFragment {
                 changeFragment(publicProfile);
             }
         });
+    }
+
+    private void processItems(List<Match> matches) {
+        if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
+                resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
+            matchListItems.clear();
+            matches.forEach(match -> {
+                MatchListItem matchItem = new MatchListItem();
+                matchItem.setDescription(match.getDescription());
+                matchItem.setAccountId(match.getAccountId());
+                matchItem.setScore(match.getMatchingPercent());
+                matchItem.setStartup(match.isStartup());
+                matchItem.setPictureId(match.getProfilePictureId());
+                if (matchItem.isStartup()) {
+                    matchItem.setAttribute(resources.getInvestmentPhase(
+                            match.getInvestmentPhaseId()).getName());
+                    matchItem.setName(match.getCompanyName());
+                } else {
+                    matchItem.setAttribute(resources.getInvestorType(
+                            match.getInvestorTypeId()).getName());
+                    matchItem.setName(match.getFirstName() + " " + match.getLastName());
+                }
+
+                matchListItems.add(matchItem);
+            });
+
+            matchListAdapter.notifyDataSetChanged();
+            if(matchListItems.size() == 0) {
+                emptyMatchListLayout.setVisibility(View.VISIBLE);
+            } else {
+                emptyMatchListLayout.setVisibility(View.GONE);
+            }
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override

@@ -238,17 +238,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             } else {
                 imageView.setImageBitmap(pictures.get(currentImageIndex));
             }
-            /*
-
-            if (investor.getProfilePictureId() != -1) {
-                Glide
-                        .with(this)
-                        .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
-                                investor.getProfilePictureId())
-                        .centerCrop()
-                        .placeholder(R.drawable.ic_person_24dp)
-                        .into(imageView);
-            }*/
             imageIndex.setText(currentIndexToString(currentImageIndex));
             return imageView;
         });
