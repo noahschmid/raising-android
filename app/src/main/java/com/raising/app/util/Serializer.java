@@ -69,6 +69,7 @@ public class Serializer {
             jsonInvestor.add("investmentPhases", toJsonArray(src.getInvestmentPhases()));
             jsonInvestor.addProperty("website", src.getWebsite());
             jsonInvestor.addProperty("countryId", src.getCountryId());
+            jsonInvestor.addProperty("profilePictureId", src.getProfilePictureId());
 
             return jsonInvestor;
         }
@@ -154,6 +155,7 @@ public class Serializer {
             jsonStartup.add("support", toJsonArray(src.getSupport()));
             jsonStartup.add("industries", toJsonArray(src.getIndustries()));
             jsonStartup.add("investorTypes", toJsonArray(src.getInvestorTypes()));
+            jsonStartup.addProperty("profilePictureId", src.getProfilePictureId());
 
             // -- FOUNDERS --
             JsonArray founders = new JsonArray();
