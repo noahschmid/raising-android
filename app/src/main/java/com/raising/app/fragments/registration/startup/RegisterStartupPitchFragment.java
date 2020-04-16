@@ -37,6 +37,7 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
                 container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar("Pitch", true);
 
         return view;
     }
@@ -76,6 +77,7 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
             btnStartupPitch.setHint(getString(R.string.myProfile_apply_changes));
             startup = (Startup) accountViewModel.getAccount().getValue();
             editMode = true;
+            hideBottomNavigation(false);
         } else {
             startup = RegistrationHandler.getStartup();
         }

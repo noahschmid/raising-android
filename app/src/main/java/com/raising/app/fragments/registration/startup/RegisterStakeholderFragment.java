@@ -79,6 +79,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
 
         hideBottomNavigation(true);
+        customizeAppBar("Stakeholders", true);
 
         return view;
     }
@@ -95,6 +96,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
             startup = (Startup)accountViewModel.getAccount().getValue();
             editMode = true;
+            hideBottomNavigation(false);
         } else {
             startup = RegistrationHandler.getStartup();
         }

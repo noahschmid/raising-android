@@ -199,6 +199,8 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
            locationPin.setVisibility(View.GONE);
        }
 
+       customizeAppBar(investor.getFirstName() + " " + investor.getLastName(), true);
+
        investorTypes.add((Model)resources.getInvestorType(investor.getInvestorTypeId()));
        investor.getIndustries().forEach(industry -> {
            industries.add(resources.getIndustry(industry));

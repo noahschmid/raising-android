@@ -46,6 +46,7 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
                 container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar("Pitch", true);
         return view;
     }
 
@@ -83,6 +84,7 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
             btnInvestorPitch.setHint(getString(R.string.myProfile_apply_changes));
             investor = (Investor) accountViewModel.getAccount().getValue();
             editMode = true;
+            hideBottomNavigation(false);
         } else {
             investor = RegistrationHandler.getInvestor();
         }

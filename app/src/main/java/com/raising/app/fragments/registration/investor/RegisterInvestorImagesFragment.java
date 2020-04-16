@@ -71,6 +71,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         View view = inflater.inflate(R.layout.fragment_register_investor_images,
                 container, false);
         hideBottomNavigation(true);
+        customizeAppBar("Images", true);
 
         return view;
     }
@@ -117,6 +118,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
             investor = (Investor) accountViewModel.getAccount().getValue();
             editMode = true;
+            hideBottomNavigation(false);
         } else {
             investor = RegistrationHandler.getInvestor();
         }

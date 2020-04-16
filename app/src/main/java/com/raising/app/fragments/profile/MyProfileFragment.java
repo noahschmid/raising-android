@@ -47,6 +47,7 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        customizeAppBar("My Profile", false);
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
