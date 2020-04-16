@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class StartupPublicProfileFragment extends RaisingFragment {
+    private static final String TAG = "StartupPublicProfile";
     private ImageSwitcher imageSwitcher;
     private ImageButton profileRequest, profileDecline;
     private TextView imageIndex, matchingPercent, profileName, profileLocation, profileSentence,
@@ -177,7 +178,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         founderRecyclerView.setAdapter(founderListAdapter);
 
         // setup recycler view for board members
-        ArrayList<BoardMember> boardMemberList = new ArrayList<>(startup.getBoardMembers());
+        ArrayList<BoardMember> boardMemberList = new ArrayList<>();
+        boardMemberList.addAll(startup.getBoardMembers());
         RecyclerView boardMemberRecyclerView = view.findViewById(R.id.startup_profile_board_member_list);
         boardMemberRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         StartupProfileBoardMemberAdapter boardMemberListAdapter
