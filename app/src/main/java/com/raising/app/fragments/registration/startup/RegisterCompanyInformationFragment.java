@@ -46,7 +46,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
         View view = inflater.inflate(R.layout.fragment_register_company_information, container, false);
 
         hideBottomNavigation(true);
-        customizeAppBar("Company Information", true);
+        customizeAppBar(getString(R.string.toolbar_title_company_information), true);
 
         return view;
     }

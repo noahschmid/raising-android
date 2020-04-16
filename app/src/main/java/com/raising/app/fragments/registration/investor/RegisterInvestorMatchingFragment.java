@@ -57,7 +57,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                 container, false);
 
         hideBottomNavigation(true);
-        customizeAppBar("Matching Information", true);
+        customizeAppBar(getString(R.string.toolbar_title_matching_criteria), true);
 
         return view;
     }

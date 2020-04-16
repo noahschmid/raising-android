@@ -70,8 +70,9 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_investor_images,
                 container, false);
+
         hideBottomNavigation(true);
-        customizeAppBar("Images", true);
+        customizeAppBar(getString(R.string.toolbar_title_profile_images), true);
 
         return view;
     }
@@ -241,7 +242,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         //prepare custom title view
         TextView titleView = new TextView(this.getContext());
         titleView.setText(getString(R.string.image_action_dialog_title));
-        titleView.setTextSize(32f);
+        titleView.setTextSize(28f);
         titleView.setTypeface(Typeface.DEFAULT_BOLD);
         titleView.setPadding(50, 20, 0, 20);
         titleView.setBackgroundColor(ContextCompat.getColor(this.getContext(), R.color.raisingPrimary));

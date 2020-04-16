@@ -56,7 +56,7 @@ public class ShareholderInputFragment extends RaisingFragment {
                 container, false);
 
         hideBottomNavigation(true);
-        customizeAppBar("Add Shareholder", true);
+        customizeAppBar(getString(R.string.toolbar_title_shareholder), true);
 
         return view;
     }
@@ -252,7 +252,7 @@ public class ShareholderInputFragment extends RaisingFragment {
             shareholder = new Shareholder();
         } else {
             btnAddShareholder.setText(getString(R.string.submit));
-            customizeAppBar("Edit Founder", true);
+            customizeAppBar(getString(R.string.toolbar_title_edit_shareholder), true);
             if(shareholder.getId() != -1) {
                 hideBottomNavigation(false);
             }

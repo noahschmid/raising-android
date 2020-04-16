@@ -46,7 +46,7 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
                 container, false);
 
         hideBottomNavigation(true);
-        customizeAppBar("Pitch", true);
+        customizeAppBar(getString(R.string.toolbar_title_pitch), true);
         return view;
     }
 

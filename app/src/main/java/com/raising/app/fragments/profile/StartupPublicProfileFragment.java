@@ -104,6 +104,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         } else {
             AccountService.getStartupAccount(getArguments().getLong("id"), startup -> {
                 matchScore = getArguments().getInt("score");
+                customizeAppBar(getArguments().getString("title"), true);
                 this.startup = startup;
                 Log.i("startup", startup.toString());
                 loadData();

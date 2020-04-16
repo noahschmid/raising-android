@@ -17,36 +17,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/text_startup_pitch"
-                style="@style/FragmentTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_pitch_information_text"
-                app:layout_constraintBottom_toTopOf="@+id/register_startup_pitch_sentence"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="packed" />
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/register_startup_pitch_sentence"
                 style="@style/TextInputLayoutTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_pitch_sentence"
+                app:endIconDrawable="@drawable/ic_info_outline_24dp"
+                app:endIconMode="custom"
                 app:errorEnabled="true"
                 app:helperTextEnabled="true"
-                app:endIconMode="custom"
-                app:endIconDrawable="@drawable/ic_info_outline_24dp"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_pitch_pitch"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_startup_pitch">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/register_input_startup_pitch_sentence"
@@ -62,10 +52,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_pitch"
+                app:endIconDrawable="@drawable/ic_info_outline_24dp"
+                app:endIconMode="custom"
                 app:errorEnabled="true"
                 app:helperTextEnabled="true"
-                app:endIconMode="custom"
-                app:endIconDrawable="@drawable/ic_info_outline_24dp"
                 app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_pitch_sentence"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_pitch_sentence"
@@ -76,11 +66,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
-                    android:minHeight="@dimen/inputPitchHeight"
                     android:maxHeight="@dimen/inputPitchMaxHeight"
+                    android:minHeight="@dimen/inputPitchHeight"
                     android:overScrollMode="always"
                     android:scrollbarStyle="insideInset"
-                    android:scrollbars="vertical"/>
+                    android:scrollbars="vertical" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout

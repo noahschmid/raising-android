@@ -41,7 +41,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         View view = inflater.inflate(R.layout.fragment_register_login_information, container, false);
 
         hideBottomNavigation(true);
-        customizeAppBar("Account Information", true);
+        customizeAppBar(getString(R.string.toolbar_title_login_information), true);
 
         RegistrationHandler.setCancelAllowed(true);
 

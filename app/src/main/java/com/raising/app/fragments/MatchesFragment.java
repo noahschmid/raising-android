@@ -42,7 +42,9 @@ public class MatchesFragment extends RaisingFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        customizeAppBar("Matches of the Week", false);
+
+        customizeAppBar(getString(R.string.toolbar_title_match_list), false);
+
         return inflater.inflate(R.layout.fragment_matches, container, false);
     }
 

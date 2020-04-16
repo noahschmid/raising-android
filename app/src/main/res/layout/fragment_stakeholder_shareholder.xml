@@ -20,31 +20,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/text_add_shareholder_information"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/standardFragmentTitleMargin"
-                android:layout_marginBottom="@dimen/standardFragmentTitleMargin"
-                android:hint="@string/register_stakeholder_shareholder_information_text"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTitleFontSize"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/stakeholder_select_type_of_shareholder"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="packed" />
-
             <RadioGroup
                 android:id="@+id/stakeholder_select_type_of_shareholder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_private_shareholder"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_add_shareholder_information">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed">
 
                 <RadioButton
                     android:id="@+id/stakeholder_select_private_shareholder"
@@ -66,7 +52,6 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_corporate_shareholder"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_select_type_of_shareholder">
 
@@ -182,9 +167,8 @@
                 android:id="@+id/stakeholder_corporate_shareholder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/button_cancel_shareholder"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_private_shareholder">
 
@@ -294,12 +278,11 @@
                 style="@style/ButtonConfirmRegistration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/cancel_text"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/stakeholder_select_type_of_shareholder"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder" />
 
             <Button

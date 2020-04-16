@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         toolbar = findViewById(R.id.raising_app_bar);
-        setSupportActionBar(toolbar);
+        // setSupportActionBar(toolbar);
 
         RegistrationHandler.setContext(getApplicationContext());
 

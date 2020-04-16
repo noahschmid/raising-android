@@ -36,6 +36,7 @@ public class ResetPasswordFragment extends RaisingFragment implements View.OnCli
         passwordInput = view.findViewById(R.id.forgot_input_new_password);
 
         hideBottomNavigation(true);
+        customizeAppBar(getString(R.string.toolbar_title_reset_password), true);
 
         Button loginWithToken = view.findViewById(R.id.button_forgot_loginWithToken);
         loginWithToken.setOnClickListener(this);

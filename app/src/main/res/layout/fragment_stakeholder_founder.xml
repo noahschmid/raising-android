@@ -19,41 +19,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/text_add_founder_information"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/standardFragmentTitleMargin"
-        android:hint="@string/register_stakeholder_founder_information_text"
-        android:textSize="@dimen/raisingTitleFontSize"
-        android:textStyle="bold"
-        android:textColorHint="@color/raisingTextColor"
-        app:layout_constraintBottom_toTopOf="@+id/founder_first_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/founder_first_name"
+                style="@style/TextInputLayoutTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/register_stakeholder_first_name"
+                app:layout_constraintBottom_toTopOf="@+id/founder_last_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/founder_first_name"
-        style="@style/TextInputLayoutTheme"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/standardHorizontalMargin"
-        android:layout_marginEnd="@dimen/standardHorizontalMargin"
-        android:layout_marginBottom="@dimen/standardVerticalMargin"
-        android:hint="@string/register_stakeholder_first_name"
-        app:layout_constraintBottom_toTopOf="@+id/founder_last_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_founder_first_name"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/inputFormHeight" />
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_founder_first_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/inputFormHeight" />
+            </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/founder_last_name"
