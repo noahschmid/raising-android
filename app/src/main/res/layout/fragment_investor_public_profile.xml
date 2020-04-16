@@ -20,7 +20,6 @@
                 android:id="@+id/investor_gallery_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/element_underline_black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -227,6 +226,7 @@
                 android:id="@+id/button_investor_public_profile_website"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/public_profile_website"
                 android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
@@ -239,7 +239,6 @@
                 android:id="@+id/investor_public_profile_matching_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/button_investor_public_profile_website">
 

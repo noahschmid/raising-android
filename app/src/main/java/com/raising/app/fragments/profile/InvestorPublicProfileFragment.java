@@ -33,7 +33,6 @@ import com.raising.app.models.Investor;
 import com.raising.app.models.Model;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
-import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -49,8 +48,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     private ArrayList<Model> investorTypes, industries, investmentPhases, supports;
     private PublicProfileMatchingRecyclerViewAdapter typeAdapter, industryAdapter, phaseAdapter,
             supportAdapter;
-
-    private ScrollView scrollView;
 
     private boolean handshakeRequest = false;
     private boolean handshakeDecline = false;
