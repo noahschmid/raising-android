@@ -15,34 +15,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/handshake_contact_information_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:hint="@string/handshake_contact_information_text"
-                android:textColorHint="@color/raisingSecondaryDark"
-                android:textSize="@dimen/raisingTitleFontSize"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/handshake_contact_coffee"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/handshake_contact_coffee"
                 style="@style/HandshakeContactCardView"
                 android:layout_width="0dp"
-                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 app:layout_constraintBottom_toTopOf="@+id/handshake_contact_businessplan"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/handshake_contact_information_text">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -52,12 +36,13 @@
                         android:id="@+id/handshake_contact_coffee_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/textView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
@@ -71,16 +56,22 @@
 
                     <Button
                         android:id="@+id/button_handshake_contact_coffee"
-                        style="@style/GeneralButtonStyle"
+                        style="@style/HandshakeContactButtonStyle"
                         android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                        android:backgroundTint="@color/raisingSecondaryDark"
-                        android:hint="@string/request_text"
-                        android:textSize="@dimen/raisingTextFontSize"
+                        android:text="@string/request_text"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                        android:src="@drawable/ic_keyboard_arrow_right_32dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -102,7 +93,7 @@
                         android:id="@+id/handshake_contact_businessplan_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -121,13 +112,18 @@
 
                     <Button
                         android:id="@+id/button_handshake_contact_businessplan"
-                        style="@style/GeneralButtonStyle"
+                        style="@style/HandshakeContactButtonStyle"
                         android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                        android:backgroundTint="@color/raisingSecondaryDark"
-                        android:hint="@string/request_text"
-                        android:textSize="@dimen/raisingTextFontSize"
+                        android:text="@string/request_text"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                        android:src="@drawable/ic_keyboard_arrow_right_32dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -152,7 +148,7 @@
                         android:id="@+id/handshake_contact_phone_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
                         android:src="@drawable/ic_phone_24dp"
                         android:tint="@color/raisingSecondaryDark"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -173,13 +169,18 @@
 
                     <Button
                         android:id="@+id/button_handshake_contact_phone"
-                        style="@style/GeneralButtonStyle"
+                        style="@style/HandshakeContactButtonStyle"
                         android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                        android:backgroundTint="@color/raisingSecondaryDark"
-                        android:hint="@string/request_text"
-                        android:textSize="@dimen/raisingTextFontSize"
+                        android:text="@string/request_text"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                        android:src="@drawable/ic_keyboard_arrow_right_32dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -204,7 +205,7 @@
                         android:id="@+id/handshake_contact_email_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
                         android:src="@drawable/ic_email_24dp"
                         android:tint="@color/raisingSecondaryDark"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -225,13 +226,18 @@
 
                     <Button
                         android:id="@+id/button_handshake_contact_email"
-                        style="@style/GeneralButtonStyle"
+                        style="@style/HandshakeContactButtonStyle"
                         android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                        android:backgroundTint="@color/raisingSecondaryDark"
-                        android:hint="@string/request_text"
-                        android:textSize="@dimen/raisingTextFontSize"
+                        android:text="@string/request_text"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                        android:src="@drawable/ic_keyboard_arrow_right_32dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -256,7 +262,7 @@
                         android:id="@+id/handshake_contact_video_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
                         android:src="@drawable/ic_video_call_24dp"
                         android:tint="@color/raisingSecondaryDark"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -277,13 +283,18 @@
 
                     <Button
                         android:id="@+id/button_handshake_contact_video"
-                        style="@style/GeneralButtonStyle"
+                        style="@style/HandshakeContactButtonStyle"
                         android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                        android:backgroundTint="@color/raisingSecondaryDark"
-                        android:hint="@string/request_text"
-                        android:textSize="@dimen/raisingTextFontSize"
+                        android:text="@string/request_text"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                        android:src="@drawable/ic_keyboard_arrow_right_32dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
