@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -24,11 +25,13 @@ import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.viewModels.AccountViewModel;
+import com.raising.app.viewModels.MatchesViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 
 public class MainActivity extends AppCompatActivity {
     AccountViewModel accountViewModel;
     ResourcesViewModel resourcesViewModel;
+    MatchesViewModel matchesViewModel;
 
     MaterialToolbar toolbar;
 
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         resourcesViewModel = new ViewModelProvider(this).get(ResourcesViewModel.class);
+        matchesViewModel = new ViewModelProvider(this).get(MatchesViewModel.class);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +25,7 @@ import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -75,6 +77,9 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     private boolean handshakeRequest = false;
     private boolean handshakeDecline = false;
 
+    private ConstraintLayout profileLayout;
+    private ScrollView scrollView;
+
     private int matchScore;
 
     private LayoutInflater inflater;
@@ -123,6 +128,9 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         inflater = (LayoutInflater) getContext().getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
+        scrollView = view.findViewById(R.id.scroll_layout);
+        profileLayout = view.findViewById(R.id.profile_layout);
+        profileLayout.setVisibility(View.INVISIBLE);
 
         imageIndex = view.findViewById(R.id.text_startup_profile_gallery_image_index);
 
@@ -298,6 +306,9 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         }
 
         loadStakeholders();
+        profileLayout.setVisibility(View.VISIBLE);
+        scrollView.scrollTo(0,0);
+        scrollView.smoothScrollTo(0, 0);
     }
 
     private void loadStakeholders() {
