@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -57,7 +58,7 @@ public class MatchesFragment extends RaisingFragment {
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
 
-        matchesViewModel  = new ViewModelProvider(this)
+        matchesViewModel  = ViewModelProviders.of(getActivity())
                 .get(MatchesViewModel .class);
 
         matchesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> processViewState(state));
@@ -93,8 +94,11 @@ public class MatchesFragment extends RaisingFragment {
             Log.d(TAG, "matchListItems: " + + item.getAccountId() + " " + item.getAttribute() + item.getName());
         });
 
-        matchesViewModel.getMatches().observe(getViewLifecycleOwner(), matches -> {
-            processItems(matches);
+        matchesViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
+            processViewState(viewState);
+            if(viewState == ViewState.CACHED || viewState == ViewState.RESULT) {
+                processItems(matchesViewModel.getMatches().getValue());
+            }
         });
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -156,6 +160,8 @@ public class MatchesFragment extends RaisingFragment {
             matchListAdapter.notifyDataSetChanged();
             if(matchListItems.size() == 0) {
                 emptyMatchListLayout.setVisibility(View.VISIBLE);
+            } else {
+                emptyMatchListLayout.setVisibility(View.GONE);
             }
             swipeRefreshLayout.setRefreshing(false);
         }
