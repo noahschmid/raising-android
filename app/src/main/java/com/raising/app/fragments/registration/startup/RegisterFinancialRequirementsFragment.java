@@ -80,6 +80,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         financialTypeInput = view.findViewById(R.id.register_input_financial_type);
         financialTypeInput.setShowSoftInputOnFocus(false);
+        financialTypeInput.setAdapter(adapterType);
 
         financialTypeInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

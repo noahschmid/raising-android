@@ -66,11 +66,16 @@ public class AccountService {
         }
 
         Function<JSONObject, Void> middleware = response -> {
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.registerTypeAdapter(Startup.class, new StartupDeserializer());
-            Gson gson = gsonBuilder.create();
-            Startup startup = gson.fromJson(response.toString(), Startup.class);
-            callback.apply(startup);
+            try {
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                gsonBuilder.registerTypeAdapter(Startup.class, new StartupDeserializer());
+                Gson gson = gsonBuilder.create();
+                Startup startup = gson.fromJson(response.toString(), Startup.class);
+
+                callback.apply(startup);
+            } catch (Exception e) {
+                Log.e(TAG, "getStartupAccount: " + e.getMessage());
+            }
             return null;
         };
 
@@ -90,13 +95,17 @@ public class AccountService {
         }
 
         Function<JSONObject, Void> middleware = response -> {
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            InvestorDeserializer deserializer = new InvestorDeserializer();
-            gsonBuilder.registerTypeAdapter(Investor.class, deserializer);
-            Gson gson = gsonBuilder.create();
-            Log.d("AccountJSON", response.toString());
-            Investor investor = gson.fromJson(response.toString(), Investor.class);
-            callback.apply(investor);
+            try {
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                InvestorDeserializer deserializer = new InvestorDeserializer();
+                gsonBuilder.registerTypeAdapter(Investor.class, deserializer);
+                Gson gson = gsonBuilder.create();
+                Log.d("AccountJSON", response.toString());
+                Investor investor = gson.fromJson(response.toString(), Investor.class);
+                callback.apply(investor);
+            } catch(Exception e) {
+                Log.e(TAG, "getInvestorAccount: " + e.getMessage() );
+            }
             return null;
         };
 

@@ -100,15 +100,10 @@ public class MatchesFragment extends RaisingFragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                matchesViewModel.runMatching();
                 matchesViewModel.loadMatches();
             }
         });
-
-        if(matchListItems.size() == 0) {
-            emptyMatchListLayout.setVisibility(View.VISIBLE);
-        } else {
-            emptyMatchListLayout.setVisibility(View.GONE);
-        }
 
         matchList = view.findViewById(R.id.matchList);
         matchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -161,8 +156,6 @@ public class MatchesFragment extends RaisingFragment {
             matchListAdapter.notifyDataSetChanged();
             if(matchListItems.size() == 0) {
                 emptyMatchListLayout.setVisibility(View.VISIBLE);
-            } else {
-                emptyMatchListLayout.setVisibility(View.GONE);
             }
             swipeRefreshLayout.setRefreshing(false);
         }

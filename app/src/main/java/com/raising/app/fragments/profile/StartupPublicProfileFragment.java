@@ -27,6 +27,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -168,34 +170,6 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         completedProgress = view.findViewById(R.id.progress_profile_completed);
 
-        // setup recycler view for founders
-        ArrayList<Founder> founderList = new ArrayList<>();
-        founderList.addAll(startup.getFounders());
-        RecyclerView founderRecyclerView = view.findViewById(R.id.startup_profile_founder_list);
-        founderRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        StartupProfileFounderAdapter founderListAdapter
-                = new StartupProfileFounderAdapter(founderList);
-        founderRecyclerView.setAdapter(founderListAdapter);
-
-        // setup recycler view for board members
-        ArrayList<BoardMember> boardMemberList = new ArrayList<>();
-        boardMemberList.addAll(startup.getBoardMembers());
-        RecyclerView boardMemberRecyclerView = view.findViewById(R.id.startup_profile_board_member_list);
-        boardMemberRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        StartupProfileBoardMemberAdapter boardMemberListAdapter
-                = new StartupProfileBoardMemberAdapter(boardMemberList);
-        boardMemberRecyclerView.setAdapter(boardMemberListAdapter);
-
-        // check if startup has shareholders, if true load pie chart, if false, hide all views
-        if(startup.getCorporateShareholders().size() == 0
-                && startup.getPrivateShareholders().size() == 0) {
-            view.findViewById(R.id.text_profile_shareholder).setVisibility(View.GONE);
-            view.findViewById(R.id.stakeholder_equity_chart).setVisibility(View.GONE);
-            view.findViewById(R.id.stakeholder_equity_chart_legend).setVisibility(View.GONE);
-        } else {
-            setupShareholderPieChart(view);
-        }
-
         if (startup != null) {
             loadData();
         }
@@ -285,6 +259,76 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             startupValuationTitle.setVisibility(View.GONE);
             startupValuation.setVisibility(View.GONE);
         }
+
+        Glide.with(this)
+                .asBitmap()
+                .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                        startup.getProfilePictureId())
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable
+                            Transition<? super Bitmap> transition) {
+                        pictures.add(resource);
+                        imageSwitcher.setImageDrawable(new BitmapDrawable(
+                                pictures.get(currentImageIndex)));
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
+                });
+
+        if(startup.getGalleryIds() != null) {
+            startup.getGalleryIds().forEach(galleryId -> {
+                Glide.with(this)
+                        .asBitmap()
+                        .load(ApiRequestHandler.getDomain() + "media/gallery/" +
+                                galleryId)
+                        .into(new CustomTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                pictures.add(resource);
+                            }
+
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
+                            }
+                        });
+            });
+        }
+
+        loadStakeholders();
+    }
+
+    private void loadStakeholders() {
+        View view = getView();
+        // setup recycler view for founders
+        ArrayList<Founder> founderList = new ArrayList<>();
+        founderList.addAll(startup.getFounders());
+        RecyclerView founderRecyclerView = view.findViewById(R.id.startup_profile_founder_list);
+        founderRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        StartupProfileFounderAdapter founderListAdapter
+                = new StartupProfileFounderAdapter(founderList);
+        founderRecyclerView.setAdapter(founderListAdapter);
+
+        // setup recycler view for board members
+        ArrayList<BoardMember> boardMemberList = new ArrayList<>();
+        boardMemberList.addAll(startup.getBoardMembers());
+        RecyclerView boardMemberRecyclerView = view.findViewById(R.id.startup_profile_board_member_list);
+        boardMemberRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        StartupProfileBoardMemberAdapter boardMemberListAdapter
+                = new StartupProfileBoardMemberAdapter(boardMemberList);
+        boardMemberRecyclerView.setAdapter(boardMemberListAdapter);
+
+        // check if startup has shareholders, if true load pie chart, if false, hide all views
+        if(startup.getCorporateShareholders().size() == 0
+                && startup.getPrivateShareholders().size() == 0) {
+            view.findViewById(R.id.text_profile_shareholder).setVisibility(View.GONE);
+            view.findViewById(R.id.stakeholder_equity_chart).setVisibility(View.GONE);
+            view.findViewById(R.id.stakeholder_equity_chart_legend).setVisibility(View.GONE);
+        } else {
+            setupShareholderPieChart(view);
+        }
     }
 
     /**
@@ -365,23 +409,13 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             imageView.setLayoutParams(new ImageSwitcher.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
-            if (startup.getProfilePictureId() != -1) {
-                Glide
-                        .with(this)
-                        .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
-                                startup.getProfilePictureId())
-                        .centerCrop()
-                        .placeholder(R.drawable.ic_person_24dp)
-                        .into(imageView);
-            }
 
-            /*
             if(pictures.size() == 0) {
                 imageView.setImageDrawable(getResources()
                         .getDrawable(R.drawable.ic_person_24dp));
             } else {
                 imageView.setImageBitmap(pictures.get(currentImageIndex));
-            }*/
+            }
             imageIndex.setText(currentIndexToString(currentImageIndex));
             return imageView;
         });

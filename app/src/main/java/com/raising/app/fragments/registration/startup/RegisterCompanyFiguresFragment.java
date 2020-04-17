@@ -213,7 +213,8 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
         });
 
         // check for countries and continents
-        if(countries.isEmpty() && continents.isEmpty()) {
+        if(countries.isEmpty() && continents.isEmpty() && startup.getCountries().isEmpty() &&
+        startup.getContinents().isEmpty()) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
@@ -234,8 +235,11 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
             return;
         }
 
-        startup.setCountries(countries);
-        startup.setContinents(continents);
+        if(!countries.isEmpty() || !continents.isEmpty()) {
+            startup.setCountries(countries);
+            startup.setContinents(continents);
+        }
+
         startup.setBreakEvenYear(Integer.parseInt(companyBreakevenInput.getText().toString()));
         startup.setFoundingYear(Integer.parseInt(companyFoundingInput.getText().toString()));
         startup.setNumberOfFte(Integer.parseInt(companyFteInput.getText().toString()));
