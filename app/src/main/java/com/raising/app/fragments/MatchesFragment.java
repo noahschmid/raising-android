@@ -57,15 +57,15 @@ public class MatchesFragment extends RaisingFragment {
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
 
-        matchesViewModel  = new ViewModelProvider(this)
-                .get(MatchesViewModel .class);
+        matchesViewModel = new ViewModelProvider(this)
+                .get(MatchesViewModel.class);
 
         matchesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> processViewState(state));
         processViewState(matchesViewModel.getViewState().getValue());
         matchListItems = new ArrayList<>();
 
-        if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
-        resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
+        if (resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
+                resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
             ArrayList<Match> matchList = matchesViewModel.getMatches().getValue();
             matchListItems.clear();
             matchList.forEach(match -> {
@@ -90,86 +90,90 @@ public class MatchesFragment extends RaisingFragment {
         matchListAdapter = new MatchListAdapter(matchListItems);
 
         matchListItems.forEach(item -> {
-            Log.d(TAG, "matchListItems: " + + item.getAccountId() + " " + item.getAttribute() + item.getName());
+            Log.d(TAG, "matchListItems: " + +item.getAccountId() + " " + item.getAttribute() + item.getName());
         });
 
         matchesViewModel.getMatches().observe(getViewLifecycleOwner(), matches -> {
             processItems(matches);
         });
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                matchesViewModel.loadMatches();
-            }
-        });
+        matchesViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
+            switch (viewState) {
+                case RESULT:
+                case CACHED:
+                    dismissLoadingPanel();
+                    break;
+                case LOADING:
+                    showLoadingPanel();
+                    break;
+            }});
 
-        if(matchListItems.size() == 0) {
-            emptyMatchListLayout.setVisibility(View.VISIBLE);
-        } else {
-            emptyMatchListLayout.setVisibility(View.GONE);
-        }
-
-        matchList = view.findViewById(R.id.matchList);
-        matchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        matchList.setAdapter(matchListAdapter);
-        RecyclerViewMargin decoration = new RecyclerViewMargin(15);
-        matchList.addItemDecoration(decoration);
-        matchListAdapter.setOnItemClickListener(position -> {
-            Bundle args = new Bundle();
-            MatchListItem item = matchListItems.get(position);
-            args.putLong("id", item.getAccountId());
-            args.putInt("score", item.getScore());
-            args.putString("title", item.getName());
-            customizeAppBar(item.getName(), true);
-            if(matchListItems.get(position).isStartup()) {
-                StartupPublicProfileFragment publicProfile = new StartupPublicProfileFragment();
-                publicProfile.setArguments(args);
-                changeFragment(publicProfile);
-            } else {
-                InvestorPublicProfileFragment publicProfile = new InvestorPublicProfileFragment();
-                publicProfile.setArguments(args);
-                changeFragment(publicProfile);
-            }
-        });
-    }
-
-    private void processItems(List<Match> matches) {
-        if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
-                resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
-            matchListItems.clear();
-            matches.forEach(match -> {
-                MatchListItem matchItem = new MatchListItem();
-                matchItem.setDescription(match.getDescription());
-                matchItem.setAccountId(match.getAccountId());
-                matchItem.setScore(match.getMatchingPercent());
-                matchItem.setStartup(match.isStartup());
-                matchItem.setPictureId(match.getProfilePictureId());
-                if (matchItem.isStartup()) {
-                    matchItem.setAttribute(resources.getInvestmentPhase(
-                            match.getInvestmentPhaseId()).getName());
-                    matchItem.setName(match.getCompanyName());
-                } else {
-                    matchItem.setAttribute(resources.getInvestorType(
-                            match.getInvestorTypeId()).getName());
-                    matchItem.setName(match.getFirstName() + " " + match.getLastName());
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    matchesViewModel.loadMatches();
                 }
-
-                matchListItems.add(matchItem);
             });
 
-            matchListAdapter.notifyDataSetChanged();
-            if(matchListItems.size() == 0) {
-                emptyMatchListLayout.setVisibility(View.VISIBLE);
-            } else {
-                emptyMatchListLayout.setVisibility(View.GONE);
+            matchList = view.findViewById(R.id.matchList);
+            matchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
+            matchList.setAdapter(matchListAdapter);
+            RecyclerViewMargin decoration = new RecyclerViewMargin(15);
+            matchList.addItemDecoration(decoration);
+            matchListAdapter.setOnItemClickListener(position -> {
+                Bundle args = new Bundle();
+                MatchListItem item = matchListItems.get(position);
+                args.putLong("id", item.getAccountId());
+                args.putInt("score", item.getScore());
+                args.putString("title", item.getName());
+                customizeAppBar(item.getName(), true);
+                if (matchListItems.get(position).isStartup()) {
+                    StartupPublicProfileFragment publicProfile = new StartupPublicProfileFragment();
+                    publicProfile.setArguments(args);
+                    changeFragment(publicProfile);
+                } else {
+                    InvestorPublicProfileFragment publicProfile = new InvestorPublicProfileFragment();
+                    publicProfile.setArguments(args);
+                    changeFragment(publicProfile);
+                }
+            });
+        }
+
+        private void processItems (List < Match > matches) {
+            if (resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
+                    resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
+
+                if (matches.size() == 0) {
+                    emptyMatchListLayout.setVisibility(View.VISIBLE);
+                } else {
+                    emptyMatchListLayout.setVisibility(View.GONE);
+                }
+                matchListItems.clear();
+                matches.forEach(match -> {
+                    MatchListItem matchItem = new MatchListItem();
+                    matchItem.setDescription(match.getDescription());
+                    matchItem.setAccountId(match.getAccountId());
+                    matchItem.setScore(match.getMatchingPercent());
+                    matchItem.setStartup(match.isStartup());
+                    matchItem.setPictureId(match.getProfilePictureId());
+                    if (matchItem.isStartup()) {
+                        matchItem.setAttribute(resources.getInvestmentPhase(
+                                match.getInvestmentPhaseId()).getName());
+                        matchItem.setName(match.getCompanyName());
+                    } else {
+                        matchItem.setAttribute(resources.getInvestorType(
+                                match.getInvestorTypeId()).getName());
+                        matchItem.setName(match.getFirstName() + " " + match.getLastName());
+                    }
+                    matchListItems.add(matchItem);
+                });
+                matchListAdapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
             }
-            swipeRefreshLayout.setRefreshing(false);
+        }
+
+        @Override
+        public void onActivityCreated (@Nullable Bundle savedInstanceState){
+            super.onActivityCreated(savedInstanceState);
         }
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-}
