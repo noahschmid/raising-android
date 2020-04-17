@@ -131,8 +131,9 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
             return;
         }
 
+        showLoadingPanel();
         try {
-            if(!email.equals(AuthenticationHandler.getEmail())) {
+            if(!email.equals(AuthenticationHandler.getEmail()) || !AuthenticationHandler.isLoggedIn()) {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("email", email);
 
@@ -145,19 +146,22 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
                 accountViewModel.update(account);
             }
         } catch(Exception e) {
+            dismissLoadingPanel();
             Log.e("RegisterLoginInformation", "" + e.getMessage());
             return;
         }
     }
 
     Function<JSONObject, Void> callback = response -> {
+        dismissLoadingPanel();
+
         final String firstName = firstNameInput.getText().toString();
         final String lastName = lastNameInput.getText().toString();
         final String email = emailInput.getText().toString();
         final String password = passwordInput.getText().toString();
 
         try {
-            if(editMode) {
+            if(!editMode) {
                 RegistrationHandler.saveLoginInformation(firstName, lastName, email, password);
                 changeFragment(new RegisterSelectTypeFragment(),
                         "RegisterSelectTypeFragment");
@@ -175,6 +179,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     };
 
     Function<VolleyError, Void> errorHandler = error -> {
+        dismissLoadingPanel();
         try {
             if(error.networkResponse.statusCode == 400) {
                 showSimpleDialog(

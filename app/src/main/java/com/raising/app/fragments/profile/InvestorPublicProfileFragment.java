@@ -286,7 +286,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
            });
        }
 
-        profileLayout.setVisibility(View.VISIBLE);
+       profileLayout.setVisibility(View.VISIBLE);
        scrollView.scrollTo(0,0);
        scrollView.smoothScrollTo(0, 0);
     }

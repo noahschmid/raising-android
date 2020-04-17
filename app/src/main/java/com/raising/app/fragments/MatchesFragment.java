@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -56,15 +57,19 @@ public class MatchesFragment extends RaisingFragment {
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
 
-        matchesViewModel  = new ViewModelProvider(this)
+        matchesViewModel  = ViewModelProviders.of(getActivity())
                 .get(MatchesViewModel .class);
 
         matchesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> processViewState(state));
         processViewState(matchesViewModel.getViewState().getValue());
         matchListItems = new ArrayList<>();
 
+        resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+            Log.d(TAG, "onViewCreated: ViewState:" + state.toString());
+        });
+
         if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
-        resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
+                resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
             ArrayList<Match> matchList = matchesViewModel.getMatches().getValue();
             matchListItems.clear();
             matchList.forEach(match -> {
@@ -84,30 +89,29 @@ public class MatchesFragment extends RaisingFragment {
                     matchItem.setName(match.getFirstName() + " " + match.getLastName());
                 }
                 matchListItems.add(matchItem);
+                Log.d(TAG, "onViewCreated: Match List filled");
             });
         }
         matchListAdapter = new MatchListAdapter(matchListItems);
 
         matchListItems.forEach(item -> {
-            Log.d(TAG, "matchListItems: " + + item.getAccountId() + " " + item.getAttribute() + item.getName());
+            Log.d(TAG, "matchListItems: " + item.getAccountId() + " " + item.getAttribute() + item.getName());
         });
 
-        matchesViewModel.getMatches().observe(getViewLifecycleOwner(), matches -> {
-            processItems(matches);
+        matchesViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
+            processViewState(viewState);
+            if(viewState == ViewState.CACHED || viewState == ViewState.RESULT) {
+                processItems(matchesViewModel.getMatches().getValue());
+            }
         });
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                matchesViewModel.runMatching();
                 matchesViewModel.loadMatches();
             }
         });
-
-        if(matchListItems.size() == 0) {
-            emptyMatchListLayout.setVisibility(View.VISIBLE);
-        } else {
-            emptyMatchListLayout.setVisibility(View.GONE);
-        }
 
         matchList = view.findViewById(R.id.matchList);
         matchList.setLayoutManager(new LinearLayoutManager(this.getContext()));

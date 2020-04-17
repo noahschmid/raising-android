@@ -30,7 +30,7 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
     @Override
     public Startup deserialize(JsonElement json, Type typeOfT,
                                 JsonDeserializationContext context)
-            throws JsonParseException {
+            throws JsonParseException, NullPointerException {
         Log.d("StartupDeserializer", json.toString());
         JsonObject jsonObject = json.getAsJsonObject();
         Startup startup = new Startup();
@@ -154,7 +154,9 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
             corporateShareholder.setCorporateBodyId(obj.get("corporateBodyId").getAsInt());
             corporateShareholder.setCountryId(obj.get("countryId").getAsInt());
             corporateShareholder.setEquityShare(obj.get("equityShare").getAsFloat());
-            corporateShareholder.setCorpName(obj.get("corpName").getAsString());
+            if(obj.get("corpName") != null) {
+                corporateShareholder.setCorpName(obj.get("corpName").getAsString());
+            }
             corporateShareholder.setWebsite(obj.get("website").getAsString());
             corporateShareholder.setId(obj.get("id").getAsLong());
             corporateShareholder.setTitle(corporateShareholder.getCorpName() + ", " +

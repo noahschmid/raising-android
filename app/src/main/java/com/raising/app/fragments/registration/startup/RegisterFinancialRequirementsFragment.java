@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -80,6 +81,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         financialTypeInput = view.findViewById(R.id.register_input_financial_type);
         financialTypeInput.setShowSoftInputOnFocus(false);
+        financialTypeInput.setAdapter(adapterType);
 
         financialTypeInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

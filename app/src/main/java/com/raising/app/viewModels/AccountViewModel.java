@@ -235,6 +235,8 @@ public class AccountViewModel extends AndroidViewModel {
     public void updateProfilePicture(Image image) {
         currentAccount.getValue().setProfilePicture(image);
 
+        viewState.setValue(ViewState.LOADING);
+
         try {
             String method = "POST";
             String endpoint = ApiRequestHandler.getDomain() + "media/profilepicture";
@@ -248,15 +250,19 @@ public class AccountViewModel extends AndroidViewModel {
                 try {
                     currentAccount.getValue().setProfilePictureId(response.getLong("id"));
                 } catch (JSONException e) {
+                    viewState.setValue(ViewState.ERROR);
                 }
                 Log.d(TAG, "Successfully updated profile picture");
+                viewState.setValue(ViewState.RESULT);
 
                 return null;
             }, error -> {
+                viewState.setValue(ViewState.ERROR);
                 Log.e(TAG, "updateProfilePicture: " + error.toString() );
                 return null;
             }).execute();
         } catch (Exception e) {
+            viewState.setValue(ViewState.ERROR);
             Log.e(TAG, "Error while updating profile picture: " +
                     e.getMessage());
         }

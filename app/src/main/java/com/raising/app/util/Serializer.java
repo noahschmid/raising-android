@@ -35,8 +35,13 @@ public class Serializer {
             jsonInvestor.addProperty("description", src.getDescription());
             jsonInvestor.addProperty("countryId", src.getCountryId());
 
-            jsonInvestor.add("countries", toJsonArray(src.getCountries()));
-            jsonInvestor.add("continents", toJsonArray(src.getContinents()));
+            if(!src.getCountries().isEmpty()) {
+                jsonInvestor.add("countries", toJsonArray(src.getCountries()));
+            }
+
+            if(!src.getContinents().isEmpty()) {
+                jsonInvestor.add("continents", toJsonArray(src.getContinents()));
+            }
             jsonInvestor.add("investmentPhases", toJsonArray(src.getInvestmentPhases()));
             jsonInvestor.add("support", toJsonArray(src.getSupport()));
             jsonInvestor.add("industries", toJsonArray(src.getIndustries()));
@@ -62,8 +67,14 @@ public class Serializer {
             jsonInvestor.addProperty("firstName", src.getFirstName());
             jsonInvestor.addProperty("lastName", src.getLastName());
             jsonInvestor.addProperty("description", src.getDescription());
-            jsonInvestor.add("countries", toJsonArray(src.getCountries()));
-            jsonInvestor.add("continents", toJsonArray(src.getContinents()));
+
+            if(!src.getCountries().isEmpty()) {
+                jsonInvestor.add("countries", toJsonArray(src.getCountries()));
+            }
+
+            if(!src.getContinents().isEmpty()) {
+                jsonInvestor.add("continents", toJsonArray(src.getContinents()));
+            }
             jsonInvestor.add("support", toJsonArray(src.getSupport()));
             jsonInvestor.add("industries", toJsonArray(src.getIndustries()));
             jsonInvestor.add("investmentPhases", toJsonArray(src.getInvestmentPhases()));
@@ -83,6 +94,7 @@ public class Serializer {
 
             jsonStartup.addProperty("ticketMinId", src.getTicketMinId());
             jsonStartup.addProperty("ticketMaxId", src.getTicketMaxId());
+            jsonStartup.addProperty("preMoneyValuation", src.getPreMoneyValuation());
             jsonStartup.addProperty("investmentPhaseId", src.getInvestmentPhaseId());
             jsonStartup.addProperty("companyName", src.getCompanyName());
             jsonStartup.addProperty("pitch", src.getPitch());
@@ -96,7 +108,7 @@ public class Serializer {
             jsonStartup.addProperty("foundingYear", src.getFoundingYear());
             jsonStartup.addProperty("closingTime", src.getClosingTime());
             jsonStartup.addProperty("breakEvenYear", src.getBreakEvenYear());
-            jsonStartup.addProperty("uId", src.getUId());
+            jsonStartup.addProperty("uid", src.getUId());
             jsonStartup.addProperty("website", src.getWebsite());
             jsonStartup.addProperty("scope", src.getScope());
             jsonStartup.addProperty("financeTypeId", src.getFinanceTypeId());
@@ -128,6 +140,7 @@ public class Serializer {
             jsonStartup.addProperty("email", src.getEmail());
             jsonStartup.addProperty("ticketMinId", src.getTicketMinId());
             jsonStartup.addProperty("ticketMaxId", src.getTicketMaxId());
+            jsonStartup.addProperty("preMoneyValuation", src.getPreMoneyValuation());
             jsonStartup.addProperty("investmentPhaseId", src.getInvestmentPhaseId());
             jsonStartup.addProperty("companyName", src.getCompanyName());
             jsonStartup.addProperty("pitch", src.getPitch());
@@ -141,7 +154,7 @@ public class Serializer {
             jsonStartup.addProperty("foundingYear", src.getFoundingYear());
             jsonStartup.addProperty("closingTime", src.getClosingTime());
             jsonStartup.addProperty("breakEvenYear", src.getBreakEvenYear());
-            jsonStartup.addProperty("uId", src.getUId());
+            jsonStartup.addProperty("uid", src.getUId());
             jsonStartup.addProperty("website", src.getWebsite());
             jsonStartup.addProperty("scope", src.getScope());
             jsonStartup.addProperty("financeTypeId", src.getFinanceTypeId());

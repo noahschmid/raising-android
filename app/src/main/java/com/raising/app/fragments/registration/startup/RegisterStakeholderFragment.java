@@ -416,6 +416,8 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                     getString(R.string.register_stakeholder_error_equity));
         }
 
+        //TODO: remove manually set loading panel
+        showLoadingPanel();
         try {
             if(!editMode) {
                 startup.clearFounders();
@@ -450,9 +452,35 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                         errorCallback, jsonStartup);
                 Log.d("RegistrationString", startup);
             } else {
+                ArrayList<Founder> founders = new ArrayList<>();
+                founderList.forEach(founder -> {
+                    founders.add((Founder) founder);
+                });
+                startup.setFounders(founders);
+
+                ArrayList<BoardMember> boardMembers = new ArrayList<>();
+                boardMemberList.forEach(boardMember -> {
+                    boardMembers.add((BoardMember) boardMember);
+                });
+                startup.setBoardMembers(boardMembers);
+
+                ArrayList<Shareholder> corpShareholders = new ArrayList<>();
+                ArrayList<Shareholder> privShareholders = new ArrayList<>();
+                shareholderList.forEach(shareholder -> {
+                    if(((Shareholder)shareholder).isPrivateShareholder()) {
+                        privShareholders.add((Shareholder)shareholder);
+                    } else {
+                        corpShareholders.add((Shareholder)shareholder);
+                    }
+                });
+                startup.setPrivateShareholders(privShareholders);
+                startup.setCorporateShareholders(corpShareholders);
+
                 popCurrentFragment(this);
             }
         } catch (IOException | JSONException e) {
+            //TODO: remove manually set loading panel
+            dismissLoadingPanel();
             Log.e("RegisterStakeholderFragment", "Error in processInputs: " +
                     e.getMessage());
         }
@@ -462,6 +490,8 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
      * Cancel ongoing registration as request was successful and proceed to login page
      */
     Function<JSONObject, Void> registerCallback = response -> {
+        //TODO: remove manually set loading panel
+        dismissLoadingPanel();
         try {
             RegistrationHandler.finish(response.getLong("id"),
                     response.getString("token"), true);
@@ -475,6 +505,8 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     };
 
     Function<VolleyError, Void> errorCallback = response -> {
+        //TODO: remove manually set loading panel
+        dismissLoadingPanel();
         try {
             if (response.networkResponse.statusCode == 500) {
                 JSONObject body = new JSONObject(new String(

@@ -26,6 +26,15 @@
 
     <!-- Strings used for Login, ForgotPassword -->
     <string name="toolbar_title_login"> Login </string>
+    <string name="login_welcome_text"> Welcome to Raising </string>
+    <string name="login_button_text"> Login </string>
+    <string name="login_email"> E-Mail </string>
+    <string name="login_password"> Password</string>
+    <string name="login_forgot_button_text"> Forgot Password? </string>
+    <string name="login_register_text"> No Account? </string>
+    <string name="login_dialog_title"> Login failed </string>
+    <string name="login_dialog_text_403"> Incorrect username or password </string>
+    <string name="login_dialog_text_empty_credentials"> Please fill out all required fields </string>
 
     <string name="toolbar_title_forgot_email"> Forgot Password</string>
 
@@ -69,11 +78,29 @@
     <string name="toolbar_title_match_list"> Matches of the Week </string>
 
     <string name="toolbar_title_handshakes"> Leads </string>
+    <string name="handshake_your_turn"> Your turn </string>
+    <string name="handshake_pending"> Pending </string>
+    <string name="handshake_closed"> Closed </string>
+
+    <string name="handshake_open_requests"> Open Requests </string>
+    <string name="handshake_open_requests_description"> Accept or decline requests </string>
+
+    <string name="handshake_tab_today"> Today </string>
+    <string name="handshake_tab_this_week"> This Week </string>
+
+    <string name="toolbar_title_open_requests"> Open Requests</string>
+
     <string name="toolbar_title_contact"> Contact </string>
+
+    <string name="handshake_contact_coffee"> Drink a Coffee</string>
+    <string name="handshake_contact_businessplan"> Request Businessplan</string>
+    <string name="handshake_contact_phone">Phone call</string>
+    <string name="handshake_contact_email"> Send Email</string>
+    <string name="handshake_contact_video"> Video-Conference</string>
+
     <string name="handshake_contact_requested"> Requested </string>
     <string name="handshake_contact_send_email"> Send E-Mail</string>
     <string name="handshake_contact_save_contact"> Save to Contacts</string>
-
 
 
     <string name="toolbar_title_settings"> Settings </string>
@@ -122,42 +149,6 @@
     <!-- Strings used for MatchList and Handshake Screens -->
     <string name="empty_matchList_text"> You are done! </string>
     <string name="empty_matchList_text_2"> Enjoy the rest of your week! </string>
-
-    <string name="handshake_your_turn"> Your turn </string>
-    <string name="handshake_pending"> Pending </string>
-    <string name="handshake_closed"> Closed </string>
-
-    <string name="handshake_get_in_touch"> Get in touch</string>
-
-    <string name="handshake_contact_information_text"> How would you like to get in touch?</string>
-    <string name="handshake_contact_coffee"> Drink a Coffee</string>
-    <string name="handshake_contact_businessplan"> Request Businessplan</string>
-    <string name="handshake_contact_phone">Phone call</string>
-    <string name="handshake_contact_email"> Send Email</string>
-    <string name="handshake_contact_video"> Video-Conference</string>
-
-    <string name="handshake_contact"> Contact </string>
-
-    <string name="handshake_open_requests"> Open Requests </string>
-    <string name="handshake_open_requests_description"> Accept or decline requests </string>
-
-    <string name="handshake_tab_today"> Today </string>
-    <string name="handshake_tab_this_week"> This Week </string>
-
-    <string name="handshake_open_requests_title"> Open Requests</string>
-
-    <!-- Strings used in LoginScreen -->
-    <string name="login_welcome_text"> Welcome to Raising </string>
-    <string name="login_button_text"> Login </string>
-    <string name="login_email"> E-Mail </string>
-    <string name="login_password"> Password</string>
-
-    <string name="login_forgot_button_text"> Forgot Password? </string>
-    <string name="login_register_text"> No Account? </string>
-
-    <string name="login_dialog_title"> Login failed </string>
-    <string name="login_dialog_text_403"> Incorrect username or password </string>
-    <string name="login_dialog_text_empty_credentials"> Please fill out all required fields </string>
 
     <!-- Strings used in ForgotPasswordScreens -->
     <string name="reset_email_input_placeholder"> E-Mail </string>
@@ -231,7 +222,7 @@
     <string name="register_matching_countries"> Countries </string>
 
     <string-array name="revenue_units">
-        <item>k</item>
+        <item>K</item>
         <item>M</item>
         <item>B</item>
     </string-array>

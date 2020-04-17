@@ -44,6 +44,17 @@ public class MatchesViewModel extends AndroidViewModel {
 
     public MutableLiveData<ViewState> getViewState() { return viewState; }
 
+    public void runMatching() {
+        ApiRequestHandler.performPostRequest("match/run",
+                response -> {
+                    return null;
+                },
+                error -> {
+                    Log.e(TAG, "runMatching: " + ApiRequestHandler.parseVolleyError(error) );
+                    return null;
+                }, new JSONObject());
+    }
+
     public void loadMatches() {
         ArrayList<Match> cachedMatchList = getCachedMatches();
         if(cachedMatchList != null) {

@@ -95,10 +95,6 @@ public class RaisingFragment extends Fragment {
                 case UPDATED:
                     onAccountUpdated();
                     break;
-                case ERROR:
-                    dismissLoadingPanel();
-                    displayGenericError();
-                    break;
             }
         });
 
@@ -124,10 +120,6 @@ public class RaisingFragment extends Fragment {
             case RESULT:
             case CACHED:
                 dismissLoadingPanel();
-                break;
-            case ERROR:
-                dismissLoadingPanel();
-                displayGenericError();
                 break;
         }
     }
@@ -329,6 +321,7 @@ public class RaisingFragment extends Fragment {
         FragmentManager fragmentManager = getActivitiesFragmentManager();
         fragmentManager.beginTransaction().remove(currentFragment);
         fragmentManager.popBackStackImmediate();
+        accountViewModel.updateCompleted();
     }
 
     /**

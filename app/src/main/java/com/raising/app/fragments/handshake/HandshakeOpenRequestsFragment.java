@@ -28,7 +28,7 @@ public class HandshakeOpenRequestsFragment extends RaisingFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        customizeAppBar(getString(R.string.handshake_open_requests_title), true);
+        customizeAppBar(getString(R.string.toolbar_title_open_requests), true);
 
         return inflater.inflate(R.layout.fragment_handshake_open_requests, container, false);
     }
