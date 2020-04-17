@@ -65,7 +65,7 @@ public class MatchesFragment extends RaisingFragment {
         matchListItems = new ArrayList<>();
 
         if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
-        resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
+                resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
             ArrayList<Match> matchList = matchesViewModel.getMatches().getValue();
             matchListItems.clear();
             matchList.forEach(match -> {
