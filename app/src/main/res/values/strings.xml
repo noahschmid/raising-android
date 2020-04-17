@@ -25,6 +25,15 @@
 
     <!-- Strings used for Login, ForgotPassword -->
     <string name="toolbar_title_login"> Login </string>
+    <string name="login_welcome_text"> Welcome to Raising </string>
+    <string name="login_button_text"> Login </string>
+    <string name="login_email"> E-Mail </string>
+    <string name="login_password"> Password</string>
+    <string name="login_forgot_button_text"> Forgot Password? </string>
+    <string name="login_register_text"> No Account? </string>
+    <string name="login_dialog_title"> Login failed </string>
+    <string name="login_dialog_text_403"> Incorrect username or password </string>
+    <string name="login_dialog_text_empty_credentials"> Please fill out all required fields </string>
 
     <string name="toolbar_title_forgot_email"> Forgot Password</string>
 
@@ -121,19 +130,6 @@
     <string name="empty_matchList_text"> You are done! </string>
     <string name="empty_matchList_text_2"> Enjoy the rest of your week! </string>
 
-    <!-- Strings used in LoginScreen -->
-    <string name="login_welcome_text"> Welcome to Raising </string>
-    <string name="login_button_text"> Login </string>
-    <string name="login_email"> E-Mail </string>
-    <string name="login_password"> Password</string>
-
-    <string name="login_forgot_button_text"> Forgot Password? </string>
-    <string name="login_register_text"> No Account? </string>
-
-    <string name="login_dialog_title"> Login failed </string>
-    <string name="login_dialog_text_403"> Incorrect username or password </string>
-    <string name="login_dialog_text_empty_credentials"> Please fill out all required fields </string>
-
     <!-- Strings used in ForgotPasswordScreens -->
     <string name="reset_email_input_placeholder"> E-Mail </string>
     <string name="forgot_button_sendEmail"> Send E-Mail </string>
@@ -206,7 +202,7 @@
     <string name="register_matching_countries"> Countries </string>
 
     <string-array name="revenue_units">
-        <item>k</item>
+        <item>K</item>
         <item>M</item>
         <item>B</item>
     </string-array>
