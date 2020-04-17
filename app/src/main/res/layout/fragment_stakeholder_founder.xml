@@ -134,7 +134,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:hint="@string/cancel_text"
+                android:text="@string/cancel_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/founder_country" />
         </androidx.constraintlayout.widget.ConstraintLayout>

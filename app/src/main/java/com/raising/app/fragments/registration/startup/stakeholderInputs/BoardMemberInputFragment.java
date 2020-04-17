@@ -26,6 +26,8 @@ import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class BoardMemberInputFragment extends RaisingFragment {
     private BoardMemberViewModel boardMemberViewModel;
     private EditText boardFirstNameInput, boardLastNameInput, boardProfessionInput,

@@ -452,6 +452,30 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                         errorCallback, jsonStartup);
                 Log.d("RegistrationString", startup);
             } else {
+                ArrayList<Founder> founders = new ArrayList<>();
+                founderList.forEach(founder -> {
+                    founders.add((Founder) founder);
+                });
+                startup.setFounders(founders);
+
+                ArrayList<BoardMember> boardMembers = new ArrayList<>();
+                boardMemberList.forEach(boardMember -> {
+                    boardMembers.add((BoardMember) boardMember);
+                });
+                startup.setBoardMembers(boardMembers);
+
+                ArrayList<Shareholder> corpShareholders = new ArrayList<>();
+                ArrayList<Shareholder> privShareholders = new ArrayList<>();
+                shareholderList.forEach(shareholder -> {
+                    if(((Shareholder)shareholder).isPrivateShareholder()) {
+                        privShareholders.add((Shareholder)shareholder);
+                    } else {
+                        corpShareholders.add((Shareholder)shareholder);
+                    }
+                });
+                startup.setPrivateShareholders(privShareholders);
+                startup.setCorporateShareholders(corpShareholders);
+
                 popCurrentFragment(this);
             }
         } catch (IOException | JSONException e) {
