@@ -21,8 +21,10 @@
     <color name="raisingWhiteTransparent">#88FFFFFF</color>
     <color name="raisingBlack"> #000000 </color>
     <color name="raisingPositive"> #128700 </color>
+    <color name="raisingPositiveAccent"> #6FA87E </color>
     <color name="raisingNegative"> #ff0000 </color>
     <color name="raisingWarning"> #FFB200</color>
+    <color name="raisingActionBlue"> #1F35F5</color>
 
     <color name="raisingButtonBackgroundColor">@color/raisingSecondary </color>
 

@@ -124,4 +124,11 @@
         <item name="android:backgroundTint"> @color/raisingSecondaryAccent </item>
         <item name="android:layout_height"> @dimen/handshakeContactCardHeight</item>
     </style>
+
+    <style name="HandshakeContactButtonStyle" parent="GeneralButtonStyle">
+        <item name="android:layout_height">@dimen/handshakeContactButtonHeight</item>
+        <item name="android:layout_marginEnd">@dimen/standardHorizontalMarginReallySmall</item>
+        <item name="backgroundColor">@color/raisingSecondaryDark</item>
+        <item name="android:textSize">@dimen/raisingSmallerTextFontSize</item>
+    </style>
 </resources>

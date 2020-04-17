@@ -16,6 +16,7 @@
     <string name="accept_text"> Accept </string>
     <string name="decline_text"> Decline </string>
     <string name="request_text"> Request </string>
+    <string name="confirm_text"> Confirm</string>
     <string name="got_it_text"> Got it</string>
 
     <string name="simple_dialog_invalid_input_title">Invalid inputs</string>
@@ -49,7 +50,7 @@
     <string name="toolbar_title_company_information"> Company Information </string>
 
     <string name="toolbar_title_company_figures"> Facts and Figures </string>
-    
+
     <string name="toolbar_title_labels"> Labels </string>
 
     <string name="toolbar_title_video"> Video </string>
@@ -68,16 +69,17 @@
     <string name="toolbar_title_match_list"> Matches of the Week </string>
 
     <string name="toolbar_title_handshakes"> Leads </string>
+    <string name="toolbar_title_contact"> Contact </string>
+    <string name="handshake_contact_requested"> Requested </string>
+    <string name="handshake_contact_send_email"> Send E-Mail</string>
+    <string name="handshake_contact_save_contact"> Save to Contacts</string>
+
+
 
     <string name="toolbar_title_settings"> Settings </string>
 
     <!-- Strings used for Profile -->
     <string name="toolbar_title_my_profile"> My Profile </string>
-
-
-
-
-
 
 
     <!-- Strings used for profile -->
