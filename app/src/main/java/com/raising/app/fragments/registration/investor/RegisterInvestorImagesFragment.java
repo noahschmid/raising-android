@@ -306,6 +306,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                 accountViewModel.updateProfilePicture(new Image(logo));
                 popCurrentFragment(this);
             } else {
+                //TODO: remove manually set loading panel
+                showLoadingPanel();
                 RegistrationHandler.saveInvestor(investor);
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.registerTypeAdapter(Investor.class,
@@ -317,6 +319,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                 Log.d("RegisterInvestorImagesFragment", investor);
             }
         } catch (JSONException | IOException e) {
+            //TODO: remove manually set loading panel
+            dismissLoadingPanel();
             Log.d("RegisterInvestorImagesFragment","Error in process inputs: " + e.getMessage());
         }
     }
@@ -325,6 +329,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
      * Save private profile after login response and proceed to matches fragment
      */
     Function<JSONObject, Void> registerCallback = response -> {
+        //TODO: remove manually set loading panel
+        dismissLoadingPanel();
         try {
             RegistrationHandler.finish(response.getLong("id"),
                     response.getString("token"), false);
@@ -341,6 +347,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
      * Display error from backend
      */
     Function<VolleyError, Void> errorCallback = response -> {
+        //TODO: remove manually set loading panel
+        dismissLoadingPanel();
         try {
             if (response.networkResponse.statusCode == 500) {
                 JSONObject body = new JSONObject(new String(

@@ -94,6 +94,7 @@ public class Serializer {
 
             jsonStartup.addProperty("ticketMinId", src.getTicketMinId());
             jsonStartup.addProperty("ticketMaxId", src.getTicketMaxId());
+            jsonStartup.addProperty("preMoneyValuation", src.getPreMoneyValuation());
             jsonStartup.addProperty("investmentPhaseId", src.getInvestmentPhaseId());
             jsonStartup.addProperty("companyName", src.getCompanyName());
             jsonStartup.addProperty("pitch", src.getPitch());
@@ -139,6 +140,7 @@ public class Serializer {
             jsonStartup.addProperty("email", src.getEmail());
             jsonStartup.addProperty("ticketMinId", src.getTicketMinId());
             jsonStartup.addProperty("ticketMaxId", src.getTicketMaxId());
+            jsonStartup.addProperty("preMoneyValuation", src.getPreMoneyValuation());
             jsonStartup.addProperty("investmentPhaseId", src.getInvestmentPhaseId());
             jsonStartup.addProperty("companyName", src.getCompanyName());
             jsonStartup.addProperty("pitch", src.getPitch());

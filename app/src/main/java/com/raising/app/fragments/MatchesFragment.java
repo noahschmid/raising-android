@@ -65,6 +65,10 @@ public class MatchesFragment extends RaisingFragment {
         processViewState(matchesViewModel.getViewState().getValue());
         matchListItems = new ArrayList<>();
 
+        resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+            Log.d(TAG, "onViewCreated: ViewState:" + state.toString());
+        });
+
         if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
                 resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
             ArrayList<Match> matchList = matchesViewModel.getMatches().getValue();
@@ -86,12 +90,13 @@ public class MatchesFragment extends RaisingFragment {
                     matchItem.setName(match.getFirstName() + " " + match.getLastName());
                 }
                 matchListItems.add(matchItem);
+                Log.d(TAG, "onViewCreated: Match List filled");
             });
         }
         matchListAdapter = new MatchListAdapter(matchListItems);
 
         matchListItems.forEach(item -> {
-            Log.d(TAG, "matchListItems: " + + item.getAccountId() + " " + item.getAttribute() + item.getName());
+            Log.d(TAG, "matchListItems: " + item.getAccountId() + " " + item.getAttribute() + item.getName());
         });
 
         matchesViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
