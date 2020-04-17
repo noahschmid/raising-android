@@ -58,6 +58,8 @@ public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.View
 
         switch (stateEnum) {
             case YOUR_TURN:
+                holder.statusIcon.setVisibility(View.GONE);
+                break;
             case PENDING:
             case CLOSED:
                 break;

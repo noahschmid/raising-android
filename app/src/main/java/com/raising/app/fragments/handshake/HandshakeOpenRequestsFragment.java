@@ -48,12 +48,12 @@ public class HandshakeOpenRequestsFragment extends RaisingFragment {
         adapter.setOnClickListener(new HandshakeOpenRequestAdapter.OnClickListener() {
             @Override
             public void onClickAccept(int position) {
-                //TODO: accept request
+                //TODO: accept open request
             }
 
             @Override
             public void onClickDecline(int position) {
-                //TODO: decline request
+                //TODO: decline open request
             }
         });
 

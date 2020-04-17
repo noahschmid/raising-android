@@ -49,19 +49,14 @@ public class HandshakeTabFragment extends RaisingFragment {
         if (stateEnum.equals(HandshakeState.YOUR_TURN)) {
             ImageView image = view.findViewById(R.id.handshake_open_requests_image);
             //TODO: insert image of uppermost open request
-            openRequests.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                     changeFragment(new HandshakeOpenRequestsFragment());
-                }
-            });
+            openRequests.setOnClickListener(v ->
+                    changeFragment(new HandshakeOpenRequestsFragment()));
         } else {
             openRequests.setVisibility(View.GONE);
         }
 
-
         // initialize the recycler view for all 'today'-handshakes
-        //TODO: store handshakes in below array list
+        //TODO: store today handshakes in below array list
         ArrayList<HandshakeItem> handshakeItemsToday = new ArrayList<>();
 
         RecyclerView recyclerToday = view.findViewById(R.id.handshake_tab_recycler_today);
@@ -69,15 +64,12 @@ public class HandshakeTabFragment extends RaisingFragment {
         HandshakeAdapter adapterToday = new HandshakeAdapter(handshakeItemsToday, stateEnum);
         recyclerToday.setAdapter(adapterToday);
 
-        adapterToday.setOnItemClickListener(new HandshakeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Bundle args = new Bundle();
-                args.putLong("id", handshakeItemsToday.get(position).getId());
-                Fragment contactFragment = new HandshakeContactFragment();
-                contactFragment.setArguments(args);
-                changeFragment(contactFragment, "HandshakeContactFragment");
-            }
+        adapterToday.setOnItemClickListener(position -> {
+            Bundle args = new Bundle();
+            args.putLong("id", handshakeItemsToday.get(position).getId());
+            Fragment contactFragment = new HandshakeContactFragment();
+            contactFragment.setArguments(args);
+            changeFragment(contactFragment, "HandshakeContactFragment");
         });
 
         // initialize the recycler view for all 'this week'-handshakes
@@ -89,15 +81,12 @@ public class HandshakeTabFragment extends RaisingFragment {
         HandshakeAdapter adapterWeek = new HandshakeAdapter(handshakeItemsWeek, stateEnum);
         recyclerWeek.setAdapter(adapterWeek);
 
-        adapterWeek.setOnItemClickListener(new HandshakeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Bundle args = new Bundle();
-                args.putLong("id", handshakeItemsToday.get(position).getId());
-                Fragment contactFragment = new HandshakeContactFragment();
-                contactFragment.setArguments(args);
-                changeFragment(contactFragment, "HandshakeContactFragment");
-            }
+        adapterWeek.setOnItemClickListener(position -> {
+            Bundle args = new Bundle();
+            args.putLong("id", handshakeItemsToday.get(position).getId());
+            Fragment contactFragment = new HandshakeContactFragment();
+            contactFragment.setArguments(args);
+            changeFragment(contactFragment, "HandshakeContactFragment");
         });
     }
 }

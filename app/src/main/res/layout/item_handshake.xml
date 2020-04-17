@@ -65,9 +65,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
             android:src="@drawable/ic_check_40dp"
-            app:layout_constraintBottom_toBottomOf="@+id/item_handshake_profile_image"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/item_handshake_profile_image" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/item_handshake_match_percent"

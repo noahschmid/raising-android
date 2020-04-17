@@ -51,18 +51,18 @@
                 android:text="E-Mail"
                 android:textColor="@color/raisingTextColorDark"
                 android:textSize="@dimen/raisingTextFontSize"
-                app:layout_constraintBottom_toTopOf="@+id/button_handshake_contact_send_mail"
+                app:layout_constraintBottom_toTopOf="@+id/button_handshake_contact_interact"
                 app:layout_constraintEnd_toEndOf="@+id/handshake_contact_name"
                 app:layout_constraintStart_toStartOf="@+id/handshake_contact_name"
                 app:layout_constraintTop_toBottomOf="@+id/handshake_contact_name" />
 
             <Button
-                android:id="@+id/button_handshake_contact_send_mail"
+                android:id="@+id/button_handshake_contact_interact"
                 style="@style/GeneralButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:hint="@string/handshake_contact_send_email"
+                android:hint="@string/handshake_contact_interact"
                 app:layout_constraintBottom_toTopOf="@+id/handshake_contact_save_contact"
                 app:layout_constraintEnd_toEndOf="@+id/handshake_contact_mail"
                 app:layout_constraintStart_toStartOf="@+id/handshake_contact_mail"
@@ -76,9 +76,9 @@
                 android:textColorHint="@color/raisingActionBlue"
                 android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/button_handshake_contact_send_mail"
-                app:layout_constraintStart_toStartOf="@+id/button_handshake_contact_send_mail"
-                app:layout_constraintTop_toBottomOf="@+id/button_handshake_contact_send_mail"
+                app:layout_constraintEnd_toEndOf="@+id/button_handshake_contact_interact"
+                app:layout_constraintStart_toStartOf="@+id/button_handshake_contact_interact"
+                app:layout_constraintTop_toBottomOf="@+id/button_handshake_contact_interact"
                 app:layout_constraintVertical_bias="0.0" />
 
 

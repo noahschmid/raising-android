@@ -1,65 +1,103 @@
 package com.raising.app.fragments.handshake;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.raising.app.R;
+import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.models.HandshakeContact;
+import com.raising.app.models.HandshakeContactType;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HandshakeContactExchangeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class HandshakeContactExchangeFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class HandshakeContactExchangeFragment extends RaisingFragment {
+    private ImageView contactImage;
+    private TextView contactName, contactMail, saveContact;
+    private Button btnInteract;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public HandshakeContactExchangeFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HandshakeContactExchangeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HandshakeContactExchangeFragment newInstance(String param1, String param2) {
-        HandshakeContactExchangeFragment fragment = new HandshakeContactExchangeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    private HandshakeContactType contactType;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
+        customizeAppBar(getString(R.string.toolbar_title_contact), true);
         return inflater.inflate(R.layout.fragment_handshake_contact_exchange, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if(getArguments().getSerializable("contactType") != null) {
+            contactType = (HandshakeContactType) getArguments().getSerializable("contactType");
+        }
+
+        //TODO: store contact in this variable
+        HandshakeContact contact;
+
+        contactImage = view.findViewById(R.id.handshake_contact_picture);
+        contactImage.setImageBitmap(contact.getBitmap());
+        contactName = view.findViewById(R.id.handshake_contact_name);
+        contactName.setText(contact.getName());
+        contactMail = view.findViewById(R.id.handshake_contact_mail);
+        contactMail.setText(contact.getEmail());
+
+        saveContact = view.findViewById(R.id.handshake_contact_save_contact);
+        saveContact.setOnClickListener(v -> {
+            Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
+            intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+            intent.putExtra(ContactsContract.Intents.Insert.PHONE, contact.getPhone())
+                    .putExtra(ContactsContract.Intents.Insert.EMAIL, contact.getEmail())
+                    .putExtra(ContactsContract.Intents.Insert.NAME, contact.getName());
+            startActivity(intent);
+        });
+
+        btnInteract = view.findViewById(R.id.button_handshake_contact_interact);
+        btnInteract.setOnClickListener(v -> {
+            Intent interactionIntent;
+            switch (contactType) {
+                case COFFEE:
+                    interactionIntent = new Intent(Intent.ACTION_SENDTO);
+                    interactionIntent.setType("text/plain");
+                    interactionIntent.putExtra(Intent.EXTRA_EMAIL, contact.getEmail());
+                    interactionIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.handshake_contact_coffee_subject_template));
+                    interactionIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.handshake_contact_coffee_body_template));
+                    break;
+                case BUSINESS_PLAN:
+                    interactionIntent = new Intent(Intent.ACTION_SENDTO);
+                    interactionIntent.setType("text/plain");
+                    interactionIntent.putExtra(Intent.EXTRA_EMAIL, contact.getEmail());
+                    interactionIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.handshake_contact_business_plan_subject_template));
+                    interactionIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.handshake_contact_business_plan_body_template));
+                    break;
+                case E_MAIL:
+                    interactionIntent = new Intent(Intent.ACTION_SENDTO);
+                    interactionIntent.setType("text/plain");
+                    interactionIntent.putExtra(Intent.EXTRA_EMAIL, contact.getEmail());
+                    interactionIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.handshake_contact_mail_subject_template));
+                    interactionIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.handshake_contact_mail_body_template));
+                    break;
+                case PHONE:
+                    interactionIntent = new Intent(Intent.ACTION_DIAL);
+                    String telUri = "tel:" + contact.getPhone();
+                    interactionIntent.setData(Uri.parse(telUri));
+                    break;
+                default:
+                    interactionIntent = new Intent();
+                    break;
+            }
+            startActivity(interactionIntent);
+        });
     }
 }

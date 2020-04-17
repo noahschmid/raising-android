@@ -93,13 +93,20 @@
     <string name="toolbar_title_contact"> Contact </string>
 
     <string name="handshake_contact_coffee"> Drink a Coffee</string>
+    <string name="handshake_contact_coffee_subject_template"> RAI$ING: Drink a Coffee </string>
+    <string name="handshake_contact_coffee_body_template"> We have matched on RAI$ING. Let us drink a coffee. </string>
+    <string name="handshake_contact_business_plan_subject_template"> RAI$ING: Send Business Plan </string>
+    <string name="handshake_contact_business_plan_body_template"> We have matched on RAI$ING. Let us exchange business plans. </string>
+    <string name="handshake_contact_mail_subject_template"> RAI$ING: Send E-Mail </string>
+    <string name="handshake_contact_mail_body_template"> We have matched on RAI$ING.</string>
+
     <string name="handshake_contact_businessplan"> Request Businessplan</string>
     <string name="handshake_contact_phone">Phone call</string>
     <string name="handshake_contact_email"> Send Email</string>
     <string name="handshake_contact_video"> Video-Conference</string>
 
     <string name="handshake_contact_requested"> Requested </string>
-    <string name="handshake_contact_send_email"> Send E-Mail</string>
+    <string name="handshake_contact_interact"> Contact </string>
     <string name="handshake_contact_save_contact"> Save to Contacts</string>
 
 
