@@ -63,7 +63,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     private static final String TAG = "StartupPublicProfile";
 
     private ImageSwitcher imageSwitcher;
-    private ImageButton profileRequest, profileDecline;
+    private ImageButton profileRequest, profileDecline, btnPrevious, btnNext;
     private TextView imageIndex, matchingPercent, profileName, profileLocation, profileSentence,
             profilePitch, profileWebsite;
     private LinearLayout labelsLayout;
@@ -135,6 +135,11 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         profileLayout.setVisibility(View.INVISIBLE);
 
         imageIndex = view.findViewById(R.id.text_startup_profile_gallery_image_index);
+        btnPrevious = view.findViewById(R.id.button_startup_gallery_previous);
+        btnNext = view.findViewById(R.id.button_startup_gallery_next);
+        imageIndex.setVisibility(View.GONE);
+        btnPrevious.setVisibility(View.GONE);
+        btnNext.setVisibility(View.GONE);
 
         prepareImageSwitcher(view);
 
@@ -445,15 +450,18 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 AnimationUtils.loadAnimation(this.getContext(), R.anim.public_profile_gallery_out));
 
          */
-        ImageButton btnPrevious = view.findViewById(R.id.button_startup_gallery_previous);
-        ImageButton btnNext = view.findViewById(R.id.button_startup_gallery_next);
 
         if (currentImageIndex == 0) {
             btnPrevious.setVisibility(View.GONE);
+        } else {
+            btnPrevious.setVisibility(View.VISIBLE);
         }
         if (pictures.size() < 2) {
             btnNext.setVisibility(View.GONE);
+        } else {
+            btnNext.setVisibility(View.VISIBLE);    
         }
+
         btnPrevious.setOnClickListener(v -> {
             if (currentImageIndex == 0) {
                 btnPrevious.setVisibility(View.GONE);

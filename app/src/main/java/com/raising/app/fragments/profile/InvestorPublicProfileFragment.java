@@ -44,7 +44,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     private TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch, profileSentence, profileWebsite;
     private TextView minTicketSize, maxTicketSize;
     private ImageView locationPin;
-    private ImageButton profileRequest, profileDecline;
+    private ImageButton profileRequest, profileDecline, btnPrevious, btnNext;
     private Investor investor;
     private ImageSwitcher imageSwitcher;
     private ArrayList<Model> investorTypes, industries, investmentPhases, supports;
@@ -96,10 +96,15 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         imageIndex = view.findViewById(R.id.text_investor_profile_gallery_image_index);
+        btnPrevious = view.findViewById(R.id.button_investor_gallery_previous);
+        btnNext = view.findViewById(R.id.button_investor_gallery_next);
+        imageIndex.setVisibility(View.GONE);
+        btnPrevious.setVisibility(View.GONE);
+        btnNext.setVisibility(View.GONE);
+
         profileLayout = view.findViewById(R.id.profile_layout);
         profileLayout.setVisibility(View.INVISIBLE);
         pictures = new ArrayList<Bitmap>();
-        //prepareImageSwitcher(view);
         scrollView = view.findViewById(R.id.scroll_layout);
 
         profileRequest = view.findViewById(R.id.button_investor_public_profile_request);
@@ -339,14 +344,15 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
 
          */
 
-        ImageButton btnPrevious = view.findViewById(R.id.button_investor_gallery_previous);
-        ImageButton btnNext = view.findViewById(R.id.button_investor_gallery_next);
-
         if(currentImageIndex == 0) {
             btnPrevious.setVisibility(View.GONE);
+        } else {
+            btnPrevious.setVisibility(View.VISIBLE);
         }
         if(investor.getGalleryIds().size() + 1 < 2) {
             btnNext.setVisibility(View.GONE);
+        } else {
+            btnNext.setVisibility(View.VISIBLE);
         }
 
         btnPrevious.setOnClickListener(v -> {
