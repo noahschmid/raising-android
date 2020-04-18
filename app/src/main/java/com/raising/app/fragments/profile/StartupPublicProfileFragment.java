@@ -439,6 +439,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 imageView.setImageBitmap(pictures.get(currentImageIndex));
             }
             imageIndex.setText(currentIndexToString(currentImageIndex));
+            imageIndex.setVisibility(View.VISIBLE);
             return imageView;
         });
 
@@ -459,7 +460,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         if (pictures.size() < 2) {
             btnNext.setVisibility(View.GONE);
         } else {
-            btnNext.setVisibility(View.VISIBLE);    
+            btnNext.setVisibility(View.VISIBLE);
         }
 
         btnPrevious.setOnClickListener(v -> {

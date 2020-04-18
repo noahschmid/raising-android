@@ -332,6 +332,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                 imageView.setImageBitmap(pictures.get(currentImageIndex));
             }
             imageIndex.setText(currentIndexToString(currentImageIndex));
+            imageIndex.setVisibility(View.VISIBLE);
             return imageView;
         });
 
