@@ -6,6 +6,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
@@ -40,9 +41,9 @@ public class MatchesViewModel extends AndroidViewModel {
         loadMatches();
     }
 
-    public MutableLiveData<ArrayList<Match>> getMatches() { return matches; }
+    public LiveData<ArrayList<Match>> getMatches() { return matches; }
 
-    public MutableLiveData<ViewState> getViewState() { return viewState; }
+    public LiveData<ViewState> getViewState() { return viewState; }
 
     public void runMatching() {
         ApiRequestHandler.performPostRequest("match/run",

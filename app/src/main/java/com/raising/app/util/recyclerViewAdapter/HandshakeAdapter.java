@@ -3,7 +3,6 @@ package com.raising.app.util.recyclerViewAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,16 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.raising.app.R;
 import com.raising.app.models.HandshakeItem;
-import com.raising.app.models.HandshakeState;
+import com.raising.app.models.LeadState;
 
 import java.util.ArrayList;
 
 public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.ViewHolder> {
     private ArrayList<HandshakeItem> recyclerItems;
     private OnItemClickListener itemClickListener;
-    private HandshakeState stateEnum;
+    private LeadState stateEnum;
 
-    public HandshakeAdapter(ArrayList<HandshakeItem> recyclerItems, HandshakeState stateEnum) {
+    public HandshakeAdapter(ArrayList<HandshakeItem> recyclerItems, LeadState stateEnum) {
         this.recyclerItems = recyclerItems;
         this.stateEnum = stateEnum;
     }
@@ -40,12 +39,37 @@ public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.View
     public void onBindViewHolder(@NonNull HandshakeAdapter.ViewHolder holder, int position) {
         HandshakeItem recyclerItem = recyclerItems.get(position);
 
-        // array holding background colors of match list items
-        int [] cardBackground = {
-                ContextCompat.getColor(holder.card.getContext(), R.color.raisingSecondaryLight),
-                ContextCompat.getColor(holder.card.getContext(), R.color.raisingWhite)};
-
-        holder.card.setBackgroundColor(cardBackground[position % 2]);
+        switch (recyclerItem.getHandshakeState()) {
+            case HANDSHAKE_REQUESTED:
+                //TODO: insert one hand
+                break;
+            case HANDSHAKE_ACCEPTED:
+                holder.statusIcon.setImageDrawable(
+                        ContextCompat.getDrawable(holder.statusIcon.getContext(),
+                                R.drawable.ic_handshake_24dp));
+                holder.statusIcon.setBackgroundColor(
+                        ContextCompat.getColor(holder.statusIcon.getContext(),
+                                R.color.raisingSecondaryDark));
+                break;
+            case HANDSHAKE_DECLINED:
+                holder.statusIcon.setImageDrawable(
+                        ContextCompat.getDrawable(holder.statusIcon.getContext(),
+                                R.drawable.ic_cancel_24dp));
+                holder.statusIcon.setBackgroundColor(
+                        ContextCompat.getColor(holder.statusIcon.getContext(),
+                                R.color.raisingNegative));
+                break;
+            case CONTACT_SUCCESS:
+            case CONTACT_ACCEPTED:
+                holder.statusIcon.setImageDrawable(
+                        ContextCompat.getDrawable(holder.statusIcon.getContext(),
+                                R.drawable.ic_check_circle_24dp));
+                holder.statusIcon.setBackgroundColor(
+                        ContextCompat.getColor(holder.statusIcon.getContext(),
+                        R.color.raisingPositive));
+                break;
+            case CONTACT_REQUESTED:
+        }
 
         // Default: set visibility of warning to gone
         holder.warning.setVisibility(View.GONE);
@@ -71,7 +95,7 @@ public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.View
         return recyclerItems.size();
     }
 
-    public interface  OnItemClickListener {
+    public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
@@ -98,9 +122,9 @@ public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.View
             warning = itemView.findViewById(R.id.item_handshake_warning);
 
             itemView.setOnClickListener(v -> {
-                if(itemClickListener != null) {
+                if (itemClickListener != null) {
                     int position = getAdapterPosition();
-                    if(position != RecyclerView.NO_POSITION) {
+                    if (position != RecyclerView.NO_POSITION) {
                         itemClickListener.onItemClick(position);
                     }
                 }

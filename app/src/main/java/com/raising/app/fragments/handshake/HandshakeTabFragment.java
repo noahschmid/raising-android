@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,17 +18,24 @@ import android.widget.ImageView;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
-import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.HandshakeItem;
-import com.raising.app.models.HandshakeState;
-import com.raising.app.models.ViewState;
+import com.raising.app.models.LeadState;
+import com.raising.app.models.Lead;
 import com.raising.app.util.recyclerViewAdapter.HandshakeAdapter;
+import com.raising.app.viewModels.HandshakesViewModel;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class HandshakeTabFragment extends RaisingFragment {
-    private HandshakeState stateEnum;
+
+    private final String TAG = "HandshakeTabFragment";
+
+    private LeadState leadState;
+    private HandshakesViewModel handshakesViewModel;
+
+    private ArrayList<HandshakeItem> handshakeItemsToday;
+    private ArrayList<HandshakeItem> handshakeItemsWeek;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,12 +50,13 @@ public class HandshakeTabFragment extends RaisingFragment {
 
         // check for handshake state
         if (getArguments() != null) {
-            stateEnum = (HandshakeState) getArguments().getSerializable("handshakeState");
+            leadState = (LeadState) getArguments().getSerializable("handshakeState");
         }
+
 
         // prepare open requests layout
         ConstraintLayout openRequests = view.findViewById(R.id.handshake_open_requests);
-        if (stateEnum.equals(HandshakeState.YOUR_TURN)) {
+        if (leadState.equals(LeadState.YOUR_TURN)) {
             ImageView image = view.findViewById(R.id.handshake_open_requests_image);
             //TODO: insert image of uppermost open request
             openRequests.setOnClickListener(v ->
@@ -56,15 +65,81 @@ public class HandshakeTabFragment extends RaisingFragment {
             openRequests.setVisibility(View.GONE);
         }
 
-        // initialize the recycler view for all 'today'-handshakes
-        //TODO: store today handshakes in below array list
-        ArrayList<HandshakeItem> handshakeItemsToday = new ArrayList<>();
 
+        // prepare handshakeViewModel for usage
+        handshakesViewModel = ViewModelProviders.of(getActivity())
+                .get(HandshakesViewModel.class);
+
+        handshakesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> processViewState(state));
+        processViewState(handshakesViewModel.getViewState().getValue());
+        handshakeItemsToday = new ArrayList<>();
+        handshakeItemsWeek = new ArrayList<>();
+
+        resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+            Log.d(TAG, "onViewCreated: ViewState: " + state.toString());
+        });
+
+        ArrayList<Lead> leads = handshakesViewModel.getLeads().getValue();
+        ArrayList<Lead> handshakeStateLeads = new ArrayList<>();
+
+        switch (leadState) {
+            case YOUR_TURN:
+                leads.forEach(lead -> {
+                    if(lead.getState() == LeadState.YOUR_TURN) {
+                        handshakeStateLeads.add(lead);
+                    }
+                });
+                break;
+            case PENDING:
+                leads.forEach(lead -> {
+                    if(lead.getState() == LeadState.PENDING) {
+                        handshakeStateLeads.add(lead);
+                    }
+                });
+                break;
+            case CLOSED:
+                leads.forEach(lead -> {
+                    if(lead.getState() == LeadState.CLOSED) {
+                        handshakeStateLeads.add(lead);
+                    }
+                });
+                break;
+        }
+
+        // populate recycler view lists
+        handshakeItemsToday.clear();
+        handshakeItemsWeek.clear();
+        handshakeStateLeads.forEach(lead -> {
+            HandshakeItem handshakeItem = new HandshakeItem();
+            handshakeItem.setId(lead.getId());
+            handshakeItem.setMatchingPercent(lead.getMatchingPercent());
+            handshakeItem.setStartup(lead.isStartup());
+            handshakeItem.setImage(lead.getProfileImage());
+            handshakeItem.setHandshakeState(lead.getHandshakeState());
+            if(handshakeItem.isStartup()) {
+                handshakeItem.setName(lead.getCompanyName());
+                handshakeItem.setAttribute(resources.getInvestmentPhase(
+                        lead.getInvestmentPhaseId()).getName());
+            } else {
+                handshakeItem.setName(lead.getFirstName() + " " + lead.getLastName());
+                handshakeItem.setAttribute(resources.getInvestorType(
+                        lead.getInvestorTypeId()).getName());
+            }
+            if(lead.getDate().equals(new Date())) {
+                handshakeItemsToday.add(handshakeItem);
+            } else {
+                handshakeItemsWeek.add(handshakeItem);
+            }
+            Log.d(TAG, "onViewCreated: HandshakeLists filled");
+        });
+
+        HandshakeAdapter adapterToday = new HandshakeAdapter(handshakeItemsToday, leadState);
+        HandshakeAdapter adapterWeek = new HandshakeAdapter(handshakeItemsWeek, leadState);
+
+        // initialize the recycler view for all 'today'-handshakes
         RecyclerView recyclerToday = view.findViewById(R.id.handshake_tab_recycler_today);
         recyclerToday.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        HandshakeAdapter adapterToday = new HandshakeAdapter(handshakeItemsToday, stateEnum);
         recyclerToday.setAdapter(adapterToday);
-
         adapterToday.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
             args.putLong("id", handshakeItemsToday.get(position).getId());
@@ -74,14 +149,9 @@ public class HandshakeTabFragment extends RaisingFragment {
         });
 
         // initialize the recycler view for all 'this week'-handshakes
-        //TODO: store handshakes in below array list
-        ArrayList<HandshakeItem> handshakeItemsWeek = new ArrayList<>();
-
         RecyclerView recyclerWeek = view.findViewById(R.id.handshake_tab_recycler_week);
         recyclerWeek.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        HandshakeAdapter adapterWeek = new HandshakeAdapter(handshakeItemsWeek, stateEnum);
         recyclerWeek.setAdapter(adapterWeek);
-
         adapterWeek.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
             args.putLong("id", handshakeItemsToday.get(position).getId());
