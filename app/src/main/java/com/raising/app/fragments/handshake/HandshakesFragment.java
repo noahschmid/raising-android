@@ -28,19 +28,15 @@ public class HandshakesFragment extends RaisingFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        View view = inflater.inflate(R.layout.fragment_handshakes, container, false);
+
         customizeAppBar(getString(R.string.toolbar_title_handshakes), false);
-
-        return inflater.inflate(R.layout.fragment_handshakes, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
         tabLayout = view.findViewById(R.id.handshake_tab_layout);
         yourTurn = view.findViewById(R.id.tab_your_turn);
         pending = view.findViewById(R.id.tab_pending);
         closed = view.findViewById(R.id.tab_closed);
+
         viewPager = view.findViewById(R.id.handshake_view_pager);
 
         pagerAdapter = new HandshakePageAdapter(getActivitiesFragmentManager(),
@@ -67,5 +63,14 @@ public class HandshakesFragment extends RaisingFragment {
             }
         });
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
     }
 }

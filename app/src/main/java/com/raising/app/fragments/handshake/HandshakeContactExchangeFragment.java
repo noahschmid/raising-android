@@ -46,6 +46,7 @@ public class HandshakeContactExchangeFragment extends RaisingFragment {
         //TODO: store contact in this variable
         HandshakeContact contact;
 
+        /*
         contactImage = view.findViewById(R.id.handshake_contact_picture);
         contactImage.setImageBitmap(contact.getBitmap());
         contactName = view.findViewById(R.id.handshake_contact_name);
@@ -99,5 +100,6 @@ public class HandshakeContactExchangeFragment extends RaisingFragment {
             }
             startActivity(interactionIntent);
         });
+        */
     }
 }
