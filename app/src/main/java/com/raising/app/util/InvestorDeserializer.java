@@ -22,6 +22,7 @@ import com.raising.app.models.Support;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class InvestorDeserializer implements JsonDeserializer<Investor> {
     @Override
@@ -51,10 +52,11 @@ public class InvestorDeserializer implements JsonDeserializer<Investor> {
             investor.setProfilePictureId(jsonObject.get("profilePictureId").getAsInt());
         }
 
+        List<Long> galleryIds = new ArrayList<>();
         for(JsonElement el : jsonObject.get("gallery").getAsJsonArray()) {
-            JsonObject obj = el.getAsJsonObject();
-            investor.addToGallery(new Image(obj.get("image").getAsString()));
+            galleryIds.add(el.getAsLong());
         }
+        investor.setGalleryIds(galleryIds);
 
         for(JsonElement el : jsonObject.get("countries").getAsJsonArray()) {
             investor.addCountry(el.getAsLong());

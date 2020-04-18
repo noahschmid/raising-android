@@ -110,15 +110,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_images_add_gallery">
-
-                <ImageView
-                    android:id="@+id/gallery_add"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/background_gallery"
-                    android:src="@drawable/ic_add_24dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
             </com.google.android.flexbox.FlexboxLayout>
 
 

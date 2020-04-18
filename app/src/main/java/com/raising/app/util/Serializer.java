@@ -35,13 +35,9 @@ public class Serializer {
             jsonInvestor.addProperty("description", src.getDescription());
             jsonInvestor.addProperty("countryId", src.getCountryId());
 
-            if(!src.getCountries().isEmpty()) {
-                jsonInvestor.add("countries", toJsonArray(src.getCountries()));
-            }
+            jsonInvestor.add("countries", toJsonArray(src.getCountries()));
+            jsonInvestor.add("continents", toJsonArray(src.getContinents()));
 
-            if(!src.getContinents().isEmpty()) {
-                jsonInvestor.add("continents", toJsonArray(src.getContinents()));
-            }
             jsonInvestor.add("investmentPhases", toJsonArray(src.getInvestmentPhases()));
             jsonInvestor.add("support", toJsonArray(src.getSupport()));
             jsonInvestor.add("industries", toJsonArray(src.getIndustries()));
@@ -68,13 +64,9 @@ public class Serializer {
             jsonInvestor.addProperty("lastName", src.getLastName());
             jsonInvestor.addProperty("description", src.getDescription());
 
-            if(!src.getCountries().isEmpty()) {
-                jsonInvestor.add("countries", toJsonArray(src.getCountries()));
-            }
+            jsonInvestor.add("countries", toJsonArray(src.getCountries()));
 
-            if(!src.getContinents().isEmpty()) {
-                jsonInvestor.add("continents", toJsonArray(src.getContinents()));
-            }
+            jsonInvestor.add("continents", toJsonArray(src.getContinents()));
             jsonInvestor.add("support", toJsonArray(src.getSupport()));
             jsonInvestor.add("industries", toJsonArray(src.getIndustries()));
             jsonInvestor.add("investmentPhases", toJsonArray(src.getInvestmentPhases()));

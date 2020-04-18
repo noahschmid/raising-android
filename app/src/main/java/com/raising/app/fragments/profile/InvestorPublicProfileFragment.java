@@ -26,6 +26,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.raising.app.R;
@@ -54,7 +55,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
 
     private boolean handshakeRequest = false;
     private boolean handshakeDecline = false;
-
     private int matchScore = 0;
 
     private RecyclerView recyclerInvestorType, recyclerPhase, recyclerIndustry, recyclerInvolvement;
@@ -99,7 +99,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         profileLayout = view.findViewById(R.id.profile_layout);
         profileLayout.setVisibility(View.INVISIBLE);
         pictures = new ArrayList<Bitmap>();
-        prepareImageSwitcher(view);
+        //prepareImageSwitcher(view);
         scrollView = view.findViewById(R.id.scroll_layout);
 
         profileRequest = view.findViewById(R.id.button_investor_public_profile_request);
@@ -239,27 +239,32 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
            profileWebsite.setVisibility(View.GONE);
        }
 
+       /*
        if(investor.getProfilePicture() != null) {
-           pictures.add(investor.getProfilePicture().getBitmap());
+           pictures.add(investor.getProfilePicture().getImage());
        }
 
        if(investor.getGallery() != null) {
            investor.getGallery().forEach(image -> {
-               pictures.add(image.getBitmap());
+               pictures.add(image.getImage());
            });
-       }
+       }*/
 
        Glide.with(this)
                 .asBitmap()
                 .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
                         investor.getProfilePictureId())
+               .diskCacheStrategy(DiskCacheStrategy.NONE)
+               .skipMemoryCache(true)
                 .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable
                             Transition<? super Bitmap> transition) {
-                        pictures.add(resource);
-                        imageSwitcher.setImageDrawable(new BitmapDrawable(
-                                pictures.get(currentImageIndex)));
+                        pictures.add(0, resource);
+
+                        if(pictures.size() == investor.getGalleryIds().size() + 1) {
+                            prepareImageSwitcher(getView());
+                        }
                     }
 
                     @Override
@@ -273,10 +278,21 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                        .asBitmap()
                        .load(ApiRequestHandler.getDomain() + "media/gallery/" +
                                galleryId)
+                       .diskCacheStrategy(DiskCacheStrategy.NONE)
+                       .skipMemoryCache(true)
+                       .placeholder(R.drawable.ic_hourglass_empty_black_24dp)
                        .into(new CustomTarget<Bitmap>() {
                            @Override
                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                               pictures.add(resource);
+                               if(!pictures.isEmpty()) {
+                                   pictures.add(1, resource);
+                               } else {
+                                   pictures.add(resource);
+                               }
+
+                               if(pictures.size() == investor.getGalleryIds().size() + 1) {
+                                   prepareImageSwitcher(getView());
+                               }
                            }
 
                            @Override
@@ -322,16 +338,23 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                 AnimationUtils.loadAnimation(this.getContext(), R.anim.public_profile_gallery_out));
 
          */
+
         ImageButton btnPrevious = view.findViewById(R.id.button_investor_gallery_previous);
         ImageButton btnNext = view.findViewById(R.id.button_investor_gallery_next);
 
         if(currentImageIndex == 0) {
             btnPrevious.setVisibility(View.GONE);
         }
-        if(pictures.size() < 2) {
+        if(investor.getGalleryIds().size() + 1 < 2) {
             btnNext.setVisibility(View.GONE);
         }
+
         btnPrevious.setOnClickListener(v -> {
+            if(pictures.size() == 0)
+                return;
+
+            currentImageIndex--;
+
             if(currentImageIndex == 0) {
                 btnPrevious.setVisibility(View.GONE);
             }
@@ -340,9 +363,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                 btnNext.setVisibility(View.VISIBLE);
             }
 
-            if(pictures.size() == 0)
-                return;
-            currentImageIndex--;
             if(currentImageIndex == -1) {
                 currentImageIndex = pictures.size() - 1;
             }
@@ -354,6 +374,11 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(pictures.size() == 0)
+                    return;
+
+                currentImageIndex ++;
+
                 if(currentImageIndex == pictures.size() - 1) {
                     btnNext.setVisibility(View.GONE);
                 }
@@ -362,9 +387,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                     btnPrevious.setVisibility(View.VISIBLE);
                 }
 
-                if(pictures.size() == 0)
-                    return;
-                currentImageIndex ++;
                 if (currentImageIndex == pictures.size()) {
                     currentImageIndex = 0;
                 }

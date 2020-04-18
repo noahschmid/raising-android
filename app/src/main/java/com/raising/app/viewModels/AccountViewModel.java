@@ -1,8 +1,10 @@
 package com.raising.app.viewModels;
 
 import android.app.Application;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -11,6 +13,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.raising.app.models.Account;
 import com.raising.app.models.Image;
 import com.raising.app.models.Investor;
@@ -23,12 +26,15 @@ import com.raising.app.util.ImageUploader;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.Serializer;
+import com.raising.app.util.ToastHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class AccountViewModel extends AndroidViewModel {
     private MutableLiveData<Account> currentAccount = new MutableLiveData<>();
@@ -177,7 +183,7 @@ public class AccountViewModel extends AndroidViewModel {
         String accountString = null;
 
         if (!(update instanceof Investor) && !(update instanceof Startup)) {
-            Log.e("RegistrationHandler", "update: invalid account instance");
+            Log.e("AccountViewModel", "update: invalid account instance");
             return;
         }
 
@@ -233,8 +239,6 @@ public class AccountViewModel extends AndroidViewModel {
      * @param image
      */
     public void updateProfilePicture(Image image) {
-        currentAccount.getValue().setProfilePicture(image);
-
         try {
             String method = "POST";
             String endpoint = ApiRequestHandler.getDomain() + "media/profilepicture";
@@ -243,22 +247,63 @@ public class AccountViewModel extends AndroidViewModel {
                 method = "PATCH";
                 endpoint += "/" + currentAccount.getValue().getProfilePictureId();
             }
-            new ImageUploader(endpoint,
-                    image.getBitmap(), method, response -> {
+            new ImageUploader(endpoint, "profilePicture",
+                    image.getImage(), AuthenticationHandler.getId(), method, response -> {
                 try {
-                    currentAccount.getValue().setProfilePictureId(response.getLong("id"));
+                    currentAccount.getValue().setProfilePicture(image);
+                    if(response.length() > 0) {
+                        JSONObject obj = response.getJSONObject(0);
+                        currentAccount.getValue().setProfilePictureId(obj.getLong("id"));
+                    }
+                    viewState.postValue(ViewState.UPDATED);
                 } catch (JSONException e) {
+                    Log.e(TAG, "updateProfilePicture: " + e.getMessage());
+                    viewState.setValue(ViewState.ERROR);
                 }
                 Log.d(TAG, "Successfully updated profile picture");
 
                 return null;
             }, error -> {
+                viewState.setValue(ViewState.ERROR);
                 Log.e(TAG, "updateProfilePicture: " + error.toString() );
                 return null;
             }).execute();
         } catch (Exception e) {
+            viewState.setValue(ViewState.ERROR);
             Log.e(TAG, "Error while updating profile picture: " +
                     e.getMessage());
         }
+    }
+
+    /**
+     * Update the gallery photos
+     * @param gallery
+     */
+    public void updateGallery(List<Image> gallery) {
+        List<Bitmap> pictures = new ArrayList<>();
+        gallery.forEach(img -> {
+            if(img.getId() == -1) {
+                pictures.add(img.getImage());
+            }
+        });
+
+        new ImageUploader("media/gallery", "gallery",
+                pictures, AuthenticationHandler.getId(), "POST", response -> {
+            try {
+                for(int i = 0; i < response.length(); ++i) {
+                    currentAccount.getValue().getGalleryIds().add(response.getLong(i));
+                }
+                viewState.postValue(ViewState.UPDATED);
+            } catch (JSONException e) {
+                Log.e(TAG, "updateGallery: " + e.getMessage());
+                viewState.setValue(ViewState.ERROR);
+            }
+            Log.d(TAG, "Successfully updated gallery");
+            return null;
+        }, error -> {
+            viewState.setValue(ViewState.ERROR);
+            Log.e(TAG, "updateGallery: " + error.toString() );
+            return null;
+        }).execute();
     }
 }

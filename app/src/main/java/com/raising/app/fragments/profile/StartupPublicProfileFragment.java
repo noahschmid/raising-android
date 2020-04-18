@@ -29,6 +29,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.github.mikephil.charting.charts.PieChart;
@@ -256,7 +257,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         if (startup.getGallery() != null) {
             startup.getGallery().forEach(image -> {
-                pictures.add(image.getBitmap());
+                pictures.add(image.getImage());
             });
         }
 
@@ -272,6 +273,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 .asBitmap()
                 .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
                         startup.getProfilePictureId())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable
@@ -292,6 +295,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                         .asBitmap()
                         .load(ApiRequestHandler.getDomain() + "media/gallery/" +
                                 galleryId)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
                         .into(new CustomTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {

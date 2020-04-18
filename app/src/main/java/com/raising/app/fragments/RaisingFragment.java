@@ -93,6 +93,7 @@ public class RaisingFragment extends Fragment {
                     dismissLoadingPanel();
                     break;
                 case UPDATED:
+                    currentAccount = accountViewModel.getAccount().getValue();
                     onAccountUpdated();
                     break;
             }

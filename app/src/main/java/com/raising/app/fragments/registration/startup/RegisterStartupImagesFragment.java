@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +33,9 @@ import android.widget.VideoView;
 
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.gson.Gson;
 import com.raising.app.R;
@@ -50,6 +54,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -59,12 +64,17 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
     static final int REQUEST_GALLERY_CAPTURE = 3;
     static final int REQUEST_GALLERY_FETCH = 4;
 
-    private ImageView profileImage, addGalleryImage, profileImageOverlay;
+    private ImageView profileImage, profileImageOverlay;
+    private View addGalleryImage;
     private Button deleteProfileImageButton;
     private FlexboxLayout galleryLayout;
     private LayoutInflater inflater;
     private Startup startup;
     private boolean editMode = false;
+    boolean profilePictureChanged = false;
+    boolean galleryChanged = false;
+
+    private List<Image> gallery;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,7 +83,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_profile_images), true);
-
+        gallery = new ArrayList<>();
         return view;
     }
 
@@ -110,11 +120,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             profileImage.setImageBitmap(null);
         });
 
-        addGalleryImage = view.findViewById(R.id.gallery_add);
-        addGalleryImage.setOnClickListener(v -> showImageMenu(false));
-
         loadImages();
-
     }
 
     @Override
@@ -130,6 +136,8 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                 .with(this)
                 .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
                         startup.getProfilePictureId())
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
                 .centerCrop()
                 .placeholder(R.drawable.ic_person_24dp)
                 .into(profileImage);
@@ -137,9 +145,25 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             deleteProfileImageButton.setVisibility(View.VISIBLE);
         }
 
-        if(startup.getGallery() != null) {
-            startup.getGallery().forEach(image -> {
-                addImageToGallery(image.getBitmap());
+        if(startup.getGalleryIds() != null) {
+            startup.getGalleryIds().forEach(imageId -> {
+                Glide.with(this)
+                        .asBitmap()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .load(ApiRequestHandler.getDomain() + "media/gallery/" +
+                                imageId)
+                        .into(new CustomTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable
+                                    Transition<? super Bitmap> transition) {
+                                addImageToGallery(new Image(imageId, resource));
+                            }
+
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
+                            }
+                        });
             });
         }
     }
@@ -152,14 +176,14 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         switch (requestCode) {
             case REQUEST_GALLERY_CAPTURE:
                 Bitmap image = (Bitmap) data.getExtras().get("data");
-                addImageToGallery(image);
+                addImageToGallery(new Image(image));
                 break;
 
             case REQUEST_GALLERY_FETCH:
                 Uri imageUri = data.getData();
                 try {
                     image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
-                    addImageToGallery(image);
+                    addImageToGallery(new Image(image));
                 } catch (Exception e) {
                     Log.d("StartupImages", e.getMessage());
                 }
@@ -185,6 +209,28 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         }
     }
 
+    /**
+     * Add an image view at the end of the gallery with an + drawable
+     */
+    private void addNewGalleryPlaceholder() {
+        if(gallery.size() >= 9) {
+            return;
+        }
+        final View galleryObject = inflater.inflate(R.layout.item_gallery, null);
+        ImageView galleryImage = galleryObject.findViewById(R.id.gallery_image);
+        galleryImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showImageMenu(false);
+            }
+        });
+        galleryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_24dp));
+        AppCompatButton deleteButton = galleryObject.findViewById(R.id.button_delete_gallery_img);
+        deleteButton.setVisibility(View.GONE);
+        addGalleryImage = galleryObject;
+        galleryLayout.addView(galleryObject);
+    }
+
     private void setProfileImage(Bitmap image) {
         try {
             profileImage.setImageBitmap(ImageRotator.rotateImage(image));
@@ -195,19 +241,48 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         }
     }
 
-    private void addImageToGallery(Bitmap image) {
-        final View galleryObject = inflater.inflate(R.layout.item_gallery, null);
+    /**
+     * Add a new image to the gallery
+     * @param image
+     */
+    private void addImageToGallery(Image image) {
+        final View galleryObject;
+        if(addGalleryImage == null) {
+            galleryObject = inflater.inflate(R.layout.item_gallery, null);
+        } else {
+            galleryObject = addGalleryImage;
+        }
+
         ImageView galleryImage = galleryObject.findViewById(R.id.gallery_image);
-        galleryImage.setImageBitmap(image);
+        gallery.add(image);
+        galleryImage.setImageBitmap(image.getImage());
         AppCompatButton deleteButton = galleryObject.findViewById(R.id.button_delete_gallery_img);
+        deleteButton.setVisibility(View.VISIBLE);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 galleryObject.setVisibility(View.GONE);
                 galleryLayout.removeView(galleryObject);
+                if(image.getId() != -1) {
+                    ApiRequestHandler.performDeleteRequest("media/gallery/" + image.getId(),
+                            success -> {
+                                startup.getGalleryIds().remove(image.getId());
+                                return null;
+                            },
+                            error -> {
+                                return null;
+                            });
+                    gallery.remove(image);
+                    addNewGalleryPlaceholder();
+                }
             }
         });
-        galleryLayout.addView(galleryObject);
+
+
+        if(addGalleryImage == null) {
+            galleryLayout.addView(galleryObject);
+        }
+        addNewGalleryPlaceholder();
     }
 
     private void showImageMenu(boolean profileImage) {
@@ -269,25 +344,15 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         //encode image to base64 string
 
         Bitmap logo =((BitmapDrawable)profileImage.getDrawable()).getBitmap();
-        ArrayList<Image> gallery = new ArrayList<>();
-        for(int i = 0; i < galleryLayout.getChildCount(); ++i) {
-            View view = galleryLayout.getChildAt(i);
-            if(view.getId() != R.id.gallery_add) {
-                ImageView img = view.findViewById(R.id.gallery_image);
-                Bitmap galleryImg = ((BitmapDrawable)(img).getDrawable()).getBitmap();
-                gallery.add(new Image(galleryImg));
-            }
-        }
-
-        startup.setProfilePicture(new Image(logo));
-        startup.setGallery(gallery);
 
         try {
             if(!editMode) {
+                // todo : upload profile picture and gallery
                 RegistrationHandler.saveStartup(startup);
                 changeFragment(new RegisterStartupVideoFragment());
             } else {
                 accountViewModel.updateProfilePicture(new Image(logo));
+                accountViewModel.updateGallery(gallery);
                 popCurrentFragment(this);
             }
 
