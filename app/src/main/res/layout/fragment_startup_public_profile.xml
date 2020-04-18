@@ -515,7 +515,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:hint="@string/register_financial_information_text"
+                android:hint="@string/startup_profile_financial_requirements"
                 android:textColorHint="@color/raisingPrimary"
                 android:textSize="@dimen/raisingTextFontSize"
                 android:textStyle="bold"
