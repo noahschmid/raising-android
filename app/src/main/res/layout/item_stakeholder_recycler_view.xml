@@ -20,6 +20,7 @@
             android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
             android:padding="@dimen/standardVerticalMarginSmall"
             android:text="Title"
+            android:textSize="@dimen/raisingTextFontSize"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/stakeholder_recycler_button_edit"
             app:layout_constraintStart_toStartOf="parent"

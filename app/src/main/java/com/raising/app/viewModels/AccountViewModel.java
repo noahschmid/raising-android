@@ -261,6 +261,7 @@ public class AccountViewModel extends AndroidViewModel {
                     viewState.setValue(ViewState.ERROR);
                 }
                 Log.d(TAG, "Successfully updated profile picture");
+                viewState.setValue(ViewState.RESULT);
 
                 return null;
             }, error -> {

@@ -173,7 +173,7 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 fragment.setArguments(bundle);
                 break;
             case R.id.button_myProfile_startup_public_profile:
-                bundle.putSerializable("startup", (Startup)currentAccount);
+                bundle.putSerializable("startup", (Startup) currentAccount);
                 fragment = new StartupPublicProfileFragment();
                 fragment.setArguments(bundle);
                 break;

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     MatchesViewModel matchesViewModel;
 
     MaterialToolbar toolbar;
+
+    private final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,12 +160,15 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager manager = getSupportFragmentManager();
 
         int currentEntryCount = manager.getBackStackEntryCount();
+        Log.d(TAG, "onBackPressed: EntryCount: " + currentEntryCount);
         if(currentEntryCount == 1) {
+
             return;
         }
         Fragment currentFragment = manager.findFragmentById(currentEntryCount - 1);
+        Log.d(TAG, "onBackPressed: " + currentFragment);
         if(currentFragment != null) {
-            manager.beginTransaction().remove(currentFragment);
+            // manager.beginTransaction().remove(currentFragment);
             manager.popBackStackImmediate();
         }
     }

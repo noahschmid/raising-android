@@ -304,7 +304,7 @@
 
                 <TextView
                     android:id="@+id/text_investor_public_profile_min_ticket"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                     android:text="Min Ticket"
@@ -329,7 +329,7 @@
 
                 <TextView
                     android:id="@+id/text_investor_public_profile_max_ticket"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                     android:text="Max Ticket"

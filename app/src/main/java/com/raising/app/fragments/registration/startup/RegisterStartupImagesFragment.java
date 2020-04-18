@@ -233,7 +233,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
     private void setProfileImage(Bitmap image) {
         try {
-            profileImage.setImageBitmap(ImageRotator.rotateImage(image));
+            profileImage.setImageBitmap(image); //TODO: ImageRotator.rotateImage(image)
             deleteProfileImageButton.setVisibility(View.VISIBLE);
             profileImageOverlay.setVisibility(View.GONE);
         } catch (Exception e) {

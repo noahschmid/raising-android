@@ -61,6 +61,7 @@ import java.util.Objects;
 
 public class StartupPublicProfileFragment extends RaisingFragment {
     private static final String TAG = "StartupPublicProfile";
+
     private ImageSwitcher imageSwitcher;
     private ImageButton profileRequest, profileDecline;
     private TextView imageIndex, matchingPercent, profileName, profileLocation, profileSentence,
