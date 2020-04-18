@@ -389,12 +389,9 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     accountViewModel.updateGallery(gallery);
                 }
             } else {
-<<<<<<< HEAD
                 // todo : upload profile picture and gallery
-=======
                 //TODO: remove manually set loading panel
                 showLoadingPanel();
->>>>>>> a83a019feefdb4fee13ff8583592e10c84067aea
                 RegistrationHandler.saveInvestor(investor);
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.registerTypeAdapter(Investor.class,
