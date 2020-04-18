@@ -12,16 +12,16 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.raising.app.R;
-import com.raising.app.models.HandshakeOpenRequestItem;
+import com.raising.app.models.HandshakeItem;
 
 import java.util.ArrayList;
 
 public class HandshakeOpenRequestAdapter extends RecyclerView.Adapter<HandshakeOpenRequestAdapter.ViewHolder> {
-    private ArrayList<HandshakeOpenRequestItem> recyclerItems;
+    private ArrayList<HandshakeItem> recyclerItems;
     private OnClickListener clickListener;
     private OnItemClickListener itemClickListener;
 
-    public HandshakeOpenRequestAdapter(ArrayList<HandshakeOpenRequestItem> recyclerItems) {
+    public HandshakeOpenRequestAdapter(ArrayList<HandshakeItem> recyclerItems) {
         this.recyclerItems = recyclerItems;
     }
 
@@ -35,11 +35,10 @@ public class HandshakeOpenRequestAdapter extends RecyclerView.Adapter<HandshakeO
 
     @Override
     public void onBindViewHolder(@NonNull HandshakeOpenRequestAdapter.ViewHolder holder, int position) {
-        HandshakeOpenRequestItem recyclerItem = recyclerItems.get(position);
+        HandshakeItem recyclerItem = recyclerItems.get(position);
 
         holder.name.setText(recyclerItem.getName());
         holder.attribute.setText(recyclerItem.getAttribute());
-
         holder.image.setImageBitmap(recyclerItem.getBitmap());
     }
 
@@ -66,7 +65,6 @@ public class HandshakeOpenRequestAdapter extends RecyclerView.Adapter<HandshakeO
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private CardView card;
         private ImageView image;
         private TextView name, attribute;
         private Button accept, decline;

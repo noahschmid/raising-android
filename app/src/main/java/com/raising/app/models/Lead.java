@@ -23,11 +23,11 @@ public class Lead implements Serializable {
     private Date date;
 
     private LeadState state;
-    private HandshakeState handshakeState;
+    private InteractionState interactionState;
 
     public Lead (long id, boolean isStartup, String companyName, String firstName, String lastName,
                  int matchingPercent, Image profileImage, long accountId, long investmentPhaseId,
-                 long investorTypeId, long statusId, LeadState state, Date date, HandshakeState handshakeState) {
+                 long investorTypeId, long statusId, LeadState state, Date date, InteractionState interactionState) {
         this.id = id;
         this.isStartup = isStartup;
         this.companyName = companyName;
@@ -41,7 +41,7 @@ public class Lead implements Serializable {
         this.statusId = statusId;
         this.state = state;
         this.date = date;
-        this.handshakeState = handshakeState;
+        this.interactionState = interactionState;
     }
 
     public Bitmap getBitmap() {

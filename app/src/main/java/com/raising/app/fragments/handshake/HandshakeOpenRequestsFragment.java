@@ -5,9 +5,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +18,21 @@ import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
-import com.raising.app.models.HandshakeOpenRequestItem;
-import com.raising.app.util.recyclerViewAdapter.HandshakeAdapter;
+import com.raising.app.models.HandshakeItem;
+import com.raising.app.models.Lead;
+import com.raising.app.models.ViewState;
 import com.raising.app.util.recyclerViewAdapter.HandshakeOpenRequestAdapter;
+import com.raising.app.viewModels.HandshakesViewModel;
 
 import java.util.ArrayList;
 
 public class HandshakeOpenRequestsFragment extends RaisingFragment {
+
+    private final String TAG = "HandshakeOpenRequestFragment";
+
+    private HandshakesViewModel handshakesViewModel;
+
+    private ArrayList<HandshakeItem> openRequestItems;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,8 +47,40 @@ public class HandshakeOpenRequestsFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO: store open requests in the following array list
-        ArrayList<HandshakeOpenRequestItem> openRequestItems = new ArrayList<>();
+        // prepare handshakeViewModel for usage
+        handshakesViewModel = ViewModelProviders.of(getActivity())
+                .get(HandshakesViewModel.class);
+
+        handshakesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> processViewState(state));
+        processViewState(handshakesViewModel.getViewState().getValue());
+        openRequestItems = new ArrayList<>();
+
+        resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+            Log.d(TAG, "onViewCreated: ResourceViewModel ViewState: " + state.toString());
+        });
+
+        // populate open requests
+        if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
+                resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
+            ArrayList<Lead> openRequests = handshakesViewModel.getOpenRequests().getValue();
+            openRequests.forEach(openRequest -> {
+                HandshakeItem openRequestItem = new HandshakeItem();
+                openRequestItem.setId(openRequest.getId());
+                openRequestItem.setStartup(openRequest.isStartup());
+                openRequestItem.setImage(openRequest.getProfileImage());
+                if (openRequestItem.isStartup()) {
+                    openRequestItem.setName(openRequest.getCompanyName());
+                    openRequestItem.setAttribute(resources.getInvestmentPhase(
+                            openRequest.getInvestmentPhaseId()).getName());
+                } else {
+                    openRequestItem.setName(openRequest.getFirstName() + " " + openRequest.getLastName());
+                    openRequestItem.setAttribute(resources.getInvestorType(
+                            openRequest.getInvestorTypeId()).getName());
+                }
+                Log.d(TAG, "onViewCreated: Add OpenRequest: " + openRequestItem.getName());
+            });
+            Log.d(TAG, "onViewCreated: OpenRequests filled");
+        }
 
         RecyclerView recyclerView = view.findViewById(R.id.handshake_open_requests_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));

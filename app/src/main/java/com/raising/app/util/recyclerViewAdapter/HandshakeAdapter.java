@@ -39,11 +39,11 @@ public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.View
     public void onBindViewHolder(@NonNull HandshakeAdapter.ViewHolder holder, int position) {
         HandshakeItem recyclerItem = recyclerItems.get(position);
 
-        switch (recyclerItem.getHandshakeState()) {
-            case HANDSHAKE_REQUESTED:
+        switch (recyclerItem.getInteractionState()) {
+            case REQUESTED:
                 //TODO: insert one hand
                 break;
-            case HANDSHAKE_ACCEPTED:
+            case ACCEPTED:
                 holder.statusIcon.setImageDrawable(
                         ContextCompat.getDrawable(holder.statusIcon.getContext(),
                                 R.drawable.ic_handshake_24dp));
@@ -51,7 +51,7 @@ public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.View
                         ContextCompat.getColor(holder.statusIcon.getContext(),
                                 R.color.raisingSecondaryDark));
                 break;
-            case HANDSHAKE_DECLINED:
+            case DECLINED:
                 holder.statusIcon.setImageDrawable(
                         ContextCompat.getDrawable(holder.statusIcon.getContext(),
                                 R.drawable.ic_cancel_24dp));
@@ -59,8 +59,7 @@ public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.View
                         ContextCompat.getColor(holder.statusIcon.getContext(),
                                 R.color.raisingNegative));
                 break;
-            case CONTACT_SUCCESS:
-            case CONTACT_ACCEPTED:
+            case SUCCESS:
                 holder.statusIcon.setImageDrawable(
                         ContextCompat.getDrawable(holder.statusIcon.getContext(),
                                 R.drawable.ic_check_circle_24dp));
@@ -68,7 +67,6 @@ public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.View
                         ContextCompat.getColor(holder.statusIcon.getContext(),
                         R.color.raisingPositive));
                 break;
-            case CONTACT_REQUESTED:
         }
 
         // Default: set visibility of warning to gone

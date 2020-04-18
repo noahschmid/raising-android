@@ -21,7 +21,9 @@ import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.HandshakeItem;
 import com.raising.app.models.LeadState;
 import com.raising.app.models.Lead;
+import com.raising.app.models.ViewState;
 import com.raising.app.util.recyclerViewAdapter.HandshakeAdapter;
+import com.raising.app.util.recyclerViewAdapter.RecyclerViewMargin;
 import com.raising.app.viewModels.HandshakesViewModel;
 
 import java.util.ArrayList;
@@ -53,7 +55,6 @@ public class HandshakeTabFragment extends RaisingFragment {
             leadState = (LeadState) getArguments().getSerializable("handshakeState");
         }
 
-
         // prepare open requests layout
         ConstraintLayout openRequests = view.findViewById(R.id.handshake_open_requests);
         if (leadState.equals(LeadState.YOUR_TURN)) {
@@ -65,7 +66,6 @@ public class HandshakeTabFragment extends RaisingFragment {
             openRequests.setVisibility(View.GONE);
         }
 
-
         // prepare handshakeViewModel for usage
         handshakesViewModel = ViewModelProviders.of(getActivity())
                 .get(HandshakesViewModel.class);
@@ -76,7 +76,7 @@ public class HandshakeTabFragment extends RaisingFragment {
         handshakeItemsWeek = new ArrayList<>();
 
         resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
-            Log.d(TAG, "onViewCreated: ViewState: " + state.toString());
+            Log.d(TAG, "onViewCreated: ResourceViewModel ViewState: " + state.toString());
         });
 
         ArrayList<Lead> leads = handshakesViewModel.getLeads().getValue();
@@ -107,39 +107,47 @@ public class HandshakeTabFragment extends RaisingFragment {
         }
 
         // populate recycler view lists
-        handshakeItemsToday.clear();
-        handshakeItemsWeek.clear();
-        handshakeStateLeads.forEach(lead -> {
-            HandshakeItem handshakeItem = new HandshakeItem();
-            handshakeItem.setId(lead.getId());
-            handshakeItem.setMatchingPercent(lead.getMatchingPercent());
-            handshakeItem.setStartup(lead.isStartup());
-            handshakeItem.setImage(lead.getProfileImage());
-            handshakeItem.setHandshakeState(lead.getHandshakeState());
-            if(handshakeItem.isStartup()) {
-                handshakeItem.setName(lead.getCompanyName());
-                handshakeItem.setAttribute(resources.getInvestmentPhase(
-                        lead.getInvestmentPhaseId()).getName());
-            } else {
-                handshakeItem.setName(lead.getFirstName() + " " + lead.getLastName());
-                handshakeItem.setAttribute(resources.getInvestorType(
-                        lead.getInvestorTypeId()).getName());
-            }
-            if(lead.getDate().equals(new Date())) {
-                handshakeItemsToday.add(handshakeItem);
-            } else {
-                handshakeItemsWeek.add(handshakeItem);
-            }
+        if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
+                resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
+            handshakeItemsToday.clear();
+            handshakeItemsWeek.clear();
+            handshakeStateLeads.forEach(lead -> {
+                HandshakeItem handshakeItem = new HandshakeItem();
+                handshakeItem.setId(lead.getId());
+                handshakeItem.setMatchingPercent(lead.getMatchingPercent());
+                handshakeItem.setStartup(lead.isStartup());
+                handshakeItem.setImage(lead.getProfileImage());
+                handshakeItem.setInteractionState(lead.getInteractionState());
+
+                if (handshakeItem.isStartup()) {
+                    handshakeItem.setName(lead.getCompanyName());
+                    handshakeItem.setAttribute(resources.getInvestmentPhase(
+                            lead.getInvestmentPhaseId()).getName());
+                } else {
+                    handshakeItem.setName(lead.getFirstName() + " " + lead.getLastName());
+                    handshakeItem.setAttribute(resources.getInvestorType(
+                            lead.getInvestorTypeId()).getName());
+                }
+
+                if (lead.getDate().equals(new Date())) {
+                    handshakeItemsToday.add(handshakeItem);
+                } else {
+                    handshakeItemsWeek.add(handshakeItem);
+                }
+                Log.d(TAG, "onViewCreated: Add HandshakeItem: " + handshakeItem.getName());
+            });
             Log.d(TAG, "onViewCreated: HandshakeLists filled");
-        });
+        }
 
         HandshakeAdapter adapterToday = new HandshakeAdapter(handshakeItemsToday, leadState);
         HandshakeAdapter adapterWeek = new HandshakeAdapter(handshakeItemsWeek, leadState);
+        RecyclerViewMargin decoration = new RecyclerViewMargin(15);
 
         // initialize the recycler view for all 'today'-handshakes
         RecyclerView recyclerToday = view.findViewById(R.id.handshake_tab_recycler_today);
         recyclerToday.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerToday.setAdapter(adapterToday);
+        recyclerToday.addItemDecoration(decoration);
         adapterToday.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
             args.putLong("id", handshakeItemsToday.get(position).getId());
@@ -152,6 +160,7 @@ public class HandshakeTabFragment extends RaisingFragment {
         RecyclerView recyclerWeek = view.findViewById(R.id.handshake_tab_recycler_week);
         recyclerWeek.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerWeek.setAdapter(adapterWeek);
+        recyclerWeek.addItemDecoration(decoration);
         adapterWeek.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
             args.putLong("id", handshakeItemsToday.get(position).getId());

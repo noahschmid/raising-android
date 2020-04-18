@@ -12,16 +12,16 @@ public class HandshakeItem {
     private String attribute;
     private int matchingPercent;
     private Image image;
-    private HandshakeState handshakeState;
+    private InteractionState interactionState;
 
-    public HandshakeItem(long id, boolean isStartup, String name, String attribute, int matchingPercent, Image image, HandshakeState handshakeState) {
+    public HandshakeItem(long id, boolean isStartup, String name, String attribute, int matchingPercent, Image image, InteractionState interactionState) {
         this.id = id;
         this.isStartup = isStartup;
         this.name = name;
         this.attribute = attribute;
         this.matchingPercent = matchingPercent;
         this.image = image;
-        this.handshakeState = handshakeState;
+        this.interactionState = interactionState;
     }
 
     public Bitmap getBitmap() {
