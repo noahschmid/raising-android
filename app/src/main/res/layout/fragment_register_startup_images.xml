@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_images_add_profile_text"
                 android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingSubtitleFontSize"
@@ -72,7 +72,6 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </FrameLayout>
 
-
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/button_delete_profile_img"
                     android:layout_width="32dp"
@@ -87,13 +86,13 @@
                 android:id="@+id/text_startup_images_add_gallery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_images_add_gallery"
                 android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingSubtitleFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_images_gallery"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/register_startup_image_profile_layout"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_image_profile_layout"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_image_profile_layout" />
 
             <com.google.android.flexbox.FlexboxLayout
@@ -112,7 +111,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_images_add_gallery">
             </com.google.android.flexbox.FlexboxLayout>
 
-
             <LinearLayout
                 android:id="@+id/registration_images_progress"
                 android:layout_width="0dp"
@@ -124,49 +122,28 @@
                 app:layout_constraintStart_toStartOf="@+id/register_startup_images_gallery">
 
                 <ImageView
+                    android:id="@+id/progress_circle_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
+                    android:id="@+id/progress_circle_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
+                    android:id="@+id/progress_circle_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
+                    android:id="@+id/progress_circle_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_circle_full_darkgrey_16dp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
             </LinearLayout>
 
             <Button
@@ -176,7 +153,8 @@
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
-                android:hint="@string/register_button_text"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/register_button_finish_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

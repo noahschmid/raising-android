@@ -187,7 +187,7 @@ public class AccountViewModel extends AndroidViewModel {
             return;
         }
 
-        viewState.setValue(ViewState.LOADING);
+        viewState.postValue(ViewState.LOADING);
         Log.d(TAG, "update: ViewState" + getViewState().getValue().toString());
 
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -209,23 +209,23 @@ public class AccountViewModel extends AndroidViewModel {
             ApiRequestHandler.performPatchRequest(endpoint,
                     v -> {
                         if (update instanceof Startup) {
-                            currentAccount.setValue((Startup) update);
+                            currentAccount.postValue((Startup) update);
                         } else if (update instanceof Investor) {
-                            currentAccount.setValue((Investor) update);
+                            currentAccount.postValue((Investor) update);
                         } else {
-                            viewState.setValue(ViewState.ERROR);
+                            viewState.postValue(ViewState.ERROR);
                             Log.d(TAG, "update: ViewState" + getViewState().getValue().toString());
                             return null;
                         }
-                        viewState.setValue(ViewState.UPDATED);
+                        viewState.postValue(ViewState.UPDATED);
                         Log.d(TAG, "update: ViewState" + getViewState().getValue().toString());
                         return null;
                     }, error -> {
-                        viewState.setValue(ViewState.ERROR);
+                        viewState.postValue(ViewState.ERROR);
                         return null;
                     }, new JSONObject(accountString));
         } catch (JSONException e) {
-            viewState.setValue(ViewState.ERROR);
+            viewState.postValue(ViewState.ERROR);
             Log.d(TAG, "update: ViewState" + getViewState().getValue().toString());
             Log.e("AccountViewModel", "Error while performing patch request: " +
                     e.getMessage());
@@ -241,39 +241,38 @@ public class AccountViewModel extends AndroidViewModel {
     public void updateProfilePicture(Image image) {
         try {
             String method = "POST";
-            String endpoint = ApiRequestHandler.getDomain() + "media/profilepicture";
+            String endpoint = "media/profilepicture";
 
             if(currentAccount.getValue().getProfilePictureId() != -1) {
                 method = "PATCH";
                 endpoint += "/" + currentAccount.getValue().getProfilePictureId();
             }
-            new ImageUploader(endpoint, "profilePicture",
-                    image.getImage(), AuthenticationHandler.getId(), method, response -> {
-                try {
-                    currentAccount.getValue().setProfilePicture(image);
-                    if(response.length() > 0) {
-                        JSONObject obj = response.getJSONObject(0);
-                        currentAccount.getValue().setProfilePictureId(obj.getLong("id"));
+                new ImageUploader(endpoint, "profilePicture",
+                        image.getImage(), method, response -> {
+                    try {
+                        currentAccount.getValue().setProfilePicture(image);
+                        if(response.has("id")) {
+                            currentAccount.getValue().setProfilePictureId(response.getLong("id"));
+                            update(currentAccount.getValue());
+                        }
+                        viewState.postValue(ViewState.UPDATED);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "updateProfilePicture: " + e.getMessage());
+                        viewState.postValue(ViewState.ERROR);
                     }
-                    viewState.postValue(ViewState.UPDATED);
-                } catch (JSONException e) {
-                    Log.e(TAG, "updateProfilePicture: " + e.getMessage());
-                    viewState.setValue(ViewState.ERROR);
-                }
-                Log.d(TAG, "Successfully updated profile picture");
-                viewState.setValue(ViewState.RESULT);
+                    Log.d(TAG, "Successfully updated profile picture");
 
-                return null;
-            }, error -> {
-                viewState.setValue(ViewState.ERROR);
-                Log.e(TAG, "updateProfilePicture: " + error.toString() );
-                return null;
-            }).execute();
-        } catch (Exception e) {
-            viewState.setValue(ViewState.ERROR);
-            Log.e(TAG, "Error while updating profile picture: " +
-                    e.getMessage());
-        }
+                    return null;
+                }, error -> {
+                    viewState.postValue(ViewState.ERROR);
+                    Log.e(TAG, "updateProfilePicture: " + error.toString() );
+                    return null;
+                }, AuthenticationHandler.getToken()).execute();
+            } catch (Exception e) {
+                viewState.postValue(ViewState.ERROR);
+                Log.e(TAG, "Error while updating profile picture: " +
+                        e.getMessage());
+            }
     }
 
     /**
@@ -289,7 +288,7 @@ public class AccountViewModel extends AndroidViewModel {
         });
 
         new ImageUploader("media/gallery", "gallery",
-                pictures, AuthenticationHandler.getId(), "POST", response -> {
+                pictures, "POST", response -> {
             try {
                 for(int i = 0; i < response.length(); ++i) {
                     currentAccount.getValue().getGalleryIds().add(response.getLong(i));
@@ -297,12 +296,12 @@ public class AccountViewModel extends AndroidViewModel {
                 viewState.postValue(ViewState.UPDATED);
             } catch (JSONException e) {
                 Log.e(TAG, "updateGallery: " + e.getMessage());
-                viewState.setValue(ViewState.ERROR);
+                viewState.postValue(ViewState.ERROR);
             }
             Log.d(TAG, "Successfully updated gallery");
             return null;
         }, error -> {
-            viewState.setValue(ViewState.ERROR);
+            viewState.postValue(ViewState.ERROR);
             Log.e(TAG, "updateGallery: " + error.toString() );
             return null;
         }).execute();

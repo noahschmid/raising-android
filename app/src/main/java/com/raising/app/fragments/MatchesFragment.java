@@ -50,6 +50,11 @@ public class MatchesFragment extends RaisingFragment {
     }
 
     @Override
+    public void onResourcesLoaded() {
+
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 

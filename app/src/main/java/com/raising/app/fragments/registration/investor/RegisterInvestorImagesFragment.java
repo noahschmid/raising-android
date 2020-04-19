@@ -307,7 +307,9 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                                 return null;
                             });
                     gallery.remove(image);
-                    addNewGalleryPlaceholder();
+                    if(addGalleryImage == null) {
+                        addNewGalleryPlaceholder();
+                    }
                 }
             }
         });
@@ -315,6 +317,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         if(addGalleryImage == null) {
             galleryLayout.addView(galleryObject);
         }
+        addGalleryImage = null;
         addNewGalleryPlaceholder();
     }
 
@@ -367,6 +370,12 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
      * Process the given inputs
      */
     private void processInputs() {
+        if(profileImage.getDrawable() == null) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_no_picture_text));
+            return;
+        }
+
         if(((BitmapDrawable)profileImage.getDrawable()).getBitmap() == null ||
                 profileImage.getDrawable().getIntrinsicWidth()  == 0 ||
                 profileImage.getDrawable().getIntrinsicHeight() == 0 ||

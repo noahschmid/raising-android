@@ -21,9 +21,14 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -33,35 +38,62 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
     private String url;
     private ArrayList<File> files = new ArrayList<>();
     private String method;
-    private Function<JSONArray, Void> callback;
+    private Function<JSONArray, Void> multiCallback;
+    private Function<JSONObject, Void> singleCallback;
     private Function<JSONObject, Void> errorCallback;
-    private long accountId = -1;
     private String fieldName;
+    private String token;
 
     private final String TAG = "ImageUploader";
 
-    public ImageUploader(String url, String fieldName, Bitmap image, long id, String method,
-                          Function<JSONArray, Void> callback,
+    // Constructor for single file - no auth
+    public ImageUploader(String url, String fieldName, Bitmap image, String method,
+                          Function<JSONObject, Void> callback,
                          Function<JSONObject, Void> errorCallback) {
         this.url = ApiRequestHandler.getDomain() + url;
         this.files.add(persistImage(image, "tmp"));
         this.method = method;
-        this.callback = callback;
+        this.singleCallback = callback;
         this.errorCallback = errorCallback;
-        this.accountId = id;
         this.fieldName = fieldName;
     }
 
-    public ImageUploader(String url, String fieldName, List<Bitmap> images, long id, String method,
+    // Constructor for single file
+    public ImageUploader(String url, String fieldName, Bitmap image, String method,
+                         Function<JSONObject, Void> callback,
+                         Function<JSONObject, Void> errorCallback, String token) {
+        this.url = ApiRequestHandler.getDomain() + url;
+        this.files.add(persistImage(image, "tmp"));
+        this.method = method;
+        this.singleCallback = callback;
+        this.errorCallback = errorCallback;
+        this.fieldName = fieldName;
+        this.token = token;
+    }
+
+    //Constructor for multiple files - no auth
+    public ImageUploader(String url, String fieldName, List<Bitmap> images, String method,
                          Function<JSONArray, Void> callback,
                          Function<JSONObject, Void> errorCallback) {
         this.url = ApiRequestHandler.getDomain() + url;
         images.forEach(img -> this.files.add(persistImage(img, "tmp" + files.size())));
         this.method = method;
-        this.callback = callback;
+        this.multiCallback = callback;
         this.errorCallback = errorCallback;
-        this.accountId = id;
         this.fieldName = fieldName;
+    }
+
+    //Constructor for multiple files
+    public ImageUploader(String url, String fieldName, List<Bitmap> images, String method,
+                         Function<JSONArray, Void> callback,
+                         Function<JSONObject, Void> errorCallback, String token) {
+        this.url = ApiRequestHandler.getDomain() + url;
+        images.forEach(img -> this.files.add(persistImage(img, "tmp" + files.size())));
+        this.method = method;
+        this.multiCallback = callback;
+        this.errorCallback = errorCallback;
+        this.fieldName = fieldName;
+        this.token = token;
     }
 
     private File persistImage(Bitmap bitmap, String name) {
@@ -100,6 +132,10 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
 
     @Override
     protected String doInBackground(Void... v) {
+        return doMultiFileUpload();
+    }
+
+    private String doMultiFileUpload() {
         String res = "fail";
 
         HttpsURLConnection.setFollowRedirects(false);
@@ -107,13 +143,15 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
 
         try {
             connection = (HttpsURLConnection) new URL(url).openConnection();
-            connection.setRequestMethod(method);
-            if(AuthenticationHandler.isLoggedIn()) {
-                connection.setRequestProperty("Authorization", "Bearer " + AuthenticationHandler.getToken());
-            }
+
+
             String boundary = "---------------------------boundary";
             String tail = "\r\n--" + boundary + "--\r\n";
+            if(token != null) {
+                connection.setRequestProperty("Authorization", "Bearer " + token);
+            }
             connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+            connection.setRequestMethod(method);
             connection.setDoOutput(true);
 
             String metadataPart = "--" + boundary + "\r\n"
@@ -149,7 +187,9 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
                 fileLength += file.length() + tail.length();
                 totalFilesLength += file.length();
                 String fileHeader2 = "Content-length: " + fileLength + "\r\n";
-                fileHeader.append(fileHeader1 + fileHeader2 + "\r\n");
+                fileHeader.append(fileHeader1)
+                        .append(fileHeader2)
+                        .append("\r\n");
             }
 
             String stringData = metadataPart + fileHeader.toString();
@@ -176,11 +216,10 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
                 }
             }
 
-            Log.d(TAG, "doInBackground: end of while loop");
-
             out.writeBytes(tail);
             out.flush();
             out.close();
+
             if (connection.getResponseCode() == 200) {
                 Log.d(TAG, "doInBackground: successful upload");
                 BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -194,18 +233,20 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
                 JSONArray response = new JSONArray();
                 if(sb.toString().startsWith("[")) {
                     response = new JSONArray(sb.toString());
+                    multiCallback.apply(response);
                 } else if (sb.toString().length() > 0) {
                     response.put(new JSONObject(sb.toString()));
+                    singleCallback.apply(new JSONObject(sb.toString()));
                 }
-                callback.apply(response);
             } else {
+                Log.e(TAG, "doMultiFileUpload: error code " + connection.getResponseCode());
                 if(connection.getErrorStream() != null) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(
                             connection.getErrorStream()));
                     StringBuilder sb = new StringBuilder();
                     String line;
                     while ((line = br.readLine()) != null) {
-                        sb.append(line+"\n");
+                        sb.append(line).append("\n");
                     }
                     br.close();
                     JSONObject response = new JSONObject();
@@ -217,9 +258,6 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
             }
         } catch (Exception e) {
             Log.e(TAG, "doInBackground: " +  e.getMessage());
-            ToastHandler toastHandler = new ToastHandler(InternalStorageHandler.getActivity());
-            toastHandler.showToast(
-                    "Upload failed", Toast.LENGTH_LONG);
         } finally {
             if (connection != null) connection.disconnect();
         }
