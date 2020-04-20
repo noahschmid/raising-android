@@ -39,7 +39,7 @@ public class HandshakeOpenRequestAdapter extends RecyclerView.Adapter<HandshakeO
 
         holder.name.setText(recyclerItem.getName());
         holder.attribute.setText(recyclerItem.getAttribute());
-        holder.image.setImageBitmap(recyclerItem.getBitmap());
+        // holder.image.setImageBitmap(recyclerItem.getBitmap());
     }
 
     @Override

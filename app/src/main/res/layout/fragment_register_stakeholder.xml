@@ -54,7 +54,8 @@
                 android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_board_member"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_founder_recycler_view"
-                app:layout_constraintTop_toBottomOf="@+id/stakeholder_founder_recycler_view" />
+                app:layout_constraintTop_toBottomOf="@+id/stakeholder_founder_recycler_view"
+                app:rippleColor="@color/raisingRippleColor"/>
 
             <TextView
                 android:id="@+id/text_stakeholder_board_member"
@@ -92,7 +93,8 @@
                 android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/text_stakeholder_shareholder"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_board_member_recycler_view"
-                app:layout_constraintTop_toBottomOf="@+id/stakeholder_board_member_recycler_view" />
+                app:layout_constraintTop_toBottomOf="@+id/stakeholder_board_member_recycler_view"
+                app:rippleColor="@color/raisingRippleColor"/>
 
             <TextView
                 android:id="@+id/text_stakeholder_shareholder"
@@ -130,7 +132,8 @@
                 android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_shareholder_recycler_view"
-                app:layout_constraintTop_toBottomOf="@+id/stakeholder_shareholder_recycler_view" />
+                app:layout_constraintTop_toBottomOf="@+id/stakeholder_shareholder_recycler_view"
+                app:rippleColor="@color/raisingRippleColor"/>
 
             <LinearLayout
                 android:id="@+id/registration_profile_progress"

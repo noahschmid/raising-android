@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
+import com.google.android.material.button.MaterialButton;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.registration.RegisterLoginInformationFragment;

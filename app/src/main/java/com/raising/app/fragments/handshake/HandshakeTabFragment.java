@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -53,17 +54,6 @@ public class HandshakeTabFragment extends RaisingFragment {
         // check for handshake state
         if (getArguments() != null) {
             leadState = (LeadState) getArguments().getSerializable("handshakeState");
-        }
-
-        // prepare open requests layout
-        ConstraintLayout openRequests = view.findViewById(R.id.handshake_open_requests);
-        if (leadState.equals(LeadState.YOUR_TURN)) {
-            ImageView image = view.findViewById(R.id.handshake_open_requests_image);
-            //TODO: insert image of uppermost open request
-            openRequests.setOnClickListener(v ->
-                    changeFragment(new HandshakeOpenRequestsFragment(), "HandshakeOpenRequestFragment"));
-        } else {
-            openRequests.setVisibility(View.GONE);
         }
 
         // prepare handshakeViewModel for usage
@@ -116,7 +106,7 @@ public class HandshakeTabFragment extends RaisingFragment {
                 handshakeItem.setId(lead.getId());
                 handshakeItem.setMatchingPercent(lead.getMatchingPercent());
                 handshakeItem.setStartup(lead.isStartup());
-                handshakeItem.setImage(lead.getProfileImage());
+                handshakeItem.setPictureId(lead.getProfilePictureId());
                 handshakeItem.setInteractionState(lead.getInteractionState());
 
                 if (handshakeItem.isStartup()) {
@@ -168,5 +158,22 @@ public class HandshakeTabFragment extends RaisingFragment {
             contactFragment.setArguments(args);
             changeFragment(contactFragment, "HandshakeContactFragment");
         });
+
+        // prepare open requests layout
+        ConstraintLayout openRequests = view.findViewById(R.id.handshake_open_requests);
+        if (!(leadState.equals(LeadState.YOUR_TURN))) {
+            openRequests.setVisibility(View.GONE);
+        } else {
+            ImageView image = view.findViewById(R.id.handshake_open_requests_image);
+            if(handshakesViewModel.getOpenRequests().getValue() != null) {
+                // set image of uppermost index in openRequests
+                // image.setImageBitmap(handshakesViewModel.getOpenRequests().getValue().get(0).getProfileImage());
+            } else {
+                image.setImageDrawable(ContextCompat.getDrawable(this.getContext(), R.drawable.ic_person_24dp));
+            }
+            openRequests.setOnClickListener(v ->
+                    changeFragment(new HandshakeOpenRequestsFragment(),
+                            "HandshakeOpenRequestFragment"));
+        }
     }
 }

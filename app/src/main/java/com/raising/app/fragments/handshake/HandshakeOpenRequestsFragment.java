@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,8 +28,9 @@ import com.raising.app.viewModels.HandshakesViewModel;
 import java.util.ArrayList;
 
 public class HandshakeOpenRequestsFragment extends RaisingFragment {
-
     private final String TAG = "HandshakeOpenRequestFragment";
+
+    ConstraintLayout emptyListLayout;
 
     private HandshakesViewModel handshakesViewModel;
 
@@ -47,6 +49,9 @@ public class HandshakeOpenRequestsFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        emptyListLayout = view.findViewById(R.id.empty_requests_layout);
+        emptyListLayout.setVisibility(View.GONE);
+
         // prepare handshakeViewModel for usage
         handshakesViewModel = ViewModelProviders.of(getActivity())
                 .get(HandshakesViewModel.class);
@@ -63,11 +68,14 @@ public class HandshakeOpenRequestsFragment extends RaisingFragment {
         if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
                 resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
             ArrayList<Lead> openRequests = handshakesViewModel.getOpenRequests().getValue();
+            if(openRequests == null || openRequests.size() == 0) {
+                emptyListLayout.setVisibility(View.VISIBLE);
+            }
             openRequests.forEach(openRequest -> {
                 HandshakeItem openRequestItem = new HandshakeItem();
                 openRequestItem.setId(openRequest.getId());
                 openRequestItem.setStartup(openRequest.isStartup());
-                openRequestItem.setImage(openRequest.getProfileImage());
+                openRequestItem.setPictureId(openRequest.getProfilePictureId());
                 if (openRequestItem.isStartup()) {
                     openRequestItem.setName(openRequest.getCompanyName());
                     openRequestItem.setAttribute(resources.getInvestmentPhase(
@@ -78,6 +86,7 @@ public class HandshakeOpenRequestsFragment extends RaisingFragment {
                             openRequest.getInvestorTypeId()).getName());
                 }
                 Log.d(TAG, "onViewCreated: Add OpenRequest: " + openRequestItem.getName());
+                openRequestItems.add(openRequestItem);
             });
             Log.d(TAG, "onViewCreated: OpenRequests filled");
         }
@@ -105,11 +114,11 @@ public class HandshakeOpenRequestsFragment extends RaisingFragment {
             if(openRequestItems.get(position).isStartup()) {
                 Fragment fragment = new StartupPublicProfileFragment();
                 fragment.setArguments(args);
-                changeFragment(fragment);
+                changeFragment(fragment, "StartupPublicProfileFragment");
             } else {
                 Fragment fragment = new InvestorPublicProfileFragment();
                 fragment.setArguments(args);
-                changeFragment(fragment);
+                changeFragment(fragment, "InvestorPublicProfileFragment");
             }
         });
     }

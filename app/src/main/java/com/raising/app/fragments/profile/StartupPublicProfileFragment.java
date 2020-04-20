@@ -627,6 +627,6 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     private String currentIndexToString(int index) {
         if (pictures.size() == 0)
             return " ";
-        return ((index + 1) + " / " + pictures.size());
+        return ((index + 1) + "/" + pictures.size());
     }
 }

@@ -19,9 +19,5 @@ public class HandshakeContact {
         this.phone = phone;
         this.image = image;
     }
-
-    public Bitmap getBitmap() {
-        return image.getBitmap();
-    }
-
 }
+

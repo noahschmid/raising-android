@@ -76,7 +76,7 @@ public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.View
         holder.attribute.setText(recyclerItem.getAttribute());
         holder.matchingPercent.setText(recyclerItem.getHandshakePercentString());
 
-        holder.profilePicture.setImageBitmap(recyclerItem.getBitmap());
+        // holder.profilePicture.setImageBitmap(recyclerItem.getBitmap());
 
         switch (stateEnum) {
             case YOUR_TURN:
@@ -102,14 +102,11 @@ public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private CardView card;
         private TextView name, attribute, matchingPercent;
         private ImageView profilePicture, statusIcon, warning;
 
         public ViewHolder(@NonNull View itemView, OnItemClickListener itemClickListener) {
             super(itemView);
-
-            card = itemView.findViewById(R.id.item_handshake_card);
 
             name = itemView.findViewById(R.id.item_handshake_name);
             attribute = itemView.findViewById(R.id.item_handshake_attributes);

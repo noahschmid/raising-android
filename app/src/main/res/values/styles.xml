@@ -20,7 +20,7 @@
         <item name="android:layout_marginBottom"> @dimen/standardVerticalMargin</item>
     </style>
     <style name="snackbar_text_style" parent="Widget.MaterialComponents.Snackbar.TextView">
-        <item name="android:textSize"> @dimen/raisingSmallTextFontSize </item>
+        <item name="android:textSize"> @dimen/raisingSmallerTextFontSize </item>
     </style>
 
     <style name="DialogTheme" parent="Theme.MaterialComponents.Light.Dialog.MinWidth" />

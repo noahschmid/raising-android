@@ -98,7 +98,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/button_login_goTo_register"
                 app:layout_constraintStart_toStartOf="@+id/button_login_goTo_register"
-                app:layout_constraintTop_toBottomOf="@+id/button_login_goTo_register" />
+                app:layout_constraintTop_toBottomOf="@+id/button_login_goTo_register"
+                app:rippleColor="@color/raisingRippleColor"/>
 
             <Button
                 android:id="@+id/button_login_goTo_register"
@@ -114,7 +115,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/button_login"
                 app:layout_constraintVertical_bias="0.40"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintVertical_chainStyle="packed"
+                app:rippleColor="@color/raisingRippleColor"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

@@ -16,8 +16,9 @@
     <string name="accept_text"> Accept </string>
     <string name="decline_text"> Decline </string>
     <string name="request_text"> Request </string>
-    <string name="confirm_text"> Confirm</string>
-    <string name="got_it_text"> Got it</string>
+    <string name="requested_text"> Requested </string>
+    <string name="confirm_text"> Confirm </string>
+    <string name="got_it_text"> Got it </string>
 
     <string name="simple_dialog_invalid_input_title">Invalid inputs</string>
 
@@ -100,7 +101,7 @@
     <string name="register_fte_helper_text"> FTE stands for Full Time Employees</string>
     <string name="register_company_error_fte">FTE should be greater than 0</string>
     <string name="register_company_error_break_even"> Break-Even Year should be after the Founding Year </string>
-    
+
     <string name="toolbar_title_labels"> Labels </string>
     <string name="register_label_sef4kmu"> SEF4KMU </string>
     <string name="register_label_venture_kick"> Venture Kick </string>
@@ -144,6 +145,7 @@
     <string name="handshake_tab_this_week"> This Week </string>
 
     <string name="toolbar_title_open_requests"> Open Requests</string>
+    <string name="handshake_no_open_requests"> You currently don\'t have any open requests!</string>
 
     <string name="toolbar_title_contact"> Contact </string>
 

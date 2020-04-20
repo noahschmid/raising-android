@@ -21,7 +21,6 @@ public class HandshakesFragment extends RaisingFragment {
     private TabLayout tabLayout;
     private TabItem yourTurn, pending, closed;
     private ViewPager viewPager;
-    private HandshakePageAdapter pagerAdapter;
 
 
     @Override
@@ -39,7 +38,7 @@ public class HandshakesFragment extends RaisingFragment {
 
         viewPager = view.findViewById(R.id.handshake_view_pager);
 
-        pagerAdapter = new HandshakePageAdapter(getActivitiesFragmentManager(),
+        HandshakePageAdapter pagerAdapter = new HandshakePageAdapter(getChildFragmentManager(),
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
                 tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
@@ -65,12 +64,5 @@ public class HandshakesFragment extends RaisingFragment {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
     }
 }

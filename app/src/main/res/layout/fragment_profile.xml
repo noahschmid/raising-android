@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/overlay_layout"
@@ -28,143 +27,238 @@
 
                     <Button
                         android:id="@+id/button_myProfile_startup_public_profile"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_height="@dimen/myProfileButtonHeight"
                         android:layout_marginTop="@dimen/standardVerticalMargin"
-                        android:layout_marginBottom="@dimen/standardVerticalMargin"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_visibility_black_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/myProfile_watch_public_profile"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_account_information"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_subscription"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_subscription"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
                         android:id="@+id/button_myProfile_startup_account_information"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_height="@dimen/myProfileButtonHeight"
                         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                         android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_person_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/toolbar_title_login_information"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_company_information"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_public_profile"
                         app:layout_constraintVertical_bias="0.0"
-                        app:layout_constraintVertical_chainStyle="packed" />
+                        app:layout_constraintVertical_chainStyle="packed"
+                        app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
                         android:id="@+id/button_myProfile_startup_company_information"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_business_black_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/toolbar_title_company_information"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_company_figures"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_account_information"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_account_information"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_account_information" />
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_account_information"
+                        app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
                         android:id="@+id/button_myProfile_startup_company_figures"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_content_paste_black_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/toolbar_title_company_figures"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_matching_criteria"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_company_information"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_company_information"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_company_information" />
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_company_information"
+                        app:rippleColor="@color/raisingRippleColor" />
 
 
                     <Button
                         android:id="@+id/button_myProfile_startup_matching_criteria"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_puzzle_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/toolbar_title_matching_criteria"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_pitch"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_company_figures"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_company_figures"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_company_figures" />
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_company_figures"
+                        app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
                         android:id="@+id/button_myProfile_startup_pitch"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_conversation_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/toolbar_title_pitch"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_labels"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_matching_criteria"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_matching_criteria"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_matching_criteria" />
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_matching_criteria"
+                        app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
                         android:id="@+id/button_myProfile_startup_labels"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_price_tag_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/toolbar_title_labels"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_images"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_pitch"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_pitch"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_pitch" />
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_pitch"
+                        app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
                         android:id="@+id/button_myProfile_startup_images"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_myprofile_images_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/toolbar_title_profile_images"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_video"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_labels"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_labels"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_labels" />
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_labels"
+                        app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
                         android:id="@+id/button_myProfile_startup_video"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_videocam_black_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/toolbar_title_video"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_financial_requirements"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_images"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_images"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_images" />
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_images"
+                        app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
                         android:id="@+id/button_myProfile_startup_financial_requirements"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_myprofile_financial_requirements_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/toolbar_title_financial_requirements"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_stakeholders"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_video"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_video"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_video" />
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_video"
+                        app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
                         android:id="@+id/button_myProfile_startup_stakeholders"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_myprofile_stakeholder_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/toolbar_title_stakeholder"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_subscription"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_financial_requirements"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_financial_requirements"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_financial_requirements" />
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_financial_requirements"
+                        app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
                         android:id="@+id/button_myProfile_startup_subscription"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
-                        android:layout_marginBottom="@dimen/standardVerticalMargin"
+                        android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/myProfile_subscription_plan"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_stakeholders"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_stakeholders"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_stakeholders" />
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_stakeholders"
+                        app:rippleColor="@color/raisingRippleColor" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </FrameLayout>
 
@@ -179,87 +273,140 @@
 
                     <Button
                         android:id="@+id/button_myProfile_investor_account_information"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_height="@dimen/myProfileButtonHeight"
                         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        android:layout_marginTop="@dimen/standardVerticalMargin"
                         android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_person_24dp"
+                        android:drawableTint="@color/raisingTextColor"
                         android:hint="@string/toolbar_title_login_information"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_profile_information"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_public_profile"
                         app:layout_constraintVertical_bias="0.0"
-                        app:layout_constraintVertical_chainStyle="packed" />
+                        app:layout_constraintVertical_chainStyle="packed"
+                        app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
                         android:id="@+id/button_myProfile_investor_profile_information"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_person_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/toolbar_title_profile_information"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_matching_criteria"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_account_information"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_account_information"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_account_information" />
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_account_information"
+                        app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
                         android:id="@+id/button_myProfile_investor_matching_criteria"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_puzzle_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/toolbar_title_matching_criteria"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_pitch"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_profile_information"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_profile_information"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_profile_information" />
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_profile_information"
+                        app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
                         android:id="@+id/button_myProfile_investor_pitch"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_conversation_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/toolbar_title_pitch"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_images"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_matching_criteria"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_matching_criteria"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_matching_criteria" />
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_matching_criteria"
+                        app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
                         android:id="@+id/button_myProfile_investor_images"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
+                        android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_myprofile_images_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/toolbar_title_profile_images"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_subscription"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_pitch"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_pitch"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_pitch" />
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_pitch"
+                        app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
                         android:id="@+id/button_myProfile_investor_subscription"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
-                        android:layout_marginBottom="@dimen/standardVerticalMargin"
-                        android:hint="@string/myProfile_subscription_plan"
+                        android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
+                        android:hint="@string/myProfile_subscription_plan"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_images"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_images"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_images" />
+                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_images"
+                        app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
                         android:id="@+id/button_myProfile_investor_public_profile"
-                        style="@style/GeneralButtonStyle"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="0dp"
-                        android:layout_marginTop="@dimen/standardVerticalMargin"
-                        android:layout_marginBottom="@dimen/standardVerticalMargin"
-                        android:hint="@string/myProfile_watch_public_profile"
+                        android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                        android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_visibility_black_24dp"
+                        android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
+                        android:hint="@string/myProfile_watch_public_profile"
+                        android:shadowColor="@color/raisingWhite"
+                        android:textColorHint="@color/raisingTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_account_information"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_subscription"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_subscription"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:rippleColor="@color/raisingRippleColor" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </FrameLayout>
         </LinearLayout>

@@ -5,8 +5,6 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorPrimaryLight"> #b3c4bf </color>
 
-    <color name="colorAccent">#D81B60</color>
-
     <color name="raisingPrimary">#911A20</color>
     <color name="raisingPrimaryLight"> #DE6A70 </color>
     <color name="raisingPrimaryDark"> #6B1318 </color>
@@ -22,11 +20,14 @@
     <color name="raisingBlack"> #000000 </color>
     <color name="raisingBlackTransparent"> #99000000</color>
     <color name="raisingDarkGrey"> #666666</color>
+
     <color name="raisingPositive"> #128700 </color>
     <color name="raisingPositiveAccent"> #6FA87E </color>
     <color name="raisingNegative"> #ff0000 </color>
     <color name="raisingWarning"> #FFB200</color>
     <color name="raisingActionBlue"> #1F35F5</color>
+
+    <color name="raisingRippleColor"> #b0b0b0</color>
 
     <color name="raisingButtonBackgroundColor">@color/raisingSecondary </color>
 
@@ -34,5 +35,4 @@
     <color name="raisingTextColorDark">@color/raisingBlack </color>
     <color name="raisingTextColorLight"> @color/raisingWhite </color>
     <color name="raisingBackground">#D9DEE4</color>
-    <color name="green">#2A9200</color>
 </resources>

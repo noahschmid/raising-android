@@ -27,7 +27,7 @@ public class HandshakesViewModel extends AndroidViewModel {
         super(application);
         leads.setValue(new ArrayList<>());
         viewState.setValue(ViewState.EMPTY);
-        loadLeads();
+        // loadLeads();
     }
 
     public LiveData<ArrayList<Lead>> getLeads() {
