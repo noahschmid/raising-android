@@ -3,6 +3,7 @@ package com.raising.app.models;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 import lombok.Data;
@@ -11,17 +12,30 @@ import lombok.Data;
 public class Lead implements Serializable {
     private long id;
     private boolean isStartup;
+    private String title;
     private String companyName;
     private String firstName;
     private String lastName;
+    private String attribute;
     private int matchingPercent;
     private long profilePictureId;
     private long accountId;
     private long investmentPhaseId;
     private long investorTypeId;
-    private long statusId;
-    private Date date;
+    private Date timestamp;
 
     private LeadState state;
-    private InteractionState interactionState;
+    private InteractionState handshakeState;
+
+    private ArrayList<Interaction> interactions;
+
+    private Interaction coffee;
+    private Interaction businessplan;
+    private Interaction phone;
+    private Interaction email;
+    private Interaction video;
+
+    public String getHandshakePercentString() {
+        return matchingPercent + " %";
+    }
 }

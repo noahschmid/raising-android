@@ -1,9 +1,7 @@
-package com.raising.app.fragments.handshake;
+package com.raising.app.fragments.leads;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -17,7 +15,7 @@ import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.util.HandshakePageAdapter;
 
-public class HandshakesFragment extends RaisingFragment {
+public class LeadsContainerFragment extends RaisingFragment {
     private TabLayout tabLayout;
     private TabItem yourTurn, pending, closed;
     private ViewPager viewPager;

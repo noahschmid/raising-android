@@ -87,7 +87,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     private int matchScore;
 
     private LayoutInflater inflater;
-    private Long relationshipId;
+    private long relationshipId = -1;
 
     private Startup startup;
 
@@ -464,9 +464,9 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                         .getDrawable(R.drawable.ic_person_24dp));
             } else {
                 imageView.setImageBitmap(pictures.get(currentImageIndex));
+                imageIndex.setVisibility(View.VISIBLE);
             }
             imageIndex.setText(currentIndexToString(currentImageIndex));
-            imageIndex.setVisibility(View.VISIBLE);
             return imageView;
         });
 

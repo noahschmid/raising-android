@@ -5,7 +5,7 @@
     android:id="@+id/overlay_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.handshake.HandshakeOpenRequestsFragment">
+    tools:context=".fragments.leads.LeadsOpenRequestsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -7,22 +7,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.raising.app.R;
-import com.raising.app.models.HandshakeItem;
+import com.raising.app.models.Lead;
 import com.raising.app.models.LeadState;
 
 import java.util.ArrayList;
 
 public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.ViewHolder> {
-    private ArrayList<HandshakeItem> recyclerItems;
+    private ArrayList<Lead> recyclerItems;
     private OnItemClickListener itemClickListener;
     private LeadState stateEnum;
 
-    public HandshakeAdapter(ArrayList<HandshakeItem> recyclerItems, LeadState stateEnum) {
+    public HandshakeAdapter(ArrayList<Lead> recyclerItems, LeadState stateEnum) {
         this.recyclerItems = recyclerItems;
         this.stateEnum = stateEnum;
     }
@@ -37,19 +36,29 @@ public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull HandshakeAdapter.ViewHolder holder, int position) {
-        HandshakeItem recyclerItem = recyclerItems.get(position);
+        Lead recyclerItem = recyclerItems.get(position);
 
-        switch (recyclerItem.getInteractionState()) {
-            case REQUESTED:
+        switch (recyclerItem.getHandshakeState()) {
+            case STARTUP_ACCEPTED:
+            case INVESTOR_ACCEPTED:
                 //TODO: insert one hand
                 break;
-            case ACCEPTED:
-                holder.statusIcon.setImageDrawable(
-                        ContextCompat.getDrawable(holder.statusIcon.getContext(),
-                                R.drawable.ic_handshake_24dp));
-                holder.statusIcon.setBackgroundColor(
-                        ContextCompat.getColor(holder.statusIcon.getContext(),
-                                R.color.raisingSecondaryDark));
+            case HANDSHAKE:
+                if(stateEnum == LeadState.YOUR_TURN || stateEnum == LeadState.PENDING) {
+                    holder.statusIcon.setImageDrawable(
+                            ContextCompat.getDrawable(holder.statusIcon.getContext(),
+                                    R.drawable.ic_handshake_24dp));
+                    holder.statusIcon.setBackgroundColor(
+                            ContextCompat.getColor(holder.statusIcon.getContext(),
+                                    R.color.raisingSecondaryDark));
+                } else if(stateEnum == LeadState.CLOSED) {
+                    holder.statusIcon.setImageDrawable(
+                            ContextCompat.getDrawable(holder.statusIcon.getContext(),
+                                    R.drawable.ic_check_circle_24dp));
+                    holder.statusIcon.setBackgroundColor(
+                            ContextCompat.getColor(holder.statusIcon.getContext(),
+                                    R.color.raisingPositive));
+                }
                 break;
             case DECLINED:
                 holder.statusIcon.setImageDrawable(
@@ -59,20 +68,12 @@ public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.View
                         ContextCompat.getColor(holder.statusIcon.getContext(),
                                 R.color.raisingNegative));
                 break;
-            case SUCCESS:
-                holder.statusIcon.setImageDrawable(
-                        ContextCompat.getDrawable(holder.statusIcon.getContext(),
-                                R.drawable.ic_check_circle_24dp));
-                holder.statusIcon.setBackgroundColor(
-                        ContextCompat.getColor(holder.statusIcon.getContext(),
-                        R.color.raisingPositive));
-                break;
         }
 
         // Default: set visibility of warning to gone
         holder.warning.setVisibility(View.GONE);
 
-        holder.name.setText(recyclerItem.getName());
+        holder.name.setText(recyclerItem.getTitle());
         holder.attribute.setText(recyclerItem.getAttribute());
         holder.matchingPercent.setText(recyclerItem.getHandshakePercentString());
 

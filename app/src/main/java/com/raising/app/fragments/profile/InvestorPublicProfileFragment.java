@@ -359,9 +359,9 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                         .getDrawable(R.drawable.ic_person_24dp));
             } else {
                 imageView.setImageBitmap(pictures.get(currentImageIndex));
+                imageIndex.setVisibility(View.VISIBLE);
             }
             imageIndex.setText(currentIndexToString(currentImageIndex));
-            imageIndex.setVisibility(View.VISIBLE);
             return imageView;
         });
 

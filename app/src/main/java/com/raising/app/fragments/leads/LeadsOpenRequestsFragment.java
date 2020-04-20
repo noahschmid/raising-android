@@ -1,4 +1,4 @@
-package com.raising.app.fragments.handshake;
+package com.raising.app.fragments.leads;
 
 import android.os.Bundle;
 
@@ -19,22 +19,21 @@ import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
-import com.raising.app.models.HandshakeItem;
 import com.raising.app.models.Lead;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.recyclerViewAdapter.HandshakeOpenRequestAdapter;
-import com.raising.app.viewModels.HandshakesViewModel;
+import com.raising.app.viewModels.LeadsViewModel;
 
 import java.util.ArrayList;
 
-public class HandshakeOpenRequestsFragment extends RaisingFragment {
+public class LeadsOpenRequestsFragment extends RaisingFragment {
     private final String TAG = "HandshakeOpenRequestFragment";
 
     ConstraintLayout emptyListLayout;
 
-    private HandshakesViewModel handshakesViewModel;
+    private LeadsViewModel leadsViewModel;
 
-    private ArrayList<HandshakeItem> openRequestItems;
+    private ArrayList<Lead> openRequestItems;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,11 +52,11 @@ public class HandshakeOpenRequestsFragment extends RaisingFragment {
         emptyListLayout.setVisibility(View.GONE);
 
         // prepare handshakeViewModel for usage
-        handshakesViewModel = ViewModelProviders.of(getActivity())
-                .get(HandshakesViewModel.class);
+        leadsViewModel = ViewModelProviders.of(getActivity())
+                .get(LeadsViewModel.class);
 
-        handshakesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> processViewState(state));
-        processViewState(handshakesViewModel.getViewState().getValue());
+        leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> processViewState(state));
+        processViewState(leadsViewModel.getViewState().getValue());
         openRequestItems = new ArrayList<>();
 
         resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
@@ -67,25 +66,25 @@ public class HandshakeOpenRequestsFragment extends RaisingFragment {
         // populate open requests
         if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
                 resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
-            ArrayList<Lead> openRequests = handshakesViewModel.getOpenRequests().getValue();
+            ArrayList<Lead> openRequests = leadsViewModel.getOpenRequests();
             if(openRequests == null || openRequests.size() == 0) {
                 emptyListLayout.setVisibility(View.VISIBLE);
             }
             openRequests.forEach(openRequest -> {
-                HandshakeItem openRequestItem = new HandshakeItem();
+                Lead openRequestItem = new Lead();
                 openRequestItem.setId(openRequest.getId());
                 openRequestItem.setStartup(openRequest.isStartup());
-                openRequestItem.setPictureId(openRequest.getProfilePictureId());
+                openRequestItem.setProfilePictureId(openRequest.getProfilePictureId());
                 if (openRequestItem.isStartup()) {
-                    openRequestItem.setName(openRequest.getCompanyName());
+                    openRequestItem.setTitle(openRequest.getCompanyName());
                     openRequestItem.setAttribute(resources.getInvestmentPhase(
                             openRequest.getInvestmentPhaseId()).getName());
                 } else {
-                    openRequestItem.setName(openRequest.getFirstName() + " " + openRequest.getLastName());
+                    openRequestItem.setTitle(openRequest.getFirstName() + " " + openRequest.getLastName());
                     openRequestItem.setAttribute(resources.getInvestorType(
                             openRequest.getInvestorTypeId()).getName());
                 }
-                Log.d(TAG, "onViewCreated: Add OpenRequest: " + openRequestItem.getName());
+                Log.d(TAG, "onViewCreated: Add OpenRequest: " + openRequestItem.getTitle());
                 openRequestItems.add(openRequestItem);
             });
             Log.d(TAG, "onViewCreated: OpenRequests filled");

@@ -19,6 +19,7 @@
     <color name="raisingWhiteTransparent">#88FFFFFF</color>
     <color name="raisingBlack"> #000000 </color>
     <color name="raisingBlackTransparent"> #99000000</color>
+    <color name="raisingLightGrey"> #b0b0b0</color>
     <color name="raisingDarkGrey"> #666666</color>
 
     <color name="raisingPositive"> #128700 </color>
@@ -28,11 +29,11 @@
     <color name="raisingActionBlue"> #1F35F5</color>
 
     <color name="raisingRippleColor"> #b0b0b0</color>
-
     <color name="raisingButtonBackgroundColor">@color/raisingSecondary </color>
+    <color name="raisingBackground">#D9DEE4</color>
 
     <color name="raisingTextColor">@color/raisingSecondaryDark </color>
     <color name="raisingTextColorDark">@color/raisingBlack </color>
     <color name="raisingTextColorLight"> @color/raisingWhite </color>
-    <color name="raisingBackground">#D9DEE4</color>
+
 </resources>
