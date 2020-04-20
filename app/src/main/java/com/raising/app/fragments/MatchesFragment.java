@@ -87,6 +87,7 @@ public class MatchesFragment extends RaisingFragment {
                     matchItem.setAccountId(match.getAccountId());
                     matchItem.setScore(match.getMatchingPercent());
                     matchItem.setStartup(match.isStartup());
+                    matchItem.setRelationshipId(match.getId());
                     matchItem.setPictureId(match.getProfilePictureId());
                     if (matchItem.isStartup()) {
                         matchItem.setAttribute(resources.getInvestmentPhase(
@@ -133,6 +134,7 @@ public class MatchesFragment extends RaisingFragment {
             Bundle args = new Bundle();
             MatchListItem item = matchListItems.get(position);
             args.putLong("id", item.getAccountId());
+            args.putLong("relationshipId", item.getRelationshipId());
             args.putInt("score", item.getScore());
             args.putString("title", item.getName());
             customizeAppBar(item.getName(), true);

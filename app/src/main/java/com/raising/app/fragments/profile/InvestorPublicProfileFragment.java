@@ -37,10 +37,13 @@ import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingAdapter;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class InvestorPublicProfileFragment extends RaisingFragment {
+    private static final String TAG = "InvestorPublicProfile";
     private TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch, profileSentence, profileWebsite;
     private TextView minTicketSize, maxTicketSize;
     private ImageView locationPin;
@@ -56,6 +59,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     private boolean handshakeRequest = false;
     private boolean handshakeDecline = false;
     private int matchScore = 0;
+    private long relationshipId = -1;
 
     private RecyclerView recyclerInvestorType, recyclerPhase, recyclerIndustry, recyclerInvolvement;
 
@@ -82,6 +86,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         } else {
             AccountService.getInvestorAccount(getArguments().getLong("id"), investor -> {
                 matchScore = getArguments().getInt("score");
+                relationshipId = getArguments().getLong("relationshipId");
                 customizeAppBar(getArguments().getString("title"), true);
                 this.investor = investor;
                 loadData(investor);
@@ -174,20 +179,44 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
      * Set click listeners to the buttons which start the handshake process
      */
     private void manageHandshakeButtons() {
+        if(relationshipId == -1) {
+            return;
+        }
+
         profileRequest.setOnClickListener(v -> {
             handshakeRequest = true;
             handshakeDecline = false;
-            //TODO: change handshake status in backend
-            //TODO: remove investor from matchlist
+            ApiRequestHandler.performPostRequest("match/" + relationshipId + "/accept",
+                    res -> {
+                    popCurrentFragment(this);
+                return null;
+                    },
+                    err -> {
+                        displayGenericError();
+                        Log.e(TAG, "manageHandshakeButtons: " +
+                                ApiRequestHandler.parseVolleyError(err) );
+                return null;
+                    },
+                    new JSONObject());
             //popCurrentFragment(this);
         });
 
         profileDecline.setOnClickListener(v -> {
             handshakeDecline = true;
             handshakeRequest = false;
-            //TODO: change handshake status in backend
-            //TODO: remove investor from matchlist
-           // popCurrentFragment(this);
+
+            ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
+                    res -> {
+                        popCurrentFragment(this);
+                        return null;
+                    },
+                    err -> {
+                        displayGenericError();
+                        Log.e(TAG, "manageHandshakeButtons: " +
+                                ApiRequestHandler.parseVolleyError(err) );
+                        return null;
+                    },
+                    new JSONObject());
         });
     }
 

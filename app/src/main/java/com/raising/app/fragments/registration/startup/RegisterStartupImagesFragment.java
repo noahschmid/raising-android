@@ -44,6 +44,7 @@ import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.ImageUploader;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.Serializer;
 
@@ -63,6 +64,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
     static final int REQUEST_IMAGE_FETCH = 2;
     static final int REQUEST_GALLERY_CAPTURE = 3;
     static final int REQUEST_GALLERY_FETCH = 4;
+    private static final String TAG = "RegisterStartupImages";
 
     ImageView profileImage, profileImageOverlay;
     View addGalleryImage;
@@ -379,72 +381,80 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         }
 
         Bitmap logo = ((BitmapDrawable)profileImage.getDrawable()).getBitmap();
-
-        try {
-            if(editMode) {
-                if(profilePictureChanged) {
-                    accountViewModel.updateProfilePicture(new Image(logo));
-                }
-                if(galleryChanged) {
-                    accountViewModel.updateGallery(gallery);
-                }
-            } else {
-                // todo : upload profile picture and gallery
-                //TODO: remove manually set loading panel
-                showLoadingPanel();
-                RegistrationHandler.saveStartup(startup);
-                GsonBuilder gsonBuilder = new GsonBuilder();
-                gsonBuilder.registerTypeAdapter(Startup.class,
-                        Serializer.StartupRegisterSerializer);
-                Gson gson = gsonBuilder.create();
-                String startup = gson.toJson(RegistrationHandler.getStartup());
-                ApiRequestHandler.performPostRequest("startup/register", registerCallback,
-                        errorCallback, new JSONObject(startup));
-                Log.d("RegisterStartupImagesFragment", startup);
+        if(editMode) {
+            if(profilePictureChanged) {
+                accountViewModel.updateProfilePicture(new Image(logo));
             }
-        } catch (JSONException | IOException e) {
-            //TODO: remove manually set loading panel
-            dismissLoadingPanel();
-            Log.d("RegisterStartupImagesFragment","Error in process inputs: " + e.getMessage());
+            if(galleryChanged) {
+                accountViewModel.updateGallery(gallery);
+            }
+        } else {
+            uploadProfilePicture(logo);
         }
     }
 
     /**
-     * Save private profile after login response and proceed to matches fragment
+     * Upload profile picture to backend server
+     * @param logo the profile picture
      */
-    Function<JSONObject, Void> registerCallback = response -> {
-        //TODO: remove manually set loading panel
-        dismissLoadingPanel();
-        try {
-            RegistrationHandler.finish(response.getLong("id"),
-                    response.getString("token"), false);
-            clearBackstackAndReplace(new MatchesFragment());
-        } catch (Exception e) {
-            Log.d("StartupImagesFragment", e.getMessage());
-            showSimpleDialog(getString(R.string.generic_error_title),
-                    getString(R.string.generic_error_text));
-        }
-        return null;
-    };
+    private void uploadProfilePicture(Bitmap logo) {
+        new ImageUploader("media/profilepicture", "profilePicture",
+                logo, "POST", response -> {
+            try {
+                if(response.has("id")) {
+                    startup.setProfilePictureId(response.getLong("id"));
+                }
+
+                Log.d(TAG, "Successfully uploaded profile picture");
+
+                if(gallery.size() > 0) {
+                    uploadGallery();
+                } else {
+                    RegistrationHandler.saveStartup(startup);
+                    changeFragment(new RegisterStartupVideoFragment());
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "uploadImages: " + e.getMessage());
+                finishButton.setEnabled(true);
+                displayGenericError();
+            }
+
+            return null;
+        }, error -> {
+            Log.e(TAG, "upload images: " + error.toString() );
+            finishButton.setEnabled(true);
+            return null;
+        }).execute();
+    }
 
     /**
-     * Display error from backend
+     * Upload gallery images to backend server
      */
-    Function<VolleyError, Void> errorCallback = response -> {
-        //TODO: remove manually set loading panel
-        dismissLoadingPanel();
-        try {
-            if (response.networkResponse.statusCode == 500) {
-                JSONObject body = new JSONObject(new String(
-                        response.networkResponse.data, StandardCharsets.UTF_8));
-                showSimpleDialog(getString(R.string.generic_error_title),
-                        body.getString("message"));
-                Log.d("StartupImages", body.getString("message"));
+    private void uploadGallery() {
+        List<Bitmap> bitmaps = new ArrayList<>();
+        gallery.forEach(img -> bitmaps.add(img.getImage()));
+        new ImageUploader("media/gallery", "gallery",
+                bitmaps, "POST", response -> {
+            try {
+                for(int i = 0; i < response.length(); ++i) {
+                    startup.getGalleryIds().add(response.getLong(i));
+                }
+
+                Log.d(TAG, "Successfully uploaded profile picture");
+
+                RegistrationHandler.saveStartup(startup);
+                changeFragment(new RegisterStartupVideoFragment());
+            } catch (Exception e) {
+                Log.e(TAG, "uploadGallery: " + e.getMessage() );
+                displayGenericError();
+                finishButton.setEnabled(true);
             }
-        } catch (Exception e) {
-            Log.d("debugMessage", e.toString());
-        }
-        Log.d("debugMessage", ApiRequestHandler.parseVolleyError(response));
-        return null;
-    };
+
+            return null;
+        }, error -> {
+            Log.e(TAG, "upload images: " + error.toString() );
+            finishButton.setEnabled(true);
+            return null;
+        }).execute();
+    }
 }

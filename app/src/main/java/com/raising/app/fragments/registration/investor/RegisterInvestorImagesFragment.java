@@ -41,9 +41,11 @@ import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Image;
 import com.raising.app.models.Investor;
+import com.raising.app.models.ViewState;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.ImageUploader;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.Serializer;
 
@@ -63,6 +65,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     static final int REQUEST_IMAGE_FETCH = 2;
     static final int REQUEST_GALLERY_CAPTURE = 3;
     static final int REQUEST_GALLERY_FETCH = 4;
+    private static final String TAG = "RegisterInvestorImages";
 
     ImageView profileImage, profileImageOverlay;
     View addGalleryImage;
@@ -373,6 +376,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         if(profileImage.getDrawable() == null) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_no_picture_text));
+            finishButton.setEnabled(true);
             return;
         }
 
@@ -398,23 +402,92 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     accountViewModel.updateGallery(gallery);
                 }
             } else {
-                // todo : upload profile picture and gallery
-                //TODO: remove manually set loading panel
-                showLoadingPanel();
-                RegistrationHandler.saveInvestor(investor);
-                GsonBuilder gsonBuilder = new GsonBuilder();
-                gsonBuilder.registerTypeAdapter(Investor.class,
-                        Serializer.InvestorRegisterSerializer);
-                Gson gson = gsonBuilder.create();
-                String investor = gson.toJson(RegistrationHandler.getInvestor());
-                ApiRequestHandler.performPostRequest("investor/register", registerCallback,
-                        errorCallback, new JSONObject(investor));
-                Log.d("RegisterInvestorImagesFragment", investor);
+                uploadProfilePicture(logo);
             }
-        } catch (JSONException | IOException e) {
+        } catch (Exception e) {
             //TODO: remove manually set loading panel
-            dismissLoadingPanel();
             Log.d("RegisterInvestorImagesFragment","Error in process inputs: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Upload profile picture to backend server
+     * @param logo the profile picture
+     */
+    private void uploadProfilePicture(Bitmap logo) {
+        new ImageUploader("media/profilepicture", "profilePicture",
+                logo, "POST", response -> {
+            try {
+                if(response.has("id")) {
+                    investor.setProfilePictureId(response.getLong("id"));
+                }
+
+                Log.d(TAG, "Successfully uploaded profile picture");
+
+                if(gallery.size() > 0) {
+                    uploadGallery();
+                } else {
+                    submitRegistration();
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "uploadImages: " + e.getMessage());
+                finishButton.setEnabled(true);
+            }
+
+            return null;
+        }, error -> {
+            Log.e(TAG, "upload images: " + error.toString() );
+            finishButton.setEnabled(true);
+            return null;
+        }).execute();
+    }
+
+    /**
+     * Upload gallery images to backend server
+     */
+    private void uploadGallery() {
+        List<Bitmap> bitmaps = new ArrayList<>();
+        gallery.forEach(img -> bitmaps.add(img.getImage()));
+        new ImageUploader("media/gallery", "gallery",
+                bitmaps, "POST", response -> {
+            try {
+                for(int i = 0; i < response.length(); ++i) {
+                    investor.getGalleryIds().add(response.getLong(i));
+                }
+
+                Log.d(TAG, "Successfully uploaded profile picture");
+
+               submitRegistration();
+
+            } catch (Exception e) {
+                Log.e(TAG, "uploadGallery: " + e.getMessage() );
+                displayGenericError();
+                finishButton.setEnabled(true);
+            }
+
+            return null;
+        }, error -> {
+            Log.e(TAG, "upload images: " + error.toString() );
+            finishButton.setEnabled(true);
+            return null;
+        }).execute();
+    }
+
+    private void submitRegistration() {
+        try {
+            RegistrationHandler.saveInvestor(investor);
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(Investor.class,
+                    Serializer.InvestorRegisterSerializer);
+            Gson gson = gsonBuilder.create();
+            String investor = gson.toJson(RegistrationHandler.getInvestor());
+            ApiRequestHandler.performPostRequest("investor/register", registerCallback,
+                    errorCallback, new JSONObject(investor));
+            Log.d("RegisterInvestorImagesFragment", investor);
+        } catch (Exception e) {
+            Log.e(TAG, "submitRegistration: " + e.getMessage() );
+            displayGenericError();
+            finishButton.setEnabled(true);
         }
     }
 
