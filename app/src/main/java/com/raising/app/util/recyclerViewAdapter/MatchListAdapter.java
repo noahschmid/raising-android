@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -62,6 +63,8 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
                             recyclerItem.getPictureId())
                     .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .placeholder(R.drawable.ic_person_24dp)
                     .into(holder.profileImage);
         } else {

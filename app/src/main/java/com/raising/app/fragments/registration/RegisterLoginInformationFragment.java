@@ -133,7 +133,8 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
 
         showLoadingPanel();
         try {
-            if(!email.equals(AuthenticationHandler.getEmail()) || !AuthenticationHandler.isLoggedIn()) {
+            if(!email.equals(AuthenticationHandler.getEmail()) ||
+                    !AuthenticationHandler.isLoggedIn()) {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("email", email);
 

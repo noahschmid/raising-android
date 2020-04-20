@@ -25,6 +25,8 @@ import com.raising.app.models.stakeholder.Shareholder;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StartupDeserializer implements JsonDeserializer<Startup> {
     @Override
@@ -68,6 +70,12 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
         startup.setFoundingYear(jsonObject.get("foundingYear").getAsInt());
         startup.setUId(jsonObject.get("uid").getAsString());
         startup.setProfilePictureId(jsonObject.get("profilePictureId").getAsInt());
+
+        List<Long> galleryIds = new ArrayList<>();
+        for(JsonElement el : jsonObject.get("gallery").getAsJsonArray()) {
+            galleryIds.add(el.getAsLong());
+        }
+        startup.setGalleryIds(galleryIds);
 
         if(jsonObject.get("website") != null) {
             startup.setWebsite(jsonObject.get("website").getAsString());

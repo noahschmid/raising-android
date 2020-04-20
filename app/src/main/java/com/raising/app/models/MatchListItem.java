@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class MatchListItem implements Serializable {
     private long accountId;
+    private long relationshipId;
     private boolean isStartup;
     private String name;
     private String description;

@@ -29,6 +29,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.MainActivity;
@@ -38,6 +39,7 @@ import com.raising.app.models.Model;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.Resources;
 import com.raising.app.util.SimpleMessageDialog;
+import com.raising.app.util.ToastHandler;
 import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
@@ -62,6 +64,9 @@ public class RaisingFragment extends Fragment {
     private int processesLoading = 0;
 
     protected void onAccountUpdated() {
+    }
+
+    protected void onResourcesLoaded() {
     }
 
     @Override
@@ -93,7 +98,14 @@ public class RaisingFragment extends Fragment {
                     dismissLoadingPanel();
                     break;
                 case UPDATED:
+                    currentAccount = accountViewModel.getAccount().getValue();
                     onAccountUpdated();
+                    break;
+
+                case ERROR:
+                    ToastHandler toastHandler = new ToastHandler(getContext());
+                    toastHandler.showToast(getString(R.string.generic_error_title), Toast.LENGTH_LONG);
+                    accountViewModel.loadAccount();
                     break;
             }
         });
@@ -120,6 +132,7 @@ public class RaisingFragment extends Fragment {
             case RESULT:
             case CACHED:
                 dismissLoadingPanel();
+                onResourcesLoaded();
                 break;
         }
     }

@@ -1,5 +1,6 @@
 package com.raising.app.util;
 
+import android.app.Activity;
 import android.content.Context;
 
 import java.io.BufferedReader;
@@ -14,10 +15,14 @@ import java.util.ArrayList;
 
 public class InternalStorageHandler {
     private static Context context;
+    private static Activity activity;
 
     public static void setContext(Context context) { InternalStorageHandler.context = context; }
+    public static void setActivity(Activity activity) { InternalStorageHandler.activity = activity; }
 
     public static Context getContext() { return context; }
+    public static Activity getActivity() { return activity; }
+
     /**
      * Load object from internal storage
      * @param filename the file to load from

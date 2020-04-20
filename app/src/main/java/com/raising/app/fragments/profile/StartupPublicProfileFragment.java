@@ -29,6 +29,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.github.mikephil.charting.charts.PieChart;
@@ -50,6 +51,8 @@ import com.raising.app.util.recyclerViewAdapter.StartupProfileBoardMemberAdapter
 import com.raising.app.util.recyclerViewAdapter.StartupProfileFounderAdapter;
 import com.raising.app.util.ApiRequestHandler;
 
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -60,8 +63,9 @@ import java.util.Objects;
 
 public class StartupPublicProfileFragment extends RaisingFragment {
     private static final String TAG = "StartupPublicProfile";
+
     private ImageSwitcher imageSwitcher;
-    private ImageButton profileRequest, profileDecline;
+    private ImageButton profileRequest, profileDecline, btnPrevious, btnNext;
     private TextView imageIndex, matchingPercent, profileName, profileLocation, profileSentence,
             profilePitch, profileWebsite;
     private LinearLayout labelsLayout;
@@ -83,6 +87,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     private int matchScore;
 
     private LayoutInflater inflater;
+    private Long relationshipId;
 
     private Startup startup;
 
@@ -112,6 +117,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             AccountService.getStartupAccount(getArguments().getLong("id"), startup -> {
                 matchScore = getArguments().getInt("score");
                 customizeAppBar(getArguments().getString("title"), true);
+                relationshipId = getArguments().getLong("relationshipId");
                 this.startup = startup;
                 Log.i("startup", startup.toString());
                 loadData();
@@ -133,6 +139,11 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         profileLayout.setVisibility(View.INVISIBLE);
 
         imageIndex = view.findViewById(R.id.text_startup_profile_gallery_image_index);
+        btnPrevious = view.findViewById(R.id.button_startup_gallery_previous);
+        btnNext = view.findViewById(R.id.button_startup_gallery_next);
+        imageIndex.setVisibility(View.GONE);
+        btnPrevious.setVisibility(View.GONE);
+        btnNext.setVisibility(View.GONE);
 
         prepareImageSwitcher(view);
 
@@ -256,7 +267,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         if (startup.getGallery() != null) {
             startup.getGallery().forEach(image -> {
-                pictures.add(image.getBitmap());
+                pictures.add(image.getImage());
             });
         }
 
@@ -272,6 +283,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 .asBitmap()
                 .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
                         startup.getProfilePictureId())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable
@@ -292,6 +305,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                         .asBitmap()
                         .load(ApiRequestHandler.getDomain() + "media/gallery/" +
                                 galleryId)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
                         .into(new CustomTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
@@ -376,20 +391,43 @@ public class StartupPublicProfileFragment extends RaisingFragment {
      * Set click listeners to the buttons which start the handshake process
      */
     private void manageHandshakeButtons() {
+        if(relationshipId == -1) {
+            return;
+        }
         profileRequest.setOnClickListener(v -> {
             handshakeRequest = true;
             handshakeDecline = false;
-            //TODO: change handshake status in backend
-            //TODO: remove investor from matchlist
-            popCurrentFragment(this);
+            ApiRequestHandler.performPostRequest("match/" + relationshipId + "/accept",
+                    res -> {
+                        popCurrentFragment(this);
+                        return null;
+                    },
+                    err -> {
+                        displayGenericError();
+                        Log.e(TAG, "manageHandshakeButtons: " +
+                                ApiRequestHandler.parseVolleyError(err) );
+                        return null;
+                    },
+                    new JSONObject());
+            //popCurrentFragment(this);
         });
 
         profileDecline.setOnClickListener(v -> {
             handshakeDecline = true;
             handshakeRequest = false;
-            //TODO: change handshake status in backend
-            //TODO: remove investor from matchlist
-            popCurrentFragment(this);
+
+            ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
+                    res -> {
+                        popCurrentFragment(this);
+                        return null;
+                    },
+                    err -> {
+                        displayGenericError();
+                        Log.e(TAG, "manageHandshakeButtons: " +
+                                ApiRequestHandler.parseVolleyError(err) );
+                        return null;
+                    },
+                    new JSONObject());
         });
     }
 
@@ -428,6 +466,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 imageView.setImageBitmap(pictures.get(currentImageIndex));
             }
             imageIndex.setText(currentIndexToString(currentImageIndex));
+            imageIndex.setVisibility(View.VISIBLE);
             return imageView;
         });
 
@@ -439,15 +478,18 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 AnimationUtils.loadAnimation(this.getContext(), R.anim.public_profile_gallery_out));
 
          */
-        ImageButton btnPrevious = view.findViewById(R.id.button_startup_gallery_previous);
-        ImageButton btnNext = view.findViewById(R.id.button_startup_gallery_next);
 
         if (currentImageIndex == 0) {
             btnPrevious.setVisibility(View.GONE);
+        } else {
+            btnPrevious.setVisibility(View.VISIBLE);
         }
         if (pictures.size() < 2) {
             btnNext.setVisibility(View.GONE);
+        } else {
+            btnNext.setVisibility(View.VISIBLE);
         }
+
         btnPrevious.setOnClickListener(v -> {
             if (currentImageIndex == 0) {
                 btnPrevious.setVisibility(View.GONE);

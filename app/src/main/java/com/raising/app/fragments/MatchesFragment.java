@@ -49,6 +49,11 @@ public class MatchesFragment extends RaisingFragment {
     }
 
     @Override
+    public void onResourcesLoaded() {
+
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -57,41 +62,46 @@ public class MatchesFragment extends RaisingFragment {
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
 
-        matchesViewModel  = ViewModelProviders.of(getActivity())
-                .get(MatchesViewModel .class);
+        matchesViewModel = ViewModelProviders.of(getActivity())
+                .get(MatchesViewModel.class);
 
-        matchesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> processViewState(state));
+        matchesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+            Log.d(TAG, "onViewCreated: MatchesViewState: " + state.toString());
+            processViewState(state);
+        });
         processViewState(matchesViewModel.getViewState().getValue());
         matchListItems = new ArrayList<>();
 
         resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
-            Log.d(TAG, "onViewCreated: ViewState:" + state.toString());
+            Log.d(TAG, "onViewCreated: ResourcesViewState:" + state.toString());
         });
 
-        if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
-                resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
-            ArrayList<Match> matchList = matchesViewModel.getMatches().getValue();
-            matchListItems.clear();
-            matchList.forEach(match -> {
-                MatchListItem matchItem = new MatchListItem();
-                matchItem.setDescription(match.getDescription());
-                matchItem.setAccountId(match.getAccountId());
-                matchItem.setScore(match.getMatchingPercent());
-                matchItem.setStartup(match.isStartup());
-                matchItem.setPictureId(match.getProfilePictureId());
-                if (matchItem.isStartup()) {
-                    matchItem.setAttribute(resources.getInvestmentPhase(
-                            match.getInvestmentPhaseId()).getName());
-                    matchItem.setName(match.getCompanyName());
-                } else {
-                    matchItem.setAttribute(resources.getInvestorType(
-                            match.getInvestorTypeId()).getName());
-                    matchItem.setName(match.getFirstName() + " " + match.getLastName());
-                }
-                matchListItems.add(matchItem);
-                Log.d(TAG, "onViewCreated: Match List filled");
-            });
-        }
+        resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+            if (state == ViewState.CACHED || state == ViewState.RESULT) {
+                ArrayList<Match> matchList = matchesViewModel.getMatches().getValue();
+                matchListItems.clear();
+                matchList.forEach(match -> {
+                    MatchListItem matchItem = new MatchListItem();
+                    matchItem.setDescription(match.getDescription());
+                    matchItem.setAccountId(match.getAccountId());
+                    matchItem.setScore(match.getMatchingPercent());
+                    matchItem.setStartup(match.isStartup());
+                    matchItem.setRelationshipId(match.getId());
+                    matchItem.setPictureId(match.getProfilePictureId());
+                    if (matchItem.isStartup()) {
+                        matchItem.setAttribute(resources.getInvestmentPhase(
+                                match.getInvestmentPhaseId()).getName());
+                        matchItem.setName(match.getCompanyName());
+                    } else {
+                        matchItem.setAttribute(resources.getInvestorType(
+                                match.getInvestorTypeId()).getName());
+                        matchItem.setName(match.getFirstName() + " " + match.getLastName());
+                    }
+                    matchListItems.add(matchItem);
+                    Log.d(TAG, "onViewCreated: Match List filled");
+                });
+            }
+        });
         matchListAdapter = new MatchListAdapter(matchListItems);
 
         matchListItems.forEach(item -> {
@@ -100,7 +110,7 @@ public class MatchesFragment extends RaisingFragment {
 
         matchesViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
             processViewState(viewState);
-            if(viewState == ViewState.CACHED || viewState == ViewState.RESULT) {
+            if (viewState == ViewState.CACHED || viewState == ViewState.RESULT) {
                 processItems(matchesViewModel.getMatches().getValue());
             }
         });
@@ -113,6 +123,7 @@ public class MatchesFragment extends RaisingFragment {
             }
         });
 
+        // prepare match list recycler view
         matchList = view.findViewById(R.id.matchList);
         matchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         matchList.setAdapter(matchListAdapter);
@@ -122,10 +133,11 @@ public class MatchesFragment extends RaisingFragment {
             Bundle args = new Bundle();
             MatchListItem item = matchListItems.get(position);
             args.putLong("id", item.getAccountId());
+            args.putLong("relationshipId", item.getRelationshipId());
             args.putInt("score", item.getScore());
             args.putString("title", item.getName());
             customizeAppBar(item.getName(), true);
-            if(matchListItems.get(position).isStartup()) {
+            if (matchListItems.get(position).isStartup()) {
                 StartupPublicProfileFragment publicProfile = new StartupPublicProfileFragment();
                 publicProfile.setArguments(args);
                 changeFragment(publicProfile);
@@ -138,7 +150,7 @@ public class MatchesFragment extends RaisingFragment {
     }
 
     private void processItems(List<Match> matches) {
-        if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
+        if (resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
                 resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
             matchListItems.clear();
             matches.forEach(match -> {
@@ -162,7 +174,7 @@ public class MatchesFragment extends RaisingFragment {
             });
 
             matchListAdapter.notifyDataSetChanged();
-            if(matchListItems.size() == 0) {
+            if (matchListItems.size() == 0) {
                 emptyMatchListLayout.setVisibility(View.VISIBLE);
             } else {
                 emptyMatchListLayout.setVisibility(View.GONE);

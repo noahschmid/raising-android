@@ -26,6 +26,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.raising.app.R;
@@ -36,14 +37,17 @@ import com.raising.app.util.AccountService;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingAdapter;
 import com.raising.app.util.ApiRequestHandler;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class InvestorPublicProfileFragment extends RaisingFragment {
+    private static final String TAG = "InvestorPublicProfile";
     private TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch, profileSentence, profileWebsite;
     private TextView minTicketSize, maxTicketSize;
     private ImageView locationPin;
-    private ImageButton profileRequest, profileDecline;
+    private ImageButton profileRequest, profileDecline, btnPrevious, btnNext;
     private Investor investor;
     private ImageSwitcher imageSwitcher;
     private ArrayList<Model> investorTypes, industries, investmentPhases, supports;
@@ -54,8 +58,8 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
 
     private boolean handshakeRequest = false;
     private boolean handshakeDecline = false;
-
     private int matchScore = 0;
+    private long relationshipId = -1;
 
     private RecyclerView recyclerInvestorType, recyclerPhase, recyclerIndustry, recyclerInvolvement;
 
@@ -82,6 +86,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         } else {
             AccountService.getInvestorAccount(getArguments().getLong("id"), investor -> {
                 matchScore = getArguments().getInt("score");
+                relationshipId = getArguments().getLong("relationshipId");
                 customizeAppBar(getArguments().getString("title"), true);
                 this.investor = investor;
                 loadData(investor);
@@ -96,10 +101,15 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         imageIndex = view.findViewById(R.id.text_investor_profile_gallery_image_index);
+        btnPrevious = view.findViewById(R.id.button_investor_gallery_previous);
+        btnNext = view.findViewById(R.id.button_investor_gallery_next);
+        imageIndex.setVisibility(View.GONE);
+        btnPrevious.setVisibility(View.GONE);
+        btnNext.setVisibility(View.GONE);
+
         profileLayout = view.findViewById(R.id.profile_layout);
         profileLayout.setVisibility(View.INVISIBLE);
         pictures = new ArrayList<Bitmap>();
-        prepareImageSwitcher(view);
         scrollView = view.findViewById(R.id.scroll_layout);
 
         profileRequest = view.findViewById(R.id.button_investor_public_profile_request);
@@ -169,20 +179,44 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
      * Set click listeners to the buttons which start the handshake process
      */
     private void manageHandshakeButtons() {
+        if(relationshipId == -1) {
+            return;
+        }
+
         profileRequest.setOnClickListener(v -> {
             handshakeRequest = true;
             handshakeDecline = false;
-            //TODO: change handshake status in backend
-            //TODO: remove investor from matchlist
+            ApiRequestHandler.performPostRequest("match/" + relationshipId + "/accept",
+                    res -> {
+                    popCurrentFragment(this);
+                return null;
+                    },
+                    err -> {
+                        displayGenericError();
+                        Log.e(TAG, "manageHandshakeButtons: " +
+                                ApiRequestHandler.parseVolleyError(err) );
+                return null;
+                    },
+                    new JSONObject());
             //popCurrentFragment(this);
         });
 
         profileDecline.setOnClickListener(v -> {
             handshakeDecline = true;
             handshakeRequest = false;
-            //TODO: change handshake status in backend
-            //TODO: remove investor from matchlist
-           // popCurrentFragment(this);
+
+            ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
+                    res -> {
+                        popCurrentFragment(this);
+                        return null;
+                    },
+                    err -> {
+                        displayGenericError();
+                        Log.e(TAG, "manageHandshakeButtons: " +
+                                ApiRequestHandler.parseVolleyError(err) );
+                        return null;
+                    },
+                    new JSONObject());
         });
     }
 
@@ -239,27 +273,32 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
            profileWebsite.setVisibility(View.GONE);
        }
 
+       /*
        if(investor.getProfilePicture() != null) {
-           pictures.add(investor.getProfilePicture().getBitmap());
+           pictures.add(investor.getProfilePicture().getImage());
        }
 
        if(investor.getGallery() != null) {
            investor.getGallery().forEach(image -> {
-               pictures.add(image.getBitmap());
+               pictures.add(image.getImage());
            });
-       }
+       }*/
 
        Glide.with(this)
                 .asBitmap()
                 .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
                         investor.getProfilePictureId())
+               .diskCacheStrategy(DiskCacheStrategy.NONE)
+               .skipMemoryCache(true)
                 .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable
                             Transition<? super Bitmap> transition) {
-                        pictures.add(resource);
-                        imageSwitcher.setImageDrawable(new BitmapDrawable(
-                                pictures.get(currentImageIndex)));
+                        pictures.add(0, resource);
+
+                        if(pictures.size() == investor.getGalleryIds().size() + 1) {
+                            prepareImageSwitcher(getView());
+                        }
                     }
 
                     @Override
@@ -273,10 +312,21 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                        .asBitmap()
                        .load(ApiRequestHandler.getDomain() + "media/gallery/" +
                                galleryId)
+                       .diskCacheStrategy(DiskCacheStrategy.NONE)
+                       .skipMemoryCache(true)
+                       .placeholder(R.drawable.ic_hourglass_empty_black_24dp)
                        .into(new CustomTarget<Bitmap>() {
                            @Override
                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                               pictures.add(resource);
+                               if(!pictures.isEmpty()) {
+                                   pictures.add(1, resource);
+                               } else {
+                                   pictures.add(resource);
+                               }
+
+                               if(pictures.size() == investor.getGalleryIds().size() + 1) {
+                                   prepareImageSwitcher(getView());
+                               }
                            }
 
                            @Override
@@ -311,6 +361,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                 imageView.setImageBitmap(pictures.get(currentImageIndex));
             }
             imageIndex.setText(currentIndexToString(currentImageIndex));
+            imageIndex.setVisibility(View.VISIBLE);
             return imageView;
         });
 
@@ -322,16 +373,24 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                 AnimationUtils.loadAnimation(this.getContext(), R.anim.public_profile_gallery_out));
 
          */
-        ImageButton btnPrevious = view.findViewById(R.id.button_investor_gallery_previous);
-        ImageButton btnNext = view.findViewById(R.id.button_investor_gallery_next);
 
         if(currentImageIndex == 0) {
             btnPrevious.setVisibility(View.GONE);
+        } else {
+            btnPrevious.setVisibility(View.VISIBLE);
         }
-        if(pictures.size() < 2) {
+        if(investor.getGalleryIds().size() + 1 < 2) {
             btnNext.setVisibility(View.GONE);
+        } else {
+            btnNext.setVisibility(View.VISIBLE);
         }
+
         btnPrevious.setOnClickListener(v -> {
+            if(pictures.size() == 0)
+                return;
+
+            currentImageIndex--;
+
             if(currentImageIndex == 0) {
                 btnPrevious.setVisibility(View.GONE);
             }
@@ -340,9 +399,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                 btnNext.setVisibility(View.VISIBLE);
             }
 
-            if(pictures.size() == 0)
-                return;
-            currentImageIndex--;
             if(currentImageIndex == -1) {
                 currentImageIndex = pictures.size() - 1;
             }
@@ -354,6 +410,11 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(pictures.size() == 0)
+                    return;
+
+                currentImageIndex ++;
+
                 if(currentImageIndex == pictures.size() - 1) {
                     btnNext.setVisibility(View.GONE);
                 }
@@ -362,9 +423,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                     btnPrevious.setVisibility(View.VISIBLE);
                 }
 
-                if(pictures.size() == 0)
-                    return;
-                currentImageIndex ++;
                 if (currentImageIndex == pictures.size()) {
                     currentImageIndex = 0;
                 }

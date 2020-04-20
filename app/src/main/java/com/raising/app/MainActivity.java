@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         // setSupportActionBar(toolbar);
 
         RegistrationHandler.setContext(getApplicationContext());
+        InternalStorageHandler.setActivity(this);
 
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         resourcesViewModel = new ViewModelProvider(this).get(ResourcesViewModel.class);
