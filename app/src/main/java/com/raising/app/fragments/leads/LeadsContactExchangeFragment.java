@@ -46,14 +46,14 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
         Lead contact;
 
         /*
-        contactImage = view.findViewById(R.id.handshake_contact_picture);
+        contactImage = view.findViewById(R.id.leads_contact_picture);
         contactImage.setImageBitmap(contact.getBitmap());
-        contactName = view.findViewById(R.id.handshake_contact_name);
+        contactName = view.findViewById(R.id.leads_contact_name);
         contactName.setText(contact.getName());
-        contactMail = view.findViewById(R.id.handshake_contact_mail);
+        contactMail = view.findViewById(R.id.leads_contact_mail);
         contactMail.setText(contact.getEmail());
 
-        saveContact = view.findViewById(R.id.handshake_contact_save_contact);
+        saveContact = view.findViewById(R.id.leads_contact_save_contact);
         saveContact.setOnClickListener(v -> {
             Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
             intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
@@ -63,7 +63,7 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
             startActivity(intent);
         });
 
-        btnInteract = view.findViewById(R.id.button_handshake_contact_interact);
+        btnInteract = view.findViewById(R.id.button_leads_contact_interact);
         btnInteract.setOnClickListener(v -> {
             Intent interactionIntent;
             switch (contactType) {
@@ -71,22 +71,22 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
                     interactionIntent = new Intent(Intent.ACTION_SENDTO);
                     interactionIntent.setType("text/plain");
                     interactionIntent.putExtra(Intent.EXTRA_EMAIL, contact.getEmail());
-                    interactionIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.handshake_contact_coffee_subject_template));
-                    interactionIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.handshake_contact_coffee_body_template));
+                    interactionIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.leads_contact_coffee_subject_template));
+                    interactionIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.leads_contact_coffee_body_template));
                     break;
                 case BUSINESS_PLAN:
                     interactionIntent = new Intent(Intent.ACTION_SENDTO);
                     interactionIntent.setType("text/plain");
                     interactionIntent.putExtra(Intent.EXTRA_EMAIL, contact.getEmail());
-                    interactionIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.handshake_contact_business_plan_subject_template));
-                    interactionIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.handshake_contact_business_plan_body_template));
+                    interactionIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.leads_contact_business_plan_subject_template));
+                    interactionIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.leads_contact_business_plan_body_template));
                     break;
                 case E_MAIL:
                     interactionIntent = new Intent(Intent.ACTION_SENDTO);
                     interactionIntent.setType("text/plain");
                     interactionIntent.putExtra(Intent.EXTRA_EMAIL, contact.getEmail());
-                    interactionIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.handshake_contact_mail_subject_template));
-                    interactionIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.handshake_contact_mail_body_template));
+                    interactionIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.leads_contact_mail_subject_template));
+                    interactionIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.leads_contact_mail_body_template));
                     break;
                 case PHONE:
                     interactionIntent = new Intent(Intent.ACTION_DIAL);

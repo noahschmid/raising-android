@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 hideBottomNavigation(true);
                 fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
             } else {
-                leadsViewModel.getLeads();
+                leadsViewModel.loadLeads();
                 if(!AccountService.loadContactDetails()) {
                     hideBottomNavigation(true);
                     Bundle bundle = new Bundle();
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.nav_matches:
                                 selected = new MatchesFragment();
                                 break;
-                            case R.id.nav_handshakes:
+                            case R.id.nav_leads:
                                 selected = new LeadsContainerFragment();
                                 break;
                             case R.id.nav_profile:

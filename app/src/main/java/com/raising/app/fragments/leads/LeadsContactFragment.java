@@ -21,17 +21,24 @@ import com.raising.app.models.leads.Lead;
 import com.raising.app.util.LeadsInteraction;
 
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+
 public class LeadsContactFragment extends RaisingFragment {
     private long id;
     Lead contact;
 
-    public ImageView arrowCoffee, arrowBusinessplan, arrowPhone, arrowEmail, arrowVideo;
-    public ImageButton confirmCoffee, declineCoffee, confirmBusinessplan, declineBusinessplan,
+    @Getter
+    private ImageView arrowCoffee, arrowBusinessplan, arrowPhone, arrowEmail, arrowVideo;
+
+    @Getter
+    private ImageButton confirmCoffee, declineCoffee, confirmBusinessplan, declineBusinessplan,
             confirmPhone, declinePhone, confirmEmail, declineEmail, confirmVideo, declineVideo;
-    public CardView contactCoffee, contactBusinessPlan, contactPhone, contactEmail, contactVideo;
-    public Button coffeeButton, businessplanButton, phoneButton, emailButton, videoButton;
+    @Getter
+    private CardView contactCoffee, contactBusinessPlan, contactPhone, contactEmail, contactVideo;
+    @Getter
+    private Button coffeeButton, businessplanButton, phoneButton, emailButton, videoButton;
+    @Getter
     private LeadsInteraction coffee, businessplan, phone, email, video;
 
     @Override
@@ -54,37 +61,37 @@ public class LeadsContactFragment extends RaisingFragment {
         }
 
         // initially find all arrow indicators
-        arrowCoffee = view.findViewById(R.id.handshake_coffee_arrow);
-        arrowBusinessplan = view.findViewById(R.id.handshake_businessplan_arrow);
-        arrowPhone = view.findViewById(R.id.handshake_phone_arrow);
-        arrowEmail = view.findViewById(R.id.handshake_email_arrow);
-        arrowVideo = view.findViewById(R.id.handshake_video_arrow);
+        arrowCoffee = view.findViewById(R.id.leads_coffee_arrow);
+        arrowBusinessplan = view.findViewById(R.id.leads_businessplan_arrow);
+        arrowPhone = view.findViewById(R.id.leads_phone_arrow);
+        arrowEmail = view.findViewById(R.id.leads_email_arrow);
+        arrowVideo = view.findViewById(R.id.leads_video_arrow);
 
         // initially find all confirm/decline image buttons
-        // confirmCoffee = view.findViewById(R.id.button_handshake_confirm_coffee);
-        declineCoffee = view.findViewById(R.id.button_handshake_decline_coffee);
-        // confirmBusinessplan = view.findViewById(R.id.button_handshake_confirm_businessplan);
-        declineBusinessplan = view.findViewById(R.id.button_handshake_decline_businessplan);
-        // confirmPhone = view.findViewById(R.id.button_handshake_confirm_phone);
-        declinePhone = view.findViewById(R.id.button_handshake_decline_phone);
-        // confirmEmail = view.findViewById(R.id.button_handshake_confirm_email);
-        declineEmail = view.findViewById(R.id.button_handshake_decline_email);
-        // confirmVideo = view.findViewById(R.id.button_handshake_confirm_video);
-        declineVideo = view.findViewById(R.id.button_handshake_decline_video);
+        // confirmCoffee = view.findViewById(R.id.button_leads_confirm_coffee);
+        declineCoffee = view.findViewById(R.id.button_leads_decline_coffee);
+        // confirmBusinessplan = view.findViewById(R.id.button_leads_confirm_businessplan);
+        declineBusinessplan = view.findViewById(R.id.button_leads_decline_businessplan);
+        // confirmPhone = view.findViewById(R.id.button_leads_confirm_phone);
+        declinePhone = view.findViewById(R.id.button_leads_decline_phone);
+        // confirmEmail = view.findViewById(R.id.button_leads_confirm_email);
+        declineEmail = view.findViewById(R.id.button_leads_decline_email);
+        // confirmVideo = view.findViewById(R.id.button_leads_confirm_video);
+        declineVideo = view.findViewById(R.id.button_leads_decline_video);
 
         // initially find all contact cards
-        contactCoffee = view.findViewById(R.id.handshake_contact_coffee);
-        contactBusinessPlan = view.findViewById(R.id.handshake_contact_businessplan);
-        contactPhone = view.findViewById(R.id.handshake_contact_call);
-        contactEmail = view.findViewById(R.id.handshake_contact_mail);
-        contactVideo = view.findViewById(R.id.handshake_contact_video);
+        contactCoffee = view.findViewById(R.id.leads_contact_coffee);
+        contactBusinessPlan = view.findViewById(R.id.leads_contact_businessplan);
+        contactPhone = view.findViewById(R.id.leads_contact_call);
+        contactEmail = view.findViewById(R.id.leads_contact_mail);
+        contactVideo = view.findViewById(R.id.leads_contact_video);
 
         // initially find all contact buttons
-        coffeeButton = view.findViewById(R.id.button_handshake_contact_coffee);
-        businessplanButton = view.findViewById(R.id.button_handshake_contact_businessplan);
-        phoneButton = view.findViewById(R.id.button_handshake_contact_phone);
-        emailButton = view.findViewById(R.id.button_handshake_contact_email);
-        videoButton = view.findViewById(R.id.button_handshake_contact_video);
+        coffeeButton = view.findViewById(R.id.button_leads_contact_coffee);
+        businessplanButton = view.findViewById(R.id.button_leads_contact_businessplan);
+        phoneButton = view.findViewById(R.id.button_leads_contact_phone);
+        emailButton = view.findViewById(R.id.button_leads_contact_email);
+        videoButton = view.findViewById(R.id.button_leads_contact_video);
 
         // create a class instance for all interaction types
         coffee = new LeadsInteraction(contact.getCoffee(), this);

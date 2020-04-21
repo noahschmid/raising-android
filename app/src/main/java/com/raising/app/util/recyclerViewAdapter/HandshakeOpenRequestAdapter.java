@@ -28,7 +28,7 @@ public class HandshakeOpenRequestAdapter extends RecyclerView.Adapter<HandshakeO
     @Override
     public HandshakeOpenRequestAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
        View view = LayoutInflater.from(parent.getContext())
-               .inflate(R.layout.item_handshake_open_request, parent, false);
+               .inflate(R.layout.item_lead_open_request, parent, false);
        return new ViewHolder(view, clickListener, itemClickListener);
     }
 
@@ -79,12 +79,12 @@ public class HandshakeOpenRequestAdapter extends RecyclerView.Adapter<HandshakeO
                 }
             });
 
-            image = itemView.findViewById(R.id.handshake_open_request_image);
+            image = itemView.findViewById(R.id.leads_open_request_image);
 
-            name = itemView.findViewById(R.id.handshake_open_request_name);
-            attribute = itemView.findViewById(R.id.handshake_open_request_attribute);
+            name = itemView.findViewById(R.id.leads_open_request_name);
+            attribute = itemView.findViewById(R.id.leads_open_request_attribute);
 
-            accept = itemView.findViewById(R.id.button_handshake_open_request_accept);
+            accept = itemView.findViewById(R.id.button_leads_open_request_accept);
             accept.setOnClickListener(v -> {
                 if (clickListener != null) {
                     if (getAdapterPosition() != RecyclerView.NO_POSITION) {
@@ -92,7 +92,7 @@ public class HandshakeOpenRequestAdapter extends RecyclerView.Adapter<HandshakeO
                     }
                 }
             });
-            decline = itemView.findViewById(R.id.button_handshake_open_request_decline);
+            decline = itemView.findViewById(R.id.button_leads_open_request_decline);
             decline.setOnClickListener(v -> {
                 if (clickListener != null) {
                     if (getAdapterPosition() != RecyclerView.NO_POSITION) {

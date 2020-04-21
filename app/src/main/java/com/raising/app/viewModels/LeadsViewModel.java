@@ -75,9 +75,11 @@ public class LeadsViewModel extends AndroidViewModel {
                     Gson gson = gsonBuilder.create();
                     leads.setValue(gson.fromJson(result.toString(), new TypeToken<List<Lead>>() {}.getType()));
                     viewState.setValue(ViewState.RESULT);
+                    cacheLeads();
                     return null;
                 },
                 error -> {
+                    viewState.setValue(ViewState.ERROR);
                     Log.e(TAG, "loadLeads: " + ApiRequestHandler.parseVolleyError(error));
                     return null;
                 });
@@ -88,16 +90,13 @@ public class LeadsViewModel extends AndroidViewModel {
      * @return Array list containing cached leads
      */
     private ArrayList<Lead> getCachedLeads() {
-        viewState.setValue(ViewState.LOADING);
         try {
             if(InternalStorageHandler.exists("leads_" + AuthenticationHandler.getId())) {
                 Log.d(TAG, "getCachedLeads: loaded cached leads");
-                viewState.setValue(ViewState.CACHED);
                 return (ArrayList<Lead>) InternalStorageHandler.loadObject(
                         "leads_" + AuthenticationHandler.getId());
             }
         } catch (Exception e) {
-            viewState.setValue(ViewState.ERROR);
             Log.e(TAG, "getCachedLeads: Error while loading cached leads: " + e.getMessage());
         }
         return null;

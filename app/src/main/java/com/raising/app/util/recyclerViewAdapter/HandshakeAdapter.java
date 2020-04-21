@@ -29,7 +29,7 @@ public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.View
     @NonNull
     @Override
     public HandshakeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_handshake,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_lead,
                 parent, false);
         return new ViewHolder(view, itemClickListener);
     }
@@ -60,7 +60,8 @@ public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.View
                                     R.color.raisingPositive));
                 }
                 break;
-            case DECLINED:
+            case STARTUP_DECLINED:
+            case INVESTOR_DECLINED:
                 holder.statusIcon.setImageDrawable(
                         ContextCompat.getDrawable(holder.statusIcon.getContext(),
                                 R.drawable.ic_cancel_24dp));
@@ -109,13 +110,13 @@ public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.View
         public ViewHolder(@NonNull View itemView, OnItemClickListener itemClickListener) {
             super(itemView);
 
-            name = itemView.findViewById(R.id.item_handshake_name);
-            attribute = itemView.findViewById(R.id.item_handshake_attributes);
-            matchingPercent = itemView.findViewById(R.id.item_handshake_match_percent);
+            name = itemView.findViewById(R.id.item_leads_name);
+            attribute = itemView.findViewById(R.id.item_leads_attributes);
+            matchingPercent = itemView.findViewById(R.id.item_leads_match_percent);
 
-            statusIcon = itemView.findViewById(R.id.item_handshake_status_icon);
-            profilePicture = itemView.findViewById(R.id.item_handshake_profile_image);
-            warning = itemView.findViewById(R.id.item_handshake_warning);
+            statusIcon = itemView.findViewById(R.id.item_leads_status_icon);
+            profilePicture = itemView.findViewById(R.id.item_leads_profile_image);
+            warning = itemView.findViewById(R.id.item_leads_warning);
 
             itemView.setOnClickListener(v -> {
                 if (itemClickListener != null) {

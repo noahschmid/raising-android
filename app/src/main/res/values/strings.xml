@@ -3,7 +3,7 @@
 
     <!-- Strings used in bottom navigation -->
     <string name="navigation_matches"> Matches </string>
-    <string name="navigation_handshakes"> Handshakes </string>
+    <string name="navigation_leads"> Leads </string>
     <string name="navigation_profile"> Profile </string>
     <string name="navigation_settings"> Settings </string>
 
@@ -134,38 +134,38 @@
     <string name="empty_matchList_text"> You are done! </string>
     <string name="empty_matchList_text_2"> Enjoy the rest of your week! </string>
 
-    <string name="toolbar_title_handshakes"> Leads </string>
-    <string name="handshake_your_turn"> Your turn </string>
-    <string name="handshake_pending"> Pending </string>
-    <string name="handshake_closed"> Closed </string>
+    <string name="toolbar_title_leads"> Leads </string>
+    <string name="leads_your_turn"> Your turn </string>
+    <string name="leads_pending"> Pending </string>
+    <string name="leads_closed"> Closed </string>
 
-    <string name="handshake_open_requests"> Open Requests </string>
-    <string name="handshake_open_requests_description"> Accept or decline requests </string>
+    <string name="leads_open_requests"> Open Requests </string>
+    <string name="leads_open_requests_description"> Accept or decline requests </string>
 
-    <string name="handshake_tab_today"> Today </string>
-    <string name="handshake_tab_this_week"> This Week </string>
+    <string name="leads_tab_today"> Today </string>
+    <string name="leads_tab_this_week"> This Week </string>
 
     <string name="toolbar_title_open_requests"> Open Requests</string>
-    <string name="handshake_no_open_requests"> You currently don\'t have any open requests!</string>
+    <string name="leads_no_open_requests"> You currently don\'t have any open requests!</string>
 
     <string name="toolbar_title_contact"> Contact </string>
 
-    <string name="handshake_contact_coffee"> Drink a Coffee</string>
-    <string name="handshake_contact_coffee_subject_template"> RAI$ING: Drink a Coffee </string>
-    <string name="handshake_contact_coffee_body_template"> We have matched on RAI$ING. Let us drink a coffee. </string>
-    <string name="handshake_contact_business_plan_subject_template"> RAI$ING: Send Business Plan </string>
-    <string name="handshake_contact_business_plan_body_template"> We have matched on RAI$ING. Let us exchange business plans. </string>
-    <string name="handshake_contact_mail_subject_template"> RAI$ING: Send E-Mail </string>
-    <string name="handshake_contact_mail_body_template"> We have matched on RAI$ING.</string>
+    <string name="leads_contact_coffee"> Drink a Coffee</string>
+    <string name="leads_contact_coffee_subject_template"> RAI$ING: Drink a Coffee </string>
+    <string name="leads_contact_coffee_body_template"> We have matched on RAI$ING. Let us drink a coffee. </string>
+    <string name="leads_contact_business_plan_subject_template"> RAI$ING: Send Business Plan </string>
+    <string name="leads_contact_business_plan_body_template"> We have matched on RAI$ING. Let us exchange business plans. </string>
+    <string name="leads_contact_mail_subject_template"> RAI$ING: Send E-Mail </string>
+    <string name="leads_contact_mail_body_template"> We have matched on RAI$ING.</string>
 
-    <string name="handshake_contact_businessplan"> Request Businessplan</string>
-    <string name="handshake_contact_phone">Phone call</string>
-    <string name="handshake_contact_email"> Send Email</string>
-    <string name="handshake_contact_video"> Video-Conference</string>
+    <string name="leads_contact_businessplan"> Request Businessplan</string>
+    <string name="leads_contact_phone">Phone call</string>
+    <string name="leads_contact_email"> Send Email</string>
+    <string name="leads_contact_video"> Video-Conference</string>
 
-    <string name="handshake_contact_requested"> Requested </string>
-    <string name="handshake_contact_interact"> Contact </string>
-    <string name="handshake_contact_save_contact"> Save to Contacts</string>
+    <string name="leads_contact_requested"> Requested </string>
+    <string name="leads_contact_interact"> Contact </string>
+    <string name="leads_contact_save_contact"> Save to Contacts</string>
 
 
     <string name="toolbar_title_settings"> Settings </string>
@@ -309,4 +309,5 @@
     <string name="continue_text">CONTINUE</string>
     <string name="save_text">SAVE</string>
     <string name="submit">Submit</string>
+    <string name="leads_tab_earlier">Earlier</string>
 </resources>

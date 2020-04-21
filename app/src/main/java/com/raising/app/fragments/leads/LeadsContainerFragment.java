@@ -27,14 +27,14 @@ public class LeadsContainerFragment extends RaisingFragment {
 
         View view = inflater.inflate(R.layout.fragment_leads_container, container, false);
 
-        customizeAppBar(getString(R.string.toolbar_title_handshakes), false);
+        customizeAppBar(getString(R.string.toolbar_title_leads), false);
 
-        tabLayout = view.findViewById(R.id.handshake_tab_layout);
+        tabLayout = view.findViewById(R.id.leads_tab_layout);
         yourTurn = view.findViewById(R.id.tab_your_turn);
         pending = view.findViewById(R.id.tab_pending);
         closed = view.findViewById(R.id.tab_closed);
 
-        viewPager = view.findViewById(R.id.handshake_view_pager);
+        viewPager = view.findViewById(R.id.leads_view_pager);
 
         HandshakePageAdapter pagerAdapter = new HandshakePageAdapter(getChildFragmentManager(),
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,

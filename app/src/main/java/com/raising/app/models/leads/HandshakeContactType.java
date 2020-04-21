@@ -4,11 +4,11 @@ import com.raising.app.R;
 import com.raising.app.util.InternalStorageHandler;
 
 public enum HandshakeContactType {
-    COFFEE(getString(R.string.handshake_contact_coffee)),
-    BUSINESS_PLAN(getString(R.string.handshake_contact_businessplan)),
-    PHONE(getString(R.string.handshake_contact_phone)),
-    EMAIL(getString(R.string.handshake_contact_email)),
-    VIDEO(getString(R.string.handshake_contact_video));
+    COFFEE(getString(R.string.leads_contact_coffee)),
+    BUSINESS_PLAN(getString(R.string.leads_contact_businessplan)),
+    PHONE(getString(R.string.leads_contact_phone)),
+    EMAIL(getString(R.string.leads_contact_email)),
+    VIDEO(getString(R.string.leads_contact_video));
 
     String representation;
     HandshakeContactType(String representation) {

@@ -15,6 +15,7 @@ import com.raising.app.models.leads.LeadState;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class LeadsDeserializer implements JsonDeserializer<Lead> {
@@ -30,12 +31,18 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
             lead.setHandshakeState(InteractionState.valueOf(jsonObject.get("state").getAsString()));
             lead.setInvestmentPhaseId(jsonObject.get("investmentPhaseId").getAsLong());
             lead.setInvestorTypeId(jsonObject.get("investorTypeId").getAsLong());
-            lead.setLastName(jsonObject.get("lastName").getAsString());
-            lead.setFirstName(jsonObject.get("firstName").getAsString());
-            lead.setCompanyName(jsonObject.get("companyName").getAsString());
-            lead.setStartup(jsonObject.get("isStartup").getAsBoolean());
+            if(jsonObject.get("lastName") != null) {
+                lead.setLastName(jsonObject.get("lastName").getAsString());
+            }
+            if(jsonObject.get("firstName") != null) {
+                lead.setFirstName(jsonObject.get("firstName").getAsString());
+            }
+            if(jsonObject.get("companyName") != null) {
+                lead.setCompanyName(jsonObject.get("companyName").getAsString());
+            }
+            lead.setStartup(!jsonObject.get("startup").getAsBoolean());
             lead.setMatchingPercent(jsonObject.get("matchingPercent").getAsInt());
-
+            lead.setTimestamp(new Date());
             LeadState leadState = LeadState.PENDING;
 
             JsonArray jsonInteractions = jsonObject.get("interactions").getAsJsonArray();
@@ -71,8 +78,9 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
                     leadState = LeadState.CLOSED;
                 }
 
-                if (state == InteractionState.INVESTOR_ACCEPTED && AuthenticationHandler.isStartup() ||
-                    state == InteractionState.STARTUP_ACCEPTED && !AuthenticationHandler.isStartup()) {
+                if ((state == InteractionState.INVESTOR_ACCEPTED && AuthenticationHandler.isStartup() ||
+                    state == InteractionState.STARTUP_ACCEPTED && !AuthenticationHandler.isStartup()) &&
+                        leadState != LeadState.CLOSED) {
                     leadState = LeadState.YOUR_TURN;
                 }
 
@@ -89,6 +97,12 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
             }
 
             lead.setInteractions(interactions);
+
+            if(lead.getHandshakeState() == InteractionState.INVESTOR_DECLINED ||
+            lead.getHandshakeState() == InteractionState.STARTUP_DECLINED) {
+                lead.setState(LeadState.CLOSED);
+            }
+
             lead.setState(leadState);
 
             return lead;

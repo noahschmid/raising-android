@@ -122,11 +122,11 @@
     <style name="HandshakeContactCardView">
         <item name="cardCornerRadius">2dp</item>
         <item name="android:backgroundTint"> @color/raisingSecondaryAccent </item>
-        <item name="android:layout_height"> @dimen/handshakeContactCardHeight</item>
+        <item name="android:layout_height"> @dimen/leadsContactCardHeight</item>
     </style>
 
     <style name="HandshakeContactButtonStyle" parent="GeneralButtonStyle">
-        <item name="android:layout_height">@dimen/handshakeContactButtonHeight</item>
+        <item name="android:layout_height">@dimen/leadsContactButtonHeight</item>
         <item name="android:minWidth"> 0dp</item>
         <item name="backgroundColor">@color/raisingSecondaryDark</item>
         <item name="android:textSize">@dimen/raisingSmallerTextFontSize</item>
