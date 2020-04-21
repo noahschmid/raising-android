@@ -1,6 +1,4 @@
-package com.raising.app.models;
-
-import android.graphics.Bitmap;
+package com.raising.app.models.leads;
 
 import java.io.Serializable;
 import java.util.ArrayList;

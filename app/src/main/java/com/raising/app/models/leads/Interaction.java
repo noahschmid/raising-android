@@ -1,4 +1,4 @@
-package com.raising.app.models;
+package com.raising.app.models.leads;
 
 import lombok.Data;
 

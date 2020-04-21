@@ -25,7 +25,7 @@ public class LeadsContainerFragment extends RaisingFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_handshakes, container, false);
+        View view = inflater.inflate(R.layout.fragment_leads_container, container, false);
 
         customizeAppBar(getString(R.string.toolbar_title_handshakes), false);
 

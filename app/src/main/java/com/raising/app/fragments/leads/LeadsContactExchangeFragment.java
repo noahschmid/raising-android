@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.HandshakeContactType;
-import com.raising.app.models.Lead;
+import com.raising.app.models.leads.HandshakeContactType;
+import com.raising.app.models.leads.Lead;
 
 public class LeadsContactExchangeFragment extends RaisingFragment {
     private ImageView contactImage;
@@ -29,7 +29,7 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
                              Bundle savedInstanceState) {
 
         customizeAppBar(getString(R.string.toolbar_title_contact), true);
-        return inflater.inflate(R.layout.fragment_handshake_contact_exchange, container, false);
+        return inflater.inflate(R.layout.fragment_leads_contact_exchange, container, false);
     }
 
     @Override

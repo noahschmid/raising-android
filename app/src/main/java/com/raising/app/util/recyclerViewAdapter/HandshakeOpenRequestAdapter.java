@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.raising.app.R;
-import com.raising.app.models.Lead;
+import com.raising.app.models.leads.Lead;
 
 import java.util.ArrayList;
 

@@ -7,11 +7,11 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.raising.app.models.ContactData;
-import com.raising.app.models.Interaction;
-import com.raising.app.models.InteractionState;
-import com.raising.app.models.InteractionType;
-import com.raising.app.models.Lead;
-import com.raising.app.models.LeadState;
+import com.raising.app.models.leads.Interaction;
+import com.raising.app.models.leads.InteractionState;
+import com.raising.app.models.leads.InteractionType;
+import com.raising.app.models.leads.Lead;
+import com.raising.app.models.leads.LeadState;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
