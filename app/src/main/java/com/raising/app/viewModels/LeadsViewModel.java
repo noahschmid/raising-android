@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
+import com.raising.app.models.InteractionState;
 import com.raising.app.models.Lead;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.AuthenticationHandler;
@@ -16,14 +17,13 @@ import com.raising.app.util.InternalStorageHandler;
 
 import java.util.ArrayList;
 
-public class HandshakesViewModel extends AndroidViewModel {
+public class LeadsViewModel extends AndroidViewModel {
     private MutableLiveData<ArrayList<Lead>> leads = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<Lead>> openRequests = new MutableLiveData<>();
     private MutableLiveData<ViewState> viewState = new MutableLiveData<>();
 
-    private final String TAG = "HandshakesViewModel";
+    private final String TAG = "LeadsViewModel";
 
-    public HandshakesViewModel(@NonNull Application application) {
+    public LeadsViewModel(@NonNull Application application) {
         super(application);
         leads.setValue(new ArrayList<>());
         viewState.setValue(ViewState.EMPTY);
@@ -34,7 +34,14 @@ public class HandshakesViewModel extends AndroidViewModel {
         return leads;
     }
 
-    public LiveData<ArrayList<Lead>> getOpenRequests() {
+    public ArrayList<Lead> getOpenRequests() {
+        ArrayList<Lead> openRequests = new ArrayList<>();
+        leads.getValue().forEach(lead -> {
+            if((AuthenticationHandler.isStartup() && lead.getHandshakeState() == InteractionState.INVESTOR_ACCEPTED)
+                || (!(AuthenticationHandler.isStartup()) && lead.getHandshakeState() == InteractionState.STARTUP_ACCEPTED)) {
+                openRequests.add(lead);
+            }
+        });
         return openRequests;
     }
 

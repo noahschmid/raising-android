@@ -1,13 +1,10 @@
-package com.raising.app.fragments.handshake;
+package com.raising.app.fragments.leads;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +14,10 @@ import android.widget.TextView;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.HandshakeContact;
 import com.raising.app.models.HandshakeContactType;
+import com.raising.app.models.Lead;
 
-public class HandshakeContactExchangeFragment extends RaisingFragment {
+public class LeadsContactExchangeFragment extends RaisingFragment {
     private ImageView contactImage;
     private TextView contactName, contactMail, saveContact;
     private Button btnInteract;
@@ -44,7 +41,7 @@ public class HandshakeContactExchangeFragment extends RaisingFragment {
         }
 
         //TODO: store contact in this variable
-        HandshakeContact contact;
+        Lead contact;
 
         /*
         contactImage = view.findViewById(R.id.handshake_contact_picture);

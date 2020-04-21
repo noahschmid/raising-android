@@ -1,5 +1,6 @@
-package com.raising.app.fragments.handshake;
+package com.raising.app.fragments.leads;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,28 +18,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.HandshakeItem;
 import com.raising.app.models.LeadState;
 import com.raising.app.models.Lead;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.recyclerViewAdapter.HandshakeAdapter;
 import com.raising.app.util.recyclerViewAdapter.RecyclerViewMargin;
-import com.raising.app.viewModels.HandshakesViewModel;
+import com.raising.app.viewModels.LeadsViewModel;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
-public class HandshakeTabFragment extends RaisingFragment {
+public class LeadsFragment extends RaisingFragment {
 
     private final String TAG = "HandshakeTabFragment";
 
     private LeadState leadState;
-    private HandshakesViewModel handshakesViewModel;
+    private LeadsViewModel leadsViewModel;
 
-    private ArrayList<HandshakeItem> handshakeItemsToday;
-    private ArrayList<HandshakeItem> handshakeItemsWeek;
+    private ArrayList<Lead> handshakeItemsToday;
+    private ArrayList<Lead> handshakeItemsWeek;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +50,7 @@ public class HandshakeTabFragment extends RaisingFragment {
         return inflater.inflate(R.layout.fragment_handshake_tab, container, false);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -57,11 +61,11 @@ public class HandshakeTabFragment extends RaisingFragment {
         }
 
         // prepare handshakeViewModel for usage
-        handshakesViewModel = ViewModelProviders.of(getActivity())
-                .get(HandshakesViewModel.class);
+        leadsViewModel = ViewModelProviders.of(getActivity())
+                .get(LeadsViewModel.class);
 
-        handshakesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> processViewState(state));
-        processViewState(handshakesViewModel.getViewState().getValue());
+        leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> processViewState(state));
+        processViewState(leadsViewModel.getViewState().getValue());
         handshakeItemsToday = new ArrayList<>();
         handshakeItemsWeek = new ArrayList<>();
 
@@ -69,7 +73,7 @@ public class HandshakeTabFragment extends RaisingFragment {
             Log.d(TAG, "onViewCreated: ResourceViewModel ViewState: " + state.toString());
         });
 
-        ArrayList<Lead> leads = handshakesViewModel.getLeads().getValue();
+        ArrayList<Lead> leads = leadsViewModel.getLeads().getValue();
         ArrayList<Lead> handshakeStateLeads = new ArrayList<>();
 
         switch (leadState) {
@@ -102,29 +106,29 @@ public class HandshakeTabFragment extends RaisingFragment {
             handshakeItemsToday.clear();
             handshakeItemsWeek.clear();
             handshakeStateLeads.forEach(lead -> {
-                HandshakeItem handshakeItem = new HandshakeItem();
+                Lead handshakeItem = new Lead();
                 handshakeItem.setId(lead.getId());
                 handshakeItem.setMatchingPercent(lead.getMatchingPercent());
                 handshakeItem.setStartup(lead.isStartup());
-                handshakeItem.setPictureId(lead.getProfilePictureId());
-                handshakeItem.setInteractionState(lead.getInteractionState());
+                handshakeItem.setProfilePictureId(lead.getProfilePictureId());
+                handshakeItem.setHandshakeState(lead.getHandshakeState());
 
                 if (handshakeItem.isStartup()) {
-                    handshakeItem.setName(lead.getCompanyName());
+                    handshakeItem.setTitle(lead.getCompanyName());
                     handshakeItem.setAttribute(resources.getInvestmentPhase(
                             lead.getInvestmentPhaseId()).getName());
                 } else {
-                    handshakeItem.setName(lead.getFirstName() + " " + lead.getLastName());
+                    handshakeItem.setTitle(lead.getFirstName() + " " + lead.getLastName());
                     handshakeItem.setAttribute(resources.getInvestorType(
                             lead.getInvestorTypeId()).getName());
                 }
 
-                if (lead.getDate().equals(new Date())) {
+                if (lead.getTimestamp().equals(new Date())) {
                     handshakeItemsToday.add(handshakeItem);
                 } else {
                     handshakeItemsWeek.add(handshakeItem);
                 }
-                Log.d(TAG, "onViewCreated: Add HandshakeItem: " + handshakeItem.getName());
+                Log.d(TAG, "onViewCreated: Add HandshakeItem: " + handshakeItem.getTitle());
             });
             Log.d(TAG, "onViewCreated: HandshakeLists filled");
         }
@@ -141,7 +145,7 @@ public class HandshakeTabFragment extends RaisingFragment {
         adapterToday.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
             args.putLong("id", handshakeItemsToday.get(position).getId());
-            Fragment contactFragment = new HandshakeContactFragment();
+            Fragment contactFragment = new LeadsContactFragment();
             contactFragment.setArguments(args);
             changeFragment(contactFragment, "HandshakeContactFragment");
         });
@@ -154,25 +158,29 @@ public class HandshakeTabFragment extends RaisingFragment {
         adapterWeek.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
             args.putLong("id", handshakeItemsToday.get(position).getId());
-            Fragment contactFragment = new HandshakeContactFragment();
+            Fragment contactFragment = new LeadsContactFragment();
             contactFragment.setArguments(args);
             changeFragment(contactFragment, "HandshakeContactFragment");
         });
 
         // prepare open requests layout
         ConstraintLayout openRequests = view.findViewById(R.id.handshake_open_requests);
+        ImageView openRequestsArrow = view.findViewById(R.id.handshake_open_requests_arrow);
         if (!(leadState.equals(LeadState.YOUR_TURN))) {
             openRequests.setVisibility(View.GONE);
         } else {
             ImageView image = view.findViewById(R.id.handshake_open_requests_image);
-            if(handshakesViewModel.getOpenRequests().getValue() != null) {
+            if(leadsViewModel.getOpenRequests() != null) {
                 // set image of uppermost index in openRequests
                 // image.setImageBitmap(handshakesViewModel.getOpenRequests().getValue().get(0).getProfileImage());
+                BadgeDrawable badge = BadgeDrawable.create(Objects.requireNonNull(this.getContext()));
+                badge.setNumber(leadsViewModel.getOpenRequests().size());
+                BadgeUtils.attachBadgeDrawable(badge, openRequestsArrow, null);
             } else {
                 image.setImageDrawable(ContextCompat.getDrawable(this.getContext(), R.drawable.ic_person_24dp));
             }
             openRequests.setOnClickListener(v ->
-                    changeFragment(new HandshakeOpenRequestsFragment(),
+                    changeFragment(new LeadsOpenRequestsFragment(),
                             "HandshakeOpenRequestFragment"));
         }
     }

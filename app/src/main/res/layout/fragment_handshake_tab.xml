@@ -5,7 +5,7 @@
     android:id="@+id/overlay_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.handshake.HandshakeTabFragment">
+    tools:context=".fragments.leads.LeadsFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -60,6 +60,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
                 <ImageView
+                    android:id="@+id/handshake_open_requests_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
@@ -68,6 +69,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/handshake_open_requests_image"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/handshake_open_requests_image" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView

@@ -1,8 +1,9 @@
 package com.raising.app.models;
 
 public enum InteractionState {
-    REQUESTED,
-    ACCEPTED,
+    EMPTY,
+    STARTUP_ACCEPTED,
+    INVESTOR_ACCEPTED,
     DECLINED,
-    SUCCESS;
+    HANDSHAKE
 }

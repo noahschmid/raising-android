@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -15,7 +14,7 @@ import android.view.View;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.raising.app.fragments.handshake.HandshakesFragment;
+import com.raising.app.fragments.leads.LeadsContainerFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.SettingsFragment;
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                                 selected = new MatchesFragment();
                                 break;
                             case R.id.nav_handshakes:
-                                selected = new HandshakesFragment();
+                                selected = new LeadsContainerFragment();
                                 break;
                             case R.id.nav_profile:
                                 selected = new MyProfileFragment();

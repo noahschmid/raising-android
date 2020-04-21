@@ -1,4 +1,4 @@
-package com.raising.app.fragments.handshake;
+package com.raising.app.fragments.leads;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -18,14 +18,18 @@ import android.widget.Button;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.HandshakeContact;
-import com.raising.app.models.HandshakeContactType;
+import com.raising.app.models.Interaction;
 import com.raising.app.models.InteractionState;
+import com.raising.app.util.AuthenticationHandler;
 
 import java.util.Objects;
 
-public class HandshakeContactFragment extends RaisingFragment implements View.OnClickListener{
+public class LeadsContactFragment extends RaisingFragment implements View.OnClickListener{
     private Button coffeeButton, businessplanButton, phoneButton, mailButton, videoButton;
     private CardView contactCoffee, contactBusinessPlan, contactPhone, contactMail, contactVideo;
+
+    private long id;
+    HandshakeContact contact;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +43,14 @@ public class HandshakeContactFragment extends RaisingFragment implements View.On
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if(getArguments() != null) {
+            id = getArguments().getLong("id");
+
+            //TODO: store contact of id in following object:
+            contact = new HandshakeContact();
+
+        }
+
         contactCoffee = view.findViewById(R.id.handshake_contact_coffee);
         contactBusinessPlan = view.findViewById(R.id.handshake_contact_businessplan);
         contactPhone = view.findViewById(R.id.handshake_contact_call);
@@ -47,41 +59,26 @@ public class HandshakeContactFragment extends RaisingFragment implements View.On
 
         coffeeButton = view.findViewById(R.id.button_handshake_contact_coffee);
         coffeeButton.setOnClickListener(this);
-        // toggleContactButton(coffeeButton, (...));
+        toggleContactButton(coffeeButton, contactCoffee, contact.getCoffee());
         businessplanButton = view.findViewById(R.id.button_handshake_contact_businessplan);
         businessplanButton.setOnClickListener(this);
-        // toggleContactButton(businessplanButton, (...));
+        toggleContactButton(businessplanButton, contactBusinessPlan, contact.getBusinessplan());
         phoneButton = view.findViewById(R.id.button_handshake_contact_phone);
         phoneButton.setOnClickListener(this);
-        // toggleContactButton(phoneButton, (...));
+        toggleContactButton(phoneButton, contactPhone, contact.getPhone());
         mailButton = view.findViewById(R.id.button_handshake_contact_email);
         mailButton.setOnClickListener(this);
-        // toggleContactButton(mailButton, (...));
+        toggleContactButton(mailButton, contactMail, contact.getEmail());
         videoButton = view.findViewById(R.id.button_handshake_contact_video);
         videoButton.setOnClickListener(this);
-        // toggleContactButton(videoButton, (...));
-
-        //TODO: if exchange has happened, set respective button invisible and call respective card:
-        /*
-        (.....).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle args = new Bundle();
-                args.putLong("id", ...);
-                args.putSerializable("contactType", (HandshakeContactType));
-                Fragment fragment = new HandshakeContactExchangeFragment();
-                fragment.setArguments(args);
-                changeFragment(fragment, "HandshakeContactExchangeFragment");
-            }
-        });
-         */
+        toggleContactButton(videoButton, contactVideo, contact.getVideo());
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.button_handshake_contact_coffee:
-                // toggleContactButton(coffeeButton, (...));
+                // updateInteraction();
                 //TODO: implement action
                 break;
             case R.id.button_handshake_contact_businessplan:
@@ -101,17 +98,45 @@ public class HandshakeContactFragment extends RaisingFragment implements View.On
         }
     }
 
-    private void toggleContactButton(Button button, InteractionState state) {
+    private void updateInteraction() { }
+
+    private void toggleContactButton(Button button, View contactCard, Interaction interaction) {
         Drawable drawable = button.getBackground();
         drawable = DrawableCompat.wrap(drawable);
-        if (state == InteractionState.REQUESTED) {
-            drawable.setTint(ContextCompat.getColor(
-                    Objects.requireNonNull(this.getContext()), R.color.raisingPositiveAccent));
-            button.setText(getString(R.string.requested_text));
-        } else if(state == InteractionState.ACCEPTED ) {
-            drawable.setTint(ContextCompat.getColor(
-                    Objects.requireNonNull(this.getContext()), R.color.raisingPositive));
-            button.setText(getString(R.string.confirm_text));
+        if(AuthenticationHandler.isStartup()) {
+            if(interaction.getInteractionState() == InteractionState.STARTUP_ACCEPTED) {
+                button.setEnabled(false);
+                drawable.setTint(ContextCompat.getColor(
+                        Objects.requireNonNull(this.getContext()), R.color.raisingPositiveAccent));
+                button.setText(getString(R.string.requested_text));
+            } else if (interaction.getInteractionState() == InteractionState.INVESTOR_ACCEPTED) {
+                drawable.setTint(ContextCompat.getColor(
+                        Objects.requireNonNull(this.getContext()), R.color.raisingPositiveAccent));
+                button.setText(getString(R.string.confirm_text));
+            }
+        } else {
+            if (interaction.getInteractionState() == InteractionState.STARTUP_ACCEPTED) {
+                drawable.setTint(ContextCompat.getColor(
+                        Objects.requireNonNull(this.getContext()), R.color.raisingPositiveAccent));
+                button.setText(getString(R.string.confirm_text));
+            } else if (interaction.getInteractionState() == InteractionState.INVESTOR_ACCEPTED) {
+                button.setEnabled(false);
+                drawable.setTint(ContextCompat.getColor(
+                        Objects.requireNonNull(this.getContext()), R.color.raisingPositiveAccent));
+                button.setText(getString(R.string.requested_text));
+            }
+        }
+
+        if(interaction.getInteractionState() == InteractionState.HANDSHAKE) {
+            button.setVisibility(View.GONE);
+            contactCard.setOnClickListener(v -> {
+                Bundle args = new Bundle();
+                args.putLong("id", contact.getId());
+                args.putSerializable("contactType", interaction.getInteractionType());
+                Fragment fragment = new LeadsContactExchangeFragment();
+                fragment.setArguments(args);
+                changeFragment(fragment, "LeadContactExchangeFragment");
+            });
         }
     }
 }
