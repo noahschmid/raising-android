@@ -51,6 +51,8 @@ public class AuthenticationHandler {
         AuthenticationHandler.isStartup = isStartup;
         AuthenticationHandler.email = email;
         loggedIn = true;
+
+        ContactDataHandler.init();
     }
 
     public static String getToken() { return token; }
@@ -103,6 +105,8 @@ public class AuthenticationHandler {
             AuthenticationHandler.isStartup = Boolean.parseBoolean(bufferedReader.readLine());
             AuthenticationHandler.accountId = Long.parseLong(bufferedReader.readLine());
             loggedIn = true;
+
+            ContactDataHandler.init();
 
             Log.i("AuthenticationHandler", "Auto login with accountId " + accountId);
         } catch(Exception e) {

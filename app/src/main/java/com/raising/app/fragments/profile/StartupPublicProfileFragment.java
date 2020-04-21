@@ -243,7 +243,6 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         matchingPercent.setText(matchingScore);
 
         //TODO: add labels to labelsLayout
-
         startup.getInvestorTypes().forEach(type -> {
             investorTypes.add((Model) resources.getInvestorType(type));
         });

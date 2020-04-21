@@ -25,6 +25,7 @@ import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.viewModels.AccountViewModel;
+import com.raising.app.viewModels.LeadsViewModel;
 import com.raising.app.viewModels.MatchesViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     AccountViewModel accountViewModel;
     ResourcesViewModel resourcesViewModel;
     MatchesViewModel matchesViewModel;
+    LeadsViewModel leadsViewModel;
 
     MaterialToolbar toolbar;
 
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         resourcesViewModel = new ViewModelProvider(this).get(ResourcesViewModel.class);
         matchesViewModel = new ViewModelProvider(this).get(MatchesViewModel.class);
+        leadsViewModel = new ViewModelProvider(this).get(LeadsViewModel.class);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 hideBottomNavigation(true);
                 fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
             } else {
+                leadsViewModel.getLeads();
                 if(!AccountService.loadContactDetails()) {
                     hideBottomNavigation(true);
                     Bundle bundle = new Bundle();

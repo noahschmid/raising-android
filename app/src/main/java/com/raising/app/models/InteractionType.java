@@ -1,6 +1,6 @@
 package com.raising.app.models;
 
-enum InteractionType {
+public enum InteractionType {
     VIDEO_CALL,
     COFFEE,
     BUSINESSPLAN,
