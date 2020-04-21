@@ -1,15 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/settings_frame_layout"
+    android:id="@+id/overlay_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SettingsFragment">
+    tools:context=".fragments.settings.SettingsFragment">
 
-    <Button
-        android:id="@+id/button_logout"
-        android:layout_width="165dp"
-        android:layout_height="wrap_content"
-        android:text="Logout" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/settings_language_layout"
+                style="@style/TextInputExposedDropdownMenuTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/settings_language"
+                app:layout_constraintBottom_toTopOf="@+id/settings_matches_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed">
+
+                <AutoCompleteTextView
+                    android:id="@+id/settings_language_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:focusable="false"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/settings_matches_layout"
+                style="@style/TextInputLayoutTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/settings_weekly_matches"
+                app:layout_constraintBottom_toTopOf="@+id/button_settings_notifications"
+                app:layout_constraintEnd_toEndOf="@+id/settings_language_layout"
+                app:layout_constraintStart_toStartOf="@+id/settings_language_layout"
+                app:layout_constraintTop_toBottomOf="@+id/settings_language_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/settings_matches_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:inputType="numberDecimal"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/button_settings_notifications"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/myProfileButtonHeight"
+                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                android:backgroundTint="@color/raisingWhite"
+                android:drawableLeft="@drawable/ic_info_24dp"
+                android:drawableTint="@color/raisingTextColor"
+                android:gravity="center|start"
+                android:hint="@string/settings_notifications"
+                android:shadowColor="@color/raisingWhite"
+                android:textColorHint="@color/raisingTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                app:layout_constraintBottom_toTopOf="@+id/button_settings_about"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settings_matches_layout"
+                app:rippleColor="@color/raisingRippleColor" />
+
+            <Button
+                android:id="@+id/button_settings_about"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/myProfileButtonHeight"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                android:backgroundTint="@color/raisingWhite"
+                android:drawableLeft="@drawable/ic_info_24dp"
+                android:drawableTint="@color/raisingTextColor"
+                android:gravity="center|start"
+                android:hint="@string/settings_about"
+                android:shadowColor="@color/raisingWhite"
+                android:textColorHint="@color/raisingTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                app:layout_constraintBottom_toTopOf="@+id/button_settings_report_problem"
+                app:layout_constraintEnd_toEndOf="@+id/button_settings_notifications"
+                app:layout_constraintStart_toStartOf="@+id/button_settings_notifications"
+                app:layout_constraintTop_toBottomOf="@+id/button_settings_notifications"
+                app:rippleColor="@color/raisingRippleColor" />
+
+            <Button
+                android:id="@+id/button_settings_report_problem"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/myProfileButtonHeight"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                android:backgroundTint="@color/raisingWhite"
+                android:drawableLeft="@drawable/ic_info_24dp"
+                android:drawableTint="@color/raisingTextColor"
+                android:gravity="center|start"
+                android:hint="@string/settings_report_problem"
+                android:shadowColor="@color/raisingWhite"
+                android:textColorHint="@color/raisingTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                app:layout_constraintBottom_toTopOf="@+id/button_settings_feedback"
+                app:layout_constraintEnd_toEndOf="@+id/button_settings_about"
+                app:layout_constraintStart_toStartOf="@+id/button_settings_about"
+                app:layout_constraintTop_toBottomOf="@+id/button_settings_about"
+                app:rippleColor="@color/raisingRippleColor" />
+
+            <Button
+                android:id="@+id/button_settings_feedback"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/myProfileButtonHeight"
+                android:backgroundTint="@color/raisingWhite"
+                android:drawableLeft="@drawable/ic_info_24dp"
+                android:drawableTint="@color/raisingTextColor"
+                android:gravity="center|start"
+                android:hint="@string/settings_feedback"
+                android:shadowColor="@color/raisingWhite"
+                android:textColorHint="@color/raisingTextColor"
+
+                android:textSize="@dimen/raisingTextFontSize"
+                app:layout_constraintBottom_toTopOf="@+id/button_settings_logout"
+                app:layout_constraintEnd_toEndOf="@+id/button_settings_report_problem"
+                app:layout_constraintStart_toStartOf="@+id/button_settings_report_problem"
+                app:layout_constraintTop_toBottomOf="@+id/button_settings_report_problem"
+                app:rippleColor="@color/raisingRippleColor" />
+
+            <Button
+                android:id="@+id/button_settings_logout"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/myProfileButtonHeight"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:backgroundTint="@color/raisingWhite"
+                android:drawableLeft="@drawable/ic_exit_to_app_24dp"
+                android:drawableTint="@color/raisingTextColor"
+                android:gravity="center|start"
+                android:hint="@string/settings_logout"
+                android:shadowColor="@color/raisingWhite"
+                android:textColorHint="@color/raisingTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/button_settings_feedback"
+                app:layout_constraintStart_toStartOf="@+id/button_settings_feedback"
+                app:rippleColor="@color/raisingRippleColor" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </FrameLayout>

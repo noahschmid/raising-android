@@ -24,7 +24,7 @@ import lombok.Data;
 
 @Data
 public class LeadsContactFragment extends RaisingFragment {
-    private long id;
+    // private long id;
     Lead contact;
 
     public ImageView arrowCoffee, arrowBusinessplan, arrowPhone, arrowEmail, arrowVideo;
@@ -47,7 +47,7 @@ public class LeadsContactFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (getArguments() != null) {
-            id = getArguments().getLong("id");
+            long id = getArguments().getLong("id");
 
             //TODO: store contact of id in following object:
             contact = new Lead();

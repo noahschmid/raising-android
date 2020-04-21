@@ -17,7 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.raising.app.fragments.leads.LeadsContainerFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
-import com.raising.app.fragments.SettingsFragment;
+import com.raising.app.fragments.settings.SettingsFragment;
 import com.raising.app.fragments.profile.ContactDetailsInput;
 import com.raising.app.fragments.profile.MyProfileFragment;
 import com.raising.app.util.AccountService;
