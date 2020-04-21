@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.models.leads.Interaction;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.util.LeadsInteraction;
 
@@ -93,7 +94,10 @@ public class LeadsContactFragment extends RaisingFragment {
         video = new LeadsInteraction(contact.getVideo(), this);
     }
 
-    public void enterInteractionExchange(Bundle args) {
+    public void enterInteractionExchange(Interaction interaction) {
+        Bundle args = new Bundle();
+        args.putLong("id", contact.getId());
+        args.putSerializable("contactType", interaction.getInteractionType());
         Fragment fragment = new LeadsContactExchangeFragment();
         fragment.setArguments(args);
         changeFragment(fragment, "LeadContactExchangeFragment");

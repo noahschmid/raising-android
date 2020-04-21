@@ -23,6 +23,7 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
     private Button btnInteract;
 
     private HandshakeContactType contactType;
+    private long id;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,10 +38,11 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         if(getArguments().getSerializable("contactType") != null) {
+            id = getArguments().getLong("id");
             contactType = (HandshakeContactType) getArguments().getSerializable("contactType");
         }
 
-        //TODO: store contact in this variable
+        //TODO: store contact fetched with id in this variable
         Lead contact;
 
         /*

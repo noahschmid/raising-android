@@ -21,22 +21,21 @@ import com.raising.app.models.leads.Lead;
 import java.util.Objects;
 
 public class LeadsInteraction {
+    private Interaction interaction;
+
+    private LeadsContactFragment currentFragment;
+
     private Button interactionButton;
     private CardView interactionCard;
     private ImageButton confirmInteraction;
     private ImageButton declineInteraction;
     private ImageView interactionArrow;
 
-    private Interaction interaction;
-    private Lead contact;
-
-    private LeadsContactFragment currentFragment;
-
     public LeadsInteraction(Interaction interaction, LeadsContactFragment fragment) {
         this.interaction = interaction;
         currentFragment = fragment;
-        contact = currentFragment.getContact();
 
+        // store all views for later usage
         switch (interaction.getInteractionType()) {
             case COFFEE:
                 interactionButton = currentFragment.getCoffeeButton();
@@ -77,15 +76,11 @@ public class LeadsInteraction {
         prepareInteraction();
     }
 
+    /**
+     * Prepare the contact interaction for usage by setting the needed listeners and visibilities
+     */
     private void prepareInteraction() {
         interactionArrow.setVisibility(View.GONE);
-
-        declineInteraction.setVisibility(View.GONE);
-        declineInteraction.setOnClickListener(v -> {
-            updateInteraction(true);
-            toggleContactButton();
-            updateRemoteInteraction();
-        });
 
         interactionButton.setOnClickListener(v -> {
             updateInteraction(false);
@@ -93,6 +88,12 @@ public class LeadsInteraction {
             updateRemoteInteraction();
         });
 
+        declineInteraction.setVisibility(View.GONE);
+        declineInteraction.setOnClickListener(v -> {
+            updateInteraction(true);
+            toggleContactButton();
+            updateRemoteInteraction();
+        });
     }
 
     private void updateRemoteInteraction() {
@@ -140,10 +141,7 @@ public class LeadsInteraction {
                 declineInteraction.setVisibility(View.GONE);
                 interactionArrow.setVisibility(View.VISIBLE);
                 interactionCard.setOnClickListener(v -> {
-                    Bundle args = new Bundle();
-                    args.putLong("id", contact.getId());
-                    args.putSerializable("contactType", interaction.getInteractionType());
-                    currentFragment.enterInteractionExchange(args);
+                    currentFragment.enterInteractionExchange(interaction);
                 });
                 break;
             case STARTUP_ACCEPTED:
