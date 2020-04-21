@@ -1,4 +1,4 @@
-package com.raising.app.models;
+package com.raising.app.models.leads;
 
 public enum HandshakeContactType {
     COFFEE,

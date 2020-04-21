@@ -11,8 +11,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.raising.app.R;
-import com.raising.app.models.Lead;
-import com.raising.app.models.LeadState;
+import com.raising.app.models.leads.Lead;
+import com.raising.app.models.leads.LeadState;
 
 import java.util.ArrayList;
 

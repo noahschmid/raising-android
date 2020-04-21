@@ -22,8 +22,8 @@ import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.LeadState;
-import com.raising.app.models.Lead;
+import com.raising.app.models.leads.LeadState;
+import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.recyclerViewAdapter.HandshakeAdapter;
 import com.raising.app.util.recyclerViewAdapter.RecyclerViewMargin;
@@ -47,7 +47,7 @@ public class LeadsFragment extends RaisingFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_handshake_tab, container, false);
+        return inflater.inflate(R.layout.fragment_leads, container, false);
     }
 
     @SuppressLint("RestrictedApi")

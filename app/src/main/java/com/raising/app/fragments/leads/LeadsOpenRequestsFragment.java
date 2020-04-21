@@ -19,7 +19,7 @@ import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
-import com.raising.app.models.Lead;
+import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.recyclerViewAdapter.HandshakeOpenRequestAdapter;
 import com.raising.app.viewModels.LeadsViewModel;
@@ -41,7 +41,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
 
         customizeAppBar(getString(R.string.toolbar_title_open_requests), true);
 
-        return inflater.inflate(R.layout.fragment_handshake_open_requests, container, false);
+        return inflater.inflate(R.layout.fragment_leads_open_requests, container, false);
     }
 
     @Override

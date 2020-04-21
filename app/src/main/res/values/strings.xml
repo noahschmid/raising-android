@@ -15,6 +15,7 @@
     <string name="add_text"> Add </string>
     <string name="accept_text"> Accept </string>
     <string name="decline_text"> Decline </string>
+    <string name="declined_text"> Declined </string>
     <string name="request_text"> Request </string>
     <string name="requested_text"> Requested </string>
     <string name="confirm_text"> Confirm </string>

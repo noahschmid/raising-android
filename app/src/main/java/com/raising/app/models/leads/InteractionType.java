@@ -1,6 +1,6 @@
-package com.raising.app.models;
+package com.raising.app.models.leads;
 
-enum InteractionType {
+public enum InteractionType {
     VIDEO_CALL,
     COFFEE,
     BUSINESSPLAN,
