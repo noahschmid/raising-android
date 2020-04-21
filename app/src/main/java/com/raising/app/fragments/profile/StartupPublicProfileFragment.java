@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -87,7 +88,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     private int matchScore;
 
     private LayoutInflater inflater;
-    private long relationshipId = -1;
+    private Long relationshipId = -1l;
 
     private Startup startup;
 
@@ -394,40 +395,45 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         if(relationshipId == -1) {
             return;
         }
-        profileRequest.setOnClickListener(v -> {
-            handshakeRequest = true;
-            handshakeDecline = false;
-            ApiRequestHandler.performPostRequest("match/" + relationshipId + "/accept",
-                    res -> {
-                        popCurrentFragment(this);
-                        return null;
-                    },
-                    err -> {
-                        displayGenericError();
-                        Log.e(TAG, "manageHandshakeButtons: " +
-                                ApiRequestHandler.parseVolleyError(err) );
-                        return null;
-                    },
-                    new JSONObject());
-            //popCurrentFragment(this);
+        Fragment fragment = this;
+        profileRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handshakeRequest = true;
+                handshakeDecline = false;
+                ApiRequestHandler.performPostRequest("match/" + relationshipId + "/accept",
+                        res -> {
+                            popCurrentFragment(fragment);
+                            return null;
+                        },
+                        err -> {
+                            displayGenericError();
+                            Log.e(TAG, "manageHandshakeButtons: " +
+                                    ApiRequestHandler.parseVolleyError(err) );
+                            return null;
+                        },
+                        new JSONObject());
+            }
         });
 
-        profileDecline.setOnClickListener(v -> {
-            handshakeDecline = true;
-            handshakeRequest = false;
-
-            ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
-                    res -> {
-                        popCurrentFragment(this);
-                        return null;
-                    },
-                    err -> {
-                        displayGenericError();
-                        Log.e(TAG, "manageHandshakeButtons: " +
-                                ApiRequestHandler.parseVolleyError(err) );
-                        return null;
-                    },
-                    new JSONObject());
+        profileDecline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handshakeRequest = false;
+                handshakeDecline = true;
+                ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
+                        res -> {
+                            popCurrentFragment(fragment);
+                            return null;
+                        },
+                        err -> {
+                            displayGenericError();
+                            Log.e(TAG, "manageHandshakeButtons: " +
+                                    ApiRequestHandler.parseVolleyError(err) );
+                            return null;
+                        },
+                        new JSONObject());
+            }
         });
     }
 
