@@ -47,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/settings_weekly_matches"
+                app:helperTextEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/button_settings_notifications"
                 app:layout_constraintEnd_toEndOf="@+id/settings_language_layout"
                 app:layout_constraintStart_toStartOf="@+id/settings_language_layout"

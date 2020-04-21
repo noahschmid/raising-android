@@ -13,6 +13,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.RaisingFragment;
@@ -23,7 +24,8 @@ import java.util.ArrayList;
 
 public class SettingsFragment extends RaisingFragment implements View.OnClickListener {
     private Button btnNotifications, btnAbout, btnReportProblem, btnFeedback, btnLogout;
-    private AutoCompleteTextView languageInput, matchNumberInput;
+    private AutoCompleteTextView languageInput;
+    private EditText matchNumberInput;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -57,8 +59,13 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
 
         languageInput = view.findViewById(R.id.settings_language_input);
         languageInput.setAdapter(adapterType);
-        //TODO: preselect users preferred language
+        languageInput.setText(languages.get(0));
         matchNumberInput = view.findViewById(R.id.settings_matches_input);
+        matchNumberInput.setText("10");
+
+        TextInputLayout matchNumberLayout = view.findViewById(R.id.settings_matches_layout);
+        matchNumberLayout.setHelperText(getString(R.string.settings_max_number_weekly_matches)
+                + getResources().getInteger(R.integer.maximumWeeklyMatchesNumber));
     }
 
     @Override
@@ -72,7 +79,10 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         switch (view.getId()) {
             case R.id.button_settings_notifications:
                 changeFragment(new SettingsNotificationsFragment(), "SettingsNotificationFragment");
+                break;
             case R.id.button_settings_about:
+                changeFragment(new SettingsAboutFragment(), "SettingsAboutFragment");
+                break;
             case R.id.button_settings_report_problem:
             case R.id.button_settings_feedback:
                 //TODO: implement action

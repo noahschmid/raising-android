@@ -26,4 +26,6 @@
 
     <integer name="raisingLongSnackbar"> 6000 </integer>
     <integer name="raisingShortSnackbar"> 2500 </integer>
+
+    <integer name="maximumWeeklyMatchesNumber"> 10 </integer>
 </resources>

@@ -413,6 +413,7 @@
                         style="@style/Widget.AppCompat.Button.Borderless.Colored"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/myProfileButtonHeight"
+                        android:layout_marginTop="@dimen/standardVerticalMargin"
                         android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                         android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_visibility_black_24dp"

@@ -20,17 +20,21 @@ import com.raising.app.models.leads.Interaction;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.util.LeadsInteraction;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+
 public class LeadsContactFragment extends RaisingFragment {
-    // private long id;
+    private long id;
+    @Getter
     Lead contact;
-
+    @Getter
     public ImageView arrowCoffee, arrowBusinessplan, arrowPhone, arrowEmail, arrowVideo;
+    @Getter
     public ImageButton confirmCoffee, declineCoffee, confirmBusinessplan, declineBusinessplan,
             confirmPhone, declinePhone, confirmEmail, declineEmail, confirmVideo, declineVideo;
+    @Getter
     public CardView contactCoffee, contactBusinessPlan, contactPhone, contactEmail, contactVideo;
+    @Getter
     public Button coffeeButton, businessplanButton, phoneButton, emailButton, videoButton;
     private LeadsInteraction coffee, businessplan, phone, email, video;
 
@@ -47,7 +51,7 @@ public class LeadsContactFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (getArguments() != null) {
-            long id = getArguments().getLong("id");
+            id = getArguments().getLong("id");
 
             //TODO: store contact of id in following object:
             contact = new Lead();
