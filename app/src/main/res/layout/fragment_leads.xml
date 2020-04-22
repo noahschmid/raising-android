@@ -72,91 +72,94 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/leads_today"
-            app:layout_constraintTop_toBottomOf="@+id/leads_open_requests" >
-
-            <TextView
-                android:id="@+id/leads_tab_today"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:hint="@string/leads_tab_today"
-                android:textColorHint="@color/raisingPrimary"
-                android:textSize="@dimen/raisingSubtitleFontSize"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/leads_tab_recycler_today"
-                app:layout_constraintStart_toStartOf="parent"
-                />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/leads_tab_recycler_today"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/leads_today"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/leads_tab_today"
-                tools:layout_editor_absoluteX="0dp" />
+                android:layout_marginTop="@dimen/standardVerticalMarginSmall"
+                app:layout_constraintTop_toBottomOf="@+id/leads_open_requests">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/leads_tab_today"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                    android:layout_marginTop="@dimen/standardVerticalMargin"
+                    android:layout_marginBottom="@dimen/standardVerticalMargin"
+                    android:hint="@string/leads_tab_today"
+                    android:textColorHint="@color/raisingPrimary"
+                    android:textSize="@dimen/raisingSubtitleFontSize"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/leads_tab_recycler_today"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/leads_this_week"
-            app:layout_constraintTop_toBottomOf="@+id/leads_today" >
-            <TextView
-                android:id="@+id/leads_tab_this_week"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:hint="@string/leads_tab_this_week"
-                android:textColorHint="@color/raisingPrimary"
-                android:textSize="@dimen/raisingSubtitleFontSize"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/leads_tab_recycler_this_week"
-                app:layout_constraintStart_toStartOf="parent"
-                />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/leads_tab_recycler_today"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/leads_tab_today"
+                    tools:layout_editor_absoluteX="0dp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/leads_tab_recycler_this_week"
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/leads_this_week"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/leads_tab_this_week" />
+                android:layout_marginTop="@dimen/standardVerticalMarginSmall"
+                app:layout_constraintTop_toBottomOf="@+id/leads_today">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/leads_tab_this_week"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                    android:layout_marginTop="@dimen/standardVerticalMargin"
+                    android:layout_marginBottom="@dimen/standardVerticalMargin"
+                    android:hint="@string/leads_tab_this_week"
+                    android:textColorHint="@color/raisingPrimary"
+                    android:textSize="@dimen/raisingSubtitleFontSize"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/leads_tab_recycler_this_week"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/leads_earlier"
-            app:layout_constraintTop_toBottomOf="@+id/leads_this_week">
-            <TextView
-                android:id="@+id/leads_tab_earlier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:hint="@string/leads_tab_earlier"
-                android:textColorHint="@color/raisingPrimary"
-                android:textSize="@dimen/raisingSubtitleFontSize"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/leads_tab_recycler_earlier"
-                app:layout_constraintStart_toStartOf="parent" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/leads_tab_recycler_this_week"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/leads_tab_this_week" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/leads_tab_recycler_earlier"
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/leads_earlier"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/leads_tab_earlier"
-                app:layout_constraintStart_toStartOf="parent"/>
+                android:layout_marginTop="@dimen/standardVerticalMarginSmall"
+                app:layout_constraintTop_toBottomOf="@+id/leads_this_week">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/leads_tab_earlier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                    android:layout_marginTop="@dimen/standardVerticalMargin"
+                    android:layout_marginBottom="@dimen/standardVerticalMargin"
+                    android:hint="@string/leads_tab_earlier"
+                    android:textColorHint="@color/raisingPrimary"
+                    android:textSize="@dimen/raisingSubtitleFontSize"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/leads_tab_recycler_earlier"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/leads_tab_recycler_earlier"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/leads_tab_earlier" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </FrameLayout>
