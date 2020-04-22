@@ -6,13 +6,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +23,7 @@ import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.leads.LeadState;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
-import com.raising.app.util.recyclerViewAdapter.HandshakeAdapter;
+import com.raising.app.util.recyclerViewAdapter.LeadsAdapter;
 import com.raising.app.util.recyclerViewAdapter.RecyclerViewMargin;
 import com.raising.app.viewModels.LeadsViewModel;
 
@@ -41,7 +39,7 @@ public class LeadsFragment extends RaisingFragment {
 
     private LeadState leadState;
     private LeadsViewModel leadsViewModel;
-    private HandshakeAdapter todayAdapter, thisWeekAdapter, earlierAdapter;
+    private LeadsAdapter todayAdapter, thisWeekAdapter, earlierAdapter;
     private ArrayList<Lead> today, thisWeek, earlier;
     private RecyclerView todayRecycler, thisWeekRecycler, earlierRecycler;
     private ConstraintLayout todayLayout, thisWeekLayout, earlierLayout;
@@ -74,9 +72,9 @@ public class LeadsFragment extends RaisingFragment {
 
             leadsViewModel.loadLeads();
 
-            todayAdapter = new HandshakeAdapter(today, leadState);
-            thisWeekAdapter = new HandshakeAdapter(thisWeek, leadState);
-            earlierAdapter = new HandshakeAdapter(earlier, leadState);
+            todayAdapter = new LeadsAdapter(today, leadState);
+            thisWeekAdapter = new LeadsAdapter(thisWeek, leadState);
+            earlierAdapter = new LeadsAdapter(earlier, leadState);
 
             setupRecyclerView(R.id.leads_tab_recycler_today, todayAdapter, today);
             setupRecyclerView(R.id.leads_tab_recycler_this_week, thisWeekAdapter, thisWeek);
@@ -108,8 +106,8 @@ public class LeadsFragment extends RaisingFragment {
      * @param adapter adapter of recycler view
      * @param leads list of leads for recycler view
      */
-    private void setupRecyclerView(int id, HandshakeAdapter adapter, List<Lead> leads) {
-        RecyclerView recyclerToday = getView().findViewById(R.id.leads_tab_recycler_today);
+    private void setupRecyclerView(int id, LeadsAdapter adapter, List<Lead> leads) {
+        RecyclerView recyclerToday = getView().findViewById(id);
         recyclerToday.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerToday.setAdapter(adapter);
         recyclerToday.addItemDecoration(new RecyclerViewMargin(15));

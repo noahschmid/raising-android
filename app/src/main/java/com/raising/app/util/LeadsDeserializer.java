@@ -74,7 +74,8 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
                         break;
                 }
 
-                if(state == InteractionState.HANDSHAKE) {
+                if(state == InteractionState.HANDSHAKE || state == InteractionState.INVESTOR_DECLINED ||
+                        state == InteractionState.STARTUP_DECLINED) {
                     leadState = LeadState.CLOSED;
                 }
 
@@ -100,7 +101,7 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
 
             if(lead.getHandshakeState() == InteractionState.INVESTOR_DECLINED ||
             lead.getHandshakeState() == InteractionState.STARTUP_DECLINED) {
-                lead.setState(LeadState.CLOSED);
+                leadState = LeadState.CLOSED;
             }
 
             lead.setState(leadState);

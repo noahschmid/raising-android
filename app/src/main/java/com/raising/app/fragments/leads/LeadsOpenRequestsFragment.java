@@ -21,7 +21,7 @@ import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
-import com.raising.app.util.recyclerViewAdapter.HandshakeOpenRequestAdapter;
+import com.raising.app.util.recyclerViewAdapter.LeadsOpenRequestAdapter;
 import com.raising.app.viewModels.LeadsViewModel;
 
 import java.util.ArrayList;
@@ -92,10 +92,10 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.leads_open_requests_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        HandshakeOpenRequestAdapter adapter = new HandshakeOpenRequestAdapter(openRequestItems);
+        LeadsOpenRequestAdapter adapter = new LeadsOpenRequestAdapter(openRequestItems);
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnClickListener(new HandshakeOpenRequestAdapter.OnClickListener() {
+        adapter.setOnClickListener(new LeadsOpenRequestAdapter.OnClickListener() {
             @Override
             public void onClickAccept(int position) {
                 //TODO: accept open request

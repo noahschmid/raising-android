@@ -1,5 +1,6 @@
 package com.raising.app.util.recyclerViewAdapter;
 
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,68 +9,70 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.raising.app.R;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.leads.LeadState;
+import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.InternalStorageHandler;
 
 import java.util.ArrayList;
 
-public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.ViewHolder> {
+public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> {
     private ArrayList<Lead> recyclerItems;
     private OnItemClickListener itemClickListener;
     private LeadState stateEnum;
 
-    public HandshakeAdapter(ArrayList<Lead> recyclerItems, LeadState stateEnum) {
+    public LeadsAdapter(ArrayList<Lead> recyclerItems, LeadState stateEnum) {
         this.recyclerItems = recyclerItems;
         this.stateEnum = stateEnum;
     }
 
     @NonNull
     @Override
-    public HandshakeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public LeadsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_lead,
                 parent, false);
         return new ViewHolder(view, itemClickListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HandshakeAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull LeadsAdapter.ViewHolder holder, int position) {
         Lead recyclerItem = recyclerItems.get(position);
+
+        int drawableId = R.drawable.ic_handshake_24dp, tintColor = R.color.raisingSecondaryDark;
 
         switch (recyclerItem.getHandshakeState()) {
             case STARTUP_ACCEPTED:
             case INVESTOR_ACCEPTED:
                 //TODO: insert one hand
+                tintColor = R.color.raisingSecondaryDark;
+                drawableId = R.drawable.ic_request_24dp;
                 break;
             case HANDSHAKE:
                 if(stateEnum == LeadState.YOUR_TURN || stateEnum == LeadState.PENDING) {
-                    holder.statusIcon.setImageDrawable(
-                            ContextCompat.getDrawable(holder.statusIcon.getContext(),
-                                    R.drawable.ic_handshake_24dp));
-                    holder.statusIcon.setBackgroundColor(
-                            ContextCompat.getColor(holder.statusIcon.getContext(),
-                                    R.color.raisingSecondaryDark));
+                    tintColor = R.color.raisingSecondaryDark;
+                    drawableId = R.drawable.ic_handshake_24dp;
                 } else if(stateEnum == LeadState.CLOSED) {
-                    holder.statusIcon.setImageDrawable(
-                            ContextCompat.getDrawable(holder.statusIcon.getContext(),
-                                    R.drawable.ic_check_circle_24dp));
-                    holder.statusIcon.setBackgroundColor(
-                            ContextCompat.getColor(holder.statusIcon.getContext(),
-                                    R.color.raisingPositive));
+                    tintColor = R.color.raisingPositive;
+                    drawableId = R.drawable.ic_check_circle_24dp;
                 }
                 break;
             case STARTUP_DECLINED:
             case INVESTOR_DECLINED:
-                holder.statusIcon.setImageDrawable(
-                        ContextCompat.getDrawable(holder.statusIcon.getContext(),
-                                R.drawable.ic_cancel_24dp));
-                holder.statusIcon.setBackgroundColor(
-                        ContextCompat.getColor(holder.statusIcon.getContext(),
-                                R.color.raisingNegative));
+                tintColor = R.color.raisingNegative;
+                drawableId = R.drawable.ic_cancel_24dp;
                 break;
         }
+
+        Drawable drawable = ContextCompat.getDrawable(holder.statusIcon.getContext(), drawableId);
+        drawable = DrawableCompat.wrap(drawable);
+        drawable.setTint(ContextCompat.getColor(holder.statusIcon.getContext(), tintColor));
+        holder.statusIcon.setImageDrawable(drawable);
 
         // Default: set visibility of warning to gone
         holder.warning.setVisibility(View.GONE);
@@ -78,7 +81,17 @@ public class HandshakeAdapter extends RecyclerView.Adapter<HandshakeAdapter.View
         holder.attribute.setText(recyclerItem.getAttribute());
         holder.matchingPercent.setText(recyclerItem.getHandshakePercentString());
 
-        // holder.profilePicture.setImageBitmap(recyclerItem.getBitmap());
+
+        Glide
+                .with(InternalStorageHandler.getContext())
+                .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                        recyclerItem.getProfilePictureId())
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .placeholder(R.drawable.ic_person_24dp)
+                .into(holder.profilePicture);
+
 
         switch (stateEnum) {
             case YOUR_TURN:

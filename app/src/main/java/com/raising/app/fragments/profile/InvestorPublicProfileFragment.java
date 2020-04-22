@@ -115,7 +115,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         matchesViewModel = ViewModelProviders.of(getActivity())
                 .get(MatchesViewModel.class);
 
-
         profileLayout = view.findViewById(R.id.profile_layout);
         profileLayout.setVisibility(View.INVISIBLE);
         pictures = new ArrayList<Bitmap>();
