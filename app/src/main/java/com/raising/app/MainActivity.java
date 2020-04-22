@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.bluetooth.BluetoothClass;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -15,12 +16,15 @@ import android.view.View;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.raising.app.fragments.leads.LeadsContainerFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.settings.SettingsFragment;
 import com.raising.app.fragments.profile.ContactDetailsInput;
 import com.raising.app.fragments.profile.MyProfileFragment;
+import com.raising.app.models.NotificationSettings;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
@@ -29,6 +33,8 @@ import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.LeadsViewModel;
 import com.raising.app.viewModels.MatchesViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     AccountViewModel accountViewModel;
@@ -68,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
             hideBottomNavigation(true);
             fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
         } else {
-
             if (!AccountService.loadContactDetails()) {
                 hideBottomNavigation(true);
                 Bundle bundle = new Bundle();
@@ -92,9 +97,15 @@ public class MainActivity extends AppCompatActivity {
                     fragment.setArguments(bundle);
                     fragmentTransaction.replace(R.id.fragment_container, fragment);
                 } else {
+                    Log.d(TAG, "onCreate: User logged in");
                     accountViewModel.loadAccount();
                     hideBottomNavigation(false);
-                    fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
+
+                    Bundle args = new Bundle();
+                    args.putBoolean("openingApp", true);
+                    Fragment fragment = new MatchesFragment();
+                    fragment.setArguments(args);
+                    fragmentTransaction.add(R.id.fragment_container, fragment);
                 }
             }
         }

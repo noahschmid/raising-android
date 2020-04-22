@@ -57,6 +57,12 @@ public class MatchesFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // check if this is the initial opening of the app, if true send device token to backend
+        if(this.getArguments() != null && getArguments().getBoolean("openingApp")) {
+            Log.d(TAG, "onViewCreated: Opening App");
+            // prepareDeviceForNotifications();
+        }
+
         emptyMatchListLayout = view.findViewById(R.id.empty_matchList_layout);
         emptyMatchListLayout.setVisibility(View.GONE);
 

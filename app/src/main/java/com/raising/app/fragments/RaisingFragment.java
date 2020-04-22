@@ -22,15 +22,20 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.raising.app.MainActivity;
 import com.raising.app.R;
 import com.raising.app.models.Account;
 import com.raising.app.models.Model;
+import com.raising.app.models.NotificationSettings;
 import com.raising.app.models.ViewState;
+import com.raising.app.models.leads.Lead;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.Resources;
 import com.raising.app.util.SimpleMessageDialog;
@@ -39,11 +44,17 @@ import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class RaisingFragment extends Fragment {
     final private String TAG = "RaisingFragment";
+
+    final private String deviceEndpoint = ApiRequestHandler.getDomain() + "device";
 
     protected View loadingPanel;
     protected FrameLayout overlayLayout;
@@ -129,7 +140,8 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Load profile image into image view
-     * @param id id of the profile image
+     *
+     * @param id        id of the profile image
      * @param imageView where to load the image into
      */
     protected void loadProfileImage(long id, ImageView imageView) {
@@ -240,7 +252,8 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Call {@link com.raising.app.MainActivity#customizeActionBar(String, boolean)}
-     * @param title The title of the action bar
+     *
+     * @param title          The title of the action bar
      * @param showBackButton true, if back button should be active
      *                       false, if there is no back button
      */
@@ -252,12 +265,13 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Call {@link com.raising.app.MainActivity#setActionBarMenu(boolean)}
+     *
      * @param setMenu true, if menu should be visible
      *                false, to dismiss menu
      */
     protected void setActionBarMenu(boolean setMenu) {
         MainActivity activity = (MainActivity) getActivity();
-        if(activity != null) {
+        if (activity != null) {
             activity.setActionBarMenu(setMenu);
         }
     }
@@ -520,5 +534,55 @@ public class RaisingFragment extends Fragment {
 
         loadingPanel.setVisibility(View.GONE);
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    protected void cacheNotificationSettings(ArrayList<NotificationSettings> settings) {
+        try {
+            InternalStorageHandler.saveObject(settings,
+                    "notificationSettings_" + AuthenticationHandler.getId());
+        } catch (Exception e) {
+            Log.e(TAG, "Error caching settings: " + e.getMessage());
+        }
+    }
+
+    protected ArrayList<NotificationSettings> getCachedNotificationSettings() {
+        try {
+            if (InternalStorageHandler.exists("notificationSettings_" + AuthenticationHandler.getId())) {
+                Log.d(TAG, "getCachedNotificationSettings: loaded cached settings");
+                return (ArrayList<NotificationSettings>) InternalStorageHandler.loadObject(
+                        "notificationSettings_" + AuthenticationHandler.getId());
+            } else {
+                Log.d(TAG, "getCachedNotificationSettings: No cached settings available");
+            }
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
+    void prepareDeviceForNotifications() {
+        String deviceToken = FirebaseInstanceId.getInstance().getToken();
+        String device = "ANDROID";
+        Log.d(TAG, "prepareDeviceForNotifications: DeviceToken: " + deviceToken);
+        ArrayList<String> notificationStrings = new ArrayList<>();
+        if (getCachedNotificationSettings() != null) {
+            getCachedNotificationSettings().forEach(notificationSettings -> {
+                Log.d(TAG, "prepareDeviceForNotifications: Notification Setting: " + notificationSettings.name());
+                notificationStrings.add(notificationSettings.name());
+            });
+        } else {
+            notificationStrings.add(NotificationSettings.NEVER.name());
+        }
+
+        Log.d(TAG, "prepareDeviceForNotifications: Endpoint" + deviceEndpoint);
+
+        //TODO: perform backend request
+        /* Example request
+        {
+            "token": "asdf",
+            "device": "ANDROID",
+            "notificationTypes":["MATCHLIST", "REQUEST"]
+}
+         */
     }
 }

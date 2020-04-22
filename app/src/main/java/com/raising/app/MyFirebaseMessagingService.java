@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.raising.app.util.AuthenticationHandler;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private final String TAG = "MyFirebaseMessagingService";
@@ -29,7 +30,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
-
         Log.d(TAG, "onNewToken: Refreshed Token: " + s);
     }
 }
