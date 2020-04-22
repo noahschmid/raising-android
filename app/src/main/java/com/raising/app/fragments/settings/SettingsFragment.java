@@ -32,6 +32,7 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
                              @Nullable Bundle savedInstanceState) {
 
         customizeAppBar(getString(R.string.toolbar_title_settings), false);
+        setActionBarLogout(true);
 
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
@@ -107,6 +108,8 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        setActionBarLogout(false);
 
         String language = languageInput.getText().toString();
         String numberOfMatches = matchNumberInput.getText().toString();

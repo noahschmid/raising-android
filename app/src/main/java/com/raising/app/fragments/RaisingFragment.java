@@ -245,6 +245,18 @@ public class RaisingFragment extends Fragment {
     }
 
     /**
+     * Call {@link com.raising.app.MainActivity#setActionBarLogout(boolean)}
+     * @param setMenu true, if menu should be visible
+     *                false, to dismiss menu
+     */
+    protected void setActionBarLogout(boolean setMenu) {
+        MainActivity activity = (MainActivity) getActivity();
+        if(activity != null) {
+            activity.setActionBarLogout(setMenu);
+        }
+    }
+
+    /**
      * This methods retrieves an instance the SupportFragmentManager of the underlying activity
      *
      * @return Instance of SupportFragmentManager of used Activity

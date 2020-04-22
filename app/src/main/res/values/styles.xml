@@ -20,6 +20,7 @@
 
     <style name="AppBarTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
         <item name="titleTextColor"> @color/raisingWhite</item>
+        <item name="iconTint"> @color/raisingWhite</item>
     </style>
 
     <style name="snackbar_style" parent="Widget.MaterialComponents.Snackbar">
