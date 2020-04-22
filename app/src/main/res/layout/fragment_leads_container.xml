@@ -13,31 +13,31 @@
 
         <com.google.android.material.tabs.TabLayout
             style="@style/HandshakeTabLayoutStyle"
-            android:id="@+id/handshake_tab_layout"
+            android:id="@+id/leads_tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/handshakeTabHeight">
+            android:layout_height="@dimen/leadsTabHeight">
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_your_turn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/handshake_your_turn" />
+                android:text="@string/leads_your_turn" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_pending"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/handshake_pending" />
+                android:text="@string/leads_pending" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_closed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/handshake_closed" />
+                android:text="@string/leads_closed" />
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.viewpager.widget.ViewPager
-            android:id="@+id/handshake_view_pager"
+            android:id="@+id/leads_view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

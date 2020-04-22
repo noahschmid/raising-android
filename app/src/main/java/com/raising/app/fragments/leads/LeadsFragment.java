@@ -6,17 +6,16 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
@@ -31,7 +30,9 @@ import com.raising.app.viewModels.LeadsViewModel;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class LeadsFragment extends RaisingFragment {
 
@@ -39,14 +40,15 @@ public class LeadsFragment extends RaisingFragment {
 
     private LeadState leadState;
     private LeadsViewModel leadsViewModel;
-
-    private ArrayList<Lead> handshakeItemsToday;
-    private ArrayList<Lead> handshakeItemsWeek;
+    private HandshakeAdapter todayAdapter, thisWeekAdapter, earlierAdapter;
+    private ArrayList<Lead> today, thisWeek, earlier;
+    private RecyclerView todayRecycler, thisWeekRecycler, earlierRecycler;
+    private ConstraintLayout todayLayout, thisWeekLayout, earlierLayout;
+    private TextView todayLayoutTitle, thisWeekLayoutTitle, earlierLayoutTitle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_leads, container, false);
     }
 
@@ -55,133 +57,169 @@ public class LeadsFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // check for handshake state
+        today = new ArrayList<>();
+        thisWeek = new ArrayList<>();
+        earlier = new ArrayList<>();
+
+        todayLayoutTitle = view.findViewById(R.id.leads_tab_today);
+        todayLayout = view.findViewById(R.id.leads_today);
+        thisWeekLayoutTitle = view.findViewById(R.id.leads_tab_this_week);
+        thisWeekLayout = view.findViewById(R.id.leads_this_week);
+        earlierLayoutTitle = view.findViewById(R.id.leads_tab_earlier);
+        earlierLayout = view.findViewById(R.id.leads_earlier);
+
+        // check for leads state
         if (getArguments() != null) {
-            leadState = (LeadState) getArguments().getSerializable("handshakeState");
-        }
+            leadState = (LeadState) getArguments().getSerializable("leadsState");
+            // prepare leadsViewModel for usage
+            leadsViewModel = ViewModelProviders.of(getActivity())
+                    .get(LeadsViewModel.class);
 
-        // prepare handshakeViewModel for usage
-        leadsViewModel = ViewModelProviders.of(getActivity())
-                .get(LeadsViewModel.class);
+            leadsViewModel.loadLeads();
 
-        leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> processViewState(state));
-        processViewState(leadsViewModel.getViewState().getValue());
-        handshakeItemsToday = new ArrayList<>();
-        handshakeItemsWeek = new ArrayList<>();
+            todayAdapter = new HandshakeAdapter(today, leadState);
+            thisWeekAdapter = new HandshakeAdapter(thisWeek, leadState);
+            earlierAdapter = new HandshakeAdapter(earlier, leadState);
 
-        resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
-            Log.d(TAG, "onViewCreated: ResourceViewModel ViewState: " + state.toString());
-        });
+            setupRecyclerView(R.id.leads_tab_recycler_today, todayAdapter, today);
+            setupRecyclerView(R.id.leads_tab_recycler_this_week, thisWeekAdapter, thisWeek);
+            setupRecyclerView(R.id.leads_tab_recycler_earlier, earlierAdapter, earlier);
 
-        ArrayList<Lead> leads = leadsViewModel.getLeads().getValue();
-        ArrayList<Lead> handshakeStateLeads = new ArrayList<>();
-
-        switch (leadState) {
-            case YOUR_TURN:
-                leads.forEach(lead -> {
-                    if(lead.getState() == LeadState.YOUR_TURN) {
-                        handshakeStateLeads.add(lead);
-                    }
-                });
-                break;
-            case PENDING:
-                leads.forEach(lead -> {
-                    if(lead.getState() == LeadState.PENDING) {
-                        handshakeStateLeads.add(lead);
-                    }
-                });
-                break;
-            case CLOSED:
-                leads.forEach(lead -> {
-                    if(lead.getState() == LeadState.CLOSED) {
-                        handshakeStateLeads.add(lead);
-                    }
-                });
-                break;
-        }
-
-        // populate recycler view lists
-        if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
-                resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
-            handshakeItemsToday.clear();
-            handshakeItemsWeek.clear();
-            handshakeStateLeads.forEach(lead -> {
-                Lead handshakeItem = new Lead();
-                handshakeItem.setId(lead.getId());
-                handshakeItem.setMatchingPercent(lead.getMatchingPercent());
-                handshakeItem.setStartup(lead.isStartup());
-                handshakeItem.setProfilePictureId(lead.getProfilePictureId());
-                handshakeItem.setHandshakeState(lead.getHandshakeState());
-
-                if (handshakeItem.isStartup()) {
-                    handshakeItem.setTitle(lead.getCompanyName());
-                    handshakeItem.setAttribute(resources.getInvestmentPhase(
-                            lead.getInvestmentPhaseId()).getName());
-                } else {
-                    handshakeItem.setTitle(lead.getFirstName() + " " + lead.getLastName());
-                    handshakeItem.setAttribute(resources.getInvestorType(
-                            lead.getInvestorTypeId()).getName());
-                }
-
-                if (lead.getTimestamp().equals(new Date())) {
-                    handshakeItemsToday.add(handshakeItem);
-                } else {
-                    handshakeItemsWeek.add(handshakeItem);
-                }
-                Log.d(TAG, "onViewCreated: Add HandshakeItem: " + handshakeItem.getTitle());
+            leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+                processLeadsViewState(state);
             });
-            Log.d(TAG, "onViewCreated: HandshakeLists filled");
+            processLeadsViewState(leadsViewModel.getViewState().getValue());
         }
+    }
 
-        HandshakeAdapter adapterToday = new HandshakeAdapter(handshakeItemsToday, leadState);
-        HandshakeAdapter adapterWeek = new HandshakeAdapter(handshakeItemsWeek, leadState);
-        RecyclerViewMargin decoration = new RecyclerViewMargin(15);
+    private void processLeadsViewState(ViewState state) {
+        switch (state) {
+            case CACHED:
+            case RESULT:
+                dismissLoadingPanel();
+                loadData();
+                break;
+            case LOADING:
+                showLoadingPanel();
+                break;
+        }
+    }
 
-        // initialize the recycler view for all 'today'-handshakes
-        RecyclerView recyclerToday = view.findViewById(R.id.handshake_tab_recycler_today);
-        recyclerToday.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerToday.setAdapter(adapterToday);
-        recyclerToday.addItemDecoration(decoration);
-        adapterToday.setOnItemClickListener(position -> {
+    /**
+     * Initialize recyclerview for leads
+     *
+     * @param id      id of recycler view
+     * @param adapter adapter of recycler view
+     * @param leads   list of leads for recycler view
+     */
+    private void setupRecyclerView(int id, HandshakeAdapter adapter, List<Lead> leads) {
+        RecyclerView recyclerView = Objects.requireNonNull(getView()).findViewById(id);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new RecyclerViewMargin(15));
+        adapter.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
-            args.putLong("id", handshakeItemsToday.get(position).getId());
+            args.putLong("id", leads.get(position).getId());
             Fragment contactFragment = new LeadsContactFragment();
             contactFragment.setArguments(args);
-            changeFragment(contactFragment, "HandshakeContactFragment");
+            changeFragment(contactFragment);
         });
+    }
 
-        // initialize the recycler view for all 'this week'-handshakes
-        RecyclerView recyclerWeek = view.findViewById(R.id.handshake_tab_recycler_week);
-        recyclerWeek.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerWeek.setAdapter(adapterWeek);
-        recyclerWeek.addItemDecoration(decoration);
-        adapterWeek.setOnItemClickListener(position -> {
-            Bundle args = new Bundle();
-            args.putLong("id", handshakeItemsToday.get(position).getId());
-            Fragment contactFragment = new LeadsContactFragment();
-            contactFragment.setArguments(args);
-            changeFragment(contactFragment, "HandshakeContactFragment");
-        });
-
-        // prepare open requests layout
-        ConstraintLayout openRequests = view.findViewById(R.id.handshake_open_requests);
-        ImageView openRequestsArrow = view.findViewById(R.id.handshake_open_requests_arrow);
+    /**
+     * Populate recycler views
+     */
+    private void loadData() {
+        ConstraintLayout openRequests = getView().findViewById(R.id.leads_open_requests);
+        ImageView openRequestsArrow = getView().findViewById(R.id.leads_open_requests_arrow);
         if (!(leadState.equals(LeadState.YOUR_TURN))) {
             openRequests.setVisibility(View.GONE);
         } else {
-            ImageView image = view.findViewById(R.id.handshake_open_requests_image);
-            if(leadsViewModel.getOpenRequests() != null) {
+            if (leadsViewModel.getOpenRequests().size() == 0) {
+                openRequests.setVisibility(View.GONE);
+            } else {
+                ImageView image = getView().findViewById(R.id.leads_open_requests_image);
                 // set image of uppermost index in openRequests
-                // image.setImageBitmap(handshakesViewModel.getOpenRequests().getValue().get(0).getProfileImage());
+                loadProfileImage(leadsViewModel.getOpenRequests().get(0).getProfilePictureId(), image);
                 BadgeDrawable badge = BadgeDrawable.create(Objects.requireNonNull(this.getContext()));
                 badge.setNumber(leadsViewModel.getOpenRequests().size());
                 BadgeUtils.attachBadgeDrawable(badge, openRequestsArrow, null);
-            } else {
-                image.setImageDrawable(ContextCompat.getDrawable(this.getContext(), R.drawable.ic_person_24dp));
+                openRequests.setOnClickListener(v ->
+                        changeFragment(new LeadsOpenRequestsFragment()));
             }
-            openRequests.setOnClickListener(v ->
-                    changeFragment(new LeadsOpenRequestsFragment(),
-                            "HandshakeOpenRequestFragment"));
         }
+        filterLeads();
+    }
+
+
+    /**
+     * Filter leads by state and timestamp
+     */
+    private void filterLeads() {
+        today.clear();
+        thisWeek.clear();
+        earlier.clear();
+        todayLayout.setVisibility(View.GONE);
+        todayLayoutTitle.setVisibility(View.GONE);
+        thisWeekLayout.setVisibility(View.GONE);
+        thisWeekLayoutTitle.setVisibility(View.GONE);
+        earlierLayout.setVisibility(View.GONE);
+        earlierLayoutTitle.setVisibility(View.GONE);
+
+        leadsViewModel.getLeads().getValue().forEach(lead -> {
+            if (lead.getState() == leadState) {
+                if (lead.isStartup()) {
+                    lead.setTitle(lead.getCompanyName());
+                    lead.setAttribute(resources.getInvestmentPhase(
+                            lead.getInvestmentPhaseId()).getName());
+                } else {
+                    lead.setTitle(lead.getFirstName() + " " + lead.getLastName());
+                    lead.setAttribute(resources.getInvestorType(
+                            lead.getInvestorTypeId()).getName());
+                }
+
+                if (daysSince(lead.getTimestamp()) < 1) {
+                    today.add(lead);
+                    todayLayout.setVisibility(View.VISIBLE);
+                } else if (daysSince(lead.getTimestamp()) < 7) {
+                    thisWeek.add(lead);
+                    thisWeekLayout.setVisibility(View.VISIBLE);
+                } else {
+                    earlier.add(lead);
+                    earlierLayout.setVisibility(View.VISIBLE);
+                }
+                manageListTitlesVisibility();
+            }
+        });
+
+        todayAdapter.notifyDataSetChanged();
+        thisWeekAdapter.notifyDataSetChanged();
+        earlierAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Manage the visibility of the recycler view titles
+     */
+    private void manageListTitlesVisibility() {
+        if (today.size() != 0 && (thisWeek.size() != 0 || earlier.size() != 0)) {
+            todayLayoutTitle.setVisibility(View.VISIBLE);
+        }
+        if (thisWeek.size() != 0 && (today.size() != 0 || earlier.size() != 0)) {
+            thisWeekLayoutTitle.setVisibility(View.VISIBLE);
+        }
+        if(earlier.size() != 0 && (today.size() != 0 || thisWeek.size() != 0)) {
+            earlierLayoutTitle.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * Calculate difference from given date to today in days
+     *
+     * @param date date in the past
+     * @return difference in days
+     */
+    private int daysSince(Date date) {
+        long diffMillis = Math.abs(new Date().getTime() - date.getTime());
+        return (int) TimeUnit.DAYS.convert(diffMillis, TimeUnit.MILLISECONDS);
     }
 }

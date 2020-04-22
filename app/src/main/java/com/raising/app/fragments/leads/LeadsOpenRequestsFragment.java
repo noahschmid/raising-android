@@ -51,7 +51,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         emptyListLayout = view.findViewById(R.id.empty_requests_layout);
         emptyListLayout.setVisibility(View.GONE);
 
-        // prepare handshakeViewModel for usage
+        // prepare leadsViewModel for usage
         leadsViewModel = ViewModelProviders.of(getActivity())
                 .get(LeadsViewModel.class);
 
@@ -90,7 +90,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
             Log.d(TAG, "onViewCreated: OpenRequests filled");
         }
 
-        RecyclerView recyclerView = view.findViewById(R.id.handshake_open_requests_recycler_view);
+        RecyclerView recyclerView = view.findViewById(R.id.leads_open_requests_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         HandshakeOpenRequestAdapter adapter = new HandshakeOpenRequestAdapter(openRequestItems);
         recyclerView.setAdapter(adapter);

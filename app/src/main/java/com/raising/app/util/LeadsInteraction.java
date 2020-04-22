@@ -109,14 +109,14 @@ public class LeadsInteraction {
                 if (!(AuthenticationHandler.isStartup()) && !decline) {
                     interaction.setInteractionState(InteractionState.HANDSHAKE);
                 } else if(!AuthenticationHandler.isStartup()) {
-                    interaction.setInteractionState(InteractionState.DECLINED);
+                    interaction.setInteractionState(InteractionState.INVESTOR_DECLINED);
                 }
                 break;
             case INVESTOR_ACCEPTED:
                 if (AuthenticationHandler.isStartup() && !decline) {
                     interaction.setInteractionState(InteractionState.HANDSHAKE);
                 } else if(AuthenticationHandler.isStartup()) {
-                    interaction.setInteractionState(InteractionState.DECLINED);
+                    interaction.setInteractionState(InteractionState.STARTUP_DECLINED);
                 }
                 break;
         }
@@ -129,7 +129,8 @@ public class LeadsInteraction {
         Drawable drawable = interactionButton.getBackground();
         drawable = DrawableCompat.wrap(drawable);
         switch (interaction.getInteractionState()) {
-            case DECLINED:
+            case INVESTOR_DECLINED:
+            case STARTUP_DECLINED:
                 interactionButton.setEnabled(false);
                 drawable.setTint(ContextCompat.getColor(
                         Objects.requireNonNull(interactionButton.getContext()), R.color.raisingNegativeAccent));

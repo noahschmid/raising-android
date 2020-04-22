@@ -149,6 +149,10 @@ public class MatchesFragment extends RaisingFragment {
         });
     }
 
+    /**
+     * Create MatchListItems for recyclerview out of list of matches
+     * @param matches
+     */
     private void processItems(List<Match> matches) {
         if (resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
                 resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
@@ -156,6 +160,7 @@ public class MatchesFragment extends RaisingFragment {
             matches.forEach(match -> {
                 MatchListItem matchItem = new MatchListItem();
                 matchItem.setDescription(match.getDescription());
+                matchItem.setRelationshipId(match.getId());
                 matchItem.setAccountId(match.getAccountId());
                 matchItem.setScore(match.getMatchingPercent());
                 matchItem.setStartup(match.isStartup());

@@ -17,6 +17,7 @@ import com.google.gson.JsonElement;
 import com.raising.app.models.Account;
 import com.raising.app.models.Image;
 import com.raising.app.models.Investor;
+import com.raising.app.models.Match;
 import com.raising.app.models.Startup;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.AccountService;

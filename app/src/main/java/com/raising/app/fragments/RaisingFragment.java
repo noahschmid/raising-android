@@ -26,17 +26,22 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.MainActivity;
 import com.raising.app.R;
 import com.raising.app.models.Account;
 import com.raising.app.models.Model;
 import com.raising.app.models.ViewState;
+import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.Resources;
 import com.raising.app.util.SimpleMessageDialog;
 import com.raising.app.util.ToastHandler;
@@ -135,6 +140,22 @@ public class RaisingFragment extends Fragment {
                 onResourcesLoaded();
                 break;
         }
+    }
+
+    /**
+     * Load profile image into image view
+     * @param id id of the profile image
+     * @param imageView where to load the image into
+     */
+    protected void loadProfileImage(long id, ImageView imageView) {
+        Glide
+                .with(InternalStorageHandler.getContext())
+                .load(ApiRequestHandler.getDomain() + "media/profilepicture/" + id)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .placeholder(R.drawable.ic_person_24dp)
+                .into(imageView);
     }
 
     /**

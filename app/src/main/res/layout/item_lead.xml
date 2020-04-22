@@ -2,7 +2,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_handshake_card"
+    android:id="@+id/item_leads_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/item_handshake_profile_image"
+            android:id="@+id/item_leads_profile_image"
             android:layout_width="@dimen/matchListPictureSize"
             android:layout_height="@dimen/matchListPictureSize"
             android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
@@ -20,7 +20,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/item_handshake_name"
+            android:id="@+id/item_leads_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
@@ -29,38 +29,38 @@
             android:textColor="@color/raisingTextColor"
             android:textSize="@dimen/raisingTextFontSize"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/item_handshake_attributes"
-            app:layout_constraintEnd_toStartOf="@+id/item_handshake_status_icon"
-            app:layout_constraintStart_toEndOf="@+id/item_handshake_profile_image"
-            app:layout_constraintTop_toTopOf="@+id/item_handshake_profile_image"
+            app:layout_constraintBottom_toTopOf="@+id/item_leads_attributes"
+            app:layout_constraintEnd_toStartOf="@+id/item_leads_status_icon"
+            app:layout_constraintStart_toEndOf="@+id/item_leads_profile_image"
+            app:layout_constraintTop_toTopOf="@+id/item_leads_profile_image"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <ImageView
-            android:id="@+id/item_handshake_warning"
+            android:id="@+id/item_leads_warning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/standardVerticalMargin"
             android:src="@drawable/ic_warning_24dp"
             android:tint="@color/raisingWarning"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/item_handshake_profile_image"
+            app:layout_constraintEnd_toEndOf="@+id/item_leads_profile_image"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/item_handshake_match_percent"
-            app:layout_constraintTop_toBottomOf="@+id/item_handshake_profile_image" />
+            app:layout_constraintStart_toEndOf="@+id/item_leads_match_percent"
+            app:layout_constraintTop_toBottomOf="@+id/item_leads_profile_image" />
 
         <TextView
-            android:id="@+id/item_handshake_attributes"
+            android:id="@+id/item_leads_attributes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Attribut"
             android:textColor="@color/raisingTextColor"
             android:textSize="@dimen/raisingTextFontSize"
-            app:layout_constraintBottom_toBottomOf="@+id/item_handshake_profile_image"
-            app:layout_constraintStart_toStartOf="@+id/item_handshake_name"
-            app:layout_constraintTop_toBottomOf="@+id/item_handshake_name" />
+            app:layout_constraintBottom_toBottomOf="@+id/item_leads_profile_image"
+            app:layout_constraintStart_toStartOf="@+id/item_leads_name"
+            app:layout_constraintTop_toBottomOf="@+id/item_leads_name" />
 
         <ImageView
-            android:id="@+id/item_handshake_status_icon"
+            android:id="@+id/item_leads_status_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
@@ -70,19 +70,19 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/item_handshake_match_percent"
+            android:id="@+id/item_leads_match_percent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center|start"
             android:text="Percent"
             android:textColor="@color/raisingTextColor"
             android:textSize="@dimen/raisingTextFontSize"
-            app:layout_constraintBottom_toBottomOf="@+id/item_handshake_warning"
-            app:layout_constraintEnd_toStartOf="@+id/item_handshake_warning"
+            app:layout_constraintBottom_toBottomOf="@+id/item_leads_warning"
+            app:layout_constraintEnd_toStartOf="@+id/item_leads_warning"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="@+id/item_handshake_profile_image"
-            app:layout_constraintTop_toTopOf="@+id/item_handshake_warning" />
+            app:layout_constraintStart_toStartOf="@+id/item_leads_profile_image"
+            app:layout_constraintTop_toTopOf="@+id/item_leads_warning" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

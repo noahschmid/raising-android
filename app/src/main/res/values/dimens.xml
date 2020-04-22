@@ -7,16 +7,16 @@
     <dimen name="authenticationButtonHeight"> 60dp </dimen>
     <dimen name="myProfileButtonHeight"> 60dp </dimen>
 
-    <dimen name="handshakeContactButtonHeight"> 40dp </dimen>
+    <dimen name="leadsContactButtonHeight"> 40dp </dimen>
 
-    <dimen name="handshakeTabHeight"> 60dp </dimen>
-    <dimen name="handshakeContactCardHeight"> 55dp </dimen>
+    <dimen name="leadsTabHeight"> 60dp </dimen>
+    <dimen name="leadsContactCardHeight"> 55dp </dimen>
 
     <dimen name="matchListPictureSize"> 60dp </dimen>
     <dimen name="matchListPercentChartSize"> 70dp </dimen>
 
     <dimen name="openRequestsPictureSize"> 40dp </dimen>
-    <dimen name="handshakeContactPictureSize"> 100dp</dimen>
+    <dimen name="leadsContactPictureSize"> 100dp</dimen>
 
     <dimen name="publicProfileEquityChartSize"> 225dp </dimen>
     <dimen name="publicProfileEquityLegendColorSize"> 30dp </dimen>

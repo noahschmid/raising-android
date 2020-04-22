@@ -45,6 +45,14 @@ public class MatchesViewModel extends AndroidViewModel {
 
     public LiveData<ViewState> getViewState() { return viewState; }
 
+    public void removeMatch(Long id) {
+        for(int i = 0; i < matches.getValue().size(); ++i) {
+            if(id == matches.getValue().get(i).getId()) {
+                matches.getValue().remove(i);
+            }
+        }
+    }
+
     public void runMatching() {
         ApiRequestHandler.performPostRequest("match/run",
                 response -> {

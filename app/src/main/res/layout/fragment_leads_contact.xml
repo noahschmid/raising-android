@@ -16,14 +16,14 @@
             android:layout_height="wrap_content">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/handshake_contact_coffee"
+                android:id="@+id/leads_contact_coffee"
                 style="@style/HandshakeContactCardView"
                 android:layout_width="0dp"
                 android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                app:layout_constraintBottom_toTopOf="@+id/handshake_contact_businessplan"
+                app:layout_constraintBottom_toTopOf="@+id/leads_contact_businessplan"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -33,7 +33,7 @@
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/handshake_contact_coffee_icon"
+                        android:id="@+id/leads_contact_coffee_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
@@ -46,25 +46,25 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                        android:hint="@string/handshake_contact_coffee"
+                        android:hint="@string/leads_contact_coffee"
                         android:textColorHint="@color/raisingSecondaryDark"
                         android:textSize="@dimen/raisingTextFontSize"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/handshake_contact_coffee_icon"
+                        app:layout_constraintStart_toEndOf="@+id/leads_contact_coffee_icon"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
-                        android:id="@+id/button_handshake_contact_coffee"
+                        android:id="@+id/button_leads_contact_coffee"
                         style="@style/HandshakeContactButtonStyle"
                         android:layout_width="wrap_content"
                         android:text="@string/request_text"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/button_handshake_decline_coffee"
+                        app:layout_constraintEnd_toStartOf="@+id/button_leads_decline_coffee"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageButton
-                        android:id="@+id/button_handshake_decline_coffee"
+                        android:id="@+id/button_leads_decline_coffee"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_cancel_24dp"
@@ -74,7 +74,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:id="@+id/handshake_coffee_arrow"
+                        android:id="@+id/leads_coffee_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
@@ -87,21 +87,21 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/handshake_contact_businessplan"
+                android:id="@+id/leads_contact_businessplan"
                 style="@style/HandshakeContactCardView"
                 android:layout_width="0dp"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                app:layout_constraintBottom_toTopOf="@+id/handshake_contact_call"
-                app:layout_constraintEnd_toEndOf="@+id/handshake_contact_coffee"
-                app:layout_constraintStart_toStartOf="@+id/handshake_contact_coffee"
-                app:layout_constraintTop_toBottomOf="@+id/handshake_contact_coffee">
+                app:layout_constraintBottom_toTopOf="@+id/leads_contact_call"
+                app:layout_constraintEnd_toEndOf="@+id/leads_contact_coffee"
+                app:layout_constraintStart_toStartOf="@+id/leads_contact_coffee"
+                app:layout_constraintTop_toBottomOf="@+id/leads_contact_coffee">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/handshake_contact_businessplan_icon"
+                        android:id="@+id/leads_contact_businessplan_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
@@ -113,25 +113,25 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                        android:hint="@string/handshake_contact_businessplan"
+                        android:hint="@string/leads_contact_businessplan"
                         android:textColorHint="@color/raisingSecondaryDark"
                         android:textSize="@dimen/raisingTextFontSize"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/handshake_contact_businessplan_icon"
+                        app:layout_constraintStart_toEndOf="@+id/leads_contact_businessplan_icon"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
-                        android:id="@+id/button_handshake_contact_businessplan"
+                        android:id="@+id/button_leads_contact_businessplan"
                         style="@style/HandshakeContactButtonStyle"
                         android:layout_width="wrap_content"
                         android:text="@string/request_text"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/button_handshake_decline_businessplan"
+                        app:layout_constraintEnd_toStartOf="@+id/button_leads_decline_businessplan"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageButton
-                        android:id="@+id/button_handshake_decline_businessplan"
+                        android:id="@+id/button_leads_decline_businessplan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_cancel_24dp"
@@ -141,7 +141,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:id="@+id/handshake_businessplan_arrow"
+                        android:id="@+id/leads_businessplan_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
@@ -153,21 +153,21 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/handshake_contact_call"
+                android:id="@+id/leads_contact_call"
                 style="@style/HandshakeContactCardView"
                 android:layout_width="0dp"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                app:layout_constraintBottom_toTopOf="@+id/handshake_contact_email"
-                app:layout_constraintEnd_toEndOf="@+id/handshake_contact_businessplan"
-                app:layout_constraintStart_toStartOf="@+id/handshake_contact_businessplan"
-                app:layout_constraintTop_toBottomOf="@+id/handshake_contact_businessplan">
+                app:layout_constraintBottom_toTopOf="@+id/leads_contact_email"
+                app:layout_constraintEnd_toEndOf="@+id/leads_contact_businessplan"
+                app:layout_constraintStart_toStartOf="@+id/leads_contact_businessplan"
+                app:layout_constraintTop_toBottomOf="@+id/leads_contact_businessplan">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/handshake_contact_phone_icon"
+                        android:id="@+id/leads_contact_phone_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
@@ -181,25 +181,25 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                        android:hint="@string/handshake_contact_phone"
+                        android:hint="@string/leads_contact_phone"
                         android:textColorHint="@color/raisingSecondaryDark"
                         android:textSize="@dimen/raisingTextFontSize"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/handshake_contact_phone_icon"
+                        app:layout_constraintStart_toEndOf="@+id/leads_contact_phone_icon"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
-                        android:id="@+id/button_handshake_contact_phone"
+                        android:id="@+id/button_leads_contact_phone"
                         style="@style/HandshakeContactButtonStyle"
                         android:layout_width="wrap_content"
                         android:text="@string/request_text"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/button_handshake_decline_phone"
+                        app:layout_constraintEnd_toStartOf="@+id/button_leads_decline_phone"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageButton
-                        android:id="@+id/button_handshake_decline_phone"
+                        android:id="@+id/button_leads_decline_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_cancel_24dp"
@@ -209,7 +209,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:id="@+id/handshake_phone_arrow"
+                        android:id="@+id/leads_phone_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
@@ -221,21 +221,21 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/handshake_contact_email"
+                android:id="@+id/leads_contact_email"
                 style="@style/HandshakeContactCardView"
                 android:layout_width="0dp"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                app:layout_constraintBottom_toTopOf="@+id/handshake_contact_video"
-                app:layout_constraintEnd_toEndOf="@+id/handshake_contact_call"
-                app:layout_constraintStart_toStartOf="@+id/handshake_contact_call"
-                app:layout_constraintTop_toBottomOf="@+id/handshake_contact_call">
+                app:layout_constraintBottom_toTopOf="@+id/leads_contact_video"
+                app:layout_constraintEnd_toEndOf="@+id/leads_contact_call"
+                app:layout_constraintStart_toStartOf="@+id/leads_contact_call"
+                app:layout_constraintTop_toBottomOf="@+id/leads_contact_call">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/handshake_contact_email_icon"
+                        android:id="@+id/leads_contact_email_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
@@ -249,25 +249,25 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                        android:hint="@string/handshake_contact_email"
+                        android:hint="@string/leads_contact_email"
                         android:textColorHint="@color/raisingSecondaryDark"
                         android:textSize="@dimen/raisingTextFontSize"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/handshake_contact_email_icon"
+                        app:layout_constraintStart_toEndOf="@+id/leads_contact_email_icon"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
-                        android:id="@+id/button_handshake_contact_email"
+                        android:id="@+id/button_leads_contact_email"
                         style="@style/HandshakeContactButtonStyle"
                         android:layout_width="wrap_content"
                         android:text="@string/request_text"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/button_handshake_decline_email"
+                        app:layout_constraintEnd_toStartOf="@+id/button_leads_decline_email"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageButton
-                        android:id="@+id/button_handshake_decline_email"
+                        android:id="@+id/button_leads_decline_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_cancel_24dp"
@@ -277,7 +277,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:id="@+id/handshake_email_arrow"
+                        android:id="@+id/leads_email_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
@@ -289,21 +289,21 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/handshake_contact_video"
+                android:id="@+id/leads_contact_video"
                 style="@style/HandshakeContactCardView"
                 android:layout_width="0dp"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/handshake_contact_email"
-                app:layout_constraintStart_toStartOf="@+id/handshake_contact_email"
-                app:layout_constraintTop_toBottomOf="@+id/handshake_contact_email">
+                app:layout_constraintEnd_toEndOf="@+id/leads_contact_email"
+                app:layout_constraintStart_toStartOf="@+id/leads_contact_email"
+                app:layout_constraintTop_toBottomOf="@+id/leads_contact_email">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/handshake_contact_video_icon"
+                        android:id="@+id/leads_contact_video_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
@@ -317,25 +317,25 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                        android:hint="@string/handshake_contact_video"
+                        android:hint="@string/leads_contact_video"
                         android:textColorHint="@color/raisingSecondaryDark"
                         android:textSize="@dimen/raisingTextFontSize"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/handshake_contact_video_icon"
+                        app:layout_constraintStart_toEndOf="@+id/leads_contact_video_icon"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
-                        android:id="@+id/button_handshake_contact_video"
+                        android:id="@+id/button_leads_contact_video"
                         style="@style/HandshakeContactButtonStyle"
                         android:layout_width="wrap_content"
                         android:text="@string/request_text"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/button_handshake_decline_video"
+                        app:layout_constraintEnd_toStartOf="@+id/button_leads_decline_video"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageButton
-                        android:id="@+id/button_handshake_decline_video"
+                        android:id="@+id/button_leads_decline_video"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_cancel_24dp"
@@ -345,7 +345,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:id="@+id/handshake_video_arrow"
+                        android:id="@+id/leads_video_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"

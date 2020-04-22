@@ -74,6 +74,10 @@ public class ResourcesViewModel extends AndroidViewModel{
                 });
     }
 
+    /**
+     * Load resources from internal storage if exists
+     * @return Resources instance
+     */
     private Resources getCachedResources() {
         try {
             if(InternalStorageHandler.exists("resources")) {

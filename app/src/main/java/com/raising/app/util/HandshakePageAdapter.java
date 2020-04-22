@@ -25,15 +25,15 @@ public class HandshakePageAdapter extends FragmentPagerAdapter {
         Bundle args = new Bundle();
         switch (position) {
             case 0:
-                args.putSerializable("handshakeState", LeadState.YOUR_TURN);
+                args.putSerializable("leadsState", LeadState.YOUR_TURN);
                 fragment.setArguments(args);
                 break;
             case 1:
-                args.putSerializable("handshakeState", LeadState.PENDING);
+                args.putSerializable("leadsState", LeadState.PENDING);
                 fragment.setArguments(args);
                 break;
             case 2:
-                args.putSerializable("handshakeState", LeadState.CLOSED);
+                args.putSerializable("leadsState", LeadState.CLOSED);
                 fragment.setArguments(args);
                 break;
         }
