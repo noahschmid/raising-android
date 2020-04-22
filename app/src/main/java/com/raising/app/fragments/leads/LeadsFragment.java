@@ -6,17 +6,16 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
@@ -45,6 +44,7 @@ public class LeadsFragment extends RaisingFragment {
     private ArrayList<Lead> today, thisWeek, earlier;
     private RecyclerView todayRecycler, thisWeekRecycler, earlierRecycler;
     private ConstraintLayout todayLayout, thisWeekLayout, earlierLayout;
+    private TextView todayLayoutTitle, thisWeekLayoutTitle, earlierLayoutTitle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,8 +61,11 @@ public class LeadsFragment extends RaisingFragment {
         thisWeek = new ArrayList<>();
         earlier = new ArrayList<>();
 
+        todayLayoutTitle = view.findViewById(R.id.leads_tab_today);
         todayLayout = view.findViewById(R.id.leads_today);
+        thisWeekLayoutTitle = view.findViewById(R.id.leads_tab_this_week);
         thisWeekLayout = view.findViewById(R.id.leads_this_week);
+        earlierLayoutTitle = view.findViewById(R.id.leads_tab_earlier);
         earlierLayout = view.findViewById(R.id.leads_earlier);
 
         // check for leads state
@@ -90,7 +93,7 @@ public class LeadsFragment extends RaisingFragment {
     }
 
     private void processLeadsViewState(ViewState state) {
-        switch(state) {
+        switch (state) {
             case CACHED:
             case RESULT:
                 dismissLoadingPanel();
@@ -104,15 +107,16 @@ public class LeadsFragment extends RaisingFragment {
 
     /**
      * Initialize recyclerview for leads
-     * @param id id of recycler view
+     *
+     * @param id      id of recycler view
      * @param adapter adapter of recycler view
-     * @param leads list of leads for recycler view
+     * @param leads   list of leads for recycler view
      */
     private void setupRecyclerView(int id, HandshakeAdapter adapter, List<Lead> leads) {
-        RecyclerView recyclerToday = getView().findViewById(R.id.leads_tab_recycler_today);
-        recyclerToday.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerToday.setAdapter(adapter);
-        recyclerToday.addItemDecoration(new RecyclerViewMargin(15));
+        RecyclerView recyclerView = Objects.requireNonNull(getView()).findViewById(id);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new RecyclerViewMargin(15));
         adapter.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
             args.putLong("id", leads.get(position).getId());
@@ -123,7 +127,7 @@ public class LeadsFragment extends RaisingFragment {
     }
 
     /**
-     * Populate recyclerviews
+     * Populate recycler views
      */
     private void loadData() {
         ConstraintLayout openRequests = getView().findViewById(R.id.leads_open_requests);
@@ -131,7 +135,7 @@ public class LeadsFragment extends RaisingFragment {
         if (!(leadState.equals(LeadState.YOUR_TURN))) {
             openRequests.setVisibility(View.GONE);
         } else {
-            if(leadsViewModel.getOpenRequests().size() == 0) {
+            if (leadsViewModel.getOpenRequests().size() == 0) {
                 openRequests.setVisibility(View.GONE);
             } else {
                 ImageView image = getView().findViewById(R.id.leads_open_requests_image);
@@ -144,7 +148,6 @@ public class LeadsFragment extends RaisingFragment {
                         changeFragment(new LeadsOpenRequestsFragment()));
             }
         }
-
         filterLeads();
     }
 
@@ -157,11 +160,14 @@ public class LeadsFragment extends RaisingFragment {
         thisWeek.clear();
         earlier.clear();
         todayLayout.setVisibility(View.GONE);
+        todayLayoutTitle.setVisibility(View.GONE);
         thisWeekLayout.setVisibility(View.GONE);
+        thisWeekLayoutTitle.setVisibility(View.GONE);
         earlierLayout.setVisibility(View.GONE);
+        earlierLayoutTitle.setVisibility(View.GONE);
 
         leadsViewModel.getLeads().getValue().forEach(lead -> {
-            if(lead.getState() == leadState) {
+            if (lead.getState() == leadState) {
                 if (lead.isStartup()) {
                     lead.setTitle(lead.getCompanyName());
                     lead.setAttribute(resources.getInvestmentPhase(
@@ -172,16 +178,17 @@ public class LeadsFragment extends RaisingFragment {
                             lead.getInvestorTypeId()).getName());
                 }
 
-                if(daysSince(lead.getTimestamp()) < 1) {
+                if (daysSince(lead.getTimestamp()) < 1) {
                     today.add(lead);
                     todayLayout.setVisibility(View.VISIBLE);
-                } else if(daysSince(lead.getTimestamp()) < 7) {
+                } else if (daysSince(lead.getTimestamp()) < 7) {
                     thisWeek.add(lead);
                     thisWeekLayout.setVisibility(View.VISIBLE);
                 } else {
                     earlier.add(lead);
                     earlierLayout.setVisibility(View.VISIBLE);
                 }
+                manageListTitlesVisibility();
             }
         });
 
@@ -191,12 +198,28 @@ public class LeadsFragment extends RaisingFragment {
     }
 
     /**
+     * Manage the visibility of the recycler view titles
+     */
+    private void manageListTitlesVisibility() {
+        if (today.size() != 0 && (thisWeek.size() != 0 || earlier.size() != 0)) {
+            todayLayoutTitle.setVisibility(View.VISIBLE);
+        }
+        if (thisWeek.size() != 0 && (today.size() != 0 || earlier.size() != 0)) {
+            thisWeekLayoutTitle.setVisibility(View.VISIBLE);
+        }
+        if(earlier.size() != 0 && (today.size() != 0 || thisWeek.size() != 0)) {
+            earlierLayoutTitle.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
      * Calculate difference from given date to today in days
+     *
      * @param date date in the past
      * @return difference in days
      */
     private int daysSince(Date date) {
         long diffMillis = Math.abs(new Date().getTime() - date.getTime());
-        return (int)TimeUnit.DAYS.convert(diffMillis, TimeUnit.MILLISECONDS);
+        return (int) TimeUnit.DAYS.convert(diffMillis, TimeUnit.MILLISECONDS);
     }
 }
