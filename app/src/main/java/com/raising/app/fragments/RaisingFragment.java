@@ -1,26 +1,16 @@
 package com.raising.app.fragments;
 
-import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.ExifInterface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
@@ -49,13 +39,8 @@ import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import javax.security.auth.login.LoginException;
 
 public class RaisingFragment extends Fragment {
     final private String TAG = "RaisingFragment";
@@ -266,14 +251,14 @@ public class RaisingFragment extends Fragment {
     }
 
     /**
-     * Call {@link com.raising.app.MainActivity#setActionBarLogout(boolean)}
+     * Call {@link com.raising.app.MainActivity#setActionBarMenu(boolean)}
      * @param setMenu true, if menu should be visible
      *                false, to dismiss menu
      */
-    protected void setActionBarLogout(boolean setMenu) {
+    protected void setActionBarMenu(boolean setMenu) {
         MainActivity activity = (MainActivity) getActivity();
         if(activity != null) {
-            activity.setActionBarLogout(setMenu);
+            activity.setActionBarMenu(setMenu);
         }
     }
 

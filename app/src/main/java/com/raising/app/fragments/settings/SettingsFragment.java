@@ -1,5 +1,7 @@
 package com.raising.app.fragments.settings;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -32,7 +34,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
                              @Nullable Bundle savedInstanceState) {
 
         customizeAppBar(getString(R.string.toolbar_title_settings), false);
-        setActionBarLogout(true);
 
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
@@ -85,8 +86,10 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
                 changeFragment(new SettingsAboutFragment(), "SettingsAboutFragment");
                 break;
             case R.id.button_settings_report_problem:
+                contactRaising(true);
+                break;
             case R.id.button_settings_feedback:
-                //TODO: implement action
+                contactRaising(false);
                 break;
             case R.id.button_settings_logout:
                 logout();
@@ -94,6 +97,21 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
             default:
                 break;
         }
+    }
+
+    private void contactRaising(boolean isProblemReport) {
+        Intent interactionIntent = new Intent(Intent.ACTION_SENDTO);
+        String [] addresses = {"lorenz.caliezi@gmail.com"};
+        interactionIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        interactionIntent.setData(Uri.parse("mailto:"));
+        if(isProblemReport) {
+            interactionIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.settings_problem_report_subject));
+            interactionIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.settings_problem_report_body));
+        } else {
+            interactionIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.settings_feedback_subject));
+            interactionIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.settings_feedback_body));
+        }
+        startActivity(interactionIntent);
     }
 
     private void logout() {
@@ -108,8 +126,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        setActionBarLogout(false);
 
         String language = languageInput.getText().toString();
         String numberOfMatches = matchNumberInput.getText().toString();

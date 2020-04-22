@@ -166,23 +166,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setActionBarLogout(boolean setMenu) {
+    /**
+     * Allow to set a custom menu containing a logout button into the toolbar
+     * @param setMenu true, if menu should be visible
+     *                false, if menu should not be visible
+     */
+    public void setActionBarMenu(boolean setMenu) {
         if(setMenu) {
             toolbar.inflateMenu(R.menu.top_bar_menu);
             toolbar.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case R.id.top_bar_logout:
-                        Log.d(TAG, "onMenuItemClick: logout()");
-                        AuthenticationHandler.logout();
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fragment_container, new LoginFragment())
-                                .commit();
                         return true;
                     default:
                         return false;
                 }
-
             });
         } else {
             toolbar.getMenu().clear();

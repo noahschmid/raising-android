@@ -172,6 +172,10 @@
     <string name="settings_language"> Language </string>
     <string name="settings_weekly_matches"> Number of weekly Matches</string>
     <string name="settings_max_number_weekly_matches"> Maximum number of weekly matches: </string>
+    <string name="settings_problem_report_subject"> Problem Report Rai$ing</string>
+    <string name="settings_problem_report_body"> I would like to report a problem with your app Rai$ing</string>
+    <string name="settings_feedback_subject"> Feedback for Rai$ing</string>
+    <string name="settings_feedback_body"> I would like to give my feedback to your app Rai$ing</string>
     <string name="settings_about"> About </string>
     <string name="settings_about_sponsorship"> Sponsorship</string>
     <string name="settings_about_sponsorship_text"> Swiss Enterpreneurs Foundation \nBundesgasse 35 \n3001 Bern \ninfo@swissef.ch</string>

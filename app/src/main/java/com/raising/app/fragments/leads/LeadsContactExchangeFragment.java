@@ -66,25 +66,26 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
         btnInteract = view.findViewById(R.id.button_leads_contact_interact);
         btnInteract.setOnClickListener(v -> {
             Intent interactionIntent;
+            String [] addresses = {contact.getEmail()};
             switch (contactType) {
                 case COFFEE:
                     interactionIntent = new Intent(Intent.ACTION_SENDTO);
-                    interactionIntent.setType("text/plain");
-                    interactionIntent.putExtra(Intent.EXTRA_EMAIL, contact.getEmail());
+                    interactionIntent.setData(Uri.parse("mailto:"));
+                    interactionIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
                     interactionIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.leads_contact_coffee_subject_template));
                     interactionIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.leads_contact_coffee_body_template));
                     break;
                 case BUSINESS_PLAN:
                     interactionIntent = new Intent(Intent.ACTION_SENDTO);
-                    interactionIntent.setType("text/plain");
-                    interactionIntent.putExtra(Intent.EXTRA_EMAIL, contact.getEmail());
+                    interactionIntent.setData(Uri.parse("mailto:"));
+                    interactionIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
                     interactionIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.leads_contact_business_plan_subject_template));
                     interactionIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.leads_contact_business_plan_body_template));
-                    break;
+                    break;startActivity(interactionIntent);
                 case E_MAIL:
                     interactionIntent = new Intent(Intent.ACTION_SENDTO);
-                    interactionIntent.setType("text/plain");
-                    interactionIntent.putExtra(Intent.EXTRA_EMAIL, contact.getEmail());
+                    interactionIntent.setData(Uri.parse("mailto:"));
+                    interactionIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
                     interactionIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.leads_contact_mail_subject_template));
                     interactionIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.leads_contact_mail_body_template));
                     break;
