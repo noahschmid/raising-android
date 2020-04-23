@@ -127,8 +127,6 @@ public class MatchesFragment extends RaisingFragment {
         matchList = view.findViewById(R.id.matchList);
         matchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         matchList.setAdapter(matchListAdapter);
-        RecyclerViewMargin decoration = new RecyclerViewMargin(15);
-        matchList.addItemDecoration(decoration);
         matchListAdapter.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
             MatchListItem item = matchListItems.get(position);

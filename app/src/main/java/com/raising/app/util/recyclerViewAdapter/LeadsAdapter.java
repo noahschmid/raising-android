@@ -65,7 +65,7 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
             case STARTUP_DECLINED:
             case INVESTOR_DECLINED:
                 tintColor = R.color.raisingNegative;
-                drawableId = R.drawable.ic_cancel_24dp;
+                drawableId = R.drawable.ic_cancel_outline_24dp;
                 break;
         }
 

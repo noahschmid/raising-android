@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_leads_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/item_leads_profile_image"
@@ -79,7 +75,4 @@
             app:layout_constraintEnd_toEndOf="@+id/item_leads_profile_image"
             app:layout_constraintStart_toStartOf="@+id/item_leads_profile_image"
             app:layout_constraintTop_toBottomOf="@+id/item_leads_profile_image" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

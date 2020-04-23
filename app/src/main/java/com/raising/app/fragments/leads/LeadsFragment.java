@@ -45,7 +45,6 @@ public class LeadsFragment extends RaisingFragment {
     private ArrayList<Lead> today, thisWeek, earlier;
     private RecyclerView todayRecycler, thisWeekRecycler, earlierRecycler;
     private ConstraintLayout todayLayout, thisWeekLayout, earlierLayout;
-    private TextView todayLayoutTitle, thisWeekLayoutTitle, earlierLayoutTitle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,11 +61,8 @@ public class LeadsFragment extends RaisingFragment {
         thisWeek = new ArrayList<>();
         earlier = new ArrayList<>();
 
-        todayLayoutTitle = view.findViewById(R.id.leads_tab_today);
         todayLayout = view.findViewById(R.id.leads_today);
-        thisWeekLayoutTitle = view.findViewById(R.id.leads_tab_this_week);
         thisWeekLayout = view.findViewById(R.id.leads_this_week);
-        earlierLayoutTitle = view.findViewById(R.id.leads_tab_earlier);
         earlierLayout = view.findViewById(R.id.leads_earlier);
 
         // check for leads state
@@ -117,7 +113,6 @@ public class LeadsFragment extends RaisingFragment {
         RecyclerView recyclerView = getView().findViewById(id);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new RecyclerViewMargin(15));
         adapter.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
             args.putLong("id", leads.get(position).getId());
@@ -172,11 +167,8 @@ public class LeadsFragment extends RaisingFragment {
         thisWeek.clear();
         earlier.clear();
         todayLayout.setVisibility(View.GONE);
-        todayLayoutTitle.setVisibility(View.GONE);
         thisWeekLayout.setVisibility(View.GONE);
-        thisWeekLayoutTitle.setVisibility(View.GONE);
         earlierLayout.setVisibility(View.GONE);
-        earlierLayoutTitle.setVisibility(View.GONE);
 
         leadsViewModel.getLeads().getValue().forEach(lead -> {
             if (lead.getState() == leadState) {
@@ -203,28 +195,12 @@ public class LeadsFragment extends RaisingFragment {
                     earlier.add(lead);
                     earlierLayout.setVisibility(View.VISIBLE);
                 }
-                manageListTitlesVisibility();
             }
         });
 
         todayAdapter.notifyDataSetChanged();
         thisWeekAdapter.notifyDataSetChanged();
         earlierAdapter.notifyDataSetChanged();
-    }
-
-    /**
-     * Manage the visibility of the recycler view titles
-     */
-    private void manageListTitlesVisibility() {
-        if (today.size() != 0 && (thisWeek.size() != 0 || earlier.size() != 0)) {
-            todayLayoutTitle.setVisibility(View.VISIBLE);
-        }
-        if (thisWeek.size() != 0 && (today.size() != 0 || earlier.size() != 0)) {
-            thisWeekLayoutTitle.setVisibility(View.VISIBLE);
-        }
-        if(earlier.size() != 0 && (today.size() != 0 || thisWeek.size() != 0)) {
-            earlierLayoutTitle.setVisibility(View.VISIBLE);
-        }
     }
 
     /**
