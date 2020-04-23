@@ -21,6 +21,7 @@ import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.models.leads.InteractionState;
 import com.raising.app.models.leads.LeadState;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
@@ -113,16 +114,25 @@ public class LeadsFragment extends RaisingFragment {
      * @param leads   list of leads for recycler view
      */
     private void setupRecyclerView(int id, LeadsAdapter adapter, List<Lead> leads) {
-        RecyclerView recyclerToday = getView().findViewById(id);
-        recyclerToday.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerToday.setAdapter(adapter);
-        recyclerToday.addItemDecoration(new RecyclerViewMargin(15));
+        RecyclerView recyclerView = getView().findViewById(id);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new RecyclerViewMargin(15));
         adapter.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
             args.putLong("id", leads.get(position).getId());
             Fragment contactFragment = new LeadsContactFragment();
             contactFragment.setArguments(args);
             ((RaisingFragment)getParentFragment()).changeFragment(contactFragment);
+            /*
+            if(leads.get(position).getHandshakeState() == InteractionState.HANDSHAKE) {
+                Fragment contactFragment = new LeadsContactFragment();
+                contactFragment.setArguments(args);
+                ((RaisingFragment)getParentFragment()).changeFragment(contactFragment);
+            } else {
+                showSimpleDialog(getString(R.string.leads_no_handshake_dialog_title), getString(R.string.leads_no_handshake_dialog_text));
+            }
+             */
         });
     }
 
@@ -144,6 +154,7 @@ public class LeadsFragment extends RaisingFragment {
                 loadProfileImage(leadsViewModel.getOpenRequests().get(0).getProfilePictureId(), image);
                 BadgeDrawable badge = BadgeDrawable.create(Objects.requireNonNull(this.getContext()));
                 badge.setNumber(leadsViewModel.getOpenRequests().size());
+                badge.setBadgeGravity(BadgeDrawable.TOP_START);
                 BadgeUtils.attachBadgeDrawable(badge, openRequestsArrow, null);
                 openRequests.setOnClickListener(v ->
                         changeFragment(new LeadsOpenRequestsFragment()));
