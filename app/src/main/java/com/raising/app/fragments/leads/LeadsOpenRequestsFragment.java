@@ -21,8 +21,11 @@ import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
+import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.recyclerViewAdapter.LeadsOpenRequestAdapter;
 import com.raising.app.viewModels.LeadsViewModel;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -95,12 +98,34 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         adapter.setOnClickListener(new LeadsOpenRequestAdapter.OnClickListener() {
             @Override
             public void onClickAccept(int position) {
-                //TODO: accept open request
+                String endpoint = "match/" + openRequestItems.get(position).getId() + "/accept";
+                ApiRequestHandler.performPostRequest(endpoint, v -> {
+                    openRequestItems.remove(position);
+                    adapter.notifyItemRemoved(position);
+                    return null;
+                },
+                err -> {
+                    displayGenericError();
+                    Log.e(TAG, "onClickAccept: " + ApiRequestHandler.parseVolleyError(err));
+                    return null;
+                },
+                new JSONObject());
             }
 
             @Override
             public void onClickDecline(int position) {
-                //TODO: decline open request
+                String endpoint = "match/" + openRequestItems.get(position).getId() + "/accept";
+                ApiRequestHandler.performPostRequest(endpoint, v -> {
+                            openRequestItems.remove(position);
+                            adapter.notifyItemRemoved(position);
+                            return null;
+                        },
+                        err -> {
+                            displayGenericError();
+                            Log.e(TAG, "onClickAccept: " + ApiRequestHandler.parseVolleyError(err));
+                            return null;
+                        },
+                        new JSONObject());
             }
         });
 

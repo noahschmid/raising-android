@@ -53,7 +53,14 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
             }
             lead.setStartup(jsonObject.get("startup").getAsBoolean());
             lead.setMatchingPercent(jsonObject.get("matchingPercent").getAsInt());
+
             LeadState leadState = LeadState.PENDING;
+
+            if(lead.getHandshakeState() == InteractionState.HANDSHAKE) {
+                leadState = LeadState.YOUR_TURN;
+            }
+
+            boolean pending = false;
 
             JsonArray jsonInteractions = jsonObject.get("interactions").getAsJsonArray();
             ArrayList<Interaction> interactions = new ArrayList<>();
@@ -95,6 +102,12 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
                     leadState = LeadState.YOUR_TURN;
                 }
 
+                if((state == InteractionState.INVESTOR_ACCEPTED && !AuthenticationHandler.isStartup() ||
+                        state == InteractionState.STARTUP_ACCEPTED && AuthenticationHandler.isStartup()) &&
+                        leadState != LeadState.CLOSED) {
+                    pending = true;
+                }
+
                 interaction.setInteractionState(state);
                 interaction.setInteractionType(InteractionType.valueOf(obj.get("interaction").getAsString()));
 
@@ -109,9 +122,20 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
 
             lead.setInteractions(interactions);
 
+            if(pending) {
+                leadState = LeadState.PENDING;
+            }
+
             if(lead.getHandshakeState() == InteractionState.INVESTOR_DECLINED ||
             lead.getHandshakeState() == InteractionState.STARTUP_DECLINED) {
                 leadState = LeadState.CLOSED;
+            }
+
+            if(lead.getHandshakeState() == InteractionState.INVESTOR_ACCEPTED &&
+                    AuthenticationHandler.isStartup() ||
+                    lead.getHandshakeState() == InteractionState.STARTUP_ACCEPTED &&
+                            !AuthenticationHandler.isStartup()) {
+                leadState = LeadState.OPEN_REQUEST;
             }
 
             try {

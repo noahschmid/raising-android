@@ -26,4 +26,5 @@
 
     <integer name="raisingLongSnackbar"> 6000 </integer>
     <integer name="raisingShortSnackbar"> 2500 </integer>
+    <integer name="maximalPercent">100</integer>
 </resources>

@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import com.raising.app.models.leads.InteractionState;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
+import com.raising.app.models.leads.LeadState;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
@@ -44,8 +45,7 @@ public class LeadsViewModel extends AndroidViewModel {
     public ArrayList<Lead> getOpenRequests() {
         ArrayList<Lead> openRequests = new ArrayList<>();
         leads.getValue().forEach(lead -> {
-            if((AuthenticationHandler.isStartup() && lead.getHandshakeState() == InteractionState.INVESTOR_ACCEPTED)
-                || (!(AuthenticationHandler.isStartup()) && lead.getHandshakeState() == InteractionState.STARTUP_ACCEPTED)) {
+            if(lead.getState() == LeadState.OPEN_REQUEST) {
                 openRequests.add(lead);
             }
         });
