@@ -46,10 +46,13 @@ public class LeadsFragment extends RaisingFragment {
     private ArrayList<Lead> today, thisWeek, earlier;
     private ConstraintLayout todayLayout, thisWeekLayout, earlierLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private boolean observersSet = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        leadsViewModel = ViewModelProviders.of(getActivity())
+                .get(LeadsViewModel.class);
         return inflater.inflate(R.layout.fragment_leads, container, false);
     }
 
@@ -78,8 +81,6 @@ public class LeadsFragment extends RaisingFragment {
         if (getArguments() != null) {
             leadState = (LeadState) getArguments().getSerializable("leadsState");
             // prepare leadsViewModel for usage
-            leadsViewModel = ViewModelProviders.of(getActivity())
-                    .get(LeadsViewModel.class);
 
             leadsViewModel.loadLeads();
 
@@ -91,6 +92,21 @@ public class LeadsFragment extends RaisingFragment {
             setupRecyclerView(R.id.leads_tab_recycler_this_week, thisWeekAdapter, thisWeek);
             setupRecyclerView(R.id.leads_tab_recycler_earlier, earlierAdapter, earlier);
 
+            if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
+            resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
+                leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+                    processLeadsViewState(state);
+                });
+                processLeadsViewState(leadsViewModel.getViewState().getValue());
+
+                observersSet = true;
+            }
+        }
+    }
+
+    @Override
+    protected void onResourcesLoaded() {
+        if(!observersSet && leadState != null) {
             leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
                 processLeadsViewState(state);
             });
