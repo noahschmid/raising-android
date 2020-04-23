@@ -68,7 +68,7 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
                 JsonObject obj = el.getAsJsonObject();
                 Interaction interaction = new Interaction();
                 InteractionState state = InteractionState.EMPTY;
-
+                interaction.setId(obj.get("id").getAsLong());
                 switch (obj.get("startupState").getAsString()) {
                     case "ACCEPTED":
                         state = InteractionState.STARTUP_ACCEPTED;

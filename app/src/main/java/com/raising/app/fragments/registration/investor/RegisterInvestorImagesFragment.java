@@ -38,6 +38,7 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.raising.app.R;
+import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Image;
@@ -541,13 +542,15 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         //TODO: remove manually set loading panel
         dismissLoadingPanel();
         try {
-            showSimpleDialog(getString(R.string.generic_error_title),
-                    getString(R.string.generic_error_text));
             if (response.networkResponse != null) {
                 JSONObject body = new JSONObject(new String(
                         response.networkResponse.data, StandardCharsets.UTF_8));
                 Log.e(TAG, "status code: " + response.networkResponse.statusCode);
                 Log.e("InvestorImages", body.getString("message"));
+                showSimpleDialog(getString(R.string.generic_error_title),
+                        getString(R.string.generic_error_text));
+            } else {
+                clearBackstackAndReplace(new LoginFragment());
             }
         } catch (Exception e) {
             Log.e("InvestorImages", "errorCallback: " + e.toString());

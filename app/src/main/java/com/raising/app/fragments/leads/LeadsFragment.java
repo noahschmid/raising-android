@@ -15,18 +15,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.leads.InteractionState;
 import com.raising.app.models.leads.LeadState;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.recyclerViewAdapter.LeadsAdapter;
-import com.raising.app.util.recyclerViewAdapter.RecyclerViewMargin;
 import com.raising.app.viewModels.LeadsViewModel;
 
 import java.sql.Timestamp;
@@ -116,8 +113,8 @@ public class LeadsFragment extends RaisingFragment {
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
-            args.putLong("id", leads.get(position).getId());
-            Fragment contactFragment = new LeadsContactFragment();
+            args.putSerializable("lead", leads.get(position));
+            Fragment contactFragment = new LeadsInteractionFragment();
             contactFragment.setArguments(args);
             ((RaisingFragment)getParentFragment()).changeFragment(contactFragment);
             /*

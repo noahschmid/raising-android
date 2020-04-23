@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class Interaction {
+    long id;
     InteractionState interactionState;
     InteractionType interactionType;
 
