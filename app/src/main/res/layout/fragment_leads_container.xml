@@ -15,7 +15,8 @@
             style="@style/HandshakeTabLayoutStyle"
             android:id="@+id/leads_tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/leadsTabHeight">
+            android:layout_height="@dimen/leadsTabHeight"
+            android:elevation="2dp">
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_your_turn"
@@ -38,7 +39,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:background="@color/gray" />
 
         <androidx.viewpager.widget.ViewPager

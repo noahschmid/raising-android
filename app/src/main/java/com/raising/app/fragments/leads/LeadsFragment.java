@@ -29,6 +29,7 @@ import com.raising.app.models.ViewState;
 import com.raising.app.util.recyclerViewAdapter.LeadsAdapter;
 import com.raising.app.viewModels.LeadsViewModel;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -123,7 +124,9 @@ public class LeadsFragment extends RaisingFragment {
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
-            args.putLong("id", leads.get(position).getId());
+
+            args.putSerializable("lead", leads.get(position));
+            Fragment contactFragment = new LeadsInteractionFragment();
 
             if((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_ACCEPTED)
                 || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_ACCEPTED)) {
@@ -132,7 +135,6 @@ public class LeadsFragment extends RaisingFragment {
                 || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_DECLINED)) {
                 args.putBoolean("declinedContact", true);
             }
-            Fragment contactFragment = new LeadsContactFragment();
             contactFragment.setArguments(args);
             ((RaisingFragment)getParentFragment()).changeFragment(contactFragment);
         });
@@ -160,7 +162,8 @@ public class LeadsFragment extends RaisingFragment {
                 badge.setBadgeGravity(BadgeDrawable.TOP_START);
                 BadgeUtils.attachBadgeDrawable(badge, openRequestsArrow, openRequestsArrowLayout);
                 openRequests.setOnClickListener(v ->
-                        changeFragment(new LeadsOpenRequestsFragment()));
+                        ((RaisingFragment)getParentFragment())
+                                .changeFragment(new LeadsOpenRequestsFragment()));
             }
         }
         filterLeads();
@@ -214,11 +217,11 @@ public class LeadsFragment extends RaisingFragment {
     /**
      * Calculate difference from given date to today in days
      *
-     * @param date date in the past
+     * @param timestamp timestamp in the past
      * @return difference in days
      */
-    private int daysSince(Date date) {
-        long diffMillis = Math.abs(new Date().getTime() - date.getTime());
+    private int daysSince(Timestamp timestamp) {
+        long diffMillis = Math.abs(new Date().getTime() - timestamp.getTime());
         return (int) TimeUnit.DAYS.convert(diffMillis, TimeUnit.MILLISECONDS);
     }
 }
