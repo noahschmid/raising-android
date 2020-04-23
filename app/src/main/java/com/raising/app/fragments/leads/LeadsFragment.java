@@ -122,7 +122,7 @@ public class LeadsFragment extends RaisingFragment {
             args.putLong("id", leads.get(position).getId());
             Fragment contactFragment = new LeadsContactFragment();
             contactFragment.setArguments(args);
-            changeFragment(contactFragment);
+            ((RaisingFragment)getParentFragment()).changeFragment(contactFragment);
         });
     }
 
@@ -175,8 +175,11 @@ public class LeadsFragment extends RaisingFragment {
                             lead.getInvestmentPhaseId()).getName());
                 } else {
                     lead.setTitle(lead.getFirstName() + " " + lead.getLastName());
-                    lead.setAttribute(resources.getInvestorType(
-                            lead.getInvestorTypeId()).getName());
+                    if(resources.getInvestorType(
+                            lead.getInvestorTypeId()) != null) {
+                        lead.setAttribute(resources.getInvestorType(
+                                lead.getInvestorTypeId()).getName());
+                    }
                 }
 
                 if (daysSince(lead.getTimestamp()) < 1) {

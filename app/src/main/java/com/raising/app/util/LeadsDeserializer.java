@@ -40,7 +40,7 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
             if(jsonObject.get("companyName") != null) {
                 lead.setCompanyName(jsonObject.get("companyName").getAsString());
             }
-            lead.setStartup(!jsonObject.get("startup").getAsBoolean());
+            lead.setStartup(jsonObject.get("startup").getAsBoolean());
             lead.setMatchingPercent(jsonObject.get("matchingPercent").getAsInt());
             lead.setTimestamp(new Date());
             LeadState leadState = LeadState.PENDING;

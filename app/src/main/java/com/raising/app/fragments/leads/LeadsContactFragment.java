@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.leads.Interaction;
+import com.raising.app.models.leads.InteractionType;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.util.LeadsInteraction;
 
@@ -34,10 +35,13 @@ public class LeadsContactFragment extends RaisingFragment {
     @Getter
     private ImageButton confirmCoffee, declineCoffee, confirmBusinessplan, declineBusinessplan,
             confirmPhone, declinePhone, confirmEmail, declineEmail, confirmVideo, declineVideo;
+
     @Getter
     private CardView contactCoffee, contactBusinessPlan, contactPhone, contactEmail, contactVideo;
+
     @Getter
     private Button coffeeButton, businessplanButton, phoneButton, emailButton, videoButton;
+
     @Getter
     private LeadsInteraction coffee, businessplan, phone, email, video;
 
@@ -94,11 +98,11 @@ public class LeadsContactFragment extends RaisingFragment {
         videoButton = view.findViewById(R.id.button_leads_contact_video);
 
         // create a class instance for all interaction types
-        coffee = new LeadsInteraction(contact.getCoffee(), this);
-        businessplan = new LeadsInteraction(contact.getBusinessplan(), this);
-        phone = new LeadsInteraction(contact.getPhone(), this);
-        email = new LeadsInteraction(contact.getEmail(), this);
-        video = new LeadsInteraction(contact.getVideo(), this);
+        coffee = new LeadsInteraction(contact.getInteraction(InteractionType.COFFEE), this);
+        businessplan = new LeadsInteraction(contact.getInteraction(InteractionType.BUSINESSPLAN), this);
+        phone = new LeadsInteraction(contact.getInteraction(InteractionType.PHONE_CALL), this);
+        email = new LeadsInteraction(contact.getInteraction(InteractionType.EMAIL), this);
+        video = new LeadsInteraction(contact.getInteraction(InteractionType.VIDEO_CALL), this);
     }
 
     public void enterInteractionExchange(Interaction interaction) {

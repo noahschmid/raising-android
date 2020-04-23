@@ -2,6 +2,7 @@ package com.raising.app.fragments.leads;
 
 import android.os.Bundle;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -62,5 +63,10 @@ public class LeadsContainerFragment extends RaisingFragment {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         return view;
+    }
+
+
+    public void changeToFragment(Fragment fragment) {
+        changeFragment(fragment);
     }
 }
