@@ -122,28 +122,49 @@
                 app:layout_constraintStart_toStartOf="@+id/register_startup_images_gallery">
 
                 <ImageView
-                    android:id="@+id/progress_circle_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
-                    android:id="@+id/progress_circle_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
-                    android:id="@+id/progress_circle_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
                 <ImageView
-                    android:id="@+id/progress_circle_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_circle_full_darkgrey_16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
             </LinearLayout>
 
             <Button
@@ -154,7 +175,7 @@
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:hint="@string/register_button_finish_text"
+                android:hint="@string/continue_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

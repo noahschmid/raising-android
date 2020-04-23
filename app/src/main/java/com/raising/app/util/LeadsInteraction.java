@@ -3,6 +3,7 @@ package com.raising.app.util;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -21,6 +22,8 @@ import com.raising.app.models.leads.Lead;
 import java.util.Objects;
 
 public class LeadsInteraction {
+    private static final String TAG = "LeadsInteraction";
+
     private Interaction interaction;
 
     private LeadsContactFragment currentFragment;
@@ -83,6 +86,7 @@ public class LeadsInteraction {
         interactionArrow.setVisibility(View.GONE);
 
         interactionButton.setOnClickListener(v -> {
+            Log.d(TAG, "prepareInteraction: ");
             updateInteraction(false);
             toggleContactButton();
             updateRemoteInteraction();
@@ -105,12 +109,21 @@ public class LeadsInteraction {
      */
     private void updateInteraction(boolean decline) {
         switch (interaction.getInteractionState()) {
+            case EMPTY:
+                if(AuthenticationHandler.isStartup()) {
+                    interaction.setInteractionState(InteractionState.STARTUP_ACCEPTED);
+                } else {
+                    interaction.setInteractionState(InteractionState.INVESTOR_ACCEPTED);
+                }
+                Log.d(TAG, "updateInteraction: " + interaction.getInteractionType().name() + "Interaction State" + interaction.getInteractionState().name());
+                break;
             case STARTUP_ACCEPTED:
                 if (!(AuthenticationHandler.isStartup()) && !decline) {
                     interaction.setInteractionState(InteractionState.HANDSHAKE);
                 } else if(!AuthenticationHandler.isStartup()) {
                     interaction.setInteractionState(InteractionState.INVESTOR_DECLINED);
                 }
+                Log.d(TAG, "updateInteraction: " + interaction.getInteractionType().name() + "Interaction State" + interaction.getInteractionState().name());
                 break;
             case INVESTOR_ACCEPTED:
                 if (AuthenticationHandler.isStartup() && !decline) {
@@ -118,9 +131,11 @@ public class LeadsInteraction {
                 } else if(AuthenticationHandler.isStartup()) {
                     interaction.setInteractionState(InteractionState.STARTUP_DECLINED);
                 }
+                Log.d(TAG, "updateInteraction: " + interaction.getInteractionType().name() + "Interaction State" + interaction.getInteractionState().name());
                 break;
         }
     }
+
 
     /**
      * Update the interaction button based on the current interaction state
@@ -134,7 +149,7 @@ public class LeadsInteraction {
                 interactionButton.setEnabled(false);
                 drawable.setTint(ContextCompat.getColor(
                         Objects.requireNonNull(interactionButton.getContext()), R.color.raisingNegativeAccent));
-                interactionButton.setText(Resources.getSystem().getString(R.string.declined_text));
+                interactionButton.setText(currentFragment.getResources().getString(R.string.declined_text));
                 break;
             case HANDSHAKE:
                 interactionButton.setVisibility(View.GONE);
@@ -150,11 +165,11 @@ public class LeadsInteraction {
                     interactionButton.setEnabled(false);
                     drawable.setTint(ContextCompat.getColor(
                             Objects.requireNonNull(interactionButton.getContext()), R.color.raisingPositiveAccent));
-                    interactionButton.setText(Resources.getSystem().getString(R.string.requested_text));
+                    interactionButton.setText(currentFragment.getResources().getString(R.string.requested_text));
                 } else {
                     drawable.setTint(ContextCompat.getColor(
                             Objects.requireNonNull(interactionButton.getContext()), R.color.raisingPositive));
-                    interactionButton.setText(Resources.getSystem().getString(R.string.confirm_text));
+                    interactionButton.setText(currentFragment.getResources().getString(R.string.confirm_text));
                     // confirmInteraction.setVisibility(View.VISIBLE);
                     declineInteraction.setVisibility(View.VISIBLE);
                 }
@@ -163,14 +178,14 @@ public class LeadsInteraction {
                 if(AuthenticationHandler.isStartup()) {
                     drawable.setTint(ContextCompat.getColor(
                             Objects.requireNonNull(interactionButton.getContext()), R.color.raisingPositive));
-                    interactionButton.setText(Resources.getSystem().getString(R.string.confirm_text));
+                    interactionButton.setText(currentFragment.getResources().getString(R.string.confirm_text));
                     // confirmInteraction.setVisibility(View.VISIBLE);
                     declineInteraction.setVisibility(View.VISIBLE);
                 } else {
                     interactionButton.setEnabled(false);
                     drawable.setTint(ContextCompat.getColor(
                             Objects.requireNonNull(interactionButton.getContext()), R.color.raisingPositiveAccent));
-                    interactionButton.setText(Resources.getSystem().getString(R.string.requested_text));
+                    interactionButton.setText(currentFragment.getResources().getString(R.string.requested_text));
                 }
                 break;
         }

@@ -161,7 +161,7 @@ public class RaisingFragment extends Fragment {
      * @param fragment The fragment, that should be displayed next
      * @author Lorenz Caliezi 09.03.2020
      */
-    protected void changeFragment(Fragment fragment) {
+    public void changeFragment(Fragment fragment) {
         try {
             getActivitiesFragmentManager()
                     .beginTransaction()

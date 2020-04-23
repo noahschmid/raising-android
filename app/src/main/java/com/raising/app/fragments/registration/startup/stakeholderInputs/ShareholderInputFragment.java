@@ -227,7 +227,7 @@ public class ShareholderInputFragment extends RaisingFragment {
                             JSONObject params = new JSONObject(gson.toJson(shareholder));
                             params.put("startupId", AuthenticationHandler.getId());
                             Log.d("shareholderInput", "params: " + params.toString());
-                            ApiRequestHandler.performPostRequest("startup/shareholder",
+                            ApiRequestHandler.performPostRequest(endpoint,
                                     result -> {
                                         shareholderViewModel.select(shareholder);
                                         leaveShareholderFragment();

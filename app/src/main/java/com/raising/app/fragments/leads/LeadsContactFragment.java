@@ -13,10 +13,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.leads.Interaction;
+import com.raising.app.models.leads.InteractionType;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.util.LeadsInteraction;
 
@@ -26,17 +29,22 @@ import lombok.Getter;
 public class LeadsContactFragment extends RaisingFragment {
     private long id;
     @Getter
-    Lead contact;
+    private Lead contact;
+    private boolean disableContact = false;
+    private boolean declinedContact = false;
 
     @Getter
     private ImageView arrowCoffee, arrowBusinessplan, arrowPhone, arrowEmail, arrowVideo;
     @Getter
     private ImageButton confirmCoffee, declineCoffee, confirmBusinessplan, declineBusinessplan,
             confirmPhone, declinePhone, confirmEmail, declineEmail, confirmVideo, declineVideo;
+
     @Getter
     private CardView contactCoffee, contactBusinessPlan, contactPhone, contactEmail, contactVideo;
+
     @Getter
     private Button coffeeButton, businessplanButton, phoneButton, emailButton, videoButton;
+
     @Getter
     private LeadsInteraction coffee, businessplan, phone, email, video;
 
@@ -53,6 +61,12 @@ public class LeadsContactFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (getArguments() != null) {
+            if(getArguments().getBoolean("disableContact")) {
+                disableContact = true;
+            }
+            if(getArguments().getBoolean("declinedContact")) {
+                declinedContact = true;
+            }
             id = getArguments().getLong("id");
 
             //TODO: store contact of id in following object:
@@ -93,11 +107,25 @@ public class LeadsContactFragment extends RaisingFragment {
         videoButton = view.findViewById(R.id.button_leads_contact_video);
 
         // create a class instance for all interaction types
-        coffee = new LeadsInteraction(contact.getCoffee(), this);
-        businessplan = new LeadsInteraction(contact.getBusinessplan(), this);
-        phone = new LeadsInteraction(contact.getPhone(), this);
-        email = new LeadsInteraction(contact.getEmail(), this);
-        video = new LeadsInteraction(contact.getVideo(), this);
+        coffee = new LeadsInteraction(contact.getInteraction(InteractionType.COFFEE), this);
+        businessplan = new LeadsInteraction(contact.getInteraction(InteractionType.BUSINESSPLAN), this);
+        phone = new LeadsInteraction(contact.getInteraction(InteractionType.PHONE_CALL), this);
+        email = new LeadsInteraction(contact.getInteraction(InteractionType.EMAIL), this);
+        video = new LeadsInteraction(contact.getInteraction(InteractionType.VIDEO_CALL), this);
+
+        TextView disableContactText = view.findViewById(R.id.leads_contact_disabled_text);
+        LinearLayout contactItemsLayout = view.findViewById(R.id.leads_contact_items_layout);
+        LinearLayout blurOverlay = view.findViewById(R.id.leads_contact_blur_overlay);
+        blurOverlay.setVisibility(View.GONE);
+        if(disableContact) {
+            disableContactText.setText(getString(R.string.leads_contact_disabled_contact_text));
+            blurOverlay.setVisibility(View.VISIBLE);
+        }
+
+        if(declinedContact) {
+            disableContactText.setText(getString(R.string.leads_contact_declined_contact_text));
+            blurOverlay.setVisibility(View.VISIBLE);
+        }
     }
 
     public void enterInteractionExchange(Interaction interaction) {

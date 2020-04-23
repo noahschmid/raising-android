@@ -25,7 +25,7 @@
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:hint="@string/register_profile_company"
+                android:hint="@string/register_company_name"
                 app:layout_constraintBottom_toTopOf="@+id/register_company_phone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

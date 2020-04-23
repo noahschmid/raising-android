@@ -40,7 +40,7 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
             if(jsonObject.get("companyName") != null) {
                 lead.setCompanyName(jsonObject.get("companyName").getAsString());
             }
-            lead.setStartup(!jsonObject.get("startup").getAsBoolean());
+            lead.setStartup(jsonObject.get("startup").getAsBoolean());
             lead.setMatchingPercent(jsonObject.get("matchingPercent").getAsInt());
             lead.setTimestamp(new Date());
             LeadState leadState = LeadState.PENDING;
@@ -74,7 +74,8 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
                         break;
                 }
 
-                if(state == InteractionState.HANDSHAKE) {
+                if(state == InteractionState.HANDSHAKE || state == InteractionState.INVESTOR_DECLINED ||
+                        state == InteractionState.STARTUP_DECLINED) {
                     leadState = LeadState.CLOSED;
                 }
 
@@ -100,7 +101,7 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
 
             if(lead.getHandshakeState() == InteractionState.INVESTOR_DECLINED ||
             lead.getHandshakeState() == InteractionState.STARTUP_DECLINED) {
-                lead.setState(LeadState.CLOSED);
+                leadState = LeadState.CLOSED;
             }
 
             lead.setState(leadState);

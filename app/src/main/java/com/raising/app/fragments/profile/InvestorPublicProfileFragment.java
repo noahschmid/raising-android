@@ -115,7 +115,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         matchesViewModel = ViewModelProviders.of(getActivity())
                 .get(MatchesViewModel.class);
 
-
         profileLayout = view.findViewById(R.id.profile_layout);
         profileLayout.setVisibility(View.INVISIBLE);
         pictures = new ArrayList<Bitmap>();
@@ -183,7 +182,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                 leadsDecline = true;
                 leadsRequest = false;
 
-                colorHandshakeButtonBackground(profileRequest, R.color.raisingPrimary);
+                colorHandshakeButtonBackground(profileDecline, R.color.raisingDarkGrey);
 
                 ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
                         res -> {

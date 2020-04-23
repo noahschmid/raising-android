@@ -1,5 +1,7 @@
 package com.raising.app.models.leads;
 
+import com.raising.app.util.AuthenticationHandler;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,15 +28,34 @@ public class Lead implements Serializable {
     private LeadState state;
     private InteractionState handshakeState;
 
-    private ArrayList<Interaction> interactions;
-
-    private Interaction coffee;
-    private Interaction businessplan;
-    private Interaction phone;
-    private Interaction email;
-    private Interaction video;
+    private ArrayList<Interaction> interactions = new ArrayList<>();
 
     public String getHandshakePercentString() {
         return matchingPercent + " %";
+    }
+
+    /**
+     * @param type the type of interaction
+     * @return found interaction
+     */
+    public Interaction getInteraction(InteractionType type) {
+        for(Interaction interaction : interactions) {
+            if(type == interaction.getInteractionType())
+                return interaction;
+        }
+
+        return new Interaction(type, InteractionState.EMPTY);
+    }
+
+    /**
+     * Start a new interaction for given lead
+     * @param type the type of interaction
+     */
+    public void startInteraction(InteractionType type) {
+        if(AuthenticationHandler.isStartup()) {
+            interactions.add(new Interaction(type, InteractionState.STARTUP_ACCEPTED));
+        } else {
+            interactions.add(new Interaction(type, InteractionState.INVESTOR_ACCEPTED));
+        }
     }
 }

@@ -14,18 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.models.leads.InteractionState;
 import com.raising.app.models.leads.LeadState;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
-import com.raising.app.util.recyclerViewAdapter.HandshakeAdapter;
-import com.raising.app.util.recyclerViewAdapter.RecyclerViewMargin;
+import com.raising.app.util.recyclerViewAdapter.LeadsAdapter;
 import com.raising.app.viewModels.LeadsViewModel;
 
 import java.util.ArrayList;
@@ -40,11 +40,9 @@ public class LeadsFragment extends RaisingFragment {
 
     private LeadState leadState;
     private LeadsViewModel leadsViewModel;
-    private HandshakeAdapter todayAdapter, thisWeekAdapter, earlierAdapter;
+    private LeadsAdapter todayAdapter, thisWeekAdapter, earlierAdapter;
     private ArrayList<Lead> today, thisWeek, earlier;
-    private RecyclerView todayRecycler, thisWeekRecycler, earlierRecycler;
     private ConstraintLayout todayLayout, thisWeekLayout, earlierLayout;
-    private TextView todayLayoutTitle, thisWeekLayoutTitle, earlierLayoutTitle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,11 +59,8 @@ public class LeadsFragment extends RaisingFragment {
         thisWeek = new ArrayList<>();
         earlier = new ArrayList<>();
 
-        todayLayoutTitle = view.findViewById(R.id.leads_tab_today);
         todayLayout = view.findViewById(R.id.leads_today);
-        thisWeekLayoutTitle = view.findViewById(R.id.leads_tab_this_week);
         thisWeekLayout = view.findViewById(R.id.leads_this_week);
-        earlierLayoutTitle = view.findViewById(R.id.leads_tab_earlier);
         earlierLayout = view.findViewById(R.id.leads_earlier);
 
         // check for leads state
@@ -77,9 +72,9 @@ public class LeadsFragment extends RaisingFragment {
 
             leadsViewModel.loadLeads();
 
-            todayAdapter = new HandshakeAdapter(today, leadState);
-            thisWeekAdapter = new HandshakeAdapter(thisWeek, leadState);
-            earlierAdapter = new HandshakeAdapter(earlier, leadState);
+            todayAdapter = new LeadsAdapter(today, leadState);
+            thisWeekAdapter = new LeadsAdapter(thisWeek, leadState);
+            earlierAdapter = new LeadsAdapter(earlier, leadState);
 
             setupRecyclerView(R.id.leads_tab_recycler_today, todayAdapter, today);
             setupRecyclerView(R.id.leads_tab_recycler_this_week, thisWeekAdapter, thisWeek);
@@ -112,26 +107,35 @@ public class LeadsFragment extends RaisingFragment {
      * @param adapter adapter of recycler view
      * @param leads   list of leads for recycler view
      */
-    private void setupRecyclerView(int id, HandshakeAdapter adapter, List<Lead> leads) {
-        RecyclerView recyclerView = Objects.requireNonNull(getView()).findViewById(id);
+    private void setupRecyclerView(int id, LeadsAdapter adapter, List<Lead> leads) {
+        RecyclerView recyclerView = getView().findViewById(id);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new RecyclerViewMargin(15));
         adapter.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
             args.putLong("id", leads.get(position).getId());
+
+            if((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_ACCEPTED)
+                || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_ACCEPTED)) {
+                args.putBoolean("disableContact", true);
+            } else if ((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_DECLINED)
+                || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_DECLINED)) {
+                args.putBoolean("declinedContact", true);
+            }
             Fragment contactFragment = new LeadsContactFragment();
             contactFragment.setArguments(args);
-            changeFragment(contactFragment);
+            ((RaisingFragment)getParentFragment()).changeFragment(contactFragment);
         });
     }
 
     /**
      * Populate recycler views
      */
+    @SuppressLint("RestrictedApi")
     private void loadData() {
         ConstraintLayout openRequests = getView().findViewById(R.id.leads_open_requests);
         ImageView openRequestsArrow = getView().findViewById(R.id.leads_open_requests_arrow);
+        FrameLayout openRequestsArrowLayout = getView().findViewById(R.id.leads_open_request_arrow_layout);
         if (!(leadState.equals(LeadState.YOUR_TURN))) {
             openRequests.setVisibility(View.GONE);
         } else {
@@ -143,7 +147,8 @@ public class LeadsFragment extends RaisingFragment {
                 loadProfileImage(leadsViewModel.getOpenRequests().get(0).getProfilePictureId(), image);
                 BadgeDrawable badge = BadgeDrawable.create(Objects.requireNonNull(this.getContext()));
                 badge.setNumber(leadsViewModel.getOpenRequests().size());
-                BadgeUtils.attachBadgeDrawable(badge, openRequestsArrow, null);
+                badge.setBadgeGravity(BadgeDrawable.TOP_START);
+                BadgeUtils.attachBadgeDrawable(badge, openRequestsArrow, openRequestsArrowLayout);
                 openRequests.setOnClickListener(v ->
                         changeFragment(new LeadsOpenRequestsFragment()));
             }
@@ -160,11 +165,8 @@ public class LeadsFragment extends RaisingFragment {
         thisWeek.clear();
         earlier.clear();
         todayLayout.setVisibility(View.GONE);
-        todayLayoutTitle.setVisibility(View.GONE);
         thisWeekLayout.setVisibility(View.GONE);
-        thisWeekLayoutTitle.setVisibility(View.GONE);
         earlierLayout.setVisibility(View.GONE);
-        earlierLayoutTitle.setVisibility(View.GONE);
 
         leadsViewModel.getLeads().getValue().forEach(lead -> {
             if (lead.getState() == leadState) {
@@ -174,8 +176,11 @@ public class LeadsFragment extends RaisingFragment {
                             lead.getInvestmentPhaseId()).getName());
                 } else {
                     lead.setTitle(lead.getFirstName() + " " + lead.getLastName());
-                    lead.setAttribute(resources.getInvestorType(
-                            lead.getInvestorTypeId()).getName());
+                    if(resources.getInvestorType(
+                            lead.getInvestorTypeId()) != null) {
+                        lead.setAttribute(resources.getInvestorType(
+                                lead.getInvestorTypeId()).getName());
+                    }
                 }
 
                 if (daysSince(lead.getTimestamp()) < 1) {
@@ -188,28 +193,12 @@ public class LeadsFragment extends RaisingFragment {
                     earlier.add(lead);
                     earlierLayout.setVisibility(View.VISIBLE);
                 }
-                manageListTitlesVisibility();
             }
         });
 
         todayAdapter.notifyDataSetChanged();
         thisWeekAdapter.notifyDataSetChanged();
         earlierAdapter.notifyDataSetChanged();
-    }
-
-    /**
-     * Manage the visibility of the recycler view titles
-     */
-    private void manageListTitlesVisibility() {
-        if (today.size() != 0 && (thisWeek.size() != 0 || earlier.size() != 0)) {
-            todayLayoutTitle.setVisibility(View.VISIBLE);
-        }
-        if (thisWeek.size() != 0 && (today.size() != 0 || earlier.size() != 0)) {
-            thisWeekLayoutTitle.setVisibility(View.VISIBLE);
-        }
-        if(earlier.size() != 0 && (today.size() != 0 || thisWeek.size() != 0)) {
-            earlierLayoutTitle.setVisibility(View.VISIBLE);
-        }
     }
 
     /**

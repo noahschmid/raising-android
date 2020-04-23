@@ -60,8 +60,8 @@
     <string name="toolbar_title_profile_information"> Profile Information</string>
     <string name="register_profile_country"> Country* </string>
     <string name="register_profile_website"> Website </string>
-    <string name="register_profile_company"> Company* </string>
-    <string name="register_profile_phone"> Phone Number </string>
+    <string name="register_profile_company"> Company </string>
+    <string name="register_profile_phone"> Phone Number* </string>
 
     <string name="toolbar_title_matching_criteria"> Matching Criteria</string>
     <string name="register_matching_ticket_size"> Ticket Size </string>
@@ -86,7 +86,7 @@
     <string name="toolbar_title_company_information"> Company Information </string>
     <string name="register_company_name"> Company* </string>
     <string name="register_company_uid"> UID* </string>
-    <string name="register_company_phone"> Phone Number </string>
+    <string name="register_company_phone"> Phone Number* </string>
     <string name="register_company_website"> Website </string>
     <string name="register_company_country"> Country* </string>
     <string name="register_uid_snackbar_find"> Find UID </string>
@@ -141,14 +141,19 @@
 
     <string name="leads_open_requests"> Open Requests </string>
     <string name="leads_open_requests_description"> Accept or decline requests </string>
-
     <string name="leads_tab_today"> Today </string>
     <string name="leads_tab_this_week"> This Week </string>
+    <string name="leads_tab_earlier">Earlier</string>
+    <string name="leads_no_handshake_dialog_title"> Contact not unlocked </string>
+    <string name="leads_no_handshake_dialog_text"> Please establish a handshake before contacting someone</string>
 
     <string name="toolbar_title_open_requests"> Open Requests</string>
     <string name="leads_no_open_requests"> You currently don\'t have any open requests!</string>
 
     <string name="toolbar_title_contact"> Contact </string>
+
+    <string name="leads_contact_disabled_contact_text"> Please establish a Handshake before contacting a person </string>
+    <string name="leads_contact_declined_contact_text"> The Handshake has been declined. Therefore no Contact can be initiated</string>
 
     <string name="leads_contact_coffee"> Drink a Coffee</string>
     <string name="leads_contact_coffee_subject_template"> RAI$ING: Drink a Coffee </string>
@@ -335,5 +340,4 @@
     <string name="continue_text">CONTINUE</string>
     <string name="save_text">SAVE</string>
     <string name="submit">Submit</string>
-    <string name="leads_tab_earlier">Earlier</string>
 </resources>

@@ -10,35 +10,48 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.raising.app.R;
 import com.raising.app.models.leads.Lead;
+import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.InternalStorageHandler;
 
 import java.util.ArrayList;
 
-public class HandshakeOpenRequestAdapter extends RecyclerView.Adapter<HandshakeOpenRequestAdapter.ViewHolder> {
+public class LeadsOpenRequestAdapter extends RecyclerView.Adapter<LeadsOpenRequestAdapter.ViewHolder> {
     private ArrayList<Lead> recyclerItems;
     private OnClickListener clickListener;
     private OnItemClickListener itemClickListener;
 
-    public HandshakeOpenRequestAdapter(ArrayList<Lead> recyclerItems) {
+    public LeadsOpenRequestAdapter(ArrayList<Lead> recyclerItems) {
         this.recyclerItems = recyclerItems;
     }
 
     @NonNull
     @Override
-    public HandshakeOpenRequestAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public LeadsOpenRequestAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
        View view = LayoutInflater.from(parent.getContext())
                .inflate(R.layout.item_lead_open_request, parent, false);
        return new ViewHolder(view, clickListener, itemClickListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HandshakeOpenRequestAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull LeadsOpenRequestAdapter.ViewHolder holder, int position) {
         Lead recyclerItem = recyclerItems.get(position);
 
         holder.name.setText(recyclerItem.getTitle());
         holder.attribute.setText(recyclerItem.getAttribute());
-        // holder.image.setImageBitmap(recyclerItem.getBitmap());
+
+        Glide
+                .with(InternalStorageHandler.getContext())
+                .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                        recyclerItem.getProfilePictureId())
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .placeholder(R.drawable.ic_person_24dp)
+                .into(holder.image);
     }
 
     @Override
