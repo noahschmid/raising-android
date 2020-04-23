@@ -3,7 +3,7 @@
 
     <!-- Strings used in bottom navigation -->
     <string name="navigation_matches"> Matches </string>
-    <string name="navigation_handshakes"> Handshakes </string>
+    <string name="navigation_leads"> Leads </string>
     <string name="navigation_profile"> Profile </string>
     <string name="navigation_settings"> Settings </string>
 
@@ -13,26 +13,212 @@
     <string name="cancel_text"> Cancel </string>
     <string name="remove_text"> Remove </string>
     <string name="add_text"> Add </string>
+    <string name="accept_text"> Accept </string>
+    <string name="decline_text"> Decline </string>
+    <string name="declined_text"> Declined </string>
+    <string name="request_text"> Request </string>
+    <string name="requested_text"> Requested </string>
+    <string name="confirm_text"> Confirm </string>
+    <string name="got_it_text"> Got it </string>
+
+    <string name="simple_dialog_invalid_input_title">Invalid inputs</string>
 
     <string name="general_dialog_error_title"> Error occurred! </string>
     <string name="general_dialog_error_text"> Something went wrong. Please try again </string>
 
-    <!-- Strings used in LoginScreen -->
+    <!-- Strings used for Login, ForgotPassword -->
+    <string name="toolbar_title_login"> Login </string>
     <string name="login_welcome_text"> Welcome to Raising </string>
     <string name="login_button_text"> Login </string>
     <string name="login_email"> E-Mail </string>
     <string name="login_password"> Password</string>
-
-    <string name="login_forgot_button_text"> Forgot password? </string>
-    <string name="login_register_text"> No account? </string>
-
+    <string name="login_forgot_button_text"> Forgot Password? </string>
+    <string name="login_register_text"> No Account? </string>
     <string name="login_dialog_title"> Login failed </string>
     <string name="login_dialog_text_403"> Incorrect username or password </string>
     <string name="login_dialog_text_empty_credentials"> Please fill out all required fields </string>
 
+    <string name="toolbar_title_forgot_email"> Forgot Password</string>
+
+    <string name="toolbar_title_reset_password"> Reset Password </string>
+
+    <string name="toolbar_title_contact_details"> Complete your Profile </string>
+
+
+    <!-- Strings used for Registration -->
+    <string name="toolbar_title_login_information"> Login Information</string>
+    <string name="register_first_name"> First Name* </string>
+    <string name="register_last_name"> Last Name* </string>
+    <string name="register_email"> E-Mail* </string>
+    <string name="register_password"> Password* </string>
+
+    <string name="toolbar_title_account_type"> Type of Account </string>
+    <string name="register_select_type_text"> Are you a startup or an investor? </string>
+    <string name="register_select_investor_button"> Investor </string>
+    <string name="register_select_startup_button"> Start Up</string>
+
+    <string name="toolbar_title_profile_information"> Profile Information</string>
+    <string name="register_profile_country"> Country* </string>
+    <string name="register_profile_website"> Website </string>
+    <string name="register_profile_company"> Company </string>
+    <string name="register_profile_phone"> Phone Number* </string>
+
+    <string name="toolbar_title_matching_criteria"> Matching Criteria</string>
+    <string name="register_matching_ticket_size"> Ticket Size </string>
+    <string name="register_matching_investor"> Type of investor </string>
+    <string name="register_matching_phase"> Phase </string>
+    <string name="register_matching_industry"> Industry </string>
+    <string name="register_matching_support"> Desired involvement </string>
+    <string name="register_matching_geographics_input"> Geographic preferences </string>
+    <string name="register_matching_geographics"> Geographics </string>
+
+    <string name="toolbar_title_pitch"> Pitch </string>
+    <string name="register_pitch_sentence"> Description* </string>
+    <string name="register_sentence_helper_text"> Describe yourself in one sentence.</string>
+    <string name="register_pitch"> Pitch* </string>
+    <string name="register_pitch_helper_text"> Write a pitch in less than 250 words.</string>
+    <string name="register_pitch_error_long_sentence"> One sentence should not exceed the given maximum length </string>
+    <string name="register_pitch_error_long_pitch"> Pitch should not exceed the given maximum length</string>
+    <string name="register_error_word_limit_overflow"> You have exceeded your word limit! </string>
+
+    <string name="toolbar_title_profile_images"> Images </string>
+
+    <string name="toolbar_title_company_information"> Company Information </string>
+    <string name="register_company_name"> Company* </string>
+    <string name="register_company_uid"> UID* </string>
+    <string name="register_company_phone"> Phone Number* </string>
+    <string name="register_company_website"> Website </string>
+    <string name="register_company_country"> Country* </string>
+    <string name="register_uid_snackbar_find"> Find UID </string>
+    <string name="register_uid_link"> https://www.bfs.admin.ch/bfs/en/home/register/unternehmensregister/unternehmens-identifikationsnummer.html </string>
+    <string name="register_uid_helper_text"> UID is a national identification number for all companies. </string>
+
+    <string name="toolbar_title_company_figures"> Facts and Figures </string>
+    <string name="register_company_revenue"> Revenue* </string>
+    <string name="register_company_breakeven"> Break-Even Year* </string>
+    <string name="register_company_fte"> FTE* </string>
+    <string name="register_company_markets"> Current Markets* </string>
+    <string name="register_company_founding_year"> Founding Year* </string>
+    <string name="register_fte_helper_text"> FTE stands for Full Time Employees</string>
+    <string name="register_company_error_fte">FTE should be greater than 0</string>
+    <string name="register_company_error_break_even"> Break-Even Year should be after the Founding Year </string>
+
+    <string name="toolbar_title_labels"> Labels </string>
+    <string name="register_label_sef4kmu"> SEF4KMU </string>
+    <string name="register_label_venture_kick"> Venture Kick </string>
+    <string name="register_label_innosuisse"> Innosuisse </string>
+    <string name="register_label_swissef_upscaler"> SwissEF Upscaler </string>
+
+    <string name="toolbar_title_video"> Video </string>
+
+    <string name="toolbar_title_financial_requirements"> Financial Requirements </string>
+    <string name="register_financial_type"> Type* </string>
+    <string name="register_financial_valuation"> Pre Money Valuation </string>
+    <string name="register_financial_closing_time"> Closing Time* </string>
+    <string name="register_financial_scope"> Scope </string>
+    <string name="register_financial_scope_"> Scope* </string>
+    <string name="register_financial_completed">Completed</string>
+    <string name="register_completed_helper_text"> Have you completed some of your target scope? </string>
+    <string name="register_financial_error_completed"> Completed should not be greater than Scope </string>
+
+    <string name="toolbar_title_stakeholder"> Stakeholder </string>
+    <string name="toolbar_title_founder"> Add a Founder</string>
+    <string name="toolbar_title_edit_founder"> Edit Founder </string>
+    <string name="toolbar_title_board"> Add a Board Member</string>
+    <string name="toolbar_title_edit_board"> Edit Board Member </string>
+    <string name="toolbar_title_shareholder"> Add a Shareholder</string>
+    <string name="toolbar_title_edit_shareholder"> Edit Shareholder </string>
+
+    <!-- Strings used for Match List, Handshakes, Settings -->
+    <string name="toolbar_title_match_list"> Matches of the Week </string>
+    <string name="empty_matchList_text"> You are done! </string>
+    <string name="empty_matchList_text_2"> Enjoy the rest of your week! </string>
+
+    <string name="toolbar_title_leads"> Leads </string>
+    <string name="leads_your_turn"> Your turn </string>
+    <string name="leads_pending"> Pending </string>
+    <string name="leads_closed"> Closed </string>
+
+    <string name="leads_open_requests"> Open Requests </string>
+    <string name="leads_open_requests_description"> Accept or decline requests </string>
+    <string name="leads_tab_today"> Today </string>
+    <string name="leads_tab_this_week"> This Week </string>
+    <string name="leads_tab_earlier">Earlier</string>
+    <string name="leads_no_handshake_dialog_title"> Contact not unlocked </string>
+    <string name="leads_no_handshake_dialog_text"> Please establish a handshake before contacting someone</string>
+
+    <string name="toolbar_title_open_requests"> Open Requests</string>
+    <string name="leads_no_open_requests"> You currently don\'t have any open requests!</string>
+
+    <string name="toolbar_title_contact"> Contact </string>
+
+    <string name="leads_contact_disabled_contact_text"> Please establish a Handshake before contacting a person </string>
+    <string name="leads_contact_declined_contact_text"> The Handshake has been declined. Therefore no Contact can be initiated</string>
+
+    <string name="leads_contact_coffee"> Drink a Coffee</string>
+    <string name="leads_contact_coffee_subject_template"> RAI$ING: Drink a Coffee </string>
+    <string name="leads_contact_coffee_body_template"> We have matched on RAI$ING. Let us drink a coffee. </string>
+    <string name="leads_contact_business_plan_subject_template"> RAI$ING: Send Business Plan </string>
+    <string name="leads_contact_business_plan_body_template"> We have matched on RAI$ING. Let us exchange business plans. </string>
+    <string name="leads_contact_mail_subject_template"> RAI$ING: Send E-Mail </string>
+    <string name="leads_contact_mail_body_template"> We have matched on RAI$ING.</string>
+
+    <string name="leads_contact_businessplan"> Read Business Plan</string>
+    <string name="leads_contact_phone">Phone Call</string>
+    <string name="leads_contact_email"> Send Email</string>
+    <string name="leads_contact_video"> Video-Conference</string>
+
+    <string name="leads_contact_requested"> Requested </string>
+    <string name="leads_contact_interact"> Contact </string>
+    <string name="leads_contact_save_contact"> Save to Contacts</string>
+
+
+    <string name="toolbar_title_settings"> Settings </string>
+
+    <!-- Strings used for Profile -->
+    <string name="toolbar_title_my_profile"> My Profile </string>
+
+    <!-- Strings used for profile -->
+    <string name="myProfile_account_information"> Account Information </string>
+    <string name="myProfile_subscription_plan"> Subscription Plan </string>
+    <string name="myProfile_watch_public_profile"> See my public profile </string>
+    <string name="myProfile_apply_changes"> Apply Changes </string>
+    <string name="startup_profile_key_figures"> Key Figures </string>
+    <string name="startup_profile_financial_requirements"> Financial Requirements </string>
+
+    <!-- Strings used in public profile -->
+    <string name="public_profile_website"> Read more on their website </string>
+    <string name="public_profile_matching_information"> Matching Information </string>
+
+    <string name="investor_matching_scope"> Investment Scope </string>
+    <string name="investor_matching_min_ticket"> Minimal Ticket Size </string>
+    <string name="investor_matching_max_ticket"> Maximal Ticket Size </string>
+    <string name="investor_matching_investor_type"> Investor Type </string>
+    <string name="investor_matching_phase"> Preferred Investment Phases </string>
+    <string name="investor_matching_industry"> Interested in these Industries </string>
+    <string name="investor_matching_involvement"> Desired Form of Involvement </string>
+
+    <string name="public_profile_pitch"> Pitch:</string>
+    <string name="startup_public_profile_revenue"> Revenue </string>
+    <string name="startup_public_profile_break_even"> Break-Even Year </string>
+    <string name="startup_public_profile_founding_year"> Founding Year </string>
+    <string name="startup_public_profile_markets"> Current Markets </string>
+    <string name="startup_public_profile_fte"> FTE </string>
+    <string name="startup_public_profile_type"> Type of investment </string>
+    <string name="startup_public_profile_valuation"> Pre Money Valuation </string>
+    <string name="startup_public_profile_closing_time"> Closing Time </string>
+    <string name="startup_public_profile_completed"> Completed </string>
+    <string name="startup_public_profile_founder"> Founders </string>
+    <string name="startup_public_profile_education"> Education </string>
+    <string name="startup_public_profile_profession"> Profession </string>
+    <string name="startup_public_profile_member_since"> Member Since </string>
+    <string name="startup_public_profile_board_member"> Members of the board </string>
+
+    <string name="startup_shareholder_chart_title"> Shareholder Equity Shares </string>
+
     <!-- Strings used in ForgotPasswordScreens -->
-    <string name="reset_email_input_placeholder"> Email.. </string>
-    <string name="forgot_button_sendEmail"> Reset password </string>
+    <string name="reset_email_input_placeholder"> E-Mail </string>
+    <string name="forgot_button_sendEmail"> Send E-Mail </string>
     <string name="forgot_dialog_title_no_input"> No input </string>
     <string name="forgot_dialog_text_no_input"> You must enter a valid address </string>
 
@@ -43,116 +229,50 @@
     <string name="reset_code_input_placeholder"> Reset Code</string>
     <string name="reset_button_text"> Reset Password </string>
 
-    <string name="reset_dialog_title_no_input">Invalid inputs</string>
     <string name="reset_dialog_text_no_input">You have to enter a code and a new password!</string>
 
-    <!-- Strings used in Registration -->
-    <string name="register_select_type_text"> Are you a startup or an investor? </string>
-    <string name="register_select_investor_button"> Investor </string>
-    <string name="register_select_startup_button"> Start Up</string>
-
-    <string name="register_login_information_text"> Login Information </string>
-    <string name="register_first_name"> First Name </string>
-    <string name="register_last_name"> Last Name </string>
-    <string name="register_email"> Email </string>
-    <string name="register_password"> Password </string>
-
-    <string name="register_company_information_text"> Company Information </string>
-    <string name="register_company_name"> Company </string>
-    <string name="register_company_uid"> UID </string>
-    <string name="register_company_revenue"> Revenue (CHF) </string>
-    <string name="register_company_breakeven"> Breakeven Year </string>
-    <string name="register_company_fte"> FTE </string>
-    <string name="register_company_markets"> Current Markets </string>
-    <string name="register_company_founding_year"> Founding Year </string>
-    <string name="register_company_phone">Phone Number</string>
-    <string name="register_company_website">Website</string>
-    <string name="register_company_country">Country</string>
-
-    <string name="register_address_information_text"> Address Information</string>
-    <string name="register_address_country"> Country </string>
-    <string name="register_address_city"> City </string>
-    <string name="register_address_zip"> ZIP-Code </string>
-    <string name="register_address_street"> Street </string>
-    <string name="register_address_website"> Website </string>
-
-    <string name="register_profile_information_text"> Profile Information</string>
-    <string name="register_profile_country"> Country </string>
-    <string name="register_profile_website"> Website </string>
-    <string name="register_profile_company"> Company </string>
-    <string name="register_profile_phone">Phone Number</string>
-
-    <string name="register_matching_information_text"> Matching Criteria </string>
-    <string name="register_matching_scope"> Scope </string>
-    <string name="register_matching_ticket_size"> Ticket Size </string>
-    <string name="register_matching_scope_"> Scope (CHF) </string>
-    <string name="register_matching_investor"> Type of investor </string>
-    <string name="register_matching_phase"> Phase </string>
-    <string name="register_matching_industry"> Industry </string>
-    <string name="register_matching_support"> Desired involvement </string>
-    <string name="register_matching_geographics_input"> Geographic preferences </string>
-
-    <string name="register_matching_geographics"> Geographics </string>
-    <string name="register_matching_continents"> Continents </string>
-    <string name="register_matching_countries"> Countries </string>
-
     <string-array name="revenue_units">
-        <item>k</item>
+        <item>K</item>
         <item>M</item>
         <item>B</item>
     </string-array>
 
-    <string name="register_pitch_information_text"> Pitch </string>
-    <string name="register_pitch_sentence"> One sentence description </string>
-    <string name="register_pitch"> Your pitch </string>
-    <string name="register_pitch_label_information_text"> Labels </string>
-    <string name="register_label_sef4kmu"> SEF4KMU </string>
-    <string name="register_label_venture_kick"> Venture Kick </string>
-    <string name="register_label_innosuisse"> Innosuisse </string>
-    <string name="register_label_swissef_upscaler"> SwissEF Upscaler </string>
-    <string name="register_error_word_limit_overflow"> You have exceeded your word limit! </string>
-
-    <string name="register_financial_information_text"> Financial Requirements </string>
-    <string name="register_financial_type"> Type </string>
-    <string name="register_financial_valuation"> Valuation (CHF) </string>
-    <string name="register_financial_valuation_helper"> optional </string>
-    <string name="register_financial_closing_time"> Closing Time </string>
-    <string name="register_financial_completed">Completed</string>
-
     <string name="register_stakeholder_information_text"> Stakeholders </string>
     <string name="register_stakeholder_founder_add"> Add Founder</string>
     <string name="register_stakeholder_founder_information_text"> Add a founder </string>
-    <string name="register_stakeholder_founder"> Founder </string>
-    <string name="register_stakeholder_first_name"> First Name </string>
-    <string name="register_stakeholder_last_name"> Last Name </string>
-    <string name="register_stakeholder_name"> Name </string>
-    <string name="register_stakeholder_position"> Position </string>
-    <string name="register_stakeholder_education"> Education </string>
-    <string name="register_stakeholder_board_member"> Member of the board </string>
+    <string name="register_stakeholder_founder"> Founders* </string>
+    <string name="register_stakeholder_first_name"> First Name* </string>
+    <string name="register_stakeholder_last_name"> Last Name* </string>
+    <string name="register_stakeholder_name"> Name* </string>
+    <string name="register_stakeholder_position"> Position* </string>
+    <string name="register_stakeholder_education"> Education* </string>
+    <string name="register_stakeholder_board_member"> Members of the board* </string>
     <string name="register_stakeholder_board_member_add"> Add Board Member </string>
     <string name="register_stakeholder_board_member_information_text"> Add a member of the board </string>
-    <string name="register_stakeholder_profession"> Profession </string>
-    <string name="register_stakeholder_member_since"> Member Since </string>
-    <string name="register_stakeholder_shareholder"> Shareholder </string>
+    <string name="register_stakeholder_profession"> Profession* </string>
+    <string name="register_stakeholder_member_since"> Member Since* </string>
+    <string name="register_stakeholder_shareholder"> Shareholders </string>
     <string name="register_stakeholder_shareholder_add"> Add Shareholder </string>
     <string name="register_stakeholder_shareholder_information_text"> Add a shareholder </string>
     <string name="register_stakeholder_shareholder_private"> Private Shareholder </string>
-    <string name="register_stakeholder_shareholder_country"> Country </string>
-    <string name="register_stakeholder_shareholder_equity"> Equity Share (%) </string>
+    <string name="register_stakeholder_shareholder_country"> Country* </string>
+    <string name="register_stakeholder_shareholder_equity"> Equity Share(%)* </string>
     <string name="register_stakeholder_shareholder_corporate"> Corporate Shareholder </string>
-    <string name="register_stakeholder_shareholder_corporate_body"> Corporate Body </string>
+    <string name="register_stakeholder_shareholder_corporate_body"> Corporate Body* </string>
     <string name="register_stakeholder_shareholder_website"> Website </string>
+    <string name="register_stakeholder_error_equity"> Shareholders have more than 100% equity share.</string>
 
     <string name="register_images_information_text"> Images </string>
-    <string name="register_images_add_profile_text"> Add a profile picture </string>
+    <string name="register_images_add_profile_text"> Add a profile picture* </string>
     <string name="register_images_add_gallery"> Add a picture to your gallery </string>
     <string name="register_images_video_information_text"> Video Pitch </string>
-    <string name="image_floating_menu_select_image"> Import image </string>
-    <string name="image_floating_menu_take_image"> Take image </string>
-    <string name="gallery_floating_menu_delete_image"> Delete </string>
+    <string name="image_action_dialog_title"> Select an Option </string>
+    <string name="image_action_dialog_choose"> Choose from Gallery </string>
+    <string name="image_action_dialog_take"> Take Picture </string>
 
     <string name="register_button_text"> CONTINUE </string>
     <string name="register_button_finish_text"> FINISH </string>
+
     <string name="text_register"> Register now </string>
 
     <string name="register_dialog_title"> Invalid inputs </string>
@@ -185,4 +305,12 @@
     <string name="register_images_add_video_text">Add a video pitch</string>
     <string name="register_video_information_text">Video Pitch</string>
     <string name="register_stakeholder_shareholder_type">Investor Type</string>
+    <string name="not_logged_in_title">Login needed</string>
+    <string name="not_logged_in_text">You are not logged in!</string>
+    <string name="no_profile_text">Looks like you have no profile yet!</string>
+    <string name="contact_input_title">Complete your profile</string>
+    <string name="contact_input_description">Seems like we\'ve lost some information about you! Please fill in the missing details so you can continue using Raising.</string>
+    <string name="continue_text">CONTINUE</string>
+    <string name="save_text">SAVE</string>
+    <string name="submit">Submit</string>
 </resources>

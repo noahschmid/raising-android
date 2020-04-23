@@ -31,14 +31,12 @@ public class Startup extends Account implements Serializable {
     private long financeTypeId = -1;
     private int raised;
 
-    private List<InvestorType> investorTypes;
-    private List<Label> labels;
+    private List<Long> investorTypes;
+    private List<Long> labels;
     private List<BoardMember> boardMembers;
-    private Contact contact;
     private List<Founder> founders;
     private List<Shareholder> privateShareholders;
     private List<Shareholder> corporateShareholders;
-    private int countryId;
 
     public Startup() {
         investorTypes = new ArrayList<>();
@@ -56,8 +54,8 @@ public class Startup extends Account implements Serializable {
     public void clearPrivateShareholders() { privateShareholders.clear(); }
     public void clearCorporateShareholders() { corporateShareholders.clear(); }
 
-    public void addLabel(Label label) { labels.add(label); }
-    public void addInvestorType(InvestorType type) { investorTypes.add(type); }
+    public void addLabel(Long label) { labels.add(label); }
+    public void addInvestorType(Long type) { investorTypes.add(type); }
     public void addBoardMember(BoardMember boardMember) { boardMembers.add(boardMember); }
     public void addFounder(Founder founder) { founders.add(founder); }
     public void addPrivateShareholder(Shareholder privateShareholder) {

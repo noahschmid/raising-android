@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/overlay_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.leads.LeadsContactExchangeFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/leads_contact_picture"
+                android:layout_width="@dimen/leadsContactPictureSize"
+                android:layout_height="@dimen/leadsContactPictureSize"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                app:layout_constraintBottom_toTopOf="@+id/leads_contact_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.6"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/leads_contact_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:text="Name"
+                android:textColor="@color/raisingTextColorDark"
+                android:textSize="@dimen/raisingTitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/leads_contact_mail"
+                app:layout_constraintEnd_toEndOf="@+id/leads_contact_picture"
+                app:layout_constraintStart_toStartOf="@+id/leads_contact_picture"
+                app:layout_constraintTop_toBottomOf="@+id/leads_contact_picture" />
+
+            <TextView
+                android:id="@+id/leads_contact_mail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardVerticalMarginSmall"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                android:text="E-Mail"
+                android:textColor="@color/raisingTextColorDark"
+                android:textSize="@dimen/raisingTextFontSize"
+                app:layout_constraintBottom_toTopOf="@+id/button_leads_contact_interact"
+                app:layout_constraintEnd_toEndOf="@+id/leads_contact_name"
+                app:layout_constraintStart_toStartOf="@+id/leads_contact_name"
+                app:layout_constraintTop_toBottomOf="@+id/leads_contact_name" />
+
+            <Button
+                android:id="@+id/button_leads_contact_interact"
+                style="@style/GeneralButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/leads_contact_interact"
+                app:layout_constraintBottom_toTopOf="@+id/leads_contact_save_contact"
+                app:layout_constraintEnd_toEndOf="@+id/leads_contact_mail"
+                app:layout_constraintStart_toStartOf="@+id/leads_contact_mail"
+                app:layout_constraintTop_toBottomOf="@+id/leads_contact_mail" />
+
+            <TextView
+                android:id="@+id/leads_contact_save_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/leads_contact_save_contact"
+                android:textColorHint="@color/raisingActionBlue"
+                android:textSize="@dimen/raisingTextFontSize"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/button_leads_contact_interact"
+                app:layout_constraintStart_toStartOf="@+id/button_leads_contact_interact"
+                app:layout_constraintTop_toBottomOf="@+id/button_leads_contact_interact"
+                app:layout_constraintVertical_bias="0.0" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</FrameLayout>

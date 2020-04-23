@@ -33,6 +33,7 @@ public class ForgotPasswordFragment extends RaisingFragment implements View.OnCl
         emailInput = view.findViewById(R.id.forgot_input_email);
 
         hideBottomNavigation(true);
+        customizeAppBar(getString(R.string.toolbar_title_forgot_email), true);
 
         Button btnSend = view.findViewById(R.id.button_forgot_reset);
         btnSend.setOnClickListener(this);

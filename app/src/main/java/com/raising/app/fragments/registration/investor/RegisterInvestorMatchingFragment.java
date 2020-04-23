@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -22,13 +21,10 @@ import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Continent;
 import com.raising.app.models.Country;
 import com.raising.app.models.Investor;
-import com.raising.app.models.Model;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class RegisterInvestorMatchingFragment extends RaisingFragment
@@ -45,10 +41,13 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
     private View fragmentView;
     private long investorType = -1;
     public ArrayList<PickerItem> pickerItems;
+    private Investor investor;
 
     private int minimumTicketSize, maximumTicketSize;
     private int [] ticketSizeSteps;
     private String [] ticketSizeStrings;
+
+    private boolean editMode = false;
 
 
     @Override
@@ -58,6 +57,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                 container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar(getString(R.string.toolbar_title_matching_criteria), true);
 
         return view;
     }
@@ -72,16 +72,29 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
         ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
 
-        Investor investor = RegistrationHandler.getInvestor();
+        Button btnInvestorMatching = view.findViewById(R.id.button_investor_matching);
+        btnInvestorMatching.setOnClickListener(this);
+
+        investor = null;
+
+        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
+            btnInvestorMatching.setHint(getString(R.string.myProfile_apply_changes));
+            investor = (Investor) accountViewModel.getAccount().getValue();
+            editMode = true;
+            hideBottomNavigation(false);
+        } else {
+            investor = RegistrationHandler.getInvestor();
+        }
 
         pickerItems = new ArrayList<>();
-        pickerItems.addAll(ResourcesManager.getContinents());
-        pickerItems.addAll(ResourcesManager.getCountries());
+        pickerItems.addAll(resources.getContinents());
+        pickerItems.addAll(resources.getCountries());
 
-        ticketSizeStrings = ResourcesManager.getTicketSizeStrings(getString(R.string.currency),
+        ticketSizeStrings = resources.getTicketSizeStrings(getString(R.string.currency),
                 getResources().getStringArray(R.array.revenue_units));
 
-        ticketSizeSteps = ResourcesManager.getTicketSizeValues();
+        ticketSizeSteps = resources.getTicketSizeValues();
 
         prepareTicketSizeSlider(view);
 
@@ -111,48 +124,57 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
         customPicker = builder.build();
 
-        geographicsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(customPicker.instanceRunning())
-                    customPicker.dismiss();
+        geographicsButton.setOnClickListener(v -> {
+            if(customPicker.instanceRunning())
+                customPicker.dismiss();
 
-                customPicker.showDialog(getActivity());
-            }
+            customPicker.showDialog(getActivity());
         });
+
+        // restore selected countries/continents
+        ArrayList<Long> selected = new ArrayList<>();
+
+        if(investor.getContinents().size() > 0) {
+            selected.addAll(investor.getContinents());
+        }
+
+        if(investor.getCountries().size() > 0) {
+            selected.addAll(investor.getCountries());
+        }
+
+        if(selected.size() > 0) {
+            customPicker.setSelectedById(selected);
+        }
 
         setupLists();
         restoreLists();
-
-        Button btnInvestorMatching = view.findViewById(R.id.button_investor_matching);
-        btnInvestorMatching.setOnClickListener(this);
     }
 
     /**
      * Load all necessary items into list
      */
     private void setupLists() {
-        setupCheckboxes(ResourcesManager.getInvestmentPhases(), investmentPhaseLayout);
-        setupCheckboxes(ResourcesManager.getIndustries(), industryLayout);
-        setupRadioGroup(ResourcesManager.getInvestorTypes(), investorTypeGroup);
-        setupCheckboxes(ResourcesManager.getSupports(), supportLayout);
+        setupCheckboxes(resources.getInvestmentPhases(), investmentPhaseLayout);
+        setupCheckboxes(resources.getIndustries(), industryLayout);
+        setupRadioGroup(resources.getInvestorTypes(), investorTypeGroup);
+        setupCheckboxes(resources.getSupports(), supportLayout);
     }
 
     /**
-     * Restore values of lists from previous entered data (saved in RegistrationHandler)
+     * Restore values of lists from previous entered data
      */
     private void restoreLists() {
-        Investor investor = RegistrationHandler.getInvestor();
         investorType = investor.getInvestorTypeId();
-        investor.getInvestmentPhases().forEach(phase ->
-                tickCheckbox(investmentPhaseLayout, phase.getId()));
+        investor.getInvestmentPhases().forEach(phase -> {
+            tickCheckbox(investmentPhaseLayout, phase);
+        });
         investor.getIndustries().forEach(industry ->
-                tickCheckbox(industryLayout, industry.getId()));
+                tickCheckbox(industryLayout, industry));
 
         tickRadioButton(investorTypeGroup, investor.getInvestorTypeId());
 
         investor.getSupport().forEach(support ->
-                tickCheckbox(supportLayout, support.getId()));
+                tickCheckbox(supportLayout, support));
     }
 
 
@@ -174,6 +196,12 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
         }
     }
 
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
+    }
+
     /**
      * Check if all information is valid and save it
      */
@@ -184,24 +212,24 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             return;
         }
 
-        int ticketSizeMinId =  (int)ResourcesManager.getTicketSizes().get(
-                (int)ticketSize.getMinimumValue() - 1).getId();
+        investor.setTicketMinId((int)resources.getTicketSizes().get(
+                (int)ticketSize.getMinimumValue() - 1).getId());
 
-        int ticketSizeMaxId =  (int)ResourcesManager.getTicketSizes().get(
-                (int)ticketSize.getMaximumValue() - 1).getId();
+        investor.setTicketMaxId((int)resources.getTicketSizes().get(
+                (int)ticketSize.getMaximumValue() - 1).getId());
 
         ArrayList<Long> industries = getSelectedCheckboxIds(industryLayout);
         ArrayList<Long> investmentPhases = getSelectedCheckboxIds(investmentPhaseLayout);
         ArrayList<Long> support = getSelectedCheckboxIds(supportLayout);
 
-        ArrayList<Country> countries = new ArrayList<>();
-        ArrayList<Continent> continents = new ArrayList<>();
+        ArrayList<Long> countries = new ArrayList<>();
+        ArrayList<Long> continents = new ArrayList<>();
 
         // only add child objects (countries) if parent object (continent) isn't selected
         // otherwise only add parent object
-        pickerItems.forEach(item -> {
-            if(item instanceof Continent && item.isChecked()) {
-                continents.add((Continent)item);
+        customPicker.getResult().forEach(item -> {
+            if(item instanceof Continent) {
+                continents.add(item.getId());
                 pickerItems.forEach(i -> {
                     if(i instanceof Country) {
                         i.setChecked(false);
@@ -209,8 +237,8 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                 });
             }
 
-            if(item instanceof Country && item.isChecked()) {
-                countries.add((Country)item);
+            if(item instanceof Country) {
+                countries.add(item.getId());
             }
         });
 
@@ -221,13 +249,24 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             return;
         }
 
+        investor.setInvestmentPhases(investmentPhases);
+        investor.setIndustries(industries);
+        investor.setSupport(support);
+        investor.setContinents(continents);
+        investor.setCountries(countries);
+        investor.setInvestorTypeId(investorType);
+
         try {
-            RegistrationHandler.saveInvestorMatchingFragment(ticketSizeMinId, ticketSizeMaxId,
-                    investorType, investmentPhases, industries, support, countries, continents);
-            changeFragment(new RegisterInvestorPitchFragment(),
-                    "RegisterInvestorPitchFragment");
-        } catch (IOException e) {
-            Log.d("debugMessage", e.getMessage());
+            if(!editMode) {
+                RegistrationHandler.saveInvestor(investor);
+                changeFragment(new RegisterInvestorPitchFragment(),
+                        "RegisterInvestorPitchFragment");
+            } else {
+               accountViewModel.update(investor);
+            }
+        } catch (Exception e) {
+            Log.d("RegisterInvestorMatchingFragment",
+                    "Error while saving data: " + e.getMessage());
         }
     }
 
@@ -246,7 +285,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                         (int) slider.getMaximumValue(), (int) slider.getMinimumValue()));
             }
         });
-
+        ticketSize.setValueFrom((float) 1);
         ticketSize.setValueTo(ticketSizeSteps.length);
         ticketSize.setValues(
                 (float) getResources().getInteger(R.integer.ticket_size_slider_min_value),

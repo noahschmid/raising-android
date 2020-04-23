@@ -26,12 +26,10 @@ public class GenericRequest extends JsonObjectRequest {
     @Override
     protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
         try {
-            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-            // here's the new code, if jsonString.length() == 0 don't parse
+            String jsonString = new String(response.data, "UTF-8");
             if (jsonString.length() == 0) {
                 return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
             }
-            // end of patch
             return Response.success(new JSONObject(jsonString), HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));

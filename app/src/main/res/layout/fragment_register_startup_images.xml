@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
+    android:id="@+id/overlay_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.registration.startup.RegisterStartupImagesFragment">
@@ -12,109 +10,33 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:fillViewport="true"
-        app:layout_constraintVertical_bias="1.0">
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-            <LinearLayout
-                android:id="@+id/registration_images_progress"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                android:gravity="center"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/progress_circle_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
-
-                <ImageView
-                    android:id="@+id/progress_circle_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
-
-                <ImageView
-                    android:id="@+id/progress_circle_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
-
-                <ImageView
-                    android:id="@+id/progress_circle_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
-
-                <ImageView
-                    android:id="@+id/progress_circle_5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_full_darkgrey_24dp" />
-
-                <ImageView
-                    android:id="@+id/progress_circle_6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
-
-                <ImageView
-                    android:id="@+id/progress_circle_7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_circle_outline_darkgrey_24dp" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/text_startup_images_information"
-                style="@style/FragmentTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_images_information_text"
-                app:layout_constraintBottom_toTopOf="@+id/text_startup_images_add_profile_picture"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/registration_images_progress"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="packed" />
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/text_startup_images_add_profile_picture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_images_add_profile_text"
-                android:textColorHint="@color/raisingPrimaryTextColor"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textColorHint="@color/raisingTextColor"
+                android:textSize="@dimen/raisingSubtitleFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_image_profile_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_startup_images_information" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <RelativeLayout
                 android:id="@+id/register_startup_image_profile_layout"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
                 app:layout_constraintBottom_toTopOf="@+id/text_startup_images_add_gallery"
                 app:layout_constraintEnd_toEndOf="@+id/text_startup_images_add_profile_picture"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_images_add_profile_picture"
@@ -123,13 +45,14 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                <ImageView
-                    android:id="@+id/register_startup_profile_image"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:background="@drawable/background_profile_picture"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/register_startup_profile_image"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:background="@drawable/background_profile_picture"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -149,7 +72,6 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </FrameLayout>
 
-
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/button_delete_profile_img"
                     android:layout_width="32dp"
@@ -164,128 +86,99 @@
                 android:id="@+id/text_startup_images_add_gallery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_images_add_gallery"
-                android:textColorHint="@color/raisingPrimaryTextColor"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
+                android:textColorHint="@color/raisingTextColor"
+                android:textSize="@dimen/raisingSubtitleFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_images_gallery"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/register_startup_image_profile_layout"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_image_profile_layout"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_image_profile_layout" />
 
             <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/register_startup_images_gallery"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
                 app:alignContent="stretch"
                 app:alignItems="stretch"
                 app:flexWrap="wrap"
-                app:layout_constraintBottom_toTopOf="@+id/text_startup_video_information"
-                app:layout_constraintEnd_toEndOf="@id/text_startup_images_add_profile_picture"
-                app:layout_constraintStart_toStartOf="@id/text_startup_images_add_profile_picture"
+                app:layout_constraintBottom_toTopOf="@+id/registration_images_progress"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_images_add_gallery">
-
-                <ImageView
-                    android:id="@+id/gallery_add"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/background_gallery"
-                    android:src="@drawable/ic_add_24dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
             </com.google.android.flexbox.FlexboxLayout>
 
-            <TextView
-                android:id="@+id/text_startup_video_information"
-                style="@style/FragmentTitle"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/registration_images_progress"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_video_information_text"
-                app:layout_constraintBottom_toTopOf="@+id/register_startup_video_pitch_layout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register_startup_images_gallery" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/button_startup_images"
+                app:layout_constraintEnd_toEndOf="@+id/register_startup_images_gallery"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_images_gallery">
 
-            <TextView
-                android:id="@+id/text_startup_images_add_video_pitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="32dp"
-                android:hint="@string/register_images_add_video_text"
-                android:textColorHint="@color/raisingPrimaryTextColor"
-                android:textSize="@dimen/fragmentSubtitleFontSize"
-                app:layout_constraintBottom_toTopOf="@+id/register_startup_video_pitch_layout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_startup_video_information" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
-            <RelativeLayout
-                android:id="@+id/register_startup_video_pitch_layout"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/background_profile_picture"
-                app:layout_constraintEnd_toEndOf="@+id/text_startup_images_add_profile_picture"
-                app:layout_constraintStart_toStartOf="@+id/text_startup_images_add_profile_picture"
-                app:layout_constraintTop_toBottomOf="@+id/text_startup_images_add_video_pitch">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
-                <FrameLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-                    <VideoView
-                        android:id="@+id/register_startup_video_pitch_video"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_gravity="center"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
-                        <ImageView
-                            android:id="@+id/register_video_overlay"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_add_24dp"
-                            android:visibility="visible"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </FrameLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/button_delete_video_pitch"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@drawable/ic_trash_can_red_32dp"
-                    android:visibility="visible" />
-            </RelativeLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/button_startup_images"
                 style="@style/ButtonConfirmRegistration"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                android:hint="@string/register_button_text"
+                android:layout_height="@dimen/authenticationButtonHeight"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/continue_text"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register_startup_video_pitch_layout" />
+                app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
