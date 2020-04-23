@@ -17,8 +17,11 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.raising.app.R;
 import com.raising.app.fragments.leads.LeadsInteractionFragment;
+import com.raising.app.models.ContactData;
 import com.raising.app.models.leads.Interaction;
 import com.raising.app.models.leads.InteractionState;
+
+import org.json.JSONObject;
 
 import java.util.Objects;
 
@@ -116,7 +119,23 @@ public class LeadsInteraction {
         Drawable drawable = interactionButton.getBackground();
         drawable = DrawableCompat.wrap(drawable);
 
-        ApiRequestHandler.performPostRequest("interaction/" + interaction.);
+        try {
+            JSONObject params = new JSONObject();
+            params.put("interactionId", interaction.getId());
+            params.put("interaction", interaction.getInteractionType().toString());
+            params.put("data", new ContactData());
+            ApiRequestHandler.performPostRequest("interaction/accept",
+                    v -> {
+                        return null;
+                    },
+                    err -> {
+                        Log.e(TAG, "toggleContactButton: " + ApiRequestHandler.parseVolleyError(err) );
+                        return null;
+                    },
+                    params);
+        } catch (Exception e) {
+            Log.e(TAG, "toggleContactButton: " +  e.getMessage());
+        }
 
         switch (interaction.getInteractionState()) {
             case INVESTOR_DECLINED:
