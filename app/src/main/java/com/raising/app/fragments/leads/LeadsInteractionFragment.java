@@ -4,12 +4,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.raising.app.R;
@@ -22,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class eadsInteractionFragment extends RaisingFragment {
+public class LeadsInteractionFragment extends RaisingFragment {
     private long id;
     Lead contact;
     private List<LeadsInteraction> interactions = new ArrayList<>();
@@ -42,12 +44,12 @@ public class eadsInteractionFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (getArguments() != null) {
-            contact = (Lead)getArguments().getSerializable("lead");
+            contact = (Lead) getArguments().getSerializable("lead");
 
-            if(getArguments().getBoolean("disableContact")) {
+            if (getArguments().getBoolean("disableContact")) {
                 disableContact = true;
             }
-            if(getArguments().getBoolean("declinedContact")) {
+            if (getArguments().getBoolean("declinedContact")) {
                 declinedContact = true;
             }
         }
@@ -58,17 +60,22 @@ public class eadsInteractionFragment extends RaisingFragment {
         });
 
         TextView disableContactText = view.findViewById(R.id.leads_contact_disabled_text);
-        LinearLayout contactItemsLayout = view.findViewById(R.id.leads_contact_items_layout);
-        LinearLayout blurOverlay = view.findViewById(R.id.leads_contact_blur_overlay);
+        ConstraintLayout blurOverlay = view.findViewById(R.id.leads_contact_blur_overlay);
         blurOverlay.setVisibility(View.GONE);
-        if(disableContact) {
+        if (disableContact) {
             disableContactText.setText(getString(R.string.leads_contact_disabled_contact_text));
             blurOverlay.setVisibility(View.VISIBLE);
+            interactions.forEach(interaction -> {
+                interaction.enableButton(false);
+            });
         }
 
-        if(declinedContact) {
+        if (declinedContact) {
             disableContactText.setText(getString(R.string.leads_contact_declined_contact_text));
             blurOverlay.setVisibility(View.VISIBLE);
+            interactions.forEach(interaction -> {
+                interaction.enableButton(false);
+            });
         }
     }
 

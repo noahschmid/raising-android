@@ -51,6 +51,10 @@ public class LeadsInteraction {
         layout.addView(interactionView);
     }
 
+    public void enableButton(boolean enabled) {
+        interactionButton.setEnabled(enabled);
+    }
+
     /**
      * Prepare the contact interaction for usage by setting the needed listeners and visibilities
      */
@@ -116,7 +120,7 @@ public class LeadsInteraction {
         Drawable drawable = interactionButton.getBackground();
         drawable = DrawableCompat.wrap(drawable);
 
-        ApiRequestHandler.performPostRequest("interaction/" + interaction.);
+        // ApiRequestHandler.performPostRequest("interaction/" + interaction.);
 
         switch (interaction.getInteractionState()) {
             case INVESTOR_DECLINED:
