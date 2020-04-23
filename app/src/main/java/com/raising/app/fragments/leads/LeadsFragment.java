@@ -28,6 +28,7 @@ import com.raising.app.util.recyclerViewAdapter.LeadsAdapter;
 import com.raising.app.util.recyclerViewAdapter.RecyclerViewMargin;
 import com.raising.app.viewModels.LeadsViewModel;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -146,7 +147,8 @@ public class LeadsFragment extends RaisingFragment {
                 badge.setNumber(leadsViewModel.getOpenRequests().size());
                 BadgeUtils.attachBadgeDrawable(badge, openRequestsArrow, null);
                 openRequests.setOnClickListener(v ->
-                        changeFragment(new LeadsOpenRequestsFragment()));
+                        ((RaisingFragment)getParentFragment())
+                                .changeFragment(new LeadsOpenRequestsFragment()));
             }
         }
         filterLeads();
@@ -219,11 +221,11 @@ public class LeadsFragment extends RaisingFragment {
     /**
      * Calculate difference from given date to today in days
      *
-     * @param date date in the past
+     * @param timestamp timestamp in the past
      * @return difference in days
      */
-    private int daysSince(Date date) {
-        long diffMillis = Math.abs(new Date().getTime() - date.getTime());
+    private int daysSince(Timestamp timestamp) {
+        long diffMillis = Math.abs(new Date().getTime() - timestamp.getTime());
         return (int) TimeUnit.DAYS.convert(diffMillis, TimeUnit.MILLISECONDS);
     }
 }

@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static com.android.volley.VolleyLog.TAG;
+
 public class ApiRequestHandler {
     // -- CHOOSE SERVER --
     private static final boolean CONNECT_TO_DEV_SERVER = true;
@@ -95,11 +97,18 @@ public class ApiRequestHandler {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            Log.d(TAG, "onResponse for " + endpoint);
                             callback.apply(response);
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    if(error.networkResponse != null) {
+                        Log.e(TAG, "onErrorResponse[" + error.networkResponse.statusCode +
+                                "] for " + getDomain() + endpoint);
+                    } else {
+                        Log.e(TAG, "onErrorResponse for " + getDomain() + endpoint);
+                    }
                     errorCallback.apply(error);
                 }
             }){
@@ -140,11 +149,18 @@ public class ApiRequestHandler {
                     new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {
+                            Log.d(TAG, "onResponse for " + endpoint);
                             callback.apply(response);
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    if(error.networkResponse != null) {
+                        Log.e(TAG, "onErrorResponse[" + error.networkResponse.statusCode +
+                                "] for " + endpoint);
+                    } else {
+                        Log.e(TAG, "onErrorResponse for " + endpoint);
+                    }
                     errorCallback.apply(error);
                 }
             }){

@@ -70,24 +70,21 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
             if(openRequests == null || openRequests.size() == 0) {
                 emptyListLayout.setVisibility(View.VISIBLE);
             }
-            openRequests.forEach(openRequest -> {
-                Lead openRequestItem = new Lead();
-                openRequestItem.setId(openRequest.getId());
-                openRequestItem.setStartup(openRequest.isStartup());
-                openRequestItem.setProfilePictureId(openRequest.getProfilePictureId());
-                if (openRequestItem.isStartup()) {
-                    openRequestItem.setTitle(openRequest.getCompanyName());
-                    openRequestItem.setAttribute(resources.getInvestmentPhase(
-                            openRequest.getInvestmentPhaseId()).getName());
+
+            for(int i = 0; i < openRequests.size(); ++i) {
+                Lead request = openRequests.get(i);
+                if (request.isStartup()) {
+                    request.setTitle(request.getCompanyName());
+                    request.setAttribute(resources.getInvestmentPhase(
+                            request.getInvestmentPhaseId()).getName());
                 } else {
-                    openRequestItem.setTitle(openRequest.getFirstName() + " " + openRequest.getLastName());
-                    openRequestItem.setAttribute(resources.getInvestorType(
-                            openRequest.getInvestorTypeId()).getName());
+                    request.setTitle(request.getFirstName() + " " + request.getLastName());
+                    request.setAttribute(resources.getInvestorType(
+                            request.getInvestorTypeId()).getName());
                 }
-                Log.d(TAG, "onViewCreated: Add OpenRequest: " + openRequestItem.getTitle());
-                openRequestItems.add(openRequestItem);
-            });
-            Log.d(TAG, "onViewCreated: OpenRequests filled");
+                Log.d(TAG, "onViewCreated: Add OpenRequest: " + request.getTitle());
+                openRequestItems.add(request);
+            }
         }
 
         RecyclerView recyclerView = view.findViewById(R.id.leads_open_requests_recycler_view);
@@ -109,7 +106,10 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
 
         adapter.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
-            args.putLong("id", openRequestItems.get(position).getId());
+            args.putLong("id", openRequestItems.get(position).getAccountId());
+            args.putInt("score", openRequestItems.get(position).getMatchingPercent());
+            args.putLong("relationshipId", openRequestItems.get(position).getId());
+            args.putString("title", openRequestItems.get(position).getTitle());
             if(openRequestItems.get(position).isStartup()) {
                 Fragment fragment = new StartupPublicProfileFragment();
                 fragment.setArguments(args);

@@ -84,5 +84,4 @@
             app:layout_constraintTop_toTopOf="@+id/item_leads_warning" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </com.google.android.material.card.MaterialCardView>

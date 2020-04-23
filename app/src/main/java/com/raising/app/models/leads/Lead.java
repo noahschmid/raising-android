@@ -3,6 +3,7 @@ package com.raising.app.models.leads;
 import com.raising.app.util.AuthenticationHandler;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -22,7 +23,7 @@ public class Lead implements Serializable {
     private long accountId;
     private long investmentPhaseId;
     private long investorTypeId;
-    private Date timestamp;
+    private Timestamp timestamp;
     private long contactDataId;
 
     private LeadState state;

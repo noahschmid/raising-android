@@ -1,5 +1,10 @@
 package com.raising.app.util;
 
+import android.os.Build;
+import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -14,11 +19,17 @@ import com.raising.app.models.leads.Lead;
 import com.raising.app.models.leads.LeadState;
 
 import java.lang.reflect.Type;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 public class LeadsDeserializer implements JsonDeserializer<Lead> {
+    private static String TAG = "LeadsDeserializer";
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public Lead deserialize(JsonElement json, Type typeOfT,
                 JsonDeserializationContext context) {
@@ -27,7 +38,7 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
             Gson gson = new Gson();
 
             lead.setId(jsonObject.get("id").getAsLong());
-            lead.setAccountId(jsonObject.get("id").getAsLong());
+            lead.setAccountId(jsonObject.get("accountId").getAsLong());
             lead.setHandshakeState(InteractionState.valueOf(jsonObject.get("state").getAsString()));
             lead.setInvestmentPhaseId(jsonObject.get("investmentPhaseId").getAsLong());
             lead.setInvestorTypeId(jsonObject.get("investorTypeId").getAsLong());
@@ -42,7 +53,6 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
             }
             lead.setStartup(jsonObject.get("startup").getAsBoolean());
             lead.setMatchingPercent(jsonObject.get("matchingPercent").getAsInt());
-            lead.setTimestamp(new Date());
             LeadState leadState = LeadState.PENDING;
 
             JsonArray jsonInteractions = jsonObject.get("interactions").getAsJsonArray();
@@ -102,6 +112,16 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
             if(lead.getHandshakeState() == InteractionState.INVESTOR_DECLINED ||
             lead.getHandshakeState() == InteractionState.STARTUP_DECLINED) {
                 leadState = LeadState.CLOSED;
+            }
+
+            try {
+                String timestampString = jsonObject.get("lastchanged").getAsString().substring(0, 10);
+                Log.d(TAG, "deserialize: " + timestampString);
+                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(timestampString);
+                lead.setTimestamp(new Timestamp(date.getTime()));
+            } catch (Exception e) {
+                lead.setTimestamp(new Timestamp(new Date().getTime()));
+                Log.e(TAG, "deserialize: error parsing timestamp: " + e.getMessage() );
             }
 
             lead.setState(leadState);
