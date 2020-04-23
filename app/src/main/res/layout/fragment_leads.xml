@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/leads_open_requests_description"
                     android:textColorHint="@color/raisingTextColor"
-                    android:textSize="@dimen/raisingTextFontSize"
+                    android:textSize="@dimen/raisingSmallerTextFontSize"
                     app:layout_constraintBottom_toBottomOf="@+id/leads_open_requests_image"
                     app:layout_constraintStart_toStartOf="@+id/textView4"
                     app:layout_constraintTop_toBottomOf="@+id/textView4" />

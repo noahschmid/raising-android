@@ -60,8 +60,8 @@
     <string name="toolbar_title_profile_information"> Profile Information</string>
     <string name="register_profile_country"> Country* </string>
     <string name="register_profile_website"> Website </string>
-    <string name="register_profile_company"> Company* </string>
-    <string name="register_profile_phone"> Phone Number </string>
+    <string name="register_profile_company"> Company </string>
+    <string name="register_profile_phone"> Phone Number* </string>
 
     <string name="toolbar_title_matching_criteria"> Matching Criteria</string>
     <string name="register_matching_ticket_size"> Ticket Size </string>
@@ -86,7 +86,7 @@
     <string name="toolbar_title_company_information"> Company Information </string>
     <string name="register_company_name"> Company* </string>
     <string name="register_company_uid"> UID* </string>
-    <string name="register_company_phone"> Phone Number </string>
+    <string name="register_company_phone"> Phone Number* </string>
     <string name="register_company_website"> Website </string>
     <string name="register_company_country"> Country* </string>
     <string name="register_uid_snackbar_find"> Find UID </string>

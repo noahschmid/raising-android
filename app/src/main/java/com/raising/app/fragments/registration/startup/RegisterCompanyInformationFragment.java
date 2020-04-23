@@ -142,9 +142,10 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
      * Process entered information
      */
     private void processInformation() {
-        if(companyNameInput.getText().length() == 0 ||
-                companyUidInput.getText().length() == 0 ||
-                countrySelected == null ) {
+        if(companyNameInput.getText().length() == 0
+                || companyUidInput.getText().length() == 0
+                || companyPhoneInput.getText().length() == 0
+                || countrySelected == null ) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
