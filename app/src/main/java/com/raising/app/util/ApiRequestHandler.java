@@ -30,7 +30,7 @@ import static com.android.volley.VolleyLog.TAG;
 
 public class ApiRequestHandler {
     // -- CHOOSE SERVER --
-    private static final boolean CONNECT_TO_DEV_SERVER = true;
+    private static final boolean CONNECT_TO_DEV_SERVER = false;
 
     private static ApiRequestHandler instance;
     private RequestQueue requestQueue;
@@ -252,6 +252,7 @@ public class ApiRequestHandler {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         errorCallback.apply(error);
+                        Log.d(TAG, "onErrorResponse: GET");
                     }
                 }) {
             @Override
@@ -259,6 +260,7 @@ public class ApiRequestHandler {
                 Map<String, String> headers = new HashMap<>();
                 if (AuthenticationHandler.isLoggedIn()) {
                     headers.put("Authorization", "Bearer " + AuthenticationHandler.getToken());
+                    Log.d(TAG, "getHeaders: Token" + AuthenticationHandler.getToken());
                 }
                 return headers;
             }
