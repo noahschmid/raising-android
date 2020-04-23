@@ -6,29 +6,31 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.google.gson.Gson;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.ShareholderViewModel;
 import com.raising.app.models.CorporateBody;
 import com.raising.app.models.stakeholder.Shareholder;
+import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.NoFilterArrayAdapter;
-import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.ResourcesManager;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -54,6 +56,7 @@ public class ShareholderInputFragment extends RaisingFragment {
                 container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar(getString(R.string.toolbar_title_shareholder), true);
 
         return view;
     }
@@ -75,19 +78,15 @@ public class ShareholderInputFragment extends RaisingFragment {
 
         privateTypeGroup = view.findViewById(R.id.private_shareholder_type);
 
-        setupRadioGroup(ResourcesManager.getInvestorTypes(), privateTypeGroup);
+        setupRadioGroup(resources.getInvestorTypes(), privateTypeGroup);
 
-        corporateCountryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    countryPicker.dismiss();
-                    countryPicker.showDialog(getActivity());
-                }
-            }
+        corporateCountryInput.setOnClickListener(v -> {
+            countryPicker.dismiss();
+            countryPicker.showDialog(getActivity());
         });
+
         ArrayList<String> bodies = new ArrayList<>();
-        ResourcesManager.getCorporateBodies().forEach(body -> bodies.add(body.getName()));
+        resources.getCorporateBodies().forEach(body -> bodies.add(body.getName()));
 
         NoFilterArrayAdapter<String> adapterCorporateBody = new NoFilterArrayAdapter<>( getContext(),
                 R.layout.item_dropdown_menu, bodies);
@@ -106,14 +105,9 @@ public class ShareholderInputFragment extends RaisingFragment {
         privateCountryInput.setShowSoftInputOnFocus(false);
         corporateBodyInput.setShowSoftInputOnFocus(false);
 
-        privateCountryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    countryPicker.dismiss();
-                    countryPicker.showDialog(getActivity());
-                }
-            }
+        privateCountryInput.setOnClickListener(v -> {
+            countryPicker.dismiss();
+            countryPicker.showDialog(getActivity());
         });
 
         privateFrameLayout = view.findViewById(R.id.stakeholder_private_shareholder);
@@ -126,6 +120,7 @@ public class ShareholderInputFragment extends RaisingFragment {
             @Override
             public void onClick(View v) {
                 privateShareholder = true;
+                shareholder.setPrivateShareholder(true);
                 corporateFrameLayout.setVisibility(View.GONE);
                 privateFrameLayout.setVisibility(View.VISIBLE);
             }
@@ -134,17 +129,135 @@ public class ShareholderInputFragment extends RaisingFragment {
         selectCorporateShareholder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                shareholder.setPrivateShareholder(false);
                 privateShareholder = false;
                 privateFrameLayout.setVisibility(View.GONE);
                 corporateFrameLayout.setVisibility(View.VISIBLE);
             }
         });
 
+        Button btnCancelShareholder = view.findViewById(R.id.button_cancel_shareholder);
+        btnCancelShareholder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                leaveShareholderFragment();
+            }
+        });
+        Button btnAddShareholder = view.findViewById(R.id.button_add_shareholder);
+        btnAddShareholder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (privateShareholder) {
+                    String firstName = privateFirstNameInput.getText().toString();
+                    String lastName = privateLastNameInput.getText().toString();
+                    String privateEquityShare = privateEquityInput.getText().toString();
+                    long typeId = getSelectedRadioId(privateTypeGroup);
+
+                    if (firstName.length() == 0 || lastName.length() == 0 ||
+                            countryId == -1 || privateEquityShare.length() == 0 ||
+                            typeId == -1) {
+                        showSimpleDialog(getString(R.string.register_dialog_title),
+                                getString(R.string.register_dialog_text_empty_credentials));
+                        return;
+                    }
+
+                    shareholder.setPrivateShareholder(true);
+                    shareholder.setCountryId(countryId);
+                    shareholder.setLastName(lastName);
+                    shareholder.setFirstName(firstName);
+                    shareholder.setEquityShare(Float.parseFloat(privateEquityShare));
+                    shareholder.setInvestorTypeId(typeId);
+                } else {
+                    String name = corporateNameInput.getText().toString();
+                    String corporateBody = corporateBodyInput.getText().toString();
+                    String website = corporateWebsiteInput.getText().toString();
+                    Float corporateEquityShare = Float.parseFloat(corporateEquityInput.getText().toString());
+
+                    int corporateBodyId = -1;
+                    for (CorporateBody body : resources.getCorporateBodies()) {
+                        if (body.getName().equals(corporateBody)) {
+                            corporateBodyId = (int) body.getId();
+                        }
+                    }
+
+                    if (name.length() == 0 || corporateBody.length() == 0 || countryId == -1 ||
+                            corporateBodyId == -1 || website.length() == 0 ||
+                            corporateEquityShare == 0) {
+                        showSimpleDialog(getString(R.string.register_dialog_title),
+                                getString(R.string.register_dialog_text_empty_credentials));
+                        return;
+                    }
+
+                    shareholder.setCorporateBodyId(corporateBodyId);
+                    shareholder.setEquityShare(corporateEquityShare);
+                    shareholder.setCorpName(name);
+                    shareholder.setWebsite(website);
+                    shareholder.setCountryId(countryId);
+                    shareholder.setInvestorTypeId(-1);
+                    shareholder.setPrivateShareholder(false);
+                }
+
+
+                // update existing shareholder
+                if (shareholder.getId() != -1) {
+                    try {
+                        Gson gson = new Gson();
+                        JSONObject params = new JSONObject(gson.toJson(shareholder));
+                        String endpoint = shareholder.isPrivateShareholder() ?
+                                "startup/privateshareholder/" : "startup/corporateshareholder/";
+                        ApiRequestHandler.performPatchRequest(endpoint +
+                                        shareholder.getId(), result -> {
+                                    shareholderViewModel.select(shareholder);
+                                    leaveShareholderFragment();
+                                    return null;
+                                },
+                                ApiRequestHandler.errorHandler,
+                                params);
+                    } catch (Exception e) {
+                        Log.e("shareholderInput",
+                                "Error while updating board member: " +
+                                        e.getMessage());
+                    }
+                } else {
+                    if (AuthenticationHandler.isLoggedIn()) {
+                        Gson gson = new Gson();
+                        String endpoint = shareholder.isPrivateShareholder() ?
+                                "startup/privateshareholder" : "startup/corporateshareholder";
+                        try {
+                            JSONObject params = new JSONObject(gson.toJson(shareholder));
+                            params.put("startupId", AuthenticationHandler.getId());
+                            Log.d("shareholderInput", "params: " + params.toString());
+                            ApiRequestHandler.performPostRequest(endpoint,
+                                    result -> {
+                                        shareholderViewModel.select(shareholder);
+                                        leaveShareholderFragment();
+                                        return null;
+                                    },
+                                    ApiRequestHandler.errorHandler,
+                                    params);
+                        } catch (Exception e) {
+                            displayGenericError();
+                            Log.e("shareholderInput",
+                                    "Could not add shareholder: " + e.getMessage());
+                        }
+                    } else {
+                        shareholderViewModel.select(shareholder);
+                        leaveShareholderFragment();
+                    }
+                }
+            }
+        });
+
         if(shareholder == null) {
             shareholder = new Shareholder();
         } else {
+            btnAddShareholder.setText(getString(R.string.submit));
+            customizeAppBar(getString(R.string.toolbar_title_edit_shareholder), true);
+            if(shareholder.getId() != -1) {
+                hideBottomNavigation(false);
+            }
             if(shareholder.isPrivateShareholder()) {
-                privateEquityInput.setText(shareholder.getEquityShare());
+                privateEquityInput.setText(shareholder.getEquityShare() + "");
                 privateShareholder = true;
 
                 selectPrivateShareholder.setChecked(true);
@@ -156,13 +269,13 @@ public class ShareholderInputFragment extends RaisingFragment {
                 privateFirstNameInput.setText(shareholder.getFirstName());
                 privateLastNameInput.setText(shareholder.getLastName());
 
-                tickRadioButton(privateTypeGroup, shareholder.getInvestortypeId());
+                tickRadioButton(privateTypeGroup, shareholder.getInvestorTypeId());
 
-                privateCountryInput.setText(ResourcesManager.getCountry((int)shareholder
+                privateCountryInput.setText(resources.getCountry((int)shareholder
                         .getCountryId()).getName());
 
             } else {
-                corporateEquityInput.setText(shareholder.getEquityShare());
+                corporateEquityInput.setText(shareholder.getEquityShare() + "");
                 privateShareholder = false;
 
                 selectPrivateShareholder.setChecked(false);
@@ -172,76 +285,16 @@ public class ShareholderInputFragment extends RaisingFragment {
                 corporateFrameLayout.setVisibility(View.VISIBLE);
 
                 if(shareholder.getCorporateBodyId() != -1)
-                    corporateNameInput.setText(ResourcesManager.getCorporateBody(
+                    corporateNameInput.setText(resources.getCorporateBody(
                             shareholder.getCorporateBodyId()).getName());
                 corporateWebsiteInput.setText(shareholder.getWebsite());
-                corporateBodyInput.setText(ResourcesManager
+                corporateBodyInput.setText(resources
                         .getCorporateBody(shareholder.getCorporateBodyId()).getName());
 
-                corporateCountryInput.setText(ResourcesManager.getCountry((int)shareholder
+                corporateCountryInput.setText(resources.getCountry((int)shareholder
                         .getCountryId()).getName());
             }
         }
-
-        Button btnCancelShareholder = view.findViewById(R.id.button_cancel_shareholder);
-        btnCancelShareholder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                leaveShareholderFragment();
-            }
-        });
-        Button btnAddShareholder = view.findViewById(R.id.floating_button_add_shareholder);
-        btnAddShareholder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(privateShareholder) {
-                    String firstName = privateFirstNameInput.getText().toString();
-                    String lastName = privateLastNameInput.getText().toString();
-                    String privateEquityShare = privateEquityInput.getText().toString();
-                    long typeId = getSelectedRadioId(privateTypeGroup);
-
-                    if(firstName.length() == 0 || lastName.length() == 0 ||
-                            countryId == -1 || privateEquityShare.length() == 0 ||
-                            typeId == -1) {
-                        showSimpleDialog(getString(R.string.register_dialog_title),
-                                getString(R.string.register_dialog_text_empty_credentials));
-                        return;
-                    }
-                    Shareholder newShareholder = new Shareholder(
-                            true, firstName, lastName, countryId,
-                            null, -1, null, privateEquityShare,
-                            getSelectedRadioId(privateTypeGroup));
-                    shareholderViewModel.select(newShareholder);
-                    leaveShareholderFragment();
-                } else {
-                    String name = corporateNameInput.getText().toString();
-                    String corporateBody = corporateBodyInput.getText().toString();
-                    String website = corporateWebsiteInput.getText().toString();
-                    String corporateEquityShare = corporateEquityInput.getText().toString();
-
-                    int corporateBodyId = -1;
-                    for(CorporateBody body : ResourcesManager.getCorporateBodies()) {
-                        if(body.getName().equals(corporateBody)) {
-                            corporateBodyId = (int)body.getId();
-                        }
-                    }
-
-                    if(name.length() == 0 || corporateBody.length() == 0 || countryId == -1 ||
-                            corporateBodyId == -1 || website.length() == 0 ||
-                            corporateEquityShare.length() == 0) {
-                        showSimpleDialog(getString(R.string.register_dialog_title),
-                                getString(R.string.register_dialog_text_empty_credentials));
-                        return;
-                    }
-
-                    Shareholder newShareholder = new Shareholder(
-                            false, null, null, countryId,
-                            name, corporateBodyId, website, corporateEquityShare, -1);
-                    shareholderViewModel.select(newShareholder);
-                    leaveShareholderFragment();
-                }
-            }
-        });
 
         CustomPicker.Builder builder =
                 new CustomPicker.Builder()
@@ -255,7 +308,7 @@ public class ShareholderInputFragment extends RaisingFragment {
                                 countryId = (int)country.getId();
                             }
                         })
-                        .setItems(ResourcesManager.getCountries());
+                        .setItems(resources.getCountries());
 
         countryPicker = builder.build();
     }

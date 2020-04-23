@@ -2,10 +2,10 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/OutlinedMaterialCardView"
+    style="@style/StakeholderRecyclerItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/inputFormVerticalMarginSmall">
+    android:layout_marginBottom="@dimen/standardVerticalMarginSmall">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,12 +14,15 @@
 
         <TextView
             android:id="@+id/register_stakeholder_recycler_item_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
-            android:padding="@dimen/inputFormVerticalMarginSmall"
+            android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+            android:padding="@dimen/standardVerticalMarginSmall"
             android:text="Title"
+            android:textSize="@dimen/raisingTextFontSize"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/stakeholder_recycler_button_edit"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,7 +30,7 @@
             android:id="@+id/stakeholder_recycler_button_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/inputFormHorizontalMarginSmall"
+            android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
             android:background="@color/raisingWhite"
             android:src="@drawable/ic_edit_blue_32dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -38,9 +41,9 @@
             android:id="@+id/stakeholder_recycler_button_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/inputFormHorizontalMarginSmall"
-            android:src="@drawable/ic_trash_can_red_32dp"
+            android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
             android:background="@color/raisingWhite"
+            android:src="@drawable/ic_trash_can_red_32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

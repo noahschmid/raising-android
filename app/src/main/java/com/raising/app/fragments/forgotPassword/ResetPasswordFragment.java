@@ -13,7 +13,6 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.raising.app.util.ApiRequestHandler;
-import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.GenericRequest;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.R;
@@ -37,6 +36,7 @@ public class ResetPasswordFragment extends RaisingFragment implements View.OnCli
         passwordInput = view.findViewById(R.id.forgot_input_new_password);
 
         hideBottomNavigation(true);
+        customizeAppBar(getString(R.string.toolbar_title_reset_password), true);
 
         Button loginWithToken = view.findViewById(R.id.button_forgot_loginWithToken);
         loginWithToken.setOnClickListener(this);
@@ -70,7 +70,7 @@ public class ResetPasswordFragment extends RaisingFragment implements View.OnCli
      */
     private void resetPassword(String code, String password) {
         if(code.length() == 0 || password.length() == 0) {
-            showSimpleDialog(getString(R.string.reset_dialog_title_no_input),
+            showSimpleDialog(getString(R.string.simple_dialog_invalid_input_title),
                     getString(R.string.reset_dialog_text_no_input));
             return;
         }
@@ -84,9 +84,7 @@ public class ResetPasswordFragment extends RaisingFragment implements View.OnCli
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-                                AuthenticationHandler.login(response.getString("token"),
-                                        response.getLong("id"), getContext());
-                                changeFragment(new MatchesFragment(), "MatchesFragment");
+                                changeFragment(new MatchesFragment(), "LoginFragment");
                             } catch(Exception e) {
                                 showSimpleDialog(getString(R.string.generic_error_title),
                                         e.getMessage());

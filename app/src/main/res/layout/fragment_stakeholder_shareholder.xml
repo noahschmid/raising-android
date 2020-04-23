@@ -20,31 +20,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/text_add_shareholder_information"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormInformationTextMargin"
-                android:layout_marginBottom="@dimen/inputFormInformationTextMargin"
-                android:hint="@string/register_stakeholder_shareholder_information_text"
-                android:textColorHint="@color/raisingPrimaryTextColor"
-                android:textSize="@dimen/fragmentTitleFontSize"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/stakeholder_select_type_of_shareholder"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="packed" />
-
             <RadioGroup
                 android:id="@+id/stakeholder_select_type_of_shareholder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/inputFormHorizontalMargin"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_private_shareholder"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_add_shareholder_information">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed">
 
                 <RadioButton
                     android:id="@+id/stakeholder_select_private_shareholder"
@@ -66,7 +52,6 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_corporate_shareholder"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_select_type_of_shareholder">
 
@@ -79,9 +64,9 @@
                         style="@style/TextInputLayoutTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-                        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                        android:layout_marginStart="@dimen/standardHorizontalMargin"
+                        android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
                         android:hint="@string/register_stakeholder_first_name"
                         app:layout_constraintBottom_toTopOf="@+id/shareholder_last_name"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -99,7 +84,7 @@
                         style="@style/TextInputLayoutTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
                         android:hint="@string/register_stakeholder_last_name"
                         app:layout_constraintBottom_toTopOf="@+id/shareholder_country"
                         app:layout_constraintEnd_toEndOf="@+id/shareholder_first_name"
@@ -117,7 +102,7 @@
                         style="@style/TextInputLayoutTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
                         android:hint="@string/register_stakeholder_shareholder_country"
                         app:layout_constraintBottom_toTopOf="@+id/shareholder_equity_share"
                         app:layout_constraintEnd_toEndOf="@+id/shareholder_first_name"
@@ -127,7 +112,8 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_shareholder_country"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/inputFormHeight" />
+                            android:layout_height="@dimen/inputFormHeight"
+                            android:focusable="false" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -135,12 +121,12 @@
                         style="@style/TextInputLayoutTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
                         android:hint="@string/register_stakeholder_shareholder_equity"
+                        app:layout_constraintBottom_toTopOf="@+id/text_shareholder_type"
                         app:layout_constraintEnd_toEndOf="@+id/shareholder_first_name"
                         app:layout_constraintStart_toStartOf="@+id/shareholder_first_name"
-                        app:layout_constraintTop_toBottomOf="@+id/shareholder_country"
-                        app:layout_constraintBottom_toTopOf="@+id/text_shareholder_type">
+                        app:layout_constraintTop_toBottomOf="@+id/shareholder_country">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_shareholder_equity_share"
@@ -160,16 +146,18 @@
                         app:layout_constraintBottom_toTopOf="@+id/shareholder_first_name"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/shareholder_equity_share"></TextView>
+                        app:layout_constraintTop_toBottomOf="@+id/shareholder_equity_share" />
 
                     <RadioGroup
                         android:id="@+id/private_shareholder_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/standardVerticalMargin"
                         android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/shareholder_first_name"
-                        app:layout_constraintStart_toStartOf="@+id/shareholder_first_name"
+                        app:layout_constraintEnd_toEndOf="@+id/text_shareholder_type"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/text_shareholder_type"
                         app:layout_constraintTop_toBottomOf="@+id/text_shareholder_type" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -179,9 +167,8 @@
                 android:id="@+id/stakeholder_corporate_shareholder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/button_cancel_shareholder"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_private_shareholder">
 
@@ -194,9 +181,9 @@
                         style="@style/TextInputLayoutTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/inputFormHorizontalMargin"
-                        android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                        android:layout_marginStart="@dimen/standardHorizontalMargin"
+                        android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
                         android:hint="@string/register_stakeholder_name"
                         app:layout_constraintBottom_toTopOf="@+id/shareholder_corporate_body"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -214,7 +201,7 @@
                         style="@style/TextInputExposedDropdownMenuTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
                         android:hint="@string/register_stakeholder_shareholder_corporate_body"
                         app:layout_constraintBottom_toTopOf="@+id/shareholder_website"
                         app:layout_constraintEnd_toEndOf="@+id/shareholder_name"
@@ -224,7 +211,8 @@
                         <AutoCompleteTextView
                             android:id="@+id/input_shareholder_corporate_body"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/inputFormHeight" />
+                            android:layout_height="@dimen/inputFormHeight"
+                            android:focusable="false" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -232,7 +220,7 @@
                         style="@style/TextInputLayoutTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
                         android:hint="@string/register_stakeholder_shareholder_website"
                         app:layout_constraintBottom_toTopOf="@+id/shareholder_corporate_equity_share"
                         app:layout_constraintEnd_toEndOf="@+id/shareholder_name"
@@ -250,12 +238,12 @@
                         style="@style/TextInputLayoutTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
                         android:hint="@string/register_stakeholder_shareholder_equity"
+                        app:layout_constraintBottom_toTopOf="@+id/shareholder_corporate_country"
                         app:layout_constraintEnd_toEndOf="@+id/shareholder_name"
                         app:layout_constraintStart_toStartOf="@+id/shareholder_name"
-                        app:layout_constraintTop_toBottomOf="@+id/shareholder_website"
-                        app:layout_constraintBottom_toTopOf="@+id/shareholder_corporate_country">
+                        app:layout_constraintTop_toBottomOf="@+id/shareholder_website">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_shareholder_corporate_equity_share"
@@ -269,7 +257,7 @@
                         style="@style/TextInputLayoutTheme"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/inputFormVerticalMargin"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
                         android:hint="@string/register_stakeholder_shareholder_country"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/shareholder_name"
@@ -279,7 +267,8 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/input_shareholder_corporate_country"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/inputFormHeight" />
+                            android:layout_height="@dimen/inputFormHeight"
+                            android:focusable="false" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </FrameLayout>
@@ -289,20 +278,22 @@
                 style="@style/ButtonConfirmRegistration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/inputFormHorizontalMarginSmall"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:hint="@string/cancel_text"
-                app:layout_constraintStart_toStartOf="@+id/stakeholder_select_type_of_shareholder"
-                app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder"/>
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:text="@string/cancel_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder" />
 
             <Button
-                android:id="@+id/floating_button_add_shareholder"
+                android:id="@+id/button_add_shareholder"
                 style="@style/ButtonConfirmRegistration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/inputFormVerticalMargin"
-                android:layout_marginEnd="@dimen/inputFormHorizontalMargin"
-                android:hint="@string/add_text"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:text="@string/add_text"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/stakeholder_corporate_shareholder"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder" />
         </androidx.constraintlayout.widget.ConstraintLayout>

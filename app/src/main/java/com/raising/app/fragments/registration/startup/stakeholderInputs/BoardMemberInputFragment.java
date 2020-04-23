@@ -6,35 +6,36 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.BoardMemberViewModel;
 import com.raising.app.models.stakeholder.BoardMember;
-import com.raising.app.util.NoFilterArrayAdapter;
-import com.raising.app.util.ResourcesManager;
+import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class BoardMemberInputFragment extends RaisingFragment {
     private BoardMemberViewModel boardMemberViewModel;
     private EditText boardFirstNameInput, boardLastNameInput, boardProfessionInput,
-            boardEducationInput, memberSinceInput, countryInput;
-    private AutoCompleteTextView boardPositionInput;
+            boardEducationInput, boardPositionInput, memberSinceInput, countryInput;
     private BoardMember boardMember;
     private CustomPicker countryPicker;
     private int countryId = -1;
+    private boolean editMode = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +44,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
                 container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar(getString(R.string.toolbar_title_board), true);
 
         return view;
     }
@@ -56,20 +58,11 @@ public class BoardMemberInputFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
         boardMemberViewModel = new ViewModelProvider(requireActivity()).get(BoardMemberViewModel.class);
 
-        //TODO: fetch these values from the backend
-        ArrayList<String> positions = new ArrayList<String>(Arrays.asList(new String[]{"CEO", "CFO", "VRP"}));
-
-        NoFilterArrayAdapter<String> adapterPosition = new NoFilterArrayAdapter<String>( getContext(),
-                R.layout.item_dropdown_menu, positions);
-
         boardFirstNameInput = view.findViewById(R.id.input_board_member_first_name);
         boardLastNameInput = view.findViewById(R.id.input_board_member_last_name);
         boardProfessionInput = view.findViewById(R.id.input_board_member_profession);
         boardEducationInput = view.findViewById(R.id.input_board_member_education);
-
         boardPositionInput = view.findViewById(R.id.input_board_member_position);
-        boardPositionInput.setAdapter(adapterPosition);
-
         memberSinceInput = view.findViewById(R.id.input_board_member_member_since);
         countryInput = view.findViewById(R.id.input_board_member_country);
         memberSinceInput.setShowSoftInputOnFocus(false);
@@ -83,33 +76,14 @@ public class BoardMemberInputFragment extends RaisingFragment {
                             @Override
                             public void onSelectItem(PickerItem country) {
                                 countryInput.setText(country.getName());
-                                countryId = (int)country.getId();
+                                countryId = (int) country.getId();
                             }
                         })
-                        .setItems(ResourcesManager.getCountries());
+                        .setItems(resources.getCountries());
 
         countryPicker = builder.build();
 
-        countryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus)
-                    countryPicker.showDialog(getActivity());
-            }
-        });
-
-        if(boardMember == null) {
-            boardMember = new BoardMember();
-        } else {
-            boardFirstNameInput.setText(boardMember.getFirstName());
-            boardLastNameInput.setText(boardMember.getLastName());
-            boardProfessionInput.setText(boardMember.getProfession());
-            boardPositionInput.setText(boardMember.getBoardPosition());
-            memberSinceInput.setText(String.valueOf(boardMember.getMemberSince()));
-            boardEducationInput.setText(boardMember.getEducation());
-            if(boardMember.getCountryId() != -1)
-                countryInput.setText(ResourcesManager.getCountry(boardMember.getCountryId()).getName());
-        }
+        countryInput.setOnClickListener(v -> countryPicker.showDialog(getActivity()));
 
         Button btnCancelBoardMember = view.findViewById(R.id.button_cancel_board_member);
         btnCancelBoardMember.setOnClickListener(new View.OnClickListener() {
@@ -129,30 +103,89 @@ public class BoardMemberInputFragment extends RaisingFragment {
                 String memberSince = memberSinceInput.getText().toString();
                 String education = boardEducationInput.getText().toString();
 
-                if(firstName.length() == 0 || lastName.length() == 0
+                if (firstName.length() == 0 || lastName.length() == 0
                         || profession.length() == 0 || boardPosition.length() == 0
                         || memberSince.length() == 0 || countryId == -1) {
                     showSimpleDialog(getString(R.string.register_dialog_title),
                             getString(R.string.register_dialog_text_empty_credentials));
                     return;
                 }
-                BoardMember boardMember = new BoardMember(
-                        firstName, lastName, profession, boardPosition,
-                        memberSince, education, countryId);
 
-                boardMemberViewModel.select(boardMember);
-                leaveBoardMemberFragment();
-            }
-        });
+                boardMember.setCountryId(countryId);
+                boardMember.setFirstName(firstName);
+                boardMember.setLastName(lastName);
+                boardMember.setMemberSince(memberSince);
+                boardMember.setProfession(profession);
+                boardMember.setBoardPosition(boardPosition);
+                boardMember.setEducation(education);
+                boardMember.setTitle(firstName + " " + lastName + ", " + boardPosition);
 
-        memberSinceInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    showYearPicker("Select year", memberSinceInput);
+                if(boardMember.getId() != -1) {
+                    try {
+                        Gson gson = new Gson();
+                        JSONObject params = new JSONObject(gson.toJson(boardMember));
+                        ApiRequestHandler.performPatchRequest("startup/boardmember/" +
+                                        boardMember.getId(), result -> {
+                                    boardMemberViewModel.select(boardMember);
+                                    leaveBoardMemberFragment();
+                                    return null;
+                                },
+                                ApiRequestHandler.errorHandler,
+                                params);
+                    } catch (Exception e) {
+                        Log.e("BoardMemberInput",
+                                "Error while updating board member: " +
+                                        e.getMessage());
+                    }
+                } else {
+                    if(AuthenticationHandler.isLoggedIn()) {
+                        Gson gson = new Gson();
+                        try {
+                            JSONObject params = new JSONObject(gson.toJson(boardMember));
+                            params.put("startupId", AuthenticationHandler.getId());
+                            Log.d("BoardmemberInput", "params: " + params.toString());
+                            ApiRequestHandler.performPostRequest("startup/boardmember",
+                                    result -> {
+                                        boardMemberViewModel.select(boardMember);
+                                        leaveBoardMemberFragment();
+                                        return null;
+                                    },
+                                    ApiRequestHandler.errorHandler,
+                                    params);
+                        } catch (Exception e) {
+                            displayGenericError();
+                            Log.e("BoardMemberInput",
+                                    "Could not add boardmember: " + e.getMessage());
+                        }
+                    } else {
+                        boardMemberViewModel.select(boardMember);
+                        leaveBoardMemberFragment();
+                    }
                 }
             }
         });
+
+        if (boardMember == null) {
+            boardMember = new BoardMember();
+        } else {
+            customizeAppBar(getString(R.string.toolbar_title_edit_board), true);
+            if(boardMember.getId() != -1) {
+                hideBottomNavigation(false);
+            }
+            editMode = true;
+            btnAddBoardMember.setText(getString(R.string.submit));
+            countryId = boardMember.getCountryId();
+            boardFirstNameInput.setText(boardMember.getFirstName());
+            boardLastNameInput.setText(boardMember.getLastName());
+            boardProfessionInput.setText(boardMember.getProfession());
+            boardPositionInput.setText(boardMember.getBoardPosition());
+            memberSinceInput.setText(String.valueOf(boardMember.getMemberSince()));
+            boardEducationInput.setText(boardMember.getEducation());
+            if (boardMember.getCountryId() != -1)
+                countryInput.setText(resources.getCountry(boardMember.getCountryId()).getName());
+        }
+
+        memberSinceInput.setOnClickListener(v -> showYearPicker("Select year", memberSinceInput));
     }
 
     @Override

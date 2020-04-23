@@ -1,8 +1,10 @@
 package com.raising.app.util;
 
+import android.app.Activity;
 import android.content.Context;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,14 +15,13 @@ import java.util.ArrayList;
 
 public class InternalStorageHandler {
     private static Context context;
+    private static Activity activity;
 
-    /**
-     * Set application context
-     * @param ctx
-     */
-    public static void init(Context ctx) {
-        context = ctx;
-    }
+    public static void setContext(Context context) { InternalStorageHandler.context = context; }
+    public static void setActivity(Activity activity) { InternalStorageHandler.activity = activity; }
+
+    public static Context getContext() { return context; }
+    public static Activity getActivity() { return activity; }
 
     /**
      * Load object from internal storage
@@ -44,11 +45,37 @@ public class InternalStorageHandler {
      * @throws IOException
      */
     public static void saveObject(Object object, String filename) throws IOException {
-        FileOutputStream outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+        FileOutputStream outputStream = context
+                .openFileOutput(filename, Context.MODE_PRIVATE);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
         objectOutputStream.writeObject(object);
         objectOutputStream.flush();
         objectOutputStream.close();
+    }
+
+    /**
+     * Check whether file with given filename exists in internal storage
+     * @param filename the name of the file
+     * @return true if file exists, false otherwise
+     */
+    public static boolean exists(String filename) {
+        File file = context.getFileStreamPath(filename);
+        return file.exists();
+    }
+
+    /**
+     * Save string to internal storage
+     * @param string
+     * @param filename
+     * @throws IOException
+     */
+    public static void saveString(String string, String filename) throws IOException {
+        FileOutputStream outputStream;
+        outputStream = context
+                .openFileOutput(filename, Context.MODE_PRIVATE);
+        outputStream.write(string.getBytes());
+        outputStream.flush();
+        outputStream.close();
     }
 
     /**
@@ -58,7 +85,8 @@ public class InternalStorageHandler {
      * @throws IOException
      */
     public static ArrayList<String> loadStrings(String filename) throws IOException {
-        FileInputStream fis = context.openFileInput(filename);
+        FileInputStream fis = context
+                .openFileInput(filename);
         InputStreamReader isr = new InputStreamReader(fis);
         BufferedReader bufferedReader = new BufferedReader(isr);
         ArrayList<String> result = new ArrayList<>();

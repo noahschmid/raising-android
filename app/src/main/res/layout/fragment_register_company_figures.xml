@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/overlay_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.registration.startup.RegisterCompanyFiguresFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/register_company_fte"
+                style="@style/TextInputLayoutTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/register_company_fte"
+                app:endIconDrawable="@drawable/ic_info_outline_24dp"
+                app:endIconMode="custom"
+                app:layout_constraintBottom_toTopOf="@+id/register_company_revenue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/register_input_company_fte"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/register_company_revenue"
+                style="@style/TextInputExposedDropdownMenuTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/register_company_revenue"
+                app:layout_constraintBottom_toTopOf="@+id/register_company_founding_year"
+                app:layout_constraintEnd_toEndOf="@+id/register_company_fte"
+                app:layout_constraintStart_toStartOf="@+id/register_company_fte"
+                app:layout_constraintTop_toBottomOf="@+id/register_company_fte">
+
+                <AutoCompleteTextView
+                    android:id="@+id/register_input_company_revenue"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:focusable="false" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/register_company_founding_year"
+                style="@style/TextInputLayoutTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/register_company_founding_year"
+                app:layout_constraintBottom_toTopOf="@+id/register_company_breakeven"
+                app:layout_constraintEnd_toEndOf="@+id/register_company_revenue"
+                app:layout_constraintStart_toStartOf="@+id/register_company_revenue"
+                app:layout_constraintTop_toBottomOf="@+id/register_company_revenue">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/register_input_company_founding_year"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:focusable="false"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/register_company_breakeven"
+                style="@style/TextInputLayoutTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/register_company_breakeven"
+                app:layout_constraintBottom_toTopOf="@+id/register_button_company_markets"
+                app:layout_constraintEnd_toEndOf="@+id/register_company_founding_year"
+                app:layout_constraintStart_toStartOf="@+id/register_company_founding_year"
+                app:layout_constraintTop_toBottomOf="@+id/register_company_founding_year">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/register_input_company_breakeven"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:focusable="false"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/register_button_company_markets"
+                style="@style/PrimaryOutlineButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/authenticationButtonHeight"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/register_company_markets"
+                app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
+                app:layout_constraintEnd_toEndOf="@+id/register_company_breakeven"
+                app:layout_constraintStart_toStartOf="@+id/register_company_breakeven"
+                app:layout_constraintTop_toBottomOf="@+id/register_company_breakeven" />
+
+            <LinearLayout
+                android:id="@+id/registration_profile_progress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/button_company_figures"
+                app:layout_constraintEnd_toEndOf="@+id/register_button_company_markets"
+                app:layout_constraintStart_toStartOf="@+id/register_button_company_markets">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_full_darkgrey_16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_circle_outline_darkgrey_16dp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button_company_figures"
+                style="@style/ButtonConfirmRegistration"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/authenticationButtonHeight"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/register_button_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/registration_profile_progress"
+                app:layout_constraintStart_toStartOf="@+id/registration_profile_progress" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</FrameLayout>

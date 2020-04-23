@@ -14,13 +14,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.raising.app.R;
-import com.raising.app.SettingsViewModel;
 import com.raising.app.util.AuthenticationHandler;
 
 public class SettingsFragment extends RaisingFragment implements View.OnClickListener {
-
-    private SettingsViewModel mViewModel;
-
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
     }
@@ -32,6 +28,7 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
 
         Button btnLogout = view.findViewById(R.id.button_logout);
         btnLogout.setOnClickListener(this);
+        customizeAppBar(getString(R.string.toolbar_title_settings), false);
 
         return view;
     }
@@ -39,7 +36,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
         // TODO: Use the ViewModel
     }
 
@@ -56,7 +52,7 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
 
     private void logout() {
         Log.d("debugMessage", "logout()");
-        AuthenticationHandler.logout(getContext());
+        AuthenticationHandler.logout();
         getActivitiesFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, new LoginFragment())

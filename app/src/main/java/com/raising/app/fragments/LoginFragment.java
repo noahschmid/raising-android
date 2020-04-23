@@ -1,6 +1,6 @@
 package com.raising.app.fragments;
 
-import androidx.lifecycle.ViewModelProviders;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 
@@ -13,12 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.raising.app.fragments.profile.ContactDetailsInput;
 import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
 
@@ -48,6 +51,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar(getString(R.string.toolbar_title_login), false);
 
         // if registration was in progress but user pressed back button, cancel it
         if (RegistrationHandler.isInProgress(getContext())) {
@@ -57,6 +61,13 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                 changeFragment(new RegisterLoginInformationFragment(),
                         "RegisterLoginInformationFragment");
         }
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         emailInput = view.findViewById(R.id.login_input_email);
         passwordInput = view.findViewById(R.id.login_input_password);
 
@@ -66,8 +77,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
         btnRegister.setOnClickListener(this);
         Button btnForgot = view.findViewById(R.id.button_login_forgot_password);
         btnForgot.setOnClickListener(this);
-
-        return view;
     }
 
     @Override
@@ -124,17 +133,40 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
             HashMap<String, String> params = new HashMap<>();
             params.put("email", email);
             params.put("password", password);
+            showLoadingPanel();
             JsonObjectRequest loginRequest = new JsonObjectRequest(
                     loginEndpoint, new JSONObject(params),
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            Log.d("LoginFragment", "login successful.");
                             try {
-                                AuthenticationHandler.login(response.getString("token"),
-                                        response.getLong("id"), getContext());
-                                // getActivitiesFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                                changeFragment(new MatchesFragment(), "MatchesFragment");
+                                dismissLoadingPanel();
+                                boolean isStartup = response.getBoolean("startup");
+                                if(!isStartup && !response.getBoolean("investor")) {
+                                    showSimpleDialog(getString(R.string.generic_error_title),
+                                            getString(R.string.no_profile_text));
+                                    return;
+                                }
+
+                                if(AccountService.loadContactDetails()) {
+                                    AuthenticationHandler.login(email,
+                                            response.getString("token"),
+                                            response.getLong("id"), isStartup);
+                                    accountViewModel.loadAccount();
+                                    clearBackstackAndReplace(new MatchesFragment());
+                                } else {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putBoolean("isStartup", isStartup);
+                                    bundle.putString("email", email);
+                                    bundle.putString("token", response.getString("token"));
+                                    bundle.putLong("id", response.getLong("id"));
+                                    Fragment fragment = new ContactDetailsInput();
+                                    fragment.setArguments(bundle);
+                                    changeFragment(fragment);
+                                }
                             } catch(Exception e) {
+                                dismissLoadingPanel();
                                 showSimpleDialog(getString(R.string.generic_error_title),
                                         e.getMessage());
                             }
@@ -142,6 +174,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    dismissLoadingPanel();
                     try {
                         if(error.networkResponse.statusCode == 403) {
                             showSimpleDialog(

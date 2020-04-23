@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/overlay_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.leads.LeadsContainerFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.tabs.TabLayout
+            style="@style/HandshakeTabLayoutStyle"
+            android:id="@+id/leads_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/leadsTabHeight">
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_your_turn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/leads_your_turn" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_pending"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/leads_pending" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_closed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/leads_closed" />
+        </com.google.android.material.tabs.TabLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/gray" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/leads_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</FrameLayout>

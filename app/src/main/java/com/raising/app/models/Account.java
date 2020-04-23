@@ -1,5 +1,7 @@
 package com.raising.app.models;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,7 @@ import lombok.Data;
 @Data
 public class Account implements Serializable, Model {
     protected long id = -1L;
-    protected String company;
+    protected String companyName;
     protected String name;
     private String firstName;
     private String lastName;
@@ -22,28 +24,38 @@ public class Account implements Serializable, Model {
     private int ticketMinId = -1;
     private int ticketMaxId = -1;
     private Image profilePicture;
+    private long profilePictureId = -1;
+    private List<Long> galleryIds;
     private List<Image> gallery;
+    private long countryId = -1l;
+    private String phone;
 
-    private List<Country> countries = new ArrayList<>();
-    private List<Continent> continents = new ArrayList<>();
-    private List<Support> support = new ArrayList<>();
-    private List<Industry> industries = new ArrayList<>();
+    private List<Long> countries = new ArrayList<>();
+    private List<Long> continents = new ArrayList<>();
+    private List<Long> support = new ArrayList<>();
+    private List<Long> industries = new ArrayList<>();
 
     public void clearSupport() { support.clear(); }
     public void clearIndustries() { industries.clear(); }
     public void clearCountries() { countries.clear(); }
     public void clearContinents() { continents.clear(); }
 
-    public void addCountry(Country country) {
+    public void addCountry(Long country) {
         countries.add(country);
     }
-    public void addContinent(Continent continent) {
+    public void addContinent(Long continent) {
         continents.add(continent);
     }
-    public void addIndustry(Industry industry) {
+    public void addIndustry(Long industry) {
         industries.add(industry);
     }
-    public void addSupport(Support spprt) {
+    public void addSupport(Long spprt) {
         support.add(spprt);
+    }
+    public void addToGallery(Image image) { gallery.add(image); }
+
+    @Override
+    public Bitmap getImage() {
+        return null;
     }
 }

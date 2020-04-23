@@ -19,13 +19,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.FinanceType;
 import com.raising.app.models.Startup;
 import com.raising.app.util.NoFilterArrayAdapter;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.ResourcesManager;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -41,6 +42,10 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private Calendar selectedDate;
     private int financialTypeId = -1;
+    private boolean editMode = false;
+    private Startup startup;
+
+    final private String TAG = "RegisterFinancialRequirementsFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,30 +54,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
                 container, false);
 
         hideBottomNavigation(true);
-
-        ArrayList<FinanceType> financeTypes = ResourcesManager.getFinanceTypes();
-        ArrayList<String> values = new ArrayList<>();
-        financeTypes.forEach(type -> values.add(type.getName()));
-
-        NoFilterArrayAdapter<String> adapterType = new NoFilterArrayAdapter( getContext(),
-                R.layout.item_dropdown_menu, values);
-
-        financialTypeInput = view.findViewById(R.id.register_input_financial_type);
-        financialTypeInput.setAdapter(adapterType);
-
-        financialTypeInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String itemName = (String)adapterType.getItem(i);
-
-                for (FinanceType type : financeTypes) {
-                    if (type.getName().equals(itemName)) {
-                        financialTypeId = (int)type.getId();
-                        break;
-                    }
-                }
-            }
-        });
+        customizeAppBar(getString(R.string.toolbar_title_financial_requirements), true);
 
         return view;
     }
@@ -81,7 +63,39 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        TextInputLayout financialCompletedLayout = view.findViewById(R.id.register_financial_completed);
+        financialCompletedLayout.setEndIconOnClickListener(v -> {
+            final Snackbar snackbar = Snackbar.make(financialCompletedLayout,
+                    R.string.register_completed_helper_text, Snackbar.LENGTH_LONG);
+            snackbar.setAction(getString(R.string.got_it_text), v12 -> snackbar.dismiss());
+            snackbar.setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
+                    .show();
+        });
+
+        ArrayList<FinanceType> financeTypes = resources.getFinanceTypes();
+        ArrayList<String> values = new ArrayList<>();
+        financeTypes.forEach(type -> values.add(type.getName()));
+
+        NoFilterArrayAdapter<String> adapterType = new NoFilterArrayAdapter(getContext(),
+                R.layout.item_dropdown_menu, values);
+
+        financialTypeInput = view.findViewById(R.id.register_input_financial_type);
         financialTypeInput.setShowSoftInputOnFocus(false);
+        financialTypeInput.setAdapter(adapterType);
+
+        financialTypeInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String itemName = (String) adapterType.getItem(i);
+
+                for (FinanceType type : financeTypes) {
+                    if (type.getName().equals(itemName)) {
+                        financialTypeId = (int) type.getId();
+                        break;
+                    }
+                }
+            }
+        });
 
         scopeInput = view.findViewById(R.id.register_input_startup_financial_scope);
         financialValuationInput = view.findViewById(R.id.register_input_financial_valuation);
@@ -94,29 +108,45 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         completedInput = view.findViewById(R.id.register_input_financial_completed);
 
-        Startup startup = RegistrationHandler.getStartup();
+        if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
+            btnFinancialRequirements.setHint(getString(R.string.myProfile_apply_changes));
+            editMode = true;
+            startup = (Startup)accountViewModel.getAccount().getValue();
+            hideBottomNavigation(false);
+        } else {
+            startup = RegistrationHandler.getStartup();
+        }
 
-        if(startup.getClosingTime() != null) {
+        if (startup.getClosingTime() != null) {
             try {
-                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 Date date = formatter.parse(startup.getClosingTime());
                 selectedDate = Calendar.getInstance();
                 selectedDate.setTime(date);
-                financialClosingTimeInput.setText(selectedDate.get(Calendar.DAY_OF_MONTH)
-                        + "." + (selectedDate.get(Calendar.MONTH) + 1 + "."
-                                + selectedDate.get(Calendar.YEAR)));
+
+                formatter = new SimpleDateFormat("dd.MM.yyyy");
+
+                financialClosingTimeInput.setText(formatter.format(date));
             } catch (ParseException e) {
-                Log.d("debugMessage", "error parsing date!");
+                Log.d("RegisterFinancialRequirements", "error parsing date!");
             }
         }
-        if(startup.getScope() > 0)
+        if (startup.getScope() > 0)
             scopeInput.setText(String.valueOf(startup.getScope()));
 
-        if(startup.getPreMoneyValuation() > 0)
+        if (startup.getPreMoneyValuation() > 0)
             financialValuationInput.setText(String.valueOf(startup.getPreMoneyValuation()));
 
-        if(startup.getRaised() > 0)
+        if (startup.getRaised() > 0)
             completedInput.setText(String.valueOf(startup.getRaised()));
+
+        if (startup.getFinanceTypeId() != -1) {
+            financialTypeInput.setText(resources.getFinanceType(
+                    startup.getFinanceTypeId()
+            ).getName());
+            financialTypeId = (int) startup.getFinanceTypeId();
+        }
 
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             /**
@@ -128,13 +158,13 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
              */
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-               String selected = dayOfMonth + "." + (month + 1) + "." + year;
-               financialClosingTimeInput.setText(selected);
+                String selected = dayOfMonth + "." + (month + 1) + "." + year;
+                financialClosingTimeInput.setText(selected);
 
-               selectedDate = Calendar.getInstance();
-               selectedDate.set(Calendar.YEAR, year);
-               selectedDate.set(Calendar.MONTH, month);
-               selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                selectedDate = Calendar.getInstance();
+                selectedDate.set(Calendar.YEAR, year);
+                selectedDate.set(Calendar.MONTH, month);
+                selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             }
         };
     }
@@ -149,9 +179,15 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.button_financial_requirements){
+        if (view.getId() == R.id.button_financial_requirements) {
             processInputs();
         }
+    }
+
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
     }
 
     /**
@@ -160,7 +196,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void processInputs() {
         Log.d("debugMessage", "processInputs");
-        if(scopeInput.getText().length() == 0 || selectedDate == null ||
+        if (scopeInput.getText().length() == 0 || selectedDate == null ||
                 financialTypeId == -1 ||
                 Integer.parseInt(scopeInput.getText().toString()) == 0) {
             showSimpleDialog(getString(R.string.register_dialog_title),
@@ -170,10 +206,11 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         float valuation = 0;
 
-        if(financialValuationInput.getText().length() > 0)
+        if (financialValuationInput.getText().length() > 0)
             valuation = Float.parseFloat(financialValuationInput.getText().toString());
 
-        if(selectedDate.before(Calendar.getInstance())) {
+        // check if closing time is after current date
+        if (selectedDate.before(Calendar.getInstance())) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_invalid_date));
             return;
@@ -181,16 +218,35 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         float scope = Float.parseFloat(scopeInput.getText().toString());
         int completed = 0;
-        if(completedInput.getText().length() != 0) {
+        if (completedInput.getText().length() != 0) {
             completed = Integer.parseInt(completedInput.getText().toString());
         }
 
+        // check if completed is smaller than scope
+        if(completed > (int) scope) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_financial_error_completed));
+            return;
+        }
+
+        startup.setFinanceTypeId(financialTypeId);
+        startup.setPreMoneyValuation((int) valuation);
+        startup.setScope((int) scope);
+        startup.setRaised(completed);
+
+        Date completedDate = selectedDate.getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        startup.setClosingTime(formatter.format(completedDate));
+
         try {
-            RegistrationHandler.saveFinancialRequirements(financialTypeId, valuation, selectedDate, scope,
-                    completed);
-            changeFragment(new RegisterStakeholderFragment());
+            if (!editMode) {
+                RegistrationHandler.saveStartup(startup);
+                changeFragment(new RegisterStakeholderFragment());
+            } else {
+                accountViewModel.update(startup);
+            }
         } catch (IOException e) {
-            Log.d("debugMessage", e.getMessage());
+            Log.e("RegisterFinancialRequirements", "Error in processInputs: " + e.getMessage());
         }
     }
 
@@ -205,7 +261,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 Objects.requireNonNull(getView()).getContext(),
-                R.style.DialogTheme, dateSetListener, year, month, day);
+                R.style.DatePickerStyle, dateSetListener, year, month, day);
         datePickerDialog.show();
     }
 }

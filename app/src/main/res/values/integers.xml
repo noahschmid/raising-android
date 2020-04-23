@@ -9,8 +9,6 @@
     <integer name="ticket_size_slider_min_value"> 1 </integer>
     <integer name="ticket_size_slider_starting_value"> 3</integer>
 
-    <integer name="startup_registration_max_steps">8</integer>
-
     <integer-array name="matching_ticket_sizes" >
         <item> 20000 </item>
         <item> 50000 </item>
@@ -26,4 +24,6 @@
     <integer name="million"> 1000000 </integer>
     <integer name="thousand"> 1000 </integer>
 
+    <integer name="raisingLongSnackbar"> 6000 </integer>
+    <integer name="raisingShortSnackbar"> 2500 </integer>
 </resources>

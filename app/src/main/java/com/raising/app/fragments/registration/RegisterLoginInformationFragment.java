@@ -16,7 +16,11 @@ import com.android.volley.VolleyError;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Account;
+import com.raising.app.models.Investor;
+import com.raising.app.models.Startup;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.RegistrationHandler;
 
 import org.json.JSONObject;
@@ -28,12 +32,16 @@ import java.util.function.Function;
 public class RegisterLoginInformationFragment extends RaisingFragment implements View.OnClickListener {
     private EditText firstNameInput, lastNameInput, emailInput, passwordInput;
     private boolean load = false;
+    private boolean editMode = false;
+    private Account account;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_login_information, container, false);
+
         hideBottomNavigation(true);
+        customizeAppBar(getString(R.string.toolbar_title_login_information), true);
 
         RegistrationHandler.setCancelAllowed(true);
 
@@ -49,22 +57,36 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         emailInput = view.findViewById(R.id.register_input_email);
         passwordInput = view.findViewById(R.id.register_input_password);
 
-        Account account = RegistrationHandler.getAccount();
+        Button btnLoginInformation = view.findViewById(R.id.button_login_information);
+        btnLoginInformation.setOnClickListener(this);
+
+        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            btnLoginInformation.setHint(getString(R.string.myProfile_apply_changes));
+            editMode = true;
+            hideBottomNavigation(false);
+            account = currentAccount;
+            account.setEmail(AuthenticationHandler.getEmail());
+            view.findViewById(R.id.register_password).setVisibility(View.GONE);
+        } else {
+            account = RegistrationHandler.getAccount();
+        }
+
         firstNameInput.setText(account.getFirstName());
         lastNameInput.setText(account.getLastName());
         emailInput.setText(account.getEmail());
         passwordInput.setText(account.getPassword());
-
-
-        Button btnLoginInformation = view.findViewById(R.id.button_login_information);
-        btnLoginInformation.setOnClickListener(this);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         hideBottomNavigation(false);
+    }
+
+    @Override
+    public void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
     }
 
     @Override
@@ -91,7 +113,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
      */
     private void processLoginInformation(final String firstName, final String lastName, final String email, final String password) {
         if(firstName.length() == 0 || lastName.length() == 0  || email.length() == 0  ||
-                password.length() == 0 ) {
+                (password.length() == 0 && !editMode)) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
@@ -103,46 +125,62 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
             return;
         }
 
-        if(password.length() < 6) {
+        if(password.length() < 6 && !editMode) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_weak_password));
             return;
         }
 
+        showLoadingPanel();
         try {
-            HashMap<String, String> params = new HashMap<>();
-            params.put("email", email);
+            if(!email.equals(AuthenticationHandler.getEmail()) ||
+                    !AuthenticationHandler.isLoggedIn()) {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("email", email);
 
-            Log.d("debugMessage", "sending request...");
-
-            ApiRequestHandler.performPostRequest("account/valid",
-                    callback, errorHandler, new JSONObject(params), getContext());
+                ApiRequestHandler.performPostRequest("account/valid",
+                        callback, errorHandler, new JSONObject(params));
+            } else {
+                account.setFirstName(firstName);
+                account.setLastName(lastName);
+                account.setEmail(email);
+                accountViewModel.update(account);
+            }
         } catch(Exception e) {
-            Log.d("debugMessage", e.getMessage());
-            Log.d("debugMessage", e.toString());
+            dismissLoadingPanel();
+            Log.e("RegisterLoginInformation", "" + e.getMessage());
             return;
         }
     }
 
     Function<JSONObject, Void> callback = response -> {
+        dismissLoadingPanel();
+
         final String firstName = firstNameInput.getText().toString();
         final String lastName = lastNameInput.getText().toString();
         final String email = emailInput.getText().toString();
         final String password = passwordInput.getText().toString();
 
         try {
-            Log.d("debugMessage", "successful response");
-            RegistrationHandler.saveLoginInformation(firstName, lastName, email, password);
-            changeFragment(new RegisterSelectTypeFragment(),
-                    "RegisterSelectTypeFragment");
+            if(!editMode) {
+                RegistrationHandler.saveLoginInformation(firstName, lastName, email, password);
+                changeFragment(new RegisterSelectTypeFragment(),
+                        "RegisterSelectTypeFragment");
+            } else {
+                account.setFirstName(firstName);
+                account.setLastName(lastName);
+                account.setEmail(email);
+                accountViewModel.update(account);
+            }
         } catch (IOException e) {
-            // TODO: Display error message
-            Log.d("debugMessage", e.getMessage());
+            Log.e("RegisterLoginInformation","Error while saving login informaion: "
+                    + e.getMessage());
         }
         return null;
     };
 
     Function<VolleyError, Void> errorHandler = error -> {
+        dismissLoadingPanel();
         try {
             if(error.networkResponse.statusCode == 400) {
                 showSimpleDialog(
@@ -155,8 +193,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
                     getString(R.string.login_dialog_server_error_title),
                     getString(R.string.login_dialog_server_error_text)
             );
-            Log.d("debugMessage", e.toString());
-            Log.d("debugMessage", error.toString());
+            Log.e("RegisterLoginInformation", "" + e.toString());
         }
         return null;
     };

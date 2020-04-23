@@ -7,12 +7,14 @@ import androidx.annotation.Nullable;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.raising.app.R;
@@ -20,7 +22,9 @@ import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.models.Account;
 import com.raising.app.models.Investor;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.RegistrationHandler;
 
 import org.json.JSONException;
@@ -32,6 +36,8 @@ import java.util.function.Function;
 public class RegisterInvestorPitchFragment extends RaisingFragment implements View.OnClickListener {
     private EditText sentenceInput, pitchInput;
     private TextInputLayout sentenceLayout, pitchLayout;
+    private Investor investor;
+    private boolean editMode = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +46,7 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
                 container, false);
 
         hideBottomNavigation(true);
+        customizeAppBar(getString(R.string.toolbar_title_pitch), true);
         return view;
     }
 
@@ -48,20 +55,63 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         super.onViewCreated(view, savedInstanceState);
 
         sentenceLayout = view.findViewById(R.id.register_investor_pitch_sentence);
+        sentenceLayout.setEndIconOnClickListener(v -> {
+            final Snackbar snackbar = Snackbar.make(sentenceLayout,
+                    R.string.register_sentence_helper_text, Snackbar.LENGTH_LONG);
+            snackbar.setAction(getString(R.string.got_it_text), v12 -> snackbar.dismiss());
+            snackbar.setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
+                    .show();
+        });
+
         sentenceInput = view.findViewById(R.id.register_input_investor_pitch_sentence);
 
         pitchLayout = view.findViewById(R.id.register_investor_pitch_pitch);
-        pitchInput = view.findViewById(R.id.register_input_investor_pitch_pitch);
+        pitchLayout.setEndIconOnClickListener(v -> {
+            final Snackbar snackbar = Snackbar.make(pitchLayout,
+                    R.string.register_pitch_helper_text, Snackbar.LENGTH_LONG);
+            snackbar.setAction(getString(R.string.got_it_text), v12 -> snackbar.dismiss());
+            snackbar.setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
+                    .show();
+        });
 
-        prepareSentenceLayout();
-        preparePitchLayout();
+        pitchInput = view.findViewById(R.id.register_input_investor_pitch_pitch);
 
         Button btnInvestorPitch = view.findViewById(R.id.button_investor_pitch);
         btnInvestorPitch.setOnClickListener(this);
 
-        Investor investor = RegistrationHandler.getInvestor();
+        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
+            btnInvestorPitch.setHint(getString(R.string.myProfile_apply_changes));
+            investor = (Investor) accountViewModel.getAccount().getValue();
+            editMode = true;
+            hideBottomNavigation(false);
+        } else {
+            investor = RegistrationHandler.getInvestor();
+        }
         pitchInput.setText(investor.getPitch());
         sentenceInput.setText(investor.getDescription());
+
+        prepareSentenceLayout(investor.getDescription());
+        preparePitchLayout(investor.getPitch());
+
+        pitchInput.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                switch (event.getAction() & MotionEvent.ACTION_MASK ){
+                    case MotionEvent.ACTION_SCROLL:
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
+    protected void onAccountUpdated() {
+        popCurrentFragment(this);
+        accountViewModel.updateCompleted();
     }
 
     @Override
@@ -92,30 +142,55 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
             return;
         }
 
+        // check if sentence is too long
+        if(splitStringIntoWords(sentenceInput.getText().toString()).length
+                > getResources().getInteger(R.integer.pitch_sentence_max_word)) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_pitch_error_long_sentence));
+            return;
+        }
+
+        // check if pitch is too long
+        if(splitStringIntoWords(pitchInput.getText().toString()).length
+                > getResources().getInteger(R.integer.pitch_pitch_max_word)) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_pitch_error_long_pitch));
+            return;
+        }
+
+        investor.setDescription(sentenceInput.getText().toString());
+        investor.setPitch(pitchInput.getText().toString());
+
         try {
-            RegistrationHandler.savePitch(sentenceInput.getText().toString(),
-                    pitchInput.getText().toString());
-            changeFragment(new RegisterInvestorImagesFragment());
+            if(editMode) {
+                accountViewModel.update(investor);
+            } else {
+                RegistrationHandler.saveInvestor(investor);
+                changeFragment(new RegisterInvestorImagesFragment());
+            }
         } catch (IOException e) {
-            Log.d("debugMessage", e.getMessage());
+            Log.d("RegisterInvestorPitchFragment", "Error in processInputs: " +
+                    e.getMessage());
         }
     }
 
     /**
-     * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int)}
+     * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int, String)}
      *
+     * @param currentText The text, that is currently in this text view
      * @author Lorenz Caliezi 18.03.2020
      */
-    private void prepareSentenceLayout() {
-        prepareRestrictedTextLayout(sentenceLayout, sentenceInput, getResources().getInteger(R.integer.pitch_sentence_max_word));
+    private void prepareSentenceLayout(String currentText) {
+        prepareRestrictedTextLayout(sentenceLayout, sentenceInput, getResources().getInteger(R.integer.pitch_sentence_max_word), currentText);
     }
 
     /**
-     * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int)}
+     * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int, String)}
      *
+     * @param currentText The text, that is currently in this text view
      * @author Lorenz Caliezi 18.03.2020
      */
-    private void preparePitchLayout() {
-        prepareRestrictedTextLayout(pitchLayout, pitchInput, getResources().getInteger(R.integer.pitch_pitch_max_word));
+    private void preparePitchLayout(String currentText) {
+        prepareRestrictedTextLayout(pitchLayout, pitchInput, getResources().getInteger(R.integer.pitch_pitch_max_word), currentText);
     }
 }
