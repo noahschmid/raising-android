@@ -23,6 +23,12 @@
         <item name="android:textSize"> @dimen/raisingSmallerTextFontSize </item>
     </style>
 
+    <style name="RaisingSubtitleText">
+        <item name="android:textColor"> @color/raisingTextColor </item>
+        <item name="android:textColorHint"> @color/raisingTextColor </item>
+        <item name="android:textSize"> @dimen/raisingSubtitleFontSize</item>
+    </style>
+
     <style name="DialogTheme" parent="Theme.MaterialComponents.Light.Dialog.MinWidth" />
 
     <style name="TextInputLayoutTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox" />

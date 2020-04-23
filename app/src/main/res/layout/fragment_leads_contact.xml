@@ -11,355 +11,388 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/leads_contact_coffee"
-                style="@style/HandshakeContactCardView"
-                android:layout_width="0dp"
-                android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
-                android:layout_marginBottom="@dimen/standardVerticalMargin"
-                app:layout_constraintBottom_toTopOf="@+id/leads_contact_businessplan"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <TextView
+                    android:id="@+id/leads_contact_disabled_text"
+                    style="@style/RaisingSubtitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/standardVerticalMarginSmall"
+                    android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                    android:text="TEXjkdsakfklajdsnf"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/leads_contact_blur_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/raisingWhiteTransparent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/leads_contact_items_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
-                    <ImageView
-                        android:id="@+id/leads_contact_coffee_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/leads_contact_coffee"
+                        style="@style/HandshakeContactCardView"
+                        android:layout_width="0dp"
                         android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginTop="@dimen/standardVerticalMargin"
+                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
+                        app:layout_constraintBottom_toTopOf="@+id/leads_contact_businessplan"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                        android:hint="@string/leads_contact_coffee"
-                        android:textColorHint="@color/raisingSecondaryDark"
-                        android:textSize="@dimen/raisingTextFontSize"
-                        android:textStyle="bold"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/leads_contact_coffee_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textView5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                                android:hint="@string/leads_contact_coffee"
+                                android:textColorHint="@color/raisingSecondaryDark"
+                                android:textSize="@dimen/raisingTextFontSize"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/leads_contact_coffee_icon"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <Button
+                                android:id="@+id/button_leads_contact_coffee"
+                                style="@style/HandshakeContactButtonStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                                android:text="@string/request_text"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/button_leads_decline_coffee"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/button_leads_decline_coffee"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_cancel_outline_24dp"
+                                android:tint="@color/raisingNegative"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/leads_coffee_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                                android:src="@drawable/ic_keyboard_arrow_right_32dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/leads_contact_businessplan"
+                        style="@style/HandshakeContactCardView"
+                        android:layout_width="0dp"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
+                        app:layout_constraintBottom_toTopOf="@+id/leads_contact_call"
+                        app:layout_constraintEnd_toEndOf="@+id/leads_contact_coffee"
+                        app:layout_constraintStart_toStartOf="@+id/leads_contact_coffee"
+                        app:layout_constraintTop_toBottomOf="@+id/leads_contact_coffee">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/leads_contact_businessplan_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                                android:hint="@string/leads_contact_businessplan"
+                                android:textColorHint="@color/raisingSecondaryDark"
+                                android:textSize="@dimen/raisingTextFontSize"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/leads_contact_businessplan_icon"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <Button
+                                android:id="@+id/button_leads_contact_businessplan"
+                                style="@style/HandshakeContactButtonStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                                android:text="@string/request_text"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/button_leads_decline_businessplan"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/button_leads_decline_businessplan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_cancel_outline_24dp"
+                                android:tint="@color/raisingNegative"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/leads_businessplan_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                                android:src="@drawable/ic_keyboard_arrow_right_32dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/leads_contact_call"
+                        style="@style/HandshakeContactCardView"
+                        android:layout_width="0dp"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
+                        app:layout_constraintBottom_toTopOf="@+id/leads_contact_email"
+                        app:layout_constraintEnd_toEndOf="@+id/leads_contact_businessplan"
+                        app:layout_constraintStart_toStartOf="@+id/leads_contact_businessplan"
+                        app:layout_constraintTop_toBottomOf="@+id/leads_contact_businessplan">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/leads_contact_phone_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
+                                android:src="@drawable/ic_phone_24dp"
+                                android:tint="@color/raisingSecondaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                                android:hint="@string/leads_contact_phone"
+                                android:textColorHint="@color/raisingSecondaryDark"
+                                android:textSize="@dimen/raisingTextFontSize"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/leads_contact_phone_icon"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <Button
+                                android:id="@+id/button_leads_contact_phone"
+                                style="@style/HandshakeContactButtonStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                                android:text="@string/request_text"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/button_leads_decline_phone"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/button_leads_decline_phone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_cancel_outline_24dp"
+                                android:tint="@color/raisingNegative"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/leads_phone_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                                android:src="@drawable/ic_keyboard_arrow_right_32dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/leads_contact_email"
+                        style="@style/HandshakeContactCardView"
+                        android:layout_width="0dp"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
+                        app:layout_constraintBottom_toTopOf="@+id/leads_contact_video"
+                        app:layout_constraintEnd_toEndOf="@+id/leads_contact_call"
+                        app:layout_constraintStart_toStartOf="@+id/leads_contact_call"
+                        app:layout_constraintTop_toBottomOf="@+id/leads_contact_call">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/leads_contact_email_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
+                                android:src="@drawable/ic_email_24dp"
+                                android:tint="@color/raisingSecondaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                                android:hint="@string/leads_contact_email"
+                                android:textColorHint="@color/raisingSecondaryDark"
+                                android:textSize="@dimen/raisingTextFontSize"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/leads_contact_email_icon"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <Button
+                                android:id="@+id/button_leads_contact_email"
+                                style="@style/HandshakeContactButtonStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                                android:text="@string/request_text"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/button_leads_decline_email"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/button_leads_decline_email"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_cancel_outline_24dp"
+                                android:tint="@color/raisingNegative"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/leads_email_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                                android:src="@drawable/ic_keyboard_arrow_right_32dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/leads_contact_video"
+                        style="@style/HandshakeContactCardView"
+                        android:layout_width="0dp"
+                        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/leads_contact_coffee_icon"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintEnd_toEndOf="@+id/leads_contact_email"
+                        app:layout_constraintStart_toStartOf="@+id/leads_contact_email"
+                        app:layout_constraintTop_toBottomOf="@+id/leads_contact_email">
 
-                    <Button
-                        android:id="@+id/button_leads_contact_coffee"
-                        style="@style/HandshakeContactButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
-                        android:text="@string/request_text"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/button_leads_decline_coffee"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-                    <ImageButton
-                        android:id="@+id/button_leads_decline_coffee"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_cancel_outline_24dp"
-                        android:tint="@color/raisingNegative"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                            <ImageView
+                                android:id="@+id/leads_contact_video_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
+                                android:src="@drawable/ic_video_call_24dp"
+                                android:tint="@color/raisingSecondaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/leads_coffee_arrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
-                        android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                                android:hint="@string/leads_contact_video"
+                                android:textColorHint="@color/raisingSecondaryDark"
+                                android:textSize="@dimen/raisingTextFontSize"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/leads_contact_video_icon"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
+                            <Button
+                                android:id="@+id/button_leads_contact_video"
+                                style="@style/HandshakeContactButtonStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                                android:text="@string/request_text"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/button_leads_decline_video"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/leads_contact_businessplan"
-                style="@style/HandshakeContactCardView"
-                android:layout_width="0dp"
-                android:layout_marginBottom="@dimen/standardVerticalMargin"
-                app:layout_constraintBottom_toTopOf="@+id/leads_contact_call"
-                app:layout_constraintEnd_toEndOf="@+id/leads_contact_coffee"
-                app:layout_constraintStart_toStartOf="@+id/leads_contact_coffee"
-                app:layout_constraintTop_toBottomOf="@+id/leads_contact_coffee">
+                            <ImageButton
+                                android:id="@+id/button_leads_decline_video"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_cancel_outline_24dp"
+                                android:tint="@color/raisingNegative"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/leads_contact_businessplan_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                        android:hint="@string/leads_contact_businessplan"
-                        android:textColorHint="@color/raisingSecondaryDark"
-                        android:textSize="@dimen/raisingTextFontSize"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/leads_contact_businessplan_icon"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <Button
-                        android:id="@+id/button_leads_contact_businessplan"
-                        style="@style/HandshakeContactButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
-                        android:text="@string/request_text"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/button_leads_decline_businessplan"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageButton
-                        android:id="@+id/button_leads_decline_businessplan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_cancel_outline_24dp"
-                        android:tint="@color/raisingNegative"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/leads_businessplan_arrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
-                        android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/leads_contact_call"
-                style="@style/HandshakeContactCardView"
-                android:layout_width="0dp"
-                android:layout_marginBottom="@dimen/standardVerticalMargin"
-                app:layout_constraintBottom_toTopOf="@+id/leads_contact_email"
-                app:layout_constraintEnd_toEndOf="@+id/leads_contact_businessplan"
-                app:layout_constraintStart_toStartOf="@+id/leads_contact_businessplan"
-                app:layout_constraintTop_toBottomOf="@+id/leads_contact_businessplan">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/leads_contact_phone_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
-                        android:src="@drawable/ic_phone_24dp"
-                        android:tint="@color/raisingSecondaryDark"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                        android:hint="@string/leads_contact_phone"
-                        android:textColorHint="@color/raisingSecondaryDark"
-                        android:textSize="@dimen/raisingTextFontSize"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/leads_contact_phone_icon"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <Button
-                        android:id="@+id/button_leads_contact_phone"
-                        style="@style/HandshakeContactButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
-                        android:text="@string/request_text"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/button_leads_decline_phone"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageButton
-                        android:id="@+id/button_leads_decline_phone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_cancel_outline_24dp"
-                        android:tint="@color/raisingNegative"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/leads_phone_arrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
-                        android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/leads_contact_email"
-                style="@style/HandshakeContactCardView"
-                android:layout_width="0dp"
-                android:layout_marginBottom="@dimen/standardVerticalMargin"
-                app:layout_constraintBottom_toTopOf="@+id/leads_contact_video"
-                app:layout_constraintEnd_toEndOf="@+id/leads_contact_call"
-                app:layout_constraintStart_toStartOf="@+id/leads_contact_call"
-                app:layout_constraintTop_toBottomOf="@+id/leads_contact_call">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/leads_contact_email_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
-                        android:src="@drawable/ic_email_24dp"
-                        android:tint="@color/raisingSecondaryDark"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                        android:hint="@string/leads_contact_email"
-                        android:textColorHint="@color/raisingSecondaryDark"
-                        android:textSize="@dimen/raisingTextFontSize"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/leads_contact_email_icon"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <Button
-                        android:id="@+id/button_leads_contact_email"
-                        style="@style/HandshakeContactButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
-                        android:text="@string/request_text"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/button_leads_decline_email"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageButton
-                        android:id="@+id/button_leads_decline_email"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_cancel_outline_24dp"
-                        android:tint="@color/raisingNegative"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/leads_email_arrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
-                        android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/leads_contact_video"
-                style="@style/HandshakeContactCardView"
-                android:layout_width="0dp"
-                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/leads_contact_email"
-                app:layout_constraintStart_toStartOf="@+id/leads_contact_email"
-                app:layout_constraintTop_toBottomOf="@+id/leads_contact_email">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/leads_contact_video_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
-                        android:src="@drawable/ic_video_call_24dp"
-                        android:tint="@color/raisingSecondaryDark"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                        android:hint="@string/leads_contact_video"
-                        android:textColorHint="@color/raisingSecondaryDark"
-                        android:textSize="@dimen/raisingTextFontSize"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/leads_contact_video_icon"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <Button
-                        android:id="@+id/button_leads_contact_video"
-                        style="@style/HandshakeContactButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
-                        android:text="@string/request_text"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/button_leads_decline_video"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageButton
-                        android:id="@+id/button_leads_decline_video"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_cancel_outline_24dp"
-                        android:tint="@color/raisingNegative"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/leads_video_arrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
-                        android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                            <ImageView
+                                android:id="@+id/leads_video_arrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                                android:src="@drawable/ic_keyboard_arrow_right_32dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 </FrameLayout>

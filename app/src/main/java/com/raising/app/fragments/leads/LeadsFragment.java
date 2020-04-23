@@ -116,18 +116,17 @@ public class LeadsFragment extends RaisingFragment {
         adapter.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
             args.putLong("id", leads.get(position).getId());
+
+            if((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_ACCEPTED)
+                || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_ACCEPTED)) {
+                args.putBoolean("disableContact", true);
+            } else if ((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_DECLINED)
+                || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_DECLINED)) {
+                args.putBoolean("declinedContact", true);
+            }
             Fragment contactFragment = new LeadsContactFragment();
             contactFragment.setArguments(args);
             ((RaisingFragment)getParentFragment()).changeFragment(contactFragment);
-            /*
-            if(leads.get(position).getHandshakeState() == InteractionState.HANDSHAKE) {
-                Fragment contactFragment = new LeadsContactFragment();
-                contactFragment.setArguments(args);
-                ((RaisingFragment)getParentFragment()).changeFragment(contactFragment);
-            } else {
-                showSimpleDialog(getString(R.string.leads_no_handshake_dialog_title), getString(R.string.leads_no_handshake_dialog_text));
-            }
-             */
         });
     }
 
