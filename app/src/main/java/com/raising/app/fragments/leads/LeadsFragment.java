@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
@@ -26,7 +26,6 @@ import com.raising.app.models.leads.LeadState;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.recyclerViewAdapter.LeadsAdapter;
-import com.raising.app.util.recyclerViewAdapter.RecyclerViewMargin;
 import com.raising.app.viewModels.LeadsViewModel;
 
 import java.util.ArrayList;
@@ -43,7 +42,6 @@ public class LeadsFragment extends RaisingFragment {
     private LeadsViewModel leadsViewModel;
     private LeadsAdapter todayAdapter, thisWeekAdapter, earlierAdapter;
     private ArrayList<Lead> today, thisWeek, earlier;
-    private RecyclerView todayRecycler, thisWeekRecycler, earlierRecycler;
     private ConstraintLayout todayLayout, thisWeekLayout, earlierLayout;
 
     @Override
@@ -137,6 +135,7 @@ public class LeadsFragment extends RaisingFragment {
     private void loadData() {
         ConstraintLayout openRequests = getView().findViewById(R.id.leads_open_requests);
         ImageView openRequestsArrow = getView().findViewById(R.id.leads_open_requests_arrow);
+        FrameLayout openRequestsArrowLayout = getView().findViewById(R.id.leads_open_request_arrow_layout);
         if (!(leadState.equals(LeadState.YOUR_TURN))) {
             openRequests.setVisibility(View.GONE);
         } else {
@@ -149,7 +148,7 @@ public class LeadsFragment extends RaisingFragment {
                 BadgeDrawable badge = BadgeDrawable.create(Objects.requireNonNull(this.getContext()));
                 badge.setNumber(leadsViewModel.getOpenRequests().size());
                 badge.setBadgeGravity(BadgeDrawable.TOP_START);
-                BadgeUtils.attachBadgeDrawable(badge, openRequestsArrow, null);
+                BadgeUtils.attachBadgeDrawable(badge, openRequestsArrow, openRequestsArrowLayout);
                 openRequests.setOnClickListener(v ->
                         changeFragment(new LeadsOpenRequestsFragment()));
             }
