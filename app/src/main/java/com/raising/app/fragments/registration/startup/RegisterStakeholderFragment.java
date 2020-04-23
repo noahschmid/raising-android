@@ -400,7 +400,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
      * Process given inputs
      */
     private void processInputs() {
-        if (founderList.isEmpty() || boardMemberList.isEmpty() ||shareholderList.isEmpty()) {
+        if (founderList.isEmpty() || boardMemberList.isEmpty()) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             finishButton.setEnabled(true);
@@ -414,6 +414,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         if(totalEquity > 100) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_stakeholder_error_equity));
+            return;
         }
 
         //TODO: remove manually set loading panel

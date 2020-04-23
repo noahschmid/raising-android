@@ -283,6 +283,7 @@
                         android:backgroundTint="@color/raisingWhite"
                         android:drawableLeft="@drawable/ic_person_24dp"
                         android:drawableTint="@color/raisingTextColor"
+                        android:gravity="center|start"
                         android:hint="@string/toolbar_title_login_information"
                         android:shadowColor="@color/raisingWhite"
                         android:textColorHint="@color/raisingTextColor"

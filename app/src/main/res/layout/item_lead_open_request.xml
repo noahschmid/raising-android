@@ -56,7 +56,7 @@
             android:hint="@string/accept_text"
             android:minWidth="0dp"
             android:textColorHint="@color/raisingWhite"
-            android:textSize="@dimen/raisingTextFontSize"
+            android:textSize="@dimen/raisingSmallTextFontSize"
             app:layout_constraintBottom_toBottomOf="@+id/button_leads_open_request_decline"
             app:layout_constraintEnd_toStartOf="@+id/button_leads_open_request_decline"
             app:layout_constraintTop_toTopOf="@+id/button_leads_open_request_decline" />
@@ -69,6 +69,7 @@
             android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
             android:hint="@string/decline_text"
             android:minWidth="0dp"
+            android:textSize="@dimen/raisingSmallTextFontSize"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

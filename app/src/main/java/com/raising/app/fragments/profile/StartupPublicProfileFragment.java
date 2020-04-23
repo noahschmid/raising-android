@@ -549,7 +549,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
      */
     private void setupShareholderPieChart(View view) {
         //stores the colors used in the pie chart
-        ArrayList<Integer> pieChartColors = populateColorArray();
+        ArrayList<Integer> pieChartColorsTemplate = populateColorArray();
+        ArrayList<Integer> pieChartColors = new ArrayList<>();
 
         //stores the shareholders combined with their respective chart color
         ArrayList<EquityChartLegendItem> legendItems = new ArrayList<>();
@@ -562,11 +563,12 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         int offset = 0;
         for (int i = 0; i < shareholders.size(); i++) {
-            int colorIndex = (i + offset) % (pieChartColors.size() - 1);
+            int colorIndex = (i + offset) % (pieChartColorsTemplate.size() - 1);
             if (i % shareholders.size() == 0 && i != 0) {
                 offset = offset == 0 ? 1 : 0;
             }
-            int shareholderColor = pieChartColors.get(colorIndex);
+            int shareholderColor = pieChartColorsTemplate.get(colorIndex);
+            pieChartColors.add(shareholderColor);
             Shareholder tmp = shareholders.get(i);
             if (tmp.isPrivateShareholder()) {
                 legendItems.add(new EquityChartLegendItem(shareholderColor,
@@ -579,10 +581,16 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             }
         }
 
-        legendItems.forEach(legendItem -> {
-            pieEntries.add(new PieEntry(legendItem.getEquityShare(), legendItem.getEquityShareString()));
-
-        });
+        float maximumEquityShare = 100;
+        //stores the index for the transparent color
+        int transparentColorIndex = 0;
+        for(int i = 0; i < legendItems.size(); i++) {
+            pieEntries.add(new PieEntry(legendItems.get(i).getEquityShare(), legendItems.get(i).getEquityShareString()));
+            maximumEquityShare -= legendItems.get(i).getEquityShare();
+            transparentColorIndex = i + 1;
+        }
+        pieEntries.add(new PieEntry(maximumEquityShare, ""));
+        pieChartColors.add(transparentColorIndex, getResources().getColor(android.R.color.transparent, null));
 
         FlexboxLayout pieChartLegend = view.findViewById(R.id.stakeholder_equity_chart_legend);
         legendItems.forEach(legendItem -> {
@@ -610,6 +618,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         pieChart.setEntryLabelTextSize(16f);
         pieChart.setHoleRadius(0f);
         pieChart.setTransparentCircleRadius(0f);
+        pieChart.setUsePercentValues(true);
         pieChart.invalidate();
     }
 
