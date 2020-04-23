@@ -53,7 +53,7 @@ public class LeadsContactFragment extends RaisingFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        customizeAppBar(getString(R.string.toolbar_title_contact), true);
+        customizeAppBar(contact.getTitle(), true);
         return inflater.inflate(R.layout.fragment_leads_contact, container, false);
     }
 

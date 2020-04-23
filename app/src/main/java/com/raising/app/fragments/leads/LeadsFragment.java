@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,7 @@ public class LeadsFragment extends RaisingFragment {
     private LeadsAdapter todayAdapter, thisWeekAdapter, earlierAdapter;
     private ArrayList<Lead> today, thisWeek, earlier;
     private ConstraintLayout todayLayout, thisWeekLayout, earlierLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +56,14 @@ public class LeadsFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        swipeRefreshLayout = view.findViewById(R.id.leads_swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         today = new ArrayList<>();
         thisWeek = new ArrayList<>();
