@@ -14,12 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.models.leads.InteractionState;
 import com.raising.app.models.leads.LeadState;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
@@ -41,7 +43,6 @@ public class LeadsFragment extends RaisingFragment {
     private LeadsViewModel leadsViewModel;
     private LeadsAdapter todayAdapter, thisWeekAdapter, earlierAdapter;
     private ArrayList<Lead> today, thisWeek, earlier;
-    private RecyclerView todayRecycler, thisWeekRecycler, earlierRecycler;
     private ConstraintLayout todayLayout, thisWeekLayout, earlierLayout;
 
     @Override
@@ -113,19 +114,19 @@ public class LeadsFragment extends RaisingFragment {
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
+
             args.putSerializable("lead", leads.get(position));
             Fragment contactFragment = new LeadsInteractionFragment();
+
+            if((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_ACCEPTED)
+                || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_ACCEPTED)) {
+                args.putBoolean("disableContact", true);
+            } else if ((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_DECLINED)
+                || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_DECLINED)) {
+                args.putBoolean("declinedContact", true);
+            }
             contactFragment.setArguments(args);
             ((RaisingFragment)getParentFragment()).changeFragment(contactFragment);
-            /*
-            if(leads.get(position).getHandshakeState() == InteractionState.HANDSHAKE) {
-                Fragment contactFragment = new LeadsContactFragment();
-                contactFragment.setArguments(args);
-                ((RaisingFragment)getParentFragment()).changeFragment(contactFragment);
-            } else {
-                showSimpleDialog(getString(R.string.leads_no_handshake_dialog_title), getString(R.string.leads_no_handshake_dialog_text));
-            }
-             */
         });
     }
 
@@ -136,6 +137,7 @@ public class LeadsFragment extends RaisingFragment {
     private void loadData() {
         ConstraintLayout openRequests = getView().findViewById(R.id.leads_open_requests);
         ImageView openRequestsArrow = getView().findViewById(R.id.leads_open_requests_arrow);
+        FrameLayout openRequestsArrowLayout = getView().findViewById(R.id.leads_open_request_arrow_layout);
         if (!(leadState.equals(LeadState.YOUR_TURN))) {
             openRequests.setVisibility(View.GONE);
         } else {
@@ -148,7 +150,7 @@ public class LeadsFragment extends RaisingFragment {
                 BadgeDrawable badge = BadgeDrawable.create(Objects.requireNonNull(this.getContext()));
                 badge.setNumber(leadsViewModel.getOpenRequests().size());
                 badge.setBadgeGravity(BadgeDrawable.TOP_START);
-                BadgeUtils.attachBadgeDrawable(badge, openRequestsArrow, null);
+                BadgeUtils.attachBadgeDrawable(badge, openRequestsArrow, openRequestsArrowLayout);
                 openRequests.setOnClickListener(v ->
                         ((RaisingFragment)getParentFragment())
                                 .changeFragment(new LeadsOpenRequestsFragment()));

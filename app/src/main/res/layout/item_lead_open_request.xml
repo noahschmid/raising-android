@@ -72,5 +72,4 @@
             app:layout_constraintTop_toTopOf="parent"
             app:rippleColor="@color/raisingRippleColor"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.cardview.widget.CardView>

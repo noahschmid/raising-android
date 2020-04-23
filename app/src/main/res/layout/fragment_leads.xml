@@ -66,17 +66,22 @@
                         app:layout_constraintStart_toStartOf="@+id/textView4"
                         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-                    <ImageView
-                        android:id="@+id/leads_open_requests_arrow"
+                    <FrameLayout
+                        android:id="@+id/leads_open_request_arrow_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                        android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/raisingSecondaryDark"
                         app:layout_constraintBottom_toBottomOf="@+id/leads_open_requests_image"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/leads_open_requests_image" />
+                        app:layout_constraintTop_toTopOf="@+id/leads_open_requests_image">
 
+                        <ImageView
+                            android:id="@+id/leads_open_requests_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_keyboard_arrow_right_32dp"
+                            android:tint="@color/raisingSecondaryDark" />
+                    </FrameLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout

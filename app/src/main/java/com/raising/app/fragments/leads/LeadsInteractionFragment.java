@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
@@ -26,6 +27,8 @@ public class LeadsInteractionFragment extends RaisingFragment {
     Lead contact;
     private List<LeadsInteraction> interactions = new ArrayList<>();
 
+    private boolean disableContact, declinedContact;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,12 +43,33 @@ public class LeadsInteractionFragment extends RaisingFragment {
 
         if (getArguments() != null) {
             contact = (Lead)getArguments().getSerializable("lead");
+
+            if(getArguments().getBoolean("disableContact")) {
+                disableContact = true;
+            }
+            if(getArguments().getBoolean("declinedContact")) {
+                declinedContact = true;
+            }
         }
 
         LinearLayout layout = view.findViewById(R.id.leads_contact_items_layout);
         contact.getInteractions().forEach(interaction -> {
             interactions.add(new LeadsInteraction(interaction, layout, getActivity()));
         });
+
+        TextView disableContactText = view.findViewById(R.id.leads_contact_disabled_text);
+        LinearLayout contactItemsLayout = view.findViewById(R.id.leads_contact_items_layout);
+        LinearLayout blurOverlay = view.findViewById(R.id.leads_contact_blur_overlay);
+        blurOverlay.setVisibility(View.GONE);
+        if(disableContact) {
+            disableContactText.setText(getString(R.string.leads_contact_disabled_contact_text));
+            blurOverlay.setVisibility(View.VISIBLE);
+        }
+
+        if(declinedContact) {
+            disableContactText.setText(getString(R.string.leads_contact_declined_contact_text));
+            blurOverlay.setVisibility(View.VISIBLE);
+        }
     }
 
     public void enterInteractionExchange(Interaction interaction) {
