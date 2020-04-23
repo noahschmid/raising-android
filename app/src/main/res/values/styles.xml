@@ -135,6 +135,6 @@
         <item name="android:layout_height">@dimen/leadsContactButtonHeight</item>
         <item name="android:minWidth"> 0dp</item>
         <item name="backgroundColor">@color/raisingSecondaryDark</item>
-        <item name="android:textSize">@dimen/raisingSmallerTextFontSize</item>
+        <item name="android:textSize">@dimen/raisingSmallTextFontSize</item>
     </style>
 </resources>

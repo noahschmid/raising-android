@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -37,6 +38,7 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.raising.app.R;
+import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Image;
@@ -394,6 +396,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         Bitmap logo = ((BitmapDrawable)profileImage.getDrawable()).getBitmap();
 
         try {
+            showLoadingPanel();
             if(editMode) {
                 if(profilePictureChanged) {
                     accountViewModel.updateProfilePicture(new Image(logo));
@@ -405,6 +408,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                 uploadProfilePicture(logo);
             }
         } catch (Exception e) {
+            dismissLoadingPanel();
             //TODO: remove manually set loading panel
             Log.d("RegisterInvestorImagesFragment","Error in process inputs: " + e.getMessage());
         }
@@ -424,10 +428,24 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
                 Log.d(TAG, "Successfully uploaded profile picture");
 
+                Handler mainHandler = new Handler(getContext().getMainLooper());
+
                 if(gallery.size() > 0) {
-                    uploadGallery();
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            uploadGallery();
+                        }
+                    };
+                    mainHandler.post(runnable);
                 } else {
-                    submitRegistration();
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            submitRegistration();
+                        }
+                    };
+                    mainHandler.post(runnable);
                 }
             } catch (JSONException e) {
                 Log.e(TAG, "uploadImages: " + e.getMessage());
@@ -455,9 +473,17 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     investor.getGalleryIds().add(response.getLong(i));
                 }
 
-                Log.d(TAG, "Successfully uploaded profile picture");
+                Log.d(TAG, "Successfully uploaded gallery");
 
-               submitRegistration();
+                Handler mainHandler = new Handler(getContext().getMainLooper());
+
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        submitRegistration();
+                    }
+                };
+                mainHandler.post(runnable);
 
             } catch (Exception e) {
                 Log.e(TAG, "uploadGallery: " + e.getMessage() );
@@ -495,8 +521,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
      * Save private profile after login response and proceed to matches fragment
      */
     Function<JSONObject, Void> registerCallback = response -> {
+        Log.d(TAG, "registerCallback called");
         //TODO: remove manually set loading panel
-        dismissLoadingPanel();
         try {
             RegistrationHandler.finish(response.getLong("id"),
                     response.getString("token"), false);
@@ -516,17 +542,19 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         //TODO: remove manually set loading panel
         dismissLoadingPanel();
         try {
-            if (response.networkResponse.statusCode == 500) {
+            if (response.networkResponse != null) {
                 JSONObject body = new JSONObject(new String(
                         response.networkResponse.data, StandardCharsets.UTF_8));
+                Log.e(TAG, "status code: " + response.networkResponse.statusCode);
+                Log.e("InvestorImages", body.getString("message"));
                 showSimpleDialog(getString(R.string.generic_error_title),
-                        body.getString("message"));
-                Log.d("InvestorImages", body.getString("message"));
+                        getString(R.string.generic_error_text));
+            } else {
+                clearBackstackAndReplace(new LoginFragment());
             }
         } catch (Exception e) {
-            Log.d("debugMessage", e.toString());
+            Log.e("InvestorImages", "errorCallback: " + e.toString());
         }
-        Log.d("debugMessage", ApiRequestHandler.parseVolleyError(response));
         return null;
     };
 }

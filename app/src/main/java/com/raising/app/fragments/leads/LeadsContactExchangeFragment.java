@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.leads.HandshakeContactType;
+import com.raising.app.models.leads.InteractionType;
 import com.raising.app.models.leads.Lead;
 
 public class LeadsContactExchangeFragment extends RaisingFragment {
@@ -22,7 +22,7 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
     private TextView contactName, contactMail, saveContact;
     private Button btnInteract;
 
-    private HandshakeContactType contactType;
+    private InteractionType contactType;
     private long id;
 
     @Override
@@ -39,7 +39,7 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
 
         if(getArguments().getSerializable("contactType") != null) {
             id = getArguments().getLong("id");
-            contactType = (HandshakeContactType) getArguments().getSerializable("contactType");
+            contactType = (InteractionType) getArguments().getSerializable("contactType");
         }
 
         //TODO: store contact fetched with id in this variable
