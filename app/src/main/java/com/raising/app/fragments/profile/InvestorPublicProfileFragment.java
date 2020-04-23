@@ -182,7 +182,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                 leadsDecline = true;
                 leadsRequest = false;
 
-                colorHandshakeButtonBackground(profileRequest, R.color.raisingPrimary);
+                colorHandshakeButtonBackground(profileDecline, R.color.raisingDarkGrey);
 
                 ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
                         res -> {

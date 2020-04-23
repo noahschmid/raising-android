@@ -236,7 +236,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 leadsDecline = true;
                 leadsRequest = false;
 
-                colorHandshakeButtonBackground(profileRequest, R.color.raisingPrimary);
+                colorHandshakeButtonBackground(profileDecline, R.color.raisingDarkGrey);
 
                 ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
                         res -> {
@@ -561,6 +561,11 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         ArrayList<Shareholder> shareholders = new ArrayList<>(startup.getPrivateShareholders());
         shareholders.addAll(startup.getCorporateShareholders());
 
+        float overallEquityShare = 0;
+        for(int i = 0; i < shareholders.size(); i++) {
+            overallEquityShare += shareholders.get(i).getEquityShare();
+        }
+
         int offset = 0;
         for (int i = 0; i < shareholders.size(); i++) {
             int colorIndex = (i + offset) % (pieChartColorsTemplate.size() - 1);
@@ -581,7 +586,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             }
         }
 
-        float maximumEquityShare = 100;
+        float maximumEquityShare = getResources().getInteger(R.integer.maximalPercent);
         //stores the index for the transparent color
         int transparentColorIndex = 0;
         for(int i = 0; i < legendItems.size(); i++) {
@@ -589,8 +594,13 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             maximumEquityShare -= legendItems.get(i).getEquityShare();
             transparentColorIndex = i + 1;
         }
-        pieEntries.add(new PieEntry(maximumEquityShare, ""));
-        pieChartColors.add(transparentColorIndex, getResources().getColor(android.R.color.transparent, null));
+
+        // if equity share total is below 100, add filler element to complete round pie chart
+        if(overallEquityShare < getResources().getInteger(R.integer.maximalPercent)) {
+            pieEntries.add(new PieEntry(maximumEquityShare, ""));
+            pieChartColors.add(transparentColorIndex, getResources().getColor(R.color.gray, null));
+        }
+
 
         FlexboxLayout pieChartLegend = view.findViewById(R.id.stakeholder_equity_chart_legend);
         legendItems.forEach(legendItem -> {
@@ -618,7 +628,10 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         pieChart.setEntryLabelTextSize(16f);
         pieChart.setHoleRadius(0f);
         pieChart.setTransparentCircleRadius(0f);
-        pieChart.setUsePercentValues(true);
+        // if the total equity is higher than 100, do not use a percent value chart. This will break
+        if(overallEquityShare < getResources().getInteger(R.integer.maximalPercent)) {
+            pieChart.setUsePercentValues(true);
+        }
         pieChart.invalidate();
     }
 
