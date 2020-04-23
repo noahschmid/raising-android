@@ -177,6 +177,7 @@
 
     <!-- Strings used for Profile -->
     <string name="toolbar_title_my_profile"> My Profile </string>
+    <string name="toolbar_my_public_profile"> My Public Profile</string>
 
     <!-- Strings used for profile -->
     <string name="myProfile_account_information"> Account Information </string>

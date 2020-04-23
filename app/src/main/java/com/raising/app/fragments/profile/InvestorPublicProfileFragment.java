@@ -85,6 +85,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             Log.d("InvestorPublicProfile", "name: " + ((Investor)getArguments()
                     .getSerializable("investor")).getName());
             investor = (Investor)getArguments().getSerializable("investor");
+            customizeAppBar(getString(R.string.toolbar_my_public_profile), true);
             // hide matching summary, if user accesses own public profile
             CardView matchingSummary = view.findViewById(R.id.investor_public_profile_matching_summary);
             matchingSummary.setVisibility(View.GONE);
