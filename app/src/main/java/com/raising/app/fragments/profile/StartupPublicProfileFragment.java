@@ -586,7 +586,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             }
         }
 
-        float maximumEquityShare = getResources().getInteger(R.integer.maximalPercent);
+        float maximumEquityShare = 100;
         //stores the index for the transparent color
         int transparentColorIndex = 0;
         for(int i = 0; i < legendItems.size(); i++) {
@@ -596,7 +596,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         }
 
         // if equity share total is below 100, add filler element to complete round pie chart
-        if(overallEquityShare < getResources().getInteger(R.integer.maximalPercent)) {
+        if(overallEquityShare < 100) {
             pieEntries.add(new PieEntry(maximumEquityShare, ""));
             pieChartColors.add(transparentColorIndex, getResources().getColor(R.color.gray, null));
         }
@@ -629,7 +629,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         pieChart.setHoleRadius(0f);
         pieChart.setTransparentCircleRadius(0f);
         // if the total equity is higher than 100, do not use a percent value chart. This will break
-        if(overallEquityShare < getResources().getInteger(R.integer.maximalPercent)) {
+        if(overallEquityShare < 100) {
             pieChart.setUsePercentValues(true);
         }
         pieChart.invalidate();
