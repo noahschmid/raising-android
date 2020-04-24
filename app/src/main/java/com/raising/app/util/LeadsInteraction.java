@@ -41,12 +41,13 @@ public class LeadsInteraction {
 
     private FragmentActivity activity;
 
-    public LeadsInteraction(Interaction interaction, LinearLayout layout, @NonNull FragmentActivity activity) {
+    public LeadsInteraction(Interaction interaction, LinearLayout layout,
+                            @NonNull FragmentActivity activity, Lead lead) {
         this.interaction = interaction;
         this.layout = layout;
         this.activity = activity;
         this.lead = lead;
-        View interactionView = activity.getLayoutInflater().inflate(R.layout.item_lead_interaction, null);
+        interactionView = activity.getLayoutInflater().inflate(R.layout.item_lead_interaction, null);
         ((TextView)interactionView.findViewById(R.id.interaction_caption))
                 .setText(interaction.getInteractionType().getCaption());
 
@@ -67,6 +68,13 @@ public class LeadsInteraction {
      */
     private void prepareInteraction() {
         interactionArrow.setVisibility(View.GONE);
+
+        interactionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                interaction.getInteractionType().executeAction(lead);
+            }
+        });
 
         interactionButton.setOnClickListener(v -> {
             updateInteraction(true);

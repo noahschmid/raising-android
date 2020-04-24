@@ -65,7 +65,7 @@ public class LeadsFragment extends RaisingFragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(false);
+                leadsViewModel.loadLeads();
             }
         });
 
@@ -129,6 +129,7 @@ public class LeadsFragment extends RaisingFragment {
             case RESULT:
                 dismissLoadingPanel();
                 loadData();
+                swipeRefreshLayout.setRefreshing(false);
                 break;
             case LOADING:
                 showLoadingPanel();

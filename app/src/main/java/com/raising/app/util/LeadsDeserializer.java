@@ -135,6 +135,7 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
                 if(obj.get("data") != null) {
                     JsonObject data = obj.get("data").getAsJsonObject();
                     ContactData contactData = gson.fromJson(data.toString(), ContactData.class);
+                    contactData.setAccountId(lead.getAccountId());
                     ContactDataHandler.processNewData(contactData);
                 }
 

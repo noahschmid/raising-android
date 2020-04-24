@@ -21,6 +21,12 @@ public class ContactDataHandler {
         contactData = loadContactData();
         if(contactData == null)
             contactData = new ArrayList<>();
+
+        Log.d(TAG, "init: contact data size: " + contactData.size());
+        contactData.forEach(data -> {
+            Log.d(TAG, "- id: " + data.getAccountId() + " email: " + data.getEmail() +  " phone: "
+            + data.getPhone());
+        });
     }
 
     /**
