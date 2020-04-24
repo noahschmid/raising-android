@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.button.MaterialButton;
 import com.raising.app.R;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.util.ApiRequestHandler;
@@ -43,15 +45,20 @@ public class LeadsOpenRequestAdapter extends RecyclerView.Adapter<LeadsOpenReque
         holder.name.setText(recyclerItem.getTitle());
         holder.attribute.setText(recyclerItem.getAttribute());
 
-        Glide
-                .with(InternalStorageHandler.getContext())
-                .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
-                        recyclerItem.getProfilePictureId())
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .placeholder(R.drawable.ic_person_24dp)
-                .into(holder.image);
+        if(recyclerItem.getProfilePictureId() > 0) {
+            Glide
+                    .with(InternalStorageHandler.getContext())
+                    .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                            recyclerItem.getProfilePictureId())
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .placeholder(R.drawable.ic_person_24dp)
+                    .into(holder.image);
+        } else {
+            holder.image.setImageDrawable(InternalStorageHandler.getContext()
+                    .getResources().getDrawable(R.drawable.ic_person_24dp));
+        }
     }
 
     @Override
@@ -79,7 +86,8 @@ public class LeadsOpenRequestAdapter extends RecyclerView.Adapter<LeadsOpenReque
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView image;
         private TextView name, attribute;
-        private Button accept, decline;
+        private ImageButton decline;
+        private MaterialButton accept;
 
         public ViewHolder(@NonNull View itemView, OnClickListener clickListener, OnItemClickListener itemClickListener) {
             super(itemView);

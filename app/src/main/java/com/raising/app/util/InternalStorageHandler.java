@@ -3,6 +3,8 @@ package com.raising.app.util;
 import android.app.Activity;
 import android.content.Context;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,10 +17,10 @@ import java.util.ArrayList;
 
 public class InternalStorageHandler {
     private static Context context;
-    private static Activity activity;
+    private static AppCompatActivity activity;
 
     public static void setContext(Context context) { InternalStorageHandler.context = context; }
-    public static void setActivity(Activity activity) { InternalStorageHandler.activity = activity; }
+    public static void setActivity(AppCompatActivity activity) { InternalStorageHandler.activity = activity; }
 
     public static Context getContext() { return context; }
     public static Activity getActivity() { return activity; }

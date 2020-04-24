@@ -3,22 +3,11 @@ package com.raising.app.util;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.raising.app.models.Account;
-import com.raising.app.models.Investor;
-import com.raising.app.models.ContactDetails;
-import com.raising.app.models.Startup;
-
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.util.function.Function;
 
 public class AuthenticationHandler {
     private static long accountId = -1;
