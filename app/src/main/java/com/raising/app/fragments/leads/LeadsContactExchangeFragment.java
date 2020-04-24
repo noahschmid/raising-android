@@ -49,8 +49,8 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
             contactName = view.findViewById(R.id.leads_contact_name);
             contactName.setText(lead.getTitle());
 
+            contactMail = view.findViewById(R.id.leads_contact_mail);
             if(contactData != null) {
-                contactMail = view.findViewById(R.id.leads_contact_mail);
                 contactMail.setText(contactData.getEmail());
             } else {
                 contactMail.setVisibility(View.GONE);
