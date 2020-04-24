@@ -19,8 +19,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.raising.app.fragments.leads.LeadsContainerFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
-import com.raising.app.fragments.settings.SettingsFragment;
 import com.raising.app.fragments.profile.ContactDataInput;
+import com.raising.app.fragments.settings.SettingsFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
@@ -74,14 +74,14 @@ public class MainActivity extends AppCompatActivity {
             hideBottomNavigation(true);
             fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
         } else {
-            if (!AccountService.loadContactDetails()) {
+            if (!AccountService.loadContactData()) {
                 hideBottomNavigation(true);
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("isStartup", AuthenticationHandler.isStartup());
                 bundle.putString("email", AuthenticationHandler.getEmail());
                 bundle.putString("token", AuthenticationHandler.getToken());
                 bundle.putLong("id", AuthenticationHandler.getId());
-                Fragment fragment = new ContactDetailsInput();
+                Fragment fragment = new ContactDataInput();
                 fragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.fragment_container, fragment);
             } else {
