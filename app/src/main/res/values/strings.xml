@@ -339,4 +339,5 @@
     <string name="continue_text">CONTINUE</string>
     <string name="save_text">SAVE</string>
     <string name="submit">Submit</string>
+    <string name="phone_number">Phone Number</string>
 </resources>
