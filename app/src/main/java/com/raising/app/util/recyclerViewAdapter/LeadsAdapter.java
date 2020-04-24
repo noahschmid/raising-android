@@ -82,16 +82,20 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
         holder.matchingPercent.setText(recyclerItem.getHandshakePercentString());
 
 
-        Glide
-                .with(InternalStorageHandler.getContext())
-                .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
-                        recyclerItem.getProfilePictureId())
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .placeholder(R.drawable.ic_person_24dp)
-                .into(holder.profilePicture);
-
+        if(recyclerItem.getProfilePictureId() > 0) {
+            Glide
+                    .with(InternalStorageHandler.getContext())
+                    .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                            recyclerItem.getProfilePictureId())
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .placeholder(R.drawable.ic_person_24dp)
+                    .into(holder.profilePicture);
+        } else {
+            holder.profilePicture.setImageDrawable(InternalStorageHandler.getContext()
+                    .getResources().getDrawable(R.drawable.ic_person_24dp));
+        }
 
         switch (stateEnum) {
             case YOUR_TURN:

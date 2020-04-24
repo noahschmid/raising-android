@@ -148,6 +148,8 @@ public class RaisingFragment extends Fragment {
      * @param imageView where to load the image into
      */
     protected void loadProfileImage(long id, ImageView imageView) {
+        if(id <= 0)
+            return;
         Glide
                 .with(InternalStorageHandler.getContext())
                 .load(ApiRequestHandler.getDomain() + "media/profilepicture/" + id)

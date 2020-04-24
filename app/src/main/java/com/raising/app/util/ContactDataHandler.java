@@ -19,6 +19,8 @@ public class ContactDataHandler {
 
     public static void init() {
         contactData = loadContactData();
+        if(contactData == null)
+            contactData = new ArrayList<>();
     }
 
     /**

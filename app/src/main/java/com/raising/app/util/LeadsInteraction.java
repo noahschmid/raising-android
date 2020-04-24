@@ -100,6 +100,14 @@ public class LeadsInteraction {
             interactionButton.setText(activity.getResources().getString(R.string.requested_text));
         }
 
+        if(interaction.getInteractionState() == InteractionState.STARTUP_DECLINED ||
+                interaction.getInteractionState() == InteractionState.INVESTOR_DECLINED ) {
+            interactionButton.setEnabled(false);
+            interactionButton.getBackground().setTint(ContextCompat.getColor(
+                    Objects.requireNonNull(interactionButton.getContext()), R.color.raisingNegative));
+            interactionButton.setText(activity.getResources().getString(R.string.declined_text));
+        }
+
         if(interaction.getInteractionState() == InteractionState.HANDSHAKE) {
             interactionArrow.setVisibility(View.VISIBLE);
             interactionButton.setVisibility(View.GONE);
@@ -129,7 +137,7 @@ public class LeadsInteraction {
                         },
                         params);
             } else {
-                String endpoint = accept ? "interaction/accept" : "interaction/decline/" + interaction.getId();
+                String endpoint = accept ? "interaction/accept" : "interaction/reject/" + interaction.getId();
 
                 ApiRequestHandler.performPatchRequest(endpoint,
                         v -> {

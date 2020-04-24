@@ -3,7 +3,9 @@ package com.raising.app.models.leads;
 import com.raising.app.R;
 import com.raising.app.util.InternalStorageHandler;
 
-public enum InteractionType {
+import java.io.Serializable;
+
+public enum InteractionType implements Serializable {
     COFFEE(getString(R.string.leads_contact_coffee)),
     BUSINESSPLAN(getString(R.string.leads_contact_businessplan)),
     PHONE_CALL(getString(R.string.leads_contact_phone)),
