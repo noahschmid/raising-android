@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -497,7 +498,11 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         try {
             RegistrationHandler.finish(response.getLong("id"),
                     response.getString("token"), true);
-            clearBackstackAndReplace(new MatchesFragment());
+            Bundle args = new Bundle();
+            args.putBoolean("newUser", true);
+            RaisingFragment fragment = new MatchesFragment();
+            fragment.setArguments(args);
+            clearBackstackAndReplace(fragment);
         } catch (Exception e ){
             showSimpleDialog(getString(R.string.generic_error_title),
                     getString(R.string.generic_error_text));

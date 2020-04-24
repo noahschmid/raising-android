@@ -142,8 +142,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                         @Override
                         public void onResponse(JSONObject response) {
                             Log.d("LoginFragment", "login successful.");
-                            loadNotificationSettings();
-                            prepareDeviceForNotifications();
                             try {
                                 dismissLoadingPanel();
                                 boolean isStartup = response.getBoolean("startup");
@@ -209,16 +207,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
             Log.d("debugMessage", e.toString());
             return;
         }
-    }
-
-    private void loadNotificationSettings() {
-        ArrayList<NotificationSettings> settings = new ArrayList<>();
-        settings.add(NotificationSettings.MATCHLIST);
-        // settings.add(NotificationSettings.LEAD);
-        settings.add(NotificationSettings.REQUEST);
-        settings.add(NotificationSettings.CONNECTION);
-
-        cacheNotificationSettings(settings);
     }
 
     /**

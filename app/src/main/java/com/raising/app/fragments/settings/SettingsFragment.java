@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,15 +20,24 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.models.PersonalSettings;
+import com.raising.app.models.ViewState;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.NoFilterArrayAdapter;
+import com.raising.app.viewModels.MatchesViewModel;
+import com.raising.app.viewModels.SettingsViewModel;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class SettingsFragment extends RaisingFragment implements View.OnClickListener {
+    private final String TAG = "SettingsFragment";
     private Button btnNotifications, btnAbout, btnReportProblem, btnFeedback, btnLogout;
     private AutoCompleteTextView languageInput;
     private EditText matchNumberInput;
+
+    private SettingsViewModel settingsViewModel;
+    private PersonalSettings personalSettings;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -42,6 +52,20 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        settingsViewModel = ViewModelProviders.of(getActivity())
+                .get(SettingsViewModel.class);
+
+        settingsViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
+            Log.d(TAG, "onViewCreated: SettingsViewState" + viewState.toString());
+            processViewState(viewState);
+            settingsViewModel.loadSettings();
+            if(viewState == ViewState.CACHED || viewState == ViewState.RESULT) {
+                personalSettings = settingsViewModel.getPersonalSettings().getValue();
+                populateSettings();
+            }
+        });
+        processViewState(settingsViewModel.getViewState().getValue());
+
         btnNotifications = view.findViewById(R.id.button_settings_notifications);
         btnNotifications.setOnClickListener(this);
         btnAbout = view.findViewById(R.id.button_settings_about);
@@ -55,15 +79,13 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
 
         ArrayList<String> languages = new ArrayList<>();
         languages.add("English");
-
         NoFilterArrayAdapter<String> adapterType = new NoFilterArrayAdapter(getContext(),
                 R.layout.item_dropdown_menu, languages);
 
         languageInput = view.findViewById(R.id.settings_language_input);
         languageInput.setAdapter(adapterType);
-        languageInput.setText(languages.get(0));
+
         matchNumberInput = view.findViewById(R.id.settings_matches_input);
-        matchNumberInput.setText("10");
 
         TextInputLayout matchNumberLayout = view.findViewById(R.id.settings_matches_layout);
         matchNumberLayout.setHelperText(getString(R.string.settings_max_number_weekly_matches)
@@ -114,21 +136,36 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         startActivity(interactionIntent);
     }
 
+    private void populateSettings() {
+        if(personalSettings != null) {
+            languageInput.setText(personalSettings.getLanguage());
+            matchNumberInput.setText(personalSettings.getNumberOfMatches());
+        } else {
+            settingsViewModel.addInitialSettings();
+        }
+    }
+
     private void logout() {
         Log.d("debugMessage", "logout()");
         AuthenticationHandler.logout();
-        getActivitiesFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, new LoginFragment())
-                .commit();
+        changeFragment(new LoginFragment());
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy: Updating Settings");
 
         String language = languageInput.getText().toString();
         String numberOfMatches = matchNumberInput.getText().toString();
-        //TODO: communicate new values to backend and store in internal storage
+
+        if(numberOfMatches.length() == 0 || Integer.parseInt(numberOfMatches) > 10) {
+            return;
+        }
+
+        personalSettings.setLanguage(language);
+        personalSettings.setNumberOfMatches(Integer.parseInt(numberOfMatches));
+
+        settingsViewModel.updatePersonalSettings(personalSettings);
     }
 }

@@ -33,6 +33,7 @@ import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.LeadsViewModel;
 import com.raising.app.viewModels.MatchesViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
+import com.raising.app.viewModels.SettingsViewModel;
 
 import java.util.ArrayList;
 
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     ResourcesViewModel resourcesViewModel;
     MatchesViewModel matchesViewModel;
     LeadsViewModel leadsViewModel;
+    SettingsViewModel settingsViewModel;
 
     MaterialToolbar toolbar;
 
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         resourcesViewModel = new ViewModelProvider(this).get(ResourcesViewModel.class);
         matchesViewModel = new ViewModelProvider(this).get(MatchesViewModel.class);
         leadsViewModel = new ViewModelProvider(this).get(LeadsViewModel.class);
+        settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
@@ -100,12 +103,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "onCreate: User logged in");
                     accountViewModel.loadAccount();
                     hideBottomNavigation(false);
-
-                    Bundle args = new Bundle();
-                    args.putBoolean("openingApp", true);
-                    Fragment fragment = new MatchesFragment();
-                    fragment.setArguments(args);
-                    fragmentTransaction.add(R.id.fragment_container, fragment);
+                    fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
                 }
             }
         }

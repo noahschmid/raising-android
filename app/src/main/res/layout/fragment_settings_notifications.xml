@@ -66,7 +66,7 @@
                     android:hint="@string/settings_notifications_matchlist"
                     android:textColorHint="@color/raisingTextColor"
                     android:textSize="@dimen/raisingTextFontSize"
-                    app:layout_constraintBottom_toTopOf="@+id/notifications_contact"
+                    app:layout_constraintBottom_toTopOf="@+id/notifications_request"
                     app:layout_constraintEnd_toStartOf="@+id/notifications_switch_matchlist"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -81,7 +81,7 @@
                     app:layout_constraintTop_toTopOf="@+id/notifications_matchlist" />
 
                 <TextView
-                    android:id="@+id/notifications_contact"
+                    android:id="@+id/notifications_request"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/myProfileButtonHeight"
                     android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
@@ -91,17 +91,17 @@
                     android:textColorHint="@color/raisingTextColor"
                     android:textSize="@dimen/raisingTextFontSize"
                     app:layout_constraintBottom_toTopOf="@+id/notifications_connection"
-                    app:layout_constraintEnd_toStartOf="@+id/notifications_switch_contact"
+                    app:layout_constraintEnd_toStartOf="@+id/notifications_switch_request"
                     app:layout_constraintStart_toStartOf="@+id/notifications_matchlist"
                     app:layout_constraintTop_toBottomOf="@+id/notifications_matchlist" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/notifications_switch_contact"
+                    android:id="@+id/notifications_switch_request"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/notifications_contact"
+                    app:layout_constraintBottom_toBottomOf="@+id/notifications_request"
                     app:layout_constraintEnd_toEndOf="@+id/notifications_switch_matchlist"
-                    app:layout_constraintTop_toTopOf="@+id/notifications_contact" />
+                    app:layout_constraintTop_toTopOf="@+id/notifications_request" />
 
                 <TextView
                     android:id="@+id/notifications_connection"
@@ -114,15 +114,15 @@
                     android:textSize="@dimen/raisingTextFontSize"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/notifications_switch_connection"
-                    app:layout_constraintStart_toStartOf="@+id/notifications_contact"
-                    app:layout_constraintTop_toBottomOf="@+id/notifications_contact" />
+                    app:layout_constraintStart_toStartOf="@+id/notifications_request"
+                    app:layout_constraintTop_toBottomOf="@+id/notifications_request" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/notifications_switch_connection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="@+id/notifications_connection"
-                    app:layout_constraintEnd_toEndOf="@+id/notifications_switch_contact"
+                    app:layout_constraintEnd_toEndOf="@+id/notifications_switch_request"
                     app:layout_constraintTop_toTopOf="@+id/notifications_connection" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

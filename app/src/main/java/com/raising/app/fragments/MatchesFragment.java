@@ -25,6 +25,7 @@ import com.raising.app.util.recyclerViewAdapter.MatchListAdapter;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.recyclerViewAdapter.RecyclerViewMargin;
 import com.raising.app.viewModels.MatchesViewModel;
+import com.raising.app.viewModels.SettingsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,10 +58,15 @@ public class MatchesFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // check if this is the initial opening of the app, if true send device token to backend
-        if(this.getArguments() != null && getArguments().getBoolean("openingApp")) {
-            Log.d(TAG, "onViewCreated: Opening App");
-            // prepareDeviceForNotifications();
+        if(getArguments() != null && getArguments().getBoolean("newUser")) {
+            SettingsViewModel settingsViewModel = ViewModelProviders.of(getActivity())
+                    .get(SettingsViewModel.class);
+            settingsViewModel.addInitialSettings();
+
+            settingsViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
+                Log.d(TAG, "onViewCreated: SettingsViewState" + viewState.toString());
+                processViewState(viewState);
+            });
         }
 
         emptyMatchListLayout = view.findViewById(R.id.empty_matchList_layout);
@@ -73,7 +79,7 @@ public class MatchesFragment extends RaisingFragment {
 
         matchesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             Log.d(TAG, "onViewCreated: MatchesViewState: " + state.toString());
-            processViewState(state);
+
         });
         processViewState(matchesViewModel.getViewState().getValue());
         matchListItems = new ArrayList<>();

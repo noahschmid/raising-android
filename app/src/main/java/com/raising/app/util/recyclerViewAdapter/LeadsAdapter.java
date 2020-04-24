@@ -95,7 +95,7 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
 
         switch (stateEnum) {
             case YOUR_TURN:
-                holder.statusIcon.setVisibility(View.GONE);
+                //holder.statusIcon.setVisibility(View.GONE);
                 break;
             case PENDING:
             case CLOSED:

@@ -54,8 +54,6 @@ import java.util.HashMap;
 public class RaisingFragment extends Fragment {
     final private String TAG = "RaisingFragment";
 
-    final private String deviceEndpoint = ApiRequestHandler.getDomain() + "device";
-
     protected View loadingPanel;
     protected FrameLayout overlayLayout;
     protected AccountViewModel accountViewModel;
@@ -534,55 +532,5 @@ public class RaisingFragment extends Fragment {
 
         loadingPanel.setVisibility(View.GONE);
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-    }
-
-    protected void cacheNotificationSettings(ArrayList<NotificationSettings> settings) {
-        try {
-            InternalStorageHandler.saveObject(settings,
-                    "notificationSettings_" + AuthenticationHandler.getId());
-        } catch (Exception e) {
-            Log.e(TAG, "Error caching settings: " + e.getMessage());
-        }
-    }
-
-    protected ArrayList<NotificationSettings> getCachedNotificationSettings() {
-        try {
-            if (InternalStorageHandler.exists("notificationSettings_" + AuthenticationHandler.getId())) {
-                Log.d(TAG, "getCachedNotificationSettings: loaded cached settings");
-                return (ArrayList<NotificationSettings>) InternalStorageHandler.loadObject(
-                        "notificationSettings_" + AuthenticationHandler.getId());
-            } else {
-                Log.d(TAG, "getCachedNotificationSettings: No cached settings available");
-            }
-        } catch (Exception e) {
-
-        }
-        return null;
-    }
-
-    void prepareDeviceForNotifications() {
-        String deviceToken = FirebaseInstanceId.getInstance().getToken();
-        String device = "ANDROID";
-        Log.d(TAG, "prepareDeviceForNotifications: DeviceToken: " + deviceToken);
-        ArrayList<String> notificationStrings = new ArrayList<>();
-        if (getCachedNotificationSettings() != null) {
-            getCachedNotificationSettings().forEach(notificationSettings -> {
-                Log.d(TAG, "prepareDeviceForNotifications: Notification Setting: " + notificationSettings.name());
-                notificationStrings.add(notificationSettings.name());
-            });
-        } else {
-            notificationStrings.add(NotificationSettings.NEVER.name());
-        }
-
-        Log.d(TAG, "prepareDeviceForNotifications: Endpoint" + deviceEndpoint);
-
-        //TODO: perform backend request
-        /* Example request
-        {
-            "token": "asdf",
-            "device": "ANDROID",
-            "notificationTypes":["MATCHLIST", "REQUEST"]
-}
-         */
     }
 }
