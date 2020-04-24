@@ -22,6 +22,7 @@ import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.PersonalSettings;
 import com.raising.app.models.ViewState;
+import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.NoFilterArrayAdapter;
 import com.raising.app.viewModels.MatchesViewModel;
@@ -33,8 +34,7 @@ import java.util.Set;
 public class SettingsFragment extends RaisingFragment implements View.OnClickListener {
     private final String TAG = "SettingsFragment";
     private Button btnNotifications, btnAbout, btnReportProblem, btnFeedback, btnLogout;
-    private AutoCompleteTextView languageInput;
-    private EditText matchNumberInput;
+    private AutoCompleteTextView languageInput, matchNumberInput;
 
     private SettingsViewModel settingsViewModel;
     private PersonalSettings personalSettings;
@@ -55,17 +55,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         settingsViewModel = ViewModelProviders.of(getActivity())
                 .get(SettingsViewModel.class);
 
-        settingsViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
-            Log.d(TAG, "onViewCreated: SettingsViewState" + viewState.toString());
-            processViewState(viewState);
-            settingsViewModel.loadSettings();
-            if(viewState == ViewState.CACHED || viewState == ViewState.RESULT) {
-                personalSettings = settingsViewModel.getPersonalSettings().getValue();
-                populateSettings();
-            }
-        });
-        processViewState(settingsViewModel.getViewState().getValue());
-
         btnNotifications = view.findViewById(R.id.button_settings_notifications);
         btnNotifications.setOnClickListener(this);
         btnAbout = view.findViewById(R.id.button_settings_about);
@@ -85,11 +74,26 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         languageInput = view.findViewById(R.id.settings_language_input);
         languageInput.setAdapter(adapterType);
 
-        matchNumberInput = view.findViewById(R.id.settings_matches_input);
+        ArrayList<Integer> integers = new ArrayList<>();
+        for(int i = 0; i < getResources().getInteger(R.integer.maximumWeeklyMatchesNumber); i++) {
+            integers.add(i+1);
+        }
 
-        TextInputLayout matchNumberLayout = view.findViewById(R.id.settings_matches_layout);
-        matchNumberLayout.setHelperText(getString(R.string.settings_max_number_weekly_matches)
-                + getResources().getInteger(R.integer.maximumWeeklyMatchesNumber));
+        NoFilterArrayAdapter<Integer> adapter = new NoFilterArrayAdapter(getContext(),
+                R.layout.item_dropdown_menu, integers);
+        matchNumberInput = view.findViewById(R.id.settings_matches_input);
+        matchNumberInput.setAdapter(adapter);
+
+        settingsViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
+            Log.d(TAG, "onViewCreated: SettingsViewState" + viewState.toString());
+            processViewState(viewState);
+            if(viewState == ViewState.CACHED || viewState == ViewState.RESULT) {
+                personalSettings = settingsViewModel.getPersonalSettings().getValue();
+                populateSettings();
+            }
+        });
+        processViewState(settingsViewModel.getViewState().getValue());
+        settingsViewModel.loadSettings();
     }
 
     @Override
@@ -139,7 +143,7 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     private void populateSettings() {
         if(personalSettings != null) {
             languageInput.setText(personalSettings.getLanguage());
-            matchNumberInput.setText(personalSettings.getNumberOfMatches());
+            matchNumberInput.setText(String.valueOf(personalSettings.getNumberOfMatches()));
         } else {
             settingsViewModel.addInitialSettings();
         }
@@ -156,15 +160,8 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         super.onDestroy();
         Log.d(TAG, "onDestroy: Updating Settings");
 
-        String language = languageInput.getText().toString();
-        String numberOfMatches = matchNumberInput.getText().toString();
-
-        if(numberOfMatches.length() == 0 || Integer.parseInt(numberOfMatches) > 10) {
-            return;
-        }
-
-        personalSettings.setLanguage(language);
-        personalSettings.setNumberOfMatches(Integer.parseInt(numberOfMatches));
+        personalSettings.setLanguage(languageInput.getText().toString());
+        personalSettings.setNumberOfMatches(Integer.parseInt(matchNumberInput.getText().toString()));
 
         settingsViewModel.updatePersonalSettings(personalSettings);
     }

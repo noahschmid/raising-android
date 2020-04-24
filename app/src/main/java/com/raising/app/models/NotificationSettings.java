@@ -1,6 +1,8 @@
 package com.raising.app.models;
 
-public enum NotificationSettings {
+import java.io.Serializable;
+
+public enum NotificationSettings implements Serializable {
     NEVER,
     MATCHLIST,
     LEAD,

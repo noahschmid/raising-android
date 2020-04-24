@@ -18,6 +18,7 @@ import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,11 +48,12 @@ public class SettingsViewModel extends AndroidViewModel {
         viewState.setValue(ViewState.LOADING);
         PersonalSettings cachedSettings = getCachedSettings();
         if (cachedSettings != null) {
-            viewState.setValue(ViewState.CACHED);
             personalSettings.setValue(cachedSettings);
+            viewState.setValue(ViewState.CACHED);
         } else {
-            viewState.setValue(ViewState.LOADING);
-            personalSettings.setValue(new PersonalSettings());
+            // TODO: once server supports GET replace with GET request
+            addInitialSettings();
+            loadSettings();
         }
 
         //TODO: get personal settings from server
@@ -72,15 +74,21 @@ public class SettingsViewModel extends AndroidViewModel {
         Log.d(TAG, "updatePersonalSettings: DeviceToken: " + deviceToken);
 
         JSONObject object = new JSONObject();
+        ArrayList<String> notificationSettingsStrings = new ArrayList<>();
+        personalSettings.getValue().getNotificationSettings().forEach(notificationSettings -> {
+            notificationSettingsStrings.add(notificationSettings.name());
+        });
         try {
+            Gson gson = new Gson();
+            object.put("notificationTypes", new JSONArray(notificationSettingsStrings.toArray()));
             object.put("token", deviceToken);
             object.put("device", "ANDROID");
-            Gson gson = new Gson();
-            object.put("notificationTypes",
-                    new JSONObject(gson.toJson(personalSettings.getValue().getNotificationSettings())));
+
+            //TODO: add following fields, once backend supports these values
 
             // object.put("language", personalSettings.getValue().getLanguage());
             // object.put("numberOfMatches", personalSettings.getValue().getNumberOfMatches());
+
             Log.d(TAG, "updatePersonalSettings: JSONObject" + object.toString());
         } catch (JSONException e) {
             Log.e(TAG, "updatePersonalSettings: JSONException" + e.getMessage());
@@ -148,36 +156,6 @@ public class SettingsViewModel extends AndroidViewModel {
         notificationSettings.add(NotificationSettings.CONNECTION);
         initialSettings.setNotificationSettings(notificationSettings);
 
-        personalSettings.setValue(initialSettings);
-        cacheSettings(personalSettings.getValue());
-
-        // device specifications
-        String deviceToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "addInitialSettings: DeviceToken: " + deviceToken);
-
-        JSONObject object = new JSONObject();
-        try {
-            object.put("token", deviceToken);
-            object.put("device", "ANDROID");
-            Gson gson = new Gson();
-            object.put("notificationTypes",
-                    new JSONObject(gson.toJson(personalSettings.getValue().getNotificationSettings())));
-
-            // object.put("language", personalSettings.getValue().getLanguage());
-            // object.put("numberOfMatches", personalSettings.getValue().getNumberOfMatches());
-            Log.d(TAG, "addInitialSettings: JSONObject" + object.toString());
-        } catch (JSONException e) {
-            Log.e(TAG, "addInitialSettings: JSONException" + e.getMessage());
-        }
-
-        ApiRequestHandler.performPostRequest("device",
-                response -> {
-                    viewState.setValue(ViewState.RESULT);
-                    return null;
-                }, volleyError -> {
-                    viewState.setValue(ViewState.ERROR);
-                    Log.e(TAG, "addInitialSettings: " + ApiRequestHandler.parseVolleyError(volleyError));
-                    return null;
-                }, object);
+        updatePersonalSettings(initialSettings);
     }
 }

@@ -45,9 +45,22 @@ public class SettingsNotificationsFragment extends RaisingFragment {
         settingsViewModel = ViewModelProviders.of(getActivity())
                 .get(SettingsViewModel.class);
 
+        specificSettings = view.findViewById(R.id.notifications_specific_settings);
+
+        generalSwitch = view.findViewById(R.id.notifications_switch_general);
+        generalSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                specificSettings.setVisibility(View.VISIBLE);
+            } else {
+                specificSettings.setVisibility(View.GONE);
+            }
+        });
+        matchlistSwitch = view.findViewById(R.id.notifications_switch_matchlist);
+        requestSwitch = view.findViewById(R.id.notifications_switch_request);
+        connectionSwitch = view.findViewById(R.id.notifications_switch_connection);
+
         settingsViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
             processViewState(viewState);
-            settingsViewModel.loadSettings();
             if(viewState == ViewState.CACHED || viewState == ViewState.RESULT) {
                 Log.d(TAG, "onViewCreated: Receive personal settings");
                 personalSettings = settingsViewModel.getPersonalSettings().getValue();
@@ -58,6 +71,9 @@ public class SettingsNotificationsFragment extends RaisingFragment {
                         switch (notificationSettings) {
                             case NEVER:
                                 generalSwitch.setChecked(false);
+                                if(!generalSwitch.isChecked()) {
+                                    specificSettings.setVisibility(View.GONE);
+                                }
                                 break;
                             case LEAD:
                             case REQUEST:
@@ -77,23 +93,10 @@ public class SettingsNotificationsFragment extends RaisingFragment {
                 } else {
                     generalSwitch.setChecked(false);
                 }
-
-                specificSettings = view.findViewById(R.id.notifications_specific_settings);
-
-                generalSwitch = view.findViewById(R.id.notifications_switch_general);
-                generalSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    if (isChecked) {
-                        specificSettings.setVisibility(View.VISIBLE);
-                    } else {
-                        specificSettings.setVisibility(View.GONE);
-                    }
-                });
-                matchlistSwitch = view.findViewById(R.id.notifications_switch_matchlist);
-                requestSwitch = view.findViewById(R.id.notifications_switch_request);
-                connectionSwitch = view.findViewById(R.id.notifications_switch_connection);
             }
         });
         processViewState(settingsViewModel.getViewState().getValue());
+        settingsViewModel.loadSettings();
     }
 
     @Override

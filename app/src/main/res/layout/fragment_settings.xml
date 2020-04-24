@@ -42,7 +42,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/settings_matches_layout"
-                style="@style/TextInputLayoutTheme"
+                style="@style/TextInputExposedDropdownMenuTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
@@ -53,11 +53,11 @@
                 app:layout_constraintStart_toStartOf="@+id/settings_language_layout"
                 app:layout_constraintTop_toBottomOf="@+id/settings_language_layout">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <AutoCompleteTextView
                     android:id="@+id/settings_matches_input"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"
-                    android:inputType="numberDecimal"/>
+                    android:focusable="false"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
