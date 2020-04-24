@@ -72,7 +72,9 @@ public class LeadsInteraction {
         interactionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                interaction.getInteractionType().executeAction(lead);
+                if(interaction.getInteractionState() == InteractionState.HANDSHAKE) {
+                    interaction.getInteractionType().executeAction(lead);
+                }
             }
         });
 

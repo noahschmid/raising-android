@@ -14,6 +14,11 @@ import java.net.URLEncoder;
 public class BusinessPlanAction implements HandshakeAction {
     public void execute(Lead lead) {
         ContactData contactData = ContactDataHandler.getContactData(lead.getAccountId());
+
+        if(contactData == null) {
+            return;
+        }
+
         Intent interactionIntent = new Intent(Intent.ACTION_SENDTO);
         interactionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         String subject = InternalStorageHandler.getContext()
