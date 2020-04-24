@@ -48,6 +48,7 @@ import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.ImageUploader;
+import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.Serializer;
 
@@ -161,7 +162,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     }
 
     private void loadImages() {
-        if(investor.getProfilePictureId() != -1) {
+        if(investor.getProfilePictureId() > 0) {
             Glide
                     .with(this)
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
@@ -173,27 +174,31 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     .into(profileImage);
             profileImageOverlay.setVisibility(View.GONE);
             deleteProfileImageButton.setVisibility(View.VISIBLE);
+        } else {
+            profileImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_24dp));
         }
 
         if(investor.getGalleryIds() != null) {
             investor.getGalleryIds().forEach(imageId -> {
-                Glide.with(this)
-                        .asBitmap()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .load(ApiRequestHandler.getDomain() + "media/gallery/" +
-                                imageId)
-                        .into(new CustomTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(@NonNull Bitmap resource, @Nullable
-                                    Transition<? super Bitmap> transition) {
-                                addImageToGallery(new Image(imageId, resource));
-                            }
+                if(imageId > 0) {
+                    Glide.with(this)
+                            .asBitmap()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .load(ApiRequestHandler.getDomain() + "media/gallery/" +
+                                    imageId)
+                            .into(new CustomTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(@NonNull Bitmap resource, @Nullable
+                                        Transition<? super Bitmap> transition) {
+                                    addImageToGallery(new Image(imageId, resource));
+                                }
 
-                            @Override
-                            public void onLoadCleared(@Nullable Drawable placeholder) {
-                            }
-                        });
+                                @Override
+                                public void onLoadCleared(@Nullable Drawable placeholder) {
+                                }
+                            });
+                }
             });
         }
     }

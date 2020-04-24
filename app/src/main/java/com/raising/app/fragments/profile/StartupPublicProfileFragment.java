@@ -115,6 +115,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                     .getSerializable("startup")).getName());
             startup = (Startup) getArguments().getSerializable("startup");
             Log.i("startup", startup.toString());
+            customizeAppBar(getString(R.string.toolbar_my_public_profile), true);
             // hide matching summary, if user accesses own public profile
             CardView matchingSummary = view.findViewById(R.id.startup_public_profile_matching_summary);
             matchingSummary.setVisibility(View.GONE);
@@ -333,45 +334,48 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             startupValuationTitle.setVisibility(View.GONE);
             startupValuation.setVisibility(View.GONE);
         }
+        if(startup.getProfilePictureId() > 0) {
+            Glide.with(this)
+                    .asBitmap()
+                    .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                            startup.getProfilePictureId())
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable
+                                Transition<? super Bitmap> transition) {
+                            pictures.add(resource);
+                            imageSwitcher.setImageDrawable(new BitmapDrawable(
+                                    pictures.get(currentImageIndex)));
+                        }
 
-        Glide.with(this)
-                .asBitmap()
-                .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
-                        startup.getProfilePictureId())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable
-                            Transition<? super Bitmap> transition) {
-                        pictures.add(resource);
-                        imageSwitcher.setImageDrawable(new BitmapDrawable(
-                                pictures.get(currentImageIndex)));
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                    }
-                });
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                        }
+                    });
+        }
 
         if(startup.getGalleryIds() != null) {
             startup.getGalleryIds().forEach(galleryId -> {
-                Glide.with(this)
-                        .asBitmap()
-                        .load(ApiRequestHandler.getDomain() + "media/gallery/" +
-                                galleryId)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(new CustomTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                pictures.add(resource);
-                            }
+                if(galleryId > 0) {
+                    Glide.with(this)
+                            .asBitmap()
+                            .load(ApiRequestHandler.getDomain() + "media/gallery/" +
+                                    galleryId)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .into(new CustomTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                    pictures.add(resource);
+                                }
 
-                            @Override
-                            public void onLoadCleared(@Nullable Drawable placeholder) {
-                            }
-                        });
+                                @Override
+                                public void onLoadCleared(@Nullable Drawable placeholder) {
+                                }
+                            });
+                }
             });
         }
 

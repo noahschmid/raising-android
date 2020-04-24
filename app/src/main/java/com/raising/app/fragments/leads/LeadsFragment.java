@@ -44,7 +44,7 @@ public class LeadsFragment extends RaisingFragment {
     private LeadsViewModel leadsViewModel;
     private LeadsAdapter todayAdapter, thisWeekAdapter, earlierAdapter;
     private ArrayList<Lead> today, thisWeek, earlier;
-    private ConstraintLayout todayLayout, thisWeekLayout, earlierLayout;
+    private ConstraintLayout todayLayout, thisWeekLayout, earlierLayout, emptyLeadsLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
     private boolean observersSet = false;
 
@@ -61,11 +61,13 @@ public class LeadsFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        emptyLeadsLayout = view.findViewById(R.id.empty_leads_fragment_text);
+
         swipeRefreshLayout = view.findViewById(R.id.leads_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(false);
+                leadsViewModel.loadLeads();
             }
         });
 
@@ -76,6 +78,12 @@ public class LeadsFragment extends RaisingFragment {
         todayLayout = view.findViewById(R.id.leads_today);
         thisWeekLayout = view.findViewById(R.id.leads_this_week);
         earlierLayout = view.findViewById(R.id.leads_earlier);
+
+        todayLayout.setVisibility(View.GONE);
+        thisWeekLayout.setVisibility(View.GONE);
+        earlierLayout.setVisibility(View.GONE);
+        emptyLeadsLayout.setVisibility(View.GONE);
+        getView().findViewById(R.id.leads_open_requests).setVisibility(View.GONE);
 
         // check for leads state
         if (getArguments() != null) {
@@ -92,8 +100,8 @@ public class LeadsFragment extends RaisingFragment {
             setupRecyclerView(R.id.leads_tab_recycler_this_week, thisWeekAdapter, thisWeek);
             setupRecyclerView(R.id.leads_tab_recycler_earlier, earlierAdapter, earlier);
 
-            if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
-            resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
+            if (resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
+                    resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
                 leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
                     processLeadsViewState(state);
                 });
@@ -106,7 +114,7 @@ public class LeadsFragment extends RaisingFragment {
 
     @Override
     protected void onResourcesLoaded() {
-        if(!observersSet && leadState != null) {
+        if (!observersSet && leadState != null) {
             leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
                 processLeadsViewState(state);
             });
@@ -114,12 +122,16 @@ public class LeadsFragment extends RaisingFragment {
         }
     }
 
+    /**
+     * @param state
+     */
     private void processLeadsViewState(ViewState state) {
         switch (state) {
             case CACHED:
             case RESULT:
                 dismissLoadingPanel();
                 loadData();
+                swipeRefreshLayout.setRefreshing(false);
                 break;
             case LOADING:
                 showLoadingPanel();
@@ -144,15 +156,15 @@ public class LeadsFragment extends RaisingFragment {
             args.putSerializable("lead", leads.get(position));
             Fragment contactFragment = new LeadsInteractionFragment();
 
-            if((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_ACCEPTED)
-                || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_ACCEPTED)) {
+            if ((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_ACCEPTED)
+                    || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_ACCEPTED)) {
                 args.putBoolean("disableContact", true);
             } else if ((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_DECLINED)
-                || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_DECLINED)) {
+                    || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_DECLINED)) {
                 args.putBoolean("declinedContact", true);
             }
             contactFragment.setArguments(args);
-            ((RaisingFragment)getParentFragment()).changeFragment(contactFragment);
+            ((RaisingFragment) getParentFragment()).changeFragment(contactFragment);
         });
     }
 
@@ -164,12 +176,16 @@ public class LeadsFragment extends RaisingFragment {
         ConstraintLayout openRequests = getView().findViewById(R.id.leads_open_requests);
         ImageView openRequestsArrow = getView().findViewById(R.id.leads_open_requests_arrow);
         FrameLayout openRequestsArrowLayout = getView().findViewById(R.id.leads_open_request_arrow_layout);
+        boolean showEmptyLeadsText = false;
         if (!(leadState.equals(LeadState.YOUR_TURN))) {
             openRequests.setVisibility(View.GONE);
+            showEmptyLeadsText = true;
         } else {
             if (leadsViewModel.getOpenRequests().size() == 0) {
                 openRequests.setVisibility(View.GONE);
+                showEmptyLeadsText = true;
             } else {
+                openRequests.setVisibility(View.VISIBLE);
                 ImageView image = getView().findViewById(R.id.leads_open_requests_image);
                 // set image of uppermost index in openRequests
                 loadProfileImage(leadsViewModel.getOpenRequests().get(0).getProfilePictureId(), image);
@@ -178,13 +194,15 @@ public class LeadsFragment extends RaisingFragment {
                 badge.setBadgeGravity(BadgeDrawable.TOP_START);
                 BadgeUtils.attachBadgeDrawable(badge, openRequestsArrow, openRequestsArrowLayout);
                 openRequests.setOnClickListener(v ->
-                        ((RaisingFragment)getParentFragment())
+                        ((RaisingFragment) getParentFragment())
                                 .changeFragment(new LeadsOpenRequestsFragment()));
             }
         }
         filterLeads();
+        if (today.size() == 0 && thisWeek.size() == 0 && earlier.size() == 0 && showEmptyLeadsText) {
+            emptyLeadsLayout.setVisibility(View.VISIBLE);
+        }
     }
-
 
     /**
      * Filter leads by state and timestamp
@@ -205,7 +223,7 @@ public class LeadsFragment extends RaisingFragment {
                             lead.getInvestmentPhaseId()).getName());
                 } else {
                     lead.setTitle(lead.getFirstName() + " " + lead.getLastName());
-                    if(resources.getInvestorType(
+                    if (resources.getInvestorType(
                             lead.getInvestorTypeId()) != null) {
                         lead.setAttribute(resources.getInvestorType(
                                 lead.getInvestorTypeId()).getName());

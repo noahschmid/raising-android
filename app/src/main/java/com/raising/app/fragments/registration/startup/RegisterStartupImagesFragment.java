@@ -158,7 +158,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
     }
 
     private void loadImages() {
-        if(startup.getProfilePictureId() != -1) {
+        if(startup.getProfilePictureId() > 0) {
             Glide
                     .with(this)
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
@@ -170,27 +170,31 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                     .into(profileImage);
             profileImageOverlay.setVisibility(View.GONE);
             deleteProfileImageButton.setVisibility(View.VISIBLE);
+        } else {
+            profileImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_24dp));
         }
 
         if(startup.getGalleryIds() != null) {
             startup.getGalleryIds().forEach(imageId -> {
-                Glide.with(this)
-                        .asBitmap()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .load(ApiRequestHandler.getDomain() + "media/gallery/" +
-                                imageId)
-                        .into(new CustomTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(@NonNull Bitmap resource, @Nullable
-                                    Transition<? super Bitmap> transition) {
-                                addImageToGallery(new Image(imageId, resource));
-                            }
+                if(imageId > 0) {
+                    Glide.with(this)
+                            .asBitmap()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .load(ApiRequestHandler.getDomain() + "media/gallery/" +
+                                    imageId)
+                            .into(new CustomTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(@NonNull Bitmap resource, @Nullable
+                                        Transition<? super Bitmap> transition) {
+                                    addImageToGallery(new Image(imageId, resource));
+                                }
 
-                            @Override
-                            public void onLoadCleared(@Nullable Drawable placeholder) {
-                            }
-                        });
+                                @Override
+                                public void onLoadCleared(@Nullable Drawable placeholder) {
+                                }
+                            });
+                }
             });
         }
     }

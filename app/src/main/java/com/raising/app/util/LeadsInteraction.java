@@ -15,11 +15,13 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.gson.Gson;
 import com.raising.app.R;
 import com.raising.app.fragments.leads.LeadsInteractionFragment;
 import com.raising.app.models.ContactData;
 import com.raising.app.models.leads.Interaction;
 import com.raising.app.models.leads.InteractionState;
+import com.raising.app.models.leads.Lead;
 
 import org.json.JSONObject;
 
@@ -35,14 +37,17 @@ public class LeadsInteraction {
     private ImageView interactionArrow;
     private View interactionView;
     private LinearLayout layout;
+    private Lead lead;
 
     private FragmentActivity activity;
 
-    public LeadsInteraction(Interaction interaction, LinearLayout layout, @NonNull FragmentActivity activity) {
+    public LeadsInteraction(Interaction interaction, LinearLayout layout,
+                            @NonNull FragmentActivity activity, Lead lead) {
         this.interaction = interaction;
         this.layout = layout;
         this.activity = activity;
-        View interactionView = activity.getLayoutInflater().inflate(R.layout.item_lead_interaction, null);
+        this.lead = lead;
+        interactionView = activity.getLayoutInflater().inflate(R.layout.item_lead_interaction, null);
         ((TextView)interactionView.findViewById(R.id.interaction_caption))
                 .setText(interaction.getInteractionType().getCaption());
 
@@ -64,29 +69,106 @@ public class LeadsInteraction {
     private void prepareInteraction() {
         interactionArrow.setVisibility(View.GONE);
 
+        interactionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(interaction.getInteractionState() == InteractionState.HANDSHAKE) {
+                    interaction.getInteractionType().executeAction(lead);
+                }
+            }
+        });
+
         interactionButton.setOnClickListener(v -> {
-            Log.d(TAG, "prepareInteraction: ");
-            updateInteraction(false);
+            updateInteraction(true);
             toggleContactButton();
-            updateRemoteInteraction();
+            updateRemoteInteraction(true);
         });
 
         declineInteraction.setVisibility(View.GONE);
         declineInteraction.setOnClickListener(v -> {
-            updateInteraction(true);
+            updateInteraction(false);
             toggleContactButton();
-            updateRemoteInteraction();
+            updateRemoteInteraction(false);
         });
+
+        if(interaction.getInteractionState() == InteractionState.STARTUP_ACCEPTED &&
+                !AuthenticationHandler.isStartup() || interaction.getInteractionState() ==
+                InteractionState.INVESTOR_ACCEPTED && AuthenticationHandler.isStartup()) {
+            interactionButton.setText(R.string.accept_text);
+            interactionButton.getBackground().setTint(ContextCompat.getColor(
+                    Objects.requireNonNull(interactionButton.getContext()), R.color.raisingPositive));
+            declineInteraction.setVisibility(View.VISIBLE);
+        }
+
+        if(interaction.getInteractionState() == InteractionState.STARTUP_ACCEPTED &&
+                AuthenticationHandler.isStartup() || interaction.getInteractionState() ==
+                InteractionState.INVESTOR_ACCEPTED && !AuthenticationHandler.isStartup()) {
+            interactionButton.setEnabled(false);
+            interactionButton.getBackground().setTint(ContextCompat.getColor(
+                    Objects.requireNonNull(interactionButton.getContext()), R.color.raisingPositiveAccent));
+            interactionButton.setText(activity.getResources().getString(R.string.requested_text));
+        }
+
+        if(interaction.getInteractionState() == InteractionState.STARTUP_DECLINED ||
+                interaction.getInteractionState() == InteractionState.INVESTOR_DECLINED ) {
+            interactionButton.setEnabled(false);
+            interactionButton.getBackground().setTint(ContextCompat.getColor(
+                    Objects.requireNonNull(interactionButton.getContext()), R.color.raisingNegativeAccent));
+            interactionButton.setText(activity.getResources().getString(R.string.declined_text));
+            declineInteraction.setVisibility(View.GONE);
+        }
+
+        if(interaction.getInteractionState() == InteractionState.HANDSHAKE) {
+            interactionArrow.setVisibility(View.VISIBLE);
+            interactionButton.setVisibility(View.GONE);
+            declineInteraction.setVisibility(View.GONE);
+        }
     }
 
-    private void updateRemoteInteraction() {
-        //TODO: update interaction on server
+    private void updateRemoteInteraction(boolean accept) {
+        Log.d(TAG, "updateRemoteInteraction: " + accept + " " + interaction.getId());
+        try {
+            JSONObject params = new JSONObject();
+            params.put("interactionId", interaction.getId());
+            params.put("interaction", interaction.getInteractionType().toString());
+            Gson gson = new Gson();
+
+            params.put("data", new JSONObject(gson.toJson(AccountService.getContactData())));
+            params.put("accountId", interaction.getPartnerId());
+
+            if(interaction.getId() == -1) {
+                Log.d(TAG, "updateRemoteInteraction: " + params.toString());
+                ApiRequestHandler.performPostRequest("interaction",
+                        v -> {
+                            return null;
+                        },
+                        err -> {
+                            Log.e(TAG, "updateRemoteInteraction: " + ApiRequestHandler.parseVolleyError(err) );
+                            return null;
+                        },
+                        params);
+            } else {
+                String endpoint = accept ? "interaction/accept" : "interaction/reject/" + interaction.getId();
+
+                ApiRequestHandler.performPatchRequest(endpoint,
+                        v -> {
+                            return null;
+                        },
+                        err -> {
+                            Log.e(TAG, "updateRemoteInteraction: " + ApiRequestHandler.parseVolleyError(err));
+                            return null;
+                        },
+                        accept ? params : new JSONObject());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "updateRemoteInteraction: " +  e.getMessage());
+        }
     }
 
     /**
      * Update the interaction state based on the previous state
      */
-    private void updateInteraction(boolean decline) {
+    private void updateInteraction(boolean accept) {
         switch (interaction.getInteractionState()) {
             case EMPTY:
                 if(AuthenticationHandler.isStartup()) {
@@ -97,7 +179,7 @@ public class LeadsInteraction {
                 Log.d(TAG, "updateInteraction: " + interaction.getInteractionType().name() + "Interaction State" + interaction.getInteractionState().name());
                 break;
             case STARTUP_ACCEPTED:
-                if (!(AuthenticationHandler.isStartup()) && !decline) {
+                if (!(AuthenticationHandler.isStartup()) && accept) {
                     interaction.setInteractionState(InteractionState.HANDSHAKE);
                 } else if(!AuthenticationHandler.isStartup()) {
                     interaction.setInteractionState(InteractionState.INVESTOR_DECLINED);
@@ -105,7 +187,7 @@ public class LeadsInteraction {
                 Log.d(TAG, "updateInteraction: " + interaction.getInteractionType().name() + "Interaction State" + interaction.getInteractionState().name());
                 break;
             case INVESTOR_ACCEPTED:
-                if (AuthenticationHandler.isStartup() && !decline) {
+                if (AuthenticationHandler.isStartup() && accept) {
                     interaction.setInteractionState(InteractionState.HANDSHAKE);
                 } else if(AuthenticationHandler.isStartup()) {
                     interaction.setInteractionState(InteractionState.STARTUP_DECLINED);
@@ -122,23 +204,6 @@ public class LeadsInteraction {
     private void toggleContactButton() {
         Drawable drawable = interactionButton.getBackground();
         drawable = DrawableCompat.wrap(drawable);
-        try {
-            JSONObject params = new JSONObject();
-            params.put("interactionId", interaction.getId());
-            params.put("interaction", interaction.getInteractionType().toString());
-            params.put("data", new ContactData());
-            ApiRequestHandler.performPostRequest("interaction/accept",
-                    v -> {
-                        return null;
-                    },
-                    err -> {
-                        Log.e(TAG, "toggleContactButton: " + ApiRequestHandler.parseVolleyError(err) );
-                        return null;
-                    },
-                    params);
-        } catch (Exception e) {
-            Log.e(TAG, "toggleContactButton: " +  e.getMessage());
-        }
 
         switch (interaction.getInteractionState()) {
             case INVESTOR_DECLINED:

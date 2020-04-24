@@ -57,7 +57,7 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
         holder.attribute.setText(recyclerItem.getAttribute());
         holder.sentence.setText(recyclerItem.getDescription());
         holder.matchingPercent.setText(recyclerItem.getScore() + "%");
-        if(recyclerItem.getPictureId() != -1) {
+        if(recyclerItem.getPictureId() > 0) {
             Glide
                     .with(InternalStorageHandler.getContext())
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +

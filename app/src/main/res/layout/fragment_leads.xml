@@ -22,6 +22,24 @@
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/empty_leads_fragment_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/RaisingSubtitleText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/standardVerticalMarginSmall"
+                        android:gravity="center"
+                        android:hint="@string/leads_no_current_leads_text"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/leads_open_requests"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -70,7 +88,8 @@
                         android:id="@+id/leads_open_request_arrow_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                        android:foregroundGravity="center"
                         app:layout_constraintBottom_toBottomOf="@+id/leads_open_requests_image"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/leads_open_requests_image">
@@ -79,6 +98,11 @@
                             android:id="@+id/leads_open_requests_arrow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                            android:layout_marginTop="@dimen/standardVerticalMargin"
+                            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                            android:layout_marginBottom="@dimen/standardVerticalMargin"
                             android:src="@drawable/ic_keyboard_arrow_right_32dp"
                             android:tint="@color/raisingSecondaryDark" />
                     </FrameLayout>

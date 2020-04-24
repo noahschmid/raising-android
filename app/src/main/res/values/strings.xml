@@ -144,8 +144,7 @@
     <string name="leads_tab_today"> Today </string>
     <string name="leads_tab_this_week"> This Week </string>
     <string name="leads_tab_earlier">Earlier</string>
-    <string name="leads_no_handshake_dialog_title"> Contact not unlocked </string>
-    <string name="leads_no_handshake_dialog_text"> Please establish a handshake before contacting someone</string>
+    <string name="leads_no_current_leads_text"> You currently do not have any leads to display under this category</string>
 
     <string name="toolbar_title_open_requests"> Open Requests</string>
     <string name="leads_no_open_requests"> You currently don\'t have any open requests!</string>
@@ -174,9 +173,36 @@
 
 
     <string name="toolbar_title_settings"> Settings </string>
+    <string name="settings_language"> Language </string>
+    <string name="settings_weekly_matches"> Number of weekly Matches</string>
+    <string name="settings_max_number_weekly_matches"> Maximum number of weekly matches: </string>
+    <string name="settings_problem_report_subject"> Problem Report Rai$ing</string>
+    <string name="settings_problem_report_body"> I would like to report a problem with your app Rai$ing</string>
+    <string name="settings_feedback_subject"> Feedback for Rai$ing</string>
+    <string name="settings_feedback_body"> I would like to give my feedback to your app Rai$ing</string>
+    <string name="settings_about"> About Rai$ing </string>
+    <string name="settings_about_sponsorship"> Sponsorship</string>
+    <string name="settings_about_sponsorship_text"> Swiss Enterpreneurs Foundation \nBundesgasse 35 \n3001 Bern \ninfo@swissef.ch</string>
+    <string name="settings_about_idea"> Idea and specification sheet </string>
+    <string name="settings_about_idea_text"> Peter Stähli</string>
+    <string name="settings_about_supervision"> Supervision</string>
+    <string name="settings_about_supervision_text"> Ubique Innovations AG, Zürich</string>
+    <string name="settings_about_management"> Project Management and Implementation</string>
+    <string name="settings_about_management_text"> University of Bern, Computer Science \nLorenz Caliezi \nNoah Schmid \nAdrian Jörg \nManuel Schüpbach \nOlivier Stähli</string>
+    <string name="settings_about_graphics"> Graphics and Design </string>
+    <string name="settings_about_graphics_text"> Olivier Stähli</string>
+    <string name="settings_notifications"> Notifications </string>
+    <string name="settings_notifications_toggle_all"> Toggle all Notifications</string>
+    <string name="settings_notifications_matchlist"> New Matchlist is available</string>
+    <string name="settings_notifications_contact"> I get a new contact request</string>
+    <string name="settings_notifications_connection"> I make a successful connection</string>
+    <string name="settings_report_problem"> Report a Problem </string>
+    <string name="settings_feedback"> Give Feedback</string>
+    <string name="settings_logout"> Logout</string>
 
     <!-- Strings used for Profile -->
     <string name="toolbar_title_my_profile"> My Profile </string>
+    <string name="toolbar_my_public_profile"> My Public Profile</string>
 
     <!-- Strings used for profile -->
     <string name="myProfile_account_information"> Account Information </string>
@@ -313,4 +339,5 @@
     <string name="continue_text">CONTINUE</string>
     <string name="save_text">SAVE</string>
     <string name="submit">Submit</string>
+    <string name="phone_number">Phone Number</string>
 </resources>

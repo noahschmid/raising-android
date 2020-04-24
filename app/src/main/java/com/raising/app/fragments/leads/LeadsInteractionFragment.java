@@ -56,7 +56,7 @@ public class LeadsInteractionFragment extends RaisingFragment {
 
         LinearLayout layout = view.findViewById(R.id.leads_contact_items_layout);
         contact.getInteractions().forEach(interaction -> {
-            interactions.add(new LeadsInteraction(interaction, layout, getActivity()));
+            interactions.add(new LeadsInteraction(interaction, layout, getActivity(), contact));
         });
 
         TextView disableContactText = view.findViewById(R.id.leads_contact_disabled_text);
