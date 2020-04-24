@@ -67,7 +67,7 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
                         .putExtra(ContactsContract.Intents.Insert.NAME, contact.getName());
                 startActivity(intent);
             });
-
+            
             btnInteract = view.findViewById(R.id.button_leads_contact_interact);
             btnInteract.setOnClickListener(v -> {
                 Intent interactionIntent;

@@ -218,6 +218,7 @@ public class ApiRequestHandler {
                     Map<String, String> headers = new HashMap<>();
                     if (AuthenticationHandler.isLoggedIn()) {
                         headers.put("Authorization", "Bearer " + AuthenticationHandler.getToken());
+                        Log.d(TAG, "getHeaders: Bearer " + AuthenticationHandler.getToken());
                     }
                     return headers;
                 }

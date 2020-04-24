@@ -12,8 +12,15 @@
         <item name="snackbarTextViewStyle"> @style/snackbar_text_style</item>
     </style>
 
+    <style name="RaisingText">
+        <item name="fontFamily"> sans-serif </item>
+        <item name="android:textColor"> @color/raisingTextColor</item>
+        <item name="android:textColorHint"> @color/raisingTextColor</item>
+    </style>
+
     <style name="AppBarTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
         <item name="titleTextColor"> @color/raisingWhite</item>
+        <item name="iconTint"> @color/raisingWhite</item>
     </style>
 
     <style name="snackbar_style" parent="Widget.MaterialComponents.Snackbar">
@@ -138,5 +145,18 @@
         <item name="android:textColor">@color/raisingWhite</item>
         <item name="android:textColorHint">@color/raisingWhite</item>
         <item name="android:textSize">@dimen/raisingSmallTextFontSize</item>
+    </style>
+
+    <style name="RaisingSwitchButtonStyle">
+        <item name="thumbTint"> @color/raisingPrimary </item>
+        <item name="trackTint"> @color/raisingPrimaryLight</item>
+    </style>
+
+    <style name="RaisingStandardParagraph" parent="RaisingText">
+        <item name="android:textSize"> @dimen/raisingTextFontSize</item>
+    </style>
+
+    <style name="RaisingStandardParagraphBold" parent="RaisingStandardParagraph">
+        <item name="android:textStyle"> bold </item>
     </style>
 </resources>

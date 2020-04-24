@@ -59,7 +59,7 @@ public class MatchesViewModel extends AndroidViewModel {
                     return null;
                 },
                 error -> {
-                    Log.e(TAG, "runMatching: " + ApiRequestHandler.parseVolleyError(error) );
+                    Log.e(TAG, "runMatching: " + ApiRequestHandler.parseVolleyError(error));
                     return null;
                 }, new JSONObject());
     }

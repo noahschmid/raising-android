@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.raising.app.fragments.profile.ContactDataInput;
 import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
+import com.raising.app.models.NotificationSettings;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
@@ -32,6 +33,7 @@ import com.raising.app.util.RegistrationHandler;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
