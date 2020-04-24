@@ -5,6 +5,7 @@ import android.app.Person;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -147,7 +148,7 @@ public class SettingsViewModel extends AndroidViewModel {
         PersonalSettings initialSettings = new PersonalSettings();
 
         initialSettings.setLanguage("English");
-        initialSettings.setNumberOfMatches(10);
+        initialSettings.setNumberOfMatches(5);
 
         ArrayList<NotificationSettings> notificationSettings = new ArrayList<>();
         notificationSettings.add(NotificationSettings.MATCHLIST);
@@ -156,6 +157,45 @@ public class SettingsViewModel extends AndroidViewModel {
         notificationSettings.add(NotificationSettings.CONNECTION);
         initialSettings.setNotificationSettings(notificationSettings);
 
-        updatePersonalSettings(initialSettings);
+        //TODO: remove and replace with updatePersonalSettings(initialSettings); once backend supports all requests via PATCH
+
+        personalSettings.setValue(initialSettings);
+        cacheSettings(personalSettings.getValue());
+
+        // device specifications
+        String deviceToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "updatePersonalSettings: DeviceToken: " + deviceToken);
+
+        JSONObject object = new JSONObject();
+        ArrayList<String> notificationSettingsStrings = new ArrayList<>();
+        personalSettings.getValue().getNotificationSettings().forEach(settings -> {
+            notificationSettingsStrings.add(settings.name());
+        });
+        try {
+            Gson gson = new Gson();
+            object.put("notificationTypes", new JSONArray(notificationSettingsStrings.toArray()));
+            object.put("token", deviceToken);
+            object.put("device", "ANDROID");
+
+            //TODO: add following fields, once backend supports these values
+
+            // object.put("language", personalSettings.getValue().getLanguage());
+            // object.put("numberOfMatches", personalSettings.getValue().getNumberOfMatches());
+
+            Log.d(TAG, "updatePersonalSettings: JSONObject" + object.toString());
+        } catch (JSONException e) {
+            Log.e(TAG, "updatePersonalSettings: JSONException" + e.getMessage());
+        }
+
+        ApiRequestHandler.performPostRequest("device",
+                response -> {
+                    viewState.setValue(ViewState.RESULT);
+                    return null;
+                }, volleyError -> {
+                    viewState.setValue(ViewState.ERROR);
+                    Log.e(TAG, "updatePersonalSettings: " + ApiRequestHandler.parseVolleyError(volleyError));
+                    return null;
+                }, object);
+
     }
 }
