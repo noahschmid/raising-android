@@ -88,6 +88,7 @@
                         android:id="@+id/leads_open_request_arrow_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:foregroundGravity="center"
                         app:layout_constraintBottom_toBottomOf="@+id/leads_open_requests_image"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/leads_open_requests_image">

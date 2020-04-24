@@ -531,11 +531,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         try {
             RegistrationHandler.finish(response.getLong("id"),
                     response.getString("token"), false);
-            Bundle args = new Bundle();
-            args.putBoolean("newUser", true);
-            RaisingFragment fragment = new MatchesFragment();
-            fragment.setArguments(args);
-            clearBackstackAndReplace(fragment);
+            clearBackstackAndReplace(new MatchesFragment());
         } catch (Exception e) {
             Log.d("InvestorImagesFragment", e.getMessage());
             showSimpleDialog(getString(R.string.generic_error_title),

@@ -58,17 +58,6 @@ public class MatchesFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(getArguments() != null && getArguments().getBoolean("newUser")) {
-            SettingsViewModel settingsViewModel = ViewModelProviders.of(getActivity())
-                    .get(SettingsViewModel.class);
-            settingsViewModel.addInitialSettings();
-
-            settingsViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
-                Log.d(TAG, "onViewCreated: SettingsViewState" + viewState.toString());
-                processViewState(viewState);
-            });
-        }
-
         emptyMatchListLayout = view.findViewById(R.id.empty_matchList_layout);
         emptyMatchListLayout.setVisibility(View.GONE);
 

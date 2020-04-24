@@ -35,6 +35,7 @@ public class SettingsViewModel extends AndroidViewModel {
         super(application);
         personalSettings.setValue(new PersonalSettings());
         viewState.setValue(ViewState.EMPTY);
+        loadSettings();
     }
 
     public LiveData<PersonalSettings> getPersonalSettings() {
@@ -46,6 +47,7 @@ public class SettingsViewModel extends AndroidViewModel {
     }
 
     public void loadSettings() {
+        Log.d(TAG, "loadSettings: Loading Settings");
         viewState.setValue(ViewState.LOADING);
         PersonalSettings cachedSettings = getCachedSettings();
         if (cachedSettings != null) {

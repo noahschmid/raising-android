@@ -498,11 +498,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         try {
             RegistrationHandler.finish(response.getLong("id"),
                     response.getString("token"), true);
-            Bundle args = new Bundle();
-            args.putBoolean("newUser", true);
-            RaisingFragment fragment = new MatchesFragment();
-            fragment.setArguments(args);
-            clearBackstackAndReplace(fragment);
+            clearBackstackAndReplace(new MatchesFragment());
         } catch (Exception e ){
             showSimpleDialog(getString(R.string.generic_error_title),
                     getString(R.string.generic_error_text));
