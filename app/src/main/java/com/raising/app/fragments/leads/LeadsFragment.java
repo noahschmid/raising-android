@@ -77,6 +77,11 @@ public class LeadsFragment extends RaisingFragment {
         thisWeekLayout = view.findViewById(R.id.leads_this_week);
         earlierLayout = view.findViewById(R.id.leads_earlier);
 
+        todayLayout.setVisibility(View.GONE);
+        thisWeekLayout.setVisibility(View.GONE);
+        earlierLayout.setVisibility(View.GONE);
+        getView().findViewById(R.id.leads_open_requests).setVisibility(View.GONE);
+
         // check for leads state
         if (getArguments() != null) {
             leadState = (LeadState) getArguments().getSerializable("leadsState");
@@ -114,6 +119,10 @@ public class LeadsFragment extends RaisingFragment {
         }
     }
 
+    /**
+     *
+     * @param state
+     */
     private void processLeadsViewState(ViewState state) {
         switch (state) {
             case CACHED:
@@ -170,6 +179,7 @@ public class LeadsFragment extends RaisingFragment {
             if (leadsViewModel.getOpenRequests().size() == 0) {
                 openRequests.setVisibility(View.GONE);
             } else {
+                openRequests.setVisibility(View.VISIBLE);
                 ImageView image = getView().findViewById(R.id.leads_open_requests_image);
                 // set image of uppermost index in openRequests
                 loadProfileImage(leadsViewModel.getOpenRequests().get(0).getProfilePictureId(), image);

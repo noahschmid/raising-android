@@ -15,7 +15,7 @@ import android.widget.EditText;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.ContactDetails;
+import com.raising.app.models.ContactData;
 import com.raising.app.models.Investor;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.RegistrationHandler;
@@ -28,7 +28,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
     private CustomPicker customPicker;
     private int countryId = -1;
     private boolean editMode = false;
-    private ContactDetails contactDetails;
+    private ContactData contactDetails;
     private Investor investor;
 
     @Override
@@ -61,12 +61,12 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnProfileInformation.setHint(getString(R.string.myProfile_apply_changes));
             investor = (Investor) accountViewModel.getAccount().getValue();
-            contactDetails = AccountService.getContactDetails();
+            contactDetails = AccountService.getContactData();
             editMode = true;
             hideBottomNavigation(false);
         } else {
             investor = RegistrationHandler.getInvestor();
-            contactDetails = RegistrationHandler.getContactDetails();
+            contactDetails = RegistrationHandler.getContactData();
         }
 
         setupCountryPicker();
@@ -166,12 +166,12 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
 
         try {
             if(!editMode) {
-                RegistrationHandler.saveContactDetails(contactDetails);
+                RegistrationHandler.saveContactData(contactDetails);
                 RegistrationHandler.saveInvestor(investor);
                 changeFragment(new RegisterInvestorMatchingFragment(),
                         "RegisterInvestorMatchingFragment");
             } else {
-                if(AccountService.saveContactDetails(contactDetails)) {
+                if(AccountService.saveContactData(contactDetails)) {
                     accountViewModel.update(investor);
                 } else {
                     showSimpleDialog(getString(R.string.generic_error_title),

@@ -15,14 +15,13 @@ import android.widget.EditText;
 import com.raising.app.R;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.ContactDetails;
-import com.raising.app.util.AccountService;
+import com.raising.app.models.ContactData;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 
-public class ContactDetailsInput extends RaisingFragment {
+public class ContactDataInput extends RaisingFragment {
     private EditText phoneNumberInput;
-    private ContactDetails contactDetails;
+    private ContactData contactDetails;
     private Button saveButton;
     private boolean isStartup;
     private String token;
@@ -40,11 +39,12 @@ public class ContactDetailsInput extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        contactDetails = new ContactDetails();
+        contactDetails = new ContactData();
         contactDetails.setEmail(this.getArguments().getString("email"));
         isStartup = this.getArguments().getBoolean("isStartup");
         token = this.getArguments().getString("token");
         accountId = this.getArguments().getLong("id");
+        contactDetails.setAccountId(accountId);
 
         phoneNumberInput = view.findViewById(R.id.contact_input_phone);
         saveButton = view.findViewById(R.id.contact_input_save_button);

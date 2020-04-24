@@ -16,15 +16,12 @@ import android.view.View;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessagingService;
 import com.raising.app.fragments.leads.LeadsContainerFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.settings.SettingsFragment;
-import com.raising.app.fragments.profile.ContactDetailsInput;
+import com.raising.app.fragments.profile.ContactDataInput;
 import com.raising.app.fragments.profile.MyProfileFragment;
-import com.raising.app.models.NotificationSettings;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
@@ -89,14 +86,14 @@ public class MainActivity extends AppCompatActivity {
                 fragmentTransaction.replace(R.id.fragment_container, fragment);
             } else {
                 leadsViewModel.loadLeads();
-                if(!AccountService.loadContactDetails()) {
+                if(!AccountService.loadContactData()) {
                     hideBottomNavigation(true);
                     Bundle bundle = new Bundle();
                     bundle.putBoolean("isStartup", AuthenticationHandler.isStartup());
                     bundle.putString("email", AuthenticationHandler.getEmail());
                     bundle.putString("token", AuthenticationHandler.getToken());
                     bundle.putLong("id", AuthenticationHandler.getId());
-                    Fragment fragment = new ContactDetailsInput();
+                    Fragment fragment = new ContactDataInput();
                     fragment.setArguments(bundle);
                     fragmentTransaction.replace(R.id.fragment_container, fragment);
                 } else {

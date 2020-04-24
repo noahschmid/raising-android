@@ -28,7 +28,7 @@ public class ContactDataHandler {
      */
     public static ContactData getContactData(long leadAccountId) {
         for(ContactData data : contactData) {
-            if(data.getLeadAccountId() == leadAccountId) {
+            if(data.getAccountId() == leadAccountId) {
                 return data;
             }
         }
@@ -41,12 +41,12 @@ public class ContactDataHandler {
      * @param data a ContactData instance containing contact information about a certain lead
      */
     public static void processNewData(ContactData data) {
-        if(data.getLeadAccountId() == -1)
+        if(data.getAccountId() == -1)
             return;
 
         boolean found = false;
         for(int i = 0; i < contactData.size(); ++i) {
-            if(contactData.get(i).getLeadAccountId() == data.getLeadAccountId()) {
+            if(contactData.get(i).getAccountId() == data.getAccountId()) {
                 ContactData updated = contactData.get(i);
                 if(data.getEmail() != null) {
                     updated.setEmail(data.getEmail());

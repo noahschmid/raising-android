@@ -64,6 +64,13 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
 
             JsonArray jsonInteractions = jsonObject.get("interactions").getAsJsonArray();
             ArrayList<Interaction> interactions = new ArrayList<>();
+
+            if(jsonObject.get("lastchanged") != null) {
+                lead.setTimestamp(parseTimestamp(jsonObject.get("lastchanged").getAsString()));
+            } else {
+                lead.setTimestamp(new Timestamp(new Date().getTime()));
+            }
+
             for(JsonElement el : jsonInteractions) {
                 JsonObject obj = el.getAsJsonObject();
                 Interaction interaction = new Interaction();
@@ -108,6 +115,20 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
                     pending = true;
                 }
 
+                if(obj.get("createdAt") != null) {
+                    Timestamp createdAt = parseTimestamp(obj.get("createdAt").getAsString());
+                    if(createdAt.after(lead.getTimestamp()))
+                        lead.setTimestamp(createdAt);
+                }
+
+                if(obj.get("acceptedAt") != null) {
+                    Timestamp acceptedAt = parseTimestamp(obj.get("acceptedAt").getAsString());
+                    if(acceptedAt.after(lead.getTimestamp()))
+                        lead.setTimestamp(acceptedAt);
+                }
+
+                interaction.setPartnerId(lead.getAccountId());
+                interaction.setId(obj.get("id").getAsLong());
                 interaction.setInteractionState(state);
                 interaction.setInteractionType(InteractionType.valueOf(obj.get("interaction").getAsString()));
 
@@ -138,18 +159,26 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
                 leadState = LeadState.OPEN_REQUEST;
             }
 
-            try {
-                String timestampString = jsonObject.get("lastchanged").getAsString().substring(0, 10);
-                Log.d(TAG, "deserialize: " + timestampString);
-                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(timestampString);
-                lead.setTimestamp(new Timestamp(date.getTime()));
-            } catch (Exception e) {
-                lead.setTimestamp(new Timestamp(new Date().getTime()));
-                Log.e(TAG, "deserialize: error parsing timestamp: " + e.getMessage() );
-            }
-
             lead.setState(leadState);
 
             return lead;
+        }
+
+
+    /**
+     * Parse Timestamp object from ISO string
+     * @param timestamp
+     * @return
+     */
+    private Timestamp parseTimestamp(String timestamp) {
+            try {
+                String timestampString = timestamp.substring(0, 10);
+                Log.d(TAG, "deserialize: " + timestampString);
+                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(timestampString);
+                return new Timestamp(date.getTime());
+            } catch(Exception e) {
+                Log.e(TAG, "deserialize: error parsing timestamp: " + e.getMessage() );
+                return new Timestamp(new Date().getTime());
+            }
         }
 }
