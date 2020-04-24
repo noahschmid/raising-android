@@ -158,7 +158,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
     }
 
     private void loadImages() {
-        if(startup.getProfilePictureId() != -1) {
+        if(startup.getProfilePictureId() > 0) {
             Glide
                     .with(this)
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
@@ -170,6 +170,8 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                     .into(profileImage);
             profileImageOverlay.setVisibility(View.GONE);
             deleteProfileImageButton.setVisibility(View.VISIBLE);
+        } else {
+            profileImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_24dp));
         }
 
         if(startup.getGalleryIds() != null) {

@@ -1,9 +1,11 @@
 package com.raising.app.models.leads;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 @Data
-public class Interaction {
+public class Interaction implements Serializable {
     long id;
     long partnerId;
     InteractionState interactionState;

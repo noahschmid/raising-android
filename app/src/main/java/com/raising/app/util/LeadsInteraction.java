@@ -69,7 +69,6 @@ public class LeadsInteraction {
         interactionArrow.setVisibility(View.GONE);
 
         interactionButton.setOnClickListener(v -> {
-            Log.d(TAG, "prepareInteraction: ");
             updateInteraction(true);
             toggleContactButton();
             updateRemoteInteraction(true);
@@ -100,6 +99,15 @@ public class LeadsInteraction {
             interactionButton.setText(activity.getResources().getString(R.string.requested_text));
         }
 
+        if(interaction.getInteractionState() == InteractionState.STARTUP_DECLINED ||
+                interaction.getInteractionState() == InteractionState.INVESTOR_DECLINED ) {
+            interactionButton.setEnabled(false);
+            interactionButton.getBackground().setTint(ContextCompat.getColor(
+                    Objects.requireNonNull(interactionButton.getContext()), R.color.raisingNegativeAccent));
+            interactionButton.setText(activity.getResources().getString(R.string.declined_text));
+            declineInteraction.setVisibility(View.GONE);
+        }
+
         if(interaction.getInteractionState() == InteractionState.HANDSHAKE) {
             interactionArrow.setVisibility(View.VISIBLE);
             interactionButton.setVisibility(View.GONE);
@@ -108,6 +116,7 @@ public class LeadsInteraction {
     }
 
     private void updateRemoteInteraction(boolean accept) {
+        Log.d(TAG, "updateRemoteInteraction: " + accept + " " + interaction.getId());
         try {
             JSONObject params = new JSONObject();
             params.put("interactionId", interaction.getId());
@@ -129,7 +138,7 @@ public class LeadsInteraction {
                         },
                         params);
             } else {
-                String endpoint = accept ? "interaction/accept" : "interaction/decline/" + interaction.getId();
+                String endpoint = accept ? "interaction/accept" : "interaction/reject/" + interaction.getId();
 
                 ApiRequestHandler.performPatchRequest(endpoint,
                         v -> {
@@ -139,7 +148,7 @@ public class LeadsInteraction {
                             Log.e(TAG, "updateRemoteInteraction: " + ApiRequestHandler.parseVolleyError(err));
                             return null;
                         },
-                        params);
+                        accept ? params : new JSONObject());
             }
         } catch (Exception e) {
             Log.e(TAG, "updateRemoteInteraction: " +  e.getMessage());
