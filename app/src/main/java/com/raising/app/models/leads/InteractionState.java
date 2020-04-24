@@ -1,6 +1,8 @@
 package com.raising.app.models.leads;
 
-public enum InteractionState {
+import java.io.Serializable;
+
+public enum InteractionState implements Serializable {
     EMPTY,
     STARTUP_ACCEPTED,
     INVESTOR_ACCEPTED,

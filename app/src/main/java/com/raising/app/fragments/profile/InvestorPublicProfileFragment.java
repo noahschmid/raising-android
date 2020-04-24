@@ -85,6 +85,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             Log.d("InvestorPublicProfile", "name: " + ((Investor)getArguments()
                     .getSerializable("investor")).getName());
             investor = (Investor)getArguments().getSerializable("investor");
+            customizeAppBar(getString(R.string.toolbar_my_public_profile), true);
             // hide matching summary, if user accesses own public profile
             CardView matchingSummary = view.findViewById(R.id.investor_public_profile_matching_summary);
             matchingSummary.setVisibility(View.GONE);
@@ -295,56 +296,59 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                pictures.add(image.getImage());
            });
        }*/
+        if(investor.getProfilePictureId() > 0) {
+            Glide.with(this)
+                    .asBitmap()
+                    .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
+                            investor.getProfilePictureId())
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable
+                                Transition<? super Bitmap> transition) {
+                            pictures.add(0, resource);
 
-       Glide.with(this)
-                .asBitmap()
-                .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
-                        investor.getProfilePictureId())
-               .diskCacheStrategy(DiskCacheStrategy.NONE)
-               .skipMemoryCache(true)
-                .into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable
-                            Transition<? super Bitmap> transition) {
-                        pictures.add(0, resource);
-
-                        if(pictures.size() == investor.getGalleryIds().size() + 1) {
-                            prepareImageSwitcher(getView());
+                            if (pictures.size() == investor.getGalleryIds().size() + 1) {
+                                prepareImageSwitcher(getView());
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                    }
-                });
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                        }
+                    });
+        }
 
        if(investor.getGalleryIds() != null) {
            investor.getGalleryIds().forEach(galleryId -> {
-               Glide.with(this)
-                       .asBitmap()
-                       .load(ApiRequestHandler.getDomain() + "media/gallery/" +
-                               galleryId)
-                       .diskCacheStrategy(DiskCacheStrategy.NONE)
-                       .skipMemoryCache(true)
-                       .placeholder(R.drawable.ic_hourglass_empty_black_24dp)
-                       .into(new CustomTarget<Bitmap>() {
-                           @Override
-                           public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                               if(!pictures.isEmpty()) {
-                                   pictures.add(1, resource);
-                               } else {
-                                   pictures.add(resource);
+               if(galleryId > 0) {
+                   Glide.with(this)
+                           .asBitmap()
+                           .load(ApiRequestHandler.getDomain() + "media/gallery/" +
+                                   galleryId)
+                           .diskCacheStrategy(DiskCacheStrategy.NONE)
+                           .skipMemoryCache(true)
+                           .placeholder(R.drawable.ic_hourglass_empty_black_24dp)
+                           .into(new CustomTarget<Bitmap>() {
+                               @Override
+                               public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                   if (!pictures.isEmpty()) {
+                                       pictures.add(1, resource);
+                                   } else {
+                                       pictures.add(resource);
+                                   }
+
+                                   if (pictures.size() == investor.getGalleryIds().size() + 1) {
+                                       prepareImageSwitcher(getView());
+                                   }
                                }
 
-                               if(pictures.size() == investor.getGalleryIds().size() + 1) {
-                                   prepareImageSwitcher(getView());
+                               @Override
+                               public void onLoadCleared(@Nullable Drawable placeholder) {
                                }
-                           }
-
-                           @Override
-                           public void onLoadCleared(@Nullable Drawable placeholder) {
-                           }
-                       });
+                           });
+               }
            });
        }
 

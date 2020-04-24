@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "800045300820",
+    "firebase_url": "https://raising-32593.firebaseio.com",
+    "project_id": "raising-32593",
+    "storage_bucket": "raising-32593.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800045300820:android:72327667bb6f4ef22941c1",
+        "android_client_info": {
+          "package_name": "com.raising.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800045300820-0jkc3bkklatg3mh0r2s272ktie2e9ncg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS27qGlEUFoX5GGbR954VrH2tpaXCaiNk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "800045300820-0jkc3bkklatg3mh0r2s272ktie2e9ncg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "800045300820-93c9op0me2h8bdmkgepqdfeivh1ubf8j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ch.swissef.raisingapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

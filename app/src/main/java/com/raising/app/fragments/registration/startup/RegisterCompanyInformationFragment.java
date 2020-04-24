@@ -18,10 +18,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.ContactDetails;
+import com.raising.app.models.ContactData;
 import com.raising.app.models.Country;
 import com.raising.app.models.Startup;
-import com.raising.app.models.ViewState;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.customPicker.CustomPicker;
@@ -37,7 +36,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
     public ArrayList<PickerItem> countryItems;
     private Country countrySelected = null;
     private Startup startup;
-    private ContactDetails contactDetails;
+    private ContactData contactDetails;
     private boolean editMode = false;
 
     @Override
@@ -79,11 +78,11 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
             btnCompanyInformation.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
             startup = (Startup)accountViewModel.getAccount().getValue();
-            contactDetails = AccountService.getContactDetails();
+            contactDetails = AccountService.getContactData();
             hideBottomNavigation(false);
         } else {
             startup = RegistrationHandler.getStartup();
-            contactDetails = RegistrationHandler.getContactDetails();
+            contactDetails = RegistrationHandler.getContactData();
         }
 
         companyUidInput.setText(startup.getUId());
@@ -127,7 +126,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
         if(!editMode)
             return;
 
-        AccountService.saveContactDetails(contactDetails);
+        AccountService.saveContactData(contactDetails);
         popCurrentFragment(this);
     }
 
@@ -161,7 +160,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
         try {
             if(!editMode) {
                 RegistrationHandler.saveStartup(startup);
-                RegistrationHandler.saveContactDetails(contactDetails);
+                RegistrationHandler.saveContactData(contactDetails);
                 changeFragment(new RegisterCompanyFiguresFragment(),
                         "RegisterCompanyFiguresFragment");
             } else {

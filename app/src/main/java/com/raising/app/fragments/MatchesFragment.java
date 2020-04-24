@@ -25,6 +25,7 @@ import com.raising.app.util.recyclerViewAdapter.MatchListAdapter;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.recyclerViewAdapter.RecyclerViewMargin;
 import com.raising.app.viewModels.MatchesViewModel;
+import com.raising.app.viewModels.SettingsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,10 +66,13 @@ public class MatchesFragment extends RaisingFragment {
         matchesViewModel = ViewModelProviders.of(getActivity())
                 .get(MatchesViewModel.class);
 
+        matchesViewModel.runMatching();
+        matchesViewModel.loadMatches();
+
         matchesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             Log.d(TAG, "onViewCreated: MatchesViewState: " + state.toString());
-            processViewState(state);
         });
+
         processViewState(matchesViewModel.getViewState().getValue());
         matchListItems = new ArrayList<>();
 

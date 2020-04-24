@@ -2,11 +2,13 @@ package com.raising.app;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.bluetooth.BluetoothClass;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -17,8 +19,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.raising.app.fragments.leads.LeadsContainerFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
-import com.raising.app.fragments.SettingsFragment;
-import com.raising.app.fragments.profile.ContactDetailsInput;
+import com.raising.app.fragments.profile.ContactDataInput;
+import com.raising.app.fragments.settings.SettingsFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
@@ -28,12 +30,16 @@ import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.LeadsViewModel;
 import com.raising.app.viewModels.MatchesViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
+import com.raising.app.viewModels.SettingsViewModel;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     AccountViewModel accountViewModel;
     ResourcesViewModel resourcesViewModel;
     MatchesViewModel matchesViewModel;
     LeadsViewModel leadsViewModel;
+    SettingsViewModel settingsViewModel;
 
     MaterialToolbar toolbar;
 
@@ -60,31 +66,45 @@ public class MainActivity extends AppCompatActivity {
         resourcesViewModel = new ViewModelProvider(this).get(ResourcesViewModel.class);
         matchesViewModel = new ViewModelProvider(this).get(MatchesViewModel.class);
         leadsViewModel = new ViewModelProvider(this).get(LeadsViewModel.class);
+        settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-            if(!AuthenticationHandler.isLoggedIn()) {
+        if (!AuthenticationHandler.isLoggedIn()) {
+            hideBottomNavigation(true);
+            fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
+        } else {
+            if (!AccountService.loadContactData()) {
                 hideBottomNavigation(true);
-                fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("isStartup", AuthenticationHandler.isStartup());
+                bundle.putString("email", AuthenticationHandler.getEmail());
+                bundle.putString("token", AuthenticationHandler.getToken());
+                bundle.putLong("id", AuthenticationHandler.getId());
+                Fragment fragment = new ContactDataInput();
+                fragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.fragment_container, fragment);
             } else {
                 leadsViewModel.loadLeads();
-                if(!AccountService.loadContactDetails()) {
+                if(!AccountService.loadContactData()) {
                     hideBottomNavigation(true);
                     Bundle bundle = new Bundle();
                     bundle.putBoolean("isStartup", AuthenticationHandler.isStartup());
                     bundle.putString("email", AuthenticationHandler.getEmail());
                     bundle.putString("token", AuthenticationHandler.getToken());
                     bundle.putLong("id", AuthenticationHandler.getId());
-                    Fragment fragment = new ContactDetailsInput();
+                    Fragment fragment = new ContactDataInput();
                     fragment.setArguments(bundle);
                     fragmentTransaction.replace(R.id.fragment_container, fragment);
                 } else {
+                    Log.d(TAG, "onCreate: User logged in");
                     accountViewModel.loadAccount();
                     hideBottomNavigation(false);
                     fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
                 }
             }
-            fragmentTransaction.commit();
+        }
+        fragmentTransaction.commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -93,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                     Fragment selected = null;
-                    if(!AuthenticationHandler.isLoggedIn()) {
+                    if (!AuthenticationHandler.isLoggedIn()) {
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .replace(R.id.fragment_container, new LoginFragment())
@@ -127,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Toggles the bottom navigation
+     *
      * @param isHidden if true, the bottom navigation is hidden
      *                 if false, the bottom navigation is visible
      */
@@ -136,23 +157,40 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Allow to set a title and icon to our top app bar
-     * @param title The title of the current app bar
+     *
+     * @param title          The title of the current app bar
      * @param showBackButton true, if the app bar should contain a "back" arrow
      *                       false, if app bar should not have this arrow
      */
-    public void customizeActionBar(String title, boolean showBackButton ) {
+    public void customizeActionBar(String title, boolean showBackButton) {
         toolbar.setTitle(title);
         if (showBackButton) {
             toolbar.setNavigationIcon(R.drawable.ic_arrow_back_32dp);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onBackPressed();
-                }
-            });
+            toolbar.setNavigationOnClickListener(v -> onBackPressed());
         } else {
             //TODO: add icon as icon, if back button is not wanted
             toolbar.setNavigationIcon(null);
+        }
+    }
+
+    /**
+     * Allow to set a custom menu containing a logout button into the toolbar
+     * @param setMenu true, if menu should be visible
+     *                false, if menu should not be visible
+     */
+    public void setActionBarMenu(boolean setMenu) {
+        if(setMenu) {
+            toolbar.inflateMenu(R.menu.top_bar_menu);
+            toolbar.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.top_bar_logout:
+                        return true;
+                    default:
+                        return false;
+                }
+            });
+        } else {
+            toolbar.getMenu().clear();
         }
     }
 
@@ -164,15 +202,17 @@ public class MainActivity extends AppCompatActivity {
 
         int currentEntryCount = manager.getBackStackEntryCount();
         Log.d(TAG, "onBackPressed: EntryCount: " + currentEntryCount);
-        if(currentEntryCount == 1) {
+        if (currentEntryCount == 1) {
 
             return;
         }
         Fragment currentFragment = manager.findFragmentById(currentEntryCount - 1);
         Log.d(TAG, "onBackPressed: " + currentFragment);
-        if(currentFragment != null) {
+        if (currentFragment != null) {
             // manager.beginTransaction().remove(currentFragment);
             manager.popBackStackImmediate();
         }
     }
+
+
 }
