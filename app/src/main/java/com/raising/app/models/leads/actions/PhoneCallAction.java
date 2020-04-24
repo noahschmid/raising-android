@@ -12,6 +12,11 @@ import com.raising.app.util.InternalStorageHandler;
 public class PhoneCallAction implements HandshakeAction{
     public void execute(Lead lead) {
         ContactData contactData = ContactDataHandler.getContactData(lead.getAccountId());
+
+        if(contactData == null) {
+            return;
+        }
+
         Intent interactionIntent = new Intent(Intent.ACTION_DIAL);
         interactionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         String telUri = "tel:" + contactData.getPhone();
