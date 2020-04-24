@@ -88,7 +88,6 @@
                         android:id="@+id/leads_open_request_arrow_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                         app:layout_constraintBottom_toBottomOf="@+id/leads_open_requests_image"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/leads_open_requests_image">
@@ -97,6 +96,10 @@
                             android:id="@+id/leads_open_requests_arrow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                            android:layout_marginTop="@dimen/standardVerticalMargin"
+                            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                            android:layout_marginBottom="@dimen/standardVerticalMargin"
                             android:src="@drawable/ic_keyboard_arrow_right_32dp"
                             android:tint="@color/raisingSecondaryDark" />
                     </FrameLayout>

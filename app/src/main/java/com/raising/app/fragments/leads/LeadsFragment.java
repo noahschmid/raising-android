@@ -176,11 +176,14 @@ public class LeadsFragment extends RaisingFragment {
         ConstraintLayout openRequests = getView().findViewById(R.id.leads_open_requests);
         ImageView openRequestsArrow = getView().findViewById(R.id.leads_open_requests_arrow);
         FrameLayout openRequestsArrowLayout = getView().findViewById(R.id.leads_open_request_arrow_layout);
+        boolean showEmptyLeadsText = false;
         if (!(leadState.equals(LeadState.YOUR_TURN))) {
             openRequests.setVisibility(View.GONE);
+            showEmptyLeadsText = true;
         } else {
             if (leadsViewModel.getOpenRequests().size() == 0) {
                 openRequests.setVisibility(View.GONE);
+                showEmptyLeadsText = true;
             } else {
                 openRequests.setVisibility(View.VISIBLE);
                 ImageView image = getView().findViewById(R.id.leads_open_requests_image);
@@ -196,8 +199,10 @@ public class LeadsFragment extends RaisingFragment {
             }
         }
         filterLeads();
+        if (today.size() == 0 && thisWeek.size() == 0 && earlier.size() == 0 && showEmptyLeadsText) {
+            emptyLeadsLayout.setVisibility(View.VISIBLE);
+        }
     }
-
 
     /**
      * Filter leads by state and timestamp
@@ -237,10 +242,6 @@ public class LeadsFragment extends RaisingFragment {
                 }
             }
         });
-
-        if (today.size() == 0 && thisWeek.size() == 0 && earlier.size() == 0) {
-            emptyLeadsLayout.setVisibility(View.VISIBLE);
-        }
 
         todayAdapter.notifyDataSetChanged();
         thisWeekAdapter.notifyDataSetChanged();
