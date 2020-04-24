@@ -80,7 +80,7 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
                     case "ACCEPTED":
                         state = InteractionState.STARTUP_ACCEPTED;
                         break;
-                    case "DECLINED":
+                    case "REJECT":
                         state = InteractionState.STARTUP_DECLINED;
                         break;
                 }
@@ -93,7 +93,7 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
                             state = InteractionState.INVESTOR_ACCEPTED;
                         }
                         break;
-                    case "DECLINED":
+                    case "REJECT":
                         state = InteractionState.INVESTOR_DECLINED;
                         break;
                 }

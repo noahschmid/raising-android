@@ -69,7 +69,6 @@ public class LeadsInteraction {
         interactionArrow.setVisibility(View.GONE);
 
         interactionButton.setOnClickListener(v -> {
-            Log.d(TAG, "prepareInteraction: ");
             updateInteraction(true);
             toggleContactButton();
             updateRemoteInteraction(true);
@@ -104,8 +103,9 @@ public class LeadsInteraction {
                 interaction.getInteractionState() == InteractionState.INVESTOR_DECLINED ) {
             interactionButton.setEnabled(false);
             interactionButton.getBackground().setTint(ContextCompat.getColor(
-                    Objects.requireNonNull(interactionButton.getContext()), R.color.raisingNegative));
+                    Objects.requireNonNull(interactionButton.getContext()), R.color.raisingNegativeAccent));
             interactionButton.setText(activity.getResources().getString(R.string.declined_text));
+            declineInteraction.setVisibility(View.GONE);
         }
 
         if(interaction.getInteractionState() == InteractionState.HANDSHAKE) {
@@ -116,6 +116,7 @@ public class LeadsInteraction {
     }
 
     private void updateRemoteInteraction(boolean accept) {
+        Log.d(TAG, "updateRemoteInteraction: " + accept + " " + interaction.getId());
         try {
             JSONObject params = new JSONObject();
             params.put("interactionId", interaction.getId());
@@ -147,7 +148,7 @@ public class LeadsInteraction {
                             Log.e(TAG, "updateRemoteInteraction: " + ApiRequestHandler.parseVolleyError(err));
                             return null;
                         },
-                        params);
+                        accept ? params : new JSONObject());
             }
         } catch (Exception e) {
             Log.e(TAG, "updateRemoteInteraction: " +  e.getMessage());
