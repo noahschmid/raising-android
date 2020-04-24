@@ -26,7 +26,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.raising.app.MainActivity;
 import com.raising.app.R;
 import com.raising.app.models.Account;
@@ -143,16 +142,18 @@ public class RaisingFragment extends Fragment {
      * @param imageView where to load the image into
      */
     protected void loadProfileImage(long id, ImageView imageView) {
-        if(id <= 0)
-            return;
-        Glide
-                .with(InternalStorageHandler.getContext())
-                .load(ApiRequestHandler.getDomain() + "media/profilepicture/" + id)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .placeholder(R.drawable.ic_person_24dp)
-                .into(imageView);
+        if(id <= 0) {
+            imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_24dp));
+        } else {
+            Glide
+                    .with(InternalStorageHandler.getContext())
+                    .load(ApiRequestHandler.getDomain() + "media/profilepicture/" + id)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .placeholder(R.drawable.ic_person_24dp)
+                    .into(imageView);
+        }
     }
 
     /**

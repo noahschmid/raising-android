@@ -77,10 +77,13 @@ public class MatchesFragment extends RaisingFragment {
         matchesViewModel = ViewModelProviders.of(getActivity())
                 .get(MatchesViewModel.class);
 
+        matchesViewModel.runMatching();
+        matchesViewModel.loadMatches();
+
         matchesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             Log.d(TAG, "onViewCreated: MatchesViewState: " + state.toString());
-
         });
+
         processViewState(matchesViewModel.getViewState().getValue());
         matchListItems = new ArrayList<>();
 
