@@ -6,7 +6,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.raising.app.models.Account;
-import com.raising.app.models.ContactDetails;
+import com.raising.app.models.ContactData;
 import com.raising.app.util.RegistrationHandler;
 
 import org.junit.Before;
@@ -50,23 +50,23 @@ public class RegistrationHandlerTest {
 
     @Test
     public void testSaveAndLoadProfile() {
-        ContactDetails profile = new ContactDetails();
+        ContactData profile = new ContactData();
         profile.setPhone("0123456789");
-        profile.setCompany("company");
-        profile.setWebsite("website");
-        profile.setZipCode("zipCode");
+        profile.setEmail("email");
+        profile.setBusinessPlanId(15);
+        profile.setAccountId(22);
 
         try {
             RegistrationHandler.begin();
-            RegistrationHandler.saveProfileInformation("company", "0123456789", "website", "country");
+            RegistrationHandler.saveContactData(profile);
         } catch (IOException e) {
             fail();
         }
-        ContactDetails loaded = RegistrationHandler.loadPrivateProfile();
+        ContactData loaded = RegistrationHandler.loadContactData();
 
-        assertEquals(profile.getCompany(), loaded.getCompany());
-        assertEquals(profile.getCountry(), loaded.getCountry());
+        assertEquals(profile.getAccountId(), loaded.getAccountId());
+        assertEquals(profile.getEmail(), loaded.getEmail());
         assertEquals(profile.getPhone(), loaded.getPhone());
-        assertEquals(profile.getWebsite(), loaded.getWebsite());
+        assertEquals(profile.getBusinessPlanId(), loaded.getBusinessPlanId());
     }
 }
