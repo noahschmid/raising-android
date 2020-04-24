@@ -13,13 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.raising.app.fragments.profile.ContactDetailsInput;
+import com.raising.app.fragments.profile.ContactDataInput;
 import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
@@ -149,7 +148,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                                     return;
                                 }
 
-                                if(AccountService.loadContactDetails()) {
+                                if(AccountService.loadContactData()) {
                                     AuthenticationHandler.login(email,
                                             response.getString("token"),
                                             response.getLong("id"), isStartup);
@@ -161,7 +160,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                                     bundle.putString("email", email);
                                     bundle.putString("token", response.getString("token"));
                                     bundle.putLong("id", response.getLong("id"));
-                                    Fragment fragment = new ContactDetailsInput();
+                                    Fragment fragment = new ContactDataInput();
                                     fragment.setArguments(bundle);
                                     changeFragment(fragment);
                                 }

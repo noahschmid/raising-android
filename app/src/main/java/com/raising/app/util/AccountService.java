@@ -1,6 +1,5 @@
 package com.raising.app.util;
 
-import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -8,29 +7,17 @@ import androidx.annotation.Nullable;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.raising.app.R;
 import com.raising.app.models.Account;
-import com.raising.app.models.ContactDetails;
-import com.raising.app.models.Image;
+import com.raising.app.models.ContactData;
 import com.raising.app.models.Investor;
-import com.raising.app.models.Model;
 import com.raising.app.models.Startup;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.function.Function;
 
 public class AccountService {
-    private static ContactDetails contactDetails = new ContactDetails();
+    private static ContactData contactData = new ContactData();
     private static Account account = new Account();
     private final static String TAG = "AccountService";
 
@@ -38,12 +25,12 @@ public class AccountService {
      * Get private contact details of logged in user
      * @return profile of user, null if not logged in
      */
-    public static ContactDetails getContactDetails() {
+    public static ContactData getContactData() {
         if(!AuthenticationHandler.isLoggedIn()) {
             Log.e("AuthenticationHandler",
-                    "ERROR: fetching contact details without being logged in");
+                    "ERROR: fetching contact data without being logged in");
         }
-        return contactDetails;
+        return contactData;
     }
 
     /**
@@ -126,34 +113,34 @@ public class AccountService {
      * Load contact details from internal storage
      * @return true if process was successful, else false
      */
-    public static boolean loadContactDetails() {
+    public static boolean loadContactData() {
         try {
-            contactDetails = (ContactDetails) InternalStorageHandler
+            contactData = (ContactData) InternalStorageHandler
                     .loadObject("contact_" +
                             AuthenticationHandler.getId());
-            account.setEmail(contactDetails.getEmail());
-            Log.d("AccountService", "contact details loaded successfully");
+            account.setEmail(contactData.getEmail());
+            Log.d("AccountService", "contact data loaded successfully");
             Log.d("AccountService", "email: " + account.getEmail());
         } catch(Exception e) {
-            Log.e("AccountService", "Error loading contact details: " + e.getMessage());
+            Log.e("AccountService", "Error loading contact data: " + e.getMessage());
             return false;
         }
         return true;
     }
 
     /**
-     * Save private contact details to internal storage
+     * Save private contact data to internal storage
      * @return true if process was successful, else false
      */
-    public static boolean saveContactDetails(@Nullable ContactDetails details) {
+    public static boolean saveContactData(@Nullable ContactData details) {
         if(details != null) {
-            contactDetails = details;
+            contactData = details;
         }
         try {
-            InternalStorageHandler.saveObject(contactDetails, "contact_" +
+            InternalStorageHandler.saveObject(contactData, "contact_" +
                     AuthenticationHandler.getId());
         } catch (Exception e) {
-            Log.e("AccountService", "Error while saving contact details: " +
+            Log.e("AccountService", "Error while saving contact data: " +
                     e.getMessage());
             return false;
         }
