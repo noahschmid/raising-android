@@ -21,8 +21,11 @@ import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
+import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.recyclerViewAdapter.LeadsOpenRequestAdapter;
 import com.raising.app.viewModels.LeadsViewModel;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -70,24 +73,21 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
             if(openRequests == null || openRequests.size() == 0) {
                 emptyListLayout.setVisibility(View.VISIBLE);
             }
-            openRequests.forEach(openRequest -> {
-                Lead openRequestItem = new Lead();
-                openRequestItem.setId(openRequest.getId());
-                openRequestItem.setStartup(openRequest.isStartup());
-                openRequestItem.setProfilePictureId(openRequest.getProfilePictureId());
-                if (openRequestItem.isStartup()) {
-                    openRequestItem.setTitle(openRequest.getCompanyName());
-                    openRequestItem.setAttribute(resources.getInvestmentPhase(
-                            openRequest.getInvestmentPhaseId()).getName());
+
+            for(int i = 0; i < openRequests.size(); ++i) {
+                Lead request = openRequests.get(i);
+                if (request.isStartup()) {
+                    request.setTitle(request.getCompanyName());
+                    request.setAttribute(resources.getInvestmentPhase(
+                            request.getInvestmentPhaseId()).getName());
                 } else {
-                    openRequestItem.setTitle(openRequest.getFirstName() + " " + openRequest.getLastName());
-                    openRequestItem.setAttribute(resources.getInvestorType(
-                            openRequest.getInvestorTypeId()).getName());
+                    request.setTitle(request.getFirstName() + " " + request.getLastName());
+                    request.setAttribute(resources.getInvestorType(
+                            request.getInvestorTypeId()).getName());
                 }
-                Log.d(TAG, "onViewCreated: Add OpenRequest: " + openRequestItem.getTitle());
-                openRequestItems.add(openRequestItem);
-            });
-            Log.d(TAG, "onViewCreated: OpenRequests filled");
+                Log.d(TAG, "onViewCreated: Add OpenRequest: " + request.getTitle());
+                openRequestItems.add(request);
+            }
         }
 
         RecyclerView recyclerView = view.findViewById(R.id.leads_open_requests_recycler_view);
@@ -98,18 +98,43 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         adapter.setOnClickListener(new LeadsOpenRequestAdapter.OnClickListener() {
             @Override
             public void onClickAccept(int position) {
-                //TODO: accept open request
+                String endpoint = "match/" + openRequestItems.get(position).getId() + "/accept";
+                ApiRequestHandler.performPostRequest(endpoint, v -> {
+                    openRequestItems.remove(position);
+                    adapter.notifyItemRemoved(position);
+                    return null;
+                },
+                err -> {
+                    displayGenericError();
+                    Log.e(TAG, "onClickAccept: " + ApiRequestHandler.parseVolleyError(err));
+                    return null;
+                },
+                new JSONObject());
             }
 
             @Override
             public void onClickDecline(int position) {
-                //TODO: decline open request
+                String endpoint = "match/" + openRequestItems.get(position).getId() + "/accept";
+                ApiRequestHandler.performPostRequest(endpoint, v -> {
+                            openRequestItems.remove(position);
+                            adapter.notifyItemRemoved(position);
+                            return null;
+                        },
+                        err -> {
+                            displayGenericError();
+                            Log.e(TAG, "onClickAccept: " + ApiRequestHandler.parseVolleyError(err));
+                            return null;
+                        },
+                        new JSONObject());
             }
         });
 
         adapter.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
-            args.putLong("id", openRequestItems.get(position).getId());
+            args.putLong("id", openRequestItems.get(position).getAccountId());
+            args.putInt("score", openRequestItems.get(position).getMatchingPercent());
+            args.putLong("relationshipId", openRequestItems.get(position).getId());
+            args.putString("title", openRequestItems.get(position).getTitle());
             if(openRequestItems.get(position).isStartup()) {
                 Fragment fragment = new StartupPublicProfileFragment();
                 fragment.setArguments(args);

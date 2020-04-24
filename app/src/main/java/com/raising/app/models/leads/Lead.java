@@ -3,8 +3,10 @@ package com.raising.app.models.leads;
 import com.raising.app.util.AuthenticationHandler;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -22,7 +24,7 @@ public class Lead implements Serializable {
     private long accountId;
     private long investmentPhaseId;
     private long investorTypeId;
-    private Date timestamp;
+    private Timestamp timestamp;
     private long contactDataId;
 
     private LeadState state;
@@ -45,6 +47,19 @@ public class Lead implements Serializable {
         }
 
         return new Interaction(type, InteractionState.EMPTY);
+    }
+
+    /**
+     * Get all interactions of given lead
+     * @return array list of interactions
+     */
+    public List<Interaction> getInteractions() {
+        List<Interaction> interactions = new ArrayList<>();
+        for(InteractionType type : InteractionType.values()) {
+            interactions.add(getInteraction(type));
+        }
+
+        return interactions;
     }
 
     /**

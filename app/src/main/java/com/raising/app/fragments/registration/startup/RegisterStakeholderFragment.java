@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.raising.app.R;
+import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.BoardMemberInputFragment;
@@ -509,10 +510,14 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         //TODO: remove manually set loading panel
         dismissLoadingPanel();
         try {
-            if (response.networkResponse.statusCode == 500) {
-                JSONObject body = new JSONObject(new String(
-                        response.networkResponse.data, "UTF-8"));
-                Log.d("StartupImages", body.getString("message"));
+            if(response.networkResponse != null) {
+                if (response.networkResponse.statusCode == 500) {
+                    JSONObject body = new JSONObject(new String(
+                            response.networkResponse.data, "UTF-8"));
+                    Log.d("StartupImages", body.getString("message"));
+                }
+            } else {
+                clearBackstackAndReplace(new LoginFragment());
             }
         } catch(Exception e) {
             Log.d("InvestorImagesErrorException", "" + e.getMessage());

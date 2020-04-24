@@ -163,8 +163,8 @@
     <string name="leads_contact_mail_subject_template"> RAI$ING: Send E-Mail </string>
     <string name="leads_contact_mail_body_template"> We have matched on RAI$ING.</string>
 
-    <string name="leads_contact_businessplan"> Request Businessplan</string>
-    <string name="leads_contact_phone">Phone call</string>
+    <string name="leads_contact_businessplan"> Read Business Plan</string>
+    <string name="leads_contact_phone">Phone Call</string>
     <string name="leads_contact_email"> Send Email</string>
     <string name="leads_contact_video"> Video-Conference</string>
 
@@ -203,7 +203,7 @@
 
     <!-- Strings used for Profile -->
     <string name="toolbar_title_my_profile"> My Profile </string>
-
+    <string name="toolbar_my_public_profile"> My Public Profile</string>
 
     <!-- Strings used for profile -->
     <string name="myProfile_account_information"> Account Information </string>

@@ -115,6 +115,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                     .getSerializable("startup")).getName());
             startup = (Startup) getArguments().getSerializable("startup");
             Log.i("startup", startup.toString());
+            customizeAppBar(getString(R.string.toolbar_my_public_profile), true);
             // hide matching summary, if user accesses own public profile
             CardView matchingSummary = view.findViewById(R.id.startup_public_profile_matching_summary);
             matchingSummary.setVisibility(View.GONE);

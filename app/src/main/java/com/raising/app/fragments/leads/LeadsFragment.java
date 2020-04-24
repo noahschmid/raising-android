@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.raising.app.models.ViewState;
 import com.raising.app.util.recyclerViewAdapter.LeadsAdapter;
 import com.raising.app.viewModels.LeadsViewModel;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,10 +45,14 @@ public class LeadsFragment extends RaisingFragment {
     private LeadsAdapter todayAdapter, thisWeekAdapter, earlierAdapter;
     private ArrayList<Lead> today, thisWeek, earlier;
     private ConstraintLayout todayLayout, thisWeekLayout, earlierLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private boolean observersSet = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        leadsViewModel = ViewModelProviders.of(getActivity())
+                .get(LeadsViewModel.class);
         return inflater.inflate(R.layout.fragment_leads, container, false);
     }
 
@@ -54,6 +60,14 @@ public class LeadsFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        swipeRefreshLayout = view.findViewById(R.id.leads_swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         today = new ArrayList<>();
         thisWeek = new ArrayList<>();
@@ -67,8 +81,6 @@ public class LeadsFragment extends RaisingFragment {
         if (getArguments() != null) {
             leadState = (LeadState) getArguments().getSerializable("leadsState");
             // prepare leadsViewModel for usage
-            leadsViewModel = ViewModelProviders.of(getActivity())
-                    .get(LeadsViewModel.class);
 
             leadsViewModel.loadLeads();
 
@@ -80,6 +92,21 @@ public class LeadsFragment extends RaisingFragment {
             setupRecyclerView(R.id.leads_tab_recycler_this_week, thisWeekAdapter, thisWeek);
             setupRecyclerView(R.id.leads_tab_recycler_earlier, earlierAdapter, earlier);
 
+            if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
+            resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
+                leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+                    processLeadsViewState(state);
+                });
+                processLeadsViewState(leadsViewModel.getViewState().getValue());
+
+                observersSet = true;
+            }
+        }
+    }
+
+    @Override
+    protected void onResourcesLoaded() {
+        if(!observersSet && leadState != null) {
             leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
                 processLeadsViewState(state);
             });
@@ -113,7 +140,9 @@ public class LeadsFragment extends RaisingFragment {
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(position -> {
             Bundle args = new Bundle();
-            args.putLong("id", leads.get(position).getId());
+
+            args.putSerializable("lead", leads.get(position));
+            Fragment contactFragment = new LeadsInteractionFragment();
 
             if((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_ACCEPTED)
                 || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_ACCEPTED)) {
@@ -122,7 +151,6 @@ public class LeadsFragment extends RaisingFragment {
                 || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_DECLINED)) {
                 args.putBoolean("declinedContact", true);
             }
-            Fragment contactFragment = new LeadsContactFragment();
             contactFragment.setArguments(args);
             ((RaisingFragment)getParentFragment()).changeFragment(contactFragment);
         });
@@ -150,7 +178,8 @@ public class LeadsFragment extends RaisingFragment {
                 badge.setBadgeGravity(BadgeDrawable.TOP_START);
                 BadgeUtils.attachBadgeDrawable(badge, openRequestsArrow, openRequestsArrowLayout);
                 openRequests.setOnClickListener(v ->
-                        changeFragment(new LeadsOpenRequestsFragment()));
+                        ((RaisingFragment)getParentFragment())
+                                .changeFragment(new LeadsOpenRequestsFragment()));
             }
         }
         filterLeads();
@@ -204,11 +233,11 @@ public class LeadsFragment extends RaisingFragment {
     /**
      * Calculate difference from given date to today in days
      *
-     * @param date date in the past
+     * @param timestamp timestamp in the past
      * @return difference in days
      */
-    private int daysSince(Date date) {
-        long diffMillis = Math.abs(new Date().getTime() - date.getTime());
+    private int daysSince(Timestamp timestamp) {
+        long diffMillis = Math.abs(new Date().getTime() - timestamp.getTime());
         return (int) TimeUnit.DAYS.convert(diffMillis, TimeUnit.MILLISECONDS);
     }
 }
