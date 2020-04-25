@@ -170,6 +170,8 @@
     <string name="leads_contact_requested"> Requested </string>
     <string name="leads_contact_interact"> Contact </string>
     <string name="leads_contact_save_contact"> Save to Contacts</string>
+    <string name="leads_contact_error_title"> Contact Information missing </string>
+    <string name="leads_contact_error_text"> Something went wrong while loading your contact. Please try again</string>
 
 
     <string name="toolbar_title_settings"> Settings </string>

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> {
     private ArrayList<Lead> recyclerItems;
     private OnItemClickListener itemClickListener;
+    private OnClickListener clickListener;
     private LeadState stateEnum;
 
     public LeadsAdapter(ArrayList<Lead> recyclerItems, LeadState stateEnum) {
@@ -37,7 +38,7 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
     public LeadsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_lead,
                 parent, false);
-        return new ViewHolder(view, itemClickListener);
+        return new ViewHolder(view, itemClickListener, clickListener);
     }
 
     @Override
@@ -120,20 +121,46 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
         itemClickListener = listener;
     }
 
+    public interface OnClickListener {
+        void onClick(int position);
+    }
+
+    public void setOnClickListener(OnClickListener listener) {
+        clickListener = listener;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView name, attribute, matchingPercent;
         private ImageView profilePicture, statusIcon, warning;
 
-        public ViewHolder(@NonNull View itemView, OnItemClickListener itemClickListener) {
+        public ViewHolder(@NonNull View itemView, OnItemClickListener itemClickListener, OnClickListener clickListener) {
             super(itemView);
 
-            name = itemView.findViewById(R.id.item_leads_name);
             attribute = itemView.findViewById(R.id.item_leads_attributes);
             matchingPercent = itemView.findViewById(R.id.item_leads_match_percent);
 
             statusIcon = itemView.findViewById(R.id.item_leads_status_icon);
-            profilePicture = itemView.findViewById(R.id.item_leads_profile_image);
             warning = itemView.findViewById(R.id.item_leads_warning);
+
+            name = itemView.findViewById(R.id.item_leads_name);
+            name.setOnClickListener(v -> {
+                if(clickListener != null) {
+                    int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION) {
+                        clickListener.onClick(position);
+                    }
+                }
+            });
+
+            profilePicture = itemView.findViewById(R.id.item_leads_profile_image);
+            profilePicture.setOnClickListener(v -> {
+                if(clickListener != null) {
+                    int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION) {
+                        clickListener.onClick(position);
+                    }
+                }
+            });
 
             itemView.setOnClickListener(v -> {
                 if (itemClickListener != null) {

@@ -1,6 +1,7 @@
 package com.raising.app.fragments.leads;
 
 import android.content.Intent;
+import android.gesture.GesturePoint;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -24,6 +25,7 @@ import com.raising.app.util.ContactDataHandler;
 import com.raising.app.util.InternalStorageHandler;
 
 import java.net.URLEncoder;
+import java.nio.file.attribute.GroupPrincipal;
 
 import static com.raising.app.models.leads.InteractionType.COFFEE;
 
@@ -59,47 +61,58 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
 
             contactMail = view.findViewById(R.id.leads_contact_mail);
             contactPhone = view.findViewById(R.id.leads_contact_phone);
-            
-            if(contactData.getEmail() != null) {
-                contactMail.setText(contactData.getEmail());
-            } else {
-                contactMail.setVisibility(View.GONE);
-            }
-
-            if(contactData.getPhone() != null) {
-                contactPhone.setText(contactData.getPhone());
-            } else {
-                contactPhone.setVisibility(View.GONE);
-            }
 
             saveContact = view.findViewById(R.id.leads_contact_save_contact);
-            saveContact.setOnClickListener(v -> {
-                Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
-                intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
-                intent.putExtra(ContactsContract.Intents.Insert.PHONE, "" + contactData.getPhone())
-                        .putExtra(ContactsContract.Intents.Insert.EMAIL, "" + contactData.getEmail())
-                        .putExtra(ContactsContract.Intents.Insert.NAME, lead.getFirstName() + " "
-                        + lead.getLastName())
-                .putExtra(ContactsContract.Intents.Insert.COMPANY, "" + lead.getCompanyName());
-                startActivity(intent);
-            });
-
             btnInteract = view.findViewById(R.id.button_leads_contact_interact);
-            if(contactData.getEmail() == null) {
-                btnInteract.setVisibility(View.GONE);
-            } else {
-                btnInteract.setOnClickListener(v -> {
-                    Intent interactionIntent = new Intent(Intent.ACTION_SENDTO);
-                    interactionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    String subject = getString(R.string.leads_contact_mail_subject_template);
-                    String body = getString(R.string.leads_contact_mail_body_template);
 
-                    String uriText = "mailto:" + contactData.getEmail()
-                    + "?subject=" + subject + "&body=" + body;
+            if(contactData != null) {
 
-                    interactionIntent.setData(Uri.parse(uriText));
-                    startActivity(interactionIntent);
+                if(contactData.getEmail() != null) {
+                    contactMail.setText(contactData.getEmail());
+                } else {
+                    contactMail.setVisibility(View.GONE);
+                }
+
+                if(contactData.getPhone() != null) {
+                    contactPhone.setText(contactData.getPhone());
+                } else {
+                    contactPhone.setVisibility(View.GONE);
+                }
+
+                saveContact.setOnClickListener(v -> {
+                    Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
+                    intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+                    intent.putExtra(ContactsContract.Intents.Insert.PHONE, "" + contactData.getPhone())
+                            .putExtra(ContactsContract.Intents.Insert.EMAIL, "" + contactData.getEmail())
+                            .putExtra(ContactsContract.Intents.Insert.NAME, lead.getFirstName() + " "
+                                    + lead.getLastName())
+                            .putExtra(ContactsContract.Intents.Insert.COMPANY, "" + lead.getCompanyName());
+                    startActivity(intent);
                 });
+
+                if(contactData.getEmail() == null) {
+                    btnInteract.setVisibility(View.GONE);
+                } else {
+                    btnInteract.setOnClickListener(v -> {
+                        Intent interactionIntent = new Intent(Intent.ACTION_SENDTO);
+                        interactionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        String subject = getString(R.string.leads_contact_mail_subject_template);
+                        String body = getString(R.string.leads_contact_mail_body_template);
+
+                        String uriText = "mailto:" + contactData.getEmail()
+                                + "?subject=" + subject + "&body=" + body;
+
+                        interactionIntent.setData(Uri.parse(uriText));
+                        startActivity(interactionIntent);
+                    });
+                }
+            } else {
+                showSimpleDialog(getString(R.string.leads_contact_error_title),
+                        getString(R.string.leads_contact_error_text));
+                contactMail.setVisibility(View.GONE);
+                contactPhone.setVisibility(View.GONE);
+                saveContact.setVisibility(View.GONE);
+                btnInteract.setVisibility(View.GONE);
             }
         }
     }

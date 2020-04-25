@@ -22,6 +22,8 @@ import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
+import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.leads.InteractionState;
 import com.raising.app.models.leads.LeadState;
 import com.raising.app.models.leads.Lead;
@@ -165,6 +167,24 @@ public class LeadsFragment extends RaisingFragment {
             }
             contactFragment.setArguments(args);
             ((RaisingFragment) getParentFragment()).changeFragment(contactFragment);
+        });
+
+        adapter.setOnClickListener(position -> {
+            Bundle args = new Bundle();
+            args.putLong("id", leads.get(position).getAccountId());
+            args.putInt("score", leads.get(position).getMatchingPercent());
+            args.putString("title", leads.get(position).getTitle());
+            args.putLong("relationshipId", leads.get(position).getId());
+            args.putSerializable("handshakeState", leads.get(position).getHandshakeState());
+            if(leads.get(position).isStartup()) {
+                Fragment fragment = new StartupPublicProfileFragment();
+                fragment.setArguments(args);
+                ((RaisingFragment) getParentFragment()).changeFragment(fragment);
+            } else {
+                Fragment fragment = new InvestorPublicProfileFragment();
+                fragment.setArguments(args);
+                ((RaisingFragment) getParentFragment()).changeFragment(fragment);
+            }
         });
     }
 
