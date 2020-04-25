@@ -96,7 +96,7 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
                     .into(holder.profilePicture);
         } else {
             holder.profilePicture.setImageDrawable(InternalStorageHandler.getContext()
-                    .getResources().getDrawable(R.drawable.ic_person_24dp));
+                    .getResources().getDrawable(R.drawable.ic_placeholder_24dp));
         }
 
         switch (stateEnum) {

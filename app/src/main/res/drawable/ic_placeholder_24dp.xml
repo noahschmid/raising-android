@@ -2,7 +2,6 @@
     <item
         android:gravity="fill"
         android:drawable="@drawable/ic_brightness_1_black_24dp"
-
         />
     <item
         android:gravity="center"
@@ -12,5 +11,4 @@
         android:left="10dp"
         android:right="10dp"
         />
-
 </layer-list>

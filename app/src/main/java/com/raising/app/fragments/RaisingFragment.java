@@ -144,7 +144,7 @@ public class RaisingFragment extends Fragment {
      */
     protected void loadProfileImage(long id, ImageView imageView) {
         if(id <= 0) {
-            imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_24dp));
+            imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_placeholder_24dp));
         } else {
             Glide
                     .with(InternalStorageHandler.getContext())

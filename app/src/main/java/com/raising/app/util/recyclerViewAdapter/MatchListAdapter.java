@@ -71,7 +71,7 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
                     .into(holder.profileImage);
         } else {
             holder.profileImage.setImageDrawable(InternalStorageHandler.getContext()
-                    .getResources().getDrawable(R.drawable.ic_person_24dp));
+                    .getResources().getDrawable(R.drawable.ic_placeholder_24dp));
         }
         setupMatchingPercentGraphic(holder.matchingPercentGraphic, recyclerItem);
     }
