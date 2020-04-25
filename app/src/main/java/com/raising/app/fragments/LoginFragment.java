@@ -38,6 +38,7 @@ import java.util.HashMap;
 
 
 public class LoginFragment extends RaisingFragment implements View.OnClickListener {
+    private static final String TAG = "LoginFragment";
     private EditText emailInput, passwordInput;
 
     final private String loginEndpoint = ApiRequestHandler.getDomain() + "account/login";
@@ -134,6 +135,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
             HashMap<String, String> params = new HashMap<>();
             params.put("email", email);
             params.put("password", password);
+            Log.d(TAG, "login: Login Params" + params);
             showLoadingPanel();
             JsonObjectRequest loginRequest = new JsonObjectRequest(
                     loginEndpoint, new JSONObject(params),

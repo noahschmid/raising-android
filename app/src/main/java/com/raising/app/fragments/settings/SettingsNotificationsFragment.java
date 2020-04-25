@@ -26,8 +26,6 @@ public class SettingsNotificationsFragment extends RaisingFragment {
     private final String TAG = "SettingsNotificationsFragment";
     private SwitchMaterial generalSwitch, matchlistSwitch, requestSwitch, connectionSwitch;
     private ConstraintLayout specificSettings;
-
-    private SettingsViewModel settingsViewModel;
     private PersonalSettings personalSettings;
 
     @Override
@@ -41,9 +39,6 @@ public class SettingsNotificationsFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        settingsViewModel = ViewModelProviders.of(getActivity())
-                .get(SettingsViewModel.class);
 
         specificSettings = view.findViewById(R.id.notifications_specific_settings);
 

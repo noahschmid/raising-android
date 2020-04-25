@@ -26,12 +26,9 @@ public class BusinessPlanAction implements HandshakeAction {
         String body = InternalStorageHandler.getContext()
                 .getResources().getString(R.string.leads_contact_business_plan_body_template);
 
-        String uriText = "mailto:" + contactData.getEmail() +
-                "?subject=" + URLEncoder.encode(subject) +
-                "&body=" + URLEncoder.encode(body);
+        String uriText = "mailto:" + contactData.getEmail() + "?subject=" + subject + "&body=" + body;
 
         interactionIntent.setData(Uri.parse(uriText));
-        InternalStorageHandler.getActivity().startActivity(Intent.createChooser(interactionIntent,
-                "Send Email Using: "));
+        InternalStorageHandler.getActivity().startActivity(interactionIntent);
     }
 }
