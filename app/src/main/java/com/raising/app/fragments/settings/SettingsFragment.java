@@ -37,8 +37,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     private final String TAG = "SettingsFragment";
     private Button btnNotifications, btnAbout, btnReportProblem, btnFeedback, btnLogout;
     private AutoCompleteTextView languageInput, matchNumberInput;
-
-    private SettingsViewModel settingsViewModel;
     private PersonalSettings personalSettings;
 
     @Override
@@ -53,9 +51,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        settingsViewModel = ViewModelProviders.of(getActivity())
-                .get(SettingsViewModel.class);
 
         btnNotifications = view.findViewById(R.id.button_settings_notifications);
         btnNotifications.setOnClickListener(this);

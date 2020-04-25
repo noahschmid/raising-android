@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -41,6 +42,7 @@ import com.raising.app.util.SimpleMessageDialog;
 import com.raising.app.util.ToastHandler;
 import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
+import com.raising.app.viewModels.SettingsViewModel;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
 import org.json.JSONException;
@@ -57,6 +59,7 @@ public class RaisingFragment extends Fragment {
     protected FrameLayout overlayLayout;
     protected AccountViewModel accountViewModel;
     protected ResourcesViewModel resourcesViewModel;
+    protected SettingsViewModel settingsViewModel;
     protected Resources resources;
     protected Account currentAccount;
     private int processesLoading = 0;
@@ -108,6 +111,11 @@ public class RaisingFragment extends Fragment {
             }
         });
 
+        settingsViewModel = ViewModelProviders.of(getActivity()).get(SettingsViewModel.class);
+        settingsViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
+            processViewState(viewState);
+        });
+
         resourcesViewModel = ViewModelProviders.of(getActivity()).get(ResourcesViewModel.class);
         resourcesViewModel.getResources().observe(getViewLifecycleOwner(), resources -> {
             this.resources = resources;
@@ -119,6 +127,7 @@ public class RaisingFragment extends Fragment {
 
         processViewState(resourcesViewModel.getViewState().getValue());
         processViewState(accountViewModel.getViewState().getValue());
+        processViewState(settingsViewModel.getViewState().getValue());
     }
 
 
