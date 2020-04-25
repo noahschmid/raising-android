@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.raising.app.R;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.leads.LeadState;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> {
     private ArrayList<Lead> recyclerItems;
     private OnItemClickListener itemClickListener;
+    private OnClickListener clickListener;
     private LeadState stateEnum;
 
     public LeadsAdapter(ArrayList<Lead> recyclerItems, LeadState stateEnum) {
@@ -37,7 +39,7 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
     public LeadsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_lead,
                 parent, false);
-        return new ViewHolder(view, itemClickListener);
+        return new ViewHolder(view, itemClickListener, clickListener);
     }
 
     @Override
@@ -88,13 +90,14 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
                             recyclerItem.getProfilePictureId())
                     .centerCrop()
+                    .apply(RequestOptions.circleCropTransform())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
-                    .placeholder(R.drawable.ic_person_24dp)
+                    .placeholder(R.drawable.ic_placeholder_24dp)
                     .into(holder.profilePicture);
         } else {
             holder.profilePicture.setImageDrawable(InternalStorageHandler.getContext()
-                    .getResources().getDrawable(R.drawable.ic_person_24dp));
+                    .getResources().getDrawable(R.drawable.ic_placeholder_24dp));
         }
 
         switch (stateEnum) {
@@ -120,20 +123,46 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
         itemClickListener = listener;
     }
 
+    public interface OnClickListener {
+        void onClick(int position);
+    }
+
+    public void setOnClickListener(OnClickListener listener) {
+        clickListener = listener;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView name, attribute, matchingPercent;
         private ImageView profilePicture, statusIcon, warning;
 
-        public ViewHolder(@NonNull View itemView, OnItemClickListener itemClickListener) {
+        public ViewHolder(@NonNull View itemView, OnItemClickListener itemClickListener, OnClickListener clickListener) {
             super(itemView);
 
-            name = itemView.findViewById(R.id.item_leads_name);
             attribute = itemView.findViewById(R.id.item_leads_attributes);
             matchingPercent = itemView.findViewById(R.id.item_leads_match_percent);
 
             statusIcon = itemView.findViewById(R.id.item_leads_status_icon);
-            profilePicture = itemView.findViewById(R.id.item_leads_profile_image);
             warning = itemView.findViewById(R.id.item_leads_warning);
+
+            name = itemView.findViewById(R.id.item_leads_name);
+            name.setOnClickListener(v -> {
+                if(clickListener != null) {
+                    int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION) {
+                        clickListener.onClick(position);
+                    }
+                }
+            });
+
+            profilePicture = itemView.findViewById(R.id.item_leads_profile_image);
+            profilePicture.setOnClickListener(v -> {
+                if(clickListener != null) {
+                    int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION) {
+                        clickListener.onClick(position);
+                    }
+                }
+            });
 
             itemView.setOnClickListener(v -> {
                 if (itemClickListener != null) {

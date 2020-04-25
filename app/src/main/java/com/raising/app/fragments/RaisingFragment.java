@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.MainActivity;
 import com.raising.app.R;
@@ -41,6 +43,7 @@ import com.raising.app.util.SimpleMessageDialog;
 import com.raising.app.util.ToastHandler;
 import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
+import com.raising.app.viewModels.SettingsViewModel;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
 import org.json.JSONException;
@@ -57,6 +60,7 @@ public class RaisingFragment extends Fragment {
     protected FrameLayout overlayLayout;
     protected AccountViewModel accountViewModel;
     protected ResourcesViewModel resourcesViewModel;
+    protected SettingsViewModel settingsViewModel;
     protected Resources resources;
     protected Account currentAccount;
     private int processesLoading = 0;
@@ -108,6 +112,11 @@ public class RaisingFragment extends Fragment {
             }
         });
 
+        settingsViewModel = ViewModelProviders.of(getActivity()).get(SettingsViewModel.class);
+        settingsViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
+            processViewState(viewState);
+        });
+
         resourcesViewModel = ViewModelProviders.of(getActivity()).get(ResourcesViewModel.class);
         resourcesViewModel.getResources().observe(getViewLifecycleOwner(), resources -> {
             this.resources = resources;
@@ -119,6 +128,7 @@ public class RaisingFragment extends Fragment {
 
         processViewState(resourcesViewModel.getViewState().getValue());
         processViewState(accountViewModel.getViewState().getValue());
+        processViewState(settingsViewModel.getViewState().getValue());
     }
 
 
@@ -143,15 +153,16 @@ public class RaisingFragment extends Fragment {
      */
     protected void loadProfileImage(long id, ImageView imageView) {
         if(id <= 0) {
-            imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_24dp));
+            imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_placeholder_24dp));
         } else {
             Glide
                     .with(InternalStorageHandler.getContext())
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" + id)
                     .centerCrop()
+                    .apply(RequestOptions.circleCropTransform())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
-                    .placeholder(R.drawable.ic_person_24dp)
+                    .placeholder(R.drawable.ic_placeholder_24dp)
                     .into(imageView);
         }
     }

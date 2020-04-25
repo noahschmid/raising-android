@@ -35,6 +35,7 @@ import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Investor;
 import com.raising.app.models.Model;
+import com.raising.app.models.leads.InteractionState;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.recyclerViewAdapter.PublicProfileMatchingAdapter;
 import com.raising.app.util.ApiRequestHandler;
@@ -63,6 +64,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     private boolean leadsDecline = false;
     private int matchScore = 0;
     private long relationshipId = -1;
+    private InteractionState handshakeState;
 
     private RecyclerView recyclerInvestorType, recyclerPhase, recyclerIndustry, recyclerInvolvement;
 
@@ -94,7 +96,9 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                 matchScore = getArguments().getInt("score");
                 relationshipId = getArguments().getLong("relationshipId");
                 customizeAppBar(getArguments().getString("title"), true);
+                handshakeState = (InteractionState) getArguments().getSerializable("handshakeState");
                 this.investor = investor;
+                prepareHandshakeButtons();
                 loadData(investor);
                 return null;
             });
@@ -153,52 +157,44 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         }
 
         Fragment fragment = this;
-        profileRequest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                leadsRequest = true;
-                leadsDecline = false;
+        profileRequest.setOnClickListener(v -> {
+            leadsRequest = true;
+            leadsDecline = false;
+            colorHandshakeButtonBackground(profileRequest, R.color.raisingDarkGrey);
 
-                colorHandshakeButtonBackground(profileRequest, R.color.raisingDarkGrey);
-
-                ApiRequestHandler.performPostRequest("match/" + relationshipId + "/accept",
-                        res -> {
-                            matchesViewModel.removeMatch(relationshipId);
-                            popCurrentFragment(fragment);
-                            return null;
-                        },
-                        err -> {
-                            displayGenericError();
-                            Log.e(TAG, "manageHandshakeButtons: " +
-                                    ApiRequestHandler.parseVolleyError(err) );
-                            return null;
-                        },
-                        new JSONObject());
-            }
+            ApiRequestHandler.performPostRequest("match/" + relationshipId + "/accept",
+                    res -> {
+                        matchesViewModel.removeMatch(relationshipId);
+                        popCurrentFragment(fragment);
+                        return null;
+                    },
+                    err -> {
+                        displayGenericError();
+                        Log.e(TAG, "manageHandshakeButtons: " +
+                                ApiRequestHandler.parseVolleyError(err) );
+                        return null;
+                    },
+                    new JSONObject());
         });
 
-        profileDecline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                leadsDecline = true;
-                leadsRequest = false;
+        profileDecline.setOnClickListener(v -> {
+            leadsDecline = true;
+            leadsRequest = false;
+            colorHandshakeButtonBackground(profileDecline, R.color.raisingDarkGrey);
 
-                colorHandshakeButtonBackground(profileDecline, R.color.raisingDarkGrey);
-
-                ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
-                        res -> {
-                            matchesViewModel.removeMatch(relationshipId);
-                            popCurrentFragment(fragment);
-                            return null;
-                        },
-                        err -> {
-                            displayGenericError();
-                            Log.e(TAG, "manageHandshakeButtons: " +
-                                    ApiRequestHandler.parseVolleyError(err) );
-                            return null;
-                        },
-                        new JSONObject());
-            }
+            ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
+                    res -> {
+                        matchesViewModel.removeMatch(relationshipId);
+                        popCurrentFragment(fragment);
+                        return null;
+                    },
+                    err -> {
+                        displayGenericError();
+                        Log.e(TAG, "manageHandshakeButtons: " +
+                                ApiRequestHandler.parseVolleyError(err) );
+                        return null;
+                    },
+                    new JSONObject());
         });
     }
 
@@ -243,6 +239,27 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         drawable = DrawableCompat.wrap(drawable);
         drawable.setTint(getResources().getColor(color));
         button.setBackground(drawable);
+    }
+
+    /**
+     * Toggle the handshake buttons based on the current state of the handshake
+     */
+    private void prepareHandshakeButtons() {
+        if(handshakeState != null) {
+            switch (handshakeState) {
+                case HANDSHAKE:
+                case STARTUP_ACCEPTED:
+                    colorHandshakeButtonBackground(profileRequest, R.color.raisingPositive);
+                    profileRequest.setEnabled(false);
+                    profileDecline.setEnabled(false);
+                    break;
+                case STARTUP_DECLINED:
+                    colorHandshakeButtonBackground(profileDecline, R.color.raisingNegative);
+                    profileRequest.setEnabled(false);
+                    profileDecline.setEnabled(false);
+                    break;
+            }
+        }
     }
 
     /**

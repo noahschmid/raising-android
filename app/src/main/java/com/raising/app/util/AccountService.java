@@ -113,11 +113,10 @@ public class AccountService {
      * Load contact details from internal storage
      * @return true if process was successful, else false
      */
-    public static boolean loadContactData() {
+    public static boolean loadContactData(long id) {
         try {
             contactData = (ContactData) InternalStorageHandler
-                    .loadObject("contact_" +
-                            AuthenticationHandler.getId());
+                    .loadObject("contact_" + id);
             account.setEmail(contactData.getEmail());
             Log.d("AccountService", "contact data loaded successfully");
             Log.d("AccountService", "email: " + account.getEmail());

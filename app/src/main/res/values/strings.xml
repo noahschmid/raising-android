@@ -151,8 +151,8 @@
 
     <string name="toolbar_title_contact"> Contact </string>
 
-    <string name="leads_contact_disabled_contact_text"> Please establish a Handshake before contacting a person </string>
-    <string name="leads_contact_declined_contact_text"> The Handshake has been declined. Therefore no Contact can be initiated</string>
+    <string name="leads_contact_disabled_contact_text"> This user first needs to accept your request before you can start interacting with each other. </string>
+    <string name="leads_contact_declined_contact_text"> This user declined your request. Therefore no Contact can be initiated</string>
 
     <string name="leads_contact_coffee"> Drink a Coffee</string>
     <string name="leads_contact_coffee_subject_template"> RAI$ING: Drink a Coffee </string>
@@ -170,12 +170,15 @@
     <string name="leads_contact_requested"> Requested </string>
     <string name="leads_contact_interact"> Contact </string>
     <string name="leads_contact_save_contact"> Save to Contacts</string>
+    <string name="leads_contact_error_title"> Contact Information missing </string>
+    <string name="leads_contact_error_text"> Something went wrong while loading your contact. Please try again</string>
 
 
     <string name="toolbar_title_settings"> Settings </string>
     <string name="settings_language"> Language </string>
     <string name="settings_weekly_matches"> Number of weekly Matches</string>
     <string name="settings_max_number_weekly_matches"> Maximum number of weekly matches: </string>
+    <string name="settings_target_email_address"> lorenz.caliezi@gmail.com</string>
     <string name="settings_problem_report_subject"> Problem Report Rai$ing</string>
     <string name="settings_problem_report_body"> I would like to report a problem with your app Rai$ing</string>
     <string name="settings_feedback_subject"> Feedback for Rai$ing</string>

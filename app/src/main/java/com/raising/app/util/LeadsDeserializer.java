@@ -53,6 +53,7 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
             }
             lead.setStartup(jsonObject.get("startup").getAsBoolean());
             lead.setMatchingPercent(jsonObject.get("matchingPercent").getAsInt());
+            lead.setProfilePictureId(jsonObject.get("profilePictureId").getAsLong());
 
             LeadState leadState = LeadState.PENDING;
 

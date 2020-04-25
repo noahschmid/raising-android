@@ -230,6 +230,8 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
                     sb.append(line+"\n");
                 }
                 br.close();
+                Log.d(TAG, "doMultiFileUpload: successful upload");
+                Log.d(TAG, "doMultiFileUpload: " + sb.toString());
                 JSONArray response = new JSONArray();
                 if(sb.toString().startsWith("[")) {
                     response = new JSONArray(sb.toString());
@@ -253,6 +255,8 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
                     if(sb.toString().length() > 0) {
                         response = new JSONObject(sb.toString());
                     }
+                    Log.d(TAG, "doMultiFileUpload: error while uploading");
+                    Log.d(TAG, "doMultiFileUpload: " + sb.toString());
                     errorCallback.apply(response);
                 }
             }

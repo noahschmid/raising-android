@@ -44,6 +44,7 @@ import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Model;
 import com.raising.app.models.EquityChartLegendItem;
 import com.raising.app.models.Startup;
+import com.raising.app.models.leads.InteractionState;
 import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.models.stakeholder.Shareholder;
@@ -91,6 +92,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
     private LayoutInflater inflater;
     private Long relationshipId = -1l;
+    private InteractionState handshakeState;
 
     private Startup startup;
 
@@ -124,13 +126,14 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 matchScore = getArguments().getInt("score");
                 customizeAppBar(getArguments().getString("title"), true);
                 relationshipId = getArguments().getLong("relationshipId");
+                handshakeState = (InteractionState) getArguments().getSerializable("handshakeState");
                 this.startup = startup;
                 Log.i("startup", startup.toString());
+                prepareHandshakeButtons();
                 loadData();
                 return null;
             });
         }
-
         return view;
     }
 
@@ -444,6 +447,27 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         recyclerInvolvement = view.findViewById(R.id.startup_public_profile_involvement_list);
         recyclerInvolvement.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerInvolvement.setAdapter(supportAdapter);
+    }
+
+    /**
+     * Toggle the handshake buttons based on the current state of the handshake
+     */
+    private void prepareHandshakeButtons() {
+        if(handshakeState != null) {
+            switch (handshakeState) {
+                case HANDSHAKE:
+                case INVESTOR_ACCEPTED:
+                    colorHandshakeButtonBackground(profileRequest, R.color.raisingPositive);
+                    profileRequest.setEnabled(false);
+                    profileDecline.setEnabled(false);
+                    break;
+                case INVESTOR_DECLINED:
+                    colorHandshakeButtonBackground(profileDecline, R.color.raisingNegative);
+                    profileRequest.setEnabled(false);
+                    profileDecline.setEnabled(false);
+                    break;
+            }
+        }
     }
 
     /**

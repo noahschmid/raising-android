@@ -32,6 +32,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.flexbox.FlexboxLayout;
@@ -174,8 +175,6 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     .into(profileImage);
             profileImageOverlay.setVisibility(View.GONE);
             deleteProfileImageButton.setVisibility(View.VISIBLE);
-        } else {
-            profileImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_24dp));
         }
 
         if(investor.getGalleryIds() != null) {

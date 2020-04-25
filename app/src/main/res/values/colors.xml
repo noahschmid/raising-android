@@ -19,7 +19,7 @@
     <color name="raisingWhiteTransparent">#88FFFFFF</color>
     <color name="raisingBlack"> #000000 </color>
     <color name="raisingBlackTransparent"> #99000000</color>
-    <color name="raisingLightGrey"> #b0b0b0</color>
+    <color name="raisingLightGrey">#FFEFEFEF</color>
     <color name="raisingDarkGrey"> #666666</color>
 
     <color name="raisingPositive"> #128700 </color>

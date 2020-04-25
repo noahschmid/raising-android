@@ -231,7 +231,7 @@ public class AccountViewModel extends AndroidViewModel {
             Log.e("AccountViewModel", "Error while performing patch request: " +
                     e.getMessage());
         }
-        Log.d("AccountViewModel", "patch request: " + accountString);
+        Log.d(TAG, "patch request: " + accountString);
     }
 
     /**

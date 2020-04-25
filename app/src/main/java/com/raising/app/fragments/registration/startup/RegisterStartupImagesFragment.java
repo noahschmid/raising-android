@@ -170,8 +170,6 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                     .into(profileImage);
             profileImageOverlay.setVisibility(View.GONE);
             deleteProfileImageButton.setVisibility(View.VISIBLE);
-        } else {
-            profileImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_person_24dp));
         }
 
         if(startup.getGalleryIds() != null) {

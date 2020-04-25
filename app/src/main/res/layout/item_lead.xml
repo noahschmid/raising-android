@@ -17,16 +17,14 @@
 
         <TextView
             android:id="@+id/item_leads_name"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
             android:text="Name"
             android:textColor="@color/raisingTextColor"
             android:textSize="@dimen/raisingTextFontSize"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/item_leads_attributes"
-            app:layout_constraintEnd_toStartOf="@+id/item_leads_status_icon"
             app:layout_constraintStart_toEndOf="@+id/item_leads_profile_image"
             app:layout_constraintTop_toTopOf="@+id/item_leads_profile_image"
             app:layout_constraintVertical_chainStyle="packed" />
