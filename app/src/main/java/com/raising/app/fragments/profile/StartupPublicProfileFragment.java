@@ -453,18 +453,20 @@ public class StartupPublicProfileFragment extends RaisingFragment {
      * Toggle the handshake buttons based on the current state of the handshake
      */
     private void prepareHandshakeButtons() {
-        switch (handshakeState) {
-            case HANDSHAKE:
-            case INVESTOR_ACCEPTED:
-                colorHandshakeButtonBackground(profileRequest, R.color.raisingPositive);
-                profileRequest.setEnabled(false);
-                profileDecline.setEnabled(false);
-                break;
-            case INVESTOR_DECLINED:
-                colorHandshakeButtonBackground(profileDecline, R.color.raisingNegative);
-                profileRequest.setEnabled(false);
-                profileDecline.setEnabled(false);
-                break;
+        if(handshakeState != null) {
+            switch (handshakeState) {
+                case HANDSHAKE:
+                case INVESTOR_ACCEPTED:
+                    colorHandshakeButtonBackground(profileRequest, R.color.raisingPositive);
+                    profileRequest.setEnabled(false);
+                    profileDecline.setEnabled(false);
+                    break;
+                case INVESTOR_DECLINED:
+                    colorHandshakeButtonBackground(profileDecline, R.color.raisingNegative);
+                    profileRequest.setEnabled(false);
+                    profileDecline.setEnabled(false);
+                    break;
+            }
         }
     }
 

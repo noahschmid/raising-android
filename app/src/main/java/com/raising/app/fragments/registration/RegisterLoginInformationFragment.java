@@ -15,6 +15,7 @@ import android.widget.EditText;
 import com.android.volley.VolleyError;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.profile.MyProfileFragment;
 import com.raising.app.models.Account;
 import com.raising.app.models.Investor;
 import com.raising.app.models.Startup;
@@ -131,6 +132,10 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
             return;
         }
 
+        account.setFirstName(firstName);
+        account.setLastName(lastName);
+        account.setEmail(email);
+
         showLoadingPanel();
         try {
             if(!email.equals(AuthenticationHandler.getEmail()) ||
@@ -141,9 +146,6 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
                 ApiRequestHandler.performPostRequest("account/valid",
                         callback, errorHandler, new JSONObject(params));
             } else {
-                account.setFirstName(firstName);
-                account.setLastName(lastName);
-                account.setEmail(email);
                 accountViewModel.update(account);
             }
         } catch(Exception e) {
