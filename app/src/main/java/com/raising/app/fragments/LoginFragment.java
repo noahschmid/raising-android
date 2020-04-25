@@ -150,7 +150,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                                     return;
                                 }
 
-                                if(AccountService.loadContactData()) {
+                                if(AccountService.loadContactData(response.getLong("id"))) {
                                     AuthenticationHandler.login(email,
                                             response.getString("token"),
                                             response.getLong("id"), isStartup);
@@ -177,7 +177,8 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                 public void onErrorResponse(VolleyError error) {
                     dismissLoadingPanel();
                     try {
-                        if(error.networkResponse.statusCode == 403) {
+                        if(error.networkResponse.statusCode == 500 ||
+                        error.networkResponse.statusCode == 403) {
                             showSimpleDialog(
                                     getString(R.string.login_dialog_title),
                                     getString(R.string.login_dialog_text_403)

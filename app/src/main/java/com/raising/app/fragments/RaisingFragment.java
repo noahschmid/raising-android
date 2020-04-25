@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.MainActivity;
 import com.raising.app.R;
@@ -149,9 +150,10 @@ public class RaisingFragment extends Fragment {
                     .with(InternalStorageHandler.getContext())
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" + id)
                     .centerCrop()
+                    .apply(RequestOptions.circleCropTransform())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
-                    .placeholder(R.drawable.ic_person_24dp)
+                    .placeholder(R.drawable.ic_placeholder_24dp)
                     .into(imageView);
         }
     }

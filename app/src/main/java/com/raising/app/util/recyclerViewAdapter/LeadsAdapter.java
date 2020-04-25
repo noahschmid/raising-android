@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.raising.app.R;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.leads.LeadState;
@@ -88,9 +89,10 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
                             recyclerItem.getProfilePictureId())
                     .centerCrop()
+                    .apply(RequestOptions.circleCropTransform())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
-                    .placeholder(R.drawable.ic_person_24dp)
+                    .placeholder(R.drawable.ic_placeholder_24dp)
                     .into(holder.profilePicture);
         } else {
             holder.profilePicture.setImageDrawable(InternalStorageHandler.getContext()

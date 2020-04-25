@@ -22,6 +22,7 @@ import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.profile.ContactDataInput;
 import com.raising.app.fragments.settings.SettingsFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
+import com.raising.app.models.Account;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
@@ -74,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
             hideBottomNavigation(true);
             fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
         } else {
-            if (!AccountService.loadContactData()) {
+            leadsViewModel.loadLeads();
+            if (!AccountService.loadContactData(AuthenticationHandler.getId())) {
                 hideBottomNavigation(true);
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("isStartup", AuthenticationHandler.isStartup());
@@ -85,23 +87,12 @@ public class MainActivity extends AppCompatActivity {
                 fragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.fragment_container, fragment);
             } else {
-                leadsViewModel.loadLeads();
-                if(!AccountService.loadContactData()) {
-                    hideBottomNavigation(true);
-                    Bundle bundle = new Bundle();
-                    bundle.putBoolean("isStartup", AuthenticationHandler.isStartup());
-                    bundle.putString("email", AuthenticationHandler.getEmail());
-                    bundle.putString("token", AuthenticationHandler.getToken());
-                    bundle.putLong("id", AuthenticationHandler.getId());
-                    Fragment fragment = new ContactDataInput();
-                    fragment.setArguments(bundle);
-                    fragmentTransaction.replace(R.id.fragment_container, fragment);
-                } else {
-                    Log.d(TAG, "onCreate: User logged in");
-                    accountViewModel.loadAccount();
-                    hideBottomNavigation(false);
-                    fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
-                }
+                Log.d(TAG, "onCreate: User[" + AuthenticationHandler.getId()
+                        + "] with email " + AccountService.getContactData().getEmail()
+                        + " logged in");
+                accountViewModel.loadAccount();
+                hideBottomNavigation(false);
+                fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
             }
         }
         fragmentTransaction.commit();
