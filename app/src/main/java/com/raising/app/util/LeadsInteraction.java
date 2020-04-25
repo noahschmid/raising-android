@@ -33,7 +33,7 @@ public class LeadsInteraction {
     private Interaction interaction;
 
     private Button interactionButton;
-    private ImageButton declineInteraction;
+    private ImageView declineInteraction;
     private ImageView interactionArrow;
     private View interactionView;
     private LinearLayout layout;
@@ -51,9 +51,9 @@ public class LeadsInteraction {
         ((TextView)interactionView.findViewById(R.id.interaction_caption))
                 .setText(interaction.getInteractionType().getCaption());
 
-        interactionArrow = (ImageView)interactionView.findViewById(R.id.interaction_arrow);
-        interactionButton = (Button)interactionView.findViewById(R.id.button_request_interaction);
-        declineInteraction = (ImageButton) interactionView.findViewById(R.id.button_decline_interaction);
+        interactionArrow = interactionView.findViewById(R.id.interaction_arrow);
+        interactionButton = interactionView.findViewById(R.id.button_request_interaction);
+        declineInteraction = interactionView.findViewById(R.id.button_decline_interaction);
 
         prepareInteraction();
         layout.addView(interactionView);
@@ -212,6 +212,7 @@ public class LeadsInteraction {
                 drawable.setTint(ContextCompat.getColor(
                         Objects.requireNonNull(interactionButton.getContext()), R.color.raisingNegativeAccent));
                 interactionButton.setText(activity.getResources().getString(R.string.declined_text));
+                declineInteraction.setVisibility(View.GONE);
                 break;
             case HANDSHAKE:
                 interactionButton.setVisibility(View.GONE);

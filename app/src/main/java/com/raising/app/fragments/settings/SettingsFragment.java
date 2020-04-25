@@ -28,6 +28,8 @@ import com.raising.app.util.NoFilterArrayAdapter;
 import com.raising.app.viewModels.MatchesViewModel;
 import com.raising.app.viewModels.SettingsViewModel;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -127,16 +129,20 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
 
     private void contactRaising(boolean isProblemReport) {
         Intent interactionIntent = new Intent(Intent.ACTION_SENDTO);
-        String [] addresses = {"lorenz.caliezi@gmail.com"};
-        interactionIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
-        interactionIntent.setData(Uri.parse("mailto:"));
+        interactionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        String subject = "";
+        String body = "";
+        String targetAddress = getString(R.string.settings_target_email_address);
         if(isProblemReport) {
-            interactionIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.settings_problem_report_subject));
-            interactionIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.settings_problem_report_body));
+            subject = getString(R.string.settings_problem_report_subject);
+            body = getString(R.string.settings_problem_report_body);
         } else {
-            interactionIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.settings_feedback_subject));
-            interactionIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.settings_feedback_body));
+            subject = getString(R.string.settings_feedback_subject);
+            body = getString(R.string.settings_feedback_body);
         }
+
+        String uriText = "mailto:" + targetAddress + "?subject=" + subject + "&body=" + body;
+        interactionIntent.setData(Uri.parse(uriText));
         startActivity(interactionIntent);
     }
 

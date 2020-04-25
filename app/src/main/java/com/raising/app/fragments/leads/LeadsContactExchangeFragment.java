@@ -94,13 +94,11 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
                     String subject = getString(R.string.leads_contact_mail_subject_template);
                     String body = getString(R.string.leads_contact_mail_body_template);
 
-                    String uriText = "mailto:" + contactData.getEmail() +
-                            "?subject=" + URLEncoder.encode(subject) +
-                            "&body=" + URLEncoder.encode(body);
+                    String uriText = "mailto:" + contactData.getEmail()
+                    + "?subject=" + subject + "&body=" + body;
 
                     interactionIntent.setData(Uri.parse(uriText));
-                    startActivity(Intent.createChooser(interactionIntent,
-                            "Send Email Using: "));
+                    startActivity(interactionIntent);
                 });
             }
         }
