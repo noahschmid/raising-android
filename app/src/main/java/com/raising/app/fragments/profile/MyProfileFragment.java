@@ -12,10 +12,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-import com.google.android.material.bottomnavigation.LabelVisibilityMode;
-import com.google.android.material.button.MaterialButton;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.profile.subscription.SubscriptionFragment;
 import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.fragments.registration.investor.RegisterInvestorImagesFragment;
 import com.raising.app.fragments.registration.investor.RegisterInvestorMatchingFragment;
@@ -34,7 +33,6 @@ import com.raising.app.fragments.registration.startup.RegisterStartupVideoFragme
 import com.raising.app.models.Investor;
 import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
-import com.raising.app.util.AuthenticationHandler;
 
 public class MyProfileFragment extends RaisingFragment implements View.OnClickListener {
     private FrameLayout startUpLayout, investorLayout;

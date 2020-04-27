@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
@@ -29,6 +28,7 @@ public class Account implements Serializable, Model {
     private List<Image> gallery;
     private long countryId = -1l;
     private String phone;
+    private Subscription activeSubscription;
 
     private List<Long> countries = new ArrayList<>();
     private List<Long> continents = new ArrayList<>();

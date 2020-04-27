@@ -5,7 +5,7 @@
     android:id="@+id/overlay_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.profile.SubscriptionFragment">
+    tools:context=".fragments.profile.subscription.SubscriptionFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,9 +22,9 @@
                 style="@style/RaisingText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/subscription_paragraph_1"
                 app:layout_constraintBottom_toTopOf="@+id/subscription_paragraph_2"
@@ -53,49 +53,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/subscription_paragraph_3"
-                app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+                app:layout_constraintBottom_toTopOf="@+id/subscriptions_layout"
                 app:layout_constraintEnd_toEndOf="@+id/subscription_paragraph_2"
                 app:layout_constraintStart_toStartOf="@+id/subscription_paragraph_2"
                 app:layout_constraintTop_toBottomOf="@+id/subscription_paragraph_2" />
 
-            <RadioGroup
-                android:id="@+id/radioGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
-                app:layout_constraintBottom_toTopOf="@+id/button_subscribe"
-                app:layout_constraintStart_toStartOf="@+id/subscription_paragraph_3"
-                app:layout_constraintTop_toBottomOf="@+id/subscription_paragraph_3">
-
-                <RadioButton
-                    android:id="@+id/subscription_three_months"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/subscription_three_months" />
-
-                <RadioButton
-                    android:id="@+id/subscription_six_months"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/subscription_six_months"/>
-
-                <RadioButton
-                    android:id="@+id/subscription_twelve_months"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/subscription_twelve_months"/>
-            </RadioGroup>
-
-            <Button
-                android:id="@+id/button_subscribe"
-                style="@style/ButtonConfirmRegistration"
+            <LinearLayout
+                android:id="@+id/subscriptions_layout"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/authenticationButtonHeight"
-                android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:hint="@string/subscription_subscribe"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/subscription_paragraph_3"
-                app:layout_constraintStart_toStartOf="@+id/subscription_paragraph_3" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/subscription_paragraph_3"></LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </FrameLayout>

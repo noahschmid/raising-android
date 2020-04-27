@@ -23,6 +23,12 @@
         <item name="android:textSize">@dimen/raisingSubtitleFontSize</item>
     </style>
 
+    <style name="RaisingDescriptionText" parent="RaisingText">
+        <item name="android:textSize"> @dimen/raisingSmallerTextFontSize</item>
+        <item name="android:textColor"> @color/gray</item>
+        <item name="android:textColorHint">@color/gray</item>
+    </style>
+
     <style name="AppBarTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
         <item name="titleTextColor">@color/raisingWhite</item>
         <item name="iconTint">@color/raisingWhite</item>

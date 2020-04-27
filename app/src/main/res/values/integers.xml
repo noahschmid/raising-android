@@ -28,4 +28,8 @@
     <integer name="raisingShortSnackbar"> 2500 </integer>
 
     <integer name="maximumWeeklyMatchesNumber"> 5 </integer>
+
+    <integer name="threeMonthSubscriptionPrice"> 120</integer>
+    <integer name="sixMonthSubscriptionPrice"> 200</integer>
+    <integer name="twelveMonthSubscriptionPrice">320</integer>
 </resources>

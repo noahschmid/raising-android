@@ -5,7 +5,7 @@
     <dimen name="checkBoxHeight"> 40dp </dimen>
 
     <dimen name="authenticationButtonHeight"> 60dp </dimen>
-    <dimen name="myProfileButtonHeight"> 50dp </dimen>
+    <dimen name="myProfileButtonHeight"> 60dp </dimen>
 
     <dimen name="leadsContactButtonHeight"> 40dp </dimen>
 
