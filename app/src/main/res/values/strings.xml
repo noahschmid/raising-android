@@ -207,6 +207,15 @@
     <string name="toolbar_title_my_profile"> My Profile </string>
     <string name="toolbar_my_public_profile"> My Public Profile</string>
 
+    <string name="toolbar_profile_subscription"> Subscription</string>
+    <string name="subscription_paragraph_1">Subscribe to Rai$ing to unlock the full potential of our app.</string>
+    <string name="subscription_paragraph_2">Your subscription will be automatically renewed once it expires.</string>
+    <string name="subscription_paragraph_3">If you have finished your financing round or are otherwise no longer interested, you can deactivate your subscription temporarily.</string>
+    <string name="subscription_three_months"> 3 months for 120CHF </string>
+    <string name="subscription_six_months"> 6 months for 200CHF</string>
+    <string name="subscription_twelve_months"> 12 months for 350CHF</string>
+    <string name="subscription_subscribe"> Subscribe </string>
+
     <!-- Strings used for profile -->
     <string name="myProfile_account_information"> Account Information </string>
     <string name="myProfile_subscription_plan"> Subscription Plan </string>

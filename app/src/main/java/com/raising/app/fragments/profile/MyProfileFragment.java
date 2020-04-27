@@ -180,7 +180,7 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 break;
             case R.id.button_myProfile_startup_subscription:
             case R.id.button_myProfile_investor_subscription:
-                //TODO: insert fragment
+                fragment = new SubscriptionFragment();
                 break;
             case R.id.button_myProfile_startup_stakeholders:
                 fragment = new RegisterStakeholderFragment();

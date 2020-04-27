@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/overlay_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.profile.SubscriptionFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/subscription_paragraph_1"
+                style="@style/RaisingText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/subscription_paragraph_1"
+                app:layout_constraintBottom_toTopOf="@+id/subscription_paragraph_2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/subscription_paragraph_2"
+                style="@style/RaisingText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/subscription_paragraph_2"
+                app:layout_constraintBottom_toTopOf="@+id/subscription_paragraph_3"
+                app:layout_constraintEnd_toEndOf="@+id/subscription_paragraph_1"
+                app:layout_constraintStart_toStartOf="@+id/subscription_paragraph_1"
+                app:layout_constraintTop_toBottomOf="@+id/subscription_paragraph_1" />
+
+            <TextView
+                android:id="@+id/subscription_paragraph_3"
+                style="@style/RaisingText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/subscription_paragraph_3"
+                app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+                app:layout_constraintEnd_toEndOf="@+id/subscription_paragraph_2"
+                app:layout_constraintStart_toStartOf="@+id/subscription_paragraph_2"
+                app:layout_constraintTop_toBottomOf="@+id/subscription_paragraph_2" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                app:layout_constraintBottom_toTopOf="@+id/button_subscribe"
+                app:layout_constraintStart_toStartOf="@+id/subscription_paragraph_3"
+                app:layout_constraintTop_toBottomOf="@+id/subscription_paragraph_3">
+
+                <RadioButton
+                    android:id="@+id/subscription_three_months"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/subscription_three_months" />
+
+                <RadioButton
+                    android:id="@+id/subscription_six_months"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/subscription_six_months"/>
+
+                <RadioButton
+                    android:id="@+id/subscription_twelve_months"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/subscription_twelve_months"/>
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/button_subscribe"
+                style="@style/ButtonConfirmRegistration"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/authenticationButtonHeight"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/subscription_subscribe"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/subscription_paragraph_3"
+                app:layout_constraintStart_toStartOf="@+id/subscription_paragraph_3" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</FrameLayout>
