@@ -22,7 +22,7 @@ public enum SubscriptionType implements Serializable {
     }
 
     public String getTitle() {
-        return getString(R.string.currency) + price + " / " + representation;
+        return getString(R.string.currency) + " " + price + " / " + representation;
     }
 
     private static String getString(int id) {

@@ -9,6 +9,6 @@ import lombok.Data;
 public class Subscription implements Serializable {
 
     private SubscriptionType subscriptionType;
+    private Date purchaseDate;
     private Date expirationDate;
-    private boolean automaticExtension = false;
 }

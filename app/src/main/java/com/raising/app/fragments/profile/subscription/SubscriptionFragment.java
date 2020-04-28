@@ -57,13 +57,15 @@ public class SubscriptionFragment extends RaisingFragment {
             // create card for all subscription types except no subscription
             if (subscriptionType != SubscriptionType.NONE) {
                 // setup layout for unselected subscriptions
-                View card = getActivity().getLayoutInflater().inflate(R.layout.item_subscription_detail, null);
+                View subscriptionLayout = getActivity().getLayoutInflater().inflate(R.layout.item_subscription_detail, null);
+
                 // gather all views of a subscription card
-                TextView activeSubscription = card.findViewById(R.id.subscription_active_subscription);
-                TextView subscriptionTitle = card.findViewById(R.id.subscription_title);
-                TextView subscriptionExpiration = card.findViewById(R.id.subscription_expiration);
-                Button btnSubscribe = card.findViewById(R.id.button_subscribe);
-                Button btnCancelSubscription = card.findViewById(R.id.button_cancel_subscription);
+                MaterialCardView card = subscriptionLayout.findViewById(R.id.card_subscription);
+                TextView activeSubscription = subscriptionLayout.findViewById(R.id.subscription_active_subscription);
+                TextView subscriptionTitle = subscriptionLayout.findViewById(R.id.subscription_title);
+                TextView subscriptionExpiration = subscriptionLayout.findViewById(R.id.subscription_expiration);
+                Button btnSubscribe = subscriptionLayout.findViewById(R.id.button_subscribe);
+                Button btnCancelSubscription = subscriptionLayout.findViewById(R.id.button_cancel_subscription);
 
                 // hide views that are not needed for unselected subscriptions
                 activeSubscription.setVisibility(View.GONE);
@@ -74,28 +76,28 @@ public class SubscriptionFragment extends RaisingFragment {
                 btnSubscribe.setOnClickListener(v -> {
                     Subscription subscription = new Subscription();
                     subscription.setSubscriptionType(subscriptionType);
-                    subscription.setExpirationDate(new Date());
-                    Log.d(TAG, "onViewCreated: Selected subscription " + subscription.getSubscriptionType().getTitle() + " " + subscription.getExpirationDate().toString());
+                    subscription.setPurchaseDate(new Date());
+                    Log.d(TAG, "onViewCreated: Selected subscription " + subscription.getSubscriptionType().getTitle());
                     currentAccount.setActiveSubscription(subscription);
                     refreshSubscriptionsLayout();
                 });
                 // check for currently selected form of subscription
                 if(currentAccount.getActiveSubscription() != null && currentAccount.getActiveSubscription().getSubscriptionType() == subscriptionType) {
+                    card.setStrokeColor(getResources().getColor(R.color.raisingPositiveAccent, null));
+                    card.setStrokeWidth(5);
                     activeSubscription.setVisibility(View.VISIBLE);
                     subscriptionExpiration.setVisibility(View.VISIBLE);
 
-                    subscriptionExpiration.setText(currentAccount.getActiveSubscription().getExpirationDate().toString());
+                    // subscriptionExpiration.setText(currentAccount.getActiveSubscription().getExpirationDate().toString());
                     btnCancelSubscription.setVisibility(View.VISIBLE);
                     btnCancelSubscription.setOnClickListener(v -> {
                         Subscription subscription = new Subscription();
                         subscription.setSubscriptionType(SubscriptionType.NONE);
-                        subscription.setAutomaticExtension(true);
-                        subscription.setExpirationDate(new Date());
                         currentAccount.setActiveSubscription(subscription);
                         refreshSubscriptionsLayout();
                     });
                 }
-                subscriptionsLayout.addView(card);
+                subscriptionsLayout.addView(subscriptionLayout);
             }
         });
     }
