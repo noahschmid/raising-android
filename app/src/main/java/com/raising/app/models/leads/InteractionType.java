@@ -12,7 +12,7 @@ import java.io.Serializable;
 @SuppressWarnings("ALL")
 public enum InteractionType implements Serializable {
     COFFEE(getString(R.string.leads_contact_coffee), new CoffeeAction()),
-    BUSINESSPLAN(getString(R.string.leads_contact_businessplan), new BusinessPlanAction()),
+    BUSINESS_PLAN(getString(R.string.leads_contact_businessplan), new BusinessPlanAction()),
     PHONE_CALL(getString(R.string.leads_contact_phone)),
     EMAIL(getString(R.string.leads_contact_email)),
     VIDEO_CONFERENCE(getString(R.string.leads_contact_video));
