@@ -24,6 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMarginSmall"
+                android:gravity="center"
                 android:hint="@string/subscription_your_subscriptions"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/subscription_title"
@@ -39,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMarginSmall"
-                android:hint="@string/subscription_three_months"
+                android:hint="Name of Subscription"
                 app:layout_constraintBottom_toTopOf="@+id/subscription_expiration"
                 app:layout_constraintEnd_toEndOf="@+id/subscription_active_subscription"
                 app:layout_constraintStart_toStartOf="@+id/subscription_active_subscription"
@@ -49,46 +50,13 @@
                 android:id="@+id/subscription_expiration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/subscription_three_months_price"
-                app:layout_constraintBottom_toTopOf="@+id/button_subscribe"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                android:hint="Expires"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/subscription_title"
                 app:layout_constraintStart_toStartOf="@+id/subscription_title"
                 app:layout_constraintTop_toBottomOf="@+id/subscription_title" />
 
-            <Button
-                android:id="@+id/button_subscribe"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/leadsContactButtonHeight"
-                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                android:layout_marginTop="@dimen/standardVerticalMarginSmall"
-                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
-                android:backgroundTint="@color/raisingSecondary"
-                android:hint="@string/subscription_subscribe"
-                android:minWidth="0dp"
-                android:textColorHint="@color/raisingWhite"
-                android:textSize="@dimen/raisingSmallTextFontSize"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/button_cancel_subscription"
-                app:layout_constraintTop_toBottomOf="@+id/subscription_expiration" />
-
-            <Button
-                android:id="@+id/button_cancel_subscription"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/leadsContactButtonHeight"
-                android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                android:backgroundTint="@color/raisingSecondary"
-                android:hint="@string/cancel_text"
-                android:minWidth="0dp"
-                android:textColorHint="@color/raisingWhite"
-                android:textSize="@dimen/raisingSmallTextFontSize"
-                app:layout_constraintBottom_toBottomOf="@+id/button_subscribe"
-                app:layout_constraintEnd_toStartOf="@+id/button_subscribe"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/button_subscribe" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

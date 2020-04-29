@@ -8,21 +8,23 @@ import java.io.Serializable;
 import lombok.Getter;
 
 public enum SubscriptionType implements Serializable {
-    NONE("", 0),
-    THREE(getString(R.string.subscription_three_months), getInteger(R.integer.threeMonthSubscriptionPrice)),
-    SIX(getString(R.string.subscription_six_months), getInteger(R.integer.sixMonthSubscriptionPrice)),
-    TWELVE(getString(R.string.subscription_twelve_months), getInteger(R.integer.twelveMonthSubscriptionPrice));
+    NONE(0, 0),
+    THREE(3 , getInteger(R.integer.threeMonthSubscriptionPrice)),
+    SIX(6 , getInteger(R.integer.sixMonthSubscriptionPrice)),
+    TWELVE(12 , getInteger(R.integer.twelveMonthSubscriptionPrice));
 
-    String representation;
+    @Getter
+    int duration;
+    @Getter
     int price;
 
-    SubscriptionType(String representation, int price) {
-        this.representation = representation;
+    SubscriptionType(int duration, int price) {
+        this.duration = duration;
         this.price = price;
     }
 
     public String getTitle() {
-        return getString(R.string.currency) + " " + price + " / " + representation;
+        return getString(R.string.currency) + " " + price + " / " + duration + " " + getString(R.string.subscription_months);
     }
 
     private static String getString(int id) {

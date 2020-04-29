@@ -10,6 +10,7 @@
     <!-- General Strings -->
     <string name="register_text"> Register now </string>
     <string name="ok_text"> OK </string>
+    <string name="yes_text"> Yes</string>
     <string name="cancel_text"> Cancel </string>
     <string name="remove_text"> Remove </string>
     <string name="add_text"> Add </string>
@@ -278,18 +279,20 @@
     <string name="toolbar_profile_subscription"> Subscription</string>
     <string name="subscription_add_subscription"> Add new subscription</string>
     <string name="subscription_your_subscriptions">Your active subscription</string>
-    <string name="subscription_automatic_extension"> Extend automatically</string>
-    <string name="subscription_paragraph_1">Subscribe to Rai$ing to unlock the full potential of our app.</string>
-    <string name="subscription_paragraph_2">Your subscription will be automatically renewed once it expires.</string>
-    <string name="subscription_paragraph_3">If you have finished your financing round or are otherwise no longer interested, you can deactivate your subscription temporarily.</string>
-    <string name="toolbar_profile_subscription_details"> Subscription Details</string>
-    <string name="subscription_three_months"> 3 Months</string>
-    <string name="subscription_six_months"> 6 Months</string>
-    <string name="subscription_twelve_months"> 12 Months</string>
-    <string name="subscription_three_months_price"> 120CHF </string>
-    <string name="subscription_six_months_price"> 200CHF</string>
-    <string name="subscription_twelve_months_price"> 350CHF</string>
+    <string name="subscription_downgrade"> Downgrade to </string>
+    <string name="subscription_upgrade"> Upgrade to</string>
+    <string name="subscription_automatic_extension">Automatic extension active</string>
+    <string name="subscription_paragraph_1">Subscribe to Rai$ing to unlock the full potential of our app</string>
+    <string name="subscription_paragraph_2">Your subscription is automatically renewed</string>
+    <string name="subscription_benefits_1">Access to possible investment partners, that match your profile</string>
+    <string name="subscription_benefits_2">Overview over key figures and a pitch of a possible investment partner</string>
+    <string name="subscription_benefits_3">Establish a contact and exchange personal contact information with your best possible investment partners</string>
+    <string name="subscription_months"> Months</string>
+    <string name="subscription_expires"> Expiration Date: </string>
     <string name="subscription_cancel"> Cancel Subscription</string>
+    <string name="subscription_cancel_text"> Are you sure you want to cancel your subscription?</string>
+    <string name="subscription_cancel_confirmation_title"> Subscription Cancelled</string>
+    <string name="subscription_cancel_confirmation_text"> You have successfully cancelled your subscription to Rai$ing. \n \n</string>
     <string name="subscription_subscribe">Subscribe</string>
 
     <!-- Strings used in ForgotPasswordScreens -->
