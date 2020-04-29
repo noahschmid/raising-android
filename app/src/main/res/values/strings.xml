@@ -21,6 +21,8 @@
     <string name="request_text"> Request </string>
     <string name="requested_text"> Requested </string>
     <string name="confirm_text"> Confirm </string>
+    <string name="next_text"> Next</string>
+    <string name="skip_text"> Skip</string>
     <string name="got_it_text"> Got it </string>
     <string name="search"> Search.. </string>
     <string name="currency"> CHF </string>
@@ -35,6 +37,17 @@
     <string name="general_dialog_error_title"> Error occurred! </string>
     <string name="general_dialog_error_text"> Something went wrong. Please try again </string>
     <string name="server_error">Server Error</string>
+
+    <!-- Strings used for Onboarding -->
+    <string name="toolbar_title_onboarding"> Onboarding </string>
+    <string name="onboarding_pre_1_text"> Get weekly matches of startups / investors that match your personal interests</string>
+    <string name="onboarding_pre_2_text"> Read further information about matches and request them if you are interested</string>
+    <string name="onboarding_pre_3_text"> Get contact information if the other party is interested as well</string>
+    <string name="onboarding_post_1_text"> Once a week you will get new matches. If you click on a match you can see more details</string>
+    <string name="onboarding_post_2_title"> Details</string>
+    <string name="onboarding_post_2_text"> After reading the details you can either request or decline the match</string>
+    <string name="onboarding_post_3_text"> After you requested a match, the match becomes a lead. If the other party also accepted the match, you can get in touch with each other</string>
+    <string name="onboarding_post_4_text"> Request the other party for one of the provided interactions to receive their contact details</string>
 
     <!-- Strings used for Login, ForgotPassword -->
     <string name="toolbar_title_login"> Login </string>

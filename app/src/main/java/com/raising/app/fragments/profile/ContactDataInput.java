@@ -15,6 +15,7 @@ import android.widget.EditText;
 import com.raising.app.R;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.onboarding.OnboardingPost1Fragment;
 import com.raising.app.models.ContactData;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
@@ -86,7 +87,13 @@ public class ContactDataInput extends RaisingFragment {
                     token, accountId, isStartup);
             accountViewModel.loadAccount();
             hideBottomNavigation(false);
-            clearBackstackAndReplace(new MatchesFragment());
+
+            if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
+                clearBackstackAndReplace(new OnboardingPost1Fragment());
+            } else {
+                clearBackstackAndReplace(new MatchesFragment());
+            }
+
         } catch (Exception e) {
             Log.e("ContactDetailsInput", "Error while saving contact details: " +
                     e.getMessage());

@@ -18,6 +18,7 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.raising.app.fragments.onboarding.OnboardingPost1Fragment;
 import com.raising.app.fragments.profile.ContactDataInput;
 import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.models.NotificationSettings;
@@ -157,7 +158,13 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                                             response.getString("token"),
                                             response.getLong("id"), isStartup);
                                     accountViewModel.loadAccount();
-                                    clearBackstackAndReplace(new MatchesFragment());
+
+                                    if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
+                                        clearBackstackAndReplace(new OnboardingPost1Fragment());
+                                    } else {
+                                        clearBackstackAndReplace(new MatchesFragment());
+                                    }
+
                                 } else {
                                     Bundle bundle = new Bundle();
                                     bundle.putBoolean("isStartup", isStartup);

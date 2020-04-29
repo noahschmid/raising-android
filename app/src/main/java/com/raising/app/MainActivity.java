@@ -9,7 +9,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.bluetooth.BluetoothClass;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.raising.app.fragments.leads.LeadsContainerFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
+import com.raising.app.fragments.onboarding.OnboardingPre1Fragment;
 import com.raising.app.fragments.profile.ContactDataInput;
 import com.raising.app.fragments.settings.SettingsFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
@@ -33,6 +36,7 @@ import com.raising.app.viewModels.MatchesViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 import com.raising.app.viewModels.SettingsViewModel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     MaterialToolbar toolbar;
 
     private final String TAG = "MainActivity";
+    private boolean disablePreOnboarding = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +76,17 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-        if (!AuthenticationHandler.isLoggedIn()) {
+        // check internal storage if user has completed his onboarding
+        try {
+            disablePreOnboarding = (boolean) InternalStorageHandler.loadObject("onboarding");
+        } catch (Exception e) {
+            Log.e(TAG, "onCreate: Error loading onboarding ");
+        }
+
+        if (isFirstAppLaunch() && !disablePreOnboarding) {
+            // if user has not completed his onboarding and this is a newly installed app
+            fragmentTransaction.replace(R.id.fragment_container, new OnboardingPre1Fragment());
+        } else if (!AuthenticationHandler.isLoggedIn()) {
             hideBottomNavigation(true);
             fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
         } else {
@@ -166,11 +181,12 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Allow to set a custom menu containing a logout button into the toolbar
+     *
      * @param setMenu true, if menu should be visible
      *                false, if menu should not be visible
      */
     public void setActionBarMenu(boolean setMenu) {
-        if(setMenu) {
+        if (setMenu) {
             toolbar.inflateMenu(R.menu.top_bar_menu);
             toolbar.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
@@ -205,5 +221,32 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void disablePreOnboarding() {
+        try {
+            InternalStorageHandler.saveObject(true, "onboarding");
+        } catch (IOException e) {
+            Log.e(TAG, "disablePreOnboarding: Error saving onboarding");
+        }
+    }
+    
+    public void disablePostOnboarding() {
+        try {
+            InternalStorageHandler.saveObject(true, "postOnboarding");
+        } catch (IOException e) {
+            Log.e(TAG, "disablePostOnboarding: Error saving post onboarding");
+        }
+    }
 
+    public boolean isFirstAppLaunch() {
+        long firstInstallTime = 0, lastUpdateTime = 1;
+        try {
+            firstInstallTime = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0).firstInstallTime;
+            lastUpdateTime = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0).lastUpdateTime;
+            Log.d(TAG, "onCreate: FirstInstall: " + firstInstallTime + "LastUpdate: " + lastUpdateTime);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, "onCreate: PackageManagerError");
+        }
+
+        return (firstInstallTime == lastUpdateTime);
+    }
 }

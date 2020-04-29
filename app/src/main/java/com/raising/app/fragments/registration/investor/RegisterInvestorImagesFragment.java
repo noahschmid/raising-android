@@ -42,6 +42,7 @@ import com.raising.app.R;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.onboarding.OnboardingPost1Fragment;
 import com.raising.app.models.Image;
 import com.raising.app.models.Investor;
 import com.raising.app.models.ViewState;
@@ -530,7 +531,13 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         try {
             RegistrationHandler.finish(response.getLong("id"),
                     response.getString("token"), false);
-            clearBackstackAndReplace(new MatchesFragment());
+
+            if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
+                clearBackstackAndReplace(new OnboardingPost1Fragment());
+            } else {
+                clearBackstackAndReplace(new MatchesFragment());
+            }
+
         } catch (Exception e) {
             Log.d("InvestorImagesFragment", e.getMessage());
             showSimpleDialog(getString(R.string.generic_error_title),
