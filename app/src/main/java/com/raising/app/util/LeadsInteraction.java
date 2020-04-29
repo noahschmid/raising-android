@@ -148,10 +148,19 @@ public class LeadsInteraction {
                         },
                         params);
             } else {
-                String endpoint = accept ? "interaction/accept" : "interaction/reject/" + interaction.getId();
+                String endpoint = accept ? "interaction/accept" : "interaction/decline/" + interaction.getId();
 
                 ApiRequestHandler.performPatchRequest(endpoint,
                         v -> {
+                    try {
+                        if (v.getJSONObject("data") != null) {
+                            ContactData contactData = gson.fromJson(v.getJSONObject("data").toString(), ContactData.class);
+                            contactData.setAccountId(lead.getAccountId());
+                            ContactDataHandler.processNewData(contactData);
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "updateRemoteInteraction: " + e.getMessage());
+                    }
                             return null;
                         },
                         err -> {
