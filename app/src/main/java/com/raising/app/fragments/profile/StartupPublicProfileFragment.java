@@ -493,7 +493,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         imageSwitcher.setFactory(() -> {
             ImageView imageView = new ImageView(
                     Objects.requireNonNull(getActivity()).getApplicationContext());
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setLayoutParams(new ImageSwitcher.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
