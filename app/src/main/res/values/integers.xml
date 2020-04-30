@@ -32,4 +32,6 @@
     <integer name="threeMonthSubscriptionPrice"> 120</integer>
     <integer name="sixMonthSubscriptionPrice"> 200</integer>
     <integer name="twelveMonthSubscriptionPrice">320</integer>
+
+    <integer name="raisingMaximumNameLength"> 30</integer>
 </resources>

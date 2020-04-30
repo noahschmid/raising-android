@@ -323,6 +323,7 @@
     <string name="reset_dialog_text_no_input">You have to enter a code and a new password!</string>
 
     <string name="register_dialog_title"> Invalid inputs </string>
+    <string name="register_dialog_long_name"> Please consider using a shorter name</string>
     <string name="register_dialog_text_400"> This username may already exist </string>
     <string name="register_dialog_text_empty_credentials"> Please fill out all required fields </string>
     <string name="register_dialog_text_password_match"> Please confirm your password </string>

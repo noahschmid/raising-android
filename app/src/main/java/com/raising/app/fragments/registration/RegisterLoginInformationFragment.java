@@ -120,6 +120,11 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
             return;
         }
 
+        if(firstName.length() > getResources().getInteger(R.integer.raisingMaximumNameLength) || lastName.length() > getResources().getInteger(R.integer.raisingMaximumNameLength)) {
+            showSimpleDialog(getString(R.string.register_dialog_title), getString(R.string.register_dialog_long_name));
+            return;
+        }
+
         if(!email.contains("@")) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_invalid_email));

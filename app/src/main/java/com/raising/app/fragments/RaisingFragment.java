@@ -501,9 +501,14 @@ public class RaisingFragment extends Fragment {
                 }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
 
         builder.setActivatedMonth(Calendar.JULY).setMinYear(1900)
-                .setActivatedYear(today.get(Calendar.YEAR))
-                .setMaxYear(today.get(Calendar.YEAR) + 200)
-                .setMinMonth(Calendar.FEBRUARY)
+                .setActivatedYear(today.get(Calendar.YEAR));
+                // check for founding year picker, founding year cannot be in the future
+                if(title.contains("founding")) {
+                    builder.setMaxYear(today.get(Calendar.YEAR));
+                } else {
+                    builder.setMaxYear(today.get(Calendar.YEAR) + 200);
+                }
+                builder.setMinMonth(Calendar.FEBRUARY)
                 .setTitle(title)
                 .showYearOnly()
                 .setOnYearChangedListener(new MonthPickerDialog.OnYearChangedListener() {

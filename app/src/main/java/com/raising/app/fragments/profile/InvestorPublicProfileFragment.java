@@ -141,7 +141,12 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             String website = investor.getWebsite();
             if(website.length() == 0)
                 return;
-            String uri = "http://" + website;
+            String uri;
+            if(website.startsWith("http://")) {
+                uri = website;
+            } else {
+                uri = "http://" + website;
+            }
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
             startActivity(browserIntent);
         });
