@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.raising.app.models.Account;
 import com.raising.app.models.Image;
 import com.raising.app.models.Investor;
@@ -29,6 +30,7 @@ import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.Serializer;
 import com.raising.app.util.ToastHandler;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -248,15 +250,18 @@ public class AccountViewModel extends AndroidViewModel {
                 method = "PATCH";
                 endpoint += "/" + currentAccount.getValue().getProfilePictureId();
             }
-                new ImageUploader(endpoint, "profilePicture",
-                        image.getImage(), method, response -> {
+                new ImageUploader(image.getImage(),
+                        currentAccount.getValue().getProfilePictureId(), response -> {
                     try {
-                        currentAccount.getValue().setProfilePicture(image);
-                        if(response.has("id")) {
-                            currentAccount.getValue().setProfilePictureId(response.getLong("id"));
-                            update(currentAccount.getValue());
+                        if(response.has("profileResponse")) {
+                            JSONObject profileResponse = response.getJSONObject("profileResponse");
+                            currentAccount.getValue().setProfilePicture(image);
+                            if(profileResponse.has("id")) {
+                                currentAccount.getValue().setProfilePictureId(profileResponse.getLong("id"));
+                                update(currentAccount.getValue());
+                            }
+                            viewState.postValue(ViewState.UPDATED);
                         }
-                        viewState.postValue(ViewState.UPDATED);
                     } catch (JSONException e) {
                         Log.e(TAG, "updateProfilePicture: " + e.getMessage());
                         viewState.postValue(ViewState.ERROR);
@@ -268,7 +273,7 @@ public class AccountViewModel extends AndroidViewModel {
                     viewState.postValue(ViewState.ERROR);
                     Log.e(TAG, "updateProfilePicture: " + error.toString() );
                     return null;
-                }, AuthenticationHandler.getToken()).execute();
+                }).execute();
             } catch (Exception e) {
                 viewState.postValue(ViewState.ERROR);
                 Log.e(TAG, "Error while updating profile picture: " +
@@ -288,12 +293,18 @@ public class AccountViewModel extends AndroidViewModel {
             }
         });
 
-        new ImageUploader("media/gallery", "gallery",
-                pictures, "POST", response -> {
+        new ImageUploader(null, pictures,
+                response -> {
             try {
-                for(int i = 0; i < response.length(); ++i) {
-                    currentAccount.getValue().getGalleryIds().add(response.getLong(i));
+                if(response.has("galleryResponse")) {
+                    if(!response.isNull("galleryResponse")) {
+                        JSONArray array = response.getJSONArray("galleryResponse");
+                        for(int i = 0; i < array.length(); ++i) {
+                            currentAccount.getValue().getGalleryIds().add(array.getLong(i));
+                        }
+                    }
                 }
+
                 viewState.postValue(ViewState.UPDATED);
             } catch (JSONException e) {
                 Log.e(TAG, "updateGallery: " + e.getMessage());

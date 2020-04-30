@@ -292,6 +292,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             galleryObject = inflater.inflate(R.layout.item_gallery, null);
         } else {
             galleryObject = addGalleryImage;
+            galleryObject.setOnClickListener(null);
         }
 
         ImageView galleryImage = galleryObject.findViewById(R.id.gallery_image);
@@ -411,7 +412,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         });
         new ImageUploader(logo, bitmaps, response -> {
             try {
-                if(response.has("profilePictureResponse")) {
+                if(response.has("profileResponse")) {
                     JSONObject pResponse = response.getJSONObject("profilePictureResponse");
                     startup.setProfilePictureId(pResponse.getLong("id"));
                 }
