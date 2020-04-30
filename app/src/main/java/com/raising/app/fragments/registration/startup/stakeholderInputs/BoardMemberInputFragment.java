@@ -26,8 +26,6 @@ import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 public class BoardMemberInputFragment extends RaisingFragment {
     private BoardMemberViewModel boardMemberViewModel;
     private EditText boardFirstNameInput, boardLastNameInput, boardProfessionInput,
@@ -173,7 +171,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
                 hideBottomNavigation(false);
             }
             editMode = true;
-            btnAddBoardMember.setText(getString(R.string.submit));
+            btnAddBoardMember.setText(getString(R.string.submit_text));
             countryId = boardMember.getCountryId();
             boardFirstNameInput.setText(boardMember.getFirstName());
             boardLastNameInput.setText(boardMember.getLastName());

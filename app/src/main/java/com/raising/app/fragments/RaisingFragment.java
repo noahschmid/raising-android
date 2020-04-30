@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -546,5 +547,41 @@ public class RaisingFragment extends Fragment {
 
         loadingPanel.setVisibility(View.GONE);
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    protected void disablePreOnboarding() {
+        MainActivity activity = (MainActivity) getActivity();
+        if(activity != null) {
+            activity.disablePreOnboarding();
+        }
+    }
+
+    protected boolean isDisablePostOnboarding() {
+        boolean disablePostOnboarding = false;
+        try {
+            if(!(InternalStorageHandler.exists("postOnboarding"))) {
+                return false;
+            } else {
+                disablePostOnboarding = (boolean) InternalStorageHandler.loadObject("postOnboarding");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "isDisablePostOnboarding: Error loading post onboarding");
+        }
+        return disablePostOnboarding;
+    }
+
+    protected void disablePostOnboarding() {
+        MainActivity activity = (MainActivity) getActivity();
+        if(activity != null) {
+            activity.disablePostOnboarding();
+        }
+    }
+
+    protected boolean isFirstAppLaunch() {
+        MainActivity activity = (MainActivity) getActivity();
+        if(activity != null) {
+            return activity.isFirstAppLaunch();
+        }
+        return false;
     }
 }
