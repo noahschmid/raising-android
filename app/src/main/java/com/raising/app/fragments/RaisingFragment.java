@@ -64,7 +64,6 @@ public class RaisingFragment extends Fragment {
     protected SettingsViewModel settingsViewModel;
     protected Resources resources;
     protected Account currentAccount;
-    private boolean disablePostOnboarding = false;
     private int processesLoading = 0;
 
     protected void onAccountUpdated() {
@@ -558,8 +557,13 @@ public class RaisingFragment extends Fragment {
     }
 
     protected boolean isDisablePostOnboarding() {
+        boolean disablePostOnboarding = false;
         try {
-            disablePostOnboarding = (boolean) InternalStorageHandler.loadObject("postOnboarding");
+            if(!(InternalStorageHandler.exists("postOnboarding"))) {
+                return false;
+            } else {
+                disablePostOnboarding = (boolean) InternalStorageHandler.loadObject("postOnboarding");
+            }
         } catch (Exception e) {
             Log.e(TAG, "isDisablePostOnboarding: Error loading post onboarding");
         }

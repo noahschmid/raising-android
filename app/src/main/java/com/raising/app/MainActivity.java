@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     MaterialToolbar toolbar;
 
     private final String TAG = "MainActivity";
-    private boolean disablePreOnboarding = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,13 +76,16 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
         // check internal storage if user has completed his onboarding
+        boolean disablePreOnboarding = false;
         try {
-            disablePreOnboarding = (boolean) InternalStorageHandler.loadObject("onboarding");
+            if(InternalStorageHandler.exists("onboarding")) {
+                disablePreOnboarding = (boolean) InternalStorageHandler.loadObject("onboarding");
+            }
         } catch (Exception e) {
             Log.e(TAG, "onCreate: Error loading onboarding ");
         }
 
-        if (isFirstAppLaunch() && !disablePreOnboarding) {
+        if (isFirstAppLaunch() && !disablePreOnboarding || !(InternalStorageHandler.exists("onboarding"))) {
             // if user has not completed his onboarding and this is a newly installed app
             fragmentTransaction.replace(R.id.fragment_container, new OnboardingPre1Fragment());
         } else if (!AuthenticationHandler.isLoggedIn()) {
