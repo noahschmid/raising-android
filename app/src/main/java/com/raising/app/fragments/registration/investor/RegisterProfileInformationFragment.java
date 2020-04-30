@@ -153,9 +153,11 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
     private void processProfileInformation() {
         String companyName = profileCompanyInput.getText().toString();
         contactDetails.setPhone(profilePhoneInput.getText().toString());
-        if(profileWebsiteInput.getText().toString().length() != 0) {
+        if(profileWebsiteInput.getText().toString().length() != 0 && !(profileWebsiteInput.getText().toString().contains("http"))) {
             String website = "http://" + profileWebsiteInput.getText().toString();
             investor.setWebsite(website);
+        } else {
+            investor.setWebsite(profileWebsiteInput.getText().toString());
         }
 
         if(countryId == -1 || contactDetails.getPhone().length() == 0) {

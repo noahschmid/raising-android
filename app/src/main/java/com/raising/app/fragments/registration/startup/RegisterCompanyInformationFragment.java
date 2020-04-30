@@ -159,9 +159,11 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
         startup.setUId(companyUidInput.getText().toString());
 
         contactDetails.setPhone(companyPhoneInput.getText().toString());
-        if(companyWebsiteInput.getText().toString().length() != 0) {
+        if(companyWebsiteInput.getText().toString().length() != 0 && !(companyWebsiteInput.getText().toString().contains("http"))) {
             String website = "http://" + companyWebsiteInput.getText().toString();
             startup.setWebsite(website);
+        } else {
+            startup.setWebsite(companyWebsiteInput.getText().toString());
         }
         startup.setCountryId(countrySelected.getId());
 
