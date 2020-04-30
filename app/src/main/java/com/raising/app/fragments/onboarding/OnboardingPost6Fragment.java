@@ -20,7 +20,7 @@ public class OnboardingPost6Fragment extends RaisingFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         hideBottomNavigation(true);
-        customizeAppBar(getString(R.string.toolbar_title_onboarding), false);
+        customizeAppBar(" ", false);
         return inflater.inflate(R.layout.fragment_onboarding_post6, container, false);
     }
 
