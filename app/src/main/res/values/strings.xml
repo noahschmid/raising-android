@@ -277,8 +277,11 @@
 
     <!-- Strings used for Subscription -->
     <string name="toolbar_profile_subscription"> Subscription</string>
-    <string name="subscription_add_subscription"> Add new subscription</string>
+    <string name="subscription_error_cannot_add_title"> Subscription active!</string>
+    <string name="subscription_error_cannot_add_text"> You already have an active subscription</string>
     <string name="subscription_your_subscriptions">Your active subscription</string>
+    <string name="subscription_ending"> Ending Subscription</string>
+    <string name="subscription_next"> Next Subscription</string>
     <string name="subscription_downgrade"> Downgrade to </string>
     <string name="subscription_upgrade"> Upgrade to</string>
     <string name="subscription_automatic_extension">Automatic extension active</string>
@@ -288,6 +291,7 @@
     <string name="subscription_benefits_2">Overview over key figures and a pitch of a possible investment partner</string>
     <string name="subscription_benefits_3">Establish a contact and exchange personal contact information with your best possible investment partners</string>
     <string name="subscription_months"> Months</string>
+    <string name="subscription_activated"> Will be activated: </string>
     <string name="subscription_expires"> Expiration Date: </string>
     <string name="subscription_cancel"> Cancel Subscription</string>
     <string name="subscription_cancel_text"> Are you sure you want to cancel your subscription?</string>

@@ -2,10 +2,12 @@ package com.raising.app.fragments.profile.subscription;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -65,66 +67,110 @@ public class SubscriptionFragment extends RaisingFragment {
                 MaterialCardView card = subscriptionLayout.findViewById(R.id.card_subscription);
                 TextView activeSubscription = subscriptionLayout.findViewById(R.id.subscription_active_subscription);
                 TextView subscriptionTitle = subscriptionLayout.findViewById(R.id.subscription_title);
-                TextView subscriptionExpiration = subscriptionLayout.findViewById(R.id.subscription_expiration);
+                TextView subscriptionDate = subscriptionLayout.findViewById(R.id.subscription_expiration);
 
                 // hide views that are not needed for unselected subscriptions
                 activeSubscription.setVisibility(View.GONE);
-                subscriptionExpiration.setVisibility(View.INVISIBLE);
+                subscriptionDate.setVisibility(View.INVISIBLE);
 
                 subscriptionTitle.setText(subscriptionType.getTitle());
                 card.setOnClickListener(v -> {
-                    if (currentAccount.getActiveSubscription() == null) {
+                    if (currentAccount.getActiveSubscription() != null
+                            && currentAccount.getNextSubscription() != null
+                            && currentAccount.getActiveSubscription().getSubscriptionType()
+                            != currentAccount.getNextSubscription().getSubscriptionType()) {
+                        showSimpleDialog(getString(R.string.subscription_error_cannot_add_title), getString(R.string.subscription_error_cannot_add_text));
+                    } else if (currentAccount.getActiveSubscription() == null) {
+                        // purchase subscription
                         setCurrentSubscription(subscriptionType);
                     } else {
+                        // up-/downgrade your subscription
                         setNextSubscription(subscriptionType);
                     }
                     refreshSubscriptionsLayout();
                 });
 
-                // adjust subscription cards according to current subscription
-                if (currentAccount.getActiveSubscription() != null) {
-                    // setup layout for current subscription
-                    if (currentAccount.getActiveSubscription().getSubscriptionType() == subscriptionType) {
-                        card.setStrokeColor(getResources().getColor(R.color.raisingPositiveAccent, null));
+                // check if user has a subscription
+                if (currentAccount.getActiveSubscription() != null && currentAccount.getNextSubscription() != null) {
+
+                    // adjust cards of shorter subscription types
+                    if (subscriptionType.getDuration() < currentAccount.getActiveSubscription().getSubscriptionType().getDuration()) {
+                        // subscriptions cheaper than the one currently active, if current subscription != next subscription user cannot up-/downgrade
+                        if (currentAccount.getActiveSubscription().getSubscriptionType() == currentAccount.getNextSubscription().getSubscriptionType()) {
+                            activeSubscription.setVisibility(View.VISIBLE);
+                            activeSubscription.setText(getString(R.string.subscription_downgrade));
+                        }
+                    }
+
+                    // adjust cards of longer subscription types
+                    if (subscriptionType.getDuration() > currentAccount.getActiveSubscription().getSubscriptionType().getDuration()) {
+                        // subscriptions more expensive than current subscription, if current subscription != next subscription user cannot up-/downgrade
+                        if (currentAccount.getActiveSubscription().getSubscriptionType() == currentAccount.getNextSubscription().getSubscriptionType()) {
+                            activeSubscription.setVisibility(View.VISIBLE);
+                            activeSubscription.setText(getString(R.string.subscription_upgrade));
+                        }
+                    }
+
+                    // adjust card of users current subscription
+                    if (subscriptionType == currentAccount.getActiveSubscription().getSubscriptionType()) {
+                        subscriptionDate.setVisibility(View.VISIBLE);
+                        String expiration = getString(R.string.subscription_expires) + " " + currentAccount.getActiveSubscription().getExpirationDateString();
+                        subscriptionDate.setText(expiration);
+                        // if next subscription != current subscription indicate that current subscription is ending
+                        if (currentAccount.getActiveSubscription().getSubscriptionType() != currentAccount.getNextSubscription().getSubscriptionType()) {
+                            // signal that this subscription is ending
+                            card.setStrokeColor(getResources().getColor(R.color.raisingDarkGrey, null));
+                            card.setStrokeWidth(4);
+                            activeSubscription.setVisibility(View.VISIBLE);
+                            activeSubscription.setText(getString(R.string.subscription_ending));
+                        }
+                    }
+
+                    // adjust card of users next subscription
+                    if (subscriptionType == currentAccount.getNextSubscription().getSubscriptionType()) {
+                        btnCancelSubscription.setVisibility(View.GONE);
+                        Drawable drawable = card.getBackground();
+                        drawable = DrawableCompat.wrap(drawable);
+                        drawable.setTint(getResources().getColor(R.color.raisingPositiveAccentLight, null));
+                        card.setBackground(drawable);
+                        card.setStrokeColor(getResources().getColor(R.color.raisingDarkGrey, null));
                         card.setStrokeWidth(8);
                         activeSubscription.setVisibility(View.VISIBLE);
-                        subscriptionExpiration.setVisibility(View.VISIBLE);
-                        subscriptionExpiration.setText(currentAccount.getActiveSubscription().getExpirationDateString());
-                        btnCancelSubscription.setVisibility(View.VISIBLE);
-                        btnCancelSubscription.setOnClickListener(v -> {
-                            if (currentAccount.getActiveSubscription().isSubscriptionActive()) {
-                                new AlertDialog.Builder(this.getContext())
-                                        .setTitle(getString(R.string.subscription_cancel))
-                                        .setMessage(getString(R.string.subscription_cancel_text))
-                                        .setPositiveButton(getString(R.string.yes_text), (dialog, which) -> {
-                                            currentAccount.getActiveSubscription().setSubscriptionActive(false);
-                                            refreshSubscriptionsLayout();
-                                            Log.d(TAG, "refreshSubscriptionsLayout: Subscription" + currentAccount.getActiveSubscription());
-                                            showSimpleDialog(
-                                                    getString(R.string.subscription_cancel_confirmation_title),
-                                                    getString(R.string.subscription_cancel_confirmation_text)
-                                                            + currentAccount.getActiveSubscription().getExpirationDateString());
-                                        })
-                                        .setNegativeButton(getString(R.string.cancel_text), null)
-                                        .show();
+                        subscriptionDate.setVisibility(View.VISIBLE);
+                        // if current subscription and next subscription are the same
+                        if (currentAccount.getActiveSubscription().getSubscriptionType() == currentAccount.getNextSubscription().getSubscriptionType()) {
+                            // if current subscription == next subscription the user has automatic extension
+                            activeSubscription.setText(getString(R.string.subscription_your_subscriptions));
+                            subscriptionDate.setText(getString(R.string.subscription_automatic_extension));
 
-                            } else {
-                                currentAccount.getActiveSubscription().setSubscriptionType(SubscriptionType.NONE);
-                                refreshSubscriptionsLayout();
-                            }
-                        });
-                    }
-
-                    if (subscriptionType.getDuration() < currentAccount.getActiveSubscription().getSubscriptionType().getDuration()) {
-                        // subscriptions cheaper than the one currently active
-                        activeSubscription.setVisibility(View.VISIBLE);
-                        activeSubscription.setText(getString(R.string.subscription_downgrade));
-                    }
-
-                    if (subscriptionType.getDuration() > currentAccount.getActiveSubscription().getSubscriptionType().getDuration()) {
-                        // subscriptions more expensive than current subscription
-                        activeSubscription.setVisibility(View.VISIBLE);
-                        activeSubscription.setText(getString(R.string.subscription_upgrade));
+                            btnCancelSubscription.setVisibility(View.VISIBLE);
+                            btnCancelSubscription.setOnClickListener(v -> {
+                                if (currentAccount.getActiveSubscription().getSubscriptionType() == currentAccount.getNextSubscription().getSubscriptionType()) {
+                                    new AlertDialog.Builder(this.getContext())
+                                            .setTitle(getString(R.string.subscription_cancel))
+                                            .setMessage(getString(R.string.subscription_cancel_text))
+                                            .setPositiveButton(getString(R.string.yes_text), (dialog, which) -> {
+                                                setNextSubscription(SubscriptionType.NONE);
+                                                refreshSubscriptionsLayout();
+                                                Log.d(TAG, "refreshSubscriptionsLayout: Subscription" + currentAccount.getActiveSubscription());
+                                                showSimpleDialog(
+                                                        getString(R.string.subscription_cancel_confirmation_title),
+                                                        getString(R.string.subscription_cancel_confirmation_text)
+                                                                + currentAccount.getActiveSubscription().getExpirationDateString());
+                                            })
+                                            .setNegativeButton(getString(R.string.cancel_text), null)
+                                            .show();
+                                } else {
+                                    currentAccount.getActiveSubscription().setSubscriptionType(SubscriptionType.NONE);
+                                    refreshSubscriptionsLayout();
+                                }
+                            });
+                        } else {
+                            // if current subscription != next subscription the next subscription starts, when the current one expires
+                            activeSubscription.setText(getString(R.string.subscription_next));
+                            String nextSubscriptionStart = getString(R.string.subscription_activated) + " " + currentAccount.getActiveSubscription().getExpirationDateString();
+                            subscriptionDate.setText(nextSubscriptionStart);
+                        }
                     }
                 }
                 subscriptionsLayout.addView(subscriptionLayout);
@@ -133,7 +179,6 @@ public class SubscriptionFragment extends RaisingFragment {
     }
 
     private void setNextSubscription(SubscriptionType subscriptionType) {
-        currentAccount.getActiveSubscription().setSubscriptionActive(false);
         Subscription subscription = new Subscription();
         subscription.setSubscriptionType(subscriptionType);
         subscription.setPurchaseDate(currentAccount.getActiveSubscription().getExpirationDate());
@@ -144,14 +189,15 @@ public class SubscriptionFragment extends RaisingFragment {
         calendar.add(Calendar.MONTH, subscriptionType.getDuration());
         subscription.setExpirationDate(calendar);
 
-        Log.d(TAG, "setNextSubscription: Next subscription" + subscription.getSubscriptionType().getTitle() + " " + subscription.getPurchaseDate().getTime().toString());
-        // currentAccount.setNextSubscription(subscription);
+        Log.d(TAG, "setNextSubscription: Next subscription" + subscription.getSubscriptionType().getTitle()
+                + " " + subscription.getPurchaseDate().getTime().toString()
+                + " " + subscription.getExpirationDateString());
+        currentAccount.setNextSubscription(subscription);
     }
 
     private void setCurrentSubscription(SubscriptionType subscriptionType) {
         Subscription subscription = new Subscription();
         subscription.setSubscriptionType(subscriptionType);
-        subscription.setSubscriptionActive(true);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
@@ -160,7 +206,10 @@ public class SubscriptionFragment extends RaisingFragment {
         calendar.add(Calendar.MONTH, subscriptionType.getDuration());
         subscription.setExpirationDate(calendar);
 
-        Log.d(TAG, "setCurrentSubscription: Selected subscription " + subscription.getSubscriptionType().getTitle() + " " + subscription.getPurchaseDate().getTime().toString());
+        Log.d(TAG, "setCurrentSubscription: Selected subscription " + subscription.getSubscriptionType().getTitle()
+                + " " + subscription.getPurchaseDate().getTime().toString()
+                + " " + subscription.getExpirationDateString());
         currentAccount.setActiveSubscription(subscription);
+        setNextSubscription(subscriptionType);
     }
 }
