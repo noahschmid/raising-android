@@ -445,7 +445,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         new ImageUploader(logo, bitmaps, response -> {
             try {
                 if(response.has("profileResponse")) {
-                    JSONObject pResponse = response.getJSONObject("profilePictureResponse");
+                    JSONObject pResponse = response.getJSONObject("profileResponse");
                     investor.setProfilePictureId(pResponse.getLong("id"));
                 }
 
