@@ -148,7 +148,8 @@ public class LeadsInteraction {
                         },
                         params);
             } else {
-                String endpoint = accept ? "interaction/accept" : "interaction/decline/" + interaction.getId();
+                String endpoint = accept ? "interaction/"  + interaction.getId() + "/accept" :
+                        "interaction/" + interaction.getId() + "/decline";
 
                 ApiRequestHandler.performPatchRequest(endpoint,
                         v -> {
