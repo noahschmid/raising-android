@@ -96,5 +96,6 @@
                     android:src="@drawable/ic_circle_full_12dp" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
