@@ -15,11 +15,13 @@
             android:id="@+id/constraintLayout6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standardVerticalMargin"
+            android:layout_marginBottom="@dimen/onboardingPanelBottomMargin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias=".9">
+            app:layout_constraintTop_toBottomOf="@+id/textView24"
+            app:layout_constraintVertical_bias="1.0">
 
             <TextView
                 android:id="@+id/text_onboarding_skip"
@@ -111,6 +113,7 @@
             style="@style/RaisingSubtitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standardVerticalMargin"
             android:gravity="center"
             android:hint="@string/toolbar_title_leads"
             android:textColorHint="@color/raisingPrimaryDark"
@@ -127,6 +130,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standardHorizontalMargin"
             android:layout_marginEnd="@dimen/standardHorizontalMargin"
+            android:layout_marginBottom="@dimen/standardVerticalMargin"
             android:gravity="center"
             android:hint="@string/onboarding_post_3_text"
             android:textColorHint="@color/raisingPrimaryDark"
@@ -137,14 +141,18 @@
 
         <ImageView
             android:id="@+id/imageView11"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/onboardingIconOuterMargin"
+            android:layout_marginEnd="@dimen/onboardingIconOuterMargin"
             android:layout_marginBottom="@dimen/standardVerticalMargin"
             android:src="@drawable/onboarding_leads"
             app:layout_constraintBottom_toTopOf="@+id/textView23"
+            app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
             app:layout_constraintVertical_chainStyle="packed" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

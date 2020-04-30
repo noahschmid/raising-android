@@ -15,10 +15,12 @@
             android:id="@+id/constraintLayout5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standardVerticalMargin"
+            android:layout_marginBottom="@dimen/onboardingPanelBottomMargin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView22"
             app:layout_constraintVertical_bias=".9">
 
             <TextView
@@ -111,6 +113,7 @@
             style="@style/RaisingSubtitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standardVerticalMargin"
             android:gravity="center"
             android:hint="@string/onboarding_post_2_title"
             android:textColorHint="@color/raisingPrimaryDark"
@@ -127,6 +130,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standardHorizontalMargin"
             android:layout_marginEnd="@dimen/standardHorizontalMargin"
+            android:layout_marginBottom="@dimen/standardVerticalMargin"
             android:gravity="center"
             android:hint="@string/onboarding_post_2_text"
             android:textColorHint="@color/raisingPrimaryDark"
@@ -137,14 +141,18 @@
 
         <ImageView
             android:id="@+id/imageView10"
-            android:layout_width="300dp"
-            android:layout_height="330dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/onboardingIconOuterMargin"
+            android:layout_marginEnd="@dimen/onboardingIconOuterMargin"
             android:layout_marginBottom="@dimen/standardVerticalMargin"
             android:src="@drawable/onboarding_profile"
             app:layout_constraintBottom_toTopOf="@+id/textView20"
+            app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
             app:layout_constraintVertical_chainStyle="packed" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

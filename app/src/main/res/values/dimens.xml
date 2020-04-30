@@ -37,7 +37,6 @@
     <dimen name="inputPitchHeight"> 150dp </dimen>
     <dimen name="inputPitchMaxHeight"> 400dp </dimen>
 
-
     <dimen name="raisingLargeTitleFontSize"> 22sp </dimen>
     <dimen name="raisingTitleFontSize"> 20sp </dimen>
     <dimen name="raisingSubtitleFontSize"> 18sp </dimen>
@@ -52,4 +51,7 @@
 
     <dimen name="outlinedButtonStrokeWidth"> 2dp </dimen>
     <dimen name="popupButtonFontSize"> 14sp </dimen>
+
+    <dimen name="onboardingIconOuterMargin"> 40dp</dimen>
+    <dimen name="onboardingPanelBottomMargin"> 85dp</dimen>
 </resources>
