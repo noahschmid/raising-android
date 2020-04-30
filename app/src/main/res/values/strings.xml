@@ -48,6 +48,7 @@
     <string name="onboarding_post_2_text"> After reading the details you can either request or decline the match</string>
     <string name="onboarding_post_3_text"> After you requested a match, the match becomes a lead. If the other party also accepted the match, you can get in touch with each other</string>
     <string name="onboarding_post_4_text"> Request the other party for one of the provided interactions to receive their contact details</string>
+    <string name="onboarding_post_6_title"> Good Luck!</string>
 
     <!-- Strings used for Login, ForgotPassword -->
     <string name="toolbar_title_login"> Login </string>

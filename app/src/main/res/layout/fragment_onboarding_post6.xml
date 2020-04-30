@@ -5,21 +5,21 @@
     android:id="@+id/overlay_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.onboarding.OnboardingPre4Fragment">
+    tools:context=".fragments.onboarding.OnboardingPost6Fragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout3"
+            android:id="@+id/constraintLayout7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias=".85">
+            app:layout_constraintVertical_bias=".9">
 
             <TextView
                 android:id="@+id/text_onboarding_skip"
@@ -96,24 +96,16 @@
                     android:paddingEnd="2dp"
                     android:src="@drawable/ic_circle_full_12dp"
                     android:tint="@color/raisingPrimaryDark" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:src="@drawable/ic_circle_full_12dp"
+                    android:tint="@color/raisingPrimaryDark" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/textView21"
-            style="@style/RaisingSubtitleText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/standardHorizontalMargin"
-            android:layout_marginEnd="@dimen/standardHorizontalMargin"
-            android:gravity="center"
-            android:hint="@string/onboarding_pre_3_text"
-            android:textColorHint="@color/raisingPrimaryDark"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
         <ImageView
             android:id="@+id/imageView7"
@@ -121,12 +113,13 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_circle_full_400dp"
             android:tint="@color/raisingOnboardingOutsideColor"
-            app:layout_constraintBottom_toTopOf="@+id/textView21"
+            app:layout_constraintBottom_toTopOf="@+id/textView28"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.4"
-            app:layout_constraintVertical_chainStyle="packed"/>
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <ImageView
             android:id="@+id/imageView6"
@@ -140,13 +133,28 @@
             app:layout_constraintTop_toTopOf="@+id/imageView7" />
 
         <ImageView
-            android:id="@+id/imageView8"
+            android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_onboarding_contact_176dp"
+            android:src="@drawable/ic_onboarding_luck_200dp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView6"
             app:layout_constraintEnd_toEndOf="@+id/imageView6"
             app:layout_constraintStart_toStartOf="@+id/imageView6"
-            app:layout_constraintTop_toTopOf="@+id/imageView6" />
+            app:layout_constraintTop_toTopOf="@+id/imageView6"
+            app:layout_constraintVertical_bias=".45" />
+
+        <TextView
+            android:id="@+id/textView28"
+            style="@style/RaisingSubtitleText"
+            android:gravity="center"
+            android:hint="@string/onboarding_post_6_title"
+            android:textColorHint="@color/raisingPrimaryDark"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView7" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

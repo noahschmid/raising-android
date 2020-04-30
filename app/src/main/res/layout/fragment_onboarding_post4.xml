@@ -29,7 +29,6 @@
                 android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/skip_text"
-                android:visibility="invisible"
                 android:textColorHint="@color/raisingPrimaryDark"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -45,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
-                android:hint="@string/register_button_finish_text"
+                android:hint="@string/next_text"
                 android:textColorHint="@color/raisingPrimaryDark"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -96,6 +95,14 @@
                     android:paddingEnd="2dp"
                     android:src="@drawable/ic_circle_full_12dp"
                     android:tint="@color/raisingPrimaryDark" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:src="@drawable/ic_circle_full_12dp"
+                    android:tint="@color/raisingPrimaryAccent" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -111,8 +118,7 @@
             app:layout_constraintBottom_toTopOf="@+id/textView26"
             app:layout_constraintEnd_toEndOf="@+id/textView26"
             app:layout_constraintStart_toStartOf="@+id/textView26"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView12" />
 
         <TextView
             android:id="@+id/textView26"
@@ -128,5 +134,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
+        <ImageView
+            android:id="@+id/imageView12"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginBottom="@dimen/standardVerticalMargin"
+            android:src="@drawable/onboarding_contact"
+            app:layout_constraintBottom_toTopOf="@+id/textView25"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
