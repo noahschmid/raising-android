@@ -27,6 +27,7 @@ public class Serializer {
             jsonInvestor.addProperty("companyName", src.getCompanyName());
             jsonInvestor.addProperty("pitch", src.getPitch());
             jsonInvestor.addProperty("name", src.getName());
+            jsonInvestor.addProperty("website", src.getWebsite());
             jsonInvestor.addProperty("firstName", src.getFirstName());
             jsonInvestor.addProperty("profilePictureId", src.getProfilePictureId());
             jsonInvestor.addProperty("lastName", src.getLastName());
@@ -61,6 +62,7 @@ public class Serializer {
             jsonInvestor.addProperty("investorTypeId", src.getInvestorTypeId());
             jsonInvestor.addProperty("companyName", src.getCompanyName());
             jsonInvestor.addProperty("pitch", src.getPitch());
+            jsonInvestor.addProperty("website", src.getWebsite());
             jsonInvestor.addProperty("password", src.getPassword());
             jsonInvestor.addProperty("name", src.getName());
             jsonInvestor.addProperty("firstName", src.getFirstName());

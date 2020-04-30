@@ -150,11 +150,19 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
             return;
         }
 
+        if(companyNameInput.length() > getResources().getInteger(R.integer.raisingMaximumNameLength)) {
+            showSimpleDialog(getString(R.string.register_dialog_title), getString(R.string.register_dialog_long_name));
+            return;
+        }
+
         startup.setCompanyName(companyNameInput.getText().toString());
         startup.setUId(companyUidInput.getText().toString());
 
         contactDetails.setPhone(companyPhoneInput.getText().toString());
-        startup.setWebsite(companyWebsiteInput.getText().toString());
+        if(companyWebsiteInput.getText().toString().length() != 0) {
+            String website = "http://" + companyWebsiteInput.getText().toString();
+            startup.setWebsite(website);
+        }
         startup.setCountryId(countrySelected.getId());
 
         try {
