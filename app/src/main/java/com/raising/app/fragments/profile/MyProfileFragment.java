@@ -14,7 +14,6 @@ import android.widget.FrameLayout;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.fragments.profile.subscription.SubscriptionFragment;
 import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.fragments.registration.investor.RegisterInvestorImagesFragment;
 import com.raising.app.fragments.registration.investor.RegisterInvestorMatchingFragment;

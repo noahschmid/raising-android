@@ -1,4 +1,4 @@
-package com.raising.app.fragments.profile.subscription;
+package com.raising.app.fragments.profile;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -17,6 +17,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.SkuDetailsParams;
+import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.google.android.material.card.MaterialCardView;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
@@ -26,12 +34,15 @@ import com.raising.app.models.SubscriptionType;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class SubscriptionFragment extends RaisingFragment {
     private final String TAG = "SubscriptionsFragment";
+    private BillingClient billingClient;
 
     private LinearLayout subscriptionsLayout;
     private Button btnCancelSubscription;
@@ -46,6 +57,39 @@ public class SubscriptionFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        billingClient = BillingClient.newBuilder(getContext()).setListener((billingResult, list) -> {
+            //TODO: add action
+        }).build();
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    //TODO: billing client is ready for action
+                }
+            }
+
+            @Override
+            public void onBillingServiceDisconnected() {
+                //TODO: restart billing server here
+            }
+        });
+
+        List<String> skuList = new ArrayList<>();
+        //TODO: insert product IDs in form of String
+        SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
+        params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS);
+        billingClient.querySkuDetailsAsync(params.build(),
+                new SkuDetailsResponseListener() {
+                    @Override
+                    public void onSkuDetailsResponse(BillingResult billingResult,
+                                                     List<SkuDetails> skuDetailsList) {
+                        // Process the result.
+                    }
+                });
+
+        
+
 
         subscriptionsLayout = view.findViewById(R.id.subscriptions_layout);
         btnCancelSubscription = view.findViewById(R.id.button_cancel_subscription);
