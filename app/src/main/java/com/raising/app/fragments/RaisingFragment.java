@@ -153,6 +153,8 @@ public class RaisingFragment extends Fragment {
                 break;
             case ERROR:
                 dismissLoadingPanel();
+                dismissLoadingPanel();
+                dismissLoadingPanel();
                 break;
         }
     }

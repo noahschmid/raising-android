@@ -140,6 +140,8 @@ public class LeadsInteraction {
                 Log.d(TAG, "updateRemoteInteraction: " + params.toString());
                 ApiRequestHandler.performPostRequest("interaction",
                         v -> {
+                            updateInteraction(true);
+                            toggleContactButton();
                             return null;
                         },
                         err -> {
