@@ -8,7 +8,7 @@
     <color name="raisingPrimary">#911A20</color>
     <color name="raisingPrimaryLight"> #DE6A70 </color>
     <color name="raisingPrimaryDark"> #6B1318 </color>
-    <color name="raisingPrimaryAccent"> #DEADAF </color>
+    <color name="raisingPrimaryAccent">#DEADAF</color>
 
     <color name="raisingSecondary"> #707F91 </color>
     <color name="raisingSecondaryLight"> #97ABC4 </color>
@@ -40,4 +40,6 @@
     <color name="raisingTextColorGrey">@color/raisingGrey </color>
     <color name="raisingTextColorLight"> @color/raisingWhite </color>
 
+    <color name="raisingOnboardingOutsideColor">#fff0f0</color>
+    <color name="raisingOnboardingInsideColor">#ffe3e4 </color>
 </resources>

@@ -24,8 +24,8 @@ public class Account implements Serializable, Model {
     private int ticketMaxId = -1;
     private Image profilePicture;
     private long profilePictureId = -1;
-    private List<Long> galleryIds;
-    private List<Image> gallery;
+    private List<Long> galleryIds = new ArrayList<>();
+    private List<Image> gallery = new ArrayList<>();
     private long countryId = -1l;
     private String phone;
     private Subscription activeSubscription;

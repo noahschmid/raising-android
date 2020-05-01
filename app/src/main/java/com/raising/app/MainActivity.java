@@ -8,18 +8,25 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothClass;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.leads.LeadsContainerFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
+import com.raising.app.fragments.onboarding.OnboardingPre1Fragment;
 import com.raising.app.fragments.profile.ContactDataInput;
+import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.fragments.settings.SettingsFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
 import com.raising.app.models.Account;
@@ -33,7 +40,9 @@ import com.raising.app.viewModels.MatchesViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 import com.raising.app.viewModels.SettingsViewModel;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     AccountViewModel accountViewModel;
@@ -71,7 +80,20 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-        if (!AuthenticationHandler.isLoggedIn()) {
+        // check internal storage if user has completed his onboarding
+        boolean disablePreOnboarding = false;
+        try {
+            if (InternalStorageHandler.exists("onboarding")) {
+                disablePreOnboarding = (boolean) InternalStorageHandler.loadObject("onboarding");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "onCreate: Error loading onboarding ");
+        }
+
+        if (isFirstAppLaunch() && !disablePreOnboarding || !(InternalStorageHandler.exists("onboarding"))) {
+            // if user has not completed his onboarding and this is a newly installed app
+            fragmentTransaction.replace(R.id.fragment_container, new OnboardingPre1Fragment());
+        } else if (!AuthenticationHandler.isLoggedIn()) {
             hideBottomNavigation(true);
             fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
         } else {
@@ -166,11 +188,12 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Allow to set a custom menu containing a logout button into the toolbar
+     *
      * @param setMenu true, if menu should be visible
      *                false, if menu should not be visible
      */
     public void setActionBarMenu(boolean setMenu) {
-        if(setMenu) {
+        if (setMenu) {
             toolbar.inflateMenu(R.menu.top_bar_menu);
             toolbar.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
@@ -187,23 +210,56 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
-        FragmentManager manager = getSupportFragmentManager();
-
-        int currentEntryCount = manager.getBackStackEntryCount();
-        Log.d(TAG, "onBackPressed: EntryCount: " + currentEntryCount);
-        if (currentEntryCount == 1) {
-
+        if(!RegistrationHandler.isInProgress(getApplicationContext())) {
+            super.onBackPressed();
             return;
         }
-        Fragment currentFragment = manager.findFragmentById(currentEntryCount - 1);
-        Log.d(TAG, "onBackPressed: " + currentFragment);
-        if (currentFragment != null) {
-            // manager.beginTransaction().remove(currentFragment);
-            manager.popBackStackImmediate();
+        
+        FragmentManager manager = getSupportFragmentManager();
+        List<Fragment> fragments = manager.getFragments();
+        fragments.forEach(fragment -> {
+            RaisingFragment raisingFragment = (RaisingFragment) fragment;
+            if (raisingFragment != null && raisingFragment.isVisible()) {
+                Log.d(TAG, "onBackPressed: Fragment: " + raisingFragment);
+                if (raisingFragment.getClass().equals(RegisterLoginInformationFragment.class)) {
+                    if(raisingFragment.showAlertDialog(getString(R.string.register_dialog_cancel_registration_title),
+                            getString(R.string.register_dialog_cancel_registration_text))) {
+                        super.onBackPressed();
+                    }
+                } else {
+                    super.onBackPressed();
+                    Log.d(TAG, "onBackPressed: regular execution");
+                }
+            }
+        });
+    }
+
+    public void disablePreOnboarding() {
+        try {
+            InternalStorageHandler.saveObject(true, "onboarding");
+        } catch (IOException e) {
+            Log.e(TAG, "disablePreOnboarding: Error saving onboarding");
         }
     }
 
+    public void disablePostOnboarding() {
+        try {
+            InternalStorageHandler.saveObject(true, "postOnboarding");
+        } catch (IOException e) {
+            Log.e(TAG, "disablePostOnboarding: Error saving post onboarding");
+        }
+    }
 
+    public boolean isFirstAppLaunch() {
+        long firstInstallTime = 0, lastUpdateTime = 1;
+        try {
+            firstInstallTime = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0).firstInstallTime;
+            lastUpdateTime = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0).lastUpdateTime;
+            Log.d(TAG, "onCreate: FirstInstall: " + firstInstallTime + "LastUpdate: " + lastUpdateTime);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, "onCreate: PackageManagerError");
+        }
+
+        return (firstInstallTime == lastUpdateTime);
+    }
 }

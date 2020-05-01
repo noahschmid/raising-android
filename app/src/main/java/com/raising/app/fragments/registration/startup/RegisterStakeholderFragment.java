@@ -23,6 +23,7 @@ import com.raising.app.R;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.onboarding.OnboardingPost1Fragment;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.BoardMemberInputFragment;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.FounderInputFragment;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.ShareholderInputFragment;
@@ -35,6 +36,7 @@ import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.models.stakeholder.Shareholder;
 import com.raising.app.models.stakeholder.StakeholderItem;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.Serializer;
 import com.raising.app.util.recyclerViewAdapter.StakeholderAdapter;
@@ -498,7 +500,15 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         try {
             RegistrationHandler.finish(response.getLong("id"),
                     response.getString("token"), true);
-            clearBackstackAndReplace(new MatchesFragment());
+
+            accountViewModel.loadAccount();
+
+            if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
+                clearBackstackAndReplace(new OnboardingPost1Fragment());
+            } else {
+                clearBackstackAndReplace(new MatchesFragment());
+            }
+
         } catch (Exception e ){
             showSimpleDialog(getString(R.string.generic_error_title),
                     getString(R.string.generic_error_text));

@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.onboarding.OnboardingPost1Fragment;
 import com.raising.app.models.PersonalSettings;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.ApiRequestHandler;
@@ -35,7 +37,7 @@ import java.util.Set;
 
 public class SettingsFragment extends RaisingFragment implements View.OnClickListener {
     private final String TAG = "SettingsFragment";
-    private Button btnNotifications, btnAbout, btnReportProblem, btnFeedback, btnLogout;
+    private Button btnNotifications, btnAbout, btnReportProblem, btnFeedback, btnOnboarding, btnLogout;
     private AutoCompleteTextView languageInput, matchNumberInput;
     private PersonalSettings personalSettings;
 
@@ -62,6 +64,8 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         btnFeedback.setOnClickListener(this);
         btnLogout = view.findViewById(R.id.button_settings_logout);
         btnLogout.setOnClickListener(this);
+        btnOnboarding = view.findViewById(R.id.button_settings_onboarding);
+        btnOnboarding.setOnClickListener(this);
 
         ArrayList<String> languages = new ArrayList<>();
         languages.add("English");
@@ -113,6 +117,13 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
                 break;
             case R.id.button_settings_feedback:
                 contactRaising(false);
+                break;
+            case R.id.button_settings_onboarding:
+                Fragment fragment = new OnboardingPost1Fragment();
+                Bundle args = new Bundle();
+                args.putBoolean("settings", true);
+                fragment.setArguments(args);
+                changeFragment(fragment, "Onboarding");
                 break;
             case R.id.button_settings_logout:
                 logout();

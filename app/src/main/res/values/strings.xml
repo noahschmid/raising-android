@@ -21,6 +21,8 @@
     <string name="request_text"> Request </string>
     <string name="requested_text"> Requested </string>
     <string name="confirm_text"> Confirm </string>
+    <string name="next_text"> Next</string>
+    <string name="skip_text"> Skip</string>
     <string name="got_it_text"> Got it </string>
     <string name="search"> Search.. </string>
     <string name="currency"> CHF </string>
@@ -35,6 +37,18 @@
     <string name="general_dialog_error_title"> Error occurred! </string>
     <string name="general_dialog_error_text"> Something went wrong. Please try again </string>
     <string name="server_error">Server Error</string>
+
+    <!-- Strings used for Onboarding -->
+    <string name="toolbar_title_onboarding"> Onboarding </string>
+    <string name="onboarding_pre_1_text"> Get weekly matches of startups / investors that match your personal interests</string>
+    <string name="onboarding_pre_2_text"> Read further information about matches and request them if you are interested</string>
+    <string name="onboarding_pre_3_text"> Get contact information if the other party is interested as well \n  </string>
+    <string name="onboarding_post_1_text"> Once a week you will get new matches. If you click on a match you can see more details</string>
+    <string name="onboarding_post_2_title"> Details</string>
+    <string name="onboarding_post_2_text"> After reading the details you can either request or decline the match</string>
+    <string name="onboarding_post_3_text"> After you requested a match, the match becomes a lead. If the other party also accepted the match, you can get in touch with each other</string>
+    <string name="onboarding_post_4_text"> Request the other party for one of the provided interactions to receive their contact details</string>
+    <string name="onboarding_post_6_title"> Good Luck!</string>
 
     <!-- Strings used for Login, ForgotPassword -->
     <string name="toolbar_title_login"> Login </string>
@@ -61,6 +75,9 @@
     <string name="register_last_name"> Last Name* </string>
     <string name="register_email"> E-Mail* </string>
     <string name="register_password"> Password* </string>
+
+    <string name="register_dialog_cancel_registration_title"> Cancel Registration</string>
+    <string name="register_dialog_cancel_registration_text"> You are about to cancel your registration. \nDo you want to proceed? </string>
 
     <string name="toolbar_title_account_type"> Type of Account </string>
     <string name="register_select_type_text"> Are you a startup or an investor? </string>
@@ -235,6 +252,7 @@
     <string name="settings_problem_report_body"> I would like to report a problem with your app Rai$ing</string>
     <string name="settings_feedback_subject"> Feedback for Rai$ing</string>
     <string name="settings_feedback_body"> I would like to give my feedback to your app Rai$ing</string>
+    <string name="settings_onboarding"> How it works</string>
 
     <string name="settings_logout"> Logout</string>
 
@@ -313,6 +331,7 @@
     <string name="reset_dialog_text_no_input">You have to enter a code and a new password!</string>
 
     <string name="register_dialog_title"> Invalid inputs </string>
+    <string name="register_dialog_long_name"> Please consider using a shorter name</string>
     <string name="register_dialog_text_400"> This username may already exist </string>
     <string name="register_dialog_text_empty_credentials"> Please fill out all required fields </string>
     <string name="register_dialog_text_password_match"> Please confirm your password </string>
@@ -345,6 +364,7 @@
     <string name="contact_input_title">Complete your profile</string>
     <string name="contact_input_description">Seems like we\'ve lost some information about you! Please fill in the missing details so you can continue using Raising.</string>
     <string name="phone_number">Phone Number</string>
+    <string name="invalid_uid_text">Entered UID is invalid!</string>
 
     <string-array name="revenue_units">
         <item>K</item>

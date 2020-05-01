@@ -130,12 +130,30 @@
                 android:hint="@string/settings_feedback"
                 android:shadowColor="@color/raisingWhite"
                 android:textColorHint="@color/raisingTextColor"
-
                 android:textSize="@dimen/raisingTextFontSize"
-                app:layout_constraintBottom_toTopOf="@+id/button_settings_logout"
+                app:layout_constraintBottom_toTopOf="@+id/button_settings_onboarding"
                 app:layout_constraintEnd_toEndOf="@+id/button_settings_report_problem"
                 app:layout_constraintStart_toStartOf="@+id/button_settings_report_problem"
                 app:layout_constraintTop_toBottomOf="@+id/button_settings_report_problem"
+                app:rippleColor="@color/raisingRippleColor" />
+
+            <Button
+                android:id="@+id/button_settings_onboarding"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/myProfileButtonHeight"
+                android:backgroundTint="@color/raisingWhite"
+                android:drawableLeft="@drawable/ic_info_24dp"
+                android:drawableTint="@color/raisingTextColor"
+                android:gravity="center|start"
+                android:hint="@string/settings_onboarding"
+                android:shadowColor="@color/raisingWhite"
+                android:textColorHint="@color/raisingTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                app:layout_constraintBottom_toTopOf="@+id/button_settings_logout"
+                app:layout_constraintTop_toBottomOf="@+id/button_settings_feedback"
+                app:layout_constraintEnd_toEndOf="@+id/button_settings_feedback"
+                app:layout_constraintStart_toStartOf="@+id/button_settings_feedback"
                 app:rippleColor="@color/raisingRippleColor" />
 
             <Button
@@ -156,6 +174,8 @@
                 app:layout_constraintEnd_toEndOf="@+id/button_settings_feedback"
                 app:layout_constraintStart_toStartOf="@+id/button_settings_feedback"
                 app:rippleColor="@color/raisingRippleColor" />
+
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

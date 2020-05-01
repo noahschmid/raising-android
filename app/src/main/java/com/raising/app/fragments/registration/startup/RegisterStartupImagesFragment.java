@@ -48,6 +48,7 @@ import com.raising.app.util.ImageUploader;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.Serializer;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -76,6 +77,8 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
     boolean editMode = false;
     boolean profilePictureChanged = false;
     boolean galleryChanged = false;
+
+    private int successfulUploads = 0;
 
     List<Image> gallery = new ArrayList<>();
 
@@ -289,6 +292,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             galleryObject = inflater.inflate(R.layout.item_gallery, null);
         } else {
             galleryObject = addGalleryImage;
+            galleryObject.setOnClickListener(null);
         }
 
         ImageView galleryImage = galleryObject.findViewById(R.id.gallery_image);
@@ -391,7 +395,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                 accountViewModel.updateGallery(gallery);
             }
         } else {
-            uploadProfilePicture(logo);
+            uploadImages(logo);
         }
     }
 
@@ -399,57 +403,38 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
      * Upload profile picture to backend server
      * @param logo the profile picture
      */
-    private void uploadProfilePicture(Bitmap logo) {
-        new ImageUploader("media/profilepicture", "profilePicture",
-                logo, "POST", response -> {
-            try {
-                if(response.has("id")) {
-                    startup.setProfilePictureId(response.getLong("id"));
-                }
-
-                Log.d(TAG, "Successfully uploaded profile picture");
-
-                if(gallery.size() > 0) {
-                    uploadGallery();
-                } else {
-                    RegistrationHandler.saveStartup(startup);
-                    changeFragment(new RegisterStartupVideoFragment());
-                }
-            } catch (Exception e) {
-                Log.e(TAG, "uploadImages: " + e.getMessage());
-                finishButton.setEnabled(true);
-                displayGenericError();
-            }
-
-            return null;
-        }, error -> {
-            Log.e(TAG, "upload images: " + error.toString() );
-            finishButton.setEnabled(true);
-            return null;
-        }).execute();
-    }
-
-    /**
-     * Upload gallery images to backend server
-     */
-    private void uploadGallery() {
+    private void uploadImages(Bitmap logo) {
         List<Bitmap> bitmaps = new ArrayList<>();
-        gallery.forEach(img -> bitmaps.add(img.getImage()));
-        new ImageUploader("media/gallery", "gallery",
-                bitmaps, "POST", response -> {
+        gallery.forEach(img -> {
+            if(img.getId() < 1) {
+                bitmaps.add(img.getImage());
+            }
+        });
+        new ImageUploader(logo, bitmaps, response -> {
             try {
-                for(int i = 0; i < response.length(); ++i) {
-                    startup.getGalleryIds().add(response.getLong(i));
+                if(response.has("profileResponse")) {
+                    JSONObject pResponse = response.getJSONObject("profileResponse");
+                    startup.setProfilePictureId(pResponse.getLong("id"));
                 }
 
-                Log.d(TAG, "Successfully uploaded profile picture");
+                if(response.has("galleryResponse")) {
+                    JSONArray gResponse = response.getJSONArray("galleryResponse");
+                    if(startup.getGalleryIds() == null) {
+                        startup.setGalleryIds(new ArrayList<>());
+                    }
+                    for(int i = 0; i < gResponse.length(); ++i) {
+                        startup.getGalleryIds().add(gResponse.getLong(i));
+                    }
+                }
+
+                Log.d(TAG, "Successfully uploaded images");
 
                 RegistrationHandler.saveStartup(startup);
                 changeFragment(new RegisterStartupVideoFragment());
             } catch (Exception e) {
-                Log.e(TAG, "uploadGallery: " + e.getMessage() );
-                displayGenericError();
+                Log.e(TAG, "uploadImages: " + e.getMessage());
                 finishButton.setEnabled(true);
+                displayGenericError();
             }
 
             return null;

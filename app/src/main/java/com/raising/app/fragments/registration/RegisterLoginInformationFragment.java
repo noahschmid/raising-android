@@ -1,5 +1,6 @@
 package com.raising.app.fragments.registration;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,7 +31,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.function.Function;
 
+import lombok.Getter;
+
 public class RegisterLoginInformationFragment extends RaisingFragment implements View.OnClickListener {
+    private final String TAG = "RegisterLoginInformationFragment";
     private EditText firstNameInput, lastNameInput, emailInput, passwordInput;
     private boolean load = false;
     private boolean editMode = false;
@@ -81,7 +85,9 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.d(TAG, "onDestroyView: ");
         hideBottomNavigation(false);
+
     }
 
     @Override
@@ -117,6 +123,11 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
                 (password.length() == 0 && !editMode)) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
+            return;
+        }
+
+        if(firstName.length() > getResources().getInteger(R.integer.raisingMaximumNameLength) || lastName.length() > getResources().getInteger(R.integer.raisingMaximumNameLength)) {
+            showSimpleDialog(getString(R.string.register_dialog_title), getString(R.string.register_dialog_long_name));
             return;
         }
 
