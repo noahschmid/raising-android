@@ -113,6 +113,7 @@ public class RaisingFragment extends Fragment {
                     break;
 
                 case ERROR:
+                    dismissLoadingPanel();
                     ToastHandler toastHandler = new ToastHandler(getContext());
                     toastHandler.showToast(getString(R.string.generic_error_title), Toast.LENGTH_LONG);
                     accountViewModel.loadAccount();
@@ -149,6 +150,9 @@ public class RaisingFragment extends Fragment {
             case CACHED:
                 dismissLoadingPanel();
                 onResourcesLoaded();
+                break;
+            case ERROR:
+                dismissLoadingPanel();
                 break;
         }
     }
