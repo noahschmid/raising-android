@@ -180,8 +180,9 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
                 String endpoint = ApiRequestHandler.getDomain() + "media/profilepicture";
                 if(profilePictureId > 0) {
                     endpoint += "/" + profilePictureId;
-                    Log.d(TAG, "doInBackground: updating picture with id " + profilePictureId);
                 }
+
+                Log.d(TAG, "doInBackground: url " + endpoint);
                 prepareConnection(endpoint);
                 addFilePart("profilePicture", profilePicture);
 
@@ -221,7 +222,7 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
             }
 
             // gallery
-            if(gallery != null) {
+            if(gallery.size() > 0) {
                 prepareConnection(ApiRequestHandler.getDomain() + "media/gallery");
 
                 for (File img : gallery) {
@@ -310,5 +311,4 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
             return null;
         }
     }
-
 }
