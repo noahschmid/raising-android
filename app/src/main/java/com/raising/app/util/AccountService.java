@@ -118,6 +118,7 @@ public class AccountService {
             contactData = (ContactData) InternalStorageHandler
                     .loadObject("contact_" + id);
             account.setEmail(contactData.getEmail());
+            contactData.setAccountId(id);
             Log.d("AccountService", "contact data loaded successfully");
             Log.d("AccountService", "email: " + account.getEmail());
         } catch(Exception e) {

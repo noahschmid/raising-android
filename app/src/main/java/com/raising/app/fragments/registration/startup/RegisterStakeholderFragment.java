@@ -501,6 +501,8 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             RegistrationHandler.finish(response.getLong("id"),
                     response.getString("token"), true);
 
+            accountViewModel.loadAccount();
+
             if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
                 clearBackstackAndReplace(new OnboardingPost1Fragment());
             } else {

@@ -509,6 +509,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             RegistrationHandler.finish(response.getLong("id"),
                     response.getString("token"), false);
 
+            accountViewModel.loadAccount();
+
             if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
                 clearBackstackAndReplace(new OnboardingPost1Fragment());
             } else {

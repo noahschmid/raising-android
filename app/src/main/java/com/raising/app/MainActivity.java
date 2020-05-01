@@ -210,14 +210,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if(!RegistrationHandler.isInProgress(getApplicationContext())) {
+            super.onBackPressed();
+            return;
+        }
+        
         FragmentManager manager = getSupportFragmentManager();
         List<Fragment> fragments = manager.getFragments();
         fragments.forEach(fragment -> {
-            if (fragment != null && fragment.isVisible()) {
-                Log.d(TAG, "onBackPressed: Fragment: " + fragment);
-                if (fragment.getClass().equals(RegisterLoginInformationFragment.class) && RegistrationHandler.isInProgress(getApplicationContext())) {
-                    RegisterLoginInformationFragment mFragment = (RegisterLoginInformationFragment) fragment;
-                    if(mFragment.showAlertDialog(getString(R.string.register_dialog_cancel_registration_title),
+            RaisingFragment raisingFragment = (RaisingFragment) fragment;
+            if (raisingFragment != null && raisingFragment.isVisible()) {
+                Log.d(TAG, "onBackPressed: Fragment: " + raisingFragment);
+                if (raisingFragment.getClass().equals(RegisterLoginInformationFragment.class)) {
+                    if(raisingFragment.showAlertDialog(getString(R.string.register_dialog_cancel_registration_title),
                             getString(R.string.register_dialog_cancel_registration_text))) {
                         super.onBackPressed();
                     }
