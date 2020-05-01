@@ -8,7 +8,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothClass;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -18,11 +20,13 @@ import android.view.View;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.leads.LeadsContainerFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.onboarding.OnboardingPre1Fragment;
 import com.raising.app.fragments.profile.ContactDataInput;
+import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.fragments.settings.SettingsFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
 import com.raising.app.models.Account;
@@ -38,6 +42,7 @@ import com.raising.app.viewModels.SettingsViewModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     AccountViewModel accountViewModel;
@@ -78,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         // check internal storage if user has completed his onboarding
         boolean disablePreOnboarding = false;
         try {
-            if(InternalStorageHandler.exists("onboarding")) {
+            if (InternalStorageHandler.exists("onboarding")) {
                 disablePreOnboarding = (boolean) InternalStorageHandler.loadObject("onboarding");
             }
         } catch (Exception e) {
@@ -205,22 +210,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
         FragmentManager manager = getSupportFragmentManager();
-
-        int currentEntryCount = manager.getBackStackEntryCount();
-        Log.d(TAG, "onBackPressed: EntryCount: " + currentEntryCount);
-        if (currentEntryCount == 1) {
-
-            return;
-        }
-        Fragment currentFragment = manager.findFragmentById(currentEntryCount - 1);
-        Log.d(TAG, "onBackPressed: " + currentFragment);
-        if (currentFragment != null) {
-            // manager.beginTransaction().remove(currentFragment);
-            manager.popBackStackImmediate();
-        }
+        List<Fragment> fragments = manager.getFragments();
+        fragments.forEach(fragment -> {
+            RaisingFragment raisingFragment = (RaisingFragment) fragment;
+            if (raisingFragment != null && raisingFragment.isVisible()) {
+                Log.d(TAG, "onBackPressed: Fragment: " + raisingFragment);
+                if (raisingFragment.getClass().equals(RegisterLoginInformationFragment.class) && RegistrationHandler.isInProgress(getApplicationContext())) {
+                    if(raisingFragment.showAlertDialog(getString(R.string.register_dialog_cancel_registration_title),
+                            getString(R.string.register_dialog_cancel_registration_text))) {
+                        super.onBackPressed();
+                    }
+                } else {
+                    super.onBackPressed();
+                    Log.d(TAG, "onBackPressed: regular execution");
+                }
+            }
+        });
     }
 
     public void disablePreOnboarding() {
@@ -230,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e(TAG, "disablePreOnboarding: Error saving onboarding");
         }
     }
-    
+
     public void disablePostOnboarding() {
         try {
             InternalStorageHandler.saveObject(true, "postOnboarding");
