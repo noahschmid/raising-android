@@ -120,8 +120,10 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
                 break;
             case R.id.button_settings_onboarding:
                 Fragment fragment = new OnboardingPost1Fragment();
-                
-                changeFragment(new OnboardingPost1Fragment(), "Onboarding");
+                Bundle args = new Bundle();
+                args.putBoolean("settings", true);
+                fragment.setArguments(args);
+                changeFragment(fragment, "Onboarding");
                 break;
             case R.id.button_settings_logout:
                 logout();

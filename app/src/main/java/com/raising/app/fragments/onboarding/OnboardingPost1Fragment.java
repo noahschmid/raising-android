@@ -29,11 +29,21 @@ public class OnboardingPost1Fragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {
-            disablePostOnboarding();
-            clearBackstackAndReplace(new MatchesFragment());
+        Bundle args = new Bundle();
+        if(getArguments() != null && getArguments().getBoolean("settings")) {
+            args.putBoolean("settings", getArguments().getBoolean("settings"));
+            view.findViewById(R.id.text_onboarding_skip).setVisibility(View.INVISIBLE);
+        } else {
+            view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {
+                disablePostOnboarding();
+                clearBackstackAndReplace(new MatchesFragment());
+            });
+        }
+        view.findViewById(R.id.text_onboarding_next).setOnClickListener(v -> {
+            Fragment fragment = new OnboardingPost2Fragment();
+            fragment.setArguments(args);
+            changeFragment(fragment);
         });
-        view.findViewById(R.id.text_onboarding_next).setOnClickListener(v -> changeFragment(new OnboardingPost2Fragment()));
     }
 
     @Override
