@@ -139,13 +139,13 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
             super(itemView);
 
             attribute = itemView.findViewById(R.id.item_leads_attributes);
-            matchingPercent = itemView.findViewById(R.id.item_leads_match_percent);
+            name = itemView.findViewById(R.id.item_leads_name);
 
             statusIcon = itemView.findViewById(R.id.item_leads_status_icon);
             warning = itemView.findViewById(R.id.item_leads_warning);
 
-            name = itemView.findViewById(R.id.item_leads_name);
-            name.setOnClickListener(v -> {
+            matchingPercent = itemView.findViewById(R.id.item_leads_match_percent);
+            matchingPercent.setOnClickListener(v -> {
                 if(clickListener != null) {
                     int position = getAdapterPosition();
                     if(position != RecyclerView.NO_POSITION) {
