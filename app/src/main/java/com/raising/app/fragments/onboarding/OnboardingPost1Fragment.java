@@ -14,6 +14,7 @@ import com.raising.app.R;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.settings.SettingsFragment;
 
 public class OnboardingPost1Fragment extends RaisingFragment {
 
@@ -30,19 +31,27 @@ public class OnboardingPost1Fragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         Bundle args = new Bundle();
-        if(getArguments() != null && getArguments().getBoolean("settings")) {
+        if (getArguments() != null && getArguments().getBoolean("settings")) {
             args.putBoolean("settings", getArguments().getBoolean("settings"));
-            view.findViewById(R.id.text_onboarding_skip).setVisibility(View.INVISIBLE);
-        } else {
-            view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {
+        }
+
+        view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {
+            if(getArguments() != null && getArguments().getBoolean("settings")) {
+                clearBackstackAndReplace(new SettingsFragment());
+            } else {
                 disablePostOnboarding();
                 clearBackstackAndReplace(new MatchesFragment());
-            });
-        }
+            }
+        });
+
         view.findViewById(R.id.text_onboarding_next).setOnClickListener(v -> {
             Fragment fragment = new OnboardingPost2Fragment();
-            fragment.setArguments(args);
-            changeFragment(fragment);
+            if(getArguments() != null && getArguments().getBoolean("settings")) {
+                fragment.setArguments(args);
+                changeFragment(fragment);
+            } else {
+                changeFragment(fragment);
+            }
         });
     }
 

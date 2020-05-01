@@ -9,10 +9,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.raising.app.R;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.settings.SettingsAboutFragment;
+import com.raising.app.fragments.settings.SettingsFragment;
 
 public class OnboardingPost4Fragment extends RaisingFragment {
 
@@ -28,11 +31,29 @@ public class OnboardingPost4Fragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Bundle args = new Bundle();
+        if (getArguments() != null && getArguments().getBoolean("settings")) {
+            args.putBoolean("settings", getArguments().getBoolean("settings"));
+        }
+
         view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {
-            disablePostOnboarding();
-            clearBackstackAndReplace(new MatchesFragment());
+            if(getArguments() != null && getArguments().getBoolean("settings")) {
+                clearBackstackAndReplace(new SettingsFragment());
+            } else {
+                disablePostOnboarding();
+                clearBackstackAndReplace(new MatchesFragment());
+            }
         });
-        view.findViewById(R.id.text_onboarding_next).setOnClickListener(v -> changeFragment(new OnboardingPost6Fragment()));
+
+        view.findViewById(R.id.text_onboarding_next).setOnClickListener(v -> {
+            Fragment fragment = new OnboardingPost6Fragment();
+            if(getArguments() != null && getArguments().getBoolean("settings")) {
+                fragment.setArguments(args);
+                changeFragment(fragment);
+            } else {
+                changeFragment(fragment);
+            }
+        });
     }
 
     @Override

@@ -42,7 +42,7 @@
     <string name="toolbar_title_onboarding"> Onboarding </string>
     <string name="onboarding_pre_1_text"> Get weekly matches of startups / investors that match your personal interests</string>
     <string name="onboarding_pre_2_text"> Read further information about matches and request them if you are interested</string>
-    <string name="onboarding_pre_3_text"> Get contact information if the other party is interested as well</string>
+    <string name="onboarding_pre_3_text"> Get contact information if the other party is interested as well \n  </string>
     <string name="onboarding_post_1_text"> Once a week you will get new matches. If you click on a match you can see more details</string>
     <string name="onboarding_post_2_title"> Details</string>
     <string name="onboarding_post_2_text"> After reading the details you can either request or decline the match</string>
