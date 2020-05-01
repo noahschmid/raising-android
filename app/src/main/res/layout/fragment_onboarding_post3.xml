@@ -144,6 +144,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/onboardingIconOuterMargin"
+            android:layout_marginTop="@dimen/standardVerticalMargin"
             android:layout_marginEnd="@dimen/onboardingIconOuterMargin"
             android:layout_marginBottom="@dimen/standardVerticalMargin"
             android:src="@drawable/onboarding_leads"

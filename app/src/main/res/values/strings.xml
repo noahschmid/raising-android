@@ -76,6 +76,9 @@
     <string name="register_email"> E-Mail* </string>
     <string name="register_password"> Password* </string>
 
+    <string name="register_dialog_cancel_registration_title"> Cancel Registration</string>
+    <string name="register_dialog_cancel_registration_text"> </string>
+
     <string name="toolbar_title_account_type"> Type of Account </string>
     <string name="register_select_type_text"> Are you a startup or an investor? </string>
     <string name="register_select_investor_button"> Investor </string>

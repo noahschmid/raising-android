@@ -53,5 +53,5 @@
     <dimen name="popupButtonFontSize"> 14sp </dimen>
 
     <dimen name="onboardingIconOuterMargin"> 40dp</dimen>
-    <dimen name="onboardingPanelBottomMargin"> 85dp</dimen>
+    <dimen name="onboardingPanelBottomMargin"> 75dp</dimen>
 </resources>
