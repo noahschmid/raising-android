@@ -30,6 +30,7 @@ import com.raising.app.fragments.registration.startup.stakeholderInputs.Sharehol
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.BoardMemberViewModel;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.FounderViewModel;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.ShareholderViewModel;
+import com.raising.app.models.Investor;
 import com.raising.app.models.Startup;
 import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.models.stakeholder.Founder;
@@ -498,10 +499,12 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         //TODO: remove manually set loading panel
         dismissLoadingPanel();
         try {
+            startup = RegistrationHandler.getStartup();
+            startup.setId(response.getLong("id"));
+            accountViewModel.setAccount(startup);
+
             RegistrationHandler.finish(response.getLong("id"),
                     response.getString("token"), true);
-
-            accountViewModel.loadAccount();
 
             if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
                 clearBackstackAndReplace(new OnboardingPost1Fragment());
