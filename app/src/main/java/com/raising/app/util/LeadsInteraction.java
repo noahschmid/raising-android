@@ -129,12 +129,13 @@ public class LeadsInteraction {
         Log.d(TAG, "updateRemoteInteraction: " + accept + " " + interaction.getId());
         try {
             JSONObject params = new JSONObject();
-            params.put("interactionId", interaction.getId());
             params.put("interaction", interaction.getInteractionType().toString());
             Gson gson = new Gson();
 
             params.put("data", new JSONObject(gson.toJson(AccountService.getContactData())));
             params.put("accountId", interaction.getPartnerId());
+
+            Log.d(TAG, "updateRemoteInteraction: " + params.toString());
 
             if(interaction.getId() == -1) {
                 Log.d(TAG, "updateRemoteInteraction: " + params.toString());
@@ -154,8 +155,8 @@ public class LeadsInteraction {
                 ApiRequestHandler.performPatchRequest(endpoint,
                         v -> {
                     try {
-                        if (v.getJSONObject("data") != null) {
-                            ContactData contactData = gson.fromJson(v.getJSONObject("data").toString(), ContactData.class);
+                        if (v != null) {
+                            ContactData contactData = gson.fromJson(v.toString(), ContactData.class);
                             contactData.setAccountId(lead.getAccountId());
                             ContactDataHandler.processNewData(contactData);
                         }
