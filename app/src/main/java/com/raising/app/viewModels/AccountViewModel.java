@@ -54,6 +54,10 @@ public class AccountViewModel extends AndroidViewModel {
         viewState.setValue(ViewState.RESULT);
     }
 
+    public void setAccount(Account account) {
+        currentAccount.setValue(account);
+    }
+
     /**
      * Get account of logged in user from backend
      */
