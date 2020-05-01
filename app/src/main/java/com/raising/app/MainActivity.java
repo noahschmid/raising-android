@@ -210,11 +210,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (!RegistrationHandler.isInProgress(getApplicationContext())) {
-            super.onBackPressed();
-            return;
-        }
-
         FragmentManager manager = getSupportFragmentManager();
         List<Fragment> fragments = manager.getFragments();
         fragments.forEach(fragment -> {
