@@ -43,6 +43,7 @@ import java.util.List;
 public class SubscriptionFragment extends RaisingFragment {
     private final String TAG = "SubscriptionsFragment";
     private BillingClient billingClient;
+    private final List<String> SKU_LIST = new ArrayList<>();
 
     private LinearLayout subscriptionsLayout;
     private Button btnCancelSubscription;
@@ -58,6 +59,12 @@ public class SubscriptionFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // declare views used for subscriptions
+        subscriptionsLayout = view.findViewById(R.id.subscriptions_layout);
+        btnCancelSubscription = view.findViewById(R.id.button_cancel_subscription);
+        btnCancelSubscription.setVisibility(View.GONE);
+
+        // setup billing client
         billingClient = BillingClient.newBuilder(getContext()).setListener((billingResult, list) -> {
             //TODO: add action
         }).build();
@@ -74,27 +81,30 @@ public class SubscriptionFragment extends RaisingFragment {
                 //TODO: restart billing server here
             }
         });
+        SKU_LIST.add("ch.swissef.raisingapp.subscription1y");
+        SKU_LIST.add("ch.swissef.raisingapp.subscription6m");
+        SKU_LIST.add("ch.swissef.raisingapp.subscription3m");
 
-        List<String> skuList = new ArrayList<>();
-        //TODO: insert product IDs in form of String
         SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
-        params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS);
+        params.setSkusList(SKU_LIST).setType(BillingClient.SkuType.SUBS);
         billingClient.querySkuDetailsAsync(params.build(),
-                new SkuDetailsResponseListener() {
-                    @Override
-                    public void onSkuDetailsResponse(BillingResult billingResult,
-                                                     List<SkuDetails> skuDetailsList) {
-                        // Process the result.
+                (billingResult, skuDetailsList) -> {
+                    if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null)  {
+                            fillSubscriptionsList(skuDetailsList);
+                            //TODO: successful transaction
+                    } else {
+                        Log.d(TAG, "onSkuDetailsResponse: " + billingResult.getDebugMessage());
                     }
                 });
 
-        
 
-
-        subscriptionsLayout = view.findViewById(R.id.subscriptions_layout);
-        btnCancelSubscription = view.findViewById(R.id.button_cancel_subscription);
-        btnCancelSubscription.setVisibility(View.GONE);
         refreshSubscriptionsLayout();
+    }
+
+    private void fillSubscriptionsList(List<SkuDetails> skuDetailsList) {
+        skuDetailsList.forEach(skuDetails -> {
+            //TODO: create instances of subscription items
+        });
     }
 
     private void refreshSubscriptionsLayout() {
