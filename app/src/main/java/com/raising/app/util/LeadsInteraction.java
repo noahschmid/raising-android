@@ -79,15 +79,11 @@ public class LeadsInteraction {
         });
 
         interactionButton.setOnClickListener(v -> {
-            updateInteraction(true);
-            toggleContactButton();
             updateRemoteInteraction(true);
         });
 
         declineInteraction.setVisibility(View.GONE);
         declineInteraction.setOnClickListener(v -> {
-            updateInteraction(false);
-            toggleContactButton();
             updateRemoteInteraction(false);
         });
 
@@ -132,7 +128,10 @@ public class LeadsInteraction {
             params.put("interaction", interaction.getInteractionType().toString());
             Gson gson = new Gson();
 
-            params.put("data", new JSONObject(gson.toJson(AccountService.getContactData())));
+            ContactData cData = AccountService.getContactData();
+            cData.setAccountId(AuthenticationHandler.getId());
+
+            params.put("data", new JSONObject(gson.toJson(cData)));
             params.put("accountId", interaction.getPartnerId());
 
             Log.d(TAG, "updateRemoteInteraction: " + params.toString());
@@ -141,6 +140,8 @@ public class LeadsInteraction {
                 Log.d(TAG, "updateRemoteInteraction: " + params.toString());
                 ApiRequestHandler.performPostRequest("interaction",
                         v -> {
+                            updateInteraction(true);
+                            toggleContactButton();
                             return null;
                         },
                         err -> {
@@ -160,6 +161,9 @@ public class LeadsInteraction {
                             contactData.setAccountId(lead.getAccountId());
                             ContactDataHandler.processNewData(contactData);
                         }
+
+                        updateInteraction(accept);
+                        toggleContactButton();
                     } catch (Exception e) {
                         Log.e(TAG, "updateRemoteInteraction: " + e.getMessage());
                     }

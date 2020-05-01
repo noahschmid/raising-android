@@ -333,6 +333,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     if(addGalleryImage == null) {
                         addNewGalleryPlaceholder();
                     }
+                } else {
+                    investor.getGalleryIds().remove(image.getId());
                 }
             }
         });
@@ -506,10 +508,11 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         Log.d(TAG, "registerCallback called");
         //TODO: remove manually set loading panel
         try {
+            Investor investor = RegistrationHandler.getInvestor();
+            investor.setId(response.getLong("id"));
+            accountViewModel.setAccount(investor);
             RegistrationHandler.finish(response.getLong("id"),
                     response.getString("token"), false);
-
-            accountViewModel.loadAccount();
 
             if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
                 clearBackstackAndReplace(new OnboardingPost1Fragment());

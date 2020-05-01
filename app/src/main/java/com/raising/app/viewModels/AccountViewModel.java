@@ -54,6 +54,10 @@ public class AccountViewModel extends AndroidViewModel {
         viewState.setValue(ViewState.RESULT);
     }
 
+    public void setAccount(Account account) {
+        currentAccount.setValue(account);
+    }
+
     /**
      * Get account of logged in user from backend
      */
@@ -260,8 +264,10 @@ public class AccountViewModel extends AndroidViewModel {
                                 currentAccount.getValue().setProfilePictureId(profileResponse.getLong("id"));
                                 update(currentAccount.getValue());
                             }
+                        } else {
                             viewState.postValue(ViewState.UPDATED);
                         }
+
                     } catch (JSONException e) {
                         Log.e(TAG, "updateProfilePicture: " + e.getMessage());
                         viewState.postValue(ViewState.ERROR);
