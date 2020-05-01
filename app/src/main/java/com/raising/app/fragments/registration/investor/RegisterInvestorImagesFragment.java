@@ -333,6 +333,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     if(addGalleryImage == null) {
                         addNewGalleryPlaceholder();
                     }
+                } else {
+                    investor.getGalleryIds().remove(image.getId());
                 }
             }
         });

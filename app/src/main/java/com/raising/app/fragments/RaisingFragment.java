@@ -108,6 +108,7 @@ public class RaisingFragment extends Fragment {
                     break;
                 case UPDATED:
                     currentAccount = accountViewModel.getAccount().getValue();
+                    dismissLoadingPanel();
                     onAccountUpdated();
                     break;
 
@@ -580,7 +581,9 @@ public class RaisingFragment extends Fragment {
         }
 
         loadingPanel.setVisibility(View.GONE);
-        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        if(getActivity() != null) {
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        }
     }
 
     protected void disablePreOnboarding() {
