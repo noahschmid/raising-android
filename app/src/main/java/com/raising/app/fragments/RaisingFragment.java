@@ -108,10 +108,12 @@ public class RaisingFragment extends Fragment {
                     break;
                 case UPDATED:
                     currentAccount = accountViewModel.getAccount().getValue();
+                    dismissLoadingPanel();
                     onAccountUpdated();
                     break;
 
                 case ERROR:
+                    dismissLoadingPanel();
                     ToastHandler toastHandler = new ToastHandler(getContext());
                     toastHandler.showToast(getString(R.string.generic_error_title), Toast.LENGTH_LONG);
                     accountViewModel.loadAccount();
@@ -148,6 +150,11 @@ public class RaisingFragment extends Fragment {
             case CACHED:
                 dismissLoadingPanel();
                 onResourcesLoaded();
+                break;
+            case ERROR:
+                dismissLoadingPanel();
+                dismissLoadingPanel();
+                dismissLoadingPanel();
                 break;
         }
     }
@@ -580,7 +587,9 @@ public class RaisingFragment extends Fragment {
         }
 
         loadingPanel.setVisibility(View.GONE);
-        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        if(getActivity() != null) {
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        }
     }
 
     protected void disablePreOnboarding() {

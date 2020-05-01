@@ -79,15 +79,11 @@ public class LeadsInteraction {
         });
 
         interactionButton.setOnClickListener(v -> {
-            updateInteraction(true);
-            toggleContactButton();
             updateRemoteInteraction(true);
         });
 
         declineInteraction.setVisibility(View.GONE);
         declineInteraction.setOnClickListener(v -> {
-            updateInteraction(false);
-            toggleContactButton();
             updateRemoteInteraction(false);
         });
 
@@ -129,17 +125,23 @@ public class LeadsInteraction {
         Log.d(TAG, "updateRemoteInteraction: " + accept + " " + interaction.getId());
         try {
             JSONObject params = new JSONObject();
-            params.put("interactionId", interaction.getId());
             params.put("interaction", interaction.getInteractionType().toString());
             Gson gson = new Gson();
 
-            params.put("data", new JSONObject(gson.toJson(AccountService.getContactData())));
+            ContactData cData = AccountService.getContactData();
+            cData.setAccountId(AuthenticationHandler.getId());
+
+            params.put("data", new JSONObject(gson.toJson(cData)));
             params.put("accountId", interaction.getPartnerId());
+
+            Log.d(TAG, "updateRemoteInteraction: " + params.toString());
 
             if(interaction.getId() == -1) {
                 Log.d(TAG, "updateRemoteInteraction: " + params.toString());
                 ApiRequestHandler.performPostRequest("interaction",
                         v -> {
+                            updateInteraction(true);
+                            toggleContactButton();
                             return null;
                         },
                         err -> {
@@ -154,11 +156,14 @@ public class LeadsInteraction {
                 ApiRequestHandler.performPatchRequest(endpoint,
                         v -> {
                     try {
-                        if (v.getJSONObject("data") != null) {
-                            ContactData contactData = gson.fromJson(v.getJSONObject("data").toString(), ContactData.class);
+                        if (v != null) {
+                            ContactData contactData = gson.fromJson(v.toString(), ContactData.class);
                             contactData.setAccountId(lead.getAccountId());
                             ContactDataHandler.processNewData(contactData);
                         }
+
+                        updateInteraction(accept);
+                        toggleContactButton();
                     } catch (Exception e) {
                         Log.e(TAG, "updateRemoteInteraction: " + e.getMessage());
                     }

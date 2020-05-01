@@ -316,6 +316,8 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                             });
                     gallery.remove(image);
                     addNewGalleryPlaceholder();
+                } else {
+                    startup.getGalleryIds().remove(image.getId());
                 }
             }
         });
