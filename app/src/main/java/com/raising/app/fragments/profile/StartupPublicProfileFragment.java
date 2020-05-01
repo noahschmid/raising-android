@@ -175,7 +175,12 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             String website = startup.getWebsite();
             if (website.length() == 0)
                 return;
-            String uri = "http://" + website;
+            String uri;
+            if(website.startsWith("http://")) {
+                uri = website;
+            } else {
+                uri = "http://" + website;
+            }
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
             startActivity(browserIntent);
         });
@@ -493,7 +498,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         imageSwitcher.setFactory(() -> {
             ImageView imageView = new ImageView(
                     Objects.requireNonNull(getActivity()).getApplicationContext());
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setLayoutParams(new ImageSwitcher.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));

@@ -22,6 +22,7 @@ import com.raising.app.models.ContactData;
 import com.raising.app.models.Country;
 import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
+import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
@@ -150,11 +151,27 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
             return;
         }
 
+        if(companyNameInput.length() > getResources().getInteger(R.integer.raisingMaximumNameLength)) {
+            showSimpleDialog(getString(R.string.register_dialog_title), getString(R.string.register_dialog_long_name));
+            return;
+        }
+
+        if(!isValidUid(companyUidInput.getText().toString())) {
+            showSimpleDialog(getString(R.string.simple_dialog_invalid_input_title),
+                    getString(R.string.invalid_uid_text));
+            return;
+        }
+
         startup.setCompanyName(companyNameInput.getText().toString());
         startup.setUId(companyUidInput.getText().toString());
 
         contactDetails.setPhone(companyPhoneInput.getText().toString());
-        startup.setWebsite(companyWebsiteInput.getText().toString());
+        if(companyWebsiteInput.getText().toString().length() != 0 && !(companyWebsiteInput.getText().toString().contains("http"))) {
+            String website = "http://" + companyWebsiteInput.getText().toString();
+            startup.setWebsite(website);
+        } else {
+            startup.setWebsite(companyWebsiteInput.getText().toString());
+        }
         startup.setCountryId(countrySelected.getId());
 
         try {
@@ -171,5 +188,34 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
             Log.d("RegisterCompanyInformationFragment", "Error while processing inputs: "
                     + e.getMessage());
         }
+    }
+
+
+    /**
+     * Check whether given uid is a valid one
+     * @param uid
+     * @return
+     */
+    private boolean isValidUid(String uid) {
+        if(!uid.matches("[A-Z]{3}-\\d\\d\\d\\.\\d\\d\\d\\.\\d\\d\\d")) {
+            return false;
+        }
+
+        uid = uid.substring(4);
+        uid = uid.replace(".", "");
+        int number = 0;
+        int[] multipliers = {5, 4, 3, 2, 7, 6, 5, 4};
+        int checksum = Integer.parseInt(String.valueOf(uid.charAt(uid.length() - 1)));
+        for(int i = 0; i < uid.length() - 1; ++i) {
+            number += Integer.parseInt(String.valueOf(uid.charAt(i)))*multipliers[i];
+        }
+
+        int remainder = 11 - (number % 11);
+
+        if(checksum == remainder) {
+            return true;
+        }
+
+        return false;
     }
 }

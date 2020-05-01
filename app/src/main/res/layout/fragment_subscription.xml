@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/overlay_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.profile.subscription.SubscriptionFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/subscription_paragraph_1"
+                style="@style/RaisingText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                android:hint="@string/subscription_paragraph_1"
+                app:layout_constraintBottom_toTopOf="@+id/subscription_paragraph_2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/subscription_paragraph_2"
+                style="@style/RaisingText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/subscription_paragraph_2"
+                android:textStyle="italic"
+                app:layout_constraintBottom_toTopOf="@+id/subscription_benefit_1"
+                app:layout_constraintEnd_toEndOf="@+id/subscription_paragraph_1"
+                app:layout_constraintStart_toStartOf="@+id/subscription_paragraph_1"
+                app:layout_constraintTop_toBottomOf="@+id/subscription_paragraph_1" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_40dp"
+                android:tint="@color/raisingPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/subscription_benefit_1"
+                app:layout_constraintStart_toStartOf="@+id/subscription_paragraph_2"
+                app:layout_constraintTop_toTopOf="@+id/subscription_benefit_1" />
+
+            <TextView
+                android:id="@+id/subscription_benefit_1"
+                style="@style/RaisingText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/subscription_benefits_1"
+                app:layout_constraintBottom_toTopOf="@+id/subscription_benefit_2"
+                app:layout_constraintEnd_toEndOf="@+id/subscription_paragraph_2"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/subscription_paragraph_2" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_40dp"
+                android:tint="@color/raisingPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/subscription_benefit_2"
+                app:layout_constraintStart_toStartOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/subscription_benefit_2" />
+
+            <TextView
+                android:id="@+id/subscription_benefit_2"
+                style="@style/RaisingText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/subscription_benefits_2"
+                app:layout_constraintBottom_toTopOf="@+id/subscription_benefit_3"
+                app:layout_constraintEnd_toEndOf="@+id/subscription_benefit_1"
+                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintTop_toBottomOf="@+id/subscription_benefit_1" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_40dp"
+                android:tint="@color/raisingPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/subscription_benefit_3"
+                app:layout_constraintStart_toStartOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="@+id/subscription_benefit_3" />
+
+            <TextView
+                android:id="@+id/subscription_benefit_3"
+                style="@style/RaisingText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/subscription_benefits_3"
+                app:layout_constraintBottom_toTopOf="@+id/subscriptions_layout"
+                app:layout_constraintEnd_toEndOf="@+id/subscription_benefit_2"
+                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintTop_toBottomOf="@+id/subscription_benefit_2" />
+
+            <LinearLayout
+                android:id="@+id/subscriptions_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/button_cancel_subscription"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/subscription_benefit_3"></LinearLayout>
+
+            <Button
+                android:id="@+id/button_cancel_subscription"
+                style="@style/ButtonConfirmRegistration"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/authenticationButtonHeight"
+                android:hint="@string/subscription_cancel"
+                android:backgroundTint="@color/raisingNegativeAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/subscriptions_layout"
+                app:layout_constraintStart_toStartOf="@+id/subscriptions_layout"
+                app:layout_constraintTop_toBottomOf="@+id/subscriptions_layout" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</FrameLayout>

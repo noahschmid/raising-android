@@ -8,7 +8,14 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -317,6 +324,29 @@ public class RaisingFragment extends Fragment {
         dialog.show(getActivitiesFragmentManager(), "dialog");
     }
 
+    public boolean showAlertDialog(String title, String message) {
+        final boolean[] confirmDialog = {false};
+        new AlertDialog.Builder(getContext())
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(getString(R.string.yes_text), (dialog, which) -> {
+                    Log.d(TAG, "AlertDialog onClick");
+                    confirmDialog[0] = true;
+                })
+                .setNegativeButton(getString(R.string.cancel_text), (dialog, which) -> {
+                    confirmDialog[0] = false;
+                })
+                .show()
+                .setOnDismissListener(dialog -> {
+                    throw new RuntimeException();
+                });
+        try {
+            Looper.loop();
+        } catch (RuntimeException e) {}
+
+        return confirmDialog[0];
+    }
+
     /**
      * Prepares the TextInputLayouts where a word limiter is needed
      *
@@ -500,9 +530,14 @@ public class RaisingFragment extends Fragment {
                 }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
 
         builder.setActivatedMonth(Calendar.JULY).setMinYear(1900)
-                .setActivatedYear(today.get(Calendar.YEAR))
-                .setMaxYear(today.get(Calendar.YEAR) + 200)
-                .setMinMonth(Calendar.FEBRUARY)
+                .setActivatedYear(today.get(Calendar.YEAR));
+                // check for founding year picker, founding year cannot be in the future
+                if(title.contains("founding")) {
+                    builder.setMaxYear(today.get(Calendar.YEAR));
+                } else {
+                    builder.setMaxYear(today.get(Calendar.YEAR) + 200);
+                }
+                builder.setMinMonth(Calendar.FEBRUARY)
                 .setTitle(title)
                 .showYearOnly()
                 .setOnYearChangedListener(new MonthPickerDialog.OnYearChangedListener() {
@@ -546,5 +581,41 @@ public class RaisingFragment extends Fragment {
 
         loadingPanel.setVisibility(View.GONE);
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    protected void disablePreOnboarding() {
+        MainActivity activity = (MainActivity) getActivity();
+        if(activity != null) {
+            activity.disablePreOnboarding();
+        }
+    }
+
+    protected boolean isDisablePostOnboarding() {
+        boolean disablePostOnboarding = false;
+        try {
+            if(!(InternalStorageHandler.exists("postOnboarding"))) {
+                return false;
+            } else {
+                disablePostOnboarding = (boolean) InternalStorageHandler.loadObject("postOnboarding");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "isDisablePostOnboarding: Error loading post onboarding");
+        }
+        return disablePostOnboarding;
+    }
+
+    protected void disablePostOnboarding() {
+        MainActivity activity = (MainActivity) getActivity();
+        if(activity != null) {
+            activity.disablePostOnboarding();
+        }
+    }
+
+    protected boolean isFirstAppLaunch() {
+        MainActivity activity = (MainActivity) getActivity();
+        if(activity != null) {
+            return activity.isFirstAppLaunch();
+        }
+        return false;
     }
 }

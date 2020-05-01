@@ -251,7 +251,7 @@ public class ShareholderInputFragment extends RaisingFragment {
         if(shareholder == null) {
             shareholder = new Shareholder();
         } else {
-            btnAddShareholder.setText(getString(R.string.submit));
+            btnAddShareholder.setText(getString(R.string.submit_text));
             customizeAppBar(getString(R.string.toolbar_title_edit_shareholder), true);
             if(shareholder.getId() != -1) {
                 hideBottomNavigation(false);

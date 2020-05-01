@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CompoundButton;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.raising.app.R;
@@ -22,11 +24,12 @@ import com.raising.app.viewModels.SettingsViewModel;
 
 import java.util.ArrayList;
 
-public class SettingsNotificationsFragment extends RaisingFragment {
+public class SettingsNotificationsFragment extends RaisingFragment implements CompoundButton.OnCheckedChangeListener {
     private final String TAG = "SettingsNotificationsFragment";
     private SwitchMaterial generalSwitch, matchlistSwitch, requestSwitch, connectionSwitch;
     private ConstraintLayout specificSettings;
     private PersonalSettings personalSettings;
+    private Button btnNotifications;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +42,11 @@ public class SettingsNotificationsFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        btnNotifications = view.findViewById(R.id.button_notifications);
+        btnNotifications.setOnClickListener(v -> {
+            updateNotificationSettings();
+        });
 
         specificSettings = view.findViewById(R.id.notifications_specific_settings);
 
@@ -88,17 +96,25 @@ public class SettingsNotificationsFragment extends RaisingFragment {
                 } else {
                     generalSwitch.setChecked(false);
                 }
+                // hide button that confirms the changes
+                btnNotifications.setVisibility(View.GONE);
             }
         });
         processViewState(settingsViewModel.getViewState().getValue());
         settingsViewModel.loadSettings();
+
+        // set on check changed listeners to all buttons to detect user interaction
+        generalSwitch.setOnCheckedChangeListener(this);
+        matchlistSwitch.setOnCheckedChangeListener(this);
+        requestSwitch.setOnCheckedChangeListener(this);
+        connectionSwitch.setOnCheckedChangeListener(this);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        Log.d(TAG, "onDestroy: Updating settings");
+    /**
+     * Update the users notification settings
+     */
+    private void updateNotificationSettings() {
+        Log.d(TAG, "updateNotificationSettings: Update Settings");
 
         ArrayList<NotificationSettings> newNotificationSettings = new ArrayList<>();
 
@@ -116,8 +132,22 @@ public class SettingsNotificationsFragment extends RaisingFragment {
                 newNotificationSettings.add(NotificationSettings.CONNECTION);
             }
         }
-
         personalSettings.setNotificationSettings(newNotificationSettings);
         settingsViewModel.updatePersonalSettings(personalSettings);
+
+        popCurrentFragment(this);
+    }
+
+    // show button to apply changes only, when changes happened
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId()) {
+            case R.id.notifications_switch_general:
+            case R.id.notifications_switch_matchlist:
+            case R.id.notifications_switch_request:
+            case R.id.notifications_switch_connection:
+                btnNotifications.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 }

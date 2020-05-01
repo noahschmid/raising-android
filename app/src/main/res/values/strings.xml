@@ -7,24 +7,48 @@
     <string name="navigation_profile"> Profile </string>
     <string name="navigation_settings"> Settings </string>
 
-    <!-- Strings used in multiple screens -->
-    <string name="register_now_text"> Register now </string>
+    <!-- General Strings -->
+    <string name="register_text"> Register now </string>
     <string name="ok_text"> OK </string>
+    <string name="yes_text"> Yes</string>
     <string name="cancel_text"> Cancel </string>
     <string name="remove_text"> Remove </string>
     <string name="add_text"> Add </string>
+    <string name="edit_text"> Edit</string>
     <string name="accept_text"> Accept </string>
     <string name="decline_text"> Decline </string>
     <string name="declined_text"> Declined </string>
     <string name="request_text"> Request </string>
     <string name="requested_text"> Requested </string>
     <string name="confirm_text"> Confirm </string>
+    <string name="next_text"> Next</string>
+    <string name="skip_text"> Skip</string>
     <string name="got_it_text"> Got it </string>
+    <string name="search"> Search.. </string>
+    <string name="currency"> CHF </string>
+    <string name="continue_text"> Continue </string>
+    <string name="save_text"> Save </string>
+    <string name="submit_text"> Submit </string>
+    <string name="register_button_text"> Continue </string>
+    <string name="register_button_finish_text"> Finish </string>
 
     <string name="simple_dialog_invalid_input_title">Invalid inputs</string>
 
     <string name="general_dialog_error_title"> Error occurred! </string>
     <string name="general_dialog_error_text"> Something went wrong. Please try again </string>
+    <string name="server_error">Server Error</string>
+
+    <!-- Strings used for Onboarding -->
+    <string name="toolbar_title_onboarding"> Onboarding </string>
+    <string name="onboarding_pre_1_text"> Get weekly matches of startups / investors that match your personal interests</string>
+    <string name="onboarding_pre_2_text"> Read further information about matches and request them if you are interested</string>
+    <string name="onboarding_pre_3_text"> Get contact information if the other party is interested as well</string>
+    <string name="onboarding_post_1_text"> Once a week you will get new matches. If you click on a match you can see more details</string>
+    <string name="onboarding_post_2_title"> Details</string>
+    <string name="onboarding_post_2_text"> After reading the details you can either request or decline the match</string>
+    <string name="onboarding_post_3_text"> After you requested a match, the match becomes a lead. If the other party also accepted the match, you can get in touch with each other</string>
+    <string name="onboarding_post_4_text"> Request the other party for one of the provided interactions to receive their contact details</string>
+    <string name="onboarding_post_6_title"> Good Luck!</string>
 
     <!-- Strings used for Login, ForgotPassword -->
     <string name="toolbar_title_login"> Login </string>
@@ -51,6 +75,9 @@
     <string name="register_last_name"> Last Name* </string>
     <string name="register_email"> E-Mail* </string>
     <string name="register_password"> Password* </string>
+
+    <string name="register_dialog_cancel_registration_title"> Cancel Registration</string>
+    <string name="register_dialog_cancel_registration_text"> You are about to cancel your registration. \nDo you want to proceed? </string>
 
     <string name="toolbar_title_account_type"> Type of Account </string>
     <string name="register_select_type_text"> Are you a startup or an investor? </string>
@@ -82,6 +109,12 @@
     <string name="register_error_word_limit_overflow"> You have exceeded your word limit! </string>
 
     <string name="toolbar_title_profile_images"> Images </string>
+    <string name="register_images_information_text"> Images </string>
+    <string name="register_images_add_profile_text"> Add a profile picture* </string>
+    <string name="register_images_add_gallery"> Add a picture to your gallery </string>
+    <string name="image_action_dialog_title"> Select an Option </string>
+    <string name="image_action_dialog_choose"> Choose from Gallery </string>
+    <string name="image_action_dialog_take"> Take Picture </string>
 
     <string name="toolbar_title_company_information"> Company Information </string>
     <string name="register_company_name"> Company* </string>
@@ -122,38 +155,56 @@
     <string name="register_financial_error_completed"> Completed should not be greater than Scope </string>
 
     <string name="toolbar_title_stakeholder"> Stakeholder </string>
-    <string name="toolbar_title_founder"> Add a Founder</string>
+    <string name="register_stakeholder_founder"> Founders* </string>
+    <string name="register_stakeholder_founder_add"> Add Founder</string>
     <string name="toolbar_title_edit_founder"> Edit Founder </string>
+    <string name="toolbar_title_founder"> Add a Founder</string>
+    <string name="register_stakeholder_first_name"> First Name* </string>
+    <string name="register_stakeholder_last_name"> Last Name* </string>
+    <string name="register_stakeholder_name"> Name* </string>
+    <string name="register_stakeholder_position"> Position* </string>
+    <string name="register_stakeholder_education"> Education* </string>
+    <string name="register_stakeholder_board_member"> Members of the board* </string>
+    <string name="register_stakeholder_board_member_add"> Add Board Member </string>
+    <string name="register_stakeholder_profession"> Profession* </string>
+    <string name="register_stakeholder_member_since"> Member Since* </string>
     <string name="toolbar_title_board"> Add a Board Member</string>
     <string name="toolbar_title_edit_board"> Edit Board Member </string>
     <string name="toolbar_title_shareholder"> Add a Shareholder</string>
     <string name="toolbar_title_edit_shareholder"> Edit Shareholder </string>
+    <string name="register_stakeholder_shareholder"> Shareholders </string>
+    <string name="register_stakeholder_shareholder_add"> Add Shareholder </string>
+    <string name="register_stakeholder_shareholder_private"> Private Shareholder </string>
+    <string name="register_stakeholder_shareholder_country"> Country* </string>
+    <string name="register_stakeholder_shareholder_equity"> Equity Share(%)* </string>
+    <string name="register_stakeholder_shareholder_corporate"> Corporate Shareholder </string>
+    <string name="register_stakeholder_shareholder_corporate_body"> Corporate Body* </string>
+    <string name="register_stakeholder_shareholder_website"> Website </string>
+    <string name="register_stakeholder_error_equity"> Shareholders have more than 100% equity share.</string>
 
-    <!-- Strings used for Match List, Handshakes, Settings -->
+    <!-- Strings used for Match List -->
     <string name="toolbar_title_match_list"> Matches of the Week </string>
     <string name="empty_matchList_text"> You are done! </string>
     <string name="empty_matchList_text_2"> Enjoy the rest of your week! </string>
 
+    <!-- Strings used for Leads -->
     <string name="toolbar_title_leads"> Leads </string>
     <string name="leads_your_turn"> Your turn </string>
     <string name="leads_pending"> Pending </string>
     <string name="leads_closed"> Closed </string>
-
     <string name="leads_open_requests"> Open Requests </string>
     <string name="leads_open_requests_description"> Accept or decline requests </string>
     <string name="leads_tab_today"> Today </string>
     <string name="leads_tab_this_week"> This Week </string>
     <string name="leads_tab_earlier">Earlier</string>
     <string name="leads_no_current_leads_text"> You currently do not have any leads to display under this category</string>
-
     <string name="toolbar_title_open_requests"> Open Requests</string>
     <string name="leads_no_open_requests"> You currently don\'t have any open requests!</string>
 
+    <!-- Strings used for Lead-Contacts -->
     <string name="toolbar_title_contact"> Contact </string>
-
     <string name="leads_contact_disabled_contact_text"> This user first needs to accept your request before you can start interacting with each other. </string>
     <string name="leads_contact_declined_contact_text"> This user declined your request. Therefore no Contact can be initiated</string>
-
     <string name="leads_contact_coffee"> Drink a Coffee</string>
     <string name="leads_contact_coffee_subject_template"> RAI$ING: Drink a Coffee </string>
     <string name="leads_contact_coffee_body_template"> We have matched on RAI$ING. Let us drink a coffee. </string>
@@ -161,28 +212,21 @@
     <string name="leads_contact_business_plan_body_template"> We have matched on RAI$ING. Let us exchange business plans. </string>
     <string name="leads_contact_mail_subject_template"> RAI$ING: Send E-Mail </string>
     <string name="leads_contact_mail_body_template"> We have matched on RAI$ING.</string>
-
     <string name="leads_contact_businessplan"> Read Business Plan</string>
     <string name="leads_contact_phone">Phone Call</string>
     <string name="leads_contact_email"> Send Email</string>
     <string name="leads_contact_video"> Video-Conference</string>
-
     <string name="leads_contact_requested"> Requested </string>
     <string name="leads_contact_interact"> Contact </string>
     <string name="leads_contact_save_contact"> Save to Contacts</string>
     <string name="leads_contact_error_title"> Contact Information missing </string>
     <string name="leads_contact_error_text"> Something went wrong while loading your contact. Please try again</string>
 
-
+    <!-- Strings used for Settings -->
     <string name="toolbar_title_settings"> Settings </string>
     <string name="settings_language"> Language </string>
     <string name="settings_weekly_matches"> Number of weekly Matches</string>
-    <string name="settings_max_number_weekly_matches"> Maximum number of weekly matches: </string>
-    <string name="settings_target_email_address"> lorenz.caliezi@gmail.com</string>
-    <string name="settings_problem_report_subject"> Problem Report Rai$ing</string>
-    <string name="settings_problem_report_body"> I would like to report a problem with your app Rai$ing</string>
-    <string name="settings_feedback_subject"> Feedback for Rai$ing</string>
-    <string name="settings_feedback_body"> I would like to give my feedback to your app Rai$ing</string>
+
     <string name="settings_about"> About Rai$ing </string>
     <string name="settings_about_sponsorship"> Sponsorship</string>
     <string name="settings_about_sponsorship_text"> Swiss Enterpreneurs Foundation \nBundesgasse 35 \n3001 Bern \ninfo@swissef.ch</string>
@@ -194,31 +238,34 @@
     <string name="settings_about_management_text"> University of Bern, Computer Science \nLorenz Caliezi \nNoah Schmid \nAdrian Jörg \nManuel Schüpbach \nOlivier Stähli</string>
     <string name="settings_about_graphics"> Graphics and Design </string>
     <string name="settings_about_graphics_text"> Olivier Stähli</string>
+
     <string name="settings_notifications"> Notifications </string>
     <string name="settings_notifications_toggle_all"> Toggle all Notifications</string>
     <string name="settings_notifications_matchlist"> New Matchlist is available</string>
     <string name="settings_notifications_contact"> I get a new contact request</string>
     <string name="settings_notifications_connection"> I make a successful connection</string>
+
     <string name="settings_report_problem"> Report a Problem </string>
     <string name="settings_feedback"> Give Feedback</string>
+    <string name="settings_target_email_address"> lorenz.caliezi@gmail.com</string>
+    <string name="settings_problem_report_subject"> Problem Report Rai$ing</string>
+    <string name="settings_problem_report_body"> I would like to report a problem with your app Rai$ing</string>
+    <string name="settings_feedback_subject"> Feedback for Rai$ing</string>
+    <string name="settings_feedback_body"> I would like to give my feedback to your app Rai$ing</string>
+
     <string name="settings_logout"> Logout</string>
 
-    <!-- Strings used for Profile -->
+    <!-- Strings used for My Profile -->
     <string name="toolbar_title_my_profile"> My Profile </string>
-    <string name="toolbar_my_public_profile"> My Public Profile</string>
-
-    <!-- Strings used for profile -->
     <string name="myProfile_account_information"> Account Information </string>
     <string name="myProfile_subscription_plan"> Subscription Plan </string>
     <string name="myProfile_watch_public_profile"> See my public profile </string>
     <string name="myProfile_apply_changes"> Apply Changes </string>
-    <string name="startup_profile_key_figures"> Key Figures </string>
-    <string name="startup_profile_financial_requirements"> Financial Requirements </string>
 
-    <!-- Strings used in public profile -->
+    <!-- Strings used for Public Profile -->
+    <string name="toolbar_my_public_profile"> My Public Profile</string>
     <string name="public_profile_website"> Read more on their website </string>
     <string name="public_profile_matching_information"> Matching Information </string>
-
     <string name="investor_matching_scope"> Investment Scope </string>
     <string name="investor_matching_min_ticket"> Minimal Ticket Size </string>
     <string name="investor_matching_max_ticket"> Maximal Ticket Size </string>
@@ -226,12 +273,13 @@
     <string name="investor_matching_phase"> Preferred Investment Phases </string>
     <string name="investor_matching_industry"> Interested in these Industries </string>
     <string name="investor_matching_involvement"> Desired Form of Involvement </string>
-
     <string name="public_profile_pitch"> Pitch:</string>
+    <string name="startup_profile_key_figures"> Key Figures </string>
     <string name="startup_public_profile_revenue"> Revenue </string>
     <string name="startup_public_profile_break_even"> Break-Even Year </string>
     <string name="startup_public_profile_founding_year"> Founding Year </string>
     <string name="startup_public_profile_markets"> Current Markets </string>
+    <string name="startup_profile_financial_requirements"> Financial Requirements </string>
     <string name="startup_public_profile_fte"> FTE </string>
     <string name="startup_public_profile_type"> Type of investment </string>
     <string name="startup_public_profile_valuation"> Pre Money Valuation </string>
@@ -242,69 +290,43 @@
     <string name="startup_public_profile_profession"> Profession </string>
     <string name="startup_public_profile_member_since"> Member Since </string>
     <string name="startup_public_profile_board_member"> Members of the board </string>
-
     <string name="startup_shareholder_chart_title"> Shareholder Equity Shares </string>
+
+    <!-- Strings used for Subscription -->
+    <string name="toolbar_profile_subscription"> Subscription</string>
+    <string name="subscription_add_subscription"> Add new subscription</string>
+    <string name="subscription_your_subscriptions">Your active subscription</string>
+    <string name="subscription_downgrade"> Downgrade to </string>
+    <string name="subscription_upgrade"> Upgrade to</string>
+    <string name="subscription_automatic_extension">Automatic extension active</string>
+    <string name="subscription_paragraph_1">Subscribe to Rai$ing to unlock the full potential of our app</string>
+    <string name="subscription_paragraph_2">Your subscription is automatically renewed</string>
+    <string name="subscription_benefits_1">Access to possible investment partners, that match your profile</string>
+    <string name="subscription_benefits_2">Overview over key figures and a pitch of a possible investment partner</string>
+    <string name="subscription_benefits_3">Establish a contact and exchange personal contact information with your best possible investment partners</string>
+    <string name="subscription_months"> Months</string>
+    <string name="subscription_expires"> Expiration Date: </string>
+    <string name="subscription_cancel"> Cancel Subscription</string>
+    <string name="subscription_cancel_text"> Are you sure you want to cancel your subscription?</string>
+    <string name="subscription_cancel_confirmation_title"> Subscription Cancelled</string>
+    <string name="subscription_cancel_confirmation_text"> You have successfully cancelled your subscription to Rai$ing. \n \n</string>
+    <string name="subscription_subscribe">Subscribe</string>
 
     <!-- Strings used in ForgotPasswordScreens -->
     <string name="reset_email_input_placeholder"> E-Mail </string>
     <string name="forgot_button_sendEmail"> Send E-Mail </string>
     <string name="forgot_dialog_title_no_input"> No input </string>
     <string name="forgot_dialog_text_no_input"> You must enter a valid address </string>
-
     <string name="forgot_dialog_title"> Password reset code sent </string>
     <string name="forgot_dialog_text"> Check your email for further information </string>
     <string name="forgot_reset_text"> Enter the code, that you have received via email </string>
     <string name="reset_password_input_placeholder"> New Password </string>
     <string name="reset_code_input_placeholder"> Reset Code</string>
     <string name="reset_button_text"> Reset Password </string>
-
     <string name="reset_dialog_text_no_input">You have to enter a code and a new password!</string>
 
-    <string-array name="revenue_units">
-        <item>K</item>
-        <item>M</item>
-        <item>B</item>
-    </string-array>
-
-    <string name="register_stakeholder_information_text"> Stakeholders </string>
-    <string name="register_stakeholder_founder_add"> Add Founder</string>
-    <string name="register_stakeholder_founder_information_text"> Add a founder </string>
-    <string name="register_stakeholder_founder"> Founders* </string>
-    <string name="register_stakeholder_first_name"> First Name* </string>
-    <string name="register_stakeholder_last_name"> Last Name* </string>
-    <string name="register_stakeholder_name"> Name* </string>
-    <string name="register_stakeholder_position"> Position* </string>
-    <string name="register_stakeholder_education"> Education* </string>
-    <string name="register_stakeholder_board_member"> Members of the board* </string>
-    <string name="register_stakeholder_board_member_add"> Add Board Member </string>
-    <string name="register_stakeholder_board_member_information_text"> Add a member of the board </string>
-    <string name="register_stakeholder_profession"> Profession* </string>
-    <string name="register_stakeholder_member_since"> Member Since* </string>
-    <string name="register_stakeholder_shareholder"> Shareholders </string>
-    <string name="register_stakeholder_shareholder_add"> Add Shareholder </string>
-    <string name="register_stakeholder_shareholder_information_text"> Add a shareholder </string>
-    <string name="register_stakeholder_shareholder_private"> Private Shareholder </string>
-    <string name="register_stakeholder_shareholder_country"> Country* </string>
-    <string name="register_stakeholder_shareholder_equity"> Equity Share(%)* </string>
-    <string name="register_stakeholder_shareholder_corporate"> Corporate Shareholder </string>
-    <string name="register_stakeholder_shareholder_corporate_body"> Corporate Body* </string>
-    <string name="register_stakeholder_shareholder_website"> Website </string>
-    <string name="register_stakeholder_error_equity"> Shareholders have more than 100% equity share.</string>
-
-    <string name="register_images_information_text"> Images </string>
-    <string name="register_images_add_profile_text"> Add a profile picture* </string>
-    <string name="register_images_add_gallery"> Add a picture to your gallery </string>
-    <string name="register_images_video_information_text"> Video Pitch </string>
-    <string name="image_action_dialog_title"> Select an Option </string>
-    <string name="image_action_dialog_choose"> Choose from Gallery </string>
-    <string name="image_action_dialog_take"> Take Picture </string>
-
-    <string name="register_button_text"> CONTINUE </string>
-    <string name="register_button_finish_text"> FINISH </string>
-
-    <string name="text_register"> Register now </string>
-
     <string name="register_dialog_title"> Invalid inputs </string>
+    <string name="register_dialog_long_name"> Please consider using a shorter name</string>
     <string name="register_dialog_text_400"> This username may already exist </string>
     <string name="register_dialog_text_empty_credentials"> Please fill out all required fields </string>
     <string name="register_dialog_text_password_match"> Please confirm your password </string>
@@ -326,9 +348,6 @@
     <string name="register_dialog_text_invalid_date">Entered date is invalid!</string>
     <string name="reset_email_not_found_text">No account found with given email.</string>
     <string name="error_no_countries_found">No countries found! Did you call build?</string>
-    <string name="search">Search..</string>
-    <string name="currency">CHF</string>
-    <string name="server_error">Server Error</string>
     <string name="server_error_msg_rsc">Couldn\'t fetch all data from server!</string>
     <string name="register_no_picture_text">Please select a profile picture!</string>
     <string name="register_images_add_video_text">Add a video pitch</string>
@@ -339,8 +358,12 @@
     <string name="no_profile_text">Looks like you have no profile yet!</string>
     <string name="contact_input_title">Complete your profile</string>
     <string name="contact_input_description">Seems like we\'ve lost some information about you! Please fill in the missing details so you can continue using Raising.</string>
-    <string name="continue_text">CONTINUE</string>
-    <string name="save_text">SAVE</string>
-    <string name="submit">Submit</string>
     <string name="phone_number">Phone Number</string>
+    <string name="invalid_uid_text">Entered UID is invalid!</string>
+
+    <string-array name="revenue_units">
+        <item>K</item>
+        <item>M</item>
+        <item>B</item>
+    </string-array>
 </resources>

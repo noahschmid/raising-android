@@ -170,7 +170,7 @@ public class FounderInputFragment extends RaisingFragment {
             if(founder.getId() != -1) {
                 hideBottomNavigation(false);
             }
-            btnAddFounder.setText(getString(R.string.submit));
+            btnAddFounder.setText(getString(R.string.submit_text));
             founderFirstNameInput.setText(founder.getFirstName());
             founderLastNameInput.setText(founder.getLastName());
             founderCompanyPositionInput.setText(founder.getPosition());

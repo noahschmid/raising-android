@@ -27,6 +27,7 @@ public class Serializer {
             jsonInvestor.addProperty("companyName", src.getCompanyName());
             jsonInvestor.addProperty("pitch", src.getPitch());
             jsonInvestor.addProperty("name", src.getName());
+            jsonInvestor.addProperty("website", src.getWebsite());
             jsonInvestor.addProperty("firstName", src.getFirstName());
             jsonInvestor.addProperty("profilePictureId", src.getProfilePictureId());
             jsonInvestor.addProperty("lastName", src.getLastName());
@@ -42,6 +43,8 @@ public class Serializer {
             jsonInvestor.add("investmentPhases", toJsonArray(src.getInvestmentPhases()));
             jsonInvestor.add("support", toJsonArray(src.getSupport()));
             jsonInvestor.add("industries", toJsonArray(src.getIndustries()));
+
+            jsonInvestor.add("gallery", toJsonArray(src.getGalleryIds()));
 
             return jsonInvestor;
         }
@@ -59,6 +62,7 @@ public class Serializer {
             jsonInvestor.addProperty("investorTypeId", src.getInvestorTypeId());
             jsonInvestor.addProperty("companyName", src.getCompanyName());
             jsonInvestor.addProperty("pitch", src.getPitch());
+            jsonInvestor.addProperty("website", src.getWebsite());
             jsonInvestor.addProperty("password", src.getPassword());
             jsonInvestor.addProperty("name", src.getName());
             jsonInvestor.addProperty("firstName", src.getFirstName());
@@ -74,6 +78,7 @@ public class Serializer {
             jsonInvestor.addProperty("website", src.getWebsite());
             jsonInvestor.addProperty("countryId", src.getCountryId());
             jsonInvestor.addProperty("profilePictureId", src.getProfilePictureId());
+            jsonInvestor.add("gallery", toJsonArray(src.getGalleryIds()));
 
             return jsonInvestor;
         }
@@ -121,6 +126,8 @@ public class Serializer {
             jsonStartup.add("industries", toJsonArray(src.getIndustries()));
             jsonStartup.add("investorTypes", toJsonArray(src.getInvestorTypes()));
 
+            jsonStartup.add("gallery", toJsonArray(src.getGalleryIds()));
+
             return jsonStartup;
         }
     };
@@ -163,6 +170,8 @@ public class Serializer {
             jsonStartup.add("industries", toJsonArray(src.getIndustries()));
             jsonStartup.add("investorTypes", toJsonArray(src.getInvestorTypes()));
             jsonStartup.addProperty("profilePictureId", src.getProfilePictureId());
+
+            jsonStartup.add("gallery", toJsonArray(src.getGalleryIds()));
 
             // -- FOUNDERS --
             JsonArray founders = new JsonArray();
@@ -230,6 +239,8 @@ public class Serializer {
 
 
     private static JsonArray toJsonArray(List<Long> input) {
+        if(input == null)
+            return new JsonArray();
         JsonArray array = new JsonArray();
         input.forEach(id -> {
             array.add(id);

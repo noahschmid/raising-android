@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.MutableLiveData;
 
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -42,6 +43,7 @@ import com.raising.app.R;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.onboarding.OnboardingPost1Fragment;
 import com.raising.app.models.Image;
 import com.raising.app.models.Investor;
 import com.raising.app.models.ViewState;
@@ -53,6 +55,7 @@ import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.Serializer;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,6 +73,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     static final int REQUEST_GALLERY_CAPTURE = 3;
     static final int REQUEST_GALLERY_FETCH = 4;
     private static final String TAG = "RegisterInvestorImages";
+    private MutableLiveData<Boolean> imagesUploaded = new MutableLiveData<>();
 
     ImageView profileImage, profileImageOverlay;
     View addGalleryImage;
@@ -99,6 +103,15 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        imagesUploaded.setValue(false);
+
+        imagesUploaded.observe(getViewLifecycleOwner(),
+                value -> {
+                    if(value.booleanValue() == true) {
+                        submitRegistration();
+                    }
+                });
 
         inflater = (LayoutInflater)getContext().getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
@@ -294,6 +307,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             galleryObject = inflater.inflate(R.layout.item_gallery, null);
         } else {
             galleryObject = addGalleryImage;
+            galleryObject.setOnClickListener(null);
         }
 
         ImageView galleryImage = galleryObject.findViewById(R.id.gallery_image);
@@ -409,11 +423,10 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     accountViewModel.updateGallery(gallery);
                 }
             } else {
-                uploadProfilePicture(logo);
+                uploadImages(logo);
             }
         } catch (Exception e) {
             dismissLoadingPanel();
-            //TODO: remove manually set loading panel
             Log.d("RegisterInvestorImagesFragment","Error in process inputs: " + e.getMessage());
         }
     }
@@ -422,38 +435,38 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
      * Upload profile picture to backend server
      * @param logo the profile picture
      */
-    private void uploadProfilePicture(Bitmap logo) {
-        new ImageUploader("media/profilepicture", "profilePicture",
-                logo, "POST", response -> {
+    private void uploadImages(Bitmap logo) {
+        List<Bitmap> bitmaps = new ArrayList<>();
+        gallery.forEach(img -> {
+            if(img.getId() < 1) {
+                bitmaps.add(img.getImage());
+            }
+        });
+        new ImageUploader(logo, bitmaps, response -> {
             try {
-                if(response.has("id")) {
-                    investor.setProfilePictureId(response.getLong("id"));
+                if(response.has("profileResponse")) {
+                    JSONObject pResponse = response.getJSONObject("profileResponse");
+                    investor.setProfilePictureId(pResponse.getLong("id"));
                 }
 
-                Log.d(TAG, "Successfully uploaded profile picture");
-
-                Handler mainHandler = new Handler(getContext().getMainLooper());
-
-                if(gallery.size() > 0) {
-                    Runnable runnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            uploadGallery();
-                        }
-                    };
-                    mainHandler.post(runnable);
-                } else {
-                    Runnable runnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            submitRegistration();
-                        }
-                    };
-                    mainHandler.post(runnable);
+                if(response.has("galleryResponse")) {
+                    JSONArray gResponse = response.getJSONArray("galleryResponse");
+                    if(investor.getGalleryIds() == null) {
+                        investor.setGalleryIds(new ArrayList<>());
+                    }
+                    for(int i = 0; i < gResponse.length(); ++i) {
+                        investor.getGalleryIds().add(gResponse.getLong(i));
+                    }
                 }
-            } catch (JSONException e) {
+
+                Log.d(TAG, "Successfully uploaded images");
+
+                RegistrationHandler.saveInvestor(investor);
+                imagesUploaded.postValue(true);
+            } catch (Exception e) {
                 Log.e(TAG, "uploadImages: " + e.getMessage());
                 finishButton.setEnabled(true);
+                displayGenericError();
             }
 
             return null;
@@ -465,45 +478,10 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     }
 
     /**
-     * Upload gallery images to backend server
+     * Submit the registration to backend server
      */
-    private void uploadGallery() {
-        List<Bitmap> bitmaps = new ArrayList<>();
-        gallery.forEach(img -> bitmaps.add(img.getImage()));
-        new ImageUploader("media/gallery", "gallery",
-                bitmaps, "POST", response -> {
-            try {
-                for(int i = 0; i < response.length(); ++i) {
-                    investor.getGalleryIds().add(response.getLong(i));
-                }
-
-                Log.d(TAG, "Successfully uploaded gallery");
-
-                Handler mainHandler = new Handler(getContext().getMainLooper());
-
-                Runnable runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        submitRegistration();
-                    }
-                };
-                mainHandler.post(runnable);
-
-            } catch (Exception e) {
-                Log.e(TAG, "uploadGallery: " + e.getMessage() );
-                displayGenericError();
-                finishButton.setEnabled(true);
-            }
-
-            return null;
-        }, error -> {
-            Log.e(TAG, "upload images: " + error.toString() );
-            finishButton.setEnabled(true);
-            return null;
-        }).execute();
-    }
-
     private void submitRegistration() {
+        imagesUploaded.setValue(false);
         try {
             RegistrationHandler.saveInvestor(investor);
             GsonBuilder gsonBuilder = new GsonBuilder();
@@ -530,7 +508,13 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         try {
             RegistrationHandler.finish(response.getLong("id"),
                     response.getString("token"), false);
-            clearBackstackAndReplace(new MatchesFragment());
+
+            if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
+                clearBackstackAndReplace(new OnboardingPost1Fragment());
+            } else {
+                clearBackstackAndReplace(new MatchesFragment());
+            }
+
         } catch (Exception e) {
             Log.d("InvestorImagesFragment", e.getMessage());
             showSimpleDialog(getString(R.string.generic_error_title),
