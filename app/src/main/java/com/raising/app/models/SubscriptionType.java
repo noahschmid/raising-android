@@ -8,7 +8,6 @@ import java.io.Serializable;
 import lombok.Getter;
 
 public enum SubscriptionType implements Serializable {
-    NONE(0, 0),
     THREE(3 , getInteger(R.integer.threeMonthSubscriptionPrice)),
     SIX(6 , getInteger(R.integer.sixMonthSubscriptionPrice)),
     TWELVE(12 , getInteger(R.integer.twelveMonthSubscriptionPrice));
