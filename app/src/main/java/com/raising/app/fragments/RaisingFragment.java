@@ -153,8 +153,7 @@ public class RaisingFragment extends Fragment {
                 break;
             case ERROR:
                 dismissLoadingPanel();
-                dismissLoadingPanel();
-                dismissLoadingPanel();
+                displayGenericError();
                 break;
         }
     }
@@ -579,12 +578,12 @@ public class RaisingFragment extends Fragment {
 
     protected void dismissLoadingPanel() {
         Log.d(TAG, "dismissLoadingPanel: called");
-        --processesLoading;
+       /* --processesLoading;
         if (loadingPanel == null || processesLoading != 0) {
             if (processesLoading < 0)
                 processesLoading = 0;
             return;
-        }
+        }*/
 
         loadingPanel.setVisibility(View.GONE);
         if(getActivity() != null) {
