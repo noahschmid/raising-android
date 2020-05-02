@@ -37,7 +37,7 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
     private FrameLayout startUpLayout, investorLayout;
     private Button
             startupAccountInformation, startUpCompanyInformation, startupCompanyFigures,
-            startUpMatching, startUpPitch, startupLabels, startUpImages, startupVideo,
+            startUpMatching, startUpPitch, startupLabels, startUpImages,
             startUpFinancial, startUpStakeholder, startupSubscription, startupPublicProfile,
             investorAccountInformation, investorProfileInformation, investorMatching, investorPitch,
             investorImages, investorSubscription, investorPublicProfile;
@@ -84,9 +84,6 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
 
         startUpImages = view.findViewById(R.id.button_myProfile_startup_images);
         startUpImages.setOnClickListener(this);
-
-        startupVideo = view.findViewById(R.id.button_myProfile_startup_video);
-        startupVideo.setOnClickListener(this);
 
         startUpFinancial = view.findViewById(R.id.button_myProfile_startup_financial_requirements);
         startUpFinancial.setOnClickListener(this);
@@ -160,10 +157,6 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 break;
             case R.id.button_myProfile_startup_images:
                 fragment = new RegisterStartupImagesFragment();
-                fragment.setArguments(bundle);
-                break;
-            case R.id.button_myProfile_startup_video:
-                fragment = new RegisterStartupVideoFragment();
                 fragment.setArguments(bundle);
                 break;
             case R.id.button_myProfile_startup_financial_requirements:
