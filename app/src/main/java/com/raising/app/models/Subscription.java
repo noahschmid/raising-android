@@ -12,7 +12,7 @@ public class Subscription implements Serializable {
     private String sku;
     private String skuToken;
     private int subscriptionPrice;
-    private SubscriptionType subscriptionType;
+    private int duration;
     private Calendar purchaseDate;
     private Calendar expirationDate;
 

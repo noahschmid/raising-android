@@ -1,7 +1,6 @@
 package com.raising.app.fragments.profile;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -20,23 +19,17 @@ import android.widget.TextView;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
-import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.google.android.material.card.MaterialCardView;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.Account;
 import com.raising.app.models.Subscription;
-import com.raising.app.models.SubscriptionType;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -70,9 +63,9 @@ public class SubscriptionFragment extends RaisingFragment {
         btnCancelSubscription.setVisibility(View.GONE);
 
         // setup billing client
-        SKU_LIST.add(YEARLY_SUBSCRIPTION_ID);
         SKU_LIST.add(SIX_MONTH_SUBSCRIPTION);
         SKU_LIST.add(THREE_MONTH_SUBSCRIPTION);
+        SKU_LIST.add(YEARLY_SUBSCRIPTION_ID);
 
         billingClient = BillingClient.newBuilder(getContext())
                 .setListener((billingResult, list) -> {
@@ -98,6 +91,9 @@ public class SubscriptionFragment extends RaisingFragment {
 
     }
 
+    /**
+     * Fetch all subscriptions from the billing server and store them in a variable
+     */
     private void getSkuDetails() {
         SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
         params.setSkusList(SKU_LIST).setType(BillingClient.SkuType.SUBS);
@@ -117,35 +113,35 @@ public class SubscriptionFragment extends RaisingFragment {
     private void refreshSubscriptionsLayout() {
         subscriptionsLayout.removeAllViews();
 
-        Arrays.asList(SubscriptionType.values()).forEach(subscriptionType -> {
-            // Log.d(TAG, "fillSubscriptionsList: SkuDetail" + skuDetails.getSku() + " " + skuDetails.getTitle() + " " + skuDetails.getPrice());
-
-
-
-
+        // sort skuDetails based on ascending durations
+        Collections.sort(skuDetailsArrayList, Comparator.comparingInt(this::getSkuDuration));
+        skuDetailsArrayList.forEach(skuDetails -> {
+            Log.d(TAG, "fillSubscriptionsList: SkuDetail" + skuDetails.getSku() + " " + skuDetails.getTitle() + " " + skuDetails.getPrice());
 
             // setup layout for unselected subscriptions
             View subscriptionLayout = getActivity().getLayoutInflater().inflate(R.layout.item_subscription_detail, null);
 
             // gather all views of a subscription card
             MaterialCardView card = subscriptionLayout.findViewById(R.id.card_subscription);
-            TextView subscriptionTitle = subscriptionLayout.findViewById(R.id.subscription_active_subscription);
-            TextView subscriptionName = subscriptionLayout.findViewById(R.id.subscription_title);
+            TextView subscriptionTitle = subscriptionLayout.findViewById(R.id.subscription_title);
+            TextView subscriptionPriceDuration = subscriptionLayout.findViewById(R.id.subscription_price_duration);
+            TextView subscriptionPriceWeek = subscriptionLayout.findViewById(R.id.subscription_price_week);
             TextView subscriptionDate = subscriptionLayout.findViewById(R.id.subscription_expiration);
 
             // hide views that are not needed for unselected subscriptions
             subscriptionTitle.setVisibility(View.GONE);
             subscriptionDate.setVisibility(View.INVISIBLE);
 
-            subscriptionName.setText(subscriptionType.getTitle());
-            card.setOnClickListener(v -> processOnCardClick(subscriptionType));
+            subscriptionPriceDuration.setText(createPriceString(skuDetails, true));
+            subscriptionPriceWeek.setText(createPriceString(skuDetails, false));
+            card.setOnClickListener(v -> processOnCardClick(skuDetails));
 
             // check if user has a subscription
             if (activeSubscriptionExists()) {
-                adjustNotSelectedSubscriptions(subscriptionTitle, subscriptionType);
+                adjustNotSelectedSubscriptions(subscriptionTitle, getSkuDuration(skuDetails));
 
                 // adjust card of users current subscription
-                if (subscriptionType == currentAccount.getActiveSubscription().getSubscriptionType()) {
+                if (skuDetails.getSku().equals(currentAccount.getActiveSubscription().getSku())) {
                     subscriptionDate.setVisibility(View.VISIBLE);
                     String expiration = getString(R.string.subscription_expires) + " " + currentAccount.getActiveSubscription().getExpirationDateString();
                     subscriptionDate.setText(expiration);
@@ -160,7 +156,7 @@ public class SubscriptionFragment extends RaisingFragment {
                 }
 
                 // adjust card of users next subscription
-                if (nextSubscriptionExists() && subscriptionType == currentAccount.getNextSubscription().getSubscriptionType()) {
+                if (nextSubscriptionExists() && skuDetails.getSku().equals(currentAccount.getNextSubscription().getSku())) {
                     btnCancelSubscription.setVisibility(View.GONE);
                     Drawable drawable = card.getBackground();
                     drawable = DrawableCompat.wrap(drawable);
@@ -208,81 +204,141 @@ public class SubscriptionFragment extends RaisingFragment {
         });
     }
 
-    private void processOnCardClick(SubscriptionType subscriptionType) {
+    /**
+     * Process a click on a certain card
+     * @param sku The skuDetails belonging to the card that was clicked
+     */
+    private void processOnCardClick(SkuDetails sku) {
         if (currentNotEqualNextSubscription()) {
             showSimpleDialog(getString(R.string.subscription_error_cannot_add_title), getString(R.string.subscription_error_cannot_add_text));
         } else if (!activeSubscriptionExists()) {
             // purchase subscription
             if(showAlertDialog(getString(R.string.subscription_dialog_subscribe_title), getString(R.string.subscribtion_dialog_subscribe_text))) {
-                setCurrentSubscription(subscriptionType);
+                setCurrentSubscription(sku);
                 //TODO: implement payment
             }
         } else {
             // up-/downgrade your subscription
             if(showAlertDialog(getString(R.string.subscription_dialog_subscribe_title), getString(R.string.subscribtion_dialog_subscribe_text))) {
-                setNextSubscription(subscriptionType);
+                setNextSubscription(sku);
                 //TODO: implement payment
             }
         }
         refreshSubscriptionsLayout();
     }
 
+    /**
+     * Cancel the next subscription, namely disable automatic subscription extension
+     */
     private void cancelNextSubscription() {
-        // setNextSubscription(SubscriptionType.NONE)
         currentAccount.setNextSubscription(null);
         Log.d(TAG, "cancelNextSubscription: NextSubscription" + currentAccount.getNextSubscription());
     }
 
-    private void setNextSubscription(SubscriptionType subscriptionType) {
+    /**
+     * Set the users next subscription changes with the initial selection or if the user wants to up-/ or downgrade
+     * This also changes, if the user cancels his subscription
+     * @param sku The skuDetails of the subscription that should become the users next subscription
+     */
+    private void setNextSubscription(SkuDetails sku) {
         Subscription subscription = new Subscription();
-        subscription.setSubscriptionType(subscriptionType);
+        subscription.setSku(sku.getSku());
+        subscription.setDuration(getSkuDuration(sku));
         subscription.setPurchaseDate(currentAccount.getActiveSubscription().getExpirationDate());
 
         // set expiration date
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentAccount.getActiveSubscription().getPurchaseDate().getTime());
-        calendar.add(Calendar.MONTH, subscriptionType.getDuration());
+        calendar.add(Calendar.MONTH, subscription.getDuration());
         subscription.setExpirationDate(calendar);
 
-        Log.d(TAG, "setNextSubscription: Next subscription" + subscription.getSubscriptionType().getTitle()
+        Log.d(TAG, "setNextSubscription: Next subscription" + subscription.getSku()
                 + " " + subscription.getPurchaseDate().getTime().toString()
                 + " " + subscription.getExpirationDateString());
         currentAccount.setNextSubscription(subscription);
     }
 
-    private void setCurrentSubscription(SubscriptionType subscriptionType) {
+    /**
+     * Set the users current subscription, this only changes, if a subscription expires or the user selects his first subscription
+     * @param sku The skuDetails of the chosen subscription
+     */
+    private void setCurrentSubscription(SkuDetails sku) {
         Subscription subscription = new Subscription();
-        subscription.setSubscriptionType(subscriptionType);
+        subscription.setSku(sku.getSku());
+        subscription.setDuration(getSkuDuration(sku));
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         subscription.setPurchaseDate(calendar);
         // set expiration date
-        calendar.add(Calendar.MONTH, subscriptionType.getDuration());
+        calendar.add(Calendar.MONTH, subscription.getDuration());
         subscription.setExpirationDate(calendar);
 
-        Log.d(TAG, "setCurrentSubscription: Selected subscription " + subscription.getSubscriptionType().getTitle()
+        Log.d(TAG, "setCurrentSubscription: Selected subscription " + subscription.getSku()
                 + " " + subscription.getPurchaseDate().getTime().toString()
                 + " " + subscription.getExpirationDateString());
         currentAccount.setActiveSubscription(subscription);
-        setNextSubscription(subscriptionType);
+        setNextSubscription(sku);
     }
 
+    /**
+     * Helper method to extract the exact duration of a subscription
+     * @param sku The skuDetails of the subscription, this contains a string of the duration
+     * @return An integer value of the duration of the subscription
+     */
+    private int getSkuDuration(SkuDetails sku) {
+        switch (sku.getSubscriptionPeriod()) {
+            case "P1Y":
+                return 12;
+            case "P6M":
+                return 6;
+            case "P3M":
+                return 3;
+            default:
+                return 0;
+        }
+    }
+
+    private String createPriceString(SkuDetails skuDetails, boolean isDuration) {
+        if(isDuration) {
+            return (skuDetails.getPrice() + " / " + getSkuDuration(skuDetails) + " " + getString(R.string.subscription_months));
+        } else {
+            long pricePerWeek = (skuDetails.getPriceAmountMicros() / (4 * (getSkuDuration(skuDetails)))) / 1000000;
+            Log.d(TAG, "createPriceString: pricePerWeek " + pricePerWeek + " " + skuDetails.getSku());
+            return skuDetails.getPriceCurrencyCode() + " " + pricePerWeek + " / " + getString(R.string.subscriptions_weeks);
+        }
+    }
+
+    /**
+     * Returns a boolean value wether the current and next subscription are equal, both also cannot be null
+     * @return true, if current and next subscription are equal
+     *         false, if current is not the same as next subscription, or one subscription is null
+     */
     private boolean currentEqualsNextSubscription() {
         return (activeSubscriptionExists()
                 && nextSubscriptionExists()
-                && currentAccount.getActiveSubscription().getSubscriptionType() == currentAccount.getNextSubscription().getSubscriptionType());
+                && currentAccount.getActiveSubscription().getSku().equals(currentAccount.getNextSubscription().getSku()));
     }
 
+    /**
+     * Returns a boolean value wether the current and next subscription are not equal, both also cannot be null
+     * @return true, if current and next subscription are not equal
+     *         false, if current is the same as next subscription, or one subscription is null
+     */
     private boolean currentNotEqualNextSubscription() {
         return (activeSubscriptionExists()
                 && nextSubscriptionExists()
-                && currentAccount.getActiveSubscription().getSubscriptionType() != currentAccount.getNextSubscription().getSubscriptionType());
+                && !(currentAccount.getActiveSubscription().getSku().equals(currentAccount.getNextSubscription().getSku())));
     }
 
-    private void adjustNotSelectedSubscriptions(TextView subscriptionTitle, SubscriptionType subscriptionType) {
+    /**
+     * Adjust the title of cards, based on the users choice of subscription. The title will either say "Upgrade" or "Downgrade"
+     * @param subscriptionTitle A reference to the text view, whose text should be changed
+     * @param duration The duration of the subscription, where the title of the card should be adjusted
+     */
+    private void adjustNotSelectedSubscriptions(TextView subscriptionTitle, int duration) {
         // adjust cards of shorter subscription types
-        if (subscriptionType.getDuration() < currentAccount.getActiveSubscription().getSubscriptionType().getDuration()) {
+        if (duration < currentAccount.getActiveSubscription().getDuration()) {
             // subscriptions cheaper than the one currently active, if current subscription != next subscription user cannot up-/downgrade
             if (currentEqualsNextSubscription()) {
                 subscriptionTitle.setVisibility(View.VISIBLE);
@@ -291,7 +347,7 @@ public class SubscriptionFragment extends RaisingFragment {
         }
 
         // adjust cards of longer subscription types
-        if (subscriptionType.getDuration() > currentAccount.getActiveSubscription().getSubscriptionType().getDuration()) {
+        if (duration > currentAccount.getActiveSubscription().getDuration()) {
             // subscriptions more expensive than current subscription, if current subscription != next subscription user cannot up-/downgrade
             if (currentEqualsNextSubscription()) {
                 subscriptionTitle.setVisibility(View.VISIBLE);
@@ -300,10 +356,20 @@ public class SubscriptionFragment extends RaisingFragment {
         }
     }
 
+    /**
+     * Returns a boolean wether the user has an active subscription
+     * @return true, if user has active subscription
+     *          false, if user does not have an active subscription
+     */
     private boolean activeSubscriptionExists() {
         return (currentAccount.getActiveSubscription() != null);
     }
 
+    /**
+     * Returns a boolean wether the user has a next subscription
+     * @return true, if user has next subscription
+     *          false, if user does not have a next subscription
+     */
     private boolean nextSubscriptionExists() {
         return (currentAccount.getNextSubscription() != null);
     }

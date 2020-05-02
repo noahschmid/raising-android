@@ -19,7 +19,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/subscription_active_subscription"
+                android:id="@+id/subscription_title"
                 style="@style/RaisingSubtitleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
                 android:gravity="center"
                 android:hint="@string/subscription_your_subscriptions"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/subscription_title"
+                app:layout_constraintBottom_toTopOf="@+id/subscription_price_week"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -35,29 +35,45 @@
                 app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
-                android:id="@+id/subscription_title"
-                style="@style/RaisingSubtitleText"
+                android:id="@+id/subscription_price_week"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMarginSmall"
+                android:gravity="center"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/subscription_price_duration"
+                app:layout_constraintEnd_toEndOf="@+id/subscription_title"
+                app:layout_constraintStart_toStartOf="@+id/subscription_title"
+                app:layout_constraintTop_toBottomOf="@+id/subscription_title" />
+
+            <TextView
+                android:id="@+id/subscription_price_duration"
+                style="@style/RaisingSubtitleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:hint="Name of Subscription"
                 app:layout_constraintBottom_toTopOf="@+id/subscription_expiration"
-                app:layout_constraintEnd_toEndOf="@+id/subscription_active_subscription"
-                app:layout_constraintStart_toStartOf="@+id/subscription_active_subscription"
-                app:layout_constraintTop_toBottomOf="@+id/subscription_active_subscription" />
+                app:layout_constraintEnd_toEndOf="@+id/subscription_title"
+                app:layout_constraintStart_toStartOf="@+id/subscription_title"
+                app:layout_constraintTop_toBottomOf="@+id/subscription_price_week" />
 
             <TextView
                 android:id="@+id/subscription_expiration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                android:gravity="center"
                 android:hint="Expires"
-                android:textColorHint="@color/raisingSecondary"
                 android:textColor="@color/raisingSecondary"
+                android:textColorHint="@color/raisingSecondary"
+                android:textSize="@dimen/raisingSmallerTextFontSize"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/subscription_title"
-                app:layout_constraintStart_toStartOf="@+id/subscription_title"
-                app:layout_constraintTop_toBottomOf="@+id/subscription_title" />
+                app:layout_constraintEnd_toEndOf="@+id/subscription_price_duration"
+                app:layout_constraintStart_toStartOf="@+id/subscription_price_duration"
+                app:layout_constraintTop_toBottomOf="@+id/subscription_price_duration" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

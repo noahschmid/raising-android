@@ -312,6 +312,7 @@
     <string name="subscription_benefits_2">Overview over key figures and a pitch of a possible investment partner</string>
     <string name="subscription_benefits_3">Establish a contact and exchange personal contact information with your best possible investment partners</string>
     <string name="subscription_months"> Months</string>
+    <string name="subscriptions_weeks"> Week</string>
     <string name="subscription_activated"> Will be activated: </string>
     <string name="subscription_expires"> Expiration Date: </string>
     <string name="subscription_cancel"> Cancel Subscription</string>
