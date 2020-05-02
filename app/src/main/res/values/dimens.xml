@@ -54,4 +54,6 @@
 
     <dimen name="onboardingIconOuterMargin"> 40dp</dimen>
     <dimen name="onboardingPanelBottomMargin"> 75dp</dimen>
+    <dimen name="onboardingTextVerticalPadding"> 8dp</dimen>
+    <dimen name="onboardingTextHorizontalPadding"> 16dp</dimen>
 </resources>

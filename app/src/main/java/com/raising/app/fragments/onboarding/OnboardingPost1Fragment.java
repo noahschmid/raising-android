@@ -33,6 +33,7 @@ public class OnboardingPost1Fragment extends RaisingFragment {
         Bundle args = new Bundle();
         if (getArguments() != null && getArguments().getBoolean("settings")) {
             args.putBoolean("settings", getArguments().getBoolean("settings"));
+            customizeAppBar(getString(R.string.toolbar_title_onboarding), false);
         }
 
         view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {

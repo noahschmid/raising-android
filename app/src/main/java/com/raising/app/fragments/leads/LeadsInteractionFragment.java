@@ -59,11 +59,10 @@ public class LeadsInteractionFragment extends RaisingFragment {
             interactions.add(new LeadsInteraction(interaction, layout, getActivity(), contact));
         });
 
-        TextView disableContactText = view.findViewById(R.id.leads_contact_disabled_text);
         ConstraintLayout blurOverlay = view.findViewById(R.id.leads_contact_blur_overlay);
         blurOverlay.setVisibility(View.GONE);
         if (disableContact) {
-            disableContactText.setText(getString(R.string.leads_contact_disabled_contact_text));
+            showSimpleDialog(getString(R.string.leads_contact_disabled_contact_title), getString(R.string.leads_contact_disabled_contact_text));
             blurOverlay.setVisibility(View.VISIBLE);
             interactions.forEach(interaction -> {
                 interaction.enableButton(false);
@@ -71,7 +70,7 @@ public class LeadsInteractionFragment extends RaisingFragment {
         }
 
         if (declinedContact) {
-            disableContactText.setText(getString(R.string.leads_contact_declined_contact_text));
+            showSimpleDialog(getString(R.string.leads_contact_disabled_contact_title), getString(R.string.leads_contact_declined_contact_text));
             blurOverlay.setVisibility(View.VISIBLE);
             interactions.forEach(interaction -> {
                 interaction.enableButton(false);

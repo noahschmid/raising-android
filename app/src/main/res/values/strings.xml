@@ -39,7 +39,7 @@
     <string name="server_error">Server Error</string>
 
     <!-- Strings used for Onboarding -->
-    <string name="toolbar_title_onboarding"> Onboarding </string>
+    <string name="toolbar_title_onboarding"> How it works </string>
     <string name="onboarding_pre_1_text"> Get weekly matches of startups / investors that match your personal interests</string>
     <string name="onboarding_pre_2_text"> Read further information about matches and request them if you are interested</string>
     <string name="onboarding_pre_3_text"> Get contact information if the other party is interested as well \n  </string>
@@ -99,7 +99,7 @@
     <string name="register_matching_geographics_input"> Geographic preferences </string>
     <string name="register_matching_geographics"> Geographics </string>
 
-    <string name="toolbar_title_pitch"> Pitch </string>
+    <string name="toolbar_title_pitch"> Description &amp; Pitch </string>
     <string name="register_pitch_sentence"> Description* </string>
     <string name="register_sentence_helper_text"> Describe yourself in one sentence.</string>
     <string name="register_pitch"> Pitch* </string>
@@ -203,6 +203,7 @@
 
     <!-- Strings used for Lead-Contacts -->
     <string name="toolbar_title_contact"> Contact </string>
+    <string name="leads_contact_disabled_contact_title"> Contact disabled!</string>
     <string name="leads_contact_disabled_contact_text"> This user first needs to accept your request before you can start interacting with each other. </string>
     <string name="leads_contact_declined_contact_text"> This user declined your request. Therefore no Contact can be initiated</string>
     <string name="leads_contact_coffee"> Drink a Coffee</string>
