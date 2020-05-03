@@ -37,7 +37,7 @@
                     android:id="@+id/settings_language_input"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"
-                    android:focusable="false"/>
+                    android:focusable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -57,7 +57,7 @@
                     android:id="@+id/settings_matches_input"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"
-                    android:focusable="false"/>
+                    android:focusable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -67,7 +67,7 @@
                 android:layout_height="@dimen/myProfileButtonHeight"
                 android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:backgroundTint="@color/raisingWhite"
-                android:drawableLeft="@drawable/ic_info_24dp"
+                android:drawableLeft="@drawable/ic_raising_settings_notifications"
                 android:drawableTint="@color/raisingTextColor"
                 android:gravity="center|start"
                 android:hint="@string/settings_notifications"
@@ -93,7 +93,7 @@
                 android:shadowColor="@color/raisingWhite"
                 android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
-                app:layout_constraintBottom_toTopOf="@+id/button_settings_report_problem"
+                app:layout_constraintBottom_toTopOf="@+id/button_settings_onboarding"
                 app:layout_constraintEnd_toEndOf="@+id/button_settings_notifications"
                 app:layout_constraintStart_toStartOf="@+id/button_settings_notifications"
                 app:layout_constraintTop_toBottomOf="@+id/button_settings_notifications"
@@ -105,7 +105,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/myProfileButtonHeight"
                 android:backgroundTint="@color/raisingWhite"
-                android:drawableLeft="@drawable/ic_info_24dp"
+                android:drawableLeft="@drawable/ic_raising_settings_feedback"
                 android:drawableTint="@color/raisingTextColor"
                 android:gravity="center|start"
                 android:hint="@string/settings_report_problem"
@@ -115,7 +115,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/button_settings_feedback"
                 app:layout_constraintEnd_toEndOf="@+id/button_settings_about"
                 app:layout_constraintStart_toStartOf="@+id/button_settings_about"
-                app:layout_constraintTop_toBottomOf="@+id/button_settings_about"
+                app:layout_constraintTop_toBottomOf="@+id/button_settings_onboarding"
                 app:rippleColor="@color/raisingRippleColor" />
 
             <Button
@@ -124,14 +124,14 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/myProfileButtonHeight"
                 android:backgroundTint="@color/raisingWhite"
-                android:drawableLeft="@drawable/ic_info_24dp"
+                android:drawableLeft="@drawable/ic_raising_settings_feedback"
                 android:drawableTint="@color/raisingTextColor"
                 android:gravity="center|start"
                 android:hint="@string/settings_feedback"
                 android:shadowColor="@color/raisingWhite"
                 android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
-                app:layout_constraintBottom_toTopOf="@+id/button_settings_onboarding"
+                app:layout_constraintBottom_toTopOf="@+id/button_settings_logout"
                 app:layout_constraintEnd_toEndOf="@+id/button_settings_report_problem"
                 app:layout_constraintStart_toStartOf="@+id/button_settings_report_problem"
                 app:layout_constraintTop_toBottomOf="@+id/button_settings_report_problem"
@@ -150,10 +150,10 @@
                 android:shadowColor="@color/raisingWhite"
                 android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
-                app:layout_constraintBottom_toTopOf="@+id/button_settings_logout"
-                app:layout_constraintTop_toBottomOf="@+id/button_settings_feedback"
+                app:layout_constraintBottom_toTopOf="@+id/button_settings_report_problem"
                 app:layout_constraintEnd_toEndOf="@+id/button_settings_feedback"
                 app:layout_constraintStart_toStartOf="@+id/button_settings_feedback"
+                app:layout_constraintTop_toBottomOf="@+id/button_settings_about"
                 app:rippleColor="@color/raisingRippleColor" />
 
             <Button
@@ -174,8 +174,6 @@
                 app:layout_constraintEnd_toEndOf="@+id/button_settings_feedback"
                 app:layout_constraintStart_toStartOf="@+id/button_settings_feedback"
                 app:rippleColor="@color/raisingRippleColor" />
-
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,10 +21,11 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/leads_contact_coffee_icon"
+                android:id="@+id/leads_interaction_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
+                android:tint="@color/raisingTextColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -35,12 +36,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                 android:hint="@string/leads_contact_coffee"
-                android:textColorHint="@color/raisingSecondaryDark"
+                android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingSmallerTextFontSize"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/leads_contact_coffee_icon"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/leads_interaction_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:textColor="@color/raisingTextColor" />
 
             <Button
                 android:id="@+id/button_request_interaction"
