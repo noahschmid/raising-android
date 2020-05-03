@@ -164,7 +164,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                                     } else {
                                         clearBackstackAndReplace(new MatchesFragment());
                                     }
-
                                 } else {
                                     Bundle bundle = new Bundle();
                                     bundle.putBoolean("isStartup", isStartup);
