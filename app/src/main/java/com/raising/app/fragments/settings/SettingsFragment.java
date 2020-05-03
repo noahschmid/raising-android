@@ -175,6 +175,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         personalSettings.setLanguage(languageInput.getText().toString());
         personalSettings.setNumberOfMatches(Integer.parseInt(matchNumberInput.getText().toString()));
 
-        settingsViewModel.updatePersonalSettings(personalSettings);
+        // settingsViewModel.updatePersonalSettings(personalSettings);
     }
 }

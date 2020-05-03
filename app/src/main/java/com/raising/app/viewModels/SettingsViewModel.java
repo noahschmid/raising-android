@@ -56,8 +56,8 @@ public class SettingsViewModel extends AndroidViewModel {
             Log.d(TAG, "loadSettings: ViewState " + viewState.getValue().toString());
         } else {
             // TODO: once server supports GET replace with GET request
-            addInitialSettings();
-            loadSettings();
+            // addInitialSettings();
+            // loadSettings();
         }
 
         //TODO: get personal settings from server
