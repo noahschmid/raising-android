@@ -114,7 +114,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
 
             @Override
             public void onClickDecline(int position) {
-                String endpoint = "match/" + openRequestItems.get(position).getId() + "/accept";
+                String endpoint = "match/" + openRequestItems.get(position).getId() + "/decline";
                 ApiRequestHandler.performPostRequest(endpoint, v -> {
                             openRequestItems.remove(position);
                             adapter.notifyItemRemoved(position);

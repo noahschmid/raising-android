@@ -210,7 +210,9 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
             number += Integer.parseInt(String.valueOf(uid.charAt(i)))*multipliers[i];
         }
 
-        int remainder = 11 - (number % 11);
+        int remainder = 0;
+        if(number%11 != 0)
+            remainder = 11 - (number % 11);
 
         if(checksum == remainder) {
             return true;

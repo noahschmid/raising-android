@@ -14,7 +14,6 @@ import android.widget.FrameLayout;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.fragments.profile.subscription.SubscriptionFragment;
 import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.fragments.registration.investor.RegisterInvestorImagesFragment;
 import com.raising.app.fragments.registration.investor.RegisterInvestorMatchingFragment;
@@ -38,7 +37,7 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
     private FrameLayout startUpLayout, investorLayout;
     private Button
             startupAccountInformation, startUpCompanyInformation, startupCompanyFigures,
-            startUpMatching, startUpPitch, startupLabels, startUpImages, startupVideo,
+            startUpMatching, startUpPitch, startupLabels, startUpImages,
             startUpFinancial, startUpStakeholder, startupSubscription, startupPublicProfile,
             investorAccountInformation, investorProfileInformation, investorMatching, investorPitch,
             investorImages, investorSubscription, investorPublicProfile;
@@ -85,9 +84,6 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
 
         startUpImages = view.findViewById(R.id.button_myProfile_startup_images);
         startUpImages.setOnClickListener(this);
-
-        startupVideo = view.findViewById(R.id.button_myProfile_startup_video);
-        startupVideo.setOnClickListener(this);
 
         startUpFinancial = view.findViewById(R.id.button_myProfile_startup_financial_requirements);
         startUpFinancial.setOnClickListener(this);
@@ -163,10 +159,6 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 fragment = new RegisterStartupImagesFragment();
                 fragment.setArguments(bundle);
                 break;
-            case R.id.button_myProfile_startup_video:
-                fragment = new RegisterStartupVideoFragment();
-                fragment.setArguments(bundle);
-                break;
             case R.id.button_myProfile_startup_financial_requirements:
                 fragment = new RegisterFinancialRequirementsFragment();
                 fragment.setArguments(bundle);
@@ -178,7 +170,7 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 break;
             case R.id.button_myProfile_startup_subscription:
             case R.id.button_myProfile_investor_subscription:
-                // fragment = new SubscriptionFragment();
+                fragment = new SubscriptionFragment();
                 break;
             case R.id.button_myProfile_startup_stakeholders:
                 fragment = new RegisterStakeholderFragment();

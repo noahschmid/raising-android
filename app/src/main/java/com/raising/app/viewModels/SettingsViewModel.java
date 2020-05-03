@@ -77,6 +77,7 @@ public class SettingsViewModel extends AndroidViewModel {
         String deviceToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "updatePersonalSettings: DeviceToken: " + deviceToken);
 
+        /*
         JSONObject object = new JSONObject();
         ArrayList<String> notificationSettingsStrings = new ArrayList<>();
         personalSettings.getValue().getNotificationSettings().forEach(notificationSettings -> {
@@ -106,6 +107,7 @@ public class SettingsViewModel extends AndroidViewModel {
                     Log.e(TAG, "updatePersonalSettings: " + ApiRequestHandler.parseVolleyError(volleyError));
                     return null;
                 }, object);
+        */
 
     }
 
@@ -165,6 +167,7 @@ public class SettingsViewModel extends AndroidViewModel {
         personalSettings.setValue(initialSettings);
         cacheSettings(personalSettings.getValue());
 
+        /*
         // device specifications
         String deviceToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "addInitialSettings: DeviceToken: " + deviceToken);
@@ -201,5 +204,6 @@ public class SettingsViewModel extends AndroidViewModel {
                     return null;
                 }, object);
 
+         */
     }
 }

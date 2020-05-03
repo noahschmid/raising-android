@@ -85,6 +85,11 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
             }
         }
 
+        if(labels.size() > 4) {
+            showSimpleDialog(getString(R.string.register_label_error_title), getString(R.string.register_label_error_text));
+            return;
+        }
+
         startup.setLabels(labels);
 
         try {

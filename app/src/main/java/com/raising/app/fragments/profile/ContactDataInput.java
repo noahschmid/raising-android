@@ -17,6 +17,7 @@ import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.onboarding.OnboardingPost1Fragment;
 import com.raising.app.models.ContactData;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 
@@ -49,6 +50,8 @@ public class ContactDataInput extends RaisingFragment {
 
         phoneNumberInput = view.findViewById(R.id.contact_input_phone);
         saveButton = view.findViewById(R.id.contact_input_save_button);
+
+        Log.d("ContactDataInput", "onViewCreated: " + contactDetails.getEmail());
 
         setupButton();
 
@@ -83,9 +86,11 @@ public class ContactDataInput extends RaisingFragment {
         try {
             InternalStorageHandler.saveObject(contactDetails, "contact_" +
                     accountId);
+            Log.d("ContactDataInput", "processInputs: " + contactDetails.getEmail());
             AuthenticationHandler.login(contactDetails.getEmail(),
                     token, accountId, isStartup);
             accountViewModel.loadAccount();
+            AccountService.loadContactData(AuthenticationHandler.getId());
             hideBottomNavigation(false);
 
             if(isFirstAppLaunch() && !isDisablePostOnboarding()) {

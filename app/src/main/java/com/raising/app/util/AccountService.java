@@ -30,6 +30,8 @@ public class AccountService {
             Log.e("AuthenticationHandler",
                     "ERROR: fetching contact data without being logged in");
         }
+        if(contactData.getEmail() == null)
+            loadContactData(AuthenticationHandler.getId());
         return contactData;
     }
 
