@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
         } else {
             leadsViewModel.loadLeads();
+            matchesViewModel.loadMatches();
             if (!AccountService.loadContactData(AuthenticationHandler.getId())) {
                 hideBottomNavigation(true);
                 Bundle bundle = new Bundle();

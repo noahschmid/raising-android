@@ -38,7 +38,6 @@ public class MatchesViewModel extends AndroidViewModel {
         super(application);
         matches.setValue(new ArrayList<>());
         viewState.setValue(ViewState.EMPTY);
-        loadMatches();
     }
 
     public LiveData<ArrayList<Match>> getMatches() { return matches; }
