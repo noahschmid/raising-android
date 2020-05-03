@@ -90,9 +90,8 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
                     case "ACCEPTED":
                         if(state == InteractionState.STARTUP_ACCEPTED) {
                             state = InteractionState.HANDSHAKE;
-                        }
-                        if (state != InteractionState.STARTUP_DECLINED) {
-                            state = InteractionState.INVESTOR_ACCEPTED;
+                        } else if (state != InteractionState.STARTUP_DECLINED) {
+                                state = InteractionState.INVESTOR_ACCEPTED;
                         }
                         break;
                     case "DECLINED":
