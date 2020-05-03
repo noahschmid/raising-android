@@ -172,9 +172,9 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         super.onDestroy();
         Log.d(TAG, "onDestroy: Updating Settings");
 
-        // personalSettings.setLanguage(languageInput.getText().toString());
-        // personalSettings.setNumberOfMatches(Integer.parseInt(matchNumberInput.getText().toString()));
+        personalSettings.setLanguage(languageInput.getText().toString());
+        personalSettings.setNumberOfMatches(Integer.parseInt(matchNumberInput.getText().toString()));
 
-        // settingsViewModel.updatePersonalSettings(personalSettings);
+        settingsViewModel.updatePersonalSettings(personalSettings);
     }
 }
