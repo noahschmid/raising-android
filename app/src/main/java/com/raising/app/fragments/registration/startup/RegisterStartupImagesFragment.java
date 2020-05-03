@@ -432,7 +432,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                 Log.d(TAG, "Successfully uploaded images");
 
                 RegistrationHandler.saveStartup(startup);
-                changeFragment(new RegisterStartupVideoFragment());
+                changeFragment(new RegisterFinancialRequirementsFragment());
             } catch (Exception e) {
                 Log.e(TAG, "uploadImages: " + e.getMessage());
                 finishButton.setEnabled(true);

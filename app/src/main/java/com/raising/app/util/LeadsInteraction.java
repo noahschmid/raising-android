@@ -35,6 +35,7 @@ public class LeadsInteraction {
     private Button interactionButton;
     private ImageView declineInteraction;
     private ImageView interactionArrow;
+    private ImageView interactionIcon;
     private View interactionView;
     private LinearLayout layout;
     private Lead lead;
@@ -54,10 +55,13 @@ public class LeadsInteraction {
         interactionArrow = interactionView.findViewById(R.id.interaction_arrow);
         interactionButton = interactionView.findViewById(R.id.button_request_interaction);
         declineInteraction = interactionView.findViewById(R.id.button_decline_interaction);
+        interactionIcon = interactionView.findViewById(R.id.leads_interaction_icon);
 
         prepareInteraction();
         layout.addView(interactionView);
     }
+
+
 
     public void enableButton(boolean enabled) {
         interactionButton.setEnabled(enabled);
@@ -67,6 +71,7 @@ public class LeadsInteraction {
      * Prepare the contact interaction for usage by setting the needed listeners and visibilities
      */
     private void prepareInteraction() {
+        setInteractionIcon();
         interactionArrow.setVisibility(View.GONE);
 
         interactionView.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +123,26 @@ public class LeadsInteraction {
             interactionArrow.setVisibility(View.VISIBLE);
             interactionButton.setVisibility(View.GONE);
             declineInteraction.setVisibility(View.GONE);
+        }
+    }
+
+    private void setInteractionIcon() {
+        switch (interaction.getInteractionType()) {
+            case COFFEE:
+                interactionIcon.setImageDrawable(ContextCompat.getDrawable(interactionView.getContext(), R.drawable.ic_raising_contact_coffee));
+                break;
+            case BUSINESS_PLAN:
+                interactionIcon.setImageDrawable(ContextCompat.getDrawable(interactionView.getContext(), R.drawable.ic_raising_contact_bp));
+                break;
+            case PHONE_CALL:
+                interactionIcon.setImageDrawable(ContextCompat.getDrawable(interactionView.getContext(), R.drawable.ic_raising_contact_phone));
+                break;
+            case EMAIL:
+                interactionIcon.setImageDrawable(ContextCompat.getDrawable(interactionView.getContext(), R.drawable.ic_raising_contact_mail));
+                break;
+            case VIDEO_CONFERENCE:
+                interactionIcon.setImageDrawable(ContextCompat.getDrawable(interactionView.getContext(), R.drawable.ic_raising_contact_video));
+                break;
         }
     }
 

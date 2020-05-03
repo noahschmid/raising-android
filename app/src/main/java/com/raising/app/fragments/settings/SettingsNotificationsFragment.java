@@ -52,6 +52,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
 
         generalSwitch = view.findViewById(R.id.notifications_switch_general);
         generalSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            btnNotifications.setVisibility(View.VISIBLE);
             if (isChecked) {
                 specificSettings.setVisibility(View.VISIBLE);
             } else {
@@ -104,7 +105,6 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         settingsViewModel.loadSettings();
 
         // set on check changed listeners to all buttons to detect user interaction
-        generalSwitch.setOnCheckedChangeListener(this);
         matchlistSwitch.setOnCheckedChangeListener(this);
         requestSwitch.setOnCheckedChangeListener(this);
         connectionSwitch.setOnCheckedChangeListener(this);
@@ -142,7 +142,6 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
-            case R.id.notifications_switch_general:
             case R.id.notifications_switch_matchlist:
             case R.id.notifications_switch_request:
             case R.id.notifications_switch_connection:

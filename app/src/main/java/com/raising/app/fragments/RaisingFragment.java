@@ -330,6 +330,12 @@ public class RaisingFragment extends Fragment {
         dialog.show(getActivitiesFragmentManager(), "dialog");
     }
 
+    /**
+     * Create and show an alert dialog, which allows the user to either decline or accept a message
+     * @param title The title of the dialog
+     * @param message The message of the dialog
+     * @return true, if user has accepted the dialog, false, if user has declined the dialog
+     */
     public boolean showAlertDialog(String title, String message) {
         final boolean[] confirmDialog = {false};
         new AlertDialog.Builder(getContext())

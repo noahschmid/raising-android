@@ -27,17 +27,5 @@
         android:id="@+id/leads_contact_blur_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/raisingWhiteTransparent">
-
-        <TextView
-            android:id="@+id/leads_contact_disabled_text"
-            style="@style/RaisingSubtitleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standardVerticalMarginSmall"
-            android:gravity="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:background="@color/raisingWhiteTransparent"/>
 </FrameLayout>

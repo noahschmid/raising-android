@@ -46,14 +46,14 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull LeadsAdapter.ViewHolder holder, int position) {
         Lead recyclerItem = recyclerItems.get(position);
 
-        int drawableId = R.drawable.ic_handshake_24dp, tintColor = R.color.raisingSecondaryDark;
+        int drawableId = R.drawable.ic_raising_handshake_full, tintColor = R.color.raisingSecondaryDark;
 
         switch (recyclerItem.getHandshakeState()) {
             case STARTUP_ACCEPTED:
             case INVESTOR_ACCEPTED:
                 //TODO: insert one hand
                 tintColor = R.color.raisingSecondaryDark;
-                drawableId = R.drawable.ic_request_24dp;
+                drawableId = R.drawable.ic_raising_handshake_left;
                 break;
             case HANDSHAKE:
                 if(stateEnum == LeadState.YOUR_TURN || stateEnum == LeadState.PENDING) {

@@ -39,10 +39,10 @@
     <string name="server_error">Server Error</string>
 
     <!-- Strings used for Onboarding -->
-    <string name="toolbar_title_onboarding"> Onboarding </string>
+    <string name="toolbar_title_onboarding"> How it works </string>
     <string name="onboarding_pre_1_text"> Get weekly matches of startups / investors that match your personal interests</string>
     <string name="onboarding_pre_2_text"> Read further information about matches and request them if you are interested</string>
-    <string name="onboarding_pre_3_text"> Get contact information if the other party is interested as well</string>
+    <string name="onboarding_pre_3_text"> Get contact information if the other party is interested as well \n  </string>
     <string name="onboarding_post_1_text"> Once a week you will get new matches. If you click on a match you can see more details</string>
     <string name="onboarding_post_2_title"> Details</string>
     <string name="onboarding_post_2_text"> After reading the details you can either request or decline the match</string>
@@ -99,7 +99,7 @@
     <string name="register_matching_geographics_input"> Geographic preferences </string>
     <string name="register_matching_geographics"> Geographics </string>
 
-    <string name="toolbar_title_pitch"> Pitch </string>
+    <string name="toolbar_title_pitch"> Description &amp; Pitch </string>
     <string name="register_pitch_sentence"> Description* </string>
     <string name="register_sentence_helper_text"> Describe yourself in one sentence.</string>
     <string name="register_pitch"> Pitch* </string>
@@ -137,10 +137,8 @@
     <string name="register_company_error_break_even"> Break-Even Year should be after the Founding Year </string>
 
     <string name="toolbar_title_labels"> Labels </string>
-    <string name="register_label_sef4kmu"> SEF4KMU </string>
-    <string name="register_label_venture_kick"> Venture Kick </string>
-    <string name="register_label_innosuisse"> Innosuisse </string>
-    <string name="register_label_swissef_upscaler"> SwissEF Upscaler </string>
+    <string name="register_label_error_title"> Too many Labels</string>
+    <string name="register_label_error_text"> Please do not choose more than 4 labels</string>
 
     <string name="toolbar_title_video"> Video </string>
 
@@ -203,6 +201,7 @@
 
     <!-- Strings used for Lead-Contacts -->
     <string name="toolbar_title_contact"> Contact </string>
+    <string name="leads_contact_disabled_contact_title"> Contact disabled!</string>
     <string name="leads_contact_disabled_contact_text"> This user first needs to accept your request before you can start interacting with each other. </string>
     <string name="leads_contact_declined_contact_text"> This user declined your request. Therefore no Contact can be initiated</string>
     <string name="leads_contact_coffee"> Drink a Coffee</string>
@@ -252,6 +251,7 @@
     <string name="settings_problem_report_body"> I would like to report a problem with your app Rai$ing</string>
     <string name="settings_feedback_subject"> Feedback for Rai$ing</string>
     <string name="settings_feedback_body"> I would like to give my feedback to your app Rai$ing</string>
+    <string name="settings_onboarding"> How it works</string>
 
     <string name="settings_logout"> Logout</string>
 
@@ -294,8 +294,13 @@
 
     <!-- Strings used for Subscription -->
     <string name="toolbar_profile_subscription"> Subscription</string>
-    <string name="subscription_add_subscription"> Add new subscription</string>
+    <string name="subscription_error_cannot_add_title"> Subscription active!</string>
+    <string name="subscription_error_cannot_add_text"> You already have an active subscription</string>
     <string name="subscription_your_subscriptions">Your active subscription</string>
+    <string name="subscription_dialog_subscribe_title"> Subscribe to Rai$ing</string>
+    <string name="subscribtion_dialog_subscribe_text"> You are about to purchase a subscription. \nDo you want to proceed?</string>
+    <string name="subscription_ending"> Ending Subscription</string>
+    <string name="subscription_next"> Next Subscription</string>
     <string name="subscription_downgrade"> Downgrade to </string>
     <string name="subscription_upgrade"> Upgrade to</string>
     <string name="subscription_automatic_extension">Automatic extension active</string>
@@ -305,6 +310,8 @@
     <string name="subscription_benefits_2">Overview over key figures and a pitch of a possible investment partner</string>
     <string name="subscription_benefits_3">Establish a contact and exchange personal contact information with your best possible investment partners</string>
     <string name="subscription_months"> Months</string>
+    <string name="subscriptions_weeks"> Week</string>
+    <string name="subscription_activated"> Will be activated: </string>
     <string name="subscription_expires"> Expiration Date: </string>
     <string name="subscription_cancel"> Cancel Subscription</string>
     <string name="subscription_cancel_text"> Are you sure you want to cancel your subscription?</string>
