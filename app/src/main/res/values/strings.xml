@@ -137,10 +137,8 @@
     <string name="register_company_error_break_even"> Break-Even Year should be after the Founding Year </string>
 
     <string name="toolbar_title_labels"> Labels </string>
-    <string name="register_label_sef4kmu"> SEF4KMU </string>
-    <string name="register_label_venture_kick"> Venture Kick </string>
-    <string name="register_label_innosuisse"> Innosuisse </string>
-    <string name="register_label_swissef_upscaler"> SwissEF Upscaler </string>
+    <string name="register_label_error_title"> Too many Labels</string>
+    <string name="register_label_error_text"> Please do not choose more than 4 labels</string>
 
     <string name="toolbar_title_video"> Video </string>
 
