@@ -9,10 +9,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.fragment.app.Fragment;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.raising.app.fragments.LoginFragment;
+import com.raising.app.fragments.onboarding.OnboardingPost1Fragment;
+import com.raising.app.fragments.profile.ContactDataInput;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.GenericRequest;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.R;
@@ -25,6 +32,7 @@ import java.util.HashMap;
 public class ResetPasswordFragment extends RaisingFragment implements View.OnClickListener {
     private EditText codeInput;
     private EditText passwordInput;
+    private String email;
 
     private final String resetEndpoint = ApiRequestHandler.getDomain() + "account/reset";
     @Override
@@ -40,6 +48,10 @@ public class ResetPasswordFragment extends RaisingFragment implements View.OnCli
 
         Button loginWithToken = view.findViewById(R.id.button_forgot_loginWithToken);
         loginWithToken.setOnClickListener(this);
+
+        if(getArguments().getString("email") != null) {
+            email = getArguments().getString("email");
+        }
 
         //showSimpleDialog(getString(R.string.forgot_dialog_title), getString(R.string.forgot_dialog_text));
 
@@ -84,10 +96,36 @@ public class ResetPasswordFragment extends RaisingFragment implements View.OnCli
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-                                changeFragment(new MatchesFragment(), "LoginFragment");
+                                dismissLoadingPanel();
+                                /*
+
+                                if(AccountService.loadContactData(response.getLong("id"))) {
+                                    AuthenticationHandler.login(email,
+                                            response.getString("token"),
+                                            response.getLong("id"), isStartup);
+                                    accountViewModel.loadAccount();
+
+                                    if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
+                                        clearBackstackAndReplace(new OnboardingPost1Fragment());
+                                    } else {
+                                        clearBackstackAndReplace(new MatchesFragment());
+                                    }
+                                } else {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putBoolean("isStartup", isStartup);
+                                    bundle.putString("email", email);
+                                    bundle.putString("token", response.getString("token"));
+                                    bundle.putLong("id", response.getLong("id"));
+                                    Fragment fragment = new ContactDataInput();
+                                    fragment.setArguments(bundle);
+                                    changeFragment(fragment);
+                                }*/
+
+                                changeFragment(new LoginFragment());
                             } catch(Exception e) {
+                                dismissLoadingPanel();
                                 showSimpleDialog(getString(R.string.generic_error_title),
-                                        e.getMessage());
+                                        getString(R.string.wrong_reset_code));
                             }
                         }
                     }, new Response.ErrorListener() {

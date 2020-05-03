@@ -367,6 +367,7 @@
     <string name="contact_input_description">Seems like we\'ve lost some information about you! Please fill in the missing details so you can continue using Raising.</string>
     <string name="phone_number">Phone Number</string>
     <string name="invalid_uid_text">Entered UID is invalid!</string>
+    <string name="wrong_reset_code">Entered code is invalid!</string>
 
     <string-array name="revenue_units">
         <item>K</item>

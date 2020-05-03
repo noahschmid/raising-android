@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.fragment.app.Fragment;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -79,7 +81,12 @@ public class ForgotPasswordFragment extends RaisingFragment implements View.OnCl
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            changeFragment(new ResetPasswordFragment(), "ResetPasswordFragment");
+                            Fragment fragment = new ResetPasswordFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("email", email);
+                            fragment.setArguments(bundle);
+
+                            changeFragment(fragment);
                         }
                     }, new Response.ErrorListener() {
                 @Override
