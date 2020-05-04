@@ -368,6 +368,8 @@
     <string name="phone_number">Phone Number</string>
     <string name="invalid_uid_text">Entered UID is invalid!</string>
     <string name="wrong_reset_code">Entered code is invalid!</string>
+    <string name="permissionTitle">Missing Permissions</string>
+    <string name="permissionText">We need permission to your phone\'s storage in order for you to upload pictures.</string>
 
     <string-array name="revenue_units">
         <item>K</item>

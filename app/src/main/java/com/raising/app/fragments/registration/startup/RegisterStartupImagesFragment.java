@@ -1,9 +1,11 @@
 package com.raising.app.fragments.registration.startup;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +16,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.provider.MediaStore;
@@ -44,6 +47,7 @@ import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.ImageRotator;
 import com.raising.app.util.ImageUploader;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.Serializer;
@@ -66,6 +70,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
     static final int REQUEST_GALLERY_CAPTURE = 3;
     static final int REQUEST_GALLERY_FETCH = 4;
     private static final String TAG = "RegisterStartupImages";
+    private boolean permissionGranted = false;
 
     ImageView profileImage, profileImageOverlay;
     View addGalleryImage;
@@ -103,7 +108,11 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
         profileImage = view.findViewById(R.id.register_startup_profile_image);
         profileImage.setOnClickListener(v -> {
-            showImageMenu(true);
+            if(permissionGranted) {
+                showImageMenu(true);
+            } else {
+                checkPermissions();
+            }
         });
 
         profileImageOverlay = view.findViewById(R.id.register_profile_image_overlay);
@@ -135,6 +144,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
         loadImages();
         addNewGalleryPlaceholder();
+        checkPermissions();
     }
 
     /**
@@ -150,7 +160,11 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         galleryImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showImageMenu(false);
+                if(permissionGranted) {
+                    showImageMenu(false);
+                } else {
+                    checkPermissions();
+                }
             }
         });
         galleryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_24dp));
@@ -200,8 +214,6 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         }
     }
 
-
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -238,7 +250,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                 Uri imageUri = data.getData();
                 try {
                     image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
-                    addImageToGallery(new Image(image));
+                    addImageToGallery(new Image(ImageRotator.checkRotation(getPath(imageUri), image)));
                     galleryChanged = true;
                 } catch (Exception e) {
                     Log.d("StartupImages", e.getMessage());
@@ -255,7 +267,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                 imageUri = data.getData();
                 try {
                     image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
-                    setProfileImage(image);
+                    setProfileImage(ImageRotator.checkRotation(getPath(imageUri), image));
                     profilePictureChanged = true;
                 } catch (Exception e) {
                     Log.d("StartupImages", e.getMessage());
@@ -269,6 +281,52 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
     }
 
     /**
+     * Check whether the needed read/write permissions to external storage are granted and if not
+     * show dialog
+     */
+    private void checkPermissions(){
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED||
+                ContextCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },
+                    1052);
+
+        } else {
+            this.permissionGranted = true;
+        }
+
+    }
+
+    /**
+     * Callback after granting or denying external storage permission
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (requestCode == 1052) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                this.permissionGranted = true;
+
+            } else {
+                showSimpleDialog(getString(R.string.permissionTitle),
+                        getString(R.string.permissionText));
+            }
+        }
+    }
+
+    /**
      * Set the chosen profile image
      * @param image
      */
@@ -276,6 +334,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
         try {
             profileImage.setImageBitmap(image);
             deleteProfileImageButton.setVisibility(View.VISIBLE);
+            profileImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             profileImageOverlay.setVisibility(View.GONE);
         } catch (NullPointerException e) {
             Log.d("StartupImages", e.getMessage());

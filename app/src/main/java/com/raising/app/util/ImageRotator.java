@@ -8,60 +8,90 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Date;
 
 public class ImageRotator {
-    public static Bitmap rotateImage(String path) throws IOException {
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
-        return rotateImage(bitmap, path);
-    }
-
-    public static Bitmap rotateImage(Bitmap bitmap) throws IOException {
-        Uri tempUri = getImageUri(InternalStorageHandler.getContext(), bitmap);
-
-        // CALL THIS METHOD TO GET THE ACTUAL PATH
-        return rotateImage(bitmap, getRealPathFromURI(tempUri));
-    }
-
-    public static Bitmap rotateImage(Bitmap bitmap, String path) throws IOException {
-        int rotate = 0;
-        ExifInterface exif;
-        exif = new ExifInterface(path);
-        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_NORMAL);
+    private static String TAG = "ImageRotator";
+    public static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
+        Matrix matrix = new Matrix();
         switch (orientation) {
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                rotate = 270;
+            case ExifInterface.ORIENTATION_NORMAL:
+                return bitmap;
+            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                matrix.setScale(-1, 1);
                 break;
             case ExifInterface.ORIENTATION_ROTATE_180:
-                rotate = 180;
+                matrix.setRotate(180);
+                break;
+            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                matrix.setRotate(180);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_TRANSPOSE:
+                matrix.setRotate(90);
+                matrix.postScale(-1, 1);
                 break;
             case ExifInterface.ORIENTATION_ROTATE_90:
-                rotate = 90;
+                matrix.setRotate(90);
                 break;
+            case ExifInterface.ORIENTATION_TRANSVERSE:
+                matrix.setRotate(-90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                matrix.setRotate(-90);
+                break;
+            default:
+                return bitmap;
         }
-        Matrix matrix = new Matrix();
-        matrix.postRotate(rotate);
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
-                bitmap.getHeight(), matrix, true);
+        try {
+            Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            bitmap.recycle();
+            return bmRotated;
+        }
+        catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public static Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
+    public static Bitmap checkRotation(String path, Bitmap bitmap) {
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(path);
+        } catch (IOException e) {
+            Log.e(TAG, "checkRotation: " + e.getMessage() );
+            e.printStackTrace();
+        }
+        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED);
+
+        Log.d(TAG, "checkRotation: orientation = " + orientation);
+
+        return rotateBitmap(bitmap, orientation);
     }
 
-    public static String getRealPathFromURI(Uri uri) {
-        Cursor cursor = InternalStorageHandler.getContext()
-                .getContentResolver().query(uri, null, null,
-                        null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
+    private static File persistImage(Bitmap bitmap, String name) {
+        File filesDir = InternalStorageHandler.getContext().getFilesDir();
+        File imageFile = new File(filesDir, name + ".jpg");
+
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+            return imageFile;
+        } catch (Exception e) {
+            Log.e("persistImage", "Error writing bitmap", e);
+            return null;
+        }
     }
 }

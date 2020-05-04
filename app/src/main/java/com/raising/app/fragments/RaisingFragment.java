@@ -12,10 +12,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -138,6 +141,20 @@ public class RaisingFragment extends Fragment {
         processViewState(resourcesViewModel.getViewState().getValue());
         processViewState(accountViewModel.getViewState().getValue());
         processViewState(settingsViewModel.getViewState().getValue());
+    }
+
+    /**
+     * Get path from uri
+     * @param uri
+     * @return
+     */
+    public String getPath(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getActivity().managedQuery(uri, projection, null, null, null);
+        getActivity().startManagingCursor(cursor);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
 
 

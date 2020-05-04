@@ -1,9 +1,12 @@
 package com.raising.app.fragments.registration.investor;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +17,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.MutableLiveData;
 
@@ -50,6 +54,7 @@ import com.raising.app.models.ViewState;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.ImageRotator;
 import com.raising.app.util.ImageUploader;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
@@ -74,6 +79,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     static final int REQUEST_GALLERY_FETCH = 4;
     private static final String TAG = "RegisterInvestorImages";
     private MutableLiveData<Boolean> imagesUploaded = new MutableLiveData<>();
+    private boolean permissionGranted = false;
 
     ImageView profileImage, profileImageOverlay;
     View addGalleryImage;
@@ -118,7 +124,11 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
         profileImage = view.findViewById(R.id.register_investor_profile_image);
         profileImage.setOnClickListener(v -> {
-            showImageMenu(true);
+            if(permissionGranted) {
+                showImageMenu(true);
+            } else {
+                checkPermissions();
+            }
         });
 
         profileImageOverlay = view.findViewById(R.id.register_profile_image_overlay);
@@ -150,6 +160,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
         loadImages();
         addNewGalleryPlaceholder();
+
+        checkPermissions();
     }
 
     /**
@@ -165,7 +177,11 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         galleryImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showImageMenu(false);
+                if(permissionGranted) {
+                    showImageMenu(false);
+                } else {
+                    checkPermissions();
+                }
             }
         });
         galleryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_24dp));
@@ -175,6 +191,9 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         galleryLayout.addView(galleryObject);
     }
 
+    /**
+     * Load images from backend into image views
+     */
     private void loadImages() {
         if(investor.getProfilePictureId() > 0) {
             Glide
@@ -253,10 +272,10 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                 Uri imageUri = data.getData();
                 try {
                     image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
-                    addImageToGallery(new Image(image));
+                    addImageToGallery(new Image(ImageRotator.checkRotation(getPath(imageUri), image)));
                     galleryChanged = true;
                 } catch (Exception e) {
-                    Log.d("InvestorImages", e.getMessage());
+                    Log.d("InvestorImages", "" + e.getMessage());
                 }
                 break;
 
@@ -270,7 +289,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                 imageUri = data.getData();
                 try {
                     image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
-                    setProfileImage(image);
+                    setProfileImage(ImageRotator.checkRotation(getPath(imageUri), image));
                     profilePictureChanged = true;
                 } catch (Exception e) {
                     Log.d("InvestorImages", e.getMessage());
@@ -284,12 +303,59 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     }
 
     /**
+     * Check whether the needed read/write permissions to external storage are granted and if not
+     * show dialog
+     */
+    private void checkPermissions(){
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED||
+                ContextCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },
+                    1052);
+
+        } else {
+            this.permissionGranted = true;
+        }
+
+    }
+
+    /**
+     * Callback after granting or denying external storage permission
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (requestCode == 1052) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                this.permissionGranted = true;
+
+            } else {
+                showSimpleDialog(getString(R.string.permissionTitle),
+                        getString(R.string.permissionText));
+            }
+        }
+    }
+
+    /**
      * Set the chosen profile image
      * @param image
      */
     private void setProfileImage(Bitmap image) {
         try {
             profileImage.setImageBitmap(image);
+            profileImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             deleteProfileImageButton.setVisibility(View.VISIBLE);
             profileImageOverlay.setVisibility(View.GONE);
         } catch (NullPointerException e) {
