@@ -186,7 +186,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                     .placeholder(R.drawable.ic_person_24dp)
                     .into(profileImage);
             profileImageOverlay.setVisibility(View.GONE);
-            deleteProfileImageButton.setVisibility(View.VISIBLE);
+            deleteProfileImageButton.setVisibility(View.GONE);
         }
 
         if(startup.getGalleryIds() != null) {
@@ -333,7 +333,9 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
     private void setProfileImage(Bitmap image) {
         try {
             profileImage.setImageBitmap(image);
-            deleteProfileImageButton.setVisibility(View.VISIBLE);
+            if(startup.getProfilePictureId() == -1) {
+                deleteProfileImageButton.setVisibility(View.VISIBLE);
+            }
             profileImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             profileImageOverlay.setVisibility(View.GONE);
         } catch (NullPointerException e) {
