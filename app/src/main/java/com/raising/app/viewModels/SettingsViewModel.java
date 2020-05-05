@@ -34,6 +34,7 @@ public class SettingsViewModel extends AndroidViewModel {
     public SettingsViewModel(@NonNull Application application) {
         super(application);
         personalSettings.setValue(new PersonalSettings());
+        personalSettings.getValue().setNotificationSettings(new ArrayList<>());
         viewState.setValue(ViewState.EMPTY);
     }
 
@@ -55,12 +56,30 @@ public class SettingsViewModel extends AndroidViewModel {
             viewState.setValue(ViewState.CACHED);
             Log.d(TAG, "loadSettings: ViewState " + viewState.getValue().toString());
         } else {
-            // TODO: once server supports GET replace with GET request
-            addInitialSettings();
-            loadSettings();
+            getUserSettings();
         }
+    }
 
-        //TODO: get personal settings from server
+    private void getUserSettings() {
+        ApiRequestHandler.performGetRequest("settings",
+                response -> {
+                    try {
+                        personalSettings.getValue().setLanguage(response.getString("language"));
+                        personalSettings.getValue().setNumberOfMatches(response.getInt("numberOfMatches"));
+                        JSONArray notificationSettings = response.getJSONArray("notificationTypes");
+                        for(int i = 0; i < notificationSettings.length(); i++) {
+                            personalSettings.getValue().getNotificationSettings().add(Enum.valueOf(NotificationSettings.class, notificationSettings.getString(i)));
+                        }
+                        Log.d(TAG, "getUserSettings: Personal Settings" + personalSettings.getValue());
+                        cacheSettings(personalSettings.getValue());
+                    } catch (JSONException e) {
+                        Log.e(TAG, "getUserSettings: Error getting JSON" + e.getMessage());
+                    }
+                    return null;
+                }, volleyError -> {
+                    Log.d(TAG, "getUserSettings: Error fetching settings" + volleyError.toString());
+                    return null;
+                });
     }
 
     /**
@@ -77,7 +96,6 @@ public class SettingsViewModel extends AndroidViewModel {
         String deviceToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "updatePersonalSettings: DeviceToken: " + deviceToken);
 
-        /*
         JSONObject object = new JSONObject();
         ArrayList<String> notificationSettingsStrings = new ArrayList<>();
         personalSettings.getValue().getNotificationSettings().forEach(notificationSettings -> {
@@ -90,15 +108,15 @@ public class SettingsViewModel extends AndroidViewModel {
 
             //TODO: add following fields, once backend supports these values
 
-            // object.put("language", personalSettings.getValue().getLanguage());
-            // object.put("numberOfMatches", personalSettings.getValue().getNumberOfMatches());
+            object.put("language", personalSettings.getValue().getLanguage());
+            object.put("numberOfMatches", personalSettings.getValue().getNumberOfMatches());
 
             Log.d(TAG, "updatePersonalSettings: JSONObject" + object.toString());
         } catch (JSONException e) {
             Log.e(TAG, "updatePersonalSettings: JSONException" + e.getMessage());
         }
 
-        ApiRequestHandler.performPatchRequest("device",
+        ApiRequestHandler.performPatchRequest("settings",
                 response -> {
                     viewState.setValue(ViewState.RESULT);
                     return null;
@@ -107,8 +125,6 @@ public class SettingsViewModel extends AndroidViewModel {
                     Log.e(TAG, "updatePersonalSettings: " + ApiRequestHandler.parseVolleyError(volleyError));
                     return null;
                 }, object);
-        */
-
     }
 
     /**
@@ -167,7 +183,6 @@ public class SettingsViewModel extends AndroidViewModel {
         personalSettings.setValue(initialSettings);
         cacheSettings(personalSettings.getValue());
 
-        /*
         // device specifications
         String deviceToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "addInitialSettings: DeviceToken: " + deviceToken);
@@ -184,18 +199,18 @@ public class SettingsViewModel extends AndroidViewModel {
 
             //TODO: add following fields, once backend supports these values
 
-            // object.put("language", personalSettings.getValue().getLanguage());
-            // object.put("numberOfMatches", personalSettings.getValue().getNumberOfMatches());
+            object.put("language", personalSettings.getValue().getLanguage());
+            object.put("numberOfMatches", personalSettings.getValue().getNumberOfMatches());
 
             Log.d(TAG, "addInitialSettings: JSONObject" + object.toString());
         } catch (JSONException e) {
             Log.e(TAG, "addInitialSettings: JSONException" + e.getMessage());
         }
 
-        ApiRequestHandler.performPostRequest("device",
+        ApiRequestHandler.performPatchRequest("settings",
                 response -> {
                     viewState.setValue(ViewState.RESULT);
-                    Log.d(TAG, "addInitialSettings: ViewState " + viewState.getValue().toString() );
+                    Log.d(TAG, "addInitialSettings: ViewState " + viewState.getValue().toString());
                     return null;
                 }, volleyError -> {
                     viewState.setValue(ViewState.ERROR);
@@ -203,7 +218,5 @@ public class SettingsViewModel extends AndroidViewModel {
                     Log.e(TAG, "addInitialSettings: " + ApiRequestHandler.parseVolleyError(volleyError));
                     return null;
                 }, object);
-
-         */
     }
 }
