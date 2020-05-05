@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
@@ -69,8 +70,15 @@ public class SubscriptionFragment extends RaisingFragment {
 
         billingClient = BillingClient.newBuilder(getContext())
                 .setListener((billingResult, list) -> {
-            //TODO: add action
-        })
+                    if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        //TODO: billing successful
+                        Log.d(TAG, "onViewCreated: Purchase successful" + billingResult.getResponseCode());
+                        Log.d(TAG, "onViewCreated: Purchase list" + list);
+                    } else {
+                        //TODO: billing not successful
+                        Log.d(TAG, "onViewCreated: Purchase failed: " + billingResult.getResponseCode());
+                    }
+                })
                 .enablePendingPurchases()
                 .build();
         billingClient.startConnection(new BillingClientStateListener() {
@@ -79,7 +87,6 @@ public class SubscriptionFragment extends RaisingFragment {
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     Log.d(TAG, "onBillingSetupFinished: Billing Response Code: " + billingResult.getResponseCode());
                     getSkuDetails();
-                    //TODO: billing client is ready for action
                 }
             }
 
@@ -100,7 +107,7 @@ public class SubscriptionFragment extends RaisingFragment {
         billingClient.querySkuDetailsAsync(params.build(),
                 (billingResult, skuDetailsList) -> {
                     Log.d(TAG, "onViewCreated: SkuDetails" + skuDetailsList);
-                    if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null)  {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
                         Log.d(TAG, "getSkuDetails: Billing Response Code: " + billingResult.getResponseCode());
                         skuDetailsArrayList.addAll(skuDetailsList);
                         refreshSubscriptionsLayout();
@@ -204,8 +211,21 @@ public class SubscriptionFragment extends RaisingFragment {
         });
     }
 
+    private void showGoogleBilling(SkuDetails skuDetails) {
+        Log.d(TAG, "showGoogleBilling: SkuDetails: " + skuDetails);
+        if (billingClient.isFeatureSupported("subscriptions").getResponseCode() == BillingClient.BillingResponseCode.OK
+                && billingClient.isFeatureSupported("subscriptionsUpdate").getResponseCode() == BillingClient.BillingResponseCode.OK) {
+            BillingFlowParams flowParams = BillingFlowParams.newBuilder()
+                    .setSkuDetails(skuDetails)
+                    .build();
+            BillingResult responseCode = billingClient.launchBillingFlow(this.getActivity(), flowParams);
+            Log.d(TAG, "showGoogleBilling: BillingResponseCode: " + responseCode.getDebugMessage());
+        }
+    }
+
     /**
      * Process a click on a certain card
+     *
      * @param sku The skuDetails belonging to the card that was clicked
      */
     private void processOnCardClick(SkuDetails sku) {
@@ -213,15 +233,13 @@ public class SubscriptionFragment extends RaisingFragment {
             showSimpleDialog(getString(R.string.subscription_error_cannot_add_title), getString(R.string.subscription_error_cannot_add_text));
         } else if (!activeSubscriptionExists()) {
             // purchase subscription
-            if(showAlertDialog(getString(R.string.subscription_dialog_subscribe_title), getString(R.string.subscribtion_dialog_subscribe_text))) {
-                setCurrentSubscription(sku);
-                //TODO: implement payment
+            if (showAlertDialog(getString(R.string.subscription_dialog_subscribe_title), getString(R.string.subscribtion_dialog_subscribe_text))) {
+                showGoogleBilling(sku);
             }
         } else {
             // up-/downgrade your subscription
-            if(showAlertDialog(getString(R.string.subscription_dialog_subscribe_title), getString(R.string.subscribtion_dialog_subscribe_text))) {
-                setNextSubscription(sku);
-                //TODO: implement payment
+            if (showAlertDialog(getString(R.string.subscription_dialog_subscribe_title), getString(R.string.subscribtion_dialog_subscribe_text))) {
+                showGoogleBilling(sku);
             }
         }
         refreshSubscriptionsLayout();
@@ -238,6 +256,7 @@ public class SubscriptionFragment extends RaisingFragment {
     /**
      * Set the users next subscription changes with the initial selection or if the user wants to up-/ or downgrade
      * This also changes, if the user cancels his subscription
+     *
      * @param sku The skuDetails of the subscription that should become the users next subscription
      */
     private void setNextSubscription(SkuDetails sku) {
@@ -260,6 +279,7 @@ public class SubscriptionFragment extends RaisingFragment {
 
     /**
      * Set the users current subscription, this only changes, if a subscription expires or the user selects his first subscription
+     *
      * @param sku The skuDetails of the chosen subscription
      */
     private void setCurrentSubscription(SkuDetails sku) {
@@ -283,6 +303,7 @@ public class SubscriptionFragment extends RaisingFragment {
 
     /**
      * Helper method to extract the exact duration of a subscription
+     *
      * @param sku The skuDetails of the subscription, this contains a string of the duration
      * @return An integer value of the duration of the subscription
      */
@@ -300,10 +321,10 @@ public class SubscriptionFragment extends RaisingFragment {
     }
 
     private String createPriceString(SkuDetails skuDetails, boolean isDuration) {
-        if(isDuration) {
-            return (skuDetails.getPrice() + " / " + getSkuDuration(skuDetails) + " " + getString(R.string.subscription_months));
+        if (isDuration) {
+            return (skuDetails.getOriginalPrice() + " / " + getSkuDuration(skuDetails) + " " + getString(R.string.subscription_months));
         } else {
-            long pricePerWeek = (skuDetails.getPriceAmountMicros() / (4 * (getSkuDuration(skuDetails)))) / 1000000;
+            long pricePerWeek = (skuDetails.getOriginalPriceAmountMicros() / (4 * (getSkuDuration(skuDetails)))) / 1000000;
             Log.d(TAG, "createPriceString: pricePerWeek " + pricePerWeek + " " + skuDetails.getSku());
             return skuDetails.getPriceCurrencyCode() + " " + pricePerWeek + " / " + getString(R.string.subscriptions_weeks);
         }
@@ -311,8 +332,9 @@ public class SubscriptionFragment extends RaisingFragment {
 
     /**
      * Returns a boolean value wether the current and next subscription are equal, both also cannot be null
+     *
      * @return true, if current and next subscription are equal
-     *         false, if current is not the same as next subscription, or one subscription is null
+     * false, if current is not the same as next subscription, or one subscription is null
      */
     private boolean currentEqualsNextSubscription() {
         return (activeSubscriptionExists()
@@ -322,8 +344,9 @@ public class SubscriptionFragment extends RaisingFragment {
 
     /**
      * Returns a boolean value wether the current and next subscription are not equal, both also cannot be null
+     *
      * @return true, if current and next subscription are not equal
-     *         false, if current is the same as next subscription, or one subscription is null
+     * false, if current is the same as next subscription, or one subscription is null
      */
     private boolean currentNotEqualNextSubscription() {
         return (activeSubscriptionExists()
@@ -333,8 +356,9 @@ public class SubscriptionFragment extends RaisingFragment {
 
     /**
      * Adjust the title of cards, based on the users choice of subscription. The title will either say "Upgrade" or "Downgrade"
+     *
      * @param subscriptionTitle A reference to the text view, whose text should be changed
-     * @param duration The duration of the subscription, where the title of the card should be adjusted
+     * @param duration          The duration of the subscription, where the title of the card should be adjusted
      */
     private void adjustNotSelectedSubscriptions(TextView subscriptionTitle, int duration) {
         // adjust cards of shorter subscription types
@@ -358,8 +382,9 @@ public class SubscriptionFragment extends RaisingFragment {
 
     /**
      * Returns a boolean wether the user has an active subscription
+     *
      * @return true, if user has active subscription
-     *          false, if user does not have an active subscription
+     * false, if user does not have an active subscription
      */
     private boolean activeSubscriptionExists() {
         return (currentAccount.getActiveSubscription() != null);
@@ -367,8 +392,9 @@ public class SubscriptionFragment extends RaisingFragment {
 
     /**
      * Returns a boolean wether the user has a next subscription
+     *
      * @return true, if user has next subscription
-     *          false, if user does not have a next subscription
+     * false, if user does not have a next subscription
      */
     private boolean nextSubscriptionExists() {
         return (currentAccount.getNextSubscription() != null);
