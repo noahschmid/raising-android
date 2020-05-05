@@ -5,19 +5,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -32,8 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -42,11 +34,8 @@ import com.raising.app.MainActivity;
 import com.raising.app.R;
 import com.raising.app.models.Account;
 import com.raising.app.models.Model;
-import com.raising.app.models.NotificationSettings;
 import com.raising.app.models.ViewState;
-import com.raising.app.models.leads.Lead;
 import com.raising.app.util.ApiRequestHandler;
-import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.Resources;
 import com.raising.app.util.SimpleMessageDialog;
@@ -56,12 +45,8 @@ import com.raising.app.viewModels.ResourcesViewModel;
 import com.raising.app.viewModels.SettingsViewModel;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 
 public class RaisingFragment extends Fragment {
     final private String TAG = "RaisingFragment";
@@ -156,7 +141,6 @@ public class RaisingFragment extends Fragment {
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
-
 
     protected void processViewState(ViewState viewState) {
         switch (viewState) {

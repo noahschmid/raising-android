@@ -157,11 +157,14 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
         final View galleryObject = inflater.inflate(R.layout.item_gallery, null);
         ImageView galleryImage = galleryObject.findViewById(R.id.gallery_image);
+        galleryImage.setContentDescription("placeholder");
         galleryImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(permissionGranted) {
-                    showImageMenu(false);
+                    if(galleryImage.getContentDescription() == "placeholder") {
+                        showImageMenu(false);
+                    }
                 } else {
                     checkPermissions();
                 }
@@ -353,10 +356,12 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             galleryObject = inflater.inflate(R.layout.item_gallery, null);
         } else {
             galleryObject = addGalleryImage;
-            galleryObject.setOnClickListener(null);
         }
 
+        galleryObject.setOnClickListener(null);
+
         ImageView galleryImage = galleryObject.findViewById(R.id.gallery_image);
+        galleryImage.setContentDescription("gallery");
         gallery.add(image);
         galleryImage.setImageBitmap(image.getImage());
         AppCompatButton deleteButton = galleryObject.findViewById(R.id.button_delete_gallery_img);
