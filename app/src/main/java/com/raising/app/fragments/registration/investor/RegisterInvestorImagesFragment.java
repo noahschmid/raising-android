@@ -174,11 +174,14 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
         final View galleryObject = inflater.inflate(R.layout.item_gallery, null);
         ImageView galleryImage = galleryObject.findViewById(R.id.gallery_image);
+        galleryImage.setContentDescription("placeholder");
         galleryImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(permissionGranted) {
-                    showImageMenu(false);
+                    if(galleryImage.getContentDescription() == "placeholder") {
+                        showImageMenu(false);
+                    }
                 } else {
                     checkPermissions();
                 }
@@ -206,7 +209,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     .placeholder(R.drawable.ic_person_24dp)
                     .into(profileImage);
             profileImageOverlay.setVisibility(View.GONE);
-            deleteProfileImageButton.setVisibility(View.VISIBLE);
+            deleteProfileImageButton.setVisibility(View.GONE);
         }
 
         if(investor.getGalleryIds() != null) {
@@ -356,7 +359,9 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         try {
             profileImage.setImageBitmap(image);
             profileImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            deleteProfileImageButton.setVisibility(View.VISIBLE);
+            if(investor.getProfilePictureId() == -1) {
+                deleteProfileImageButton.setVisibility(View.VISIBLE);
+            }
             profileImageOverlay.setVisibility(View.GONE);
         } catch (NullPointerException e) {
             Log.d("InvestorImages", e.getMessage());
@@ -373,10 +378,12 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             galleryObject = inflater.inflate(R.layout.item_gallery, null);
         } else {
             galleryObject = addGalleryImage;
-            galleryObject.setOnClickListener(null);
         }
 
+        galleryObject.setOnClickListener(null);
+
         ImageView galleryImage = galleryObject.findViewById(R.id.gallery_image);
+        galleryImage.setContentDescription("gallery");
         gallery.add(image);
         galleryImage.setImageBitmap(image.getImage());
         AppCompatButton deleteButton = galleryObject.findViewById(R.id.button_delete_gallery_img);
