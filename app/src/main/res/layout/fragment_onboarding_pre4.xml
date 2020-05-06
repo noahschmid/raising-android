@@ -111,7 +111,7 @@
 
         <TextView
             android:id="@+id/textView21"
-            style="@style/RaisingSubtitleText"
+            style="@style/RaisingSubtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standardHorizontalMargin"

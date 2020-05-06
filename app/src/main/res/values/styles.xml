@@ -12,6 +12,8 @@
         <item name="snackbarTextViewStyle">@style/snackbar_text_style</item>
     </style>
 
+
+   <!-- Text Styles -->
     <style name="RaisingText">
         <item name="fontFamily">sans-serif</item>
         <item name="android:textColor">@color/raisingTextColor</item>
@@ -19,15 +21,38 @@
         <item name="android:textSize">@dimen/raisingTextFontSize</item>
     </style>
 
-    <style name="RaisingSubtitleText" parent="RaisingText">
+    <style name="RaisingTextBold" parent="RaisingText">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="RaisingTitle" parent="RaisingTextBold">
+        <item name="android:textSize">@dimen/raisingTitleFontSize</item>
+    </style>
+
+    <style name="RaisingLargeTitle" parent="RaisingTextBold">
+        <item name="android:textSize">@dimen/raisingLargeTitleFontSize</item>
+    </style>
+
+    <style name="RaisingSubtitle" parent="RaisingText">
         <item name="android:textSize">@dimen/raisingSubtitleFontSize</item>
     </style>
 
-    <style name="RaisingDescriptionText" parent="RaisingText">
-        <item name="android:textSize"> @dimen/raisingSmallerTextFontSize</item>
-        <item name="android:textColor"> @color/gray</item>
-        <item name="android:textColorHint">@color/gray</item>
+    <style name="RaisingSubtitleBold" parent="RaisingTextBold">
+        <item name="android:textSize">@dimen/raisingSubtitleFontSize</item>
     </style>
+
+    <style name="RaisingHelperText" parent="RaisingText">
+        <item name="android:textSize">@dimen/raisingTextFontSize</item>
+        <item name="fontFamily"> sans-serif-light</item>
+    </style>
+
+    <style name="RaisingSmallHelperText" parent="RaisingText">
+        <item name="android:textSize">@dimen/raisingSmallerTextFontSize</item>
+        <item name="fontFamily"> sans-serif-light</item>
+    </style>
+
+
+
 
     <style name="AppBarTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
         <item name="titleTextColor">@color/raisingWhite</item>
@@ -157,13 +182,5 @@
     <style name="RaisingSwitchButtonStyle">
         <item name="thumbTint">@color/raisingPrimary</item>
         <item name="trackTint">@color/raisingPrimaryLight</item>
-    </style>
-
-    <style name="RaisingStandardParagraph" parent="RaisingText">
-        <item name="android:textSize">@dimen/raisingTextFontSize</item>
-    </style>
-
-    <style name="RaisingStandardParagraphBold" parent="RaisingStandardParagraph">
-        <item name="android:textStyle">bold</item>
     </style>
 </resources>

@@ -17,13 +17,11 @@
 
         <TextView
             android:id="@+id/item_leads_name"
+            style="@style/RaisingTextBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
             android:text="Name"
-            android:textColor="@color/raisingTextColor"
-            android:textSize="@dimen/raisingTextFontSize"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/item_leads_attributes"
             app:layout_constraintStart_toEndOf="@+id/item_leads_profile_image"
             app:layout_constraintTop_toTopOf="@+id/item_leads_profile_image"
@@ -41,11 +39,10 @@
 
         <TextView
             android:id="@+id/item_leads_attributes"
+            style="@style/RaisingHelperText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Attribut"
-            android:textColor="@color/raisingTextColor"
-            android:textSize="@dimen/raisingTextFontSize"
             app:layout_constraintBottom_toBottomOf="@+id/item_leads_profile_image"
             app:layout_constraintStart_toStartOf="@+id/item_leads_name"
             app:layout_constraintTop_toBottomOf="@+id/item_leads_name" />
@@ -62,13 +59,12 @@
 
         <TextView
             android:id="@+id/item_leads_match_percent"
+            style="@style/RaisingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/standardVerticalMargin"
             android:gravity="center|start"
             android:text="Percent"
-            android:textColor="@color/raisingTextColor"
-            android:textSize="@dimen/raisingTextFontSize"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/item_leads_profile_image"
             app:layout_constraintStart_toStartOf="@+id/item_leads_profile_image"

@@ -112,13 +112,12 @@
 
                     <TextView
                         android:id="@+id/text_startup_public_profile_matching_percent"
+                        style="@style/RaisingTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                         android:text="Percent"
                         android:textColor="@color/raisingWhite"
-                        android:textSize="@dimen/raisingTitleFontSize"
-                        android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -151,12 +150,12 @@
 
                     <TextView
                         android:id="@+id/text_startup_decline"
+                        style="@style/RaisingSmallHelperText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                         android:hint="@string/decline_text"
                         android:textColorHint="@color/raisingWhite"
-                        android:textSize="@dimen/raisingSmallTextFontSize"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/button_startup_public_profile_decline"
                         app:layout_constraintStart_toStartOf="@+id/button_startup_public_profile_decline"
@@ -164,12 +163,12 @@
 
                     <TextView
                         android:id="@+id/text_startup_accept"
+                        style="@style/RaisingSmallHelperText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                         android:hint="@string/accept_text"
                         android:textColorHint="@color/raisingWhite"
-                        android:textSize="@dimen/raisingSmallTextFontSize"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/button_startup_public_profile_accept"
                         app:layout_constraintStart_toStartOf="@+id/button_startup_public_profile_accept"
@@ -179,14 +178,13 @@
 
             <TextView
                 android:id="@+id/text_startup_public_profile_name"
+                style="@style/RaisingLargeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:text="Name"
                 android:textColor="@color/raisingPrimary"
-                android:textSize="@dimen/raisingLargeTitleFontSize"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/startup_public_profile_matching_summary" />
 
@@ -213,51 +211,46 @@
 
             <TextView
                 android:id="@+id/text_startup_public_profile_location"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Location"
-                android:textColor="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toBottomOf="@+id/startup_public_profile_location_pin"
                 app:layout_constraintStart_toEndOf="@+id/startup_public_profile_location_pin"
                 app:layout_constraintTop_toTopOf="@+id/startup_public_profile_location_pin" />
 
             <TextView
                 android:id="@+id/text_startup_public_profile_sentence"
+                style="@style/RaisingText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                 android:text="Sentence"
-                android:textColor="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_location" />
 
             <TextView
                 android:id="@+id/text_startup_pitch_title"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:hint="@string/public_profile_pitch"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_pitch"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_sentence" />
 
             <TextView
                 android:id="@+id/text_startup_public_profile_pitch"
+                style="@style/RaisingText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:text="Pitch"
-                android:textColor="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/text_startup_public_profile_website"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -265,12 +258,10 @@
 
             <TextView
                 android:id="@+id/text_startup_public_profile_website"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/public_profile_website"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/public_profile_matching_criteria"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_pitch"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_pitch" />
@@ -286,6 +277,7 @@
 
                 <TextView
                     android:id="@+id/text_startup_public_profile_matching"
+                    style="@style/RaisingSubtitleBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
@@ -293,8 +285,6 @@
                     android:layout_marginBottom="@dimen/standardVerticalMargin"
                     android:hint="@string/public_profile_matching_information"
                     android:textColorHint="@color/raisingPrimary"
-                    android:textSize="@dimen/raisingSubtitleFontSize"
-                    android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/text_startup_public_profile_type_of_investor"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/public_profile_matching_criteria" />
@@ -302,13 +292,12 @@
 
                 <TextView
                     android:id="@+id/text_startup_public_profile_type_of_investor"
+                    style="@style/RaisingTextBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/standardVerticalMargin"
                     android:hint="@string/investor_matching_investor_type"
                     android:textColorHint="@color/raisingPrimary"
-                    android:textSize="@dimen/raisingTextFontSize"
-                    android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/startup_public_profile_investor_type_list"
                     app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_matching"
                     app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_matching" />
@@ -328,13 +317,12 @@
 
                 <TextView
                     android:id="@+id/text_startup_public_profile_investment_phase"
+                    style="@style/RaisingTextBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/standardVerticalMargin"
                     android:hint="@string/investor_matching_phase"
                     android:textColorHint="@color/raisingPrimary"
-                    android:textSize="@dimen/raisingTextFontSize"
-                    android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/startup_public_profile_phase_list"
                     app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_type_of_investor"
                     app:layout_constraintTop_toBottomOf="@+id/startup_public_profile_investor_type_list" />
@@ -354,13 +342,12 @@
 
                 <TextView
                     android:id="@+id/text_startup_public_profile_industry"
+                    style="@style/RaisingTextBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/standardVerticalMargin"
                     android:hint="@string/investor_matching_industry"
                     android:textColorHint="@color/raisingPrimary"
-                    android:textSize="@dimen/raisingTextFontSize"
-                    android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/startup_public_profile_industry_list"
                     app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_investment_phase"
                     app:layout_constraintTop_toBottomOf="@+id/startup_public_profile_phase_list" />
@@ -380,13 +367,12 @@
 
                 <TextView
                     android:id="@+id/text_startup_public_profile_involvement"
+                    style="@style/RaisingTextBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/standardVerticalMargin"
                     android:hint="@string/investor_matching_involvement"
                     android:textColorHint="@color/raisingPrimary"
-                    android:textSize="@dimen/raisingTextFontSize"
-                    android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/startup_public_profile_involvement_list"
                     app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_industry"
                     app:layout_constraintTop_toBottomOf="@+id/startup_public_profile_industry_list" />
@@ -407,6 +393,7 @@
 
             <TextView
                 android:id="@+id/text_profile_key_figures"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
@@ -414,8 +401,6 @@
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/startup_profile_key_figures"
                 android:textColorHint="@color/raisingPrimary"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_profile_revenue_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/public_profile_matching_criteria"
@@ -424,176 +409,154 @@
 
             <TextView
                 android:id="@+id/text_profile_revenue_title"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/startup_public_profile_revenue"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_profile_fte_title"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_key_figures"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_key_figures" />
 
             <TextView
                 android:id="@+id/text_profile_revenue"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                 android:text="TextView"
-                android:textColor="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toBottomOf="@+id/text_profile_revenue_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/text_profile_revenue_title" />
 
             <TextView
                 android:id="@+id/text_profile_fte_title"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/startup_public_profile_fte"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_profile_founding_year_title"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_current_markets_title"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_revenue_title" />
 
             <TextView
                 android:id="@+id/text_profile_fte"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:text="TextView"
-                android:textColor="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toBottomOf="@+id/text_profile_fte_title"
                 app:layout_constraintEnd_toEndOf="@+id/text_profile_current_markets"
                 app:layout_constraintTop_toTopOf="@+id/text_profile_fte_title" />
 
             <TextView
                 android:id="@+id/text_profile_founding_year_title"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/startup_public_profile_founding_year"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_profile_breakeven_title"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_breakeven_title"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_fte_title" />
 
             <TextView
                 android:id="@+id/text_profile_founding_year"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:text="TextView"
-                android:textColor="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toBottomOf="@+id/text_profile_founding_year_title"
                 app:layout_constraintEnd_toEndOf="@+id/text_profile_breakeven"
                 app:layout_constraintTop_toTopOf="@+id/text_profile_founding_year_title" />
 
             <TextView
                 android:id="@+id/text_profile_breakeven_title"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/startup_public_profile_break_even"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_profile_current_markets_title"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_revenue_title"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_founding_year_title" />
 
             <TextView
                 android:id="@+id/text_profile_breakeven"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:text="TextView"
-                android:textColor="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toBottomOf="@+id/text_profile_breakeven_title"
                 app:layout_constraintEnd_toEndOf="@+id/text_profile_revenue"
                 app:layout_constraintTop_toTopOf="@+id/text_profile_breakeven_title" />
 
             <TextView
                 android:id="@+id/text_profile_current_markets_title"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/startup_public_profile_markets"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_profile_financial"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_founding_year_title"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_breakeven_title" />
 
             <TextView
                 android:id="@+id/text_profile_current_markets"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:text="TextView"
-                android:textColor="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toBottomOf="@+id/text_profile_current_markets_title"
                 app:layout_constraintEnd_toEndOf="@+id/text_profile_founding_year"
                 app:layout_constraintTop_toTopOf="@+id/text_profile_current_markets_title" />
 
             <TextView
                 android:id="@+id/text_profile_financial"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/startup_profile_financial_requirements"
                 android:textColorHint="@color/raisingPrimary"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_profile_valuation_title"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_key_figures"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_current_markets_title" />
 
             <TextView
                 android:id="@+id/text_profile_valuation_title"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/startup_public_profile_valuation"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_profile_investment_type_title"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_investment_type_title"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_financial" />
 
             <TextView
                 android:id="@+id/text_profile_valuation"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:text="TextView"
-                android:textColor="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toBottomOf="@+id/text_profile_valuation_title"
                 app:layout_constraintEnd_toEndOf="@+id/text_profile_investment_type"
                 app:layout_constraintTop_toTopOf="@+id/text_profile_valuation_title" />
 
             <TextView
                 android:id="@+id/text_profile_investment_type_title"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/startup_public_profile_type"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_startup_public_profile_scope_title"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_financial"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_valuation_title" />
 
             <TextView
                 android:id="@+id/text_profile_investment_type"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:text="TextView"
-                android:textColor="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toBottomOf="@+id/text_profile_investment_type_title"
                 app:layout_constraintEnd_toEndOf="@+id/text_profile_fte"
                 app:layout_constraintTop_toTopOf="@+id/text_profile_investment_type_title" />
@@ -611,131 +574,115 @@
 
             <TextView
                 android:id="@+id/text_startup_public_profile_scope_title"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/register_financial_scope"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_startup_public_profile_min_ticket_title"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_completed_title"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_investment_type_title" />
 
             <TextView
                 android:id="@+id/text_startup_public_profile_actual_scope"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                 android:text="TextView"
-                android:textColor="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toBottomOf="@+id/text_startup_public_profile_scope_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/text_startup_public_profile_scope_title" />
 
             <TextView
                 android:id="@+id/text_startup_public_profile_min_ticket_title"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/investor_matching_min_ticket"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_startup_public_profile_max_ticket_title"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_scope_title"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_scope_title" />
 
             <TextView
                 android:id="@+id/text_startup_public_profile_min_ticket"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Min Ticket"
-                android:textColor="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toBottomOf="@+id/text_startup_public_profile_min_ticket_title"
                 app:layout_constraintEnd_toEndOf="@+id/text_startup_public_profile_actual_scope"
                 app:layout_constraintTop_toTopOf="@+id/text_startup_public_profile_min_ticket_title" />
 
             <TextView
                 android:id="@+id/text_startup_public_profile_max_ticket_title"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/investor_matching_max_ticket"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_profile_closing_time_title"
                 app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_min_ticket_title"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_min_ticket_title" />
 
             <TextView
                 android:id="@+id/text_startup_public_profile_max_ticket"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Max Ticket"
-                android:textColor="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toBottomOf="@+id/text_startup_public_profile_max_ticket_title"
                 app:layout_constraintEnd_toEndOf="@+id/text_startup_public_profile_min_ticket"
                 app:layout_constraintTop_toTopOf="@+id/text_startup_public_profile_max_ticket_title" />
 
             <TextView
                 android:id="@+id/text_profile_closing_time_title"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/startup_public_profile_closing_time"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_profile_completed_title"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_valuation_title"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_max_ticket_title" />
 
             <TextView
                 android:id="@+id/text_profile_closing_time"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:text="TextView"
-                android:textColor="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toBottomOf="@+id/text_profile_closing_time_title"
                 app:layout_constraintEnd_toEndOf="@+id/text_profile_valuation"
                 app:layout_constraintTop_toTopOf="@+id/text_profile_closing_time_title" />
 
             <TextView
                 android:id="@+id/text_profile_completed_title"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/startup_public_profile_completed"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_profile_founders"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_closing_time_title"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_closing_time_title" />
 
             <TextView
                 android:id="@+id/text_profile_completed"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:text="TextView"
-                android:textColor="@color/raisingTextColor"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toBottomOf="@+id/text_profile_completed_title"
                 app:layout_constraintEnd_toEndOf="@+id/text_profile_closing_time"
                 app:layout_constraintTop_toTopOf="@+id/text_profile_completed_title" />
 
             <TextView
                 android:id="@+id/text_profile_founders"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/startup_public_profile_founder"
                 android:textColorHint="@color/raisingPrimary"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/startup_profile_founder_list"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_financial"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_completed_title" />
@@ -754,13 +701,12 @@
 
             <TextView
                 android:id="@+id/text_profile_board_member"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/startup_public_profile_board_member"
                 android:textColorHint="@color/raisingPrimary"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/startup_profile_board_member_list"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_founders"
                 app:layout_constraintTop_toBottomOf="@+id/startup_profile_founder_list" />
@@ -779,13 +725,12 @@
 
             <TextView
                 android:id="@+id/text_profile_shareholder"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_stakeholder_shareholder"
                 android:textColorHint="@color/raisingPrimary"
-                android:textSize="@dimen/raisingTextFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_equity_chart"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_board_member"
                 app:layout_constraintTop_toBottomOf="@+id/startup_profile_board_member_list" />

@@ -91,12 +91,12 @@
     <string name="register_profile_phone"> Phone Number* </string>
 
     <string name="toolbar_title_matching_criteria"> Matching Criteria</string>
-    <string name="register_matching_ticket_size"> Ticket Size </string>
-    <string name="register_matching_investor"> Type of investor </string>
-    <string name="register_matching_phase"> Phase </string>
-    <string name="register_matching_industry"> Industry </string>
-    <string name="register_matching_support"> Desired involvement </string>
-    <string name="register_matching_geographics_input"> Geographic preferences </string>
+    <string name="register_matching_ticket_size"> Ticket Size* </string>
+    <string name="register_matching_investor"> Type of investor* </string>
+    <string name="register_matching_phase"> Phase* </string>
+    <string name="register_matching_industry"> Industry* </string>
+    <string name="register_matching_support"> Desired involvement* </string>
+    <string name="register_matching_geographics_input"> Geographic preferences* </string>
     <string name="register_matching_geographics"> Geographics </string>
 
     <string name="toolbar_title_pitch"> Description &amp; Pitch </string>

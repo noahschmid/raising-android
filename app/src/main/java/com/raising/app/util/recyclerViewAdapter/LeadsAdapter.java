@@ -58,7 +58,7 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
             case HANDSHAKE:
                 if(stateEnum == LeadState.YOUR_TURN || stateEnum == LeadState.PENDING) {
                     tintColor = R.color.raisingSecondaryDark;
-                    drawableId = R.drawable.ic_handshake_24dp;
+                    drawableId = R.drawable.ic_raising_handshake_full;
                 } else if(stateEnum == LeadState.CLOSED) {
                     tintColor = R.color.raisingPositive;
                     drawableId = R.drawable.ic_check_circle_24dp;

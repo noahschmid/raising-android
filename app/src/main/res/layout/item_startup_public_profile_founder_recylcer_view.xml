@@ -12,8 +12,7 @@
         android:layout_height="0dp"
         android:gravity="center|end"
         android:text="Education"
-        android:textColor="@color/raisingTextColor"
-        android:textSize="@dimen/raisingTextFontSize"
+        style="@style/RaisingText"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_founder_education_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_startup_founder_education_title" />
@@ -23,9 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Position"
-        android:textColor="@color/raisingTextColor"
-        android:textSize="@dimen/raisingTextFontSize"
-        android:textStyle="bold"
+        style="@style/RaisingTextBold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,9 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/startup_public_profile_education"
-        android:textColorHint="@color/raisingTextColor"
-        android:textSize="@dimen/raisingTextFontSize"
-        android:textStyle="bold"
+        style="@style/RaisingTextBold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_startup_founder_position" />
 
@@ -45,8 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:text="Name"
-        android:textColor="@color/raisingTextColor"
-        android:textSize="@dimen/raisingTextFontSize"
+        style="@style/RaisingText"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_founder_position"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_startup_founder_position" />

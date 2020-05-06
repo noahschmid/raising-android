@@ -17,7 +17,7 @@
 
             <TextView
                 android:id="@+id/textView18"
-                style="@style/RaisingStandardParagraph"
+                style="@style/RaisingText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
@@ -32,7 +32,7 @@
 
             <TextView
                 android:id="@+id/textView16"
-                style="@style/RaisingStandardParagraph"
+                style="@style/RaisingText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
@@ -43,7 +43,7 @@
 
             <TextView
                 android:id="@+id/textView15"
-                style="@style/RaisingStandardParagraph"
+                style="@style/RaisingText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
@@ -54,7 +54,7 @@
 
             <TextView
                 android:id="@+id/textView6"
-                style="@style/RaisingStandardParagraphBold"
+                style="@style/RaisingTextBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/settings_about_sponsorship"
@@ -64,7 +64,7 @@
 
             <TextView
                 android:id="@+id/textView7"
-                style="@style/RaisingStandardParagraph"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
@@ -75,7 +75,7 @@
 
             <TextView
                 android:id="@+id/textView8"
-                style="@style/RaisingStandardParagraphBold"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/settings_about_supervision"
@@ -85,7 +85,7 @@
 
             <TextView
                 android:id="@+id/textView17"
-                style="@style/RaisingStandardParagraph"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
@@ -96,7 +96,7 @@
 
             <TextView
                 android:id="@+id/textView9"
-                style="@style/RaisingStandardParagraphBold"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/settings_about_idea"
@@ -106,7 +106,7 @@
 
             <TextView
                 android:id="@+id/textView10"
-                style="@style/RaisingStandardParagraph"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
@@ -117,7 +117,7 @@
 
             <TextView
                 android:id="@+id/textView11"
-                style="@style/RaisingStandardParagraphBold"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/settings_about_management"
@@ -127,7 +127,7 @@
 
             <TextView
                 android:id="@+id/textView12"
-                style="@style/RaisingStandardParagraph"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
@@ -138,7 +138,7 @@
 
             <TextView
                 android:id="@+id/textView13"
-                style="@style/RaisingStandardParagraphBold"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/settings_about_graphics"
@@ -148,7 +148,7 @@
 
             <TextView
                 android:id="@+id/textView14"
-                style="@style/RaisingStandardParagraph"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"

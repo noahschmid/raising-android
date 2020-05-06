@@ -30,13 +30,11 @@
 
             <TextView
                 android:id="@+id/leads_contact_name"
+                style="@style/RaisingTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:text="Name"
-                android:textColor="@color/raisingTextColorDark"
-                android:textSize="@dimen/raisingTitleFontSize"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/leads_contact_mail"
                 app:layout_constraintEnd_toEndOf="@+id/leads_contact_picture"
                 app:layout_constraintStart_toStartOf="@+id/leads_contact_picture"
@@ -44,13 +42,12 @@
 
             <TextView
                 android:id="@+id/leads_contact_mail"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:text="E-Mail"
-                android:textColor="@color/raisingTextColorDark"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/leads_contact_phone"
                 app:layout_constraintEnd_toEndOf="@+id/leads_contact_name"
                 app:layout_constraintStart_toStartOf="@+id/leads_contact_name"
@@ -58,13 +55,12 @@
 
             <TextView
                 android:id="@+id/leads_contact_phone"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:text="@string/phone_number"
-                android:textColor="@color/raisingTextColorDark"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/button_leads_contact_interact"
                 app:layout_constraintEnd_toEndOf="@+id/leads_contact_name"
                 app:layout_constraintStart_toStartOf="@+id/leads_contact_name"
@@ -84,11 +80,11 @@
 
             <TextView
                 android:id="@+id/leads_contact_save_contact"
+                style="@style/RaisingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/leads_contact_save_contact"
                 android:textColorHint="@color/raisingActionBlue"
-                android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/button_leads_contact_interact"
                 app:layout_constraintStart_toStartOf="@+id/button_leads_contact_interact"

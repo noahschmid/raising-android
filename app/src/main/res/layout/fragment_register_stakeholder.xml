@@ -22,9 +22,7 @@
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_stakeholder_founder"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingSubtitleFontSize"
-                android:textStyle="bold"
+                style="@style/RaisingSubtitleBold"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_founder_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_founder_recycler_view"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -63,9 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_stakeholder_board_member"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingSubtitleFontSize"
-                android:textStyle="bold"
+                style="@style/RaisingSubtitleBold"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_board_member_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_board_member_recycler_view"
                 app:layout_constraintTop_toBottomOf="@+id/button_add_founder" />
@@ -102,9 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_stakeholder_shareholder"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingSubtitleFontSize"
-                android:textStyle="bold"
+                style="@style/RaisingSubtitleBold"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_shareholder_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_shareholder_recycler_view"
                 app:layout_constraintTop_toBottomOf="@+id/button_add_board_member" />

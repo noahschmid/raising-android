@@ -120,7 +120,7 @@
 
         <TextView
             android:id="@+id/textView25"
-            style="@style/RaisingSubtitleText"
+            style="@style/RaisingSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/standardVerticalMargin"
@@ -135,7 +135,7 @@
 
         <TextView
             android:id="@+id/textView26"
-            style="@style/RaisingSubtitleText"
+            style="@style/RaisingSubtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standardHorizontalMargin"

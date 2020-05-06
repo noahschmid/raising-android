@@ -27,9 +27,7 @@
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_matching_ticket_size"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingSubtitleFontSize"
-                android:textStyle="bold"
+                style="@style/RaisingSubtitleBold"
                 app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_ticket_size"
                 app:layout_constraintStart_toStartOf="@+id/register_investor_matching_ticket_size"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -65,9 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_matching_investor"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingSubtitleFontSize"
-                android:textStyle="bold"
+                style="@style/RaisingSubtitleBold"
                 app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_radio_investor"
                 app:layout_constraintStart_toStartOf="@+id/text_investor_matching_ticket"
                 app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_ticket_size_text" />
@@ -91,9 +87,7 @@
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_matching_phase"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingSubtitleFontSize"
-                android:textStyle="bold"
+                style="@style/RaisingSubtitleBold"
                 app:layout_constraintStart_toStartOf="@+id/text_investor_matching_investor"
                 app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_radio_investor" />
 
@@ -120,9 +114,7 @@
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_matching_industry"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingSubtitleFontSize"
-                android:textStyle="bold"
+                style="@style/RaisingSubtitleBold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_phase_layout" />
 
@@ -149,9 +141,7 @@
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_matching_support"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingSubtitleFontSize"
-                android:textStyle="bold"
+                style="@style/RaisingSubtitleBold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_industry_layout" />
 
