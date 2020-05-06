@@ -16,10 +16,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.billingclient.api.AcknowledgePurchaseParams;
+import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.google.android.material.card.MaterialCardView;
@@ -70,10 +73,13 @@ public class SubscriptionFragment extends RaisingFragment {
 
         billingClient = BillingClient.newBuilder(getContext())
                 .setListener((billingResult, list) -> {
-                    if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && list != null) {
                         //TODO: billing successful
                         Log.d(TAG, "onViewCreated: Purchase successful" + billingResult.getResponseCode());
                         Log.d(TAG, "onViewCreated: Purchase list" + list);
+                        list.forEach(purchase -> {
+                            handlePurchase(purchase);
+                        });
                     } else {
                         //TODO: billing not successful
                         Log.d(TAG, "onViewCreated: Purchase failed: " + billingResult.getResponseCode());
@@ -95,7 +101,45 @@ public class SubscriptionFragment extends RaisingFragment {
                 //TODO: restart billing server here
             }
         });
+    }
 
+    private void handlePurchase(Purchase purchase) {
+        if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+            if (!purchase.isAcknowledged()) {
+                AcknowledgePurchaseParams acknowledgePurchaseParams =
+                        AcknowledgePurchaseParams.newBuilder()
+                                .setPurchaseToken(purchase.getPurchaseToken())
+                                .build();
+                billingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
+                    if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        //TODO: purchase acknowledged, grant object to user
+                    }
+                });
+            } else if(purchase.isAcknowledged()) {
+                //TODO: grant object to user
+            }
+        }
+    }
+
+    private void showGoogleBilling(SkuDetails skuDetails, boolean hasSubscription) {
+        Log.d(TAG, "showGoogleBilling: SkuDetails: " + skuDetails);
+        if (billingClient.isFeatureSupported("subscriptions").getResponseCode() == BillingClient.BillingResponseCode.OK
+                && billingClient.isFeatureSupported("subscriptionsUpdate").getResponseCode() == BillingClient.BillingResponseCode.OK) {
+            BillingFlowParams flowParams;
+            if(hasSubscription) {
+                flowParams = BillingFlowParams.newBuilder()
+                        .setSkuDetails(skuDetails)
+                        .setOldSku(currentAccount.getActiveSubscription().getSku(),
+                                currentAccount.getActiveSubscription().getPurchaseToken())
+                        .build();
+            } else {
+                flowParams = BillingFlowParams.newBuilder()
+                        .setSkuDetails(skuDetails)
+                        .build();
+            }
+            BillingResult responseCode = billingClient.launchBillingFlow(this.getActivity(), flowParams);
+            Log.d(TAG, "showGoogleBilling: BillingResponseCode: " + responseCode.getDebugMessage());
+        }
     }
 
     /**
@@ -211,18 +255,6 @@ public class SubscriptionFragment extends RaisingFragment {
         });
     }
 
-    private void showGoogleBilling(SkuDetails skuDetails) {
-        Log.d(TAG, "showGoogleBilling: SkuDetails: " + skuDetails);
-        if (billingClient.isFeatureSupported("subscriptions").getResponseCode() == BillingClient.BillingResponseCode.OK
-                && billingClient.isFeatureSupported("subscriptionsUpdate").getResponseCode() == BillingClient.BillingResponseCode.OK) {
-            BillingFlowParams flowParams = BillingFlowParams.newBuilder()
-                    .setSkuDetails(skuDetails)
-                    .build();
-            BillingResult responseCode = billingClient.launchBillingFlow(this.getActivity(), flowParams);
-            Log.d(TAG, "showGoogleBilling: BillingResponseCode: " + responseCode.getDebugMessage());
-        }
-    }
-
     /**
      * Process a click on a certain card
      *
@@ -234,12 +266,12 @@ public class SubscriptionFragment extends RaisingFragment {
         } else if (!activeSubscriptionExists()) {
             // purchase subscription
             if (showAlertDialog(getString(R.string.subscription_dialog_subscribe_title), getString(R.string.subscribtion_dialog_subscribe_text))) {
-                showGoogleBilling(sku);
+                showGoogleBilling(sku, false);
             }
         } else {
             // up-/downgrade your subscription
             if (showAlertDialog(getString(R.string.subscription_dialog_subscribe_title), getString(R.string.subscribtion_dialog_subscribe_text))) {
-                showGoogleBilling(sku);
+                showGoogleBilling(sku, true);
             }
         }
         refreshSubscriptionsLayout();
@@ -263,6 +295,7 @@ public class SubscriptionFragment extends RaisingFragment {
         Subscription subscription = new Subscription();
         subscription.setSku(sku.getSku());
         subscription.setDuration(getSkuDuration(sku));
+        subscription.setSkuDetails(sku);
         subscription.setPurchaseDate(currentAccount.getActiveSubscription().getExpirationDate());
 
         // set expiration date
@@ -286,6 +319,7 @@ public class SubscriptionFragment extends RaisingFragment {
         Subscription subscription = new Subscription();
         subscription.setSku(sku.getSku());
         subscription.setDuration(getSkuDuration(sku));
+        subscription.setSkuDetails(sku);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
