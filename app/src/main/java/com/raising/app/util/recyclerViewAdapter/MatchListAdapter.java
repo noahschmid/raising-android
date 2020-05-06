@@ -64,9 +64,8 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
                             recyclerItem.getPictureId())
                     .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                     .apply(RequestOptions.circleCropTransform())
-                    .skipMemoryCache(true)
                     .placeholder(R.drawable.ic_placeholder_24dp)
                     .into(holder.profileImage);
         } else {
