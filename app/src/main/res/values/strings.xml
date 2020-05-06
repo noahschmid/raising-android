@@ -31,6 +31,7 @@
     <string name="submit_text"> Submit </string>
     <string name="register_button_text"> Continue </string>
     <string name="register_button_finish_text"> Finish </string>
+    <string name="try_again_text"> Try again</string>
 
     <string name="simple_dialog_invalid_input_title">Invalid inputs</string>
 
@@ -318,6 +319,9 @@
     <string name="subscription_cancel_confirmation_title"> Subscription Cancelled</string>
     <string name="subscription_cancel_confirmation_text"> You have successfully cancelled your subscription to Rai$ing. \n \n</string>
     <string name="subscription_subscribe">Subscribe</string>
+    <string name="billing_connection_failed_title">No connection</string>
+    <string name="billing_connection_failed_text"> We are currently unable to connect to Google\'s Billing Server</string>
+    <string name="billing_connection_issue_text"> There is an issue with Google\'s Billing Service</string>
 
     <!-- Strings used in ForgotPasswordScreens -->
     <string name="reset_email_input_placeholder"> E-Mail </string>

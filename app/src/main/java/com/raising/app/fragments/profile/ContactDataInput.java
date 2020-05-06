@@ -90,6 +90,7 @@ public class ContactDataInput extends RaisingFragment {
             AuthenticationHandler.login(contactDetails.getEmail(),
                     token, accountId, isStartup);
             accountViewModel.loadAccount();
+            settingsViewModel.loadSettings();
             AccountService.loadContactData(AuthenticationHandler.getId());
             hideBottomNavigation(false);
 

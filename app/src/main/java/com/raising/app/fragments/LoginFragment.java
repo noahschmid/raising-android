@@ -158,6 +158,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                                             response.getString("token"),
                                             response.getLong("id"), isStartup);
                                     accountViewModel.loadAccount();
+                                    settingsViewModel.loadSettings();
 
                                     if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
                                         clearBackstackAndReplace(new OnboardingPost1Fragment());

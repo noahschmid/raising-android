@@ -1,17 +1,14 @@
 package com.raising.app.viewModels;
 
 import android.app.Application;
-import android.app.Person;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.gson.Gson;
 import com.raising.app.models.NotificationSettings;
 import com.raising.app.models.PersonalSettings;
 import com.raising.app.models.ViewState;
@@ -48,6 +45,7 @@ public class SettingsViewModel extends AndroidViewModel {
 
     public void loadSettings() {
         Log.d(TAG, "loadSettings: Loading Settings");
+        updateDeviceToken();
         viewState.setValue(ViewState.LOADING);
         Log.d(TAG, "loadSettings: ViewState " + viewState.getValue().toString());
         PersonalSettings cachedSettings = getCachedSettings();
@@ -60,14 +58,41 @@ public class SettingsViewModel extends AndroidViewModel {
         }
     }
 
+    private void updateDeviceToken() {
+        viewState.setValue(ViewState.LOADING);
+        JSONObject object = new JSONObject();
+        // device specifications
+        String deviceToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "sendDeviceToken: DeviceToken" + deviceToken);
+
+        try {
+            object.put("token", deviceToken);
+            object.put("device", "ANDROID");
+        } catch (JSONException e) {
+            Log.e(TAG, "sendDeviceToken: JSONException" + e.getMessage());
+        }
+
+        ApiRequestHandler.performPatchRequest("settings",
+                response -> {
+                    viewState.setValue(ViewState.RESULT);
+                    Log.d(TAG, "sendDeviceToken: Token updated" + deviceToken);
+                    return null;
+                }, volleyError -> {
+                    viewState.setValue(ViewState.ERROR);
+                    Log.e(TAG, "sendDeviceToken: Update failed" + volleyError.getMessage());
+                    return null;
+                }, object);
+    }
+
     private void getUserSettings() {
         ApiRequestHandler.performGetRequest("settings",
                 response -> {
+                    viewState.setValue(ViewState.RESULT);
                     try {
                         personalSettings.getValue().setLanguage(response.getString("language"));
                         personalSettings.getValue().setNumberOfMatches(response.getInt("numberOfMatches"));
                         JSONArray notificationSettings = response.getJSONArray("notificationTypes");
-                        for(int i = 0; i < notificationSettings.length(); i++) {
+                        for (int i = 0; i < notificationSettings.length(); i++) {
                             personalSettings.getValue().getNotificationSettings().add(Enum.valueOf(NotificationSettings.class, notificationSettings.getString(i)));
                         }
                         Log.d(TAG, "getUserSettings: Personal Settings" + personalSettings.getValue());
@@ -77,6 +102,7 @@ public class SettingsViewModel extends AndroidViewModel {
                     }
                     return null;
                 }, volleyError -> {
+                    viewState.setValue(ViewState.ERROR);
                     Log.d(TAG, "getUserSettings: Error fetching settings" + volleyError.toString());
                     return null;
                 });

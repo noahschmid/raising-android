@@ -42,7 +42,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top"
-                    android:minHeight="@dimen/inputOneSentenceDescriptionHeight" />
+                    android:minHeight="@dimen/inputOneSentenceDescriptionHeight"
+                    android:inputType="text|textCapSentences|textAutoComplete"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -70,7 +71,8 @@
                     android:minHeight="@dimen/inputPitchHeight"
                     android:overScrollMode="always"
                     android:scrollbarStyle="insideInset"
-                    android:scrollbars="vertical" />
+                    android:scrollbars="vertical"
+                    android:inputType="text|textCapSentences|textAutoComplete" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout

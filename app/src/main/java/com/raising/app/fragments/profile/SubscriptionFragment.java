@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.billingclient.api.AcknowledgePurchaseParams;
-import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
@@ -73,7 +72,7 @@ public class SubscriptionFragment extends RaisingFragment {
 
         billingClient = BillingClient.newBuilder(getContext())
                 .setListener((billingResult, list) -> {
-                    if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && list != null) {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && list != null) {
                         //TODO: billing successful
                         Log.d(TAG, "onViewCreated: Purchase successful" + billingResult.getResponseCode());
                         Log.d(TAG, "onViewCreated: Purchase list" + list);
@@ -81,12 +80,28 @@ public class SubscriptionFragment extends RaisingFragment {
                             handlePurchase(purchase);
                         });
                     } else {
-                        //TODO: billing not successful
                         Log.d(TAG, "onViewCreated: Purchase failed: " + billingResult.getResponseCode());
+                        switch (billingResult.getResponseCode()) {
+                            case BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED:
+                                break;
+                            case BillingClient.BillingResponseCode.SERVICE_DISCONNECTED:
+                            case BillingClient.BillingResponseCode.SERVICE_TIMEOUT:
+                            case BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE:
+                                showSimpleDialog(getString(R.string.billing_connection_failed_title), getString(R.string.billing_connection_issue_text));
+                                break;
+                            case BillingClient.BillingResponseCode.ERROR:
+                                displayGenericError();
+                                break;
+                        }
                     }
                 })
                 .enablePendingPurchases()
                 .build();
+
+        startBillingConnection();
+    }
+
+    private void startBillingConnection() {
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
             public void onBillingSetupFinished(BillingResult billingResult) {
@@ -98,7 +113,8 @@ public class SubscriptionFragment extends RaisingFragment {
 
             @Override
             public void onBillingServiceDisconnected() {
-                //TODO: restart billing server here
+                showSimpleDialog(getString(R.string.billing_connection_failed_title),
+                        getString(R.string.billing_connection_failed_text));
             }
         });
     }
@@ -111,12 +127,12 @@ public class SubscriptionFragment extends RaisingFragment {
                                 .setPurchaseToken(purchase.getPurchaseToken())
                                 .build();
                 billingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
-                    if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                        //TODO: purchase acknowledged, grant object to user
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        grantPurchase(purchase);
                     }
                 });
-            } else if(purchase.isAcknowledged()) {
-                //TODO: grant object to user
+            } else {
+                grantPurchase(purchase);
             }
         }
     }
@@ -126,7 +142,7 @@ public class SubscriptionFragment extends RaisingFragment {
         if (billingClient.isFeatureSupported("subscriptions").getResponseCode() == BillingClient.BillingResponseCode.OK
                 && billingClient.isFeatureSupported("subscriptionsUpdate").getResponseCode() == BillingClient.BillingResponseCode.OK) {
             BillingFlowParams flowParams;
-            if(hasSubscription) {
+            if (hasSubscription) {
                 flowParams = BillingFlowParams.newBuilder()
                         .setSkuDetails(skuDetails)
                         .setOldSku(currentAccount.getActiveSubscription().getSku(),
@@ -159,6 +175,22 @@ public class SubscriptionFragment extends RaisingFragment {
                         Log.d(TAG, "onSkuDetailsResponse: Bad response: " + billingResult.getDebugMessage());
                     }
                 });
+    }
+
+    private void grantPurchase(Purchase purchase) {
+        if (currentAccount.getActiveSubscription() == null) {
+            skuDetailsArrayList.forEach(skuDetails -> {
+                if (skuDetails.getSku().equals(purchase.getSku())) {
+                    setActiveSubscription(skuDetails, purchase.getPurchaseToken());
+                }
+            });
+        } else {
+            skuDetailsArrayList.forEach(skuDetails -> {
+                if (skuDetails.getSku().equals(purchase.getSku())) {
+                    setNextSubscription(skuDetails, purchase.getPurchaseToken());
+                }
+            });
+        }
     }
 
     private void refreshSubscriptionsLayout() {
@@ -265,12 +297,14 @@ public class SubscriptionFragment extends RaisingFragment {
             showSimpleDialog(getString(R.string.subscription_error_cannot_add_title), getString(R.string.subscription_error_cannot_add_text));
         } else if (!activeSubscriptionExists()) {
             // purchase subscription
-            if (showAlertDialog(getString(R.string.subscription_dialog_subscribe_title), getString(R.string.subscribtion_dialog_subscribe_text))) {
+            if (showAlertDialog(getString(R.string.subscription_dialog_subscribe_title),
+                    getString(R.string.subscribtion_dialog_subscribe_text))) {
                 showGoogleBilling(sku, false);
             }
         } else {
             // up-/downgrade your subscription
-            if (showAlertDialog(getString(R.string.subscription_dialog_subscribe_title), getString(R.string.subscribtion_dialog_subscribe_text))) {
+            if (showAlertDialog(getString(R.string.subscription_dialog_subscribe_title),
+                    getString(R.string.subscribtion_dialog_subscribe_text))) {
                 showGoogleBilling(sku, true);
             }
         }
@@ -291,8 +325,9 @@ public class SubscriptionFragment extends RaisingFragment {
      *
      * @param sku The skuDetails of the subscription that should become the users next subscription
      */
-    private void setNextSubscription(SkuDetails sku) {
+    private void setNextSubscription(SkuDetails sku, String purchaseToken) {
         Subscription subscription = new Subscription();
+        subscription.setPurchaseToken(purchaseToken);
         subscription.setSku(sku.getSku());
         subscription.setDuration(getSkuDuration(sku));
         subscription.setSkuDetails(sku);
@@ -315,8 +350,9 @@ public class SubscriptionFragment extends RaisingFragment {
      *
      * @param sku The skuDetails of the chosen subscription
      */
-    private void setCurrentSubscription(SkuDetails sku) {
+    private void setActiveSubscription(SkuDetails sku, String purchaseToken) {
         Subscription subscription = new Subscription();
+        subscription.setPurchaseToken(purchaseToken);
         subscription.setSku(sku.getSku());
         subscription.setDuration(getSkuDuration(sku));
         subscription.setSkuDetails(sku);
@@ -332,7 +368,7 @@ public class SubscriptionFragment extends RaisingFragment {
                 + " " + subscription.getPurchaseDate().getTime().toString()
                 + " " + subscription.getExpirationDateString());
         currentAccount.setActiveSubscription(subscription);
-        setNextSubscription(sku);
+        setNextSubscription(sku, purchaseToken);
     }
 
     /**

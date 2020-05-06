@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onCreate: User[" + AuthenticationHandler.getId()
                         + "] with email " + AccountService.getContactData().getEmail()
                         + " logged in");
+                settingsViewModel.loadSettings();
                 accountViewModel.loadAccount();
                 hideBottomNavigation(false);
                 fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
