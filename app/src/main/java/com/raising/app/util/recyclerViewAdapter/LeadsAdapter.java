@@ -91,8 +91,7 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
                             recyclerItem.getProfilePictureId())
                     .centerCrop()
                     .apply(RequestOptions.circleCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                     .placeholder(R.drawable.ic_placeholder_24dp)
                     .into(holder.profilePicture);
         } else {

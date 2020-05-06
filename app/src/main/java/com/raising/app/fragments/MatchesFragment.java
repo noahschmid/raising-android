@@ -66,7 +66,6 @@ public class MatchesFragment extends RaisingFragment {
         matchesViewModel = ViewModelProviders.of(getActivity())
                 .get(MatchesViewModel.class);
 
-        matchesViewModel.runMatching();
         matchesViewModel.loadMatches();
 
         matchesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
@@ -122,7 +121,6 @@ public class MatchesFragment extends RaisingFragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                matchesViewModel.runMatching();
                 matchesViewModel.loadMatches();
             }
         });

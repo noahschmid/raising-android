@@ -173,8 +173,7 @@ public class RaisingFragment extends Fragment {
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" + id)
                     .centerCrop()
                     .apply(RequestOptions.circleCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                     .placeholder(R.drawable.ic_placeholder_24dp)
                     .into(imageView);
         }

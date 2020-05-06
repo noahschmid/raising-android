@@ -370,6 +370,7 @@
     <string name="wrong_reset_code">Entered code is invalid!</string>
     <string name="permissionTitle">Missing Permissions</string>
     <string name="permissionText">We need permission to your phone\'s storage in order for you to upload pictures.</string>
+    <string name="leads_tab_this_month">This Month</string>
 
     <string-array name="revenue_units">
         <item>K</item>
