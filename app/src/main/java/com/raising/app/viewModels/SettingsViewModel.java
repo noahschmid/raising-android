@@ -89,7 +89,6 @@ public class SettingsViewModel extends AndroidViewModel {
                 response -> {
                     viewState.setValue(ViewState.RESULT);
                     try {
-                        personalSettings.getValue().setLanguage(response.getString("language"));
                         personalSettings.getValue().setNumberOfMatches(response.getInt("numberOfMatches"));
                         JSONArray notificationSettings = response.getJSONArray("notificationTypes");
                         for (int i = 0; i < notificationSettings.length(); i++) {
@@ -134,7 +133,6 @@ public class SettingsViewModel extends AndroidViewModel {
 
             //TODO: add following fields, once backend supports these values
 
-            object.put("language", personalSettings.getValue().getLanguage());
             object.put("numberOfMatches", personalSettings.getValue().getNumberOfMatches());
 
             Log.d(TAG, "updatePersonalSettings: JSONObject" + object.toString());
@@ -182,6 +180,7 @@ public class SettingsViewModel extends AndroidViewModel {
         } catch (Exception e) {
             viewState.setValue(ViewState.ERROR);
             Log.e(TAG, "getCachedSettings: Error while getting cached settings" + e.getMessage());
+            addInitialSettings();
         }
         return null;
     }
@@ -194,7 +193,6 @@ public class SettingsViewModel extends AndroidViewModel {
         Log.d(TAG, "addInitialSettings: ViewState " + viewState.getValue().toString());
         PersonalSettings initialSettings = new PersonalSettings();
 
-        initialSettings.setLanguage("English");
         initialSettings.setNumberOfMatches(5);
 
         ArrayList<NotificationSettings> notificationSettings = new ArrayList<>();
@@ -225,7 +223,6 @@ public class SettingsViewModel extends AndroidViewModel {
 
             //TODO: add following fields, once backend supports these values
 
-            object.put("language", personalSettings.getValue().getLanguage());
             object.put("numberOfMatches", personalSettings.getValue().getNumberOfMatches());
 
             Log.d(TAG, "addInitialSettings: JSONObject" + object.toString());

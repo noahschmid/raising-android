@@ -38,7 +38,7 @@ import java.util.Set;
 public class SettingsFragment extends RaisingFragment implements View.OnClickListener {
     private final String TAG = "SettingsFragment";
     private Button btnNotifications, btnAbout, btnReportProblem, btnFeedback, btnOnboarding, btnLogout;
-    private AutoCompleteTextView languageInput, matchNumberInput;
+    private AutoCompleteTextView matchNumberInput;
     private PersonalSettings personalSettings;
 
     @Override
@@ -66,14 +66,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         btnLogout.setOnClickListener(this);
         btnOnboarding = view.findViewById(R.id.button_settings_onboarding);
         btnOnboarding.setOnClickListener(this);
-
-        ArrayList<String> languages = new ArrayList<>();
-        languages.add("English");
-        NoFilterArrayAdapter<String> adapterType = new NoFilterArrayAdapter(getContext(),
-                R.layout.item_dropdown_menu, languages);
-
-        languageInput = view.findViewById(R.id.settings_language_input);
-        languageInput.setAdapter(adapterType);
 
         ArrayList<Integer> integers = new ArrayList<>();
         for(int i = 0; i < getResources().getInteger(R.integer.maximumWeeklyMatchesNumber); i++) {
@@ -154,7 +146,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
 
     private void populateSettings() {
         if(personalSettings != null) {
-            languageInput.setText(personalSettings.getLanguage());
             matchNumberInput.setText(String.valueOf(personalSettings.getNumberOfMatches()));
         } else {
             settingsViewModel.addInitialSettings();
@@ -172,7 +163,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         super.onDestroy();
         Log.d(TAG, "onDestroy: Updating Settings");
 
-        personalSettings.setLanguage(languageInput.getText().toString());
         personalSettings.setNumberOfMatches(Integer.parseInt(matchNumberInput.getText().toString()));
 
         settingsViewModel.updatePersonalSettings(personalSettings);

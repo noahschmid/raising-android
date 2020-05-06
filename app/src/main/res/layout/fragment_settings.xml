@@ -17,41 +17,22 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/settings_language_layout"
+                android:id="@+id/settings_matches_layout"
                 style="@style/TextInputExposedDropdownMenuTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/settings_language"
-                app:layout_constraintBottom_toTopOf="@+id/settings_matches_layout"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:hint="@string/settings_weekly_matches"
+                app:helperTextEnabled="true"
+                app:layout_constraintBottom_toTopOf="@+id/button_settings_notifications"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintVertical_chainStyle="packed">
-
-                <AutoCompleteTextView
-                    android:id="@+id/settings_language_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight"
-                    android:focusable="false" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/settings_matches_layout"
-                style="@style/TextInputExposedDropdownMenuTheme"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:hint="@string/settings_weekly_matches"
-                app:helperTextEnabled="true"
-                app:layout_constraintBottom_toTopOf="@+id/button_settings_notifications"
-                app:layout_constraintEnd_toEndOf="@+id/settings_language_layout"
-                app:layout_constraintStart_toStartOf="@+id/settings_language_layout"
-                app:layout_constraintTop_toBottomOf="@+id/settings_language_layout">
 
                 <AutoCompleteTextView
                     android:id="@+id/settings_matches_input"
