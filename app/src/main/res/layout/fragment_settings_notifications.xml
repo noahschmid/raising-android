@@ -18,6 +18,7 @@
 
             <TextView
                 android:id="@+id/notifications_general"
+                style="@style/RaisingSubtitleBold"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/myProfileButtonHeight"
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
@@ -26,7 +27,6 @@
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:gravity="center|start"
                 android:hint="@string/settings_notifications_toggle_all"
-                style="@style/RaisingSubtitleBold"
                 app:layout_constraintBottom_toTopOf="@+id/notifications_specific_settings"
                 app:layout_constraintEnd_toStartOf="@+id/notifications_switch_general"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +53,7 @@
 
                 <TextView
                     android:id="@+id/notifications_matchlist"
+                    style="@style/RaisingText"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/myProfileButtonHeight"
                     android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
@@ -61,8 +62,7 @@
                     android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                     android:gravity="center|start"
                     android:hint="@string/settings_notifications_matchlist"
-                    style="@style/RaisingText"
-                    app:layout_constraintBottom_toTopOf="@+id/notifications_request"
+                    app:layout_constraintBottom_toTopOf="@+id/notifications_leads"
                     app:layout_constraintEnd_toStartOf="@+id/notifications_switch_matchlist"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -77,18 +77,41 @@
                     app:layout_constraintTop_toTopOf="@+id/notifications_matchlist" />
 
                 <TextView
+                    android:id="@+id/notifications_leads"
+                    style="@style/RaisingText"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/myProfileButtonHeight"
+                    android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                    android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                    android:gravity="center|start"
+                    android:hint="@string/settings_notifications_leads"
+                    app:layout_constraintBottom_toTopOf="@+id/notifications_request"
+                    app:layout_constraintEnd_toStartOf="@+id/notifications_switch_leads"
+                    app:layout_constraintStart_toStartOf="@+id/notifications_matchlist"
+                    app:layout_constraintTop_toBottomOf="@+id/notifications_matchlist" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/notifications_switch_leads"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                    app:layout_constraintBottom_toBottomOf="@+id/notifications_leads"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/notifications_leads" />
+
+                <TextView
                     android:id="@+id/notifications_request"
+                    style="@style/RaisingText"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/myProfileButtonHeight"
                     android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                     android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                     android:gravity="center|start"
                     android:hint="@string/settings_notifications_contact"
-                    style="@style/RaisingText"
                     app:layout_constraintBottom_toTopOf="@+id/notifications_connection"
                     app:layout_constraintEnd_toStartOf="@+id/notifications_switch_request"
                     app:layout_constraintStart_toStartOf="@+id/notifications_matchlist"
-                    app:layout_constraintTop_toBottomOf="@+id/notifications_matchlist" />
+                    app:layout_constraintTop_toBottomOf="@+id/notifications_leads" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/notifications_switch_request"
@@ -100,12 +123,12 @@
 
                 <TextView
                     android:id="@+id/notifications_connection"
+                    style="@style/RaisingText"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/myProfileButtonHeight"
                     android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                     android:gravity="center|start"
                     android:hint="@string/settings_notifications_connection"
-                    style="@style/RaisingText"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/notifications_switch_connection"
                     app:layout_constraintStart_toStartOf="@+id/notifications_request"

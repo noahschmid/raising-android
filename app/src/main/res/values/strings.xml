@@ -242,6 +242,7 @@
     <string name="settings_notifications"> Notifications </string>
     <string name="settings_notifications_toggle_all"> Toggle all Notifications</string>
     <string name="settings_notifications_matchlist"> New Matchlist is available</string>
+    <string name="settings_notifications_leads">I get a new lead</string>
     <string name="settings_notifications_contact"> I get a new contact request</string>
     <string name="settings_notifications_connection"> I make a successful connection</string>
 

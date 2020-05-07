@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 public class SettingsNotificationsFragment extends RaisingFragment implements CompoundButton.OnCheckedChangeListener {
     private final String TAG = "SettingsNotificationsFragment";
-    private SwitchMaterial generalSwitch, matchlistSwitch, requestSwitch, connectionSwitch;
+    private SwitchMaterial generalSwitch, matchlistSwitch, leadsSwitch, requestSwitch, connectionSwitch;
     private ConstraintLayout specificSettings;
     private PersonalSettings personalSettings;
     private Button btnNotifications;
@@ -57,9 +57,14 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
                 specificSettings.setVisibility(View.VISIBLE);
             } else {
                 specificSettings.setVisibility(View.GONE);
+                matchlistSwitch.setChecked(false);
+                leadsSwitch.setChecked(false);
+                requestSwitch.setChecked(false);
+                connectionSwitch.setChecked(false);
             }
         });
         matchlistSwitch = view.findViewById(R.id.notifications_switch_matchlist);
+        leadsSwitch = view.findViewById(R.id.notifications_switch_leads);
         requestSwitch = view.findViewById(R.id.notifications_switch_request);
         connectionSwitch = view.findViewById(R.id.notifications_switch_connection);
 
@@ -80,6 +85,9 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
                                 }
                                 break;
                             case LEAD:
+                                leadsSwitch.setChecked(true);
+                                generalSwitch.setChecked(true);
+                                break;
                             case REQUEST:
                                 requestSwitch.setChecked(true);
                                 generalSwitch.setChecked(true);
@@ -106,6 +114,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
 
         // set on check changed listeners to all buttons to detect user interaction
         matchlistSwitch.setOnCheckedChangeListener(this);
+        leadsSwitch.setOnCheckedChangeListener(this);
         requestSwitch.setOnCheckedChangeListener(this);
         connectionSwitch.setOnCheckedChangeListener(this);
     }
@@ -123,6 +132,9 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         } else {
             if (matchlistSwitch.isChecked()) {
                 newNotificationSettings.add(NotificationSettings.MATCHLIST);
+            }
+            if (leadsSwitch.isChecked()) {
+                newNotificationSettings.add(NotificationSettings.LEAD);
             }
             if (requestSwitch.isChecked()) {
                 newNotificationSettings.add(NotificationSettings.REQUEST);
@@ -143,6 +155,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
             case R.id.notifications_switch_matchlist:
+            case R.id.notifications_switch_leads:
             case R.id.notifications_switch_request:
             case R.id.notifications_switch_connection:
                 btnNotifications.setVisibility(View.VISIBLE);
