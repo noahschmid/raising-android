@@ -37,7 +37,7 @@ import java.util.Set;
 
 public class SettingsFragment extends RaisingFragment implements View.OnClickListener {
     private final String TAG = "SettingsFragment";
-    private Button btnNotifications, btnAbout, btnReportProblem, btnFeedback, btnOnboarding, btnLogout;
+    private Button btnSubscription, btnNotifications, btnAbout, btnReportProblem, btnFeedback, btnOnboarding, btnLogout;
     private AutoCompleteTextView matchNumberInput;
     private PersonalSettings personalSettings;
 
@@ -54,6 +54,8 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        btnSubscription = view.findViewById(R.id.button_settings_subscription);
+        btnSubscription.setOnClickListener(this);
         btnNotifications = view.findViewById(R.id.button_settings_notifications);
         btnNotifications.setOnClickListener(this);
         btnAbout = view.findViewById(R.id.button_settings_about);
@@ -98,6 +100,9 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.button_settings_subscription:
+                changeFragment(new SubscriptionFragment(), "SubscriptionFragment");
+                break;
             case R.id.button_settings_notifications:
                 changeFragment(new SettingsNotificationsFragment(), "SettingsNotificationFragment");
                 break;

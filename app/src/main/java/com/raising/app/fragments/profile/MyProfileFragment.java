@@ -28,7 +28,7 @@ import com.raising.app.fragments.registration.startup.RegisterStartupLabelsFragm
 import com.raising.app.fragments.registration.startup.RegisterStartupMatchingFragment;
 import com.raising.app.fragments.registration.startup.RegisterStartupPitchFragment;
 
-import com.raising.app.fragments.registration.startup.RegisterStartupVideoFragment;
+import com.raising.app.fragments.settings.SubscriptionFragment;
 import com.raising.app.models.Investor;
 import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
@@ -38,9 +38,9 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
     private Button
             startupAccountInformation, startUpCompanyInformation, startupCompanyFigures,
             startUpMatching, startUpPitch, startupLabels, startUpImages,
-            startUpFinancial, startUpStakeholder, startupSubscription, startupPublicProfile,
+            startUpFinancial, startUpStakeholder, startupPublicProfile,
             investorAccountInformation, investorProfileInformation, investorMatching, investorPitch,
-            investorImages, investorSubscription, investorPublicProfile;
+            investorImages, investorPublicProfile;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -91,9 +91,6 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
         startUpStakeholder = view.findViewById(R.id.button_myProfile_startup_stakeholders);
         startUpStakeholder.setOnClickListener(this);
 
-        startupSubscription = view.findViewById(R.id.button_myProfile_startup_subscription);
-        startupSubscription.setOnClickListener(this);
-
         startupPublicProfile = view.findViewById(R.id.button_myProfile_startup_public_profile);
         startupPublicProfile.setOnClickListener(this);
 
@@ -111,9 +108,6 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
 
         investorImages = view.findViewById(R.id.button_myProfile_investor_pitch);
         investorImages.setOnClickListener(this);
-
-        investorSubscription = view.findViewById(R.id.button_myProfile_investor_subscription);
-        investorSubscription.setOnClickListener(this);
 
         investorPublicProfile = view.findViewById(R.id.button_myProfile_investor_public_profile);
         investorPublicProfile.setOnClickListener(this);
@@ -167,10 +161,6 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                 bundle.putSerializable("startup", (Startup) currentAccount);
                 fragment = new StartupPublicProfileFragment();
                 fragment.setArguments(bundle);
-                break;
-            case R.id.button_myProfile_startup_subscription:
-            case R.id.button_myProfile_investor_subscription:
-                fragment = new SubscriptionFragment();
                 break;
             case R.id.button_myProfile_startup_stakeholders:
                 fragment = new RegisterStakeholderFragment();

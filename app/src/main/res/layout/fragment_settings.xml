@@ -42,11 +42,32 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
+                android:id="@+id/button_settings_subscription"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/myProfileButtonHeight"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:backgroundTint="@color/raisingWhite"
+                android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
+                android:drawableTint="@color/raisingTextColor"
+                android:gravity="center|start"
+                android:hint="@string/myProfile_subscription_plan"
+                android:shadowColor="@color/raisingWhite"
+                android:textColorHint="@color/raisingTextColor"
+                android:textSize="@dimen/raisingTextFontSize"
+                app:layout_constraintBottom_toTopOf="@+id/button_settings_notifications"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settings_matches_layout"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:rippleColor="@color/raisingRippleColor" />
+
+            <Button
                 android:id="@+id/button_settings_notifications"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/myProfileButtonHeight"
-                android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:backgroundTint="@color/raisingWhite"
                 android:drawableLeft="@drawable/ic_raising_settings_notifications"
                 android:drawableTint="@color/raisingTextColor"
@@ -56,9 +77,11 @@
                 android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingTextFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/button_settings_about"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/settings_matches_layout"
+                app:layout_constraintEnd_toEndOf="@+id/button_settings_subscription"
+                app:layout_constraintStart_toStartOf="@+id/button_settings_subscription"
+                app:layout_constraintTop_toBottomOf="@+id/button_settings_subscription"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed"
                 app:rippleColor="@color/raisingRippleColor" />
 
             <Button
@@ -66,6 +89,7 @@
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/myProfileButtonHeight"
+                android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:backgroundTint="@color/raisingWhite"
                 android:drawableLeft="@drawable/ic_info_24dp"
                 android:drawableTint="@color/raisingTextColor"
@@ -85,6 +109,7 @@
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/myProfileButtonHeight"
+                android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:backgroundTint="@color/raisingWhite"
                 android:drawableLeft="@drawable/ic_raising_settings_feedback"
                 android:drawableTint="@color/raisingTextColor"

@@ -212,29 +212,10 @@
                         android:shadowColor="@color/raisingWhite"
                         android:textColorHint="@color/raisingTextColor"
                         android:textSize="@dimen/raisingTextFontSize"
-                        app:layout_constraintBottom_toTopOf="@+id/button_myProfile_startup_subscription"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_financial_requirements"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_financial_requirements"
                         app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_financial_requirements"
-                        app:rippleColor="@color/raisingRippleColor" />
-
-                    <Button
-                        android:id="@+id/button_myProfile_startup_subscription"
-                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/myProfileButtonHeight"
-                        android:backgroundTint="@color/raisingWhite"
-                        android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
-                        android:drawableTint="@color/raisingTextColor"
-                        android:gravity="center|start"
-                        android:hint="@string/myProfile_subscription_plan"
-                        android:shadowColor="@color/raisingWhite"
-                        android:textColorHint="@color/raisingTextColor"
-                        android:textSize="@dimen/raisingTextFontSize"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/button_myProfile_startup_stakeholders"
-                        app:layout_constraintStart_toStartOf="@+id/button_myProfile_startup_stakeholders"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_startup_stakeholders"
                         app:rippleColor="@color/raisingRippleColor" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </FrameLayout>
@@ -339,29 +320,10 @@
                         android:shadowColor="@color/raisingWhite"
                         android:textColorHint="@color/raisingTextColor"
                         android:textSize="@dimen/raisingTextFontSize"
-                        app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_subscription"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_pitch"
                         app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_pitch"
                         app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_pitch"
-                        app:rippleColor="@color/raisingRippleColor" />
-
-                    <Button
-                        android:id="@+id/button_myProfile_investor_subscription"
-                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/myProfileButtonHeight"
-                        android:backgroundTint="@color/raisingWhite"
-                        android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
-                        android:drawableTint="@color/raisingTextColor"
-                        android:gravity="center|start"
-                        android:hint="@string/myProfile_subscription_plan"
-                        android:shadowColor="@color/raisingWhite"
-                        android:textColorHint="@color/raisingTextColor"
-                        android:textSize="@dimen/raisingTextFontSize"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_images"
-                        app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_images"
-                        app:layout_constraintTop_toBottomOf="@+id/button_myProfile_investor_images"
                         app:rippleColor="@color/raisingRippleColor" />
 
                     <Button
@@ -379,8 +341,8 @@
                         android:textColorHint="@color/raisingTextColor"
                         android:textSize="@dimen/raisingTextFontSize"
                         app:layout_constraintBottom_toTopOf="@+id/button_myProfile_investor_account_information"
-                        app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_subscription"
-                        app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_subscription"
+                        app:layout_constraintEnd_toEndOf="@+id/button_myProfile_investor_images"
+                        app:layout_constraintStart_toStartOf="@+id/button_myProfile_investor_images"
                         app:layout_constraintTop_toTopOf="parent"
                         app:rippleColor="@color/raisingRippleColor" />
                 </androidx.constraintlayout.widget.ConstraintLayout>

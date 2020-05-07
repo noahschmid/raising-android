@@ -63,23 +63,23 @@ public class SettingsViewModel extends AndroidViewModel {
         JSONObject object = new JSONObject();
         // device specifications
         String deviceToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "sendDeviceToken: DeviceToken" + deviceToken);
+        Log.d(TAG, "sendDeviceToken: DeviceToken " + deviceToken);
 
         try {
             object.put("token", deviceToken);
             object.put("device", "ANDROID");
         } catch (JSONException e) {
-            Log.e(TAG, "sendDeviceToken: JSONException" + e.getMessage());
+            Log.e(TAG, "sendDeviceToken: JSONException " + e.getMessage());
         }
 
         ApiRequestHandler.performPatchRequest("settings",
                 response -> {
                     viewState.setValue(ViewState.RESULT);
-                    Log.d(TAG, "sendDeviceToken: Token updated" + deviceToken);
+                    Log.d(TAG, "sendDeviceToken: Token updated " + deviceToken);
                     return null;
                 }, volleyError -> {
                     viewState.setValue(ViewState.ERROR);
-                    Log.e(TAG, "sendDeviceToken: Update failed" + volleyError.getMessage());
+                    Log.e(TAG, "sendDeviceToken: Update failed " + volleyError.getMessage());
                     return null;
                 }, object);
     }

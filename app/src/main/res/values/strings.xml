@@ -92,15 +92,20 @@
     <string name="register_profile_phone"> Phone Number* </string>
 
     <string name="toolbar_title_matching_criteria"> Matching Criteria</string>
-    <string name="register_matching_ticket_size"> Ticket Size* </string>
-    <string name="register_matching_investor"> Type of investor* </string>
-    <string name="register_matching_phase"> Phase* </string>
-    <string name="register_matching_industry"> Industry* </string>
-    <string name="register_matching_support"> Desired involvement* </string>
-    <string name="register_matching_geographics_input"> Geographic preferences* </string>
+    <string name="startup_matching_ticket_size_text">What preferred amounts of money should investors invest?</string>
+    <string name="startup_matching_type_investor_text">What type of investor are you looking for?</string>
+    <string name="startup_matching_phase_text">What stage of financing are you in?</string>
+    <string name="startup_matching_industry_text">What industry are you in?</string>
+    <string name="startup_matching_involvement_text">What kind of involvement do you desire from an investor?</string>
+    <string name="investor_matching_ticket_size_text">What preferred amounts of money would you like to invest?</string>
+    <string name="investor_matching_type_investor_text">What type of investor are you?</string>
+    <string name="investor_matching_phase_text">What stage of financing are you interested in?</string>
+    <string name="investor_matching_industry_text">What are your target industries?</string>
+    <string name="investor_matching_involvement_text">What kind of involvement can you bring to startups?</string>
+    <string name="investor_matching_geographics_text">Which are your preferred regions for startups?</string>
     <string name="register_matching_geographics"> Geographics </string>
 
-    <string name="toolbar_title_pitch"> Description &amp; Pitch </string>
+    <string name="toolbar_title_pitch"> Pitch </string>
     <string name="register_pitch_sentence"> Description* </string>
     <string name="register_sentence_helper_text"> Describe yourself in one sentence.</string>
     <string name="register_pitch"> Pitch* </string>
@@ -185,6 +190,7 @@
     <string name="toolbar_title_match_list"> Matches of the Week </string>
     <string name="empty_matchList_text"> You are done! </string>
     <string name="empty_matchList_text_2"> Enjoy the rest of your week! </string>
+    <string name="empty_matchlist_text_3">Next weeks matches will be display on Monday</string>
 
     <!-- Strings used for Leads -->
     <string name="toolbar_title_leads"> Leads </string>
@@ -242,6 +248,7 @@
     <string name="settings_notifications"> Notifications </string>
     <string name="settings_notifications_toggle_all"> Toggle all Notifications</string>
     <string name="settings_notifications_matchlist"> New Matchlist is available</string>
+    <string name="settings_notifications_leads">I get a new lead</string>
     <string name="settings_notifications_contact"> I get a new contact request</string>
     <string name="settings_notifications_connection"> I make a successful connection</string>
 
@@ -267,13 +274,8 @@
     <string name="toolbar_my_public_profile"> My Public Profile</string>
     <string name="public_profile_website"> Read more on their website </string>
     <string name="public_profile_matching_information"> Matching Information </string>
-    <string name="investor_matching_scope"> Investment Scope </string>
     <string name="investor_matching_min_ticket"> Minimal Ticket Size </string>
     <string name="investor_matching_max_ticket"> Maximal Ticket Size </string>
-    <string name="investor_matching_investor_type"> Investor Type </string>
-    <string name="investor_matching_phase"> Preferred Investment Phases </string>
-    <string name="investor_matching_industry"> Interested in these Industries </string>
-    <string name="investor_matching_involvement"> Desired Form of Involvement </string>
     <string name="public_profile_pitch"> Pitch:</string>
     <string name="startup_profile_key_figures"> Key Figures </string>
     <string name="startup_public_profile_revenue"> Revenue </string>
@@ -368,7 +370,7 @@
     <string name="not_logged_in_text">You are not logged in!</string>
     <string name="no_profile_text">Looks like you have no profile yet!</string>
     <string name="contact_input_title">Complete your profile</string>
-    <string name="contact_input_description">Seems like we\'ve lost some information about you! Please fill in the missing details so you can continue using Raising.</string>
+    <string name="contact_input_description">This looks like a new device. Please enter your mobile number to allow for an exchange of mobile numbers later on!</string>
     <string name="phone_number">Phone Number</string>
     <string name="invalid_uid_text">Entered UID is invalid!</string>
     <string name="wrong_reset_code">Entered code is invalid!</string>
