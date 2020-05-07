@@ -72,8 +72,8 @@ public class SubscriptionFragment extends RaisingFragment {
 
         billingClient = BillingClient.newBuilder(getContext())
                 .setListener((billingResult, list) -> {
+                    // onPurchasesUpdated
                     if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && list != null) {
-                        //TODO: billing successful
                         Log.d(TAG, "onViewCreated: Purchase successful" + billingResult.getResponseCode());
                         Log.d(TAG, "onViewCreated: Purchase list" + list);
                         list.forEach(purchase -> {
@@ -191,6 +191,7 @@ public class SubscriptionFragment extends RaisingFragment {
                 }
             });
         }
+        refreshSubscriptionsLayout();
     }
 
     private void refreshSubscriptionsLayout() {
