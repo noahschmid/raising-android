@@ -1,4 +1,4 @@
-package com.raising.app.fragments.profile;
+package com.raising.app.fragments.settings;
 
 import android.app.AlertDialog;
 import android.graphics.drawable.Drawable;

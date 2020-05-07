@@ -272,12 +272,15 @@
                 <TextView
                     android:id="@+id/text_investor_public_profile_scope"
                     style="@style/RaisingTextBold"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
-                    android:hint="@string/investor_matching_scope"
+                    android:layout_marginTop="@dimen/standardVerticalMarginSmall"
+                    android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                    android:layout_marginBottom="@dimen/standardVerticalMargin"
+                    android:hint="@string/investor_matching_ticket_size_text"
                     android:textColorHint="@color/raisingPrimary"
                     app:layout_constraintBottom_toTopOf="@+id/text_investor_public_profile_min_ticket_title"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_matching"
                     app:layout_constraintTop_toBottomOf="@+id/text_investor_public_profile_matching" />
 
@@ -327,12 +330,13 @@
                 <TextView
                     android:id="@+id/text_investor_public_profile_type_of_investor"
                     style="@style/RaisingTextBold"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/standardVerticalMargin"
-                    android:hint="@string/investor_matching_investor_type"
+                    android:hint="@string/investor_matching_type_investor_text"
                     android:textColorHint="@color/raisingPrimary"
                     app:layout_constraintBottom_toTopOf="@+id/investor_public_profile_investor_type_list"
+                    app:layout_constraintEnd_toEndOf="@+id/text_investor_public_profile_scope"
                     app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_max_ticket_title"
                     app:layout_constraintTop_toBottomOf="@+id/text_investor_public_profile_max_ticket_title" />
 
@@ -352,12 +356,13 @@
                 <TextView
                     android:id="@+id/text_investor_public_profile_investment_phase"
                     style="@style/RaisingTextBold"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/standardVerticalMargin"
-                    android:hint="@string/investor_matching_phase"
+                    android:hint="@string/investor_matching_phase_text"
                     android:textColorHint="@color/raisingPrimary"
                     app:layout_constraintBottom_toTopOf="@+id/investor_public_profile_phase_list"
+                    app:layout_constraintEnd_toEndOf="@+id/text_investor_public_profile_type_of_investor"
                     app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_type_of_investor"
                     app:layout_constraintTop_toBottomOf="@+id/investor_public_profile_investor_type_list" />
 
@@ -377,12 +382,13 @@
                 <TextView
                     android:id="@+id/text_investor_public_profile_industry"
                     style="@style/RaisingTextBold"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/standardVerticalMargin"
-                    android:hint="@string/investor_matching_industry"
+                    android:hint="@string/investor_matching_industry_text"
                     android:textColorHint="@color/raisingPrimary"
                     app:layout_constraintBottom_toTopOf="@+id/investor_public_profile_industry_list"
+                    app:layout_constraintEnd_toEndOf="@+id/text_investor_public_profile_investment_phase"
                     app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_investment_phase"
                     app:layout_constraintTop_toBottomOf="@+id/investor_public_profile_phase_list" />
 
@@ -402,12 +408,13 @@
                 <TextView
                     android:id="@+id/text_investor_public_profile_involvement"
                     style="@style/RaisingTextBold"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/standardVerticalMargin"
-                    android:hint="@string/investor_matching_involvement"
+                    android:hint="@string/investor_matching_involvement_text"
                     android:textColorHint="@color/raisingPrimary"
                     app:layout_constraintBottom_toTopOf="@+id/investor_public_profile_involvement_list"
+                    app:layout_constraintEnd_toEndOf="@+id/text_investor_public_profile_industry"
                     app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_industry"
                     app:layout_constraintTop_toBottomOf="@+id/investor_public_profile_industry_list" />
 
