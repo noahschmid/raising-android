@@ -80,7 +80,7 @@
                     android:layout_height="32dp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:background="@drawable/ic_trash_can_red_32dp"
+                    android:background="@drawable/ic_trash_can"
                     android:visibility="visible" />
             </RelativeLayout>
 

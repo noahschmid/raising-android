@@ -148,7 +148,7 @@
                         android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                         android:background="@drawable/btn_public_profile_round"
                         android:backgroundTint="@color/raisingWhite"
-                        android:src="@drawable/ic_check_40dp"
+                        android:src="@drawable/ic_check"
                         app:layout_constraintBottom_toTopOf="@+id/text_investor_request"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"

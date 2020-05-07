@@ -47,6 +47,8 @@
     <dimen name="buttonFontSize"> 18sp </dimen>
     <dimen name="loginScreenFontSize"> 30sp </dimen>
 
+    <dimen name="emptyMatchlistIconSize"> 150dp</dimen>
+
     <dimen name="inputDropdownItemPadding"> 16dp </dimen>
 
     <dimen name="outlinedButtonStrokeWidth"> 2dp </dimen>

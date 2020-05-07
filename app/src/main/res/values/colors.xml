@@ -3,43 +3,43 @@
     <color name="gray">#FFC5C4C4</color>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorPrimaryLight"> #b3c4bf </color>
+    <color name="colorPrimaryLight">#b3c4bf</color>
 
     <color name="raisingPrimary">#911A20</color>
-    <color name="raisingPrimaryLight"> #DE6A70 </color>
-    <color name="raisingPrimaryDark"> #6B1318 </color>
+    <color name="raisingPrimaryLight">#DE6A70</color>
+    <color name="raisingPrimaryDark">#6B1318</color>
     <color name="raisingPrimaryAccent">#DEADAF</color>
 
-    <color name="raisingSecondary"> #707F91 </color>
-    <color name="raisingSecondaryLight"> #97ABC4 </color>
-    <color name="raisingSecondaryDark"> #586473 </color>
-    <color name="raisingSecondaryAccent"> #CCD6D9 </color>
+    <color name="raisingSecondary">#707F91</color>
+    <color name="raisingSecondaryLight">#97ABC4</color>
+    <color name="raisingSecondaryDark">#586473</color>
+    <color name="raisingSecondaryAccent">#CCD6D9</color>
 
     <color name="raisingWhite">#ffffff</color>
     <color name="raisingWhiteTransparent">#88FFFFFF</color>
-    <color name="raisingBlack"> #000000 </color>
-    <color name="raisingBlackTransparent"> #99000000</color>
+    <color name="raisingBlack">#000000</color>
+    <color name="raisingBlackTransparent">#99000000</color>
     <color name="raisingLightGrey">#FFEFEFEF</color>
-    <color name="raisingGrey">#bababa </color>
-    <color name="raisingDarkGrey"> #666666</color>
+    <color name="raisingGrey">#bababa</color>
+    <color name="raisingDarkGrey">#666666</color>
 
-    <color name="raisingPositive"> #128700 </color>
-    <color name="raisingPositiveAccent"> #6FA87E </color>
-    <color name="raisingPositiveAccentLight">#996FA87E </color>
-    <color name="raisingNegative"> #ff0000 </color>
-    <color name="raisingNegativeAccent"> #f04d4d</color>
-    <color name="raisingWarning"> #FFB200</color>
-    <color name="raisingActionBlue"> #1F35F5</color>
+    <color name="raisingPositive">#128700</color>
+    <color name="raisingPositiveAccent">#6FA87E</color>
+    <color name="raisingPositiveAccentLight">#996FA87E</color>
+    <color name="raisingNegative">#ffff0000</color>
+    <color name="raisingNegativeAccent">#ffff4444</color>
+    <color name="raisingWarning">#ffffbb33</color>
+    <color name="raisingActionBlue">#ff0000ff</color>
 
-    <color name="raisingRippleColor"> #bfbfbf</color>
-    <color name="raisingButtonBackgroundColor">@color/raisingSecondary </color>
+    <color name="raisingRippleColor">#bfbfbf</color>
+    <color name="raisingButtonBackgroundColor">@color/raisingSecondary</color>
     <color name="raisingBackground">#D9DEE4</color>
 
-    <color name="raisingTextColor">@color/raisingSecondaryDark </color>
-    <color name="raisingTextColorDark">@color/raisingBlack </color>
-    <color name="raisingTextColorGrey">@color/raisingGrey </color>
-    <color name="raisingTextColorLight"> @color/raisingWhite </color>
+    <color name="raisingTextColor">@color/raisingSecondaryDark</color>
+    <color name="raisingTextColorDark">@color/raisingBlack</color>
+    <color name="raisingTextColorGrey">@color/raisingGrey</color>
+    <color name="raisingTextColorLight">@color/raisingWhite</color>
 
     <color name="raisingOnboardingOutsideColor">#fff0f0</color>
-    <color name="raisingOnboardingInsideColor">#ffe3e4 </color>
+    <color name="raisingOnboardingInsideColor">#ffe3e4</color>
 </resources>

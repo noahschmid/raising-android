@@ -31,7 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
             android:background="@color/raisingWhite"
-            android:src="@drawable/ic_edit_blue_32dp"
+            android:src="@drawable/ic_edit"
+            android:tint="@color/raisingActionBlue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/stakeholder_recycler_button_delete"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,7 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
             android:background="@color/raisingWhite"
-            android:src="@drawable/ic_trash_can_red_32dp"
+            android:src="@drawable/ic_trash_can"
+            android:tint="@color/raisingNegative"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
