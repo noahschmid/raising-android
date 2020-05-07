@@ -22,6 +22,7 @@ import com.raising.app.models.Country;
 import com.raising.app.models.Revenue;
 import com.raising.app.models.Startup;
 import com.raising.app.util.NoFilterArrayAdapter;
+import com.raising.app.util.RaisingTextWatcher;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
@@ -123,8 +124,31 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
         if (startup.getBreakEvenYear() > 0)
             companyBreakevenInput.setText(Integer.toString(startup.getBreakEvenYear()));
 
-        companyBreakevenInput.setOnClickListener(v -> showYearPicker("Select breakeven year", companyBreakevenInput));
-        companyFoundingInput.setOnClickListener(v -> showYearPicker("Select founding year", companyFoundingInput));
+        companyBreakevenInput.setOnClickListener(v -> {
+            if(startup.getBreakEvenYear() > 0) {
+                showYearPicker(getString(R.string.break_even_picker_title), companyBreakevenInput, startup.getBreakEvenYear());
+            } else {
+                showYearPicker(getString(R.string.break_even_picker_title), companyBreakevenInput);
+            }
+        });
+        companyBreakevenInput.addTextChangedListener((RaisingTextWatcher) (s, start, before, count) -> {
+            if(companyBreakevenInput.getText().toString().length() != 0) {
+                startup.setBreakEvenYear(Integer.parseInt(companyBreakevenInput.getText().toString()));
+            }
+        });
+
+        companyFoundingInput.setOnClickListener(v -> {
+            if(startup.getFoundingYear() > 0) {
+                showYearPicker(getString(R.string.founding_picker_title), companyFoundingInput, startup.getFoundingYear());
+            } else {
+                showYearPicker(getString(R.string.founding_picker_title), companyFoundingInput);
+            }
+        });
+        companyFoundingInput.addTextChangedListener((RaisingTextWatcher) (s, start, before, count) -> {
+            if(companyFoundingInput.getText().toString().length() != 0) {
+                startup.setFoundingYear(Integer.parseInt(companyFoundingInput.getText().toString()));
+            }
+        });
 
         // Markets picker
         marketItems = new ArrayList<>();

@@ -541,21 +541,18 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Show year picker
-     *
      * @param title      title of the picker
      * @param inputField the field to print the output to
+     * @param activatedYear the activated year of the picker
      */
-    protected void showYearPicker(String title, EditText inputField) {
+    protected void showYearPicker(String title, EditText inputField, int activatedYear) {
         Calendar today = Calendar.getInstance();
         MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(getContext(),
-                new MonthPickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(int selectedMonth, int selectedYear) { // on date set }
-                    }
+                (selectedMonth, selectedYear) -> { // on date set }
                 }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
 
         builder.setActivatedMonth(Calendar.JULY).setMinYear(1900)
-                .setActivatedYear(today.get(Calendar.YEAR));
+                .setActivatedYear(activatedYear);
                 // check for founding year picker, founding year cannot be in the future
                 if(title.contains("founding")) {
                     builder.setMaxYear(today.get(Calendar.YEAR));
@@ -573,8 +570,19 @@ public class RaisingFragment extends Fragment {
                 })
                 .build()
                 .show();
+        inputField.setText(String.valueOf(activatedYear));
+    }
 
-        inputField.setText(String.valueOf(today.get(Calendar.YEAR)));
+    /**
+     * Delegate year picker based on title, inputField and current date
+     * @param title      title of the picker
+     * @param inputField the field to print the output to
+     *    
+     * Call {@link com.raising.app.fragments.RaisingFragment#showYearPicker(String, EditText, int)}
+     */
+    protected void showYearPicker(String title, EditText inputField) {
+        Calendar today = Calendar.getInstance();
+        showYearPicker(title, inputField, today.get(Calendar.YEAR));
     }
 
     protected void showLoadingPanel() {

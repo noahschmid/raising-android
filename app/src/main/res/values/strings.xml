@@ -78,6 +78,7 @@
     <string name="registration_information_dialog_fte">FTE stands for Full Time Employees. Potential matches may be interested in your employment status.</string>
     <string name="registration_information_dialog_completed">Tell us if you have already achieved some of the target scope, that you have specified above.</string>
     <string name="registration_information_dialog_scope">With the scope you can define how much money you would like to raise during this current financing phase.</string>
+    <string name="registration_information_label">A label is an award given to a startup upon completing a certain program or reaching predefined values</string>
 
     <string name="toolbar_title_login_information"> Login Information</string>
     <string name="register_first_name"> First Name* </string>
@@ -143,9 +144,11 @@
     <string name="toolbar_title_company_figures"> Facts and Figures </string>
     <string name="register_company_revenue"> Revenue* </string>
     <string name="register_company_breakeven"> Break-Even Year* </string>
+    <string name="break_even_picker_title">Select Breakeven Year</string>
     <string name="register_company_fte"> FTE* </string>
     <string name="register_company_markets"> Current Markets* </string>
     <string name="register_company_founding_year"> Founding Year* </string>
+    <string name="founding_picker_title">Select Founding Year</string>
     <string name="register_fte_helper_text"> FTE stands for Full Time Employees</string>
     <string name="register_company_error_fte">FTE should be greater than 0</string>
     <string name="register_company_error_break_even"> Break-Even Year should be after the Founding Year </string>
@@ -384,6 +387,9 @@
     <string name="wrong_reset_code">Entered code is invalid!</string>
     <string name="permissionTitle">Missing Permissions</string>
     <string name="permissionText">We need permission to your phone\'s storage in order for you to upload pictures.</string>
+
+    <!-- Strings used in custom elements -->
+    <string name="year_picker_title">Select Year</string>
 
     <string-array name="revenue_units">
         <item>K</item>

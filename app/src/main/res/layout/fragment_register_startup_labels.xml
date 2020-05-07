@@ -16,6 +16,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/register_startup_labels_information"
+                style="@style/RaisingText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:gravity="center"
+                android:hint="@string/registration_information_label"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_pitch_labels"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed" />
+
             <LinearLayout
                 android:id="@+id/register_startup_pitch_labels"
                 android:layout_width="0dp"
@@ -28,7 +45,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_labels_information"
                 app:layout_constraintVertical_bias="0.0" />
 
             <LinearLayout
