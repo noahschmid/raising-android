@@ -298,13 +298,13 @@ public class SubscriptionFragment extends RaisingFragment {
             showSimpleDialog(getString(R.string.subscription_error_cannot_add_title), getString(R.string.subscription_error_cannot_add_text));
         } else if (!activeSubscriptionExists()) {
             // purchase subscription
-            if (showAlertDialog(getString(R.string.subscription_dialog_subscribe_title),
+            if (showActionDialog(getString(R.string.subscription_dialog_subscribe_title),
                     getString(R.string.subscribtion_dialog_subscribe_text))) {
                 showGoogleBilling(sku, false);
             }
         } else {
             // up-/downgrade your subscription
-            if (showAlertDialog(getString(R.string.subscription_dialog_subscribe_title),
+            if (showActionDialog(getString(R.string.subscription_dialog_subscribe_title),
                     getString(R.string.subscribtion_dialog_subscribe_text))) {
                 showGoogleBilling(sku, true);
             }

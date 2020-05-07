@@ -1,5 +1,6 @@
 package com.raising.app.fragments.registration.startup;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
@@ -22,7 +22,6 @@ import com.raising.app.models.ContactData;
 import com.raising.app.models.Country;
 import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
-import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
@@ -32,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class RegisterCompanyInformationFragment extends RaisingFragment {
+    private final String TAG = "RegisterCompanyInformationFragment";
     private EditText companyNameInput, companyUidInput, companyWebsiteInput, companyPhoneInput, companyCountryInput;
     private CustomPicker countryPicker;
     public ArrayList<PickerItem> countryItems;
@@ -56,14 +56,18 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         TextInputLayout companyUidLayout = view.findViewById(R.id.register_company_uid);
-        companyUidLayout.setEndIconOnClickListener(v -> Snackbar.make(companyUidLayout,
-                R.string.register_uid_helper_text, Snackbar.LENGTH_LONG)
-                .setAction(getString(R.string.register_uid_snackbar_find), v1 -> {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(getString(R.string.register_uid_link)));
-                    startActivity(browserIntent);
-                }).setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
-                .show());
+        companyUidLayout.setEndIconOnClickListener(v ->
+                new AlertDialog.Builder(getContext())
+                        .setTitle(getString(R.string.registration_information_dialog_title))
+                        .setMessage(getString(R.string.registration_information_dialog_uid))
+                        .setPositiveButton(getString(R.string.ok_text), (dialog, which) -> {
+                        })
+                        .setNegativeButton(getString(R.string.register_uid_find), (dialog, which) -> {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                    Uri.parse(getString(R.string.register_uid_link)));
+                            startActivity(browserIntent);
+                        })
+                        .show());
 
         companyCountryInput = view.findViewById(R.id.register_input_company_countries);
         companyPhoneInput = view.findViewById(R.id.register_input_company_phone);
@@ -74,11 +78,11 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
         Button btnCompanyInformation = view.findViewById(R.id.button_company_information);
         btnCompanyInformation.setOnClickListener(v -> processInformation());
 
-        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+        if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnCompanyInformation.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
-            startup = (Startup)accountViewModel.getAccount().getValue();
+            startup = (Startup) accountViewModel.getAccount().getValue();
             contactDetails = AccountService.getContactData();
             hideBottomNavigation(false);
         } else {
@@ -89,7 +93,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
         companyUidInput.setText(startup.getUId());
         companyNameInput.setText(startup.getCompanyName());
 
-        if(resources.getCountry(startup.getCountryId()) != null)
+        if (resources.getCountry(startup.getCountryId()) != null)
             companyCountryInput.setText(resources.getCountry(startup.getCountryId()).getName());
         companyUidInput.setText(startup.getUId());
         companyWebsiteInput.setText(startup.getWebsite());
@@ -107,7 +111,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
                             @Override
                             public void onSelectItem(PickerItem country) {
                                 companyCountryInput.setText(country.getName());
-                                countrySelected = (Country)country;
+                                countrySelected = (Country) country;
                             }
                         })
                         .setItems(resources.getCountries());
@@ -115,7 +119,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
         countryPicker = pickerBuilder.build();
 
         companyCountryInput.setOnClickListener(v -> {
-            if(countryPicker.instanceRunning())
+            if (countryPicker.instanceRunning())
                 countryPicker.dismiss();
 
             countryPicker.showDialog(getActivity());
@@ -124,7 +128,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
 
     @Override
     protected void onAccountUpdated() {
-        if(!editMode)
+        if (!editMode)
             return;
 
         AccountService.saveContactData(contactDetails);
@@ -142,21 +146,21 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
      * Process entered information
      */
     private void processInformation() {
-        if(companyNameInput.getText().length() == 0
+        if (companyNameInput.getText().length() == 0
                 || companyUidInput.getText().length() == 0
                 || companyPhoneInput.getText().length() == 0
-                || countrySelected == null ) {
+                || countrySelected == null) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
-        if(companyNameInput.length() > getResources().getInteger(R.integer.raisingMaximumNameLength)) {
+        if (companyNameInput.length() > getResources().getInteger(R.integer.raisingMaximumNameLength)) {
             showSimpleDialog(getString(R.string.register_dialog_title), getString(R.string.register_dialog_long_name));
             return;
         }
 
-        if(!isValidUid(companyUidInput.getText().toString())) {
+        if (!isValidUid(companyUidInput.getText().toString())) {
             showSimpleDialog(getString(R.string.simple_dialog_invalid_input_title),
                     getString(R.string.invalid_uid_text));
             return;
@@ -166,7 +170,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
         startup.setUId(companyUidInput.getText().toString());
 
         contactDetails.setPhone(companyPhoneInput.getText().toString());
-        if(companyWebsiteInput.getText().toString().length() != 0 && !(companyWebsiteInput.getText().toString().contains("http"))) {
+        if (companyWebsiteInput.getText().toString().length() != 0 && !(companyWebsiteInput.getText().toString().contains("http"))) {
             String website = "http://" + companyWebsiteInput.getText().toString();
             startup.setWebsite(website);
         } else {
@@ -175,7 +179,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
         startup.setCountryId(countrySelected.getId());
 
         try {
-            if(!editMode) {
+            if (!editMode) {
                 RegistrationHandler.saveStartup(startup);
                 RegistrationHandler.saveContactData(contactDetails);
                 changeFragment(new RegisterCompanyFiguresFragment(),
@@ -193,11 +197,12 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
 
     /**
      * Check whether given uid is a valid one
+     *
      * @param uid
      * @return
      */
     private boolean isValidUid(String uid) {
-        if(!uid.matches("[A-Z]{3}-\\d\\d\\d\\.\\d\\d\\d\\.\\d\\d\\d")) {
+        if (!uid.matches("[A-Z]{3}-\\d\\d\\d\\.\\d\\d\\d\\.\\d\\d\\d")) {
             return false;
         }
 
@@ -206,15 +211,15 @@ public class RegisterCompanyInformationFragment extends RaisingFragment {
         int number = 0;
         int[] multipliers = {5, 4, 3, 2, 7, 6, 5, 4};
         int checksum = Integer.parseInt(String.valueOf(uid.charAt(uid.length() - 1)));
-        for(int i = 0; i < uid.length() - 1; ++i) {
-            number += Integer.parseInt(String.valueOf(uid.charAt(i)))*multipliers[i];
+        for (int i = 0; i < uid.length() - 1; ++i) {
+            number += Integer.parseInt(String.valueOf(uid.charAt(i))) * multipliers[i];
         }
 
         int remainder = 0;
-        if(number%11 != 0)
+        if (number % 11 != 0)
             remainder = 11 - (number % 11);
 
-        if(checksum == remainder) {
+        if (checksum == remainder) {
             return true;
         }
 

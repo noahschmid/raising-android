@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -19,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
@@ -65,12 +63,16 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
         TextInputLayout financialCompletedLayout = view.findViewById(R.id.register_financial_completed);
         financialCompletedLayout.setEndIconOnClickListener(v -> {
-            final Snackbar snackbar = Snackbar.make(financialCompletedLayout,
-                    R.string.register_completed_helper_text, Snackbar.LENGTH_LONG);
-            snackbar.setAction(getString(R.string.got_it_text), v12 -> snackbar.dismiss());
-            snackbar.setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
-                    .show();
+            showSimpleDialog(getString(R.string.registration_information_dialog_title),
+                    getString(R.string.registration_information_dialog_completed));
         });
+
+        TextInputLayout financialScopeLayout = view.findViewById(R.id.register_financial_scope);
+        financialScopeLayout.setEndIconOnClickListener(v -> {
+            showSimpleDialog(getString(R.string.registration_information_dialog_title),
+                    getString(R.string.registration_information_dialog_scope));
+        });
+
 
         ArrayList<FinanceType> financeTypes = resources.getFinanceTypes();
         ArrayList<String> values = new ArrayList<>();

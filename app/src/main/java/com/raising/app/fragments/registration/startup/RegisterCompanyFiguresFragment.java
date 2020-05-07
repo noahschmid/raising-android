@@ -14,7 +14,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
@@ -61,11 +60,8 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment {
 
         TextInputLayout companyFteLayout = view.findViewById(R.id.register_company_fte);
         companyFteLayout.setEndIconOnClickListener(v -> {
-            final Snackbar snackbar = Snackbar.make(companyFteLayout,
-                    R.string.register_fte_helper_text, Snackbar.LENGTH_LONG);
-            snackbar.setAction(getString(R.string.got_it_text), v12 -> snackbar.dismiss());
-            snackbar.setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
-                    .show();
+            showSimpleDialog(getString(R.string.registration_information_dialog_title),
+                    getString(R.string.registration_information_dialog_fte));
         });
 
         companyFteInput = view.findViewById(R.id.register_input_company_fte);

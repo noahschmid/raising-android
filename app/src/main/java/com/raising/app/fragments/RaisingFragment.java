@@ -334,18 +334,20 @@ public class RaisingFragment extends Fragment {
      * Create and show an alert dialog, which allows the user to either decline or accept a message
      * @param title The title of the dialog
      * @param message The message of the dialog
+     * @param positiveButton The string of the positive button
+     * @param negativeButton The string of the negative button
      * @return true, if user has accepted the dialog, false, if user has declined the dialog
      */
-    public boolean showAlertDialog(String title, String message) {
+    public boolean showActionDialog(String title, String message, String positiveButton, String negativeButton) {
         final boolean[] confirmDialog = {false};
         new AlertDialog.Builder(getContext())
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(getString(R.string.yes_text), (dialog, which) -> {
+                .setPositiveButton(positiveButton, (dialog, which) -> {
                     Log.d(TAG, "AlertDialog onClick");
                     confirmDialog[0] = true;
                 })
-                .setNegativeButton(getString(R.string.cancel_text), (dialog, which) -> {
+                .setNegativeButton(negativeButton, (dialog, which) -> {
                     confirmDialog[0] = false;
                 })
                 .show()
@@ -357,6 +359,17 @@ public class RaisingFragment extends Fragment {
         } catch (RuntimeException e) {}
 
         return confirmDialog[0];
+    }
+
+    /**
+     * Extend a simple request with "Yes" and "Cancel" to then create an action dialog.
+     * Call {@link com.raising.app.fragments.RaisingFragment#showActionDialog(String, String, String, String)}
+     * @param title The title of the action dialog
+     * @param message The message of the action dialog
+     * @return The return value of {@link com.raising.app.fragments.RaisingFragment#showActionDialog(String, String, String, String)}
+     */
+    public boolean showActionDialog(String title, String message) {
+        return showActionDialog(title, message, getString(R.string.yes_text), getString(R.string.cancel_text));
     }
 
     /**

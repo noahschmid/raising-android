@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
@@ -49,22 +48,16 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
 
         sentenceLayout = view.findViewById(R.id.register_startup_pitch_sentence);
         sentenceLayout.setEndIconOnClickListener(v -> {
-            final Snackbar snackbar = Snackbar.make(sentenceLayout,
-                    R.string.register_sentence_helper_text, Snackbar.LENGTH_LONG);
-            snackbar.setAction(getString(R.string.got_it_text), v12 -> snackbar.dismiss());
-            snackbar.setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
-                    .show();
+            showSimpleDialog(getString(R.string.registration_information_dialog_title),
+                    getString(R.string.registration_information_dialog_description));
         });
 
         sentenceInput = view.findViewById(R.id.register_input_startup_pitch_sentence);
 
         pitchLayout = view.findViewById(R.id.register_startup_pitch_pitch);
         pitchLayout.setEndIconOnClickListener(v -> {
-            final Snackbar snackbar = Snackbar.make(pitchLayout,
-                    R.string.register_pitch_helper_text, Snackbar.LENGTH_LONG);
-            snackbar.setAction(getString(R.string.got_it_text), v12 -> snackbar.dismiss());
-            snackbar.setDuration(getResources().getInteger(R.integer.raisingLongSnackbar))
-                    .show();
+            showSimpleDialog(getString(R.string.registration_information_dialog_title),
+                    getString(R.string.registration_information_dialog_pitch));
         });
 
         pitchInput = view.findViewById(R.id.register_input_startup_pitch);
