@@ -1,5 +1,6 @@
 package com.raising.app.fragments.registration.startup;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RegisterCompanyFiguresFragment extends RaisingFragment implements RaisingTextWatcher {
     private final String TAG = "RegisterCompanyInformationFragment";
@@ -36,7 +38,8 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
     private EditText companyFteInput, companyBreakevenInput, companyFoundingInput;
 
     private CustomPicker marketsPicker;
-    public ArrayList<PickerItem> marketItems;
+    private ArrayList<PickerItem> marketItems;
+    private ArrayList<Long> selected = new ArrayList<>();
 
     private int revenueMinId = -1;
     private int revenueMaxId = -1;
@@ -164,13 +167,14 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
             if (marketsPicker.instanceRunning())
                 marketsPicker.dismiss();
 
-            marketsPicker.showDialog(getActivity());
+            marketsPicker.showDialog(getActivity(), dialog -> {
+                Log.d(TAG, "onDismiss: ");
+                checkIfMarketsChanged(marketsPicker.getResult());
+            });
         });
 
 
         // restore selected markets
-        ArrayList<Long> selected = new ArrayList<>();
-
         if (startup.getContinents().size() > 0) {
             selected.addAll(startup.getContinents());
         }
@@ -215,6 +219,23 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
         Log.d(TAG, "onTextChanged: s: " + Integer.parseInt(s.toString()));
         Log.d(TAG, "onTextChanged: Founding: " + Integer.parseInt(companyFoundingInput.getText().toString()));
         Log.d(TAG, "onTextChanged: BreakEven: " + Integer.parseInt(companyBreakevenInput.getText().toString()));
+    }
+    
+    /**
+     * Checks if the user has changed his selection of markets
+     * @param list The users new selection of markets after dismissing the custom picker
+     */
+    private void checkIfMarketsChanged(List<PickerItem> list) {
+        ArrayList<Long> listId = new ArrayList<>();
+        list.forEach(pickerItem -> {
+            listId.add(pickerItem.getId());
+        });
+
+        Log.d(TAG, "checkIfMarketsChanged: listId " + listId.toString());
+        Log.d(TAG, "checkIfMarketsChanged: selected " + selected.toString());
+        if(!listId.equals(selected)) {
+            btnCompanyFigures.setVisibility(View.VISIBLE);
+        }
     }
 
     private void processInformation() {

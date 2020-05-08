@@ -25,6 +25,10 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="RaisingSmallerTextBold" parent="RaisingTextBold">
+        <item name="android:textSize">@dimen/raisingSmallerTextFontSize</item>
+    </style>
+
     <style name="RaisingTitle" parent="RaisingTextBold">
         <item name="android:textSize">@dimen/raisingTitleFontSize</item>
     </style>

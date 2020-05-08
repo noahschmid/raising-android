@@ -2,6 +2,7 @@ package com.raising.app.util.customPicker;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -10,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -41,6 +43,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class CustomPicker implements LifecycleObserver, BottomSheetInteractionListener {
+    private final String TAG = "CustomPicker";
     public static final int SORT_BY_NONE = 0;
     public static final int SORT_BY_NAME = 1;
     public static final int THEME_NEW = 2;
@@ -140,10 +143,21 @@ public class CustomPicker implements LifecycleObserver, BottomSheetInteractionLi
         });
     }
 
-    // region Utility Methods
     public void showDialog(@NonNull FragmentActivity activity) {
+        showDialog(activity, new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                Log.d(TAG, "onDismiss: Dialog dismissed");
+            }
+        });
+
+    }
+
+    // region Utility Methods
+    public void showDialog(@NonNull FragmentActivity activity, DialogInterface.OnDismissListener dismissListener) {
         activity.getLifecycle().addObserver(this);
         dialog = new Dialog(activity);
+        dialog.setOnDismissListener(dismissListener);
         View dialogView = activity.getLayoutInflater().inflate(R.layout.item_custom_picker, null);
         initiateUi(dialogView);
         setCustomStyle(dialogView);

@@ -1,5 +1,6 @@
 package com.raising.app.fragments.registration.investor;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,8 +29,10 @@ import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RegisterInvestorMatchingFragment extends RaisingFragment {
+    private final String TAG = "RegisterInvestorMatchingFragment";
     private Slider ticketSize;
     private Button geographicsButton, btnInvestorMatching;
     private CustomPicker customPicker;
@@ -39,7 +42,8 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
 
     private View fragmentView;
     private long investorType = -1;
-    public ArrayList<PickerItem> pickerItems;
+    private ArrayList<PickerItem> pickerItems;
+    private ArrayList<Long> selected = new ArrayList<>();
     private Investor investor;
 
     private int minimumTicketSize, maximumTicketSize;
@@ -130,12 +134,11 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
             if(customPicker.instanceRunning())
                 customPicker.dismiss();
 
-            customPicker.showDialog(getActivity());
-            btnInvestorMatching.setVisibility(View.VISIBLE);
+            customPicker.showDialog(getActivity(), dialog -> {
+                Log.d(TAG, "onDismiss: ");
+                checkIfMarketsChanged(customPicker.getResult());
+            });
         });
-
-        // restore selected countries/continents
-        ArrayList<Long> selected = new ArrayList<>();
 
         if(investor.getContinents().size() > 0) {
             selected.addAll(investor.getContinents());
@@ -219,6 +222,22 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
         }
     }
 
+    /**
+     * Checks if the user has changed his selection of markets
+     * @param list The users new selection of markets after dismissing the custom picker
+     */
+    private void checkIfMarketsChanged(List<PickerItem> list) {
+        ArrayList<Long> listId = new ArrayList<>();
+        list.forEach(pickerItem -> {
+            listId.add(pickerItem.getId());
+        });
+
+        Log.d(TAG, "checkIfMarketsChanged: listId " + listId.toString());
+        Log.d(TAG, "checkIfMarketsChanged: selected " + selected.toString());
+        if(!listId.equals(selected)) {
+            btnInvestorMatching.setVisibility(View.VISIBLE);
+        }
+    }
 
     @Override
     public void onDestroyView() {
