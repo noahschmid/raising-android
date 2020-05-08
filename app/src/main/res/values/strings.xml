@@ -134,12 +134,12 @@
     <string name="toolbar_title_company_information"> Company Information </string>
     <string name="register_company_name"> Company* </string>
     <string name="register_company_uid"> UID* </string>
+    <string name="register_company_uid_helper">Pattern: CHE-XXX.XXX.XXX</string>
     <string name="register_company_phone"> Phone Number* </string>
     <string name="register_company_website"> Website </string>
     <string name="register_company_country"> Country* </string>
     <string name="register_uid_find"> Find UID </string>
     <string name="register_uid_link"> https://www.bfs.admin.ch/bfs/en/home/register/unternehmensregister/unternehmens-identifikationsnummer.html </string>
-    <string name="register_uid_helper_text"> UID is a national identification number for all companies. </string>
 
     <string name="toolbar_title_company_figures"> Facts and Figures </string>
     <string name="register_company_revenue"> Revenue* </string>

@@ -44,9 +44,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         super.onViewCreated(view, savedInstanceState);
 
         btnNotifications = view.findViewById(R.id.button_notifications);
-        btnNotifications.setOnClickListener(v -> {
-            updateNotificationSettings();
-        });
+        btnNotifications.setOnClickListener(v -> updateNotificationSettings());
 
         specificSettings = view.findViewById(R.id.notifications_specific_settings);
 

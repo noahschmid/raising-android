@@ -276,6 +276,18 @@ public class RaisingFragment extends Fragment {
     }
 
     /**
+     * Call {@link com.raising.app.MainActivity#hideToolbar(boolean)}
+     * @param isHidden if true, the toolbar should be hidden
+     *                 if false, the toolbar should be visible
+     */
+    protected void hideToolbar(boolean isHidden) {
+        MainActivity activity = (MainActivity) getActivity();
+        if(activity != null) {
+            activity.hideToolbar(isHidden);
+        }
+    }
+
+    /**
      * Call {@link com.raising.app.MainActivity#customizeActionBar(String, boolean)}
      *
      * @param title          The title of the action bar

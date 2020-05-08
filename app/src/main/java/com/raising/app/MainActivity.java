@@ -87,12 +87,14 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.replace(R.id.fragment_container, new OnboardingPre1Fragment());
         } else if (!AuthenticationHandler.isLoggedIn()) {
             hideBottomNavigation(true);
+            hideToolbar(true);
             fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
         } else {
             leadsViewModel.loadLeads();
             matchesViewModel.loadMatches();
             if (!AccountService.loadContactData(AuthenticationHandler.getId())) {
                 hideBottomNavigation(true);
+                hideToolbar(true);
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("isStartup", AuthenticationHandler.isStartup());
                 bundle.putString("email", AuthenticationHandler.getEmail());
@@ -108,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 settingsViewModel.loadSettings();
                 accountViewModel.loadAccount();
                 hideBottomNavigation(false);
+                hideToolbar(false);
                 fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
             }
         }
@@ -154,12 +157,20 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Toggles the bottom navigation
-     *
      * @param isHidden if true, the bottom navigation is hidden
      *                 if false, the bottom navigation is visible
      */
     public void hideBottomNavigation(boolean isHidden) {
         findViewById(R.id.bottom_navigation).setVisibility(isHidden ? View.GONE : View.VISIBLE);
+    }
+
+    /**
+     * Toggle the visibility of the toolbar
+     * @param isHidden if true, toolbar is hidden
+     *                 if false, toolbar is visible
+     */
+    public void hideToolbar(boolean isHidden) {
+        findViewById(R.id.raising_app_bar).setVisibility(isHidden ? View.GONE : View.VISIBLE);
     }
 
     /**
