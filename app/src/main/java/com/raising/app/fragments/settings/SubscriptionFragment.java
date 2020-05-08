@@ -28,6 +28,10 @@ import com.google.android.material.card.MaterialCardView;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Subscription;
+import com.raising.app.util.ApiRequestHandler;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -76,9 +80,7 @@ public class SubscriptionFragment extends RaisingFragment {
                     if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && list != null) {
                         Log.d(TAG, "onViewCreated: Purchase successful" + billingResult.getResponseCode());
                         Log.d(TAG, "onViewCreated: Purchase list" + list);
-                        list.forEach(purchase -> {
-                            handlePurchase(purchase);
-                        });
+                        list.forEach(this::validatePurchaseWithServer);
                     } else {
                         Log.d(TAG, "onViewCreated: Purchase failed: " + billingResult.getResponseCode());
                         switch (billingResult.getResponseCode()) {
@@ -119,22 +121,23 @@ public class SubscriptionFragment extends RaisingFragment {
         });
     }
 
-    private void handlePurchase(Purchase purchase) {
-        if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-            if (!purchase.isAcknowledged()) {
-                AcknowledgePurchaseParams acknowledgePurchaseParams =
-                        AcknowledgePurchaseParams.newBuilder()
-                                .setPurchaseToken(purchase.getPurchaseToken())
-                                .build();
-                billingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
-                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                        grantPurchase(purchase);
+    /**
+     * Fetch all subscriptions from the billing server and store them in a variable
+     */
+    private void getSkuDetails() {
+        SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
+        params.setSkusList(SKU_LIST).setType(BillingClient.SkuType.SUBS);
+        billingClient.querySkuDetailsAsync(params.build(),
+                (billingResult, skuDetailsList) -> {
+                    Log.d(TAG, "onViewCreated: SkuDetails" + skuDetailsList);
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
+                        Log.d(TAG, "getSkuDetails: Billing Response Code: " + billingResult.getResponseCode());
+                        skuDetailsArrayList.addAll(skuDetailsList);
+                        refreshSubscriptionsLayout();
+                    } else {
+                        Log.d(TAG, "onSkuDetailsResponse: Bad response: " + billingResult.getDebugMessage());
                     }
                 });
-            } else {
-                grantPurchase(purchase);
-            }
-        }
     }
 
     private void showGoogleBilling(SkuDetails skuDetails, boolean hasSubscription) {
@@ -158,24 +161,47 @@ public class SubscriptionFragment extends RaisingFragment {
         }
     }
 
-    /**
-     * Fetch all subscriptions from the billing server and store them in a variable
-     */
-    private void getSkuDetails() {
-        SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
-        params.setSkusList(SKU_LIST).setType(BillingClient.SkuType.SUBS);
-        billingClient.querySkuDetailsAsync(params.build(),
-                (billingResult, skuDetailsList) -> {
-                    Log.d(TAG, "onViewCreated: SkuDetails" + skuDetailsList);
-                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
-                        Log.d(TAG, "getSkuDetails: Billing Response Code: " + billingResult.getResponseCode());
-                        skuDetailsArrayList.addAll(skuDetailsList);
-                        refreshSubscriptionsLayout();
-                    } else {
-                        Log.d(TAG, "onSkuDetailsResponse: Bad response: " + billingResult.getDebugMessage());
+    private void validatePurchaseWithServer(Purchase purchase) {
+        JSONObject object = new JSONObject();
+        try {
+            object.put("purchaseToken", purchase.getPurchaseToken());
+        } catch (JSONException e) {
+            Log.e(TAG, "validatePurchaseWithServer: Error creating JSON" + e.getMessage());
+        }
+
+        ApiRequestHandler.performPatchRequest("subscription/android",
+                response -> {
+                    Log.d(TAG, "validatePurchaseWithServer: Purchase valid");
+                    handlePurchase(purchase);
+                    return null;
+                }, volleyError -> {
+                    Log.d(TAG, "validatePurchaseWithServer: Purchase invalid " + volleyError.getMessage());
+                    return null;
+                }, object);
+    }
+
+    private void handlePurchase(Purchase purchase) {
+        Log.d(TAG, "handlePurchase: Purchase State " + purchase.getPurchaseState());
+        if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+            Log.d(TAG, "handlePurchase: Purchase Acknowledged " + purchase.isAcknowledged());
+            if (!purchase.isAcknowledged()) {
+                AcknowledgePurchaseParams acknowledgePurchaseParams =
+                        AcknowledgePurchaseParams.newBuilder()
+                                .setPurchaseToken(purchase.getPurchaseToken())
+                                .build();
+                billingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
+                    Log.d(TAG, "handlePurchase: AcknowledgementCode " + billingResult.getResponseCode());
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        Log.d(TAG, "handlePurchase: Purchase Acknowledged " + purchase.isAcknowledged());
+                        grantPurchase(purchase);
                     }
                 });
+            } else {
+                grantPurchase(purchase);
+            }
+        }
     }
+
 
     private void grantPurchase(Purchase purchase) {
         if (currentAccount.getActiveSubscription() == null) {

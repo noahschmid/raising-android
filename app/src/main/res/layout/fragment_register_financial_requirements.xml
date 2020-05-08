@@ -105,7 +105,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:hint="@string/register_financial_completed"
+                android:hint="@string/register_financial_committed"
                 app:endIconDrawable="@drawable/ic_info_outline_24dp"
                 app:endIconMode="custom"
                 app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"

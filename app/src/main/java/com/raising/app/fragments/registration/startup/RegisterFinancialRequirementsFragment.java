@@ -76,7 +76,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         TextInputLayout financialCompletedLayout = view.findViewById(R.id.register_financial_completed);
         financialCompletedLayout.setEndIconOnClickListener(v -> {
             showSimpleDialog(getString(R.string.registration_information_dialog_title),
-                    getString(R.string.registration_information_dialog_completed));
+                    getString(R.string.registration_information_dialog_committed));
         });
 
         TextInputLayout financialScopeLayout = view.findViewById(R.id.register_financial_scope);
@@ -245,7 +245,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         // check if completed is smaller than scope
         if (completed > (int) scope) {
             showSimpleDialog(getString(R.string.register_dialog_title),
-                    getString(R.string.register_financial_error_completed));
+                    getString(R.string.register_financial_error_committed));
             return;
         }
 

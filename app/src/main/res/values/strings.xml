@@ -76,9 +76,9 @@
     <string name="registration_information_dialog_pitch">Write a pitch in less than 250 words. \nThe Short-Pitch can be used to introduce yourself to potential matches.</string>
     <string name="registration_information_dialog_uid">UID is a national identification number for all companies. If you do not know your UID click on ‘Find UID’.</string>
     <string name="registration_information_dialog_fte">FTE stands for Full Time Employees. Potential matches may be interested in your employment status.</string>
-    <string name="registration_information_dialog_completed">Tell us if you have already achieved some of the target scope, that you have specified above.</string>
+    <string name="registration_information_dialog_committed">Tell us if you have already achieved some of the target scope, that you have specified above.</string>
     <string name="registration_information_dialog_scope">With the scope you can define how much money you would like to raise during this current financing phase.</string>
-    <string name="registration_information_label">A label is an award given to a startup upon completing a certain program or reaching predefined values</string>
+    <string name="registration_information_label">A label is an award given to a startup upon completing a certain program or reaching predefined values (max. 4 Labels)</string>
 
     <string name="toolbar_title_login_information"> Login Information</string>
     <string name="register_first_name"> First Name* </string>
@@ -145,7 +145,7 @@
     <string name="register_company_revenue"> Revenue* </string>
     <string name="register_company_breakeven"> Break-Even Year* </string>
     <string name="break_even_picker_title">Select Breakeven Year</string>
-    <string name="register_company_fte"> FTE* </string>
+    <string name="register_company_fte"> Full Time Employee* </string>
     <string name="register_company_markets"> Current Markets* </string>
     <string name="register_company_founding_year"> Founding Year* </string>
     <string name="founding_picker_title">Select Founding Year</string>
@@ -165,9 +165,9 @@
     <string name="register_financial_closing_time"> Closing Time* </string>
     <string name="register_financial_scope"> Scope </string>
     <string name="register_financial_scope_"> Scope* </string>
-    <string name="register_financial_completed">Completed</string>
-    <string name="register_completed_helper_text"> Have you completed some of your target scope? </string>
-    <string name="register_financial_error_completed"> Completed should not be greater than Scope </string>
+    <string name="register_financial_committed">Committed</string>
+    <string name="register_committed_helper_text"> Have you completed some of your target scope? </string>
+    <string name="register_financial_error_committed"> Committed should not be greater than Scope </string>
 
     <string name="toolbar_title_stakeholder"> Stakeholder </string>
     <string name="register_stakeholder_founder"> Founders* </string>
@@ -298,7 +298,7 @@
     <string name="startup_public_profile_type"> Type of investment </string>
     <string name="startup_public_profile_valuation"> Pre Money Valuation </string>
     <string name="startup_public_profile_closing_time"> Closing Time </string>
-    <string name="startup_public_profile_completed"> Completed </string>
+    <string name="startup_public_profile_committed"> Committed </string>
     <string name="startup_public_profile_founder"> Founders </string>
     <string name="startup_public_profile_education"> Education </string>
     <string name="startup_public_profile_profession"> Profession </string>
