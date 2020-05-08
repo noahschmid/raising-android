@@ -4,12 +4,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintHelper;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -27,15 +29,12 @@ import com.raising.app.util.customPicker.PickerItem;
 
 import java.util.ArrayList;
 
-public class RegisterInvestorMatchingFragment extends RaisingFragment
-        implements View.OnClickListener {
+public class RegisterInvestorMatchingFragment extends RaisingFragment {
     private Slider ticketSize;
-    private Button geographicsButton;
+    private Button geographicsButton, btnInvestorMatching;
     private CustomPicker customPicker;
     private TextView ticketSizeText;
-    private LinearLayout industryLayout;
-    private LinearLayout investmentPhaseLayout;
-    private LinearLayout supportLayout;
+    private LinearLayout industryLayout, investmentPhaseLayout, supportLayout;
     private RadioGroup investorTypeGroup;
 
     private View fragmentView;
@@ -72,8 +71,8 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
         ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
 
-        Button btnInvestorMatching = view.findViewById(R.id.button_investor_matching);
-        btnInvestorMatching.setOnClickListener(this);
+        btnInvestorMatching = view.findViewById(R.id.button_investor_matching);
+        btnInvestorMatching.setOnClickListener(v -> processMatchingInformation());
 
         investor = null;
 
@@ -100,6 +99,9 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
         if(investor.getTicketMinId() != 0 && investor.getTicketMaxId() != 0)
             ticketSize.setValues((float)investor.getTicketMinId(), (float)investor.getTicketMaxId());
+        if(editMode) {
+            btnInvestorMatching.setVisibility(View.INVISIBLE);
+        }
 
         industryLayout = view.findViewById(R.id.register_investor_matching_industry_layout);
         investmentPhaseLayout = view.findViewById(R.id.register_investor_matching_phase_layout);
@@ -129,6 +131,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                 customPicker.dismiss();
 
             customPicker.showDialog(getActivity());
+            btnInvestorMatching.setVisibility(View.VISIBLE);
         });
 
         // restore selected countries/continents
@@ -148,6 +151,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
 
         setupLists();
         restoreLists();
+        setupChangeListeners();
     }
 
     /**
@@ -177,23 +181,50 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
                 tickCheckbox(supportLayout, support));
     }
 
+    private void setupChangeListeners() {
+        for(int i = 0; i < investmentPhaseLayout.getChildCount(); i++) {
+            View v = investmentPhaseLayout.getChildAt(i);
+            ((CheckBox) v).setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(editMode) {
+                    btnInvestorMatching.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+
+        for(int i = 0; i < industryLayout.getChildCount(); i++) {
+            View v = industryLayout.getChildAt(i);
+            ((CheckBox) v).setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(editMode) {
+                    btnInvestorMatching.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+
+        for(int i = 0; i < investorTypeGroup.getChildCount(); i++) {
+            View v = investorTypeGroup.getChildAt(i);
+            ((RadioButton) v).setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(editMode) {
+                    btnInvestorMatching.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+
+        for(int i = 0; i < supportLayout.getChildCount(); i++) {
+            View v = supportLayout.getChildAt(i);
+            ((CheckBox) v).setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(editMode) {
+                    btnInvestorMatching.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+    }
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
         hideBottomNavigation(false);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_investor_matching:
-                processMatchingInformation();
-                break;
-            default:
-                break;
-        }
     }
 
     @Override
@@ -283,6 +314,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                 ticketSizeText.setText(adaptSliderValues(
                         (int) slider.getMaximumValue(), (int) slider.getMinimumValue()));
+                btnInvestorMatching.setVisibility(View.VISIBLE);
             }
         });
         ticketSize.setValueFrom((float) 1);

@@ -19,13 +19,15 @@ import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
+import com.raising.app.util.RaisingTextWatcher;
 import com.raising.app.util.RegistrationHandler;
 
 import java.io.IOException;
 
-public class RegisterStartupPitchFragment extends RaisingFragment {
+public class RegisterStartupPitchFragment extends RaisingFragment implements RaisingTextWatcher {
     private TextInputLayout sentenceLayout, pitchLayout;
     private EditText sentenceInput, pitchInput;
+    private Button btnStartupPitch;
     private Startup startup;
     private boolean editMode = false;
 
@@ -46,12 +48,12 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //define input views and button
         sentenceLayout = view.findViewById(R.id.register_startup_pitch_sentence);
         sentenceLayout.setEndIconOnClickListener(v -> {
             showSimpleDialog(getString(R.string.registration_information_dialog_title),
                     getString(R.string.registration_information_dialog_description));
         });
-
         sentenceInput = view.findViewById(R.id.register_input_startup_pitch_sentence);
 
         pitchLayout = view.findViewById(R.id.register_startup_pitch_pitch);
@@ -59,15 +61,17 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
             showSimpleDialog(getString(R.string.registration_information_dialog_title),
                     getString(R.string.registration_information_dialog_pitch));
         });
-
         pitchInput = view.findViewById(R.id.register_input_startup_pitch);
 
-        Button btnStartupPitch = view.findViewById(R.id.button_startup_pitch);
+        btnStartupPitch = view.findViewById(R.id.button_startup_pitch);
         btnStartupPitch.setOnClickListener(v -> processInputs());
 
+
+        //adjust fragment if this fragment is used for profile
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupPitch.setHint(getString(R.string.myProfile_apply_changes));
+            btnStartupPitch.setVisibility(View.INVISIBLE);
             startup = (Startup) accountViewModel.getAccount().getValue();
             editMode = true;
             hideBottomNavigation(false);
@@ -85,7 +89,7 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 v.getParent().requestDisallowInterceptTouchEvent(true);
-                switch (event.getAction() & MotionEvent.ACTION_MASK ){
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_SCROLL:
                         v.getParent().requestDisallowInterceptTouchEvent(false);
                         return true;
@@ -93,6 +97,12 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
                 return false;
             }
         });
+
+        // if editmode, add text watchers after initial filling with users data
+        if(editMode) {
+            sentenceInput.addTextChangedListener(this);
+            pitchInput.addTextChangedListener(this);
+        }
     }
 
 
@@ -107,6 +117,11 @@ public class RegisterStartupPitchFragment extends RaisingFragment {
     protected void onAccountUpdated() {
         popCurrentFragment(this);
         accountViewModel.updateCompleted();
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        btnStartupPitch.setVisibility(View.VISIBLE);
     }
 
     /**

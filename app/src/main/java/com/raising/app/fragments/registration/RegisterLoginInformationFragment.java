@@ -23,6 +23,7 @@ import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.RaisingTextWatcher;
 import com.raising.app.util.RegistrationHandler;
 
 import org.json.JSONObject;
@@ -33,9 +34,10 @@ import java.util.function.Function;
 
 import lombok.Getter;
 
-public class RegisterLoginInformationFragment extends RaisingFragment implements View.OnClickListener {
+public class RegisterLoginInformationFragment extends RaisingFragment implements RaisingTextWatcher {
     private final String TAG = "RegisterLoginInformationFragment";
     private EditText firstNameInput, lastNameInput, emailInput, passwordInput;
+    private Button btnLoginInformation;
     private boolean load = false;
     private boolean editMode = false;
     private Account account;
@@ -57,16 +59,19 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //define input views and button
         firstNameInput = view.findViewById(R.id.register_input_first_name);
         lastNameInput = view.findViewById(R.id.register_input_last_name);
         emailInput = view.findViewById(R.id.register_input_email);
         passwordInput = view.findViewById(R.id.register_input_password);
 
-        Button btnLoginInformation = view.findViewById(R.id.button_login_information);
-        btnLoginInformation.setOnClickListener(this);
+        btnLoginInformation = view.findViewById(R.id.button_login_information);
+        btnLoginInformation.setOnClickListener(v -> processLoginInformation());
 
+        //adjust fragment if this fragment is used for profile
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             btnLoginInformation.setHint(getString(R.string.myProfile_apply_changes));
+            btnLoginInformation.setVisibility(View.INVISIBLE);
             editMode = true;
             hideBottomNavigation(false);
             account = currentAccount;
@@ -76,10 +81,18 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
             account = RegistrationHandler.getAccount();
         }
 
+        // fill text inputs with existing user data
         firstNameInput.setText(account.getFirstName());
         lastNameInput.setText(account.getLastName());
         emailInput.setText(account.getEmail());
         passwordInput.setText(account.getPassword());
+
+        // if editmode, add text watchers after initial filling with users data
+        if(editMode) {
+            firstNameInput.addTextChangedListener(this);
+            lastNameInput.addTextChangedListener(this);
+            emailInput.addTextChangedListener(this);
+        }
     }
 
     @Override
@@ -97,28 +110,20 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     }
 
     @Override
-    public void onClick(View view) {
-        switch(view.getId()) {
-            case R.id.button_login_information:
-                final String firstName = firstNameInput.getText().toString();
-                final String lastName = lastNameInput.getText().toString();
-                final String email = emailInput.getText().toString();
-                final String password = passwordInput.getText().toString();
-                processLoginInformation(firstName, lastName, email, password);
-                break;
-            default:
-                break;
-        }
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        Log.d(TAG, "onTextChanged: Text has changed");
+        btnLoginInformation.setVisibility(View.VISIBLE);
     }
 
     /**
      * Check whether login information is valid and if so save them and move to next fragment
-     * @param firstName
-     * @param lastName
-     * @param email
-     * @param password
      */
-    private void processLoginInformation(final String firstName, final String lastName, final String email, final String password) {
+    private void processLoginInformation() {
+        final String firstName = firstNameInput.getText().toString();
+        final String lastName = lastNameInput.getText().toString();
+        final String email = emailInput.getText().toString();
+        final String password = passwordInput.getText().toString();
+
         if(firstName.length() == 0 || lastName.length() == 0  || email.length() == 0  ||
                 (password.length() == 0 && !editMode)) {
             showSimpleDialog(getString(R.string.register_dialog_title),

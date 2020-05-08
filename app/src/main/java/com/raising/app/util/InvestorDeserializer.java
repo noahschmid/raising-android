@@ -19,6 +19,8 @@ import com.raising.app.models.InvestmentPhase;
 import com.raising.app.models.Investor;
 import com.raising.app.models.Support;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -50,6 +52,10 @@ public class InvestorDeserializer implements JsonDeserializer<Investor> {
 
         if(jsonObject.get("profilePictureId") != null) {
             investor.setProfilePictureId(jsonObject.get("profilePictureId").getAsInt());
+        }
+
+        if(jsonObject.get("website") != null) {
+            investor.setWebsite(jsonObject.get("website").getAsString());
         }
 
         List<Long> galleryIds = new ArrayList<>();

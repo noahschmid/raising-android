@@ -159,24 +159,16 @@ public class CustomPicker implements LifecycleObserver, BottomSheetInteractionLi
             cancelButton.setVisibility(View.GONE);
         }
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        cancelButton.setOnClickListener(v -> dismiss());
 
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                result = new ArrayList<>();
-                items.forEach(item -> {
-                    if (item.isChecked()) {
-                        result.add(item);
-                    }
-                });
-                dismiss();
-            }
+        okButton.setOnClickListener(v -> {
+            result = new ArrayList<>();
+            items.forEach(item -> {
+                if (item.isChecked()) {
+                    result.add(item);
+                }
+            });
+            dismiss();
         });
 
         if (dialog.getWindow() != null) {

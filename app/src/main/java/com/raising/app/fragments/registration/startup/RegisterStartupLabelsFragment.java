@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import com.raising.app.R;
@@ -50,6 +51,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupLabels.setHint(getString(R.string.myProfile_apply_changes));
+            btnStartupLabels.setVisibility(View.INVISIBLE);
             startup = (Startup)currentAccount;
             hideBottomNavigation(false);
             editMode = true;
@@ -67,6 +69,16 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
         });
 
         startup.getLabels().forEach(label -> tickCheckbox(labelsLayout, label));
+
+        // check for changed labels
+        for(int i = 0; i < labelsLayout.getChildCount(); i++) {
+            View v = labelsLayout.getChildAt(i);
+            ((CheckBox) v).setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(editMode) {
+                    btnStartupLabels.setVisibility(View.VISIBLE);
+                }
+            });
+        }
     }
 
     @Override

@@ -24,6 +24,7 @@ import com.raising.app.models.Investor;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.RaisingTextWatcher;
 import com.raising.app.util.RegistrationHandler;
 
 import org.json.JSONException;
@@ -32,9 +33,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.function.Function;
 
-public class RegisterInvestorPitchFragment extends RaisingFragment implements View.OnClickListener {
+public class RegisterInvestorPitchFragment extends RaisingFragment implements View.OnClickListener, RaisingTextWatcher {
     private EditText sentenceInput, pitchInput;
     private TextInputLayout sentenceLayout, pitchLayout;
+    private Button btnInvestorPitch;
     private Investor investor;
     private boolean editMode = false;
 
@@ -53,12 +55,12 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //define input views and button
         sentenceLayout = view.findViewById(R.id.register_investor_pitch_sentence);
         sentenceLayout.setEndIconOnClickListener(v -> {
             showSimpleDialog(getString(R.string.registration_information_dialog_title),
                     getString(R.string.registration_information_dialog_description));
         });
-
         sentenceInput = view.findViewById(R.id.register_input_investor_pitch_sentence);
 
         pitchLayout = view.findViewById(R.id.register_investor_pitch_pitch);
@@ -66,21 +68,24 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
             showSimpleDialog(getString(R.string.registration_information_dialog_title),
                     getString(R.string.registration_information_dialog_pitch));
         });
-
         pitchInput = view.findViewById(R.id.register_input_investor_pitch_pitch);
 
-        Button btnInvestorPitch = view.findViewById(R.id.button_investor_pitch);
+        btnInvestorPitch = view.findViewById(R.id.button_investor_pitch);
         btnInvestorPitch.setOnClickListener(this);
 
+        //adjust fragment if this fragment is used for profile
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnInvestorPitch.setHint(getString(R.string.myProfile_apply_changes));
+            btnInvestorPitch.setVisibility(View.INVISIBLE);
             investor = (Investor) accountViewModel.getAccount().getValue();
             editMode = true;
             hideBottomNavigation(false);
         } else {
             investor = RegistrationHandler.getInvestor();
         }
+
+        // fill views with users existing data
         pitchInput.setText(investor.getPitch());
         sentenceInput.setText(investor.getDescription());
 
@@ -99,6 +104,12 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
                 return false;
             }
         });
+
+        // if editmode, add text watchers after initial filling with users data
+        if(editMode) {
+            sentenceInput.addTextChangedListener(this);
+            pitchInput.addTextChangedListener(this);
+        }
     }
 
     @Override
@@ -112,6 +123,11 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         super.onDestroyView();
 
         hideBottomNavigation(false);
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        btnInvestorPitch.setVisibility(View.VISIBLE);
     }
 
     @Override

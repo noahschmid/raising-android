@@ -114,17 +114,17 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
         imagesUploaded.observe(getViewLifecycleOwner(),
                 value -> {
-                    if(value.booleanValue() == true) {
+                    if (value.booleanValue() == true) {
                         submitRegistration();
                     }
                 });
 
-        inflater = (LayoutInflater)getContext().getSystemService
+        inflater = (LayoutInflater) getContext().getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
 
         profileImage = view.findViewById(R.id.register_investor_profile_image);
         profileImage.setOnClickListener(v -> {
-            if(permissionGranted) {
+            if (permissionGranted) {
                 showImageMenu(true);
             } else {
                 checkPermissions();
@@ -146,11 +146,15 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         });
 
         finishButton = view.findViewById(R.id.button_investor_images);
-        finishButton.setOnClickListener(v -> { finishButton.setEnabled(false); processInputs(); });
+        finishButton.setOnClickListener(v -> {
+            finishButton.setEnabled(false);
+            processInputs();
+        });
 
-        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+        if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_images_progress).setVisibility(View.INVISIBLE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
+            finishButton.setVisibility(View.INVISIBLE);
             investor = (Investor) accountViewModel.getAccount().getValue();
             editMode = true;
             hideBottomNavigation(false);
@@ -168,7 +172,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
      * Add an image view at the end of the gallery with an + drawable
      */
     private void addNewGalleryPlaceholder() {
-        if(gallery.size() >= 9) {
+        if (gallery.size() >= 9) {
             return;
         }
 
@@ -178,8 +182,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         galleryImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(permissionGranted) {
-                    if(galleryImage.getContentDescription() == "placeholder") {
+                if (permissionGranted) {
+                    if (galleryImage.getContentDescription() == "placeholder") {
                         showImageMenu(false);
                     }
                 } else {
@@ -198,7 +202,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
      * Load images from backend into image views
      */
     private void loadImages() {
-        if(investor.getProfilePictureId() > 0) {
+        if (investor.getProfilePictureId() > 0) {
             Glide
                     .with(this)
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
@@ -212,9 +216,9 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             deleteProfileImageButton.setVisibility(View.GONE);
         }
 
-        if(investor.getGalleryIds() != null) {
+        if (investor.getGalleryIds() != null) {
             investor.getGalleryIds().forEach(imageId -> {
-                if(imageId > 0) {
+                if (imageId > 0) {
                     Glide.with(this)
                             .asBitmap()
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -238,7 +242,6 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     }
 
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -254,6 +257,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
     /**
      * Process media selected from gallery/camera
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -261,7 +265,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(data == null)
+        if (data == null)
             return;
 
         switch (requestCode) {
@@ -269,6 +273,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                 Bitmap image = (Bitmap) data.getExtras().get("data");
                 addImageToGallery(new Image(image));
                 galleryChanged = true;
+                finishButton.setVisibility(View.VISIBLE);
                 break;
 
             case REQUEST_GALLERY_FETCH:
@@ -277,6 +282,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
                     addImageToGallery(new Image(ImageRotator.checkRotation(getPath(imageUri), image)));
                     galleryChanged = true;
+                    finishButton.setVisibility(View.VISIBLE);
                 } catch (Exception e) {
                     Log.d("InvestorImages", "" + e.getMessage());
                 }
@@ -286,6 +292,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                 image = (Bitmap) data.getExtras().get("data");
                 setProfileImage(image);
                 profilePictureChanged = true;
+                finishButton.setVisibility(View.VISIBLE);
                 break;
 
             case REQUEST_IMAGE_FETCH:
@@ -294,6 +301,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
                     setProfileImage(ImageRotator.checkRotation(getPath(imageUri), image));
                     profilePictureChanged = true;
+                    finishButton.setVisibility(View.VISIBLE);
                 } catch (Exception e) {
                     Log.d("InvestorImages", e.getMessage());
                 }
@@ -309,10 +317,10 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
      * Check whether the needed read/write permissions to external storage are granted and if not
      * show dialog
      */
-    private void checkPermissions(){
+    private void checkPermissions() {
         if (ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED||
+                != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(getContext(),
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
@@ -332,6 +340,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
     /**
      * Callback after granting or denying external storage permission
+     *
      * @param requestCode
      * @param permissions
      * @param grantResults
@@ -353,13 +362,14 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
     /**
      * Set the chosen profile image
+     *
      * @param image
      */
     private void setProfileImage(Bitmap image) {
         try {
             profileImage.setImageBitmap(image);
             profileImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            if(investor.getProfilePictureId() == -1) {
+            if (investor.getProfilePictureId() == -1) {
                 deleteProfileImageButton.setVisibility(View.VISIBLE);
             }
             profileImageOverlay.setVisibility(View.GONE);
@@ -370,11 +380,12 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
     /**
      * Add a new image to the gallery
+     *
      * @param image
      */
     private void addImageToGallery(Image image) {
         final View galleryObject;
-        if(addGalleryImage == null) {
+        if (addGalleryImage == null) {
             galleryObject = inflater.inflate(R.layout.item_gallery, null);
         } else {
             galleryObject = addGalleryImage;
@@ -393,7 +404,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             public void onClick(View v) {
                 galleryObject.setVisibility(View.GONE);
                 galleryLayout.removeView(galleryObject);
-                if(image.getId() != -1) {
+                if (image.getId() != -1) {
                     ApiRequestHandler.performDeleteRequest("media/gallery/" + image.getId(),
                             success -> {
                                 investor.getGalleryIds().remove(image.getId());
@@ -403,7 +414,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                                 return null;
                             });
                     gallery.remove(image);
-                    if(addGalleryImage == null) {
+                    if (addGalleryImage == null) {
                         addNewGalleryPlaceholder();
                     }
                 } else {
@@ -412,7 +423,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             }
         });
 
-        if(addGalleryImage == null) {
+        if (addGalleryImage == null) {
             galleryLayout.addView(galleryObject);
         }
         addGalleryImage = null;
@@ -421,11 +432,12 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
     /**
      * Show menu where user can choose between taking a new photo or choosing an existing one
+     *
      * @param profileImage true, if user adds profile picture
      *                     false, if user adds picture to gallery
      */
     private void showImageMenu(boolean profileImage) {
-        final String [] options = {getString(R.string.image_action_dialog_take),
+        final String[] options = {getString(R.string.image_action_dialog_take),
                 getString(R.string.image_action_dialog_choose), getString(R.string.cancel_text)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
@@ -468,15 +480,15 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
      * Process the given inputs
      */
     private void processInputs() {
-        if(profileImage.getDrawable() == null) {
+        if (profileImage.getDrawable() == null) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_no_picture_text));
             finishButton.setEnabled(true);
             return;
         }
 
-        if(((BitmapDrawable)profileImage.getDrawable()).getBitmap() == null ||
-                profileImage.getDrawable().getIntrinsicWidth()  == 0 ||
+        if (((BitmapDrawable) profileImage.getDrawable()).getBitmap() == null ||
+                profileImage.getDrawable().getIntrinsicWidth() == 0 ||
                 profileImage.getDrawable().getIntrinsicHeight() == 0 ||
                 profileImage.getDrawable() == getResources().getDrawable(
                         R.drawable.ic_add_24dp, Objects.requireNonNull(getContext()).getTheme())) {
@@ -486,15 +498,15 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             return;
         }
 
-        Bitmap logo = ((BitmapDrawable)profileImage.getDrawable()).getBitmap();
+        Bitmap logo = ((BitmapDrawable) profileImage.getDrawable()).getBitmap();
 
         try {
             showLoadingPanel();
-            if(editMode) {
-                if(profilePictureChanged) {
+            if (editMode) {
+                if (profilePictureChanged) {
                     accountViewModel.updateProfilePicture(new Image(logo));
                 }
-                if(galleryChanged) {
+                if (galleryChanged) {
                     accountViewModel.updateGallery(gallery);
                 }
             } else {
@@ -502,34 +514,35 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             }
         } catch (Exception e) {
             dismissLoadingPanel();
-            Log.d("RegisterInvestorImagesFragment","Error in process inputs: " + e.getMessage());
+            Log.d("RegisterInvestorImagesFragment", "Error in process inputs: " + e.getMessage());
         }
     }
 
     /**
      * Upload profile picture to backend server
+     *
      * @param logo the profile picture
      */
     private void uploadImages(Bitmap logo) {
         List<Bitmap> bitmaps = new ArrayList<>();
         gallery.forEach(img -> {
-            if(img.getId() < 1) {
+            if (img.getId() < 1) {
                 bitmaps.add(img.getImage());
             }
         });
         new ImageUploader(logo, bitmaps, response -> {
             try {
-                if(response.has("profileResponse")) {
+                if (response.has("profileResponse")) {
                     JSONObject pResponse = response.getJSONObject("profileResponse");
                     investor.setProfilePictureId(pResponse.getLong("id"));
                 }
 
-                if(response.has("galleryResponse")) {
+                if (response.has("galleryResponse")) {
                     JSONArray gResponse = response.getJSONArray("galleryResponse");
-                    if(investor.getGalleryIds() == null) {
+                    if (investor.getGalleryIds() == null) {
                         investor.setGalleryIds(new ArrayList<>());
                     }
-                    for(int i = 0; i < gResponse.length(); ++i) {
+                    for (int i = 0; i < gResponse.length(); ++i) {
                         investor.getGalleryIds().add(gResponse.getLong(i));
                     }
                 }
@@ -546,7 +559,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
             return null;
         }, error -> {
-            Log.e(TAG, "upload images: " + error.toString() );
+            Log.e(TAG, "upload images: " + error.toString());
             finishButton.setEnabled(true);
             return null;
         }).execute();
@@ -568,7 +581,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     errorCallback, new JSONObject(investor));
             Log.d("RegisterInvestorImagesFragment", investor);
         } catch (Exception e) {
-            Log.e(TAG, "submitRegistration: " + e.getMessage() );
+            Log.e(TAG, "submitRegistration: " + e.getMessage());
             displayGenericError();
             finishButton.setEnabled(true);
         }
@@ -587,7 +600,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             RegistrationHandler.finish(response.getLong("id"),
                     response.getString("token"), false);
 
-            if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
+            if (isFirstAppLaunch() && !isDisablePostOnboarding()) {
                 clearBackstackAndReplace(new OnboardingPost1Fragment());
             } else {
                 clearBackstackAndReplace(new MatchesFragment());
