@@ -78,7 +78,7 @@
     <string name="registration_information_dialog_fte">FTE stands for Full Time Employees. Potential matches may be interested in your employment status.</string>
     <string name="registration_information_dialog_committed">Tell us if you have already achieved some of the target scope, that you have specified above.</string>
     <string name="registration_information_dialog_scope">With the scope you can define how much money you would like to raise during this current financing phase.</string>
-    <string name="registration_information_label">A label is an award given to a startup upon completing a certain program or reaching predefined values (max. 4 Labels)</string>
+    <string name="registration_information_label">A label is an award given to a startup upon completing a certain program or reaching predefined values \n(max. 4 Labels)</string>
 
     <string name="toolbar_title_login_information"> Login Information</string>
     <string name="register_first_name"> First Name* </string>
@@ -309,10 +309,10 @@
     <!-- Strings used for Subscription -->
     <string name="toolbar_profile_subscription"> Subscription</string>
     <string name="subscription_error_cannot_add_title"> Subscription active!</string>
-    <string name="subscription_error_cannot_add_text"> You already have an active subscription</string>
+    <string name="subscription_error_cannot_add_text"> You cannot change your subscription since you have an ending subscription already.</string>
     <string name="subscription_your_subscriptions">Your active subscription</string>
     <string name="subscription_dialog_subscribe_title"> Subscribe to Rai$ing</string>
-    <string name="subscribtion_dialog_subscribe_text"> You are about to purchase a subscription. \nDo you want to proceed?</string>
+    <string name="subscribtion_dialog_subscribe_text"> You are about to purchase a subscription from Rai$ing. \nDo you want to proceed?</string>
     <string name="subscription_ending"> Ending Subscription</string>
     <string name="subscription_next"> Next Subscription</string>
     <string name="subscription_downgrade"> Downgrade to </string>
@@ -327,7 +327,8 @@
     <string name="subscriptions_weeks"> Week</string>
     <string name="subscription_activated"> Will be activated: </string>
     <string name="subscription_expires"> Expiration Date: </string>
-    <string name="subscription_cancel"> Cancel Subscription</string>
+    <string name="subscription_manage"> Manage your subscription on Google Play</string>
+    <string name="subscription_google_play"> Google Play </string>
     <string name="subscription_cancel_text"> Are you sure you want to cancel your subscription?</string>
     <string name="subscription_cancel_confirmation_title"> Subscription Cancelled</string>
     <string name="subscription_cancel_confirmation_text"> You have successfully cancelled your subscription to Rai$ing. \n \n</string>

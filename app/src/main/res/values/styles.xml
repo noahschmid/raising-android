@@ -15,7 +15,7 @@
 
    <!-- Text Styles -->
     <style name="RaisingText">
-        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textColor">@color/raisingTextColor</item>
         <item name="android:textColorHint">@color/raisingTextColor</item>
         <item name="android:textSize">@dimen/raisingTextFontSize</item>

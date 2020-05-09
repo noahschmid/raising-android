@@ -121,24 +121,36 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@+id/button_cancel_subscription"
+                app:layout_constraintBottom_toTopOf="@+id/subscription_manage_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/subscription_benefit_3"></LinearLayout>
 
             <Button
-                android:id="@+id/button_cancel_subscription"
+                android:id="@+id/button_manage_subscription"
                 style="@style/ButtonConfirmRegistration"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/authenticationButtonHeight"
-                android:hint="@string/subscription_cancel"
-                android:backgroundTint="@color/raisingNegativeAccent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/raisingButtonBackgroundColor"
+                android:hint="@string/subscription_google_play"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/subscriptions_layout"
                 app:layout_constraintStart_toStartOf="@+id/subscriptions_layout"
+                app:layout_constraintTop_toBottomOf="@+id/subscription_manage_text" />
+
+            <TextView
+                android:id="@+id/subscription_manage_text"
+                style="@style/RaisingSmallerTextBold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="@string/subscription_manage"
+                app:layout_constraintBottom_toTopOf="@+id/button_manage_subscription"
+                app:layout_constraintEnd_toEndOf="@+id/button_manage_subscription"
+                app:layout_constraintStart_toStartOf="@+id/button_manage_subscription"
                 app:layout_constraintTop_toBottomOf="@+id/subscriptions_layout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

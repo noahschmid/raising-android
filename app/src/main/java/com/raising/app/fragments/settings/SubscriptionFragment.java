@@ -1,7 +1,9 @@
 package com.raising.app.fragments.settings;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -51,7 +53,8 @@ public class SubscriptionFragment extends RaisingFragment {
     private final String THREE_MONTH_SUBSCRIPTION = "ch.swissef.raisingapp.subscription3m";
 
     private LinearLayout subscriptionsLayout;
-    private Button btnCancelSubscription;
+    private Button btnManageSubscription;
+    private TextView manageSubscriptionText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,8 +69,10 @@ public class SubscriptionFragment extends RaisingFragment {
 
         // declare views used for subscriptions
         subscriptionsLayout = view.findViewById(R.id.subscriptions_layout);
-        btnCancelSubscription = view.findViewById(R.id.button_cancel_subscription);
-        btnCancelSubscription.setVisibility(View.GONE);
+        btnManageSubscription = view.findViewById(R.id.button_manage_subscription);
+        btnManageSubscription.setVisibility(View.GONE);
+        manageSubscriptionText = view.findViewById(R.id.subscription_manage_text);
+        manageSubscriptionText.setVisibility(View.GONE);
 
         // setup billing client
         SKU_LIST.add(SIX_MONTH_SUBSCRIPTION);
@@ -146,18 +151,21 @@ public class SubscriptionFragment extends RaisingFragment {
                 && billingClient.isFeatureSupported("subscriptionsUpdate").getResponseCode() == BillingClient.BillingResponseCode.OK) {
             BillingFlowParams flowParams;
             if (hasSubscription) {
+                Log.d(TAG, "showGoogleBilling: Change subscription");
                 flowParams = BillingFlowParams.newBuilder()
                         .setSkuDetails(skuDetails)
                         .setOldSku(currentAccount.getActiveSubscription().getSku(),
                                 currentAccount.getActiveSubscription().getPurchaseToken())
+                        .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.DEFERRED)
                         .build();
             } else {
+                Log.d(TAG, "showGoogleBilling: New subscription");
                 flowParams = BillingFlowParams.newBuilder()
                         .setSkuDetails(skuDetails)
                         .build();
             }
             BillingResult responseCode = billingClient.launchBillingFlow(this.getActivity(), flowParams);
-            Log.d(TAG, "showGoogleBilling: BillingResponseCode: " + responseCode.getDebugMessage());
+            Log.d(TAG, "showGoogleBilling: BillingResponseCodeMessage: " + responseCode.getDebugMessage());
         }
     }
 
@@ -185,6 +193,7 @@ public class SubscriptionFragment extends RaisingFragment {
         if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
             Log.d(TAG, "handlePurchase: Purchase Acknowledged " + purchase.isAcknowledged());
             if (!purchase.isAcknowledged()) {
+                Log.d(TAG, "handlePurchase: Purchase Token: " + purchase.getPurchaseToken());
                 AcknowledgePurchaseParams acknowledgePurchaseParams =
                         AcknowledgePurchaseParams.newBuilder()
                                 .setPurchaseToken(purchase.getPurchaseToken())
@@ -246,6 +255,23 @@ public class SubscriptionFragment extends RaisingFragment {
             subscriptionPriceWeek.setText(createPriceString(skuDetails, false));
             card.setOnClickListener(v -> processOnCardClick(skuDetails));
 
+            if (currentAccount.getNextSubscription() != null) {
+                btnManageSubscription.setVisibility(View.VISIBLE);
+                manageSubscriptionText.setVisibility(View.VISIBLE);
+                btnManageSubscription.setOnClickListener(v -> {
+                            String baseUri = "https://play.google.com/store/account/subscriptions";
+                            if (!currentEqualsNextSubscription()) {
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(baseUri));
+                                startActivity(browserIntent);
+                            } else if (currentEqualsNextSubscription()) {
+                                String uri = baseUri + "?sku=" + currentAccount.getNextSubscription().getSku() + "&package=" + "com.raising.app";
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                startActivity(browserIntent);
+                            }
+                            refreshSubscriptionsLayout();
+                        }
+                );
+            }
             // check if user has a subscription
             if (activeSubscriptionExists()) {
                 adjustNotSelectedSubscriptions(subscriptionTitle, getSkuDuration(skuDetails));
@@ -267,7 +293,6 @@ public class SubscriptionFragment extends RaisingFragment {
 
                 // adjust card of users next subscription
                 if (nextSubscriptionExists() && skuDetails.getSku().equals(currentAccount.getNextSubscription().getSku())) {
-                    btnCancelSubscription.setVisibility(View.GONE);
                     Drawable drawable = card.getBackground();
                     drawable = DrawableCompat.wrap(drawable);
                     drawable.setTint(getResources().getColor(R.color.raisingPositiveAccentLight, null));
@@ -281,27 +306,6 @@ public class SubscriptionFragment extends RaisingFragment {
                         // if current subscription == next subscription the user has automatic extension
                         subscriptionTitle.setText(getString(R.string.subscription_your_subscriptions));
                         subscriptionDate.setText(getString(R.string.subscription_automatic_extension));
-
-                        btnCancelSubscription.setVisibility(View.VISIBLE);
-                        btnCancelSubscription.setOnClickListener(v -> {
-                            if (currentEqualsNextSubscription()) {
-                                new AlertDialog.Builder(this.getContext())
-                                        .setTitle(getString(R.string.subscription_cancel))
-                                        .setMessage(getString(R.string.subscription_cancel_text))
-                                        .setPositiveButton(getString(R.string.yes_text), (dialog, which) -> {
-                                            cancelNextSubscription();
-                                            Log.d(TAG, "refreshSubscriptionsLayout: Subscription" + currentAccount.getActiveSubscription());
-                                            showSimpleDialog(
-                                                    getString(R.string.subscription_cancel_confirmation_title),
-                                                    getString(R.string.subscription_cancel_confirmation_text)
-                                                            + currentAccount.getActiveSubscription().getExpirationDateString());
-                                            refreshSubscriptionsLayout();
-                                            btnCancelSubscription.setVisibility(View.GONE);
-                                        })
-                                        .setNegativeButton(getString(R.string.cancel_text), null)
-                                        .show();
-                            }
-                        });
                     } else {
                         // if current subscription != next subscription the next subscription starts, when the current one expires
                         subscriptionTitle.setText(getString(R.string.subscription_next));

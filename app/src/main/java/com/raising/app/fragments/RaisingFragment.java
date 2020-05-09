@@ -194,16 +194,8 @@ public class RaisingFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         } catch (NullPointerException e) {
-            Log.e("RaisingFragment", "Error while changing Fragment: " + e.getMessage());
+            Log.e(TAG, "Error while changing Fragment: " + e.getMessage());
         }
-    }
-
-    /**
-     * Display a generic "oops something went wrong" message
-     */
-    public void displayGenericError() {
-        showSimpleDialog(getString(R.string.generic_error_title),
-                getString(R.string.generic_error_text));
     }
 
     /**
@@ -225,6 +217,42 @@ public class RaisingFragment extends Fragment {
                     e.getMessage());
         }
     }
+
+    protected void changeFragmentWithAnimation(Fragment fragment) {
+        try {
+            getActivitiesFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.animation_slide_in_right, R.anim.animation_slide_out_left, R.anim.animation_slide_in_left, R.anim.animation_slide_out_right)
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        } catch (NullPointerException e) {
+            Log.d(TAG, "changeFragmentWithAnimation: Error while changing fragment" + e.getMessage());
+        }
+    }
+
+    protected void changeFragmentWithAnimation(Fragment fragment, String name) {
+        try {
+            getActivitiesFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.animation_slide_in_right, R.anim.animation_slide_out_left, R.anim.animation_slide_in_left, R.anim.animation_slide_out_right)
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(name)
+                    .commit();
+        } catch (NullPointerException e) {
+            Log.d(TAG, "changeFragmentWithAnimation: Error while changing fragment" + e.getMessage());
+        }
+    }
+
+    /**
+     * Display a generic "oops something went wrong" message
+     */
+    public void displayGenericError() {
+        showSimpleDialog(getString(R.string.generic_error_title),
+                getString(R.string.generic_error_text));
+    }
+
+
 
     /**
      * Clear all fragments on the backstack and replace fragment container with new fragment

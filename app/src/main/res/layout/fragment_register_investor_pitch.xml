@@ -18,7 +18,7 @@
 
             <TextView
                 android:id="@+id/register_investor_description_text"
-                style="@style/RaisingText"
+                style="@style/RaisingTextBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
@@ -60,7 +60,7 @@
 
             <TextView
                 android:id="@+id/register_investor_pitch_text"
-                style="@style/RaisingText"
+                style="@style/RaisingTextBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"

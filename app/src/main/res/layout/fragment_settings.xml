@@ -20,7 +20,8 @@
                 android:id="@+id/settings_subscription_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settingsCardHeight"
-                android:background="?attr/selectableItemBackground"
+                android:foreground="?attr/selectableItemBackground"
+                android:background="@color/raisingSecondaryAccent"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintBottom_toTopOf="@+id/settings_divider_1"
@@ -346,6 +347,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settings_report_layout"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <View
+                android:id="@+id/settings_divider_7"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="72dp"
+                android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+                android:background="@color/raisingLightGrey"
+                app:layout_constraintBottom_toTopOf="@+id/settings_logout_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
