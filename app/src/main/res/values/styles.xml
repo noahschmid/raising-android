@@ -29,6 +29,10 @@
         <item name="android:textSize">@dimen/raisingSmallerTextFontSize</item>
     </style>
 
+    <style name="RaisingTitleNonBold" parent="RaisingTitle">
+        <item name="android:textStyle">normal</item>
+    </style>
+
     <style name="RaisingTitle" parent="RaisingTextBold">
         <item name="android:textSize">@dimen/raisingTitleFontSize</item>
     </style>

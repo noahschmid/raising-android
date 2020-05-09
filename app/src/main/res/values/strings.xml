@@ -256,12 +256,12 @@
     <string name="settings_about_graphics"> Graphics and Design </string>
     <string name="settings_about_graphics_text"> Olivier Stähli</string>
 
-    <string name="settings_notifications"> Notifications </string>
-    <string name="settings_notifications_toggle_all"> Toggle all Notifications</string>
-    <string name="settings_notifications_matchlist"> New Matchlist is available</string>
-    <string name="settings_notifications_leads">I get a new lead</string>
-    <string name="settings_notifications_contact"> I get a new contact request</string>
-    <string name="settings_notifications_connection"> I make a successful connection</string>
+    <string name="settings_general"> General </string>
+    <string name="settings_general_toggle_all"> Toggle all Notifications</string>
+    <string name="settings_general_matchlist"> New Matchlist is available</string>
+    <string name="settings_general_leads">I get a new lead</string>
+    <string name="settings_general_contact"> I get a new contact request</string>
+    <string name="settings_general_connection"> I make a successful connection</string>
 
     <string name="settings_report_problem"> Report a Problem </string>
     <string name="settings_feedback"> Give Feedback</string>

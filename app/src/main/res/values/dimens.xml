@@ -48,6 +48,8 @@
     <dimen name="loginScreenFontSize"> 30sp </dimen>
 
     <dimen name="emptyMatchlistIconSize"> 150dp</dimen>
+    <dimen name="settingsIconSize"> 40dp</dimen>
+    <dimen name="settingsCardHeight"> 65dp</dimen>
 
     <dimen name="inputDropdownItemPadding"> 16dp </dimen>
 
