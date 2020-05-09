@@ -60,4 +60,5 @@
     <dimen name="onboardingPanelBottomMargin"> 75dp</dimen>
     <dimen name="onboardingTextVerticalPadding"> 8dp</dimen>
     <dimen name="onboardingTextHorizontalPadding"> 16dp</dimen>
+    <dimen name="onboardingNextButtonWidth"> 75dp</dimen>
 </resources>

@@ -21,7 +21,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/settingsCardHeight"
                 android:background="?attr/selectableItemBackground"
-                android:backgroundTint="@color/raisingPrimaryLight"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintBottom_toTopOf="@+id/settings_divider_1"
