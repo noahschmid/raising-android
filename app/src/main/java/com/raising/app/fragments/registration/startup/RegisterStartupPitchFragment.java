@@ -50,17 +50,9 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
 
         //define input views and button
         sentenceLayout = view.findViewById(R.id.register_startup_pitch_sentence);
-        sentenceLayout.setEndIconOnClickListener(v -> {
-            showSimpleDialog(getString(R.string.registration_information_dialog_title),
-                    getString(R.string.registration_information_dialog_description));
-        });
         sentenceInput = view.findViewById(R.id.register_input_startup_pitch_sentence);
 
         pitchLayout = view.findViewById(R.id.register_startup_pitch_pitch);
-        pitchLayout.setEndIconOnClickListener(v -> {
-            showSimpleDialog(getString(R.string.registration_information_dialog_title),
-                    getString(R.string.registration_information_dialog_pitch));
-        });
         pitchInput = view.findViewById(R.id.register_input_startup_pitch);
 
         btnStartupPitch = view.findViewById(R.id.button_startup_pitch);

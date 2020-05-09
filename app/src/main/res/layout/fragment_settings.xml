@@ -33,7 +33,7 @@
 
                 <TextView
                     android:id="@+id/settings_subscription_text"
-                    style="@style/RaisingTitleNonBold"
+                    style="@style/RaisingSubtitle"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
@@ -75,7 +75,7 @@
 
                 <TextView
                     android:id="@+id/settings_notifications_text"
-                    style="@style/RaisingTitleNonBold"
+                    style="@style/RaisingSubtitle"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
@@ -117,7 +117,7 @@
 
                 <TextView
                     android:id="@+id/settings_about_text"
-                    style="@style/RaisingTitleNonBold"
+                    style="@style/RaisingSubtitle"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
@@ -158,7 +158,7 @@
 
                 <TextView
                     android:id="@+id/settings_onboarding_text"
-                    style="@style/RaisingTitleNonBold"
+                    style="@style/RaisingSubtitle"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
@@ -200,7 +200,7 @@
 
                 <TextView
                     android:id="@+id/settings_feedback_text"
-                    style="@style/RaisingTitleNonBold"
+                    style="@style/RaisingSubtitle"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
@@ -243,7 +243,7 @@
 
                 <TextView
                     android:id="@+id/settings_report_text"
-                    style="@style/RaisingTitleNonBold"
+                    style="@style/RaisingSubtitle"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
@@ -362,7 +362,7 @@
 
                 <TextView
                     android:id="@+id/settings_logout_text"
-                    style="@style/RaisingTitleNonBold"
+                    style="@style/RaisingSubtitle"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"

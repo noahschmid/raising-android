@@ -57,17 +57,9 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
 
         //define input views and button
         sentenceLayout = view.findViewById(R.id.register_investor_pitch_sentence);
-        sentenceLayout.setEndIconOnClickListener(v -> {
-            showSimpleDialog(getString(R.string.registration_information_dialog_title),
-                    getString(R.string.registration_information_dialog_description));
-        });
         sentenceInput = view.findViewById(R.id.register_input_investor_pitch_sentence);
 
         pitchLayout = view.findViewById(R.id.register_investor_pitch_pitch);
-        pitchLayout.setEndIconOnClickListener(v -> {
-            showSimpleDialog(getString(R.string.registration_information_dialog_title),
-                    getString(R.string.registration_information_dialog_pitch));
-        });
         pitchInput = view.findViewById(R.id.register_input_investor_pitch_pitch);
 
         btnInvestorPitch = view.findViewById(R.id.button_investor_pitch);
