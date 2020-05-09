@@ -227,7 +227,8 @@ public class LeadsFragment extends RaisingFragment {
             }
         }
         filterLeads();
-        if (today.size() == 0 && thisWeek.size() == 0 && earlier.size() == 0 && showEmptyLeadsText) {
+        if (today.size() == 0 && thisWeek.size() == 0 && thisMonth.size() == 0 &&
+                earlier.size() == 0 && showEmptyLeadsText) {
             emptyLeadsLayout.setVisibility(View.VISIBLE);
         }
     }
