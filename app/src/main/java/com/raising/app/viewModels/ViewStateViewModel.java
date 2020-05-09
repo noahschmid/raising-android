@@ -26,6 +26,8 @@ public class ViewStateViewModel extends AndroidViewModel {
         return viewState;
     }
 
+    public void setViewState(ViewState state) { this.viewState.setValue(state); }
+
     /**
      *
      * @param viewModelState

@@ -37,6 +37,7 @@ import com.raising.app.models.Account;
 import com.raising.app.models.Model;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.Resources;
 import com.raising.app.util.SimpleMessageDialog;
@@ -96,7 +97,13 @@ public class RaisingFragment extends Fragment {
                     dismissLoadingPanel();
                     ToastHandler toastHandler = new ToastHandler(getContext());
                     toastHandler.showToast(getString(R.string.generic_error_title), Toast.LENGTH_LONG);
-                    accountViewModel.loadAccount();
+                    viewStateViewModel.setViewState(ViewState.EMPTY);
+                    break;
+
+                case EXPIRED:
+                    showSimpleDialog(getString(R.string.session_expired_title), getString(R.string.session_expired_text));
+                    AuthenticationHandler.logout();
+                    clearBackstackAndReplace(new LoginFragment());
                     break;
             }
         });
