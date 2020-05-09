@@ -55,12 +55,12 @@ public class ResourcesViewModel extends AndroidViewModel{
         } else {
             viewState.setValue(ViewState.LOADING);
         }
-
+/*
         try {
             JSONObject result = ApiRequestHandler.performSynchronousGetRequest("public/");
         } catch (Exception e) {
             Log.e(TAG, "loadResources: " + e.getMessage());
-        }
+        }*/
         ApiRequestHandler.performGetRequest("public/", result -> {
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     gsonBuilder.registerTypeAdapter(Resources.class, new ResourcesDeserializer());

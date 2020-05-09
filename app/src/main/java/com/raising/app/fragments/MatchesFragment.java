@@ -72,27 +72,7 @@ public class MatchesFragment extends RaisingFragment {
             if(viewStateViewModel.getViewState().getValue() != ViewState.RESULT)
                 return;
             ArrayList<Match> matchList = matchesViewModel.getMatches().getValue();
-            matchListItems.clear();
-            matchList.forEach(match -> {
-                MatchListItem matchItem = new MatchListItem();
-                matchItem.setDescription(match.getDescription());
-                matchItem.setAccountId(match.getAccountId());
-                matchItem.setScore(match.getMatchingPercent());
-                matchItem.setStartup(match.isStartup());
-                matchItem.setRelationshipId(match.getId());
-                matchItem.setPictureId(match.getProfilePictureId());
-                if (matchItem.isStartup()) {
-                    matchItem.setAttribute(resources.getInvestmentPhase(
-                            match.getInvestmentPhaseId()).getName());
-                    matchItem.setName(match.getCompanyName());
-                } else {
-                    matchItem.setAttribute(resources.getInvestorType(
-                            match.getInvestorTypeId()).getName());
-                    matchItem.setName(match.getFirstName() + " " + match.getLastName());
-                }
-                matchListItems.add(matchItem);
-                Log.d(TAG, "onViewCreated: Match List filled");
-            });
+            processItems(matchList);
         });
 
         processViewState(matchesViewModel.getViewState().getValue());
@@ -101,27 +81,7 @@ public class MatchesFragment extends RaisingFragment {
         resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             if (state == ViewState.CACHED || state == ViewState.RESULT) {
                 ArrayList<Match> matchList = matchesViewModel.getMatches().getValue();
-                matchListItems.clear();
-                matchList.forEach(match -> {
-                    MatchListItem matchItem = new MatchListItem();
-                    matchItem.setDescription(match.getDescription());
-                    matchItem.setAccountId(match.getAccountId());
-                    matchItem.setScore(match.getMatchingPercent());
-                    matchItem.setStartup(match.isStartup());
-                    matchItem.setRelationshipId(match.getId());
-                    matchItem.setPictureId(match.getProfilePictureId());
-                    if (matchItem.isStartup()) {
-                        matchItem.setAttribute(resources.getInvestmentPhase(
-                                match.getInvestmentPhaseId()).getName());
-                        matchItem.setName(match.getCompanyName());
-                    } else {
-                        matchItem.setAttribute(resources.getInvestorType(
-                                match.getInvestorTypeId()).getName());
-                        matchItem.setName(match.getFirstName() + " " + match.getLastName());
-                    }
-                    matchListItems.add(matchItem);
-                    Log.d(TAG, "onViewCreated: Match List filled");
-                });
+                processItems(matchList);
             }
         });
         matchListAdapter = new MatchListAdapter(matchListItems);
@@ -198,13 +158,14 @@ public class MatchesFragment extends RaisingFragment {
             });
 
             matchListAdapter.notifyDataSetChanged();
-            if (matchListItems.size() == 0) {
-                emptyMatchListLayout.setVisibility(View.VISIBLE);
-            } else {
-                emptyMatchListLayout.setVisibility(View.GONE);
-            }
-            swipeRefreshLayout.setRefreshing(false);
         }
+
+        if (matchListItems.size() == 0) {
+            emptyMatchListLayout.setVisibility(View.VISIBLE);
+        } else {
+            emptyMatchListLayout.setVisibility(View.GONE);
+        }
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
