@@ -32,11 +32,11 @@
 
             <TextView
                 android:id="@+id/interaction_caption"
+                style="@style/RaisingSmallerTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                 android:hint="@string/leads_contact_coffee"
-                style="@style/RaisingTextBold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/leads_interaction_icon"
                 app:layout_constraintTop_toTopOf="parent"

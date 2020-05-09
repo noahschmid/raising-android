@@ -67,14 +67,14 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         });
 
         // populate open requests
-        if(resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
+        if (resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
                 resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
             ArrayList<Lead> openRequests = leadsViewModel.getOpenRequests();
-            if(openRequests == null || openRequests.size() == 0) {
+            if (openRequests == null || openRequests.size() == 0) {
                 emptyListLayout.setVisibility(View.VISIBLE);
             }
 
-            for(int i = 0; i < openRequests.size(); ++i) {
+            for (int i = 0; i < openRequests.size(); ++i) {
                 Lead request = openRequests.get(i);
                 if (request.isStartup()) {
                     request.setTitle(request.getCompanyName());
@@ -100,16 +100,17 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
             public void onClickAccept(int position) {
                 String endpoint = "match/" + openRequestItems.get(position).getId() + "/accept";
                 ApiRequestHandler.performPostRequest(endpoint, v -> {
-                    openRequestItems.remove(position);
-                    adapter.notifyItemRemoved(position);
-                    return null;
-                },
-                err -> {
-                    displayGenericError();
-                    Log.e(TAG, "onClickAccept: " + ApiRequestHandler.parseVolleyError(err));
-                    return null;
-                },
-                new JSONObject());
+                            openRequestItems.remove(position);
+                            adapter.notifyItemRemoved(position);
+                            checkForEmptyLayout();
+                            return null;
+                        },
+                        err -> {
+                            displayGenericError();
+                            Log.e(TAG, "onClickAccept: " + ApiRequestHandler.parseVolleyError(err));
+                            return null;
+                        },
+                        new JSONObject());
             }
 
             @Override
@@ -118,6 +119,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
                 ApiRequestHandler.performPostRequest(endpoint, v -> {
                             openRequestItems.remove(position);
                             adapter.notifyItemRemoved(position);
+                            checkForEmptyLayout();
                             return null;
                         },
                         err -> {
@@ -135,7 +137,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
             args.putInt("score", openRequestItems.get(position).getMatchingPercent());
             args.putLong("relationshipId", openRequestItems.get(position).getId());
             args.putString("title", openRequestItems.get(position).getTitle());
-            if(openRequestItems.get(position).isStartup()) {
+            if (openRequestItems.get(position).isStartup()) {
                 Fragment fragment = new StartupPublicProfileFragment();
                 fragment.setArguments(args);
                 changeFragment(fragment, "StartupPublicProfileFragment");
@@ -145,5 +147,11 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
                 changeFragment(fragment, "InvestorPublicProfileFragment");
             }
         });
+    }
+
+    private void checkForEmptyLayout() {
+        if (openRequestItems.size() == 0) {
+            popCurrentFragment(this);
+        }
     }
 }

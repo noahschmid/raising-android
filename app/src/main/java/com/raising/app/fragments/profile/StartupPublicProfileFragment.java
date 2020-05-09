@@ -514,15 +514,6 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             return imageView;
         });
 
-        //TODO @lorenz : add animation to imageswitcher
-        /*
-        imageSwitcher.setInAnimation(
-                AnimationUtils.loadAnimation(this.getContext(), R.anim.public_profile_gallery_in));
-        imageSwitcher.setOutAnimation(
-                AnimationUtils.loadAnimation(this.getContext(), R.anim.public_profile_gallery_out));
-
-         */
-
         if (currentImageIndex == 0) {
             btnPrevious.setVisibility(View.GONE);
         } else {
@@ -535,6 +526,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         }
 
         btnPrevious.setOnClickListener(v -> {
+            imageSwitcher.setInAnimation(this.getContext(), R.anim.animation_slide_in_left);
+            imageSwitcher.setOutAnimation(this.getContext(), R.anim.animation_slide_out_right);
             if (currentImageIndex == 0) {
                 btnPrevious.setVisibility(View.GONE);
             }
@@ -555,6 +548,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         });
 
         btnNext.setOnClickListener(v -> {
+            imageSwitcher.setInAnimation(this.getContext(), R.anim.animation_slide_in_right);
+            imageSwitcher.setOutAnimation(this.getContext(), R.anim.animation_slide_out_left);
             if (currentImageIndex == pictures.size() - 1) {
                 btnNext.setVisibility(View.GONE);
             }

@@ -11,7 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -25,9 +28,9 @@ import com.raising.app.viewModels.AccountViewModel;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class RegisterStartupMatchingFragment extends RaisingFragment
-        implements View.OnClickListener {
+public class RegisterStartupMatchingFragment extends RaisingFragment {
     private Slider ticketSize;
+    private Button btnStartUpMatching;
     private LinearLayout investorTypeLayout, supportLayout, industryLayout;
     private RadioGroup investmentPhaseGroup;
     private TextView ticketSizeText;
@@ -74,8 +77,8 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         investmentPhaseGroup = view.findViewById(R.id.register_startup_matching_radio_phase);
         industryLayout = view.findViewById(R.id.register_startup_matching_industry_layout);
 
-        Button btnStartUpMatching = view.findViewById(R.id.button_startup_matching);
-        btnStartUpMatching.setOnClickListener(this);
+        btnStartUpMatching = view.findViewById(R.id.button_startup_matching);
+        btnStartUpMatching.setOnClickListener(v -> processMatchingInformation());
 
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
@@ -89,10 +92,13 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
 
         if(startup.getTicketMinId() != 0 && startup.getTicketMaxId() != 0)
             ticketSize.setValues((float)startup.getTicketMinId(), (float)startup.getTicketMaxId());
+        if(editMode) {
+            btnStartUpMatching.setVisibility(View.INVISIBLE);
+        }
 
         setupLists();
         restoreLists();
-
+        setupChangeListeners();
     }
 
     @Override
@@ -127,6 +133,44 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
                 tickCheckbox(supportLayout, support));
     }
 
+    private void setupChangeListeners() {
+        for(int i = 0; i < investmentPhaseGroup.getChildCount(); i++) {
+            View v = investmentPhaseGroup.getChildAt(i);
+            ((RadioButton) v).setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(editMode) {
+                    btnStartUpMatching.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+
+        for(int i = 0; i < industryLayout.getChildCount(); i++) {
+            View v = industryLayout.getChildAt(i);
+            ((CheckBox) v).setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(editMode) {
+                    btnStartUpMatching.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+
+        for(int i = 0; i < investorTypeLayout.getChildCount(); i++) {
+            View v = investorTypeLayout.getChildAt(i);
+            ((CheckBox) v).setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(editMode) {
+                    btnStartUpMatching.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+
+        for(int i = 0; i < supportLayout.getChildCount(); i++) {
+            View v = supportLayout.getChildAt(i);
+            ((CheckBox) v).setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(editMode) {
+                    btnStartUpMatching.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+    }
+
 
     @Override
     public void onDestroyView() {
@@ -134,17 +178,6 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
 
         hideBottomNavigation(false);
         Log.d("debugMessage", "onDestroy()");
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_startup_matching:
-                processMatchingInformation();
-                break;
-            default:
-                break;
-        }
     }
 
     /**
@@ -202,11 +235,11 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         ticketSizeText = view.findViewById(R.id.register_startup_matching_ticket_size_text);
         ticketSize = view.findViewById(R.id.register_startup_matching_ticket_size);
         ticketSize.addOnChangeListener(new Slider.OnChangeListener() {
-
             @Override
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                 ticketSizeText.setText(adaptSliderValues(
                         (int) slider.getMaximumValue(), (int) slider.getMinimumValue()));
+                btnStartUpMatching.setVisibility(View.VISIBLE);
             }
         });
 

@@ -16,6 +16,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/settings_matches_layout"
+                style="@style/TextInputExposedDropdownMenuTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                android:hint="@string/settings_weekly_matches"
+                app:helperTextEnabled="true"
+                app:layout_constraintBottom_toTopOf="@+id/notifications_general"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed">
+
+                <AutoCompleteTextView
+                    android:id="@+id/settings_matches_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:focusable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
                 android:id="@+id/notifications_general"
                 style="@style/RaisingSubtitleBold"
@@ -26,11 +51,11 @@
                 android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:gravity="center|start"
-                android:hint="@string/settings_notifications_toggle_all"
+                android:hint="@string/settings_general_toggle_all"
                 app:layout_constraintBottom_toTopOf="@+id/notifications_specific_settings"
                 app:layout_constraintEnd_toStartOf="@+id/notifications_switch_general"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settings_matches_layout"
                 app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintVertical_chainStyle="packed" />
 
@@ -61,7 +86,7 @@
                     android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                     android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                     android:gravity="center|start"
-                    android:hint="@string/settings_notifications_matchlist"
+                    android:hint="@string/settings_general_matchlist"
                     app:layout_constraintBottom_toTopOf="@+id/notifications_leads"
                     app:layout_constraintEnd_toStartOf="@+id/notifications_switch_matchlist"
                     app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +109,7 @@
                     android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                     android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                     android:gravity="center|start"
-                    android:hint="@string/settings_notifications_leads"
+                    android:hint="@string/settings_general_leads"
                     app:layout_constraintBottom_toTopOf="@+id/notifications_request"
                     app:layout_constraintEnd_toStartOf="@+id/notifications_switch_leads"
                     app:layout_constraintStart_toStartOf="@+id/notifications_matchlist"
@@ -107,7 +132,7 @@
                     android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                     android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                     android:gravity="center|start"
-                    android:hint="@string/settings_notifications_contact"
+                    android:hint="@string/settings_general_contact"
                     app:layout_constraintBottom_toTopOf="@+id/notifications_connection"
                     app:layout_constraintEnd_toStartOf="@+id/notifications_switch_request"
                     app:layout_constraintStart_toStartOf="@+id/notifications_matchlist"
@@ -128,7 +153,7 @@
                     android:layout_height="@dimen/myProfileButtonHeight"
                     android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                     android:gravity="center|start"
-                    android:hint="@string/settings_notifications_connection"
+                    android:hint="@string/settings_general_connection"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/notifications_switch_connection"
                     app:layout_constraintStart_toStartOf="@+id/notifications_request"

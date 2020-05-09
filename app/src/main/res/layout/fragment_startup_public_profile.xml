@@ -21,7 +21,7 @@
                 android:id="@+id/startup_gallery_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/element_underline_black"
+                android:background="@drawable/element_underline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -666,7 +666,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:hint="@string/startup_public_profile_completed"
+                android:hint="@string/startup_public_profile_committed"
                 app:layout_constraintBottom_toTopOf="@+id/text_profile_founders"
                 app:layout_constraintStart_toStartOf="@+id/text_profile_closing_time_title"
                 app:layout_constraintTop_toBottomOf="@+id/text_profile_closing_time_title" />

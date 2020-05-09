@@ -21,7 +21,7 @@ public class OnboardingPre1Fragment extends RaisingFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         hideBottomNavigation(true);
-        customizeAppBar(" ", false);
+        hideToolbar(true);
         return inflater.inflate(R.layout.fragment_onboarding_pre1, container, false);
     }
 
@@ -41,5 +41,6 @@ public class OnboardingPre1Fragment extends RaisingFragment {
         super.onDestroy();
 
         hideBottomNavigation(false);
+        hideToolbar(false);
     }
 }

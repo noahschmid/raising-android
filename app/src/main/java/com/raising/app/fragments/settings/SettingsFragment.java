@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -17,6 +18,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.LoginFragment;
@@ -37,9 +39,8 @@ import java.util.Set;
 
 public class SettingsFragment extends RaisingFragment implements View.OnClickListener {
     private final String TAG = "SettingsFragment";
-    private Button btnSubscription, btnNotifications, btnAbout, btnReportProblem, btnFeedback, btnOnboarding, btnLogout;
-    private AutoCompleteTextView matchNumberInput;
-    private PersonalSettings personalSettings;
+    private ConstraintLayout subscriptionLayout, generalLayout, aboutLayout,
+            onboardingLayout, feedbackLayout, problemLayout, logoutLayout;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -54,41 +55,20 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btnSubscription = view.findViewById(R.id.button_settings_subscription);
-        btnSubscription.setOnClickListener(this);
-        btnNotifications = view.findViewById(R.id.button_settings_notifications);
-        btnNotifications.setOnClickListener(this);
-        btnAbout = view.findViewById(R.id.button_settings_about);
-        btnAbout.setOnClickListener(this);
-        btnReportProblem = view.findViewById(R.id.button_settings_report_problem);
-        btnReportProblem.setOnClickListener(this);
-        btnFeedback = view.findViewById(R.id.button_settings_feedback);
-        btnFeedback.setOnClickListener(this);
-        btnLogout = view.findViewById(R.id.button_settings_logout);
-        btnLogout.setOnClickListener(this);
-        btnOnboarding = view.findViewById(R.id.button_settings_onboarding);
-        btnOnboarding.setOnClickListener(this);
-
-        ArrayList<Integer> integers = new ArrayList<>();
-        for(int i = 0; i < getResources().getInteger(R.integer.maximumWeeklyMatchesNumber); i++) {
-            integers.add(i+1);
-        }
-
-        NoFilterArrayAdapter<Integer> adapter = new NoFilterArrayAdapter(getContext(),
-                R.layout.item_dropdown_menu, integers);
-        matchNumberInput = view.findViewById(R.id.settings_matches_input);
-        matchNumberInput.setAdapter(adapter);
-
-        settingsViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
-            Log.d(TAG, "onViewCreated: SettingsViewState" + viewState.toString());
-            processViewState(viewState);
-            if(viewState == ViewState.CACHED || viewState == ViewState.RESULT) {
-                personalSettings = settingsViewModel.getPersonalSettings().getValue();
-                populateSettings();
-            }
-        });
-        processViewState(settingsViewModel.getViewState().getValue());
-        settingsViewModel.loadSettings();
+        subscriptionLayout = view.findViewById(R.id.settings_subscription_layout);
+        subscriptionLayout.setOnClickListener(this);
+        generalLayout = view.findViewById(R.id.settings_notifications_layout);
+        generalLayout.setOnClickListener(this);
+        aboutLayout = view.findViewById(R.id.settings_about_layout);
+        aboutLayout.setOnClickListener(this);
+        onboardingLayout = view.findViewById(R.id.settings_onboarding_layout);
+        onboardingLayout.setOnClickListener(this);
+        feedbackLayout = view.findViewById(R.id.settings_feedback_layout);
+        feedbackLayout.setOnClickListener(this);
+        problemLayout = view.findViewById(R.id.settings_report_layout);
+        problemLayout.setOnClickListener(this);
+        logoutLayout = view.findViewById(R.id.settings_logout_layout);
+        logoutLayout.setOnClickListener(this);
     }
 
     @Override
@@ -100,29 +80,29 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.button_settings_subscription:
+            case R.id.settings_subscription_layout:
                 changeFragment(new SubscriptionFragment(), "SubscriptionFragment");
                 break;
-            case R.id.button_settings_notifications:
+            case R.id.settings_notifications_layout:
                 changeFragment(new SettingsNotificationsFragment(), "SettingsNotificationFragment");
                 break;
-            case R.id.button_settings_about:
+            case R.id.settings_about_layout:
                 changeFragment(new SettingsAboutFragment(), "SettingsAboutFragment");
                 break;
-            case R.id.button_settings_report_problem:
-                contactRaising(true);
-                break;
-            case R.id.button_settings_feedback:
-                contactRaising(false);
-                break;
-            case R.id.button_settings_onboarding:
+            case R.id.settings_onboarding_layout:
                 Fragment fragment = new OnboardingPost1Fragment();
                 Bundle args = new Bundle();
                 args.putBoolean("settings", true);
                 fragment.setArguments(args);
                 changeFragment(fragment, "Onboarding");
                 break;
-            case R.id.button_settings_logout:
+            case R.id.settings_feedback_layout:
+                contactRaising(false);
+                break;
+            case R.id.settings_report_layout:
+                contactRaising(true);
+                break;
+            case R.id.settings_logout_layout:
                 logout();
                 break;
             default:
@@ -149,14 +129,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         startActivity(interactionIntent);
     }
 
-    private void populateSettings() {
-        if(personalSettings != null) {
-            matchNumberInput.setText(String.valueOf(personalSettings.getNumberOfMatches()));
-        } else {
-            settingsViewModel.addInitialSettings();
-        }
-    }
-
     private void logout() {
         Log.d("debugMessage", "logout()");
         AuthenticationHandler.logout();
@@ -167,9 +139,5 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy: Updating Settings");
-
-        personalSettings.setNumberOfMatches(Integer.parseInt(matchNumberInput.getText().toString()));
-
-        settingsViewModel.updatePersonalSettings(personalSettings);
     }
 }

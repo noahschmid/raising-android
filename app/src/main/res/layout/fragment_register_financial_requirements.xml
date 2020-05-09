@@ -26,7 +26,7 @@
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_financial_type"
-                app:layout_constraintBottom_toTopOf="@+id/register_startup_financial_scope"
+                app:layout_constraintBottom_toTopOf="@+id/register_financial_scope"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -41,12 +41,14 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/register_startup_financial_scope"
+                android:id="@+id/register_financial_scope"
                 style="@style/TextInputLayoutTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_financial_scope_"
+                app:endIconDrawable="@drawable/ic_info_outline_24dp"
+                app:endIconMode="custom"
                 app:layout_constraintBottom_toTopOf="@+id/register_financial_valuation"
                 app:layout_constraintEnd_toEndOf="@+id/register_financial_type"
                 app:layout_constraintStart_toStartOf="@+id/register_financial_type"
@@ -67,9 +69,9 @@
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_financial_valuation"
                 app:layout_constraintBottom_toTopOf="@+id/register_financial_closing_time"
-                app:layout_constraintEnd_toEndOf="@+id/register_startup_financial_scope"
-                app:layout_constraintStart_toStartOf="@+id/register_startup_financial_scope"
-                app:layout_constraintTop_toBottomOf="@+id/register_startup_financial_scope">
+                app:layout_constraintEnd_toEndOf="@+id/register_financial_scope"
+                app:layout_constraintStart_toStartOf="@+id/register_financial_scope"
+                app:layout_constraintTop_toBottomOf="@+id/register_financial_scope">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/register_input_financial_valuation"
@@ -103,7 +105,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:hint="@string/register_financial_completed"
+                android:hint="@string/register_financial_committed"
                 app:endIconDrawable="@drawable/ic_info_outline_24dp"
                 app:endIconMode="custom"
                 app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"

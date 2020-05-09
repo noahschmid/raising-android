@@ -91,7 +91,9 @@
                 app:layout_constraintBottom_toTopOf="@+id/register_company_country"
                 app:layout_constraintEnd_toEndOf="@+id/register_company_website"
                 app:layout_constraintStart_toStartOf="@+id/register_company_website"
-                app:layout_constraintTop_toBottomOf="@+id/register_company_website">
+                app:layout_constraintTop_toBottomOf="@+id/register_company_website"
+                app:helperTextEnabled="true"
+                app:helperText="@string/register_company_uid_helper">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/register_input_company_uid"

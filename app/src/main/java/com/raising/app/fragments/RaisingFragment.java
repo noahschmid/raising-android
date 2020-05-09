@@ -190,16 +190,8 @@ public class RaisingFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         } catch (NullPointerException e) {
-            Log.e("RaisingFragment", "Error while changing Fragment: " + e.getMessage());
+            Log.e(TAG, "Error while changing Fragment: " + e.getMessage());
         }
-    }
-
-    /**
-     * Display a generic "oops something went wrong" message
-     */
-    public void displayGenericError() {
-        showSimpleDialog(getString(R.string.generic_error_title),
-                getString(R.string.generic_error_text));
     }
 
     /**
@@ -221,6 +213,42 @@ public class RaisingFragment extends Fragment {
                     e.getMessage());
         }
     }
+
+    protected void changeFragmentWithAnimation(Fragment fragment) {
+        try {
+            getActivitiesFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.animation_slide_in_right, R.anim.animation_slide_out_left, R.anim.animation_slide_in_left, R.anim.animation_slide_out_right)
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        } catch (NullPointerException e) {
+            Log.d(TAG, "changeFragmentWithAnimation: Error while changing fragment" + e.getMessage());
+        }
+    }
+
+    protected void changeFragmentWithAnimation(Fragment fragment, String name) {
+        try {
+            getActivitiesFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.animation_slide_in_right, R.anim.animation_slide_out_left, R.anim.animation_slide_in_left, R.anim.animation_slide_out_right)
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(name)
+                    .commit();
+        } catch (NullPointerException e) {
+            Log.d(TAG, "changeFragmentWithAnimation: Error while changing fragment" + e.getMessage());
+        }
+    }
+
+    /**
+     * Display a generic "oops something went wrong" message
+     */
+    public void displayGenericError() {
+        showSimpleDialog(getString(R.string.generic_error_title),
+                getString(R.string.generic_error_text));
+    }
+
+
 
     /**
      * Clear all fragments on the backstack and replace fragment container with new fragment
@@ -269,6 +297,18 @@ public class RaisingFragment extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null)
             activity.hideBottomNavigation(isHidden);
+    }
+
+    /**
+     * Call {@link com.raising.app.MainActivity#hideToolbar(boolean)}
+     * @param isHidden if true, the toolbar should be hidden
+     *                 if false, the toolbar should be visible
+     */
+    protected void hideToolbar(boolean isHidden) {
+        MainActivity activity = (MainActivity) getActivity();
+        if(activity != null) {
+            activity.hideToolbar(isHidden);
+        }
     }
 
     /**
@@ -330,18 +370,20 @@ public class RaisingFragment extends Fragment {
      * Create and show an alert dialog, which allows the user to either decline or accept a message
      * @param title The title of the dialog
      * @param message The message of the dialog
+     * @param positiveButton The string of the positive button
+     * @param negativeButton The string of the negative button
      * @return true, if user has accepted the dialog, false, if user has declined the dialog
      */
-    public boolean showAlertDialog(String title, String message) {
+    public boolean showActionDialog(String title, String message, String positiveButton, String negativeButton) {
         final boolean[] confirmDialog = {false};
         new AlertDialog.Builder(getContext())
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(getString(R.string.yes_text), (dialog, which) -> {
+                .setPositiveButton(positiveButton, (dialog, which) -> {
                     Log.d(TAG, "AlertDialog onClick");
                     confirmDialog[0] = true;
                 })
-                .setNegativeButton(getString(R.string.cancel_text), (dialog, which) -> {
+                .setNegativeButton(negativeButton, (dialog, which) -> {
                     confirmDialog[0] = false;
                 })
                 .show()
@@ -353,6 +395,17 @@ public class RaisingFragment extends Fragment {
         } catch (RuntimeException e) {}
 
         return confirmDialog[0];
+    }
+
+    /**
+     * Extend a simple request with "Yes" and "Cancel" to then create an action dialog.
+     * Call {@link com.raising.app.fragments.RaisingFragment#showActionDialog(String, String, String, String)}
+     * @param title The title of the action dialog
+     * @param message The message of the action dialog
+     * @return The return value of {@link com.raising.app.fragments.RaisingFragment#showActionDialog(String, String, String, String)}
+     */
+    public boolean showActionDialog(String title, String message) {
+        return showActionDialog(title, message, getString(R.string.yes_text), getString(R.string.cancel_text));
     }
 
     /**
@@ -524,21 +577,18 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Show year picker
-     *
      * @param title      title of the picker
      * @param inputField the field to print the output to
+     * @param activatedYear the activated year of the picker
      */
-    protected void showYearPicker(String title, EditText inputField) {
+    protected void showYearPicker(String title, EditText inputField, int activatedYear) {
         Calendar today = Calendar.getInstance();
         MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(getContext(),
-                new MonthPickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(int selectedMonth, int selectedYear) { // on date set }
-                    }
+                (selectedMonth, selectedYear) -> { // on date set }
                 }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
 
         builder.setActivatedMonth(Calendar.JULY).setMinYear(1900)
-                .setActivatedYear(today.get(Calendar.YEAR));
+                .setActivatedYear(activatedYear);
                 // check for founding year picker, founding year cannot be in the future
                 if(title.contains("founding")) {
                     builder.setMaxYear(today.get(Calendar.YEAR));
@@ -556,8 +606,19 @@ public class RaisingFragment extends Fragment {
                 })
                 .build()
                 .show();
+        inputField.setText(String.valueOf(activatedYear));
+    }
 
-        inputField.setText(String.valueOf(today.get(Calendar.YEAR)));
+    /**
+     * Delegate year picker based on title, inputField and current date
+     * @param title      title of the picker
+     * @param inputField the field to print the output to
+     *    
+     * Call {@link com.raising.app.fragments.RaisingFragment#showYearPicker(String, EditText, int)}
+     */
+    protected void showYearPicker(String title, EditText inputField) {
+        Calendar today = Calendar.getInstance();
+        showYearPicker(title, inputField, today.get(Calendar.YEAR));
     }
 
     protected void showLoadingPanel() {

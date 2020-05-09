@@ -5,12 +5,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 
@@ -20,12 +20,13 @@ import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.NotificationSettings;
 import com.raising.app.models.PersonalSettings;
 import com.raising.app.models.ViewState;
-import com.raising.app.viewModels.SettingsViewModel;
+import com.raising.app.util.NoFilterArrayAdapter;
 
 import java.util.ArrayList;
 
 public class SettingsNotificationsFragment extends RaisingFragment implements CompoundButton.OnCheckedChangeListener {
     private final String TAG = "SettingsNotificationsFragment";
+    private AutoCompleteTextView matchNumberInput;
     private SwitchMaterial generalSwitch, matchlistSwitch, leadsSwitch, requestSwitch, connectionSwitch;
     private ConstraintLayout specificSettings;
     private PersonalSettings personalSettings;
@@ -35,7 +36,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        customizeAppBar(getString(R.string.settings_notifications), true);
+        customizeAppBar(getString(R.string.settings_general), true);
         return inflater.inflate(R.layout.fragment_settings_notifications, container, false);
     }
 
@@ -44,11 +45,19 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         super.onViewCreated(view, savedInstanceState);
 
         btnNotifications = view.findViewById(R.id.button_notifications);
-        btnNotifications.setOnClickListener(v -> {
-            updateNotificationSettings();
-        });
+        btnNotifications.setOnClickListener(v -> updateNotificationSettings());
 
         specificSettings = view.findViewById(R.id.notifications_specific_settings);
+
+        ArrayList<Integer> integers = new ArrayList<>();
+        for(int i = 0; i < getResources().getInteger(R.integer.maximumWeeklyMatchesNumber); i++) {
+            integers.add(i+1);
+        }
+
+        NoFilterArrayAdapter<Integer> adapter = new NoFilterArrayAdapter(getContext(),
+                R.layout.item_dropdown_menu, integers);
+        matchNumberInput = view.findViewById(R.id.settings_matches_input);
+        matchNumberInput.setAdapter(adapter);
 
         generalSwitch = view.findViewById(R.id.notifications_switch_general);
         generalSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -73,6 +82,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
             if(viewState == ViewState.CACHED || viewState == ViewState.RESULT) {
                 Log.d(TAG, "onViewCreated: Receive personal settings");
                 personalSettings = settingsViewModel.getPersonalSettings().getValue();
+                populateSettings();
 
                 if (personalSettings != null) {
                     personalSettings.getNotificationSettings().forEach(notificationSettings -> {
@@ -119,6 +129,14 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         connectionSwitch.setOnCheckedChangeListener(this);
     }
 
+    private void populateSettings() {
+        if(personalSettings != null) {
+            matchNumberInput.setText(String.valueOf(personalSettings.getNumberOfMatches()));
+        } else {
+            settingsViewModel.addInitialSettings();
+        }
+    }
+
     /**
      * Update the users notification settings
      */
@@ -144,6 +162,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
                 newNotificationSettings.add(NotificationSettings.CONNECTION);
             }
         }
+        personalSettings.setNumberOfMatches(Integer.parseInt(matchNumberInput.getText().toString()));
         personalSettings.setNotificationSettings(newNotificationSettings);
         settingsViewModel.updatePersonalSettings(personalSettings);
 
