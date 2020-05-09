@@ -2,28 +2,19 @@ package com.raising.app;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.bluetooth.BluetoothClass;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.leads.LeadsContainerFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
@@ -32,7 +23,6 @@ import com.raising.app.fragments.profile.ContactDataInput;
 import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.fragments.settings.SettingsFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
-import com.raising.app.models.Account;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
@@ -42,9 +32,9 @@ import com.raising.app.viewModels.LeadsViewModel;
 import com.raising.app.viewModels.MatchesViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 import com.raising.app.viewModels.SettingsViewModel;
+import com.raising.app.viewModels.ViewStateViewModel;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     MatchesViewModel matchesViewModel;
     LeadsViewModel leadsViewModel;
     SettingsViewModel settingsViewModel;
+    ViewStateViewModel viewStateViewModel;
 
     MaterialToolbar toolbar;
 
@@ -75,11 +66,18 @@ public class MainActivity extends AppCompatActivity {
         RegistrationHandler.setContext(getApplicationContext());
         InternalStorageHandler.setActivity(this);
 
+        viewStateViewModel = new ViewModelProvider(this).get(ViewStateViewModel.class);
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         resourcesViewModel = new ViewModelProvider(this).get(ResourcesViewModel.class);
         matchesViewModel = new ViewModelProvider(this).get(MatchesViewModel.class);
         leadsViewModel = new ViewModelProvider(this).get(LeadsViewModel.class);
         settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
+
+        viewStateViewModel.addViewModel(accountViewModel.getViewState(), this);
+        viewStateViewModel.addViewModel(resourcesViewModel.getViewState(), this);
+        viewStateViewModel.addViewModel(matchesViewModel.getViewState(), this);
+        viewStateViewModel.addViewModel(leadsViewModel.getViewState(), this);
+        viewStateViewModel.addViewModel(settingsViewModel.getViewState(), this);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
