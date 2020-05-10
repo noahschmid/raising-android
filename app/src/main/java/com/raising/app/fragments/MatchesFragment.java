@@ -66,6 +66,7 @@ public class MatchesFragment extends RaisingFragment {
         matchesViewModel = ViewModelProviders.of(getActivity())
                 .get(MatchesViewModel.class);
 
+        matchesViewModel.runMatching();
         matchesViewModel.loadMatches();
 
         matchesViewModel.getMatches().observe(getViewLifecycleOwner(), matches -> {
