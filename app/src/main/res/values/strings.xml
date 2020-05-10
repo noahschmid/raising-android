@@ -202,9 +202,9 @@
 
     <!-- Strings used for Match List -->
     <string name="toolbar_title_match_list"> Matches of the Week </string>
-    <string name="empty_matchList_text"> You are done! </string>
-    <string name="empty_matchList_text_2"> Enjoy the rest of your week! </string>
-    <string name="empty_matchlist_text_3">Next weeks matches will be display on Monday</string>
+    <string name="empty_matchList_text"> There are no more matches left this week </string>
+    <string name="empty_matchList_text_2"> Next matches will be available next Monday</string>
+    <string name="empty_matchlist_text_3"> Enjoy the rest of your week! </string>
 
     <!-- Strings used for Leads -->
     <string name="toolbar_title_leads"> Leads </string>
@@ -216,7 +216,7 @@
     <string name="leads_tab_today"> Today </string>
     <string name="leads_tab_this_week"> This Week </string>
     <string name="leads_tab_earlier">Earlier</string>
-    <string name="leads_no_current_leads_text"> You currently do not have any leads to display under this category</string>
+    <string name="leads_no_current_leads_text"> You don\'t have any leads under this category!</string>
     <string name="toolbar_title_open_requests"> Open Requests</string>
     <string name="leads_no_open_requests"> You currently don\'t have any open requests!</string>
 
