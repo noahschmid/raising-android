@@ -388,9 +388,12 @@
     <string name="wrong_reset_code">Entered code is invalid!</string>
     <string name="permissionTitle">Missing Permissions</string>
     <string name="permissionText">We need permission to your phone\'s storage in order for you to upload pictures.</string>
+    <string name="leads_tab_this_month">This Month</string>
 
     <!-- Strings used in custom elements -->
     <string name="year_picker_title">Select Year</string>
+    <string name="session_expired_title">Session expired</string>
+    <string name="session_expired_text">Please log in again to your account</string>
 
     <string-array name="revenue_units">
         <item>K</item>

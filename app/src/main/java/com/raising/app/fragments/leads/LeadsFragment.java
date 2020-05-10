@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
@@ -44,9 +46,9 @@ public class LeadsFragment extends RaisingFragment {
 
     private LeadState leadState;
     private LeadsViewModel leadsViewModel;
-    private LeadsAdapter todayAdapter, thisWeekAdapter, earlierAdapter;
-    private ArrayList<Lead> today, thisWeek, earlier;
-    private ConstraintLayout todayLayout, thisWeekLayout, earlierLayout, emptyLeadsLayout;
+    private LeadsAdapter todayAdapter, thisWeekAdapter, thisMonthAdapter, earlierAdapter;
+    private ArrayList<Lead> today, thisWeek, thisMonth, earlier;
+    private ConstraintLayout todayLayout, thisWeekLayout, thisMonthLayout, earlierLayout, emptyLeadsLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
     private boolean observersSet = false;
 
@@ -75,16 +77,20 @@ public class LeadsFragment extends RaisingFragment {
 
         today = new ArrayList<>();
         thisWeek = new ArrayList<>();
+        thisMonth = new ArrayList<>();
         earlier = new ArrayList<>();
 
         todayLayout = view.findViewById(R.id.leads_today);
         thisWeekLayout = view.findViewById(R.id.leads_this_week);
+        thisMonthLayout = view.findViewById(R.id.leads_this_month);
         earlierLayout = view.findViewById(R.id.leads_earlier);
 
         todayLayout.setVisibility(View.GONE);
         thisWeekLayout.setVisibility(View.GONE);
+        thisMonthLayout.setVisibility(View.GONE);
         earlierLayout.setVisibility(View.GONE);
         emptyLeadsLayout.setVisibility(View.GONE);
+
         getView().findViewById(R.id.leads_open_requests).setVisibility(View.GONE);
 
         // check for leads state
@@ -96,10 +102,12 @@ public class LeadsFragment extends RaisingFragment {
 
             todayAdapter = new LeadsAdapter(today, leadState);
             thisWeekAdapter = new LeadsAdapter(thisWeek, leadState);
+            thisMonthAdapter = new LeadsAdapter(thisMonth, leadState);
             earlierAdapter = new LeadsAdapter(earlier, leadState);
 
             setupRecyclerView(R.id.leads_tab_recycler_today, todayAdapter, today);
             setupRecyclerView(R.id.leads_tab_recycler_this_week, thisWeekAdapter, thisWeek);
+            setupRecyclerView(R.id.leads_tab_recycler_this_month, thisMonthAdapter, thisMonth);
             setupRecyclerView(R.id.leads_tab_recycler_earlier, earlierAdapter, earlier);
 
             if (resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
@@ -219,7 +227,8 @@ public class LeadsFragment extends RaisingFragment {
             }
         }
         filterLeads();
-        if (today.size() == 0 && thisWeek.size() == 0 && earlier.size() == 0 && showEmptyLeadsText) {
+        if (today.size() == 0 && thisWeek.size() == 0 && thisMonth.size() == 0 &&
+                earlier.size() == 0 && showEmptyLeadsText) {
             emptyLeadsLayout.setVisibility(View.VISIBLE);
         }
     }
@@ -230,6 +239,7 @@ public class LeadsFragment extends RaisingFragment {
     private void filterLeads() {
         today.clear();
         thisWeek.clear();
+        thisMonth.clear();
         earlier.clear();
         todayLayout.setVisibility(View.GONE);
         thisWeekLayout.setVisibility(View.GONE);
@@ -256,6 +266,9 @@ public class LeadsFragment extends RaisingFragment {
                 } else if (daysSince(lead.getTimestamp()) < 7) {
                     thisWeek.add(lead);
                     thisWeekLayout.setVisibility(View.VISIBLE);
+                } else if (daysSince(lead.getTimestamp()) < 30) {
+                    thisMonth.add(lead);
+                    thisMonthLayout.setVisibility(View.VISIBLE);
                 } else {
                     earlier.add(lead);
                     earlierLayout.setVisibility(View.VISIBLE);
@@ -265,6 +278,7 @@ public class LeadsFragment extends RaisingFragment {
 
         todayAdapter.notifyDataSetChanged();
         thisWeekAdapter.notifyDataSetChanged();
+        thisMonthAdapter.notifyDataSetChanged();
         earlierAdapter.notifyDataSetChanged();
     }
 

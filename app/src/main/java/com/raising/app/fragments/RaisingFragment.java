@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.AlertDialog;
@@ -36,6 +37,7 @@ import com.raising.app.models.Account;
 import com.raising.app.models.Model;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.Resources;
 import com.raising.app.util.SimpleMessageDialog;
@@ -43,6 +45,7 @@ import com.raising.app.util.ToastHandler;
 import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 import com.raising.app.viewModels.SettingsViewModel;
+import com.raising.app.viewModels.ViewStateViewModel;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
 import java.util.ArrayList;
@@ -56,6 +59,7 @@ public class RaisingFragment extends Fragment {
     protected AccountViewModel accountViewModel;
     protected ResourcesViewModel resourcesViewModel;
     protected SettingsViewModel settingsViewModel;
+    protected ViewStateViewModel viewStateViewModel;
     protected Resources resources;
     protected Account currentAccount;
     private int processesLoading = 0;
@@ -79,53 +83,53 @@ public class RaisingFragment extends Fragment {
             overlayLayout.addView(loadingPanel);
             loadingPanel.setVisibility(View.GONE);
         }
-        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
-        accountViewModel.getAccount().observe(getViewLifecycleOwner(), account -> {
-            currentAccount = account;
-        });
-        currentAccount = accountViewModel.getAccount().getValue();
-        accountViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
-            Log.d(TAG, "onViewCreated: ViewState: " + viewState.toString());
+        viewStateViewModel = ViewModelProviders.of(getActivity()).get(ViewStateViewModel.class);
+        viewStateViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
             switch (viewState) {
                 case LOADING:
                     showLoadingPanel();
                     break;
                 case RESULT:
-                case CACHED:
                     dismissLoadingPanel();
-                    break;
-                case UPDATED:
-                    currentAccount = accountViewModel.getAccount().getValue();
-                    dismissLoadingPanel();
-                    onAccountUpdated();
                     break;
 
                 case ERROR:
                     dismissLoadingPanel();
                     ToastHandler toastHandler = new ToastHandler(getContext());
                     toastHandler.showToast(getString(R.string.generic_error_title), Toast.LENGTH_LONG);
-                    accountViewModel.loadAccount();
+                    viewStateViewModel.setViewState(ViewState.EMPTY);
+                    break;
+
+                case EXPIRED:
+                    showSimpleDialog(getString(R.string.session_expired_title), getString(R.string.session_expired_text));
+                    AuthenticationHandler.logout();
+                    clearBackstackAndReplace(new LoginFragment());
                     break;
             }
         });
-
-        settingsViewModel = ViewModelProviders.of(getActivity()).get(SettingsViewModel.class);
-        settingsViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
-            processViewState(viewState);
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
+        accountViewModel.getAccount().observe(getViewLifecycleOwner(), account -> {
+            currentAccount = account;
         });
+
+        accountViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+            if(state.equals(ViewState.UPDATED)) {
+                currentAccount = accountViewModel.getAccount().getValue();
+                dismissLoadingPanel();
+                onAccountUpdated();
+            }
+        });
+
+        currentAccount = accountViewModel.getAccount().getValue();
+        settingsViewModel = ViewModelProviders.of(getActivity()).get(SettingsViewModel.class);
 
         resourcesViewModel = ViewModelProviders.of(getActivity()).get(ResourcesViewModel.class);
         resourcesViewModel.getResources().observe(getViewLifecycleOwner(), resources -> {
             this.resources = resources;
         });
-        resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
-            processViewState(viewState);
-        });
         resources = resourcesViewModel.getResources().getValue();
 
-        processViewState(resourcesViewModel.getViewState().getValue());
-        processViewState(accountViewModel.getViewState().getValue());
-        processViewState(settingsViewModel.getViewState().getValue());
+        processViewState(viewStateViewModel.getViewState().getValue());
     }
 
     /**
@@ -173,8 +177,7 @@ public class RaisingFragment extends Fragment {
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" + id)
                     .centerCrop()
                     .apply(RequestOptions.circleCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                     .placeholder(R.drawable.ic_placeholder_24dp)
                     .into(imageView);
         }

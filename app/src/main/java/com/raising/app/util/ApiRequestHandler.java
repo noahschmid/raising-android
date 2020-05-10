@@ -14,6 +14,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.raising.app.R;
 
@@ -22,8 +24,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 
 import static com.android.volley.VolleyLog.TAG;
@@ -367,6 +373,33 @@ public class ApiRequestHandler {
                     e.getMessage());
             return "failed to parse error";
         }
+    }
+
+    /**
+     * Wait for synchronous get request
+     * @param endpoint
+     * @return
+     * @throws Exception
+     */
+    public static JSONObject performSynchronousGetRequest(String endpoint) throws Exception {
+        RequestFuture<JSONObject> future = RequestFuture.newFuture();
+
+        GenericRequest request = new GenericRequest(getDomain() + endpoint, null, future, future) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                if (AuthenticationHandler.isLoggedIn()) {
+                    headers.put("Authorization", "Bearer " + AuthenticationHandler.getToken());
+                    return headers;
+                }
+                return super.getParams();
+            }
+
+        };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        getInstance(InternalStorageHandler.getContext()).addToRequestQueue(request);
+        return future.get(5, TimeUnit.SECONDS);
     }
 
     public ImageLoader getImageLoader() {

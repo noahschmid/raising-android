@@ -32,6 +32,7 @@ import com.raising.app.viewModels.LeadsViewModel;
 import com.raising.app.viewModels.MatchesViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 import com.raising.app.viewModels.SettingsViewModel;
+import com.raising.app.viewModels.ViewStateViewModel;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     MatchesViewModel matchesViewModel;
     LeadsViewModel leadsViewModel;
     SettingsViewModel settingsViewModel;
+    ViewStateViewModel viewStateViewModel;
 
     MaterialToolbar toolbar;
 
@@ -64,11 +66,18 @@ public class MainActivity extends AppCompatActivity {
         RegistrationHandler.setContext(getApplicationContext());
         InternalStorageHandler.setActivity(this);
 
+        viewStateViewModel = new ViewModelProvider(this).get(ViewStateViewModel.class);
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         resourcesViewModel = new ViewModelProvider(this).get(ResourcesViewModel.class);
         matchesViewModel = new ViewModelProvider(this).get(MatchesViewModel.class);
         leadsViewModel = new ViewModelProvider(this).get(LeadsViewModel.class);
         settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
+
+        viewStateViewModel.addViewModel(accountViewModel.getViewState(), this);
+        viewStateViewModel.addViewModel(resourcesViewModel.getViewState(), this);
+        viewStateViewModel.addViewModel(matchesViewModel.getViewState(), this);
+        viewStateViewModel.addViewModel(leadsViewModel.getViewState(), this);
+        viewStateViewModel.addViewModel(settingsViewModel.getViewState(), this);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
