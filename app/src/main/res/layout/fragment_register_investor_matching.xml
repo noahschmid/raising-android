@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".fragments.registration.investor.RegisterInvestorMatchingFragment">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,7 +24,6 @@
                 android:id="@+id/text_investor_matching_ticket"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/investor_matching_ticket_size_text"
                 style="@style/RaisingTextBold"
@@ -70,7 +69,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/text_investor_matching_ticket"
                 app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_ticket_size_text" />
 
-            <RadioGroup
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/register_investor_matching_radio_investor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -92,22 +91,20 @@
                 style="@style/RaisingTextBold"
                 app:layout_constraintStart_toStartOf="@+id/text_investor_matching_investor"
                 app:layout_constraintEnd_toEndOf="@+id/text_investor_matching_investor"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_radio_investor" />
+                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_radio_investor"
+                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_phase_layout"/>
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/register_investor_matching_phase_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="16dp"
-                android:orientation="vertical"
+                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
                 app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_industry"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_phase"
-                app:layout_constraintVertical_bias="0.52" />
+                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_phase" />
 
             <TextView
                 android:id="@+id/text_investor_matching_industry"
@@ -119,22 +116,20 @@
                 style="@style/RaisingTextBold"
                 app:layout_constraintStart_toStartOf="@+id/register_investor_matching_industry_layout"
                 app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_industry_layout"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_phase_layout" />
+                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_phase_layout"
+                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_industry_layout"/>
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/register_investor_matching_industry_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
-                android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geographics"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_industry"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/text_investor_matching_industry" />
 
             <TextView
                 android:id="@+id/text_investor_matching_support"
@@ -148,15 +143,13 @@
                 app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_support_layout"
                 app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_industry_layout" />
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/register_investor_matching_support_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
-                android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geographics"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -236,5 +229,5 @@
                 app:layout_constraintTop_toBottomOf="@+id/registration_profile_progress"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>

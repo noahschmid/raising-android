@@ -1,6 +1,8 @@
 package com.raising.app.models;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 import java.io.Serializable;
 
@@ -10,13 +12,19 @@ import lombok.Data;
 public class Label implements Serializable, Model {
     private long id;
     private String name;
+    private String icon;
+    private boolean checked = false;
+
+    public void setChecked(boolean checked) { this.checked = checked; }
 
     public Label() {}
     public Label(long id) { this.id = id; }
 
     @Override
     public Bitmap getImage() {
-        return null;
+        byte[] decodedString = Base64.decode(icon, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return decodedByte;
     }
 
     @Override

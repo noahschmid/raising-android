@@ -5,8 +5,9 @@ import android.graphics.Bitmap;
 public interface Model {
     long getId();
     String getName();
+    boolean isChecked();
+    void setChecked(boolean checked);
 
-    //TODO: change to needed format
     Bitmap getImage();
 
     void setId(long id);

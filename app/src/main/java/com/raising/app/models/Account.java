@@ -9,7 +9,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class Account implements Serializable, Model {
+public class Account implements Serializable {
     protected long id = -1L;
     protected String companyName;
     protected String name;
@@ -55,7 +55,6 @@ public class Account implements Serializable, Model {
     }
     public void addToGallery(Image image) { gallery.add(image); }
 
-    @Override
     public Bitmap getImage() {
         return null;
     }

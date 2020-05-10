@@ -2,6 +2,8 @@ package com.raising.app.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -10,6 +12,16 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.app.AlertDialog;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
@@ -17,6 +29,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
@@ -26,10 +39,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.MainActivity;
 import com.raising.app.R;
@@ -485,12 +501,31 @@ public class RaisingFragment extends Fragment {
      * @param list   the items to add
      * @param layout where to add to
      */
-    protected void setupCheckboxes(ArrayList<? extends Model> list, LinearLayout layout) {
+    protected void setupCheckboxes(ArrayList<? extends Model> list, FlexboxLayout layout) {
         list.forEach(item -> {
+            LinearLayout wrapper = new LinearLayout(getContext());
+            wrapper.setOrientation(LinearLayout.VERTICAL);
+            wrapper.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             CheckBox cb = new CheckBox(getContext());
-            cb.setText(item.getName());
             cb.setContentDescription(String.valueOf(item.getId()));
-            layout.addView(cb);
+            StateListDrawable cbImage = new StateListDrawable();
+            Bitmap iconBitmap = Bitmap.createScaledBitmap(item.getImage(), 100, 100, true);
+            RoundedBitmapDrawable icon = RoundedBitmapDrawableFactory.create(getResources(), iconBitmap);
+            RoundedBitmapDrawable iconChecked = RoundedBitmapDrawableFactory.create(getResources(), iconBitmap);
+            icon.setCornerRadius(50);
+            icon.setAntiAlias(true);
+            iconChecked.setCornerRadius(50);
+            iconChecked.setTint(getResources().getColor(R.color.raisingPrimary));
+            cbImage.addState(new int[]{android.R.attr.state_checked}, iconChecked);
+            cbImage.addState(new int[]{-android.R.attr.state_checked}, icon);
+            cb.setButtonDrawable(cbImage);
+            wrapper.addView(cb);
+            TextView label = new TextView(getContext());
+            label.setText(item.getName());
+            label.setSingleLine(false);
+            label.setMaxWidth(40);
+            wrapper.addView(label);
+            layout.addView(wrapper);
         });
     }
 
@@ -515,11 +550,15 @@ public class RaisingFragment extends Fragment {
      * @param layout
      * @param id
      */
-    protected void tickCheckbox(LinearLayout layout, long id) {
+    protected void tickCheckbox(FlexboxLayout layout, long id) {
         for (int i = 0; i < layout.getChildCount(); ++i) {
-            CheckBox cb = (CheckBox) layout.getChildAt(i);
-            if (Long.parseLong((String) cb.getContentDescription()) == id) {
-                cb.setChecked(true);
+            if(layout.getChildAt(i) instanceof LinearLayout) {
+                if(((LinearLayout)layout.getChildAt(i)).getChildAt(0) instanceof  CheckBox) {
+                    CheckBox cb = (CheckBox) ((LinearLayout) layout.getChildAt(i)).getChildAt(0);
+                    if (Long.parseLong((String) cb.getContentDescription()) == id) {
+                        cb.setChecked(true);
+                    }
+                }
             }
         }
     }
@@ -545,12 +584,16 @@ public class RaisingFragment extends Fragment {
      * @param layout
      * @return
      */
-    protected ArrayList<Long> getSelectedCheckboxIds(LinearLayout layout) {
+    protected ArrayList<Long> getSelectedCheckboxIds(FlexboxLayout layout) {
         ArrayList<Long> results = new ArrayList<>();
         for (int i = 0; i < layout.getChildCount(); ++i) {
-            View v = layout.getChildAt(i);
-            if (((CheckBox) v).isChecked() && ((String) ((CheckBox) v).getContentDescription()).length() > 0) {
-                results.add(Long.parseLong((String) ((CheckBox) v).getContentDescription()));
+            if(layout.getChildAt(i) instanceof LinearLayout) {
+                if (((LinearLayout) layout.getChildAt(i)).getChildAt(0) instanceof CheckBox) {
+                    CheckBox v = (CheckBox)((LinearLayout) layout.getChildAt(i)).getChildAt(0);
+                    if (v.isChecked() && ((String)v.getContentDescription()).length() > 0) {
+                        results.add(Long.parseLong((String) ((CheckBox) v).getContentDescription()));
+                    }
+                }
             }
         }
 

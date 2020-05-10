@@ -15,6 +15,7 @@ public class Revenue implements Serializable, Model {
     private int revenueMaxId;
     private int revenueMin;
     private int revenueMax;
+    private boolean checked = false;
 
     public String getName() { return toString("CHF", new String[]{"k", "M", "B"}); }
     public void setName(String name) { }

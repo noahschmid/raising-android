@@ -125,6 +125,8 @@ public class CustomPicker implements LifecycleObserver, BottomSheetInteractionLi
                 }
             }
         });
+
+        result = selected;
     }
 
     /**
@@ -133,10 +135,12 @@ public class CustomPicker implements LifecycleObserver, BottomSheetInteractionLi
      * @param selectedIds
      */
     public void setSelectedById(List<Long> selectedIds) {
+        result = new ArrayList<>();
         selectedIds.forEach(sel -> {
             for (PickerItem item : items) {
                 if (sel == item.getId()) {
                     item.setChecked(true);
+                    result.add(item);
                     break;
                 }
             }
@@ -150,7 +154,6 @@ public class CustomPicker implements LifecycleObserver, BottomSheetInteractionLi
                 Log.d(TAG, "onDismiss: Dialog dismissed");
             }
         });
-
     }
 
     // region Utility Methods
