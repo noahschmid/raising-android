@@ -8,34 +8,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.onboarding.OnboardingPost1Fragment;
-import com.raising.app.models.PersonalSettings;
-import com.raising.app.models.ViewState;
-import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
-import com.raising.app.util.NoFilterArrayAdapter;
-import com.raising.app.viewModels.MatchesViewModel;
-import com.raising.app.viewModels.SettingsViewModel;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Set;
 
 public class SettingsFragment extends RaisingFragment implements View.OnClickListener {
     private final String TAG = "SettingsFragment";
@@ -47,7 +29,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
                              @Nullable Bundle savedInstanceState) {
 
         customizeAppBar(getString(R.string.toolbar_title_settings), false);
-
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 

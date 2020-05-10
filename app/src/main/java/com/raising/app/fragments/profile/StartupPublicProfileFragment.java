@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -215,52 +216,42 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         startupMarkets.setVisibility(View.GONE);
 
         Fragment fragment = this;
-        profileRequest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                leadsRequest = true;
-                leadsDecline = false;
+        profileRequest.setOnClickListener(v -> {
+            leadsRequest = true;
+            leadsDecline = false;
 
-                colorHandshakeButtonBackground(profileRequest, R.color.raisingDarkGrey);
-
-                ApiRequestHandler.performPostRequest("match/" + relationshipId + "/accept",
-                        res -> {
-                            matchesViewModel.removeMatch(relationshipId);
-                            popCurrentFragment(fragment);
-                            return null;
-                        },
-                        err -> {
-                            displayGenericError();
-                            Log.e(TAG, "manageHandshakeButtons: " +
-                                    ApiRequestHandler.parseVolleyError(err) );
-                            return null;
-                        },
-                        new JSONObject());
-            }
+            ApiRequestHandler.performPostRequest("match/" + relationshipId + "/accept",
+                    res -> {
+                        matchesViewModel.removeMatch(relationshipId);
+                        popCurrentFragment(fragment);
+                        return null;
+                    },
+                    err -> {
+                        displayGenericError();
+                        Log.e(TAG, "manageHandshakeButtons: " +
+                                ApiRequestHandler.parseVolleyError(err) );
+                        return null;
+                    },
+                    new JSONObject());
         });
 
-        profileDecline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                leadsDecline = true;
-                leadsRequest = false;
+        profileDecline.setOnClickListener(v -> {
+            leadsDecline = true;
+            leadsRequest = false;
 
-                colorHandshakeButtonBackground(profileDecline, R.color.raisingDarkGrey);
-
-                ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
-                        res -> {
-                            matchesViewModel.removeMatch(relationshipId);
-                            popCurrentFragment(fragment);
-                            return null;
-                        },
-                        err -> {
-                            displayGenericError();
-                            Log.e(TAG, "manageHandshakeButtons: " +
-                                    ApiRequestHandler.parseVolleyError(err) );
-                            return null;
-                        },
-                        new JSONObject());
-            }
+            ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
+                    res -> {
+                        matchesViewModel.removeMatch(relationshipId);
+                        popCurrentFragment(fragment);
+                        return null;
+                    },
+                    err -> {
+                        displayGenericError();
+                        Log.e(TAG, "manageHandshakeButtons: " +
+                                ApiRequestHandler.parseVolleyError(err) );
+                        return null;
+                    },
+                    new JSONObject());
         });
     }
 
@@ -462,12 +453,12 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             switch (handshakeState) {
                 case HANDSHAKE:
                 case INVESTOR_ACCEPTED:
-                    colorHandshakeButtonBackground(profileRequest, R.color.raisingPositive);
+                    profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept_green));
                     profileRequest.setEnabled(false);
                     profileDecline.setEnabled(false);
                     break;
                 case INVESTOR_DECLINED:
-                    colorHandshakeButtonBackground(profileDecline, R.color.raisingNegative);
+                    profileDecline.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_decline_red));
                     profileRequest.setEnabled(false);
                     profileDecline.setEnabled(false);
                     break;

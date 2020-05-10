@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/raisingPrimary</item>
         <item name="colorPrimaryDark">@color/raisingPrimaryDark</item>
         <item name="colorAccent">@color/raisingPrimaryAccent</item>
+        <item name="fontFamily">@font/raising_font</item>
         <!-- Define styling for Android soft navigation -->
         <item name="android:navigationBarColor">@color/raisingBlack</item>
         <!-- Define styling for snackbar -->
@@ -14,7 +15,6 @@
     
    <!-- Text Styles -->
     <style name="RaisingText">
-        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textColor">@color/raisingTextColor</item>
         <item name="android:textColorHint">@color/raisingTextColor</item>
         <item name="android:textSize">@dimen/raisingTextFontSize</item>
@@ -50,12 +50,12 @@
 
     <style name="RaisingHelperText" parent="RaisingText">
         <item name="android:textSize">@dimen/raisingTextFontSize</item>
-        <item name="fontFamily"> sans-serif-light</item>
+        <item name="android:textStyle">italic</item>
     </style>
 
     <style name="RaisingSmallHelperText" parent="RaisingText">
         <item name="android:textSize">@dimen/raisingSmallerTextFontSize</item>
-        <item name="fontFamily"> sans-serif-light</item>
+        <item name="android:textStyle">italic</item>
     </style>
 
 
