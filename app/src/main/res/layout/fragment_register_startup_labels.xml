@@ -21,9 +21,10 @@
                 style="@style/RaisingTextBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/standardHorizontalMargin"
+                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                android:gravity="center"
                 android:hint="@string/registration_information_label"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_pitch_labels"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +33,7 @@
                 app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintVertical_chainStyle="packed" />
 
-            <LinearLayout
+            <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/register_startup_pitch_labels"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -40,7 +41,6 @@
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

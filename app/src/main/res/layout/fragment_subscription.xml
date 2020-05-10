@@ -127,7 +127,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/subscription_manage_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/subscription_benefit_3"></LinearLayout>
+                app:layout_constraintTop_toBottomOf="@+id/subscription_benefit_3"/>
 
             <Button
                 android:id="@+id/button_manage_subscription"

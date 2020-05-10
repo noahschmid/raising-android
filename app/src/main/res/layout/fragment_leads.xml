@@ -43,9 +43,11 @@
                     <TextView
                         android:id="@+id/textView29"
                         style="@style/RaisingSubtitle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/standardHorizontalMargin"
                         android:layout_marginTop="@dimen/standardVerticalMargin"
+                        android:layout_marginEnd="@dimen/standardHorizontalMargin"
                         android:layout_marginBottom="@dimen/standardVerticalMargin"
                         android:gravity="center"
                         android:hint="@string/leads_no_current_leads_text"

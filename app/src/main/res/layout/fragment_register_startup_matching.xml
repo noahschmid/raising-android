@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".fragments.registration.startup.RegisterStartupMatchingFragment">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -66,13 +66,12 @@
                 app:layout_constraintStart_toStartOf="@+id/text_investor_matching_ticket"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_ticket_size_text" />
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/register_startup_investor_type_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_investor" />
@@ -90,7 +89,7 @@
                 app:layout_constraintStart_toStartOf="@+id/text_startup_matching_investor"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_investor_type_layout" />
 
-            <RadioGroup
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/register_startup_matching_radio_phase"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -112,13 +111,12 @@
                 app:layout_constraintStart_toStartOf="@+id/text_startup_matching_phase"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_radio_phase" />
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/register_startup_matching_industry_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_support"
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
@@ -136,13 +134,12 @@
                 app:layout_constraintStart_toStartOf="@+id/text_startup_matching_industry"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_industry_layout" />
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/register_support_matching_support_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
@@ -222,5 +219,5 @@
                 app:layout_constraintTop_toBottomOf="@+id/registration_profile_progress" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>
