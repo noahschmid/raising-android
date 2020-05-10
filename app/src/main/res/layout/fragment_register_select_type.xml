@@ -34,13 +34,13 @@
 
     <TextView
         android:id="@+id/text_select_type"
+        style="@style/RaisingText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/standardHorizontalMargin"
         android:layout_marginEnd="@dimen/standardHorizontalMargin"
         android:gravity="center"
         android:hint="@string/register_select_type_text"
-        style="@style/RaisingText"
         app:layout_constraintBottom_toTopOf="@+id/button_register_as_startup"
         app:layout_constraintEnd_toEndOf="@+id/button_register_as_startup"
         app:layout_constraintStart_toStartOf="@+id/button_register_as_startup"

@@ -71,34 +71,52 @@ public class FounderInputFragment extends RaisingFragment {
         });
 
         Button btnAddFounder = view.findViewById(R.id.button_add_founder);
-        btnAddFounder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String firstName = founderFirstNameInput.getText().toString();
-                String lastName = founderLastNameInput.getText().toString();
-                String companyPosition = founderCompanyPositionInput.getText().toString();
-                String education = founderEducationInput.getText().toString();
+        btnAddFounder.setOnClickListener(v -> {
+            String firstName = founderFirstNameInput.getText().toString();
+            String lastName = founderLastNameInput.getText().toString();
+            String companyPosition = founderCompanyPositionInput.getText().toString();
+            String education = founderEducationInput.getText().toString();
 
-                if(firstName.length() == 0 || lastName.length() == 0
-                        || companyPosition.length() == 0 || countryId == -1) {
-                    showSimpleDialog(getString(R.string.register_dialog_title),
-                            getString(R.string.register_dialog_text_empty_credentials));
-                    return;
+            if(firstName.length() == 0 || lastName.length() == 0
+                    || companyPosition.length() == 0 || education.length() == 0 || countryId == -1) {
+                showSimpleDialog(getString(R.string.register_dialog_title),
+                        getString(R.string.register_dialog_text_empty_credentials));
+                return;
+            }
+
+            founder.setFirstName(firstName);
+            founder.setLastName(lastName);
+            founder.setPosition(companyPosition);
+            founder.setEducation(education);
+            founder.setCountryId(countryId);
+            founder.setTitle(firstName + " " + lastName + ", " + companyPosition);
+
+            if(founder.getId() != -1) {
+                try {
+                    Gson gson = new Gson();
+                    JSONObject params = new JSONObject(gson.toJson(founder));
+                    ApiRequestHandler.performPatchRequest("startup/founder/" +
+                                    founder.getId(), result -> {
+                                founderViewModel.select(founder);
+                                leaveFounderFragment();
+                                return null;
+                            },
+                            ApiRequestHandler.errorHandler,
+                            params);
+                } catch (Exception e) {
+                    Log.e("founderInput",
+                            "Error while updating board member: " +
+                                    e.getMessage());
                 }
-
-                founder.setFirstName(firstName);
-                founder.setLastName(lastName);
-                founder.setPosition(companyPosition);
-                founder.setEducation(education);
-                founder.setCountryId(countryId);
-                founder.setTitle(firstName + " " + lastName + ", " + companyPosition);
-
-                if(founder.getId() != -1) {
+            } else {
+                if(AuthenticationHandler.isLoggedIn()) {
+                    Gson gson = new Gson();
                     try {
-                        Gson gson = new Gson();
                         JSONObject params = new JSONObject(gson.toJson(founder));
-                        ApiRequestHandler.performPatchRequest("startup/founder/" +
-                                        founder.getId(), result -> {
+                        params.put("startupId", AuthenticationHandler.getId());
+                        Log.d("founderInput", "params: " + params.toString());
+                        ApiRequestHandler.performPostRequest("startup/founder",
+                                result -> {
                                     founderViewModel.select(founder);
                                     leaveFounderFragment();
                                     return null;
@@ -106,34 +124,13 @@ public class FounderInputFragment extends RaisingFragment {
                                 ApiRequestHandler.errorHandler,
                                 params);
                     } catch (Exception e) {
-                        Log.e("founderInput",
-                                "Error while updating board member: " +
-                                        e.getMessage());
+                        displayGenericError();
+                        Log.e("FounderInput",
+                                "Could not add founder: " + e.getMessage());
                     }
                 } else {
-                    if(AuthenticationHandler.isLoggedIn()) {
-                        Gson gson = new Gson();
-                        try {
-                            JSONObject params = new JSONObject(gson.toJson(founder));
-                            params.put("startupId", AuthenticationHandler.getId());
-                            Log.d("founderInput", "params: " + params.toString());
-                            ApiRequestHandler.performPostRequest("startup/founder",
-                                    result -> {
-                                        founderViewModel.select(founder);
-                                        leaveFounderFragment();
-                                        return null;
-                                    },
-                                    ApiRequestHandler.errorHandler,
-                                    params);
-                        } catch (Exception e) {
-                            displayGenericError();
-                            Log.e("FounderInput",
-                                    "Could not add founder: " + e.getMessage());
-                        }
-                    } else {
-                        founderViewModel.select(founder);
-                        leaveFounderFragment();
-                    }
+                    founderViewModel.select(founder);
+                    leaveFounderFragment();
                 }
             }
         });

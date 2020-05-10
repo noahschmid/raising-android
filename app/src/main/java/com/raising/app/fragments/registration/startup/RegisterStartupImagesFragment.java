@@ -120,13 +120,10 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
         deleteProfileImageButton = view.findViewById(R.id.button_delete_profile_img);
         deleteProfileImageButton.setVisibility(View.GONE);
-        deleteProfileImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                profileImageOverlay.setVisibility(View.VISIBLE);
-                deleteProfileImageButton.setVisibility(View.GONE);
-                profileImage.setImageBitmap(null);
-            }
+        deleteProfileImageButton.setOnClickListener(v -> {
+            profileImageOverlay.setVisibility(View.VISIBLE);
+            deleteProfileImageButton.setVisibility(View.GONE);
+            profileImage.setImageBitmap(null);
         });
 
         finishButton = view.findViewById(R.id.button_startup_images);
@@ -455,6 +452,13 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
      * Process the given inputs
      */
     private void processInputs() {
+        if (profileImage.getDrawable() == null) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_no_picture_text));
+            finishButton.setEnabled(true);
+            return;
+        }
+
         if (((BitmapDrawable) profileImage.getDrawable()).getBitmap() == null ||
                 profileImage.getDrawable().getIntrinsicWidth() == 0 ||
                 profileImage.getDrawable().getIntrinsicHeight() == 0 ||
