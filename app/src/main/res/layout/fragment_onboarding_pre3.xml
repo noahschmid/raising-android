@@ -39,6 +39,7 @@
                 android:paddingEnd="@dimen/onboardingTextHorizontalPadding"
                 android:paddingBottom="@dimen/onboardingTextVerticalPadding"
                 android:textColorHint="@color/raisingPrimaryDark"
+                android:theme="@style/SelectableItemThemeWhite"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/linearLayout"
                 app:layout_constraintHorizontal_bias="0.5"

@@ -85,6 +85,7 @@ public class SubscriptionFragment extends RaisingFragment {
                     if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && list != null) {
                         Log.d(TAG, "onViewCreated: Purchase successful" + billingResult.getResponseCode());
                         Log.d(TAG, "onViewCreated: Purchase list" + list);
+                        //TODO: with Deferred the subscription list comes back as null but transaction has completed
                         list.forEach(this::validatePurchaseWithServer);
                     } else {
                         Log.d(TAG, "onViewCreated: Purchase failed: " + billingResult.getResponseCode());

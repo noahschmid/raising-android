@@ -137,11 +137,13 @@
 
                     <TextView
                         android:id="@+id/text_shareholder_type"
-                        style="@style/FragmentTitle"
+                        style="@style/RaisingTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMargin"
                         android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                        android:layout_marginTop="@dimen/standardFragmentTitleMargin"
+                        android:layout_marginBottom="@dimen/standardFragmentTitleMargin"
                         android:text="@string/register_stakeholder_shareholder_type"
                         app:layout_constraintBottom_toTopOf="@+id/shareholder_first_name"
                         app:layout_constraintEnd_toEndOf="parent"

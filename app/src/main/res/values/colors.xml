@@ -29,9 +29,12 @@
     <color name="raisingNegative">#ffff0000</color>
     <color name="raisingNegativeAccent">#ffff4444</color>
     <color name="raisingWarning">#ffffbb33</color>
+    <color name="raisingWarningDark">#ffd99b1e</color>
     <color name="raisingActionBlue">#ff0000ff</color>
 
-    <color name="raisingRippleColor">#bfbfbf</color>
+    <color name="raisingRippleColor">#ffbfbfbf</color>
+    <color name="raisingRippleColorLight">#ffe0e0e0</color>
+
     <color name="raisingButtonBackgroundColor">@color/raisingSecondary</color>
     <color name="raisingBackground">#D9DEE4</color>
 

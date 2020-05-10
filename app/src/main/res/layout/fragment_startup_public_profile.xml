@@ -128,9 +128,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                         android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                        android:background="@drawable/btn_public_profile_round"
-                        android:backgroundTint="@color/raisingWhite"
-                        android:src="@drawable/ic_not_interested_40dp"
+                        android:background="@drawable/btn_public_profile_decline_selector"
                         app:layout_constraintBottom_toTopOf="@+id/text_startup_decline"
                         app:layout_constraintEnd_toStartOf="@+id/button_startup_public_profile_accept"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -141,9 +139,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                         android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                        android:background="@drawable/btn_public_profile_round"
-                        android:backgroundTint="@color/raisingWhite"
-                        android:src="@drawable/ic_check"
+                        android:background="@drawable/btn_public_profile_accept_selector"
                         app:layout_constraintBottom_toTopOf="@+id/text_startup_accept"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

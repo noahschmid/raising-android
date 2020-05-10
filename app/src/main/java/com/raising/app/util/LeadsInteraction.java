@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 import com.raising.app.R;
 import com.raising.app.fragments.leads.LeadsInteractionFragment;
@@ -36,6 +37,7 @@ public class LeadsInteraction {
     private ImageView declineInteraction;
     private ImageView interactionArrow;
     private ImageView interactionIcon;
+    private MaterialCardView interactionCard;
     private View interactionView;
     private LinearLayout layout;
     private Lead lead;
@@ -49,18 +51,18 @@ public class LeadsInteraction {
         this.activity = activity;
         this.lead = lead;
         interactionView = activity.getLayoutInflater().inflate(R.layout.item_lead_interaction, null);
-        ((TextView)interactionView.findViewById(R.id.interaction_caption))
+        ((TextView) interactionView.findViewById(R.id.interaction_caption))
                 .setText(interaction.getInteractionType().getCaption());
 
         interactionArrow = interactionView.findViewById(R.id.interaction_arrow);
         interactionButton = interactionView.findViewById(R.id.button_request_interaction);
         declineInteraction = interactionView.findViewById(R.id.button_decline_interaction);
         interactionIcon = interactionView.findViewById(R.id.leads_interaction_icon);
+        interactionCard = interactionView.findViewById(R.id.leads_interaction_card);
 
         prepareInteraction();
         layout.addView(interactionView);
     }
-
 
 
     public void enableButton(boolean enabled) {
@@ -74,15 +76,6 @@ public class LeadsInteraction {
         setInteractionIcon();
         interactionArrow.setVisibility(View.GONE);
 
-        interactionView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(interaction.getInteractionState() == InteractionState.HANDSHAKE) {
-                    interaction.getInteractionType().executeAction(lead);
-                }
-            }
-        });
-
         interactionButton.setOnClickListener(v -> {
             updateRemoteInteraction(true);
         });
@@ -92,7 +85,7 @@ public class LeadsInteraction {
             updateRemoteInteraction(false);
         });
 
-        if(interaction.getInteractionState() == InteractionState.STARTUP_ACCEPTED &&
+        if (interaction.getInteractionState() == InteractionState.STARTUP_ACCEPTED &&
                 !AuthenticationHandler.isStartup() || interaction.getInteractionState() ==
                 InteractionState.INVESTOR_ACCEPTED && AuthenticationHandler.isStartup()) {
             interactionButton.setText(R.string.accept_text);
@@ -101,7 +94,7 @@ public class LeadsInteraction {
             declineInteraction.setVisibility(View.VISIBLE);
         }
 
-        if(interaction.getInteractionState() == InteractionState.STARTUP_ACCEPTED &&
+        if (interaction.getInteractionState() == InteractionState.STARTUP_ACCEPTED &&
                 AuthenticationHandler.isStartup() || interaction.getInteractionState() ==
                 InteractionState.INVESTOR_ACCEPTED && !AuthenticationHandler.isStartup()) {
             interactionButton.setEnabled(false);
@@ -110,8 +103,8 @@ public class LeadsInteraction {
             interactionButton.setText(activity.getResources().getString(R.string.requested_text));
         }
 
-        if(interaction.getInteractionState() == InteractionState.STARTUP_DECLINED ||
-                interaction.getInteractionState() == InteractionState.INVESTOR_DECLINED ) {
+        if (interaction.getInteractionState() == InteractionState.STARTUP_DECLINED ||
+                interaction.getInteractionState() == InteractionState.INVESTOR_DECLINED) {
             interactionButton.setEnabled(false);
             interactionButton.getBackground().setTint(ContextCompat.getColor(
                     Objects.requireNonNull(interactionButton.getContext()), R.color.raisingNegativeAccent));
@@ -119,10 +112,13 @@ public class LeadsInteraction {
             declineInteraction.setVisibility(View.GONE);
         }
 
-        if(interaction.getInteractionState() == InteractionState.HANDSHAKE) {
+        if (interaction.getInteractionState() == InteractionState.HANDSHAKE) {
             interactionArrow.setVisibility(View.VISIBLE);
             interactionButton.setVisibility(View.GONE);
             declineInteraction.setVisibility(View.GONE);
+            interactionCard.setOnClickListener(v -> {
+                interaction.getInteractionType().executeAction(lead);
+            });
         }
     }
 
@@ -161,7 +157,7 @@ public class LeadsInteraction {
 
             Log.d(TAG, "updateRemoteInteraction: " + params.toString());
 
-            if(interaction.getId() == -1) {
+            if (interaction.getId() == -1) {
                 Log.d(TAG, "updateRemoteInteraction: " + params.toString());
                 ApiRequestHandler.performPostRequest("interaction",
                         v -> {
@@ -170,28 +166,28 @@ public class LeadsInteraction {
                             return null;
                         },
                         err -> {
-                            Log.e(TAG, "updateRemoteInteraction: " + ApiRequestHandler.parseVolleyError(err) );
+                            Log.e(TAG, "updateRemoteInteraction: " + ApiRequestHandler.parseVolleyError(err));
                             return null;
                         },
                         params);
             } else {
-                String endpoint = accept ? "interaction/"  + interaction.getId() + "/accept" :
+                String endpoint = accept ? "interaction/" + interaction.getId() + "/accept" :
                         "interaction/" + interaction.getId() + "/decline";
 
                 ApiRequestHandler.performPatchRequest(endpoint,
                         v -> {
-                    try {
-                        if (v != null) {
-                            ContactData contactData = gson.fromJson(v.toString(), ContactData.class);
-                            contactData.setAccountId(lead.getAccountId());
-                            ContactDataHandler.processNewData(contactData);
-                        }
+                            try {
+                                if (v != null) {
+                                    ContactData contactData = gson.fromJson(v.toString(), ContactData.class);
+                                    contactData.setAccountId(lead.getAccountId());
+                                    ContactDataHandler.processNewData(contactData);
+                                }
 
-                        updateInteraction(accept);
-                        toggleContactButton();
-                    } catch (Exception e) {
-                        Log.e(TAG, "updateRemoteInteraction: " + e.getMessage());
-                    }
+                                updateInteraction(accept);
+                                toggleContactButton();
+                            } catch (Exception e) {
+                                Log.e(TAG, "updateRemoteInteraction: " + e.getMessage());
+                            }
                             return null;
                         },
                         err -> {
@@ -201,7 +197,7 @@ public class LeadsInteraction {
                         accept ? params : new JSONObject());
             }
         } catch (Exception e) {
-            Log.e(TAG, "updateRemoteInteraction: " +  e.getMessage());
+            Log.e(TAG, "updateRemoteInteraction: " + e.getMessage());
         }
     }
 
@@ -211,7 +207,7 @@ public class LeadsInteraction {
     private void updateInteraction(boolean accept) {
         switch (interaction.getInteractionState()) {
             case EMPTY:
-                if(AuthenticationHandler.isStartup()) {
+                if (AuthenticationHandler.isStartup()) {
                     interaction.setInteractionState(InteractionState.STARTUP_ACCEPTED);
                 } else {
                     interaction.setInteractionState(InteractionState.INVESTOR_ACCEPTED);
@@ -221,7 +217,7 @@ public class LeadsInteraction {
             case STARTUP_ACCEPTED:
                 if (!(AuthenticationHandler.isStartup()) && accept) {
                     interaction.setInteractionState(InteractionState.HANDSHAKE);
-                } else if(!AuthenticationHandler.isStartup()) {
+                } else if (!AuthenticationHandler.isStartup()) {
                     interaction.setInteractionState(InteractionState.INVESTOR_DECLINED);
                 }
                 Log.d(TAG, "updateInteraction: " + interaction.getInteractionType().name() + "Interaction State" + interaction.getInteractionState().name());
@@ -229,7 +225,7 @@ public class LeadsInteraction {
             case INVESTOR_ACCEPTED:
                 if (AuthenticationHandler.isStartup() && accept) {
                     interaction.setInteractionState(InteractionState.HANDSHAKE);
-                } else if(AuthenticationHandler.isStartup()) {
+                } else if (AuthenticationHandler.isStartup()) {
                     interaction.setInteractionState(InteractionState.STARTUP_DECLINED);
                 }
                 Log.d(TAG, "updateInteraction: " + interaction.getInteractionType().name() + "Interaction State" + interaction.getInteractionState().name());
@@ -259,13 +255,12 @@ public class LeadsInteraction {
                 // confirmInteraction.setVisibility(View.GONE);
                 declineInteraction.setVisibility(View.GONE);
                 interactionArrow.setVisibility(View.VISIBLE);
-                /*
-                interactionView.setOnClickListener(v -> {
-                    currentFragment.enterInteractionExchange(interaction);
-                });*/
+                interactionCard.setOnClickListener(v -> {
+                    interaction.getInteractionType().executeAction(lead);
+                });
                 break;
             case STARTUP_ACCEPTED:
-                if(AuthenticationHandler.isStartup()) {
+                if (AuthenticationHandler.isStartup()) {
                     interactionButton.setEnabled(false);
                     drawable.setTint(ContextCompat.getColor(
                             Objects.requireNonNull(interactionButton.getContext()), R.color.raisingPositiveAccent));
@@ -279,7 +274,7 @@ public class LeadsInteraction {
                 }
                 break;
             case INVESTOR_ACCEPTED:
-                if(AuthenticationHandler.isStartup()) {
+                if (AuthenticationHandler.isStartup()) {
                     drawable.setTint(ContextCompat.getColor(
                             Objects.requireNonNull(interactionButton.getContext()), R.color.raisingPositive));
                     interactionButton.setText(activity.getResources().getString(R.string.confirm_text));

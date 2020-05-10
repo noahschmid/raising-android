@@ -1,6 +1,5 @@
 package com.raising.app.util.recyclerViewAdapter;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,13 +44,6 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
     @Override
     public void onBindViewHolder(@NonNull MatchListAdapter.ViewHolder holder, int position) {
         MatchListItem recyclerItem = recyclerItems.get(position);
-
-        // array holding background colors of match list items
-        int [] cardBackground = {
-                ContextCompat.getColor(holder.card.getContext(), R.color.raisingSecondaryLight),
-                ContextCompat.getColor(holder.card.getContext(), R.color.raisingWhite)};
-
-        holder.card.setBackgroundColor(cardBackground[1]);
 
         holder.name.setText(recyclerItem.getName());
         holder.attribute.setText(recyclerItem.getAttribute());
@@ -124,15 +115,12 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private CardView card;
         private TextView name, attribute, sentence, matchingPercent;
         private ImageView profileImage;
         private PieChart matchingPercentGraphic;
 
         public ViewHolder(@NonNull View itemView, OnItemClickListener clickListener) {
             super(itemView);
-
-            card = itemView.findViewById(R.id.item_matchList_card);
 
             name = itemView.findViewById(R.id.item_matchList_name);
             attribute = itemView.findViewById(R.id.item_matchList_attributes);

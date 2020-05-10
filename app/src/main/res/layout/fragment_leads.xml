@@ -148,7 +148,8 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/leads_tab_today"
-                        tools:layout_editor_absoluteX="0dp" />
+                        tools:layout_editor_absoluteX="0dp"
+                        android:nestedScrollingEnabled="false"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -178,7 +179,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/leads_tab_this_week" />
+                        app:layout_constraintTop_toBottomOf="@+id/leads_tab_this_week"
+                        android:nestedScrollingEnabled="false"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -209,10 +211,9 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/leads_tab_earlier" />
+                        app:layout_constraintTop_toBottomOf="@+id/leads_tab_earlier"
+                        android:nestedScrollingEnabled="false" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -99,15 +99,6 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
             holder.profilePicture.setImageDrawable(InternalStorageHandler.getContext()
                     .getResources().getDrawable(R.drawable.ic_placeholder_24dp));
         }
-
-        switch (stateEnum) {
-            case YOUR_TURN:
-                //holder.statusIcon.setVisibility(View.GONE);
-                break;
-            case PENDING:
-            case CLOSED:
-                break;
-        }
     }
 
     @Override

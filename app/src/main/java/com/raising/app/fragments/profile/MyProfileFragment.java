@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -34,8 +35,8 @@ import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
 
 public class MyProfileFragment extends RaisingFragment implements View.OnClickListener {
-    private FrameLayout startUpLayout, investorLayout;
-    private Button
+    private ConstraintLayout startUpLayout, investorLayout;
+    private ConstraintLayout
             startupAccountInformation, startUpCompanyInformation, startupCompanyFigures,
             startUpMatching, startUpPitch, startupLabels, startUpImages,
             startUpFinancial, startUpStakeholder, startupPublicProfile,
@@ -64,52 +65,52 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
             investorLayout.setVisibility(View.VISIBLE);
         }
 
-        startupAccountInformation = view.findViewById(R.id.button_myProfile_startup_account_information);
+        startupAccountInformation = view.findViewById(R.id.profile_startup_login_information_layout);
         startupAccountInformation.setOnClickListener(this);
 
-        startUpCompanyInformation = view.findViewById(R.id.button_myProfile_startup_company_information);
+        startUpCompanyInformation = view.findViewById(R.id.profile_startup_company_layout);
         startUpCompanyInformation.setOnClickListener(this);
 
-        startupCompanyFigures = view.findViewById(R.id.button_myProfile_startup_company_figures);
+        startupCompanyFigures = view.findViewById(R.id.profile_startup_facts_layout);
         startupCompanyFigures.setOnClickListener(this);
 
-        startUpMatching = view.findViewById(R.id.button_myProfile_startup_matching_criteria);
+        startUpMatching = view.findViewById(R.id.profile_startup_matching_layout);
         startUpMatching.setOnClickListener(this);
 
-        startUpPitch = view.findViewById(R.id.button_myProfile_startup_pitch);
+        startUpPitch = view.findViewById(R.id.profile_startup_pitch_layout);
         startUpPitch.setOnClickListener(this);
 
-        startupLabels = view.findViewById(R.id.button_myProfile_startup_labels);
+        startupLabels = view.findViewById(R.id.profile_startup_labels_layout);
         startupLabels.setOnClickListener(this);
 
-        startUpImages = view.findViewById(R.id.button_myProfile_startup_images);
+        startUpImages = view.findViewById(R.id.profile_startup_images_layout);
         startUpImages.setOnClickListener(this);
 
-        startUpFinancial = view.findViewById(R.id.button_myProfile_startup_financial_requirements);
+        startUpFinancial = view.findViewById(R.id.profile_startup_financial_layout);
         startUpFinancial.setOnClickListener(this);
 
-        startUpStakeholder = view.findViewById(R.id.button_myProfile_startup_stakeholders);
+        startUpStakeholder = view.findViewById(R.id.profile_startup_stakeholder_layout);
         startUpStakeholder.setOnClickListener(this);
 
-        startupPublicProfile = view.findViewById(R.id.button_myProfile_startup_public_profile);
+        startupPublicProfile = view.findViewById(R.id.profile_startup_view_profile_layout);
         startupPublicProfile.setOnClickListener(this);
 
-        investorAccountInformation = view.findViewById(R.id.button_myProfile_investor_account_information);
+        investorAccountInformation = view.findViewById(R.id.profile_investor_login_information_layout);
         investorAccountInformation.setOnClickListener(this);
 
-        investorProfileInformation = view.findViewById(R.id.button_myProfile_investor_profile_information);
+        investorProfileInformation = view.findViewById(R.id.profile_investor_profile_information_layout);
         investorProfileInformation.setOnClickListener(this);
 
-        investorMatching = view.findViewById(R.id.button_myProfile_investor_matching_criteria);
+        investorMatching = view.findViewById(R.id.profile_investor_matching_layout);
         investorMatching.setOnClickListener(this);
 
-        investorPitch = view.findViewById(R.id.button_myProfile_investor_images);
+        investorPitch = view.findViewById(R.id.profile_investor_pitch_layout);
         investorPitch.setOnClickListener(this);
 
-        investorImages = view.findViewById(R.id.button_myProfile_investor_pitch);
+        investorImages = view.findViewById(R.id.profile_investor_images_layout);
         investorImages.setOnClickListener(this);
 
-        investorPublicProfile = view.findViewById(R.id.button_myProfile_investor_public_profile);
+        investorPublicProfile = view.findViewById(R.id.profile_investor_view_profile_layout);
         investorPublicProfile.setOnClickListener(this);
     }
 
@@ -124,65 +125,65 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
         Bundle bundle = new Bundle();
         bundle.putBoolean("editMode", true);
         switch (v.getId()) {
-            case R.id.button_myProfile_startup_account_information:
-            case R.id.button_myProfile_investor_account_information:
+            case R.id.profile_startup_login_information_layout:
+            case R.id.profile_investor_login_information_layout:
                 fragment = new RegisterLoginInformationFragment();
                 fragment.setArguments(bundle);
                 break;
-            case R.id.button_myProfile_startup_company_information:
+            case R.id.profile_startup_company_layout:
                 fragment = new RegisterCompanyInformationFragment();
                 fragment.setArguments(bundle);
                 break;
-            case R.id.button_myProfile_startup_company_figures:
+            case R.id.profile_startup_facts_layout:
                 fragment = new RegisterCompanyFiguresFragment();
                 fragment.setArguments(bundle);
                 break;
-            case R.id.button_myProfile_startup_matching_criteria:
+            case R.id.profile_startup_matching_layout:
                 fragment = new RegisterStartupMatchingFragment();
                 fragment.setArguments(bundle);
                 break;
-            case R.id.button_myProfile_startup_pitch:
+            case R.id.profile_startup_pitch_layout:
                 fragment = new RegisterStartupPitchFragment();
                 fragment.setArguments(bundle);
                 break;
-            case R.id.button_myProfile_startup_labels:
+            case R.id.profile_startup_labels_layout:
                 fragment = new RegisterStartupLabelsFragment();
                 fragment.setArguments(bundle);
                 break;
-            case R.id.button_myProfile_startup_images:
+            case R.id.profile_startup_images_layout:
                 fragment = new RegisterStartupImagesFragment();
                 fragment.setArguments(bundle);
                 break;
-            case R.id.button_myProfile_startup_financial_requirements:
+            case R.id.profile_startup_financial_layout:
                 fragment = new RegisterFinancialRequirementsFragment();
                 fragment.setArguments(bundle);
                 break;
-            case R.id.button_myProfile_startup_public_profile:
+            case R.id.profile_startup_view_profile_layout:
                 bundle.putSerializable("startup", (Startup) currentAccount);
                 fragment = new StartupPublicProfileFragment();
                 fragment.setArguments(bundle);
                 break;
-            case R.id.button_myProfile_startup_stakeholders:
+            case R.id.profile_startup_stakeholder_layout:
                 fragment = new RegisterStakeholderFragment();
                 fragment.setArguments(bundle);
                 break;
-            case R.id.button_myProfile_investor_profile_information:
+            case R.id.profile_investor_profile_information_layout:
                 fragment = new RegisterProfileInformationFragment();
                 fragment.setArguments(bundle);
                 break;
-            case R.id.button_myProfile_investor_matching_criteria:
+            case R.id.profile_investor_matching_layout:
                 fragment = new RegisterInvestorMatchingFragment();
                 fragment.setArguments(bundle);
                 break;
-            case R.id.button_myProfile_investor_pitch:
+            case R.id.profile_investor_pitch_layout:
                 fragment = new RegisterInvestorPitchFragment();
                 fragment.setArguments(bundle);
                 break;
-            case R.id.button_myProfile_investor_images:
+            case R.id.profile_investor_images_layout:
                 fragment = new RegisterInvestorImagesFragment();
                 fragment.setArguments(bundle);
                 break;
-            case R.id.button_myProfile_investor_public_profile:
+            case R.id.profile_investor_view_profile_layout:
                 bundle.putSerializable("investor", (Investor)currentAccount);
                 fragment = new InvestorPublicProfileFragment();
                 fragment.setArguments(bundle);

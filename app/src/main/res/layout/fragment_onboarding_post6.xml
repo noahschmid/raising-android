@@ -40,6 +40,7 @@
                 android:paddingBottom="@dimen/onboardingTextVerticalPadding"
                 android:textColorHint="@color/raisingPrimaryDark"
                 android:textStyle="bold"
+                android:theme="@style/SelectableItemThemeWhite"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/linearLayout"
