@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,7 +104,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
 
                 if (firstName.length() == 0 || lastName.length() == 0
                         || profession.length() == 0 || boardPosition.length() == 0
-                        || memberSince.length() == 0 || countryId == -1) {
+                        || memberSince.length() == 0  || education.length() == 0 || countryId == -1) {
                     showSimpleDialog(getString(R.string.register_dialog_title),
                             getString(R.string.register_dialog_text_empty_credentials));
                     return;
@@ -154,7 +152,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
                                     ApiRequestHandler.errorHandler,
                                     params);
                         } catch (Exception e) {
-                            displayGenericError();
+                            showGenericError();
                             Log.e("BoardMemberInput",
                                     "Could not add boardmember: " + e.getMessage());
                         }

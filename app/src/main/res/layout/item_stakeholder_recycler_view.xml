@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/StakeholderRecyclerItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/standardVerticalMarginSmall">
+    android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+    app:cardCornerRadius="3dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/raisingPrimary">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

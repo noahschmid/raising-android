@@ -106,7 +106,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
                             return null;
                         },
                         err -> {
-                            displayGenericError();
+                            showGenericError();
                             Log.e(TAG, "onClickAccept: " + ApiRequestHandler.parseVolleyError(err));
                             return null;
                         },
@@ -123,7 +123,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
                             return null;
                         },
                         err -> {
-                            displayGenericError();
+                            showGenericError();
                             Log.e(TAG, "onClickAccept: " + ApiRequestHandler.parseVolleyError(err));
                             return null;
                         },

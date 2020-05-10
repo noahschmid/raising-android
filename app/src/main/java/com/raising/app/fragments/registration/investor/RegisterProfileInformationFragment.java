@@ -192,8 +192,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
                 if (AccountService.saveContactData(contactDetails)) {
                     accountViewModel.update(investor);
                 } else {
-                    showSimpleDialog(getString(R.string.generic_error_title),
-                            getString(R.string.generic_error_text));
+                    showGenericError();
                 }
 
             }

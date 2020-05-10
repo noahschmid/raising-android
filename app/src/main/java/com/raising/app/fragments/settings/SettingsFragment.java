@@ -28,7 +28,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
                              @Nullable Bundle savedInstanceState) {
 
         customizeAppBar(getString(R.string.toolbar_title_settings), false);
-
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 

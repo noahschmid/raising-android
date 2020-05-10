@@ -16,18 +16,18 @@
 
             <TextView
                 android:id="@+id/text_investor_matching_ticket"
+                style="@style/RaisingTextBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/startup_matching_ticket_size_text"
-                style="@style/RaisingTextBold"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_ticket_size"
-                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_ticket_size"
+                app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="packed"/>
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <com.google.android.material.slider.Slider
                 android:id="@+id/register_startup_matching_ticket_size"
@@ -46,24 +46,24 @@
 
             <TextView
                 android:id="@+id/register_startup_matching_ticket_size_text"
+                style="@style/RaisingSmallerText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                style="@style/RaisingSmallHelperText"
                 app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_investor"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_ticket_size" />
 
             <TextView
                 android:id="@+id/text_startup_matching_investor"
+                style="@style/RaisingTextBold"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/startup_matching_type_investor_text"
-                style="@style/RaisingTextBold"
-                app:layout_constraintStart_toStartOf="@+id/text_investor_matching_ticket"
-                android:layout_width="0dp"
                 app:layout_constraintEnd_toEndOf="@+id/text_investor_matching_ticket"
+                app:layout_constraintStart_toStartOf="@+id/text_investor_matching_ticket"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_ticket_size_text" />
 
             <LinearLayout
@@ -79,15 +79,15 @@
 
             <TextView
                 android:id="@+id/text_startup_matching_phase"
+                style="@style/RaisingTextBold"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/startup_matching_phase_text"
-                style="@style/RaisingTextBold"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_radio_phase"
-                app:layout_constraintStart_toStartOf="@+id/text_startup_matching_investor"
-                android:layout_width="0dp"
                 app:layout_constraintEnd_toEndOf="@+id/text_startup_matching_investor"
+                app:layout_constraintStart_toStartOf="@+id/text_startup_matching_investor"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_investor_type_layout" />
 
             <RadioGroup
@@ -98,18 +98,18 @@
                 app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_industry"
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
-                app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_phase"/>
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_phase" />
 
             <TextView
                 android:id="@+id/text_startup_matching_industry"
+                style="@style/RaisingTextBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/startup_matching_industry_text"
-                style="@style/RaisingTextBold"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_matching_industry_layout"
-                app:layout_constraintStart_toStartOf="@+id/text_startup_matching_phase"
                 app:layout_constraintEnd_toEndOf="@+id/text_startup_matching_phase"
+                app:layout_constraintStart_toStartOf="@+id/text_startup_matching_phase"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_radio_phase" />
 
             <LinearLayout
@@ -122,18 +122,18 @@
                 app:layout_constraintBottom_toTopOf="@+id/text_startup_matching_support"
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_matching_ticket_size"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_matching_ticket_size"
-                app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_industry"/>
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_matching_industry" />
 
             <TextView
                 android:id="@+id/text_startup_matching_support"
+                style="@style/RaisingTextBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/startup_matching_involvement_text"
-                style="@style/RaisingTextBold"
-                app:layout_constraintStart_toStartOf="@+id/text_startup_matching_industry"
                 app:layout_constraintEnd_toEndOf="@+id/text_startup_matching_industry"
+                app:layout_constraintStart_toStartOf="@+id/text_startup_matching_industry"
                 app:layout_constraintTop_toBottomOf="@+id/register_startup_matching_industry_layout" />
 
             <LinearLayout
@@ -210,7 +210,7 @@
 
             <Button
                 android:id="@+id/button_startup_matching"
-                style="@style/ButtonConfirmRegistration"
+                style="@style/ButtonRegistrationAndProfile"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"

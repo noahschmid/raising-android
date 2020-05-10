@@ -103,8 +103,7 @@ public class ContactDataInput extends RaisingFragment {
         } catch (Exception e) {
             Log.e("ContactDetailsInput", "Error while saving contact details: " +
                     e.getMessage());
-            showSimpleDialog(getString(R.string.generic_error_title),
-                    getString(R.string.generic_error_text));
+            showGenericError();
         }
     }
 }

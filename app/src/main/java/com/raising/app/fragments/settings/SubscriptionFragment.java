@@ -1,6 +1,5 @@
 package com.raising.app.fragments.settings;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -96,9 +95,10 @@ public class SubscriptionFragment extends RaisingFragment {
                             case BillingClient.BillingResponseCode.SERVICE_TIMEOUT:
                             case BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE:
                                 showSimpleDialog(getString(R.string.billing_connection_failed_title), getString(R.string.billing_connection_issue_text));
+                                refreshSubscriptionsLayout();
                                 break;
                             case BillingClient.BillingResponseCode.ERROR:
-                                displayGenericError();
+                                showGenericError();
                                 break;
                         }
                     }
@@ -157,7 +157,6 @@ public class SubscriptionFragment extends RaisingFragment {
                         .setSkuDetails(skuDetails)
                         .setOldSku(currentAccount.getActiveSubscription().getSku(),
                                 currentAccount.getActiveSubscription().getPurchaseToken())
-                        .setReplaceSkusProrationMode(BillingFlowParams.ProrationMode.DEFERRED)
                         .build();
             } else {
                 Log.d(TAG, "showGoogleBilling: New subscription");
@@ -174,6 +173,7 @@ public class SubscriptionFragment extends RaisingFragment {
         JSONObject object = new JSONObject();
         try {
             object.put("purchaseToken", purchase.getPurchaseToken());
+            // object.put("subscriptionId", purchase.getSku());
         } catch (JSONException e) {
             Log.e(TAG, "validatePurchaseWithServer: Error creating JSON" + e.getMessage());
         }
@@ -184,7 +184,7 @@ public class SubscriptionFragment extends RaisingFragment {
                     handlePurchase(purchase);
                     return null;
                 }, volleyError -> {
-                    Log.d(TAG, "validatePurchaseWithServer: Purchase invalid " + volleyError.getMessage());
+                    Log.d(TAG, "validatePurchaseWithServer: Server Error " + volleyError.getMessage());
                     return null;
                 }, object);
     }

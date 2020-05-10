@@ -245,8 +245,15 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
             }
         });
 
-        if(industries.size() == 0 || investmentPhases.size() == 0 || support.size() == 0 ||
-                (continents.size() == 0 && countries.size() == 0)) {
+        if(industries.size() == 0 || investmentPhases.size() == 0 || support.size() == 0) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_dialog_text_empty_credentials));
+            return;
+        }
+
+        // check for countries and continents
+        if (countries.isEmpty() && continents.isEmpty() && investor.getCountries().isEmpty() &&
+                investor.getContinents().isEmpty()) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
@@ -255,9 +262,12 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
         investor.setInvestmentPhases(investmentPhases);
         investor.setIndustries(industries);
         investor.setSupport(support);
-        investor.setContinents(continents);
-        investor.setCountries(countries);
         investor.setInvestorTypeId(investorType);
+
+        if(!continents.isEmpty() || !countries.isEmpty()) {
+            investor.setContinents(continents);
+            investor.setCountries(countries);
+        }
 
         try {
             if(!editMode) {

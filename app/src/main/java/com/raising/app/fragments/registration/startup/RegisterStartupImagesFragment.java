@@ -3,7 +3,6 @@ package com.raising.app.fragments.registration.startup;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -20,49 +19,34 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.flexbox.FlexboxLayout;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.raising.app.R;
-import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Image;
 import com.raising.app.models.Startup;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
-import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.ImageRotator;
 import com.raising.app.util.ImageUploader;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.Serializer;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 public class RegisterStartupImagesFragment extends RaisingFragment {
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -120,13 +104,10 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
         deleteProfileImageButton = view.findViewById(R.id.button_delete_profile_img);
         deleteProfileImageButton.setVisibility(View.GONE);
-        deleteProfileImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                profileImageOverlay.setVisibility(View.VISIBLE);
-                deleteProfileImageButton.setVisibility(View.GONE);
-                profileImage.setImageBitmap(null);
-            }
+        deleteProfileImageButton.setOnClickListener(v -> {
+            profileImageOverlay.setVisibility(View.VISIBLE);
+            deleteProfileImageButton.setVisibility(View.GONE);
+            profileImage.setImageBitmap(null);
         });
 
         finishButton = view.findViewById(R.id.button_startup_images);
@@ -455,6 +436,13 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
      * Process the given inputs
      */
     private void processInputs() {
+        if (profileImage.getDrawable() == null) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_no_picture_text));
+            finishButton.setEnabled(true);
+            return;
+        }
+
         if (((BitmapDrawable) profileImage.getDrawable()).getBitmap() == null ||
                 profileImage.getDrawable().getIntrinsicWidth() == 0 ||
                 profileImage.getDrawable().getIntrinsicHeight() == 0 ||
@@ -515,7 +503,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             } catch (Exception e) {
                 Log.e(TAG, "uploadImages: " + e.getMessage());
                 finishButton.setEnabled(true);
-                displayGenericError();
+                showGenericError();
             }
 
             return null;

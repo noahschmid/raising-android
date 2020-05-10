@@ -72,12 +72,6 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
         btnCompanyFigures = view.findViewById(R.id.button_company_figures);
         btnCompanyFigures.setOnClickListener(v -> processInformation());
 
-        TextInputLayout companyFteLayout = view.findViewById(R.id.register_company_fte);
-        companyFteLayout.setEndIconOnClickListener(v -> {
-            showSimpleDialog(getString(R.string.registration_information_dialog_title),
-                    getString(R.string.registration_information_dialog_fte));
-        });
-
         ArrayList<Revenue> revenues = resources.getRevenues();
         ArrayList<String> values = new ArrayList<>();
         revenues.forEach(rev -> values.add(rev.toString(getString(R.string.currency),

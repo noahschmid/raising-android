@@ -66,14 +66,16 @@
     <string name="toolbar_title_forgot_email"> Forgot Password</string>
 
     <string name="toolbar_title_reset_password"> Reset Password </string>
+    <string name="reset_password_success_title">Password reset</string>
+    <string name="reset_password_success_text">Your password has successfully been reset. You can now log in with your new password.</string>
 
     <string name="toolbar_title_contact_details"> Complete your Profile </string>
 
 
     <!-- Strings used for Registration -->
     <string name="registration_information_dialog_title"> Additional Information</string>
-    <string name="registration_information_dialog_description">Describe yourself in one sentence.</string>
-    <string name="registration_information_dialog_pitch">Write a pitch in less than 250 words. </string>
+    <string name="registration_information_dialog_description">Describe yourself in one sentence</string>
+    <string name="registration_information_dialog_pitch">Write a pitch in less than 250 words </string>
     <string name="registration_information_dialog_uid">UID is a national identification number for all companies. If you do not know your UID click on ‘Find UID’.</string>
     <string name="registration_information_dialog_fte">FTE stands for Full Time Employees. Potential matches may be interested in your employment status.</string>
     <string name="registration_information_dialog_committed">Tell us if you have already achieved some of the target scope, that you have specified above.</string>
@@ -195,6 +197,7 @@
     <string name="register_stakeholder_shareholder_corporate"> Corporate Shareholder </string>
     <string name="register_stakeholder_shareholder_corporate_body"> Corporate Body* </string>
     <string name="register_stakeholder_shareholder_website"> Website </string>
+    <string name="register_stakeholder_high_equity">A Shareholder cannot have more than 100% equity</string>
     <string name="register_stakeholder_error_equity"> Shareholders have more than 100% equity share.</string>
 
     <!-- Strings used for Match List -->
