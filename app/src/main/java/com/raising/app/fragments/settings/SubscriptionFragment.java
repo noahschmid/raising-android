@@ -1,6 +1,5 @@
 package com.raising.app.fragments.settings;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -99,7 +98,7 @@ public class SubscriptionFragment extends RaisingFragment {
                                 refreshSubscriptionsLayout();
                                 break;
                             case BillingClient.BillingResponseCode.ERROR:
-                                displayGenericError();
+                                showGenericError();
                                 break;
                         }
                     }

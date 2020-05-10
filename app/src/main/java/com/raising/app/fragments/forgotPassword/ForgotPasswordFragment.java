@@ -12,8 +12,6 @@ import android.widget.EditText;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.GenericRequest;
 import com.raising.app.R;
@@ -75,21 +73,14 @@ public class ForgotPasswordFragment extends RaisingFragment {
 
                         changeFragment(fragment);
                     }, error -> {
-                try {
-                    if (error.networkResponse.statusCode == 500) {
-                        showSimpleDialog(
-                                getString(R.string.generic_error_title),
-                                getString(R.string.reset_email_not_found_text)
-                        );
-                    }
-                } catch (Exception e) {
-
+                        Log.d("debugMessage", error.toString());
+                if (error.networkResponse.statusCode == 500) {
+                    showSimpleDialog(
+                            getString(R.string.generic_error_title),
+                            getString(R.string.reset_email_not_found_text));
+                } else {
+                    showGenericError();
                 }
-                showSimpleDialog(
-                        getString(R.string.generic_error_title),
-                        getString(R.string.generic_error_text)
-                );
-                Log.d("debugMessage", error.toString());
             }) {
                 @Override
                 public String getBodyContentType() {

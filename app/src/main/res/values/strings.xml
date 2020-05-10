@@ -66,6 +66,8 @@
     <string name="toolbar_title_forgot_email"> Forgot Password</string>
 
     <string name="toolbar_title_reset_password"> Reset Password </string>
+    <string name="reset_password_success_title">Password reset</string>
+    <string name="reset_password_success_text">Your password has successfully been reset. You can now log in with your new password.</string>
 
     <string name="toolbar_title_contact_details"> Complete your Profile </string>
 

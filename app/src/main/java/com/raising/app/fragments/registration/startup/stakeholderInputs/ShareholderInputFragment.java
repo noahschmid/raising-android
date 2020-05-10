@@ -245,7 +245,7 @@ public class ShareholderInputFragment extends RaisingFragment {
                                     ApiRequestHandler.errorHandler,
                                     params);
                         } catch (Exception e) {
-                            displayGenericError();
+                            showGenericError();
                             Log.e("shareholderInput",
                                     "Could not add shareholder: " + e.getMessage());
                         }

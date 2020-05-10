@@ -29,12 +29,13 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class ResetPasswordFragment extends RaisingFragment implements View.OnClickListener {
+public class ResetPasswordFragment extends RaisingFragment {
     private EditText codeInput;
     private EditText passwordInput;
     private String email;
 
     private final String resetEndpoint = ApiRequestHandler.getDomain() + "account/reset";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,13 +48,11 @@ public class ResetPasswordFragment extends RaisingFragment implements View.OnCli
         customizeAppBar(getString(R.string.toolbar_title_reset_password), true);
 
         Button loginWithToken = view.findViewById(R.id.button_forgot_loginWithToken);
-        loginWithToken.setOnClickListener(this);
+        loginWithToken.setOnClickListener(v -> resetPassword());
 
-        if(getArguments().getString("email") != null) {
+        if (getArguments().getString("email") != null) {
             email = getArguments().getString("email");
         }
-
-        //showSimpleDialog(getString(R.string.forgot_dialog_title), getString(R.string.forgot_dialog_text));
 
         return view;
     }
@@ -65,23 +64,14 @@ public class ResetPasswordFragment extends RaisingFragment implements View.OnCli
         hideBottomNavigation(false);
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_forgot_loginWithToken:
-                preparePasswordReset();
-                break;
-            default:
-                break;
-        }
-    }
-
     /**
      * Send password reset request to backend and process response
-     * @param code the reset code
      */
-    private void resetPassword(String code, String password) {
-        if(code.length() == 0 || password.length() == 0) {
+    private void resetPassword() {
+        String code = codeInput.getText().toString();
+        String password = passwordInput.getText().toString();
+
+        if (code.length() == 0 || password.length() == 0) {
             showSimpleDialog(getString(R.string.simple_dialog_invalid_input_title),
                     getString(R.string.reset_dialog_text_no_input));
             return;
@@ -92,52 +82,47 @@ public class ResetPasswordFragment extends RaisingFragment implements View.OnCli
             params.put("password", password);
             GenericRequest loginRequest = new GenericRequest(
                     resetEndpoint, new JSONObject(params),
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                dismissLoadingPanel();
-                                /*
+                    response -> {
+                        dismissLoadingPanel();
+                        showSimpleDialog(getString(R.string.reset_password_success_title), getString(R.string.reset_password_success_text));
+                        changeFragment(new LoginFragment());
+                        /*
+                        try {
+                            if(AccountService.loadContactData(response.getLong("id"))) {
+                                AuthenticationHandler.login(email,
+                                        response.getString("token"),
+                                        response.getLong("id"), isStartup);
+                                accountViewModel.loadAccount();
 
-                                if(AccountService.loadContactData(response.getLong("id"))) {
-                                    AuthenticationHandler.login(email,
-                                            response.getString("token"),
-                                            response.getLong("id"), isStartup);
-                                    accountViewModel.loadAccount();
-
-                                    if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
-                                        clearBackstackAndReplace(new OnboardingPost1Fragment());
-                                    } else {
-                                        clearBackstackAndReplace(new MatchesFragment());
-                                    }
+                                if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
+                                    clearBackstackAndReplace(new OnboardingPost1Fragment());
                                 } else {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putBoolean("isStartup", isStartup);
-                                    bundle.putString("email", email);
-                                    bundle.putString("token", response.getString("token"));
-                                    bundle.putLong("id", response.getLong("id"));
-                                    Fragment fragment = new ContactDataInput();
-                                    fragment.setArguments(bundle);
-                                    changeFragment(fragment);
-                                }*/
-
-                                changeFragment(new LoginFragment());
-                            } catch(Exception e) {
-                                dismissLoadingPanel();
-                                showSimpleDialog(getString(R.string.generic_error_title),
-                                        getString(R.string.wrong_reset_code));
+                                    clearBackstackAndReplace(new MatchesFragment());
+                                }
+                            } else {
+                                Bundle bundle = new Bundle();
+                                bundle.putBoolean("isStartup", isStartup);
+                                bundle.putString("email", email);
+                                bundle.putString("token", response.getString("token"));
+                                bundle.putLong("id", response.getLong("id"));
+                                Fragment fragment = new ContactDataInput();
+                                fragment.setArguments(bundle);
+                                changeFragment(fragment);
                             }
+                        } catch(Exception e) {
+                            dismissLoadingPanel();
                         }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    showSimpleDialog(
-                            getString(R.string.generic_error_title),
-                            getString(R.string.generic_error_text)
-                    );
-                    Log.d("debugMessage", error.toString());
+                        */
+                    }, error -> {
+                dismissLoadingPanel();
+                Log.d("debugMessage", error.toString());
+                if (error.networkResponse.statusCode == 500) {
+                    showSimpleDialog(getString(R.string.generic_error_title),
+                            getString(R.string.wrong_reset_code));
+                } else {
+                    showGenericError();
                 }
-            }){
+            }) {
                 @Override
                 public String getBodyContentType() {
                     return "application/json; charset=utf-8";
@@ -146,22 +131,10 @@ public class ResetPasswordFragment extends RaisingFragment implements View.OnCli
             loginRequest.setRetryPolicy(new DefaultRetryPolicy(10000, 1, 1.0f));
 
             ApiRequestHandler.getInstance(getContext()).addToRequestQueue(loginRequest);
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.d("debugMessage", e.getMessage());
             Log.d("debugMessage", e.toString());
             return;
         }
-    }
-
-    /**
-     * Simple helper method, that prepares {@link #preparePasswordReset()} (String)}.
-     *
-     * @author Lorenz Caliezi 09.03.2020
-     */
-    private void preparePasswordReset() {
-        String code = codeInput.getText().toString();
-        String password = passwordInput.getText().toString();
-
-        resetPassword(code, password);
     }
 }

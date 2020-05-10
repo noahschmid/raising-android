@@ -124,7 +124,7 @@ public class FounderInputFragment extends RaisingFragment {
                                 ApiRequestHandler.errorHandler,
                                 params);
                     } catch (Exception e) {
-                        displayGenericError();
+                        showGenericError();
                         Log.e("FounderInput",
                                 "Could not add founder: " + e.getMessage());
                     }

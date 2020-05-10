@@ -525,8 +525,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             }
 
         } catch (Exception e ){
-            showSimpleDialog(getString(R.string.generic_error_title),
-                    getString(R.string.generic_error_text));
+            showGenericError();
             Log.d("StartupStakeholder", "" + e.getMessage());
         }
         return null;
@@ -549,8 +548,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             Log.d("InvestorImagesErrorException", "" + e.getMessage());
         }
 
-        showSimpleDialog(getString(R.string.generic_error_title),
-                getString(R.string.generic_error_text));
+        showGenericError();
         finishButton.setEnabled(true);
         return null;
     };

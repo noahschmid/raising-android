@@ -3,10 +3,8 @@ package com.raising.app.fragments.registration.investor;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -21,23 +19,18 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.MutableLiveData;
 
-import android.os.Handler;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.flexbox.FlexboxLayout;
@@ -50,22 +43,15 @@ import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.onboarding.OnboardingPost1Fragment;
 import com.raising.app.models.Image;
 import com.raising.app.models.Investor;
-import com.raising.app.models.ViewState;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
-import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.ImageRotator;
 import com.raising.app.util.ImageUploader;
-import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.Serializer;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -553,7 +539,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             } catch (Exception e) {
                 Log.e(TAG, "uploadImages: " + e.getMessage());
                 finishButton.setEnabled(true);
-                displayGenericError();
+                showGenericError();
             }
 
             return null;
@@ -581,7 +567,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             Log.d("RegisterInvestorImagesFragment", investor);
         } catch (Exception e) {
             Log.e(TAG, "submitRegistration: " + e.getMessage());
-            displayGenericError();
+            showGenericError();
             finishButton.setEnabled(true);
         }
     }
@@ -607,8 +593,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
         } catch (Exception e) {
             Log.d("InvestorImagesFragment", e.getMessage());
-            showSimpleDialog(getString(R.string.generic_error_title),
-                    getString(R.string.generic_error_text));
+            showGenericError();
         }
         return null;
     };
@@ -625,8 +610,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                         response.networkResponse.data, StandardCharsets.UTF_8));
                 Log.e(TAG, "status code: " + response.networkResponse.statusCode);
                 Log.e("InvestorImages", body.getString("message"));
-                showSimpleDialog(getString(R.string.generic_error_title),
-                        getString(R.string.generic_error_text));
+                showGenericError();
             } else {
                 clearBackstackAndReplace(new LoginFragment());
             }

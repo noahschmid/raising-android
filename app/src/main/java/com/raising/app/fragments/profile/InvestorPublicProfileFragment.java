@@ -174,7 +174,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                         return null;
                     },
                     err -> {
-                        displayGenericError();
+                        showGenericError();
                         Log.e(TAG, "manageHandshakeButtons: " +
                                 ApiRequestHandler.parseVolleyError(err));
                         return null;
@@ -193,7 +193,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                         return null;
                     },
                     err -> {
-                        displayGenericError();
+                        showGenericError();
                         Log.e(TAG, "manageHandshakeButtons: " +
                                 ApiRequestHandler.parseVolleyError(err));
                         return null;

@@ -250,12 +250,10 @@ public class RaisingFragment extends Fragment {
     /**
      * Display a generic "oops something went wrong" message
      */
-    public void displayGenericError() {
+    public void showGenericError() {
         showSimpleDialog(getString(R.string.generic_error_title),
                 getString(R.string.generic_error_text));
     }
-
-
 
     /**
      * Clear all fragments on the backstack and replace fragment container with new fragment
