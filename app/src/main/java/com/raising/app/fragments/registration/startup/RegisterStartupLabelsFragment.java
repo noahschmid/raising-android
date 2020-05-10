@@ -19,12 +19,14 @@ import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Startup;
 import com.raising.app.util.RegistrationHandler;
+import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaAdapter;
+import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaComponent;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class RegisterStartupLabelsFragment extends RaisingFragment {
-    private FlexboxLayout labelsLayout;
+    private MatchingCriteriaComponent labelsLayout;
 
     private Startup startup;
     private boolean editMode = false;
@@ -60,26 +62,21 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
             startup = RegistrationHandler.getStartup();
         }
 
-        labelsLayout = view.findViewById(R.id.register_startup_pitch_labels);
-
-        resources.getLabels().forEach(label -> {
-            CheckBox cb = new CheckBox(getContext());
-            cb.setText(label.getName());
-            cb.setContentDescription(String.valueOf(label.getId()));
-            labelsLayout.addView(cb);
-        });
-
-        startup.getLabels().forEach(label -> tickCheckbox(labelsLayout, label));
-
-        // check for changed labels
-        for(int i = 0; i < labelsLayout.getChildCount(); i++) {
-            View v = labelsLayout.getChildAt(i);
-            ((CheckBox) v).setOnCheckedChangeListener((buttonView, isChecked) -> {
+        MatchingCriteriaAdapter.OnItemClickListener clickListener = new MatchingCriteriaAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
                 if(editMode) {
-                    btnStartupLabels.setVisibility(View.VISIBLE);
+                    if(editMode) {
+                        btnStartupLabels.setVisibility(View.VISIBLE);
+                    }
                 }
-            });
-        }
+            }
+        };
+
+        labelsLayout = new MatchingCriteriaComponent(view.findViewById(R.id.register_startup_pitch_labels), resources.getLabels(),
+                false, clickListener);
+
+        startup.getLabels().forEach(label -> labelsLayout.setChecked(label));
     }
 
     @Override
@@ -90,13 +87,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
     }
 
     private void processInformation() {
-        ArrayList<Long> labels = new ArrayList<>();
-        for (int i = 0; i < labelsLayout.getChildCount(); ++i) {
-            View v = labelsLayout.getChildAt(i);
-            if(((CheckBox)v).isChecked() && ((String)((CheckBox)v).getContentDescription()).length() > 0) {
-                labels.add(Long.parseLong((String)((CheckBox)v).getContentDescription()));
-            }
-        }
+        ArrayList<Long> labels = labelsLayout.getSelected();
 
         if(labels.size() > 4) {
             showSimpleDialog(getString(R.string.register_label_error_title), getString(R.string.register_label_error_text));
