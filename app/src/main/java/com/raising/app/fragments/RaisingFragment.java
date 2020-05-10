@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -113,7 +114,7 @@ public class RaisingFragment extends Fragment {
         });
 
         accountViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
-            if(state.equals(ViewState.UPDATED)) {
+            if (state.equals(ViewState.UPDATED)) {
                 currentAccount = accountViewModel.getAccount().getValue();
                 dismissLoadingPanel();
                 onAccountUpdated();
@@ -130,20 +131,6 @@ public class RaisingFragment extends Fragment {
         resources = resourcesViewModel.getResources().getValue();
 
         processViewState(viewStateViewModel.getViewState().getValue());
-    }
-
-    /**
-     * Get path from uri
-     * @param uri
-     * @return
-     */
-    public String getPath(Uri uri) {
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getActivity().managedQuery(uri, projection, null, null, null);
-        getActivity().startManagingCursor(cursor);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
     }
 
     protected void processViewState(ViewState viewState) {
@@ -163,13 +150,28 @@ public class RaisingFragment extends Fragment {
     }
 
     /**
+     * Get path from uri
+     *
+     * @param uri
+     * @return
+     */
+    public String getPath(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getActivity().managedQuery(uri, projection, null, null, null);
+        getActivity().startManagingCursor(cursor);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+    /**
      * Load profile image into image view
      *
      * @param id        id of the profile image
      * @param imageView where to load the image into
      */
     protected void loadProfileImage(long id, ImageView imageView) {
-        if(id <= 0) {
+        if (id <= 0) {
             imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_placeholder_24dp));
         } else {
             Glide
@@ -248,14 +250,6 @@ public class RaisingFragment extends Fragment {
     }
 
     /**
-     * Display a generic "oops something went wrong" message
-     */
-    public void showGenericError() {
-        showSimpleDialog(getString(R.string.generic_error_title),
-                getString(R.string.generic_error_text));
-    }
-
-    /**
      * Clear all fragments on the backstack and replace fragment container with new fragment
      *
      * @param fragment the fragment to display next
@@ -306,12 +300,13 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Call {@link com.raising.app.MainActivity#hideToolbar(boolean)}
+     *
      * @param isHidden if true, the toolbar should be hidden
      *                 if false, the toolbar should be visible
      */
     protected void hideToolbar(boolean isHidden) {
         MainActivity activity = (MainActivity) getActivity();
-        if(activity != null) {
+        if (activity != null) {
             activity.hideToolbar(isHidden);
         }
     }
@@ -359,6 +354,14 @@ public class RaisingFragment extends Fragment {
     }
 
     /**
+     * Display a generic "oops something went wrong" message
+     */
+    public void showGenericError() {
+        showSimpleDialog(getString(R.string.generic_error_title),
+                getString(R.string.generic_error_text));
+    }
+
+    /**
      * Opens a simple dialog, which can only be accepted
      *
      * @param dialogTitle   The title of the simple message dialog
@@ -373,8 +376,9 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Create and show an alert dialog, which allows the user to either decline or accept a message
-     * @param title The title of the dialog
-     * @param message The message of the dialog
+     *
+     * @param title          The title of the dialog
+     * @param message        The message of the dialog
      * @param positiveButton The string of the positive button
      * @param negativeButton The string of the negative button
      * @return true, if user has accepted the dialog, false, if user has declined the dialog
@@ -397,7 +401,8 @@ public class RaisingFragment extends Fragment {
                 });
         try {
             Looper.loop();
-        } catch (RuntimeException e) {}
+        } catch (RuntimeException e) {
+        }
 
         return confirmDialog[0];
     }
@@ -405,7 +410,8 @@ public class RaisingFragment extends Fragment {
     /**
      * Extend a simple request with "Yes" and "Cancel" to then create an action dialog.
      * Call {@link com.raising.app.fragments.RaisingFragment#showActionDialog(String, String, String, String)}
-     * @param title The title of the action dialog
+     *
+     * @param title   The title of the action dialog
      * @param message The message of the action dialog
      * @return The return value of {@link com.raising.app.fragments.RaisingFragment#showActionDialog(String, String, String, String)}
      */
@@ -582,8 +588,9 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Show year picker
-     * @param title      title of the picker
-     * @param inputField the field to print the output to
+     *
+     * @param title         title of the picker
+     * @param inputField    the field to print the output to
      * @param activatedYear the activated year of the picker
      */
     protected void showYearPicker(String title, EditText inputField, int activatedYear) {
@@ -594,13 +601,13 @@ public class RaisingFragment extends Fragment {
 
         builder.setActivatedMonth(Calendar.JULY).setMinYear(1900)
                 .setActivatedYear(activatedYear);
-                // check for founding year picker, founding year cannot be in the future
-                if(title.contains("founding")) {
-                    builder.setMaxYear(today.get(Calendar.YEAR));
-                } else {
-                    builder.setMaxYear(today.get(Calendar.YEAR) + 200);
-                }
-                builder.setMinMonth(Calendar.FEBRUARY)
+        // check for founding year picker, founding year cannot be in the future
+        if (title.contains("founding")) {
+            builder.setMaxYear(today.get(Calendar.YEAR));
+        } else {
+            builder.setMaxYear(today.get(Calendar.YEAR) + 200);
+        }
+        builder.setMinMonth(Calendar.FEBRUARY)
                 .setTitle(title)
                 .showYearOnly()
                 .setOnYearChangedListener(new MonthPickerDialog.OnYearChangedListener() {
@@ -616,10 +623,11 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Delegate year picker based on title, inputField and current date
+     *
      * @param title      title of the picker
      * @param inputField the field to print the output to
-     *    
-     * Call {@link com.raising.app.fragments.RaisingFragment#showYearPicker(String, EditText, int)}
+     *                   <p>
+     *                   Call {@link com.raising.app.fragments.RaisingFragment#showYearPicker(String, EditText, int)}
      */
     protected void showYearPicker(String title, EditText inputField) {
         Calendar today = Calendar.getInstance();
@@ -654,14 +662,14 @@ public class RaisingFragment extends Fragment {
         }*/
 
         loadingPanel.setVisibility(View.GONE);
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         }
     }
 
     protected void disablePreOnboarding() {
         MainActivity activity = (MainActivity) getActivity();
-        if(activity != null) {
+        if (activity != null) {
             activity.disablePreOnboarding();
         }
     }
@@ -669,7 +677,7 @@ public class RaisingFragment extends Fragment {
     protected boolean isDisablePostOnboarding() {
         boolean disablePostOnboarding = false;
         try {
-            if(!(InternalStorageHandler.exists("postOnboarding"))) {
+            if (!(InternalStorageHandler.exists("postOnboarding"))) {
                 return false;
             } else {
                 disablePostOnboarding = (boolean) InternalStorageHandler.loadObject("postOnboarding");
@@ -682,14 +690,14 @@ public class RaisingFragment extends Fragment {
 
     protected void disablePostOnboarding() {
         MainActivity activity = (MainActivity) getActivity();
-        if(activity != null) {
+        if (activity != null) {
             activity.disablePostOnboarding();
         }
     }
 
     protected boolean isFirstAppLaunch() {
         MainActivity activity = (MainActivity) getActivity();
-        if(activity != null) {
+        if (activity != null) {
             return activity.isFirstAppLaunch();
         }
         return false;
