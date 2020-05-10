@@ -18,6 +18,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.slider.Slider;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
@@ -27,6 +28,8 @@ import com.raising.app.models.Investor;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
+import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaAdapter;
+import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +40,8 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
     private Button geographicsButton, btnInvestorMatching;
     private CustomPicker customPicker;
     private TextView ticketSizeText;
-    private LinearLayout industryLayout, investmentPhaseLayout, supportLayout;
-    private RadioGroup investorTypeGroup;
+    private MatchingCriteriaComponent industryCriteria, investmentPhaseCriteria, supportCriteria,
+        investorTypeCriteria;
 
     private View fragmentView;
     private long investorType = -1;
@@ -68,8 +71,6 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        investorTypeGroup = view.findViewById(R.id.register_investor_matching_radio_investor);
 
         geographicsButton = view.findViewById(R.id.register_investor_matching_geographics_button);
 
@@ -107,19 +108,26 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
             btnInvestorMatching.setVisibility(View.INVISIBLE);
         }
 
-        industryLayout = view.findViewById(R.id.register_investor_matching_industry_layout);
-        investmentPhaseLayout = view.findViewById(R.id.register_investor_matching_phase_layout);
-        supportLayout = view.findViewById(R.id.register_investor_matching_support_layout);
-
-        investorTypeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
-                boolean isChecked = checkedRadioButton.isChecked();
-                if (isChecked) {
-                    investorType = Integer.parseInt((String) checkedRadioButton.getContentDescription());
+        MatchingCriteriaAdapter.OnItemClickListener clickListener = new MatchingCriteriaAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                if(editMode) {
+                    btnInvestorMatching.setVisibility(View.VISIBLE);
                 }
             }
-        });
+        };
+
+        industryCriteria = new MatchingCriteriaComponent(view.findViewById(R.id.register_investor_matching_industry_layout),
+                resources.getIndustries(), false, clickListener);
+
+        investmentPhaseCriteria = new MatchingCriteriaComponent(view.findViewById(R.id.register_investor_matching_phase_layout),
+                resources.getInvestmentPhases(), false, clickListener);
+
+        supportCriteria = new MatchingCriteriaComponent(view.findViewById(R.id.register_investor_matching_support_layout),
+                resources.getSupports(), false, clickListener);
+
+        investorTypeCriteria = new MatchingCriteriaComponent(view.findViewById(R.id.register_investor_matching_radio_investor),
+                resources.getInvestorTypes(),true, clickListener);
 
         CustomPicker.Builder builder =
                 new CustomPicker.Builder()
@@ -152,19 +160,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
             customPicker.setSelectedById(selected);
         }
 
-        setupLists();
         restoreLists();
-        setupChangeListeners();
-    }
-
-    /**
-     * Load all necessary items into list
-     */
-    private void setupLists() {
-        setupCheckboxes(resources.getInvestmentPhases(), investmentPhaseLayout);
-        setupCheckboxes(resources.getIndustries(), industryLayout);
-        setupRadioGroup(resources.getInvestorTypes(), investorTypeGroup);
-        setupCheckboxes(resources.getSupports(), supportLayout);
     }
 
     /**
@@ -172,54 +168,10 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
      */
     private void restoreLists() {
         investorType = investor.getInvestorTypeId();
-        investor.getInvestmentPhases().forEach(phase -> {
-            tickCheckbox(investmentPhaseLayout, phase);
-        });
-        investor.getIndustries().forEach(industry ->
-                tickCheckbox(industryLayout, industry));
-
-        tickRadioButton(investorTypeGroup, investor.getInvestorTypeId());
-
-        investor.getSupport().forEach(support ->
-                tickCheckbox(supportLayout, support));
-    }
-
-    private void setupChangeListeners() {
-        for(int i = 0; i < investmentPhaseLayout.getChildCount(); i++) {
-            View v = investmentPhaseLayout.getChildAt(i);
-            ((CheckBox) v).setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if(editMode) {
-                    btnInvestorMatching.setVisibility(View.VISIBLE);
-                }
-            });
-        }
-
-        for(int i = 0; i < industryLayout.getChildCount(); i++) {
-            View v = industryLayout.getChildAt(i);
-            ((CheckBox) v).setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if(editMode) {
-                    btnInvestorMatching.setVisibility(View.VISIBLE);
-                }
-            });
-        }
-
-        for(int i = 0; i < investorTypeGroup.getChildCount(); i++) {
-            View v = investorTypeGroup.getChildAt(i);
-            ((RadioButton) v).setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if(editMode) {
-                    btnInvestorMatching.setVisibility(View.VISIBLE);
-                }
-            });
-        }
-
-        for(int i = 0; i < supportLayout.getChildCount(); i++) {
-            View v = supportLayout.getChildAt(i);
-            ((CheckBox) v).setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if(editMode) {
-                    btnInvestorMatching.setVisibility(View.VISIBLE);
-                }
-            });
-        }
+        investor.getInvestmentPhases().forEach(phase -> investmentPhaseCriteria.setChecked(phase));
+        investor.getIndustries().forEach(industry -> industryCriteria.setChecked(industry));
+        investorTypeCriteria.setChecked(investor.getInvestorTypeId());
+        investor.getSupport().forEach(support -> supportCriteria.setChecked(support));
     }
 
     /**
@@ -256,6 +208,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
      * Check if all information is valid and save it
      */
     private void processMatchingInformation() {
+        investorType = investorTypeCriteria.getSingleSelected();
         if(investorType == -1) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
@@ -268,9 +221,9 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
         investor.setTicketMaxId((int)resources.getTicketSizes().get(
                 (int)ticketSize.getMaximumValue() - 1).getId());
 
-        ArrayList<Long> industries = getSelectedCheckboxIds(industryLayout);
-        ArrayList<Long> investmentPhases = getSelectedCheckboxIds(investmentPhaseLayout);
-        ArrayList<Long> support = getSelectedCheckboxIds(supportLayout);
+        ArrayList<Long> industries = industryCriteria.getSelected();
+        ArrayList<Long> investmentPhases = investmentPhaseCriteria.getSelected();
+        ArrayList<Long> support = supportCriteria.getSelected();
 
         ArrayList<Long> countries = new ArrayList<>();
         ArrayList<Long> continents = new ArrayList<>();

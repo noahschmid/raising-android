@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
+import com.google.android.flexbox.FlexboxLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Startup;
@@ -23,7 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class RegisterStartupLabelsFragment extends RaisingFragment {
-    private LinearLayout labelsLayout;
+    private FlexboxLayout labelsLayout;
 
     private Startup startup;
     private boolean editMode = false;
