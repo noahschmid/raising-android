@@ -23,9 +23,9 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class ForgotPasswordFragment extends RaisingFragment implements View.OnClickListener{
+public class ForgotPasswordFragment extends RaisingFragment {
     private EditText emailInput;
-    private final String forgotEndpoint = ApiRequestHandler.getDomain() +"account/forgot";
+    private final String forgotEndpoint = ApiRequestHandler.getDomain() + "account/forgot";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,7 +38,7 @@ public class ForgotPasswordFragment extends RaisingFragment implements View.OnCl
         customizeAppBar(getString(R.string.toolbar_title_forgot_email), true);
 
         Button btnSend = view.findViewById(R.id.button_forgot_reset);
-        btnSend.setOnClickListener(this);
+        btnSend.setOnClickListener(v -> forgotPassword());
 
         return view;
     }
@@ -50,23 +50,12 @@ public class ForgotPasswordFragment extends RaisingFragment implements View.OnCl
         hideBottomNavigation(false);
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_forgot_reset:
-                prepareForgotPassword();
-                break;
-            default:
-                break;
-        }
-    }
-
     /**
      * Send password forgot request to backend and process response
-     * @param email the email the account was registered with
      */
-    private void forgotPassword(String email) {
-        if(email.length() == 0) {
+    private void forgotPassword() {
+        String email = emailInput.getText().toString().trim();
+        if (email.length() == 0) {
             showSimpleDialog(getString(R.string.forgot_dialog_title_no_input),
                     getString(R.string.forgot_dialog_text_no_input));
             return;
@@ -78,36 +67,30 @@ public class ForgotPasswordFragment extends RaisingFragment implements View.OnCl
             params.put("email", email);
             GenericRequest loginRequest = new GenericRequest(
                     forgotEndpoint, new JSONObject(params),
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Fragment fragment = new ResetPasswordFragment();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("email", email);
-                            fragment.setArguments(bundle);
+                    response -> {
+                        Fragment fragment = new ResetPasswordFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("email", email);
+                        fragment.setArguments(bundle);
 
-                            changeFragment(fragment);
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    try {
-                        if(error.networkResponse.statusCode == 500) {
-                            showSimpleDialog(
-                                    getString(R.string.generic_error_title),
-                                    getString(R.string.reset_email_not_found_text)
-                            );
-                        }
-                    } catch (Exception e) {
-
+                        changeFragment(fragment);
+                    }, error -> {
+                try {
+                    if (error.networkResponse.statusCode == 500) {
+                        showSimpleDialog(
+                                getString(R.string.generic_error_title),
+                                getString(R.string.reset_email_not_found_text)
+                        );
                     }
-                    showSimpleDialog(
-                            getString(R.string.generic_error_title),
-                            getString(R.string.generic_error_text)
-                    );
-                    Log.d("debugMessage", error.toString());
+                } catch (Exception e) {
+
                 }
-            }){
+                showSimpleDialog(
+                        getString(R.string.generic_error_title),
+                        getString(R.string.generic_error_text)
+                );
+                Log.d("debugMessage", error.toString());
+            }) {
                 @Override
                 public String getBodyContentType() {
                     return "application/json; charset=utf-8";
@@ -116,20 +99,9 @@ public class ForgotPasswordFragment extends RaisingFragment implements View.OnCl
             loginRequest.setRetryPolicy(new DefaultRetryPolicy(10000, 1, 1.0f));
 
             ApiRequestHandler.getInstance(getContext()).addToRequestQueue(loginRequest);
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.d("debugMessage", e.getMessage());
             Log.d("debugMessage", e.toString());
-            return;
         }
-    }
-
-    /**
-     * Simple helper method, that prepares {@link #forgotPassword (String)}.
-     *
-     * @author Lorenz Caliezi 09.03.2020
-     */
-    private void prepareForgotPassword() {
-        String email = emailInput.getText().toString();
-        forgotPassword(email);
     }
 }

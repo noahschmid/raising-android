@@ -144,7 +144,7 @@
 
             <Button
                 android:id="@+id/button_startup_video"
-                style="@style/ButtonConfirmRegistration"
+                style="@style/ButtonRegistrationAndProfile"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"

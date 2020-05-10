@@ -2,7 +2,6 @@
 <resources>
 
     <dimen name="inputFormHeight"> 60dp </dimen>
-    <dimen name="checkBoxHeight"> 40dp </dimen>
 
     <dimen name="authenticationButtonHeight"> 60dp </dimen>
     <dimen name="myProfileButtonHeight"> 55dp </dimen>
@@ -31,8 +30,6 @@
     <dimen name="standardVerticalMargin"> 16dp </dimen>
     <dimen name="standardFragmentTitleMargin"> 16dp </dimen>
 
-    <dimen name="myProfileButtonMargin"> 4dp </dimen>
-
     <dimen name="inputOneSentenceDescriptionHeight"> 80dp </dimen>
     <dimen name="inputPitchHeight"> 150dp </dimen>
     <dimen name="inputPitchMaxHeight"> 300dp </dimen>
@@ -45,7 +42,6 @@
     <dimen name="raisingSmallTextFontSize"> 12sp </dimen>
 
     <dimen name="buttonFontSize"> 18sp </dimen>
-    <dimen name="loginScreenFontSize"> 30sp </dimen>
 
     <dimen name="emptyMatchlistIconSize"> 150dp</dimen>
     <dimen name="settingsIconSize"> 35dp</dimen>

@@ -6,8 +6,8 @@
 
     <RelativeLayout
         android:id="@+id/register_investor_image_profile_layout"
-        android:layout_width="98dp"
-        android:layout_height="98dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

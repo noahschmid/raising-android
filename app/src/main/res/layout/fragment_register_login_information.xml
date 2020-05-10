@@ -100,7 +100,7 @@
 
             <Button
                 android:id="@+id/button_login_information"
-                style="@style/ButtonConfirmRegistration"
+                style="@style/ButtonRegistrationAndProfile"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:hint="@string/register_button_text"
