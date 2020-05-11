@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,29 +51,33 @@ public class MatchingCriteriaAdapter extends RecyclerView.Adapter<MatchingCriter
         Model item = recyclerItems.get(position);
 
         int standardBackgroundColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.raisingSecondaryAccent);
-        int standardForegroundColor = R.color.raisingSecondaryDark;
+        int standardForegroundColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.raisingSecondaryDark);
         int selectedBackgroundColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.raisingPrimaryAccent);
-        int selectedForegroundColor = R.color.raisingPrimaryDark;
-
-        CircleImageDrawable icon = new CircleImageDrawable(item.getImage(), 1, standardBackgroundColor,
-                standardForegroundColor);
-        CircleImageDrawable iconChecked = new CircleImageDrawable(item.getImage(), 1,
-                selectedBackgroundColor, selectedForegroundColor);
+        int selectedForegroundColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.raisingPrimaryDark);
 
         holder.name.setText(item.getName());
         holder.name.setMaxWidth(150);
         holder.name.setSingleLine(false);
 
+        BitmapDrawable iconChecked = new BitmapDrawable(holder.itemView.getResources(), item.getImage());
+        iconChecked.setTint(selectedForegroundColor);
+
+        BitmapDrawable icon = new BitmapDrawable(holder.itemView.getResources(), item.getImage());
+        icon.setTint(standardForegroundColor);
+
         if (item.isChecked()) {
             holder.icon.setImageDrawable(iconChecked);
+            holder.icon.getBackground().setTint(selectedBackgroundColor);
         } else {
             holder.icon.setImageDrawable(icon);
+            holder.icon.getBackground().setTint(standardBackgroundColor);
         }
 
         holder.icon.setOnClickListener(v -> {
             item.setChecked(!item.isChecked());
 
             if (item.isChecked()) {
+                holder.icon.getBackground().setTint(selectedBackgroundColor);
                 holder.icon.setImageDrawable(iconChecked);
                 if (singleSelect) {
                     recyclerItems.forEach(i -> {
@@ -82,6 +88,7 @@ public class MatchingCriteriaAdapter extends RecyclerView.Adapter<MatchingCriter
                     notifyDataSetChanged();
                 }
             } else {
+                holder.icon.getBackground().setTint(standardBackgroundColor);
                 holder.icon.setImageDrawable(icon);
             }
             clickListener.onItemClick(position);

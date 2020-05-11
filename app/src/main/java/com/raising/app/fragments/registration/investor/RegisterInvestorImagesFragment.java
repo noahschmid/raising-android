@@ -65,7 +65,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     static final int REQUEST_GALLERY_FETCH = 4;
     private static final String TAG = "RegisterInvestorImages";
     private MutableLiveData<Boolean> imagesUploaded = new MutableLiveData<>();
-    private boolean permissionGranted = false;
+    private boolean permissionGranted = true;
 
     ImageView profileImage, profileImageOverlay;
     View addGalleryImage;
@@ -303,6 +303,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
      * show dialog
      */
     private void checkPermissions() {
+        this.permissionGranted = true;
+        /*
         if (ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED ||
@@ -319,7 +321,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
         } else {
             this.permissionGranted = true;
-        }
+        }*/
 
     }
 
