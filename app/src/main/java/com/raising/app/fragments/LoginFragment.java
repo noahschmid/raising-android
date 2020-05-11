@@ -57,6 +57,9 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
         hideBottomNavigation(true);
         hideToolbar(true);
 
+        RegistrationHandler.isInProgress(getContext());
+
+        /*
         // if registration was in progress but user pressed back button, cancel it
         if (RegistrationHandler.isInProgress(getContext())) {
             if(RegistrationHandler.shouldCancel())
@@ -64,7 +67,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
             else
                 changeFragment(new RegisterLoginInformationFragment(),
                         "RegisterLoginInformationFragment");
-        }
+        }*/
         return view;
     }
 

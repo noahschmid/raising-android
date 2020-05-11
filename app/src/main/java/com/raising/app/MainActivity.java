@@ -224,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
     @Override
     public void onBackPressed() {
         FragmentManager manager = getSupportFragmentManager();
@@ -243,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    }
+    }*/
 
     public void disablePreOnboarding() {
         try {
