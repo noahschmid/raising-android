@@ -69,7 +69,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
         };
 
         labelsLayout = new MatchingCriteriaComponent(view.findViewById(R.id.register_startup_pitch_labels), resources.getLabels(),
-                false, clickListener);
+                false, clickListener, true);
 
         startup.getLabels().forEach(label -> labelsLayout.setChecked(label));
     }

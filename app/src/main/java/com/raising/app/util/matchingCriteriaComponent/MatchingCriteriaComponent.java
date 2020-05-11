@@ -36,7 +36,31 @@ public class MatchingCriteriaComponent implements LifecycleObserver {
      */
     public MatchingCriteriaComponent(RecyclerView recyclerView, ArrayList<? extends Model> items, boolean singleSelect,
                                      MatchingCriteriaAdapter.OnItemClickListener clickListener) {
-        itemAdapter = new MatchingCriteriaAdapter(recyclerView.getContext(), items, singleSelect);
+        itemAdapter = new MatchingCriteriaAdapter(recyclerView.getContext(), items, singleSelect, false);
+        this.items = items;
+        this.recyclerView = recyclerView;
+        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(recyclerView.getContext());
+        layoutManager.setFlexWrap(FlexWrap.WRAP);
+        layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setJustifyContent(JustifyContent.SPACE_EVENLY);
+        layoutManager.setAlignItems(AlignItems.BASELINE);
+        this.recyclerView.setLayoutManager(layoutManager);
+        this.recyclerView.setAdapter(itemAdapter);
+        this.singleSelect = singleSelect;
+
+        this.itemAdapter.setOnItemClickListener(clickListener);
+    }
+
+    /**
+     * Create a new Matching Criteria Component
+     * @param recyclerView
+     * @param items
+     * @param singleSelect
+     * @param isLabelsLayout 
+     */
+    public MatchingCriteriaComponent(RecyclerView recyclerView, ArrayList<? extends Model> items, boolean singleSelect,
+                                     MatchingCriteriaAdapter.OnItemClickListener clickListener, boolean isLabelsLayout) {
+        itemAdapter = new MatchingCriteriaAdapter(recyclerView.getContext(), items, singleSelect, isLabelsLayout);
         this.items = items;
         this.recyclerView = recyclerView;
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(recyclerView.getContext());

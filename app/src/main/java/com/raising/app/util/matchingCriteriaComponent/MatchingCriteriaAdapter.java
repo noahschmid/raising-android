@@ -1,11 +1,7 @@
 package com.raising.app.util.matchingCriteriaComponent;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +10,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.raising.app.R;
 import com.raising.app.models.Model;
-import com.raising.app.util.CircleImageDrawable;
 
 import java.util.ArrayList;
 
@@ -31,11 +23,13 @@ public class MatchingCriteriaAdapter extends RecyclerView.Adapter<MatchingCriter
     private OnItemClickListener clickListener;
     private Context context;
     private boolean singleSelect;
+    private boolean isLabelsLayout;
 
-    public MatchingCriteriaAdapter(Context context, ArrayList<? extends Model> recyclerItems, boolean singleSelect) {
+    public MatchingCriteriaAdapter(Context context, ArrayList<? extends Model> recyclerItems, boolean singleSelect, boolean isLabelsLayout) {
         this.recyclerItems = recyclerItems;
         this.context = context;
         this.singleSelect = singleSelect;
+        this.isLabelsLayout = isLabelsLayout;
     }
 
     @NonNull
@@ -59,25 +53,29 @@ public class MatchingCriteriaAdapter extends RecyclerView.Adapter<MatchingCriter
         holder.name.setMaxWidth(150);
         holder.name.setSingleLine(false);
 
+        // checked icon
         BitmapDrawable iconChecked = new BitmapDrawable(holder.itemView.getResources(), item.getImage());
-        iconChecked.setTint(selectedForegroundColor);
+        if (!isLabelsLayout)
+            iconChecked.setTint(selectedForegroundColor);
 
+        // unchecked icon
         BitmapDrawable icon = new BitmapDrawable(holder.itemView.getResources(), item.getImage());
-        icon.setTint(standardForegroundColor);
+        if (!isLabelsLayout)
+            icon.setTint(standardForegroundColor);
 
         if (item.isChecked()) {
             holder.icon.setImageDrawable(iconChecked);
-            holder.icon.getBackground().setTint(selectedBackgroundColor);
+            holder.background.getBackground().setTint(selectedBackgroundColor);
         } else {
             holder.icon.setImageDrawable(icon);
-            holder.icon.getBackground().setTint(standardBackgroundColor);
+            holder.background.getBackground().setTint(standardBackgroundColor);
         }
 
         holder.icon.setOnClickListener(v -> {
             item.setChecked(!item.isChecked());
 
             if (item.isChecked()) {
-                holder.icon.getBackground().setTint(selectedBackgroundColor);
+                holder.background.getBackground().setTint(selectedBackgroundColor);
                 holder.icon.setImageDrawable(iconChecked);
                 if (singleSelect) {
                     recyclerItems.forEach(i -> {
@@ -88,7 +86,7 @@ public class MatchingCriteriaAdapter extends RecyclerView.Adapter<MatchingCriter
                     notifyDataSetChanged();
                 }
             } else {
-                holder.icon.getBackground().setTint(standardBackgroundColor);
+                holder.background.getBackground().setTint(standardBackgroundColor);
                 holder.icon.setImageDrawable(icon);
             }
             clickListener.onItemClick(position);
@@ -110,13 +108,14 @@ public class MatchingCriteriaAdapter extends RecyclerView.Adapter<MatchingCriter
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
-        private ImageView icon;
+        private ImageView icon, background;
 
         public ViewHolder(@NonNull View itemView, OnItemClickListener clickListener) {
             super(itemView);
 
-            name = itemView.findViewById(R.id.criteria_name);
-            icon = itemView.findViewById(R.id.criteria_icon);
+            name = itemView.findViewById(R.id.matching_criteria_name);
+            icon = itemView.findViewById(R.id.matching_criteria_icon);
+            background = itemView.findViewById(R.id.matching_criteria_background);
         }
     }
 }
