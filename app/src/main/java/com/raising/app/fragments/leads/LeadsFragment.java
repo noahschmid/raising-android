@@ -221,7 +221,7 @@ public class LeadsFragment extends RaisingFragment {
         thisMonthLayout.setVisibility(View.GONE);
         earlier.clear();
         earlierLayout.setVisibility(View.GONE);
-        
+
         emptyLeadsLayout.setVisibility(View.GONE);
 
         leadsViewModel.getLeads().getValue().forEach(lead -> {
