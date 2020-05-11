@@ -50,7 +50,6 @@ public class LeadsFragment extends RaisingFragment {
     private ArrayList<Lead> today, thisWeek, thisMonth, earlier;
     private ConstraintLayout todayLayout, thisWeekLayout, thisMonthLayout, earlierLayout, emptyLeadsLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private boolean observersSet = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,6 +66,7 @@ public class LeadsFragment extends RaisingFragment {
 
         emptyLeadsLayout = view.findViewById(R.id.empty_leads_fragment_text);
         emptyLeadsLayout.setVisibility(View.GONE);
+        Log.d(TAG, "onViewCreated: EmptyLeadsVisibility GONE");
 
         swipeRefreshLayout = view.findViewById(R.id.leads_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> leadsViewModel.loadLeads());
@@ -114,23 +114,12 @@ public class LeadsFragment extends RaisingFragment {
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 });
-                processLeadsViewState(leadsViewModel.getViewState().getValue());
-
-                observersSet = true;
-            }
-        }
-    }
-
-    @Override
-    protected void onResourcesLoaded() {
-        if (!observersSet && leadState != null) {
-            leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
-                if(state == ViewState.RESULT || state == ViewState.CACHED) {
+                if(leadsViewModel.getViewState().getValue() == ViewState.RESULT
+                        || leadsViewModel.getViewState().getValue() == ViewState.CACHED) {
                     loadData();
                     swipeRefreshLayout.setRefreshing(false);
                 }
-            });
-            processLeadsViewState(leadsViewModel.getViewState().getValue());
+            }
         }
     }
 
@@ -138,24 +127,7 @@ public class LeadsFragment extends RaisingFragment {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: ");
-        loadData();
-    }
-
-    /**
-     * @param state
-     */
-    private void processLeadsViewState(ViewState state) {
-        switch (state) {
-            case CACHED:
-            case RESULT:
-                dismissLoadingPanel();
-                loadData();
-                swipeRefreshLayout.setRefreshing(false);
-                break;
-            case LOADING:
-                showLoadingPanel();
-                break;
-        }
+        leadsViewModel.loadLeads();
     }
 
     /**
@@ -240,13 +212,17 @@ public class LeadsFragment extends RaisingFragment {
      * Filter leads by state and timestamp
      */
     private void filterLeads() {
+        Log.d(TAG, "filterLeads: Disable all views");
         today.clear();
-        thisWeek.clear();
-        thisMonth.clear();
-        earlier.clear();
         todayLayout.setVisibility(View.GONE);
+        thisWeek.clear();
         thisWeekLayout.setVisibility(View.GONE);
+        thisMonth.clear();
+        thisMonthLayout.setVisibility(View.GONE);
+        earlier.clear();
         earlierLayout.setVisibility(View.GONE);
+        
+        emptyLeadsLayout.setVisibility(View.GONE);
 
         leadsViewModel.getLeads().getValue().forEach(lead -> {
             if (lead.getState() == leadState) {
@@ -280,11 +256,22 @@ public class LeadsFragment extends RaisingFragment {
         });
 
         // hide empty leads layout
-        if (today.size() == 0 && thisWeek.size() == 0 && thisMonth.size() == 0 &&
-                earlier.size() == 0 && leadsViewModel.getOpenRequests().size() == 0) {
-            emptyLeadsLayout.setVisibility(View.VISIBLE);
+        if(leadState == LeadState.YOUR_TURN ) {
+            if(today.size() == 0 && thisWeek.size() == 0 && thisMonth.size() == 0 && earlier.size() == 0 && leadsViewModel.getOpenRequests().size() == 0) {
+                emptyLeadsLayout.setVisibility(View.VISIBLE);
+                Log.d(TAG, "filterLeads: EmptyLeadsVisibility Visible");
+            } else {
+                emptyLeadsLayout.setVisibility(View.GONE);
+                Log.d(TAG, "filterLeads: EmptyLeadsVisibility GONE");
+            }
         } else {
-            emptyLeadsLayout.setVisibility(View.GONE);
+            if (today.size() == 0 && thisWeek.size() == 0 && thisMonth.size() == 0 && earlier.size() == 0) {
+                emptyLeadsLayout.setVisibility(View.VISIBLE);
+                Log.d(TAG, "filterLeads: EmptyLeadsVisibility Visible");
+            } else {
+                emptyLeadsLayout.setVisibility(View.GONE);
+                Log.d(TAG, "filterLeads: EmptyLeadsVisibility GONE");
+            }
         }
 
         todayAdapter.notifyDataSetChanged();
