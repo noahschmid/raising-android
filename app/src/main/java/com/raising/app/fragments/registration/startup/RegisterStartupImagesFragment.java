@@ -169,7 +169,8 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
                             startup.getProfilePictureId())
                     .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .placeholder(R.drawable.ic_person_24dp)
                     .into(profileImage);
             profileImageOverlay.setVisibility(View.GONE);

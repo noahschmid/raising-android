@@ -194,7 +194,8 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
                             investor.getProfilePictureId())
                     .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .placeholder(R.drawable.ic_person_24dp)
                     .into(profileImage);
             profileImageOverlay.setVisibility(View.GONE);
