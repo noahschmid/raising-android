@@ -22,15 +22,18 @@
 
             <TextView
                 android:id="@+id/text_investor_matching_ticket"
+                style="@style/RaisingTextBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/investor_matching_ticket_size_text"
-                style="@style/RaisingTextBold"
                 app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_ticket_size"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_ticket_size"
                 app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_ticket_size"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_ticket_size"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintVertical_bias="0"/>
 
             <com.google.android.material.slider.Slider
                 android:id="@+id/register_investor_matching_ticket_size"
@@ -60,14 +63,14 @@
 
             <TextView
                 android:id="@+id/text_investor_matching_investor"
+                style="@style/RaisingTextBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/investor_matching_type_investor_text"
-                style="@style/RaisingTextBold"
                 app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_radio_investor"
-                app:layout_constraintStart_toStartOf="@+id/text_investor_matching_ticket"
                 app:layout_constraintEnd_toEndOf="@+id/text_investor_matching_ticket"
+                app:layout_constraintStart_toStartOf="@+id/text_investor_matching_ticket"
                 app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_ticket_size_text" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -76,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_phase"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -84,16 +88,16 @@
 
             <TextView
                 android:id="@+id/text_investor_matching_phase"
+                style="@style/RaisingTextBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/investor_matching_phase_text"
-                style="@style/RaisingTextBold"
-                app:layout_constraintStart_toStartOf="@+id/text_investor_matching_investor"
+                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_phase_layout"
                 app:layout_constraintEnd_toEndOf="@+id/text_investor_matching_investor"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_radio_investor"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_phase_layout"/>
+                app:layout_constraintStart_toStartOf="@+id/text_investor_matching_investor"
+                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_radio_investor" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/register_investor_matching_phase_layout"
@@ -102,6 +106,7 @@
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_industry"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -109,16 +114,16 @@
 
             <TextView
                 android:id="@+id/text_investor_matching_industry"
+                style="@style/RaisingTextBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/investor_matching_industry_text"
-                style="@style/RaisingTextBold"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_industry_layout"
+                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_industry_layout"
                 app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_industry_layout"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_phase_layout"
-                app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_industry_layout"/>
+                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_industry_layout"
+                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_phase_layout" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/register_investor_matching_industry_layout"
@@ -127,6 +132,7 @@
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geographics"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -134,14 +140,14 @@
 
             <TextView
                 android:id="@+id/text_investor_matching_support"
+                style="@style/RaisingTextBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/investor_matching_involvement_text"
-                style="@style/RaisingTextBold"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_support_layout"
                 app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_support_layout"
+                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_support_layout"
                 app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_industry_layout" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -151,6 +157,7 @@
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintBottom_toTopOf="@+id/text_investor_matching_geographics"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -158,14 +165,14 @@
 
             <TextView
                 android:id="@+id/text_investor_matching_geographics"
+                style="@style/RaisingTextBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/investor_matching_geographics_text"
-                style="@style/RaisingTextBold"
                 app:layout_constraintBottom_toTopOf="@+id/register_investor_matching_geographics_button"
-                app:layout_constraintStart_toStartOf="@+id/text_investor_matching_support"
                 app:layout_constraintEnd_toEndOf="@+id/text_investor_matching_support"
+                app:layout_constraintStart_toStartOf="@+id/text_investor_matching_support"
                 app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_support_layout" />
 
             <Button
@@ -177,6 +184,7 @@
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_matching_geographics"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -186,13 +194,13 @@
                 android:id="@+id/registration_profile_progress"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/standardVerticalMarginSmall"
-                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_geographics_button"
                 app:layout_constraintBottom_toTopOf="@+id/button_investor_matching"
                 app:layout_constraintEnd_toEndOf="@+id/register_investor_matching_geographics_button"
-                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_geographics_button">
+                app:layout_constraintStart_toStartOf="@+id/register_investor_matching_geographics_button"
+                app:layout_constraintTop_toBottomOf="@+id/register_investor_matching_geographics_button">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -227,7 +235,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/registration_profile_progress"/>
+                app:layout_constraintTop_toBottomOf="@+id/registration_profile_progress" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

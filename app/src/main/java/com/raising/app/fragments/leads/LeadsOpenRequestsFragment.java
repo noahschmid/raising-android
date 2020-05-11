@@ -48,8 +48,16 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+        leadsViewModel.loadLeads();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG, "onViewCreated: ");
 
         emptyListLayout = view.findViewById(R.id.empty_requests_layout);
         emptyListLayout.setVisibility(View.GONE);
@@ -69,6 +77,8 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         // populate open requests
         if (resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
                 resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
+            Log.d(TAG, "onViewCreated: ViewState " + resourcesViewModel.getViewState().getValue());
+            openRequestItems.clear();
             ArrayList<Lead> openRequests = leadsViewModel.getOpenRequests();
             if (openRequests == null || openRequests.size() == 0) {
                 emptyListLayout.setVisibility(View.VISIBLE);
@@ -88,6 +98,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
                 Log.d(TAG, "onViewCreated: Add OpenRequest: " + request.getTitle());
                 openRequestItems.add(request);
             }
+            Log.d(TAG, "onViewCreated: Open requests " + openRequestItems);
         }
 
         RecyclerView recyclerView = view.findViewById(R.id.leads_open_requests_recycler_view);

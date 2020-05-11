@@ -108,6 +108,7 @@
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_company_markets"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
                 app:layout_constraintEnd_toEndOf="@+id/register_company_breakeven"
                 app:layout_constraintStart_toStartOf="@+id/register_company_breakeven"

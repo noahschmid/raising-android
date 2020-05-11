@@ -48,6 +48,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         btnNotifications.setOnClickListener(v -> updateNotificationSettings());
 
         specificSettings = view.findViewById(R.id.notifications_specific_settings);
+        specificSettings.setVisibility(View.GONE);
 
         ArrayList<Integer> integers = new ArrayList<>();
         for(int i = 0; i < getResources().getInteger(R.integer.maximumWeeklyMatchesNumber); i++) {

@@ -369,10 +369,15 @@ public class RaisingFragment extends Fragment {
         return null;
     }
 
+    protected void showInformationToast(String message) {
+        ToastHandler toastHandler = new ToastHandler(getContext());
+        toastHandler.showToast(message, Toast.LENGTH_LONG);
+    }
+
     /**
      * Display a generic "oops something went wrong" message
      */
-    public void showGenericError() {
+    protected void showGenericError() {
         showSimpleDialog(getString(R.string.generic_error_title),
                 getString(R.string.generic_error_text));
     }

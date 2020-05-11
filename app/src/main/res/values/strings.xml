@@ -286,6 +286,8 @@
 
     <!-- Strings used for Public Profile -->
     <string name="toolbar_my_public_profile"> My Public Profile</string>
+    <string name="profile_lead_added_message"> Added a new Lead</string>
+    <string name="profile_lead_decline_message">Match declined</string>
     <string name="public_profile_website"> Read more on their website </string>
     <string name="public_profile_matching_information"> Matching Information </string>
     <string name="investor_matching_min_ticket"> Minimal Ticket Size </string>

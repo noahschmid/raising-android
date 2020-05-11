@@ -62,14 +62,9 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
             startup = RegistrationHandler.getStartup();
         }
 
-        MatchingCriteriaAdapter.OnItemClickListener clickListener = new MatchingCriteriaAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                if(editMode) {
-                    if(editMode) {
-                        btnStartupLabels.setVisibility(View.VISIBLE);
-                    }
-                }
+        MatchingCriteriaAdapter.OnItemClickListener clickListener = position -> {
+            if(editMode) {
+                btnStartupLabels.setVisibility(View.VISIBLE);
             }
         };
 

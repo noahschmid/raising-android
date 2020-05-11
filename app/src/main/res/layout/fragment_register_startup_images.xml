@@ -106,7 +106,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/registration_images_progress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_startup_images_add_gallery"></com.google.android.flexbox.FlexboxLayout>
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_images_add_gallery"/>
 
             <LinearLayout
                 android:id="@+id/registration_images_progress"

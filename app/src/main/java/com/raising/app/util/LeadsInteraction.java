@@ -154,6 +154,8 @@ public class LeadsInteraction {
 
             params.put("data", new JSONObject(gson.toJson(cData)));
             params.put("accountId", interaction.getPartnerId());
+            // Backend braucht Partner-Id doppelt
+            params.put("accountId", interaction.getPartnerId());
 
             Log.d(TAG, "updateRemoteInteraction: " + params.toString());
 

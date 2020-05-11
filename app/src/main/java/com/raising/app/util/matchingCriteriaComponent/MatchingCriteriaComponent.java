@@ -42,8 +42,8 @@ public class MatchingCriteriaComponent implements LifecycleObserver {
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(recyclerView.getContext());
         layoutManager.setFlexWrap(FlexWrap.WRAP);
         layoutManager.setFlexDirection(FlexDirection.ROW);
-        layoutManager.setJustifyContent(JustifyContent.CENTER);
-        layoutManager.setAlignItems(AlignItems.CENTER);
+        layoutManager.setJustifyContent(JustifyContent.SPACE_EVENLY);
+        layoutManager.setAlignItems(AlignItems.BASELINE);
         this.recyclerView.setLayoutManager(layoutManager);
         this.recyclerView.setAdapter(itemAdapter);
         this.singleSelect = singleSelect;

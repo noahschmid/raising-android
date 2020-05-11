@@ -123,6 +123,7 @@ public class RegistrationHandler {
             return false;
 
         try {
+            Log.d("RegistrationHandler", "isInProgress: ");
             FileInputStream fis = context.openFileInput("rgstr");
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader bufferedReader = new BufferedReader(isr);

@@ -98,12 +98,7 @@ public class MatchesFragment extends RaisingFragment {
             }
         });
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                matchesViewModel.loadMatches();
-            }
-        });
+        swipeRefreshLayout.setOnRefreshListener(() -> matchesViewModel.loadMatches());
 
         // prepare match list recycler view
         matchList = view.findViewById(R.id.matchList);
@@ -161,11 +156,8 @@ public class MatchesFragment extends RaisingFragment {
             matchListAdapter.notifyDataSetChanged();
         }
 
-        if (matchListItems.size() == 0) {
+        if (matchListItems.size() == 0 && resourcesViewModel.getViewState().getValue() == ViewState.RESULT)
             emptyMatchListLayout.setVisibility(View.VISIBLE);
-        } else {
-            emptyMatchListLayout.setVisibility(View.GONE);
-        }
         swipeRefreshLayout.setRefreshing(false);
     }
 

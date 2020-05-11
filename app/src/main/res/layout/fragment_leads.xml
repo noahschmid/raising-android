@@ -13,9 +13,9 @@
         android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/scroll_layout">
             android:fillViewport="true">
 
             <LinearLayout
@@ -105,7 +105,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
-                        android:foregroundGravity="center"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
+                        android:foregroundGravity="bottom|right"
                         app:layout_constraintBottom_toBottomOf="@+id/leads_open_requests_image"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/leads_open_requests_image">
@@ -114,13 +115,19 @@
                             android:id="@+id/leads_open_requests_arrow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
+                            android:layout_gravity="bottom|end"
                             android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                             android:layout_marginTop="@dimen/standardVerticalMargin"
-                            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                            android:layout_marginBottom="@dimen/standardVerticalMargin"
                             android:src="@drawable/ic_keyboard_arrow_right_32dp"
                             android:tint="@color/raisingSecondaryDark" />
+
+                        <View
+                            android:id="@+id/leads_open_request_badge_layout"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="2dp"
+                            android:layout_marginBottom="6dp" />
                     </FrameLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -149,10 +156,10 @@
                         android:id="@+id/leads_tab_recycler_today"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/leads_tab_today"
-                        tools:layout_editor_absoluteX="0dp"
-                        android:nestedScrollingEnabled="false"/>
+                        tools:layout_editor_absoluteX="0dp" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -181,9 +188,9 @@
                         android:id="@+id/leads_tab_recycler_this_week"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/leads_tab_this_week"
-                        android:nestedScrollingEnabled="false"/>
+                        app:layout_constraintTop_toBottomOf="@+id/leads_tab_this_week" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -243,10 +250,10 @@
                         android:id="@+id/leads_tab_recycler_earlier"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/leads_tab_earlier"
-                        android:nestedScrollingEnabled="false" />
+                        app:layout_constraintTop_toBottomOf="@+id/leads_tab_earlier" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
