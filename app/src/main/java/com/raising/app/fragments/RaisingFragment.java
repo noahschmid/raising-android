@@ -100,6 +100,7 @@ public class RaisingFragment extends Fragment {
             overlayLayout.addView(loadingPanel);
             loadingPanel.setVisibility(View.GONE);
         }
+
         viewStateViewModel = ViewModelProviders.of(getActivity()).get(ViewStateViewModel.class);
         viewStateViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
             switch (viewState) {
@@ -124,11 +125,9 @@ public class RaisingFragment extends Fragment {
                     break;
             }
         });
-        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
-        accountViewModel.getAccount().observe(getViewLifecycleOwner(), account -> {
-            currentAccount = account;
-        });
 
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
+        accountViewModel.getAccount().observe(getViewLifecycleOwner(), account -> currentAccount = account);
         accountViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             if (state.equals(ViewState.UPDATED)) {
                 currentAccount = accountViewModel.getAccount().getValue();
@@ -136,15 +135,18 @@ public class RaisingFragment extends Fragment {
                 onAccountUpdated();
             }
         });
-
         currentAccount = accountViewModel.getAccount().getValue();
+
         settingsViewModel = ViewModelProviders.of(getActivity()).get(SettingsViewModel.class);
 
         resourcesViewModel = ViewModelProviders.of(getActivity()).get(ResourcesViewModel.class);
-        resourcesViewModel.getResources().observe(getViewLifecycleOwner(), resources -> {
-            this.resources = resources;
+        resourcesViewModel.getResources().observe(getViewLifecycleOwner(), resources -> this.resources = resources);
+        resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+            if(state == ViewState.RESULT || state == ViewState.CACHED)
+                onResourcesLoaded();
         });
         resources = resourcesViewModel.getResources().getValue();
+
 
         processViewState(viewStateViewModel.getViewState().getValue());
     }

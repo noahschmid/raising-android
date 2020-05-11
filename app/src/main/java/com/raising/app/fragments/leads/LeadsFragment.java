@@ -68,12 +68,7 @@ public class LeadsFragment extends RaisingFragment {
         emptyLeadsLayout = view.findViewById(R.id.empty_leads_fragment_text);
 
         swipeRefreshLayout = view.findViewById(R.id.leads_swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                leadsViewModel.loadLeads();
-            }
-        });
+        swipeRefreshLayout.setOnRefreshListener(() -> leadsViewModel.loadLeads());
 
         today = new ArrayList<>();
         thisWeek = new ArrayList<>();
@@ -114,7 +109,10 @@ public class LeadsFragment extends RaisingFragment {
             if (resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
                     resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
                 leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
-                    processLeadsViewState(state);
+                    if(state == ViewState.RESULT || state == ViewState.CACHED) {
+                        loadData();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
                 });
                 processLeadsViewState(leadsViewModel.getViewState().getValue());
 
@@ -127,7 +125,10 @@ public class LeadsFragment extends RaisingFragment {
     protected void onResourcesLoaded() {
         if (!observersSet && leadState != null) {
             leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
-                processLeadsViewState(state);
+                if(state == ViewState.RESULT || state == ViewState.CACHED) {
+                    loadData();
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             });
             processLeadsViewState(leadsViewModel.getViewState().getValue());
         }

@@ -31,12 +31,10 @@ import java.util.ArrayList;
 
 public class LeadsOpenRequestsFragment extends RaisingFragment {
     private final String TAG = "HandshakeOpenRequestFragment";
-
-    ConstraintLayout emptyListLayout;
-
     private LeadsViewModel leadsViewModel;
 
     private ArrayList<Lead> openRequestItems;
+    private RecyclerView openRequestRecycler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +50,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         super.onResume();
         Log.d(TAG, "onResume: ");
         leadsViewModel.loadLeads();
+        checkForEmptyLayout();
     }
 
     @Override
@@ -59,8 +58,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "onViewCreated: ");
 
-        emptyListLayout = view.findViewById(R.id.empty_requests_layout);
-        emptyListLayout.setVisibility(View.GONE);
+        openRequestRecycler = view.findViewById(R.id.leads_open_requests_recycler_view);
 
         // prepare leadsViewModel for usage
         leadsViewModel = ViewModelProviders.of(getActivity())
@@ -77,34 +75,39 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         // populate open requests
         if (resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
                 resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
-            Log.d(TAG, "onViewCreated: ViewState " + resourcesViewModel.getViewState().getValue());
-            openRequestItems.clear();
-            ArrayList<Lead> openRequests = leadsViewModel.getOpenRequests();
-            if (openRequests == null || openRequests.size() == 0) {
-                emptyListLayout.setVisibility(View.VISIBLE);
-            }
-
-            for (int i = 0; i < openRequests.size(); ++i) {
-                Lead request = openRequests.get(i);
-                if (request.isStartup()) {
-                    request.setTitle(request.getCompanyName());
-                    request.setAttribute(resources.getInvestmentPhase(
-                            request.getInvestmentPhaseId()).getName());
-                } else {
-                    request.setTitle(request.getFirstName() + " " + request.getLastName());
-                    request.setAttribute(resources.getInvestorType(
-                            request.getInvestorTypeId()).getName());
+            leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+                if(state == ViewState.RESULT || state == ViewState.CACHED) {
+                    Log.d(TAG, "onViewCreated: ResourcesViewState " + resourcesViewModel.getViewState().getValue());
+                    Log.d(TAG, "onViewCreated: LeadsViewState " + state);
+                    populateOpenRequests();
                 }
-                Log.d(TAG, "onViewCreated: Add OpenRequest: " + request.getTitle());
-                openRequestItems.add(request);
-            }
-            Log.d(TAG, "onViewCreated: Open requests " + openRequestItems);
+            });
         }
+    }
 
-        RecyclerView recyclerView = view.findViewById(R.id.leads_open_requests_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+    private void populateOpenRequests() {
+        openRequestItems.clear();
+        ArrayList<Lead> openRequests = leadsViewModel.getOpenRequests();
+
+        for (int i = 0; i < openRequests.size(); ++i) {
+            Lead request = openRequests.get(i);
+            if (request.isStartup()) {
+                request.setTitle(request.getCompanyName());
+                request.setAttribute(resources.getInvestmentPhase(
+                        request.getInvestmentPhaseId()).getName());
+            } else {
+                request.setTitle(request.getFirstName() + " " + request.getLastName());
+                request.setAttribute(resources.getInvestorType(
+                        request.getInvestorTypeId()).getName());
+            }
+            Log.d(TAG, "onViewCreated: Add OpenRequest: " + request.getTitle());
+            openRequestItems.add(request);
+        }
+        checkForEmptyLayout();
+
+        openRequestRecycler.setLayoutManager(new LinearLayoutManager(this.getContext()));
         LeadsOpenRequestAdapter adapter = new LeadsOpenRequestAdapter(openRequestItems);
-        recyclerView.setAdapter(adapter);
+        openRequestRecycler.setAdapter(adapter);
 
         adapter.setOnClickListener(new LeadsOpenRequestAdapter.OnClickListener() {
             @Override
@@ -161,7 +164,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
     }
 
     private void checkForEmptyLayout() {
-        if (openRequestItems.size() == 0) {
+        if (openRequestItems == null || openRequestItems.size() == 0) {
             popCurrentFragment(this);
         }
     }
