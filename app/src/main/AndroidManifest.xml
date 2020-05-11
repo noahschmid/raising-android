@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="false">
+        android:requestLegacyExternalStorage="true">
         <service
             android:name=".MyFirebaseMessagingService"
             android:enabled="true"
