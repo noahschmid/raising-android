@@ -72,7 +72,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
     private ImageSwitcher imageSwitcher;
     private ImageButton profileRequest, profileDecline, btnPrevious, btnNext;
-    private TextView imageIndex, matchingPercent, profileName, profileLocation, profileSentence,
+    private TextView imageIndex, matchingPercent, profileName, profileLocation, profileLabels, profileSentence,
             profilePitch, profileWebsite;
     private LinearLayout labelsLayout;
     private TextView startupScope, startupMinTicket, startupMaxTicket;
@@ -168,6 +168,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         matchingPercent = view.findViewById(R.id.text_startup_public_profile_matching_percent);
         profileName = view.findViewById(R.id.text_startup_public_profile_name);
         labelsLayout = view.findViewById(R.id.layout_startup_public_profile_labels);
+        profileLabels = view.findViewById(R.id.text_startup_public_profile_labels);
         profileLocation = view.findViewById(R.id.text_startup_public_profile_location);
         profileSentence = view.findViewById(R.id.text_startup_public_profile_sentence);
         profilePitch = view.findViewById(R.id.text_startup_public_profile_pitch);
@@ -381,6 +382,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         completedProgress.setProgress(startup.getRaised());
 
         if(startup.getLabels().size() == 0) {
+            profileLabels.setVisibility(View.GONE);
             labelsLayout.setVisibility(View.GONE);
         } else {
             resources.getLabels().forEach(label -> {

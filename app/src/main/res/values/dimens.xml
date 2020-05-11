@@ -20,7 +20,7 @@
 
     <dimen name="publicProfileEquityChartSize"> 225dp </dimen>
     <dimen name="publicProfileEquityLegendColorSize"> 30dp </dimen>
-    <dimen name="publicProfileMatchingInformationIconSize"> 32dp </dimen>
+    <dimen name="publicProfileMatchingInformationIconSize"> 40dp </dimen>
 
     <dimen name="standardHorizontalMargin"> 32dp </dimen>
     <dimen name="standardHorizontalMarginSmall"> 16dp </dimen>
