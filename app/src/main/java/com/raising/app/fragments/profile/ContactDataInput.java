@@ -20,6 +20,7 @@ import com.raising.app.models.ContactData;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
+import com.raising.app.util.SubscriptionHandler;
 
 public class ContactDataInput extends RaisingFragment {
     private EditText phoneNumberInput;
@@ -62,12 +63,7 @@ public class ContactDataInput extends RaisingFragment {
      * Setup save button (add on click listener)
      */
     private void setupButton() {
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                processInputs();
-            }
-        });
+        saveButton.setOnClickListener(v -> processInputs());
     }
 
     /**
@@ -91,6 +87,7 @@ public class ContactDataInput extends RaisingFragment {
                     token, accountId, isStartup);
             accountViewModel.loadAccount();
             settingsViewModel.loadSettings();
+            SubscriptionHandler.loadSubscription();
             AccountService.loadContactData(AuthenticationHandler.getId());
             hideBottomNavigation(false);
 
