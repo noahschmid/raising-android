@@ -66,6 +66,7 @@ public class LeadsFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         emptyLeadsLayout = view.findViewById(R.id.empty_leads_fragment_text);
+        emptyLeadsLayout.setVisibility(View.GONE);
 
         swipeRefreshLayout = view.findViewById(R.id.leads_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> leadsViewModel.loadLeads());
@@ -84,7 +85,6 @@ public class LeadsFragment extends RaisingFragment {
         thisWeekLayout.setVisibility(View.GONE);
         thisMonthLayout.setVisibility(View.GONE);
         earlierLayout.setVisibility(View.GONE);
-        emptyLeadsLayout.setVisibility(View.GONE);
 
         getView().findViewById(R.id.leads_open_requests).setVisibility(View.GONE);
 
@@ -283,6 +283,8 @@ public class LeadsFragment extends RaisingFragment {
         if (today.size() == 0 && thisWeek.size() == 0 && thisMonth.size() == 0 &&
                 earlier.size() == 0 && leadsViewModel.getOpenRequests().size() == 0) {
             emptyLeadsLayout.setVisibility(View.VISIBLE);
+        } else {
+            emptyLeadsLayout.setVisibility(View.GONE);
         }
 
         todayAdapter.notifyDataSetChanged();

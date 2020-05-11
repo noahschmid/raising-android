@@ -28,8 +28,6 @@ public class Account implements Serializable {
     private List<Image> gallery = new ArrayList<>();
     private long countryId = -1l;
     private String phone;
-    private Subscription activeSubscription;
-    private Subscription nextSubscription;
 
     private List<Long> countries = new ArrayList<>();
     private List<Long> continents = new ArrayList<>();
