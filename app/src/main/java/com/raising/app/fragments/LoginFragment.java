@@ -30,6 +30,7 @@ import com.raising.app.R;
 import com.raising.app.fragments.forgotPassword.ForgotPasswordFragment;
 
 import com.raising.app.util.RegistrationHandler;
+import com.raising.app.util.SubscriptionHandler;
 
 import org.json.JSONObject;
 
@@ -160,6 +161,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                                             response.getLong("id"), isStartup);
                                     accountViewModel.loadAccount();
                                     settingsViewModel.loadSettings();
+                                    SubscriptionHandler.loadSubscription();
 
                                     if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
                                         clearBackstackAndReplace(new OnboardingPost1Fragment());

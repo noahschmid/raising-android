@@ -28,7 +28,6 @@ public class SubscriptionHandler {
     private static final String THREE_MONTH_SUBSCRIPTION = "ch.swissef.raisingapp.subscription3m";
     private static BillingClient billingClient;
 
-    private static boolean validSubscription = false;
     private static Subscription activeSubscription;
     private static Subscription nextSubscription;
 
@@ -72,6 +71,7 @@ public class SubscriptionHandler {
             Log.e(TAG, "validatePurchaseWithServer: Error creating JSON" + e.getMessage());
         }
         AtomicBoolean purchaseValid = new AtomicBoolean(false);
+        Log.d(TAG, "validatePurchase: JSON: " + object.toString());
 
         ApiRequestHandler.performPatchRequest("subscription/android",
                 response -> {
@@ -89,56 +89,62 @@ public class SubscriptionHandler {
         return purchaseValid.get();
     }
 
+    public static void loadSubscription() {
+        Log.d(TAG, "loadSubscription: ");
+        ApiRequestHandler.performGetRequest("subscription/android",
+                response -> {
+                    try {
+                        String sku = response.getString("subscriptionId");
+                        //TODO: insert actual token
+                        String purchaseToken = "";
+                        Log.d(TAG, "loadSubscription: Subsription loaded: " + sku);
+                        if (getSkuDetailsFromSku(sku) != null) {
+                            setActiveSubscription(getSkuDetailsFromSku(sku), purchaseToken);
+                        }
+                    } catch (JSONException e) {
+                        Log.e(TAG, "loadSubscription: JSONException loading subscription" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                    return null;
+                }, volleyError -> {
+                    Log.e(TAG, "loadSubscription: Error loading subscription: " + volleyError.getMessage());
+                    return null;
+                });
+    }
+
+    private static SkuDetails getSkuDetailsFromSku(String sku) {
+        for (int i = 0; i < skuDetailsArrayList.size(); i++) {
+            if (skuDetailsArrayList.get(i).getSku().equals(sku)) {
+                return skuDetailsArrayList.get(i);
+            }
+        }
+        return null;
+    }
+
     /**
      * Set the users current subscription, this only changes, if a subscription expires or the user selects his first subscription
      *
-     * @param sku The skuDetails of the chosen subscription
+     * @param skuDetails The skuDetails of the chosen subscription
      */
-     public static void setActiveSubscription(SkuDetails sku, String purchaseToken) {
+    public static void setActiveSubscription(SkuDetails skuDetails, String purchaseToken) {
         Subscription subscription = new Subscription();
+        subscription.setSku(skuDetails.getSku());
+        subscription.setSkuDetails(skuDetails);
         subscription.setPurchaseToken(purchaseToken);
-        subscription.setSku(sku.getSku());
-        subscription.setDuration(getSkuDuration(sku));
-        subscription.setSkuDetails(sku);
+
+        //TODO: implement correct purchase and expiration dates
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         subscription.setPurchaseDate(calendar);
         // set expiration date
-        calendar.add(Calendar.MONTH, subscription.getDuration());
+        calendar.add(Calendar.MONTH, getSkuDuration(skuDetails));
         subscription.setExpirationDate(calendar);
 
         Log.d(TAG, "setCurrentSubscription: Selected subscription " + subscription.getSku()
                 + " " + subscription.getPurchaseDate().getTime().toString()
                 + " " + subscription.getExpirationDateString());
         activeSubscription = subscription;
-        setNextSubscription(sku, purchaseToken);
-    }
-
-    /**
-     * Set the users next subscription changes with the initial selection or if the user wants to up-/ or downgrade
-     * This also changes, if the user cancels his subscription
-     *
-     * @param sku The skuDetails of the subscription that should become the users next subscription
-     */
-    public static void setNextSubscription(SkuDetails sku, String purchaseToken) {
-        Subscription subscription = new Subscription();
-        subscription.setPurchaseToken(purchaseToken);
-        subscription.setSku(sku.getSku());
-        subscription.setDuration(getSkuDuration(sku));
-        subscription.setSkuDetails(sku);
-        subscription.setPurchaseDate(activeSubscription.getExpirationDate());
-
-        // set expiration date
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(activeSubscription.getPurchaseDate().getTime());
-        calendar.add(Calendar.MONTH, subscription.getDuration());
-        subscription.setExpirationDate(calendar);
-
-        Log.d(TAG, "setNextSubscription: Next subscription" + subscription.getSku()
-                + " " + subscription.getPurchaseDate().getTime().toString()
-                + " " + subscription.getExpirationDateString());
-        nextSubscription = subscription;
     }
 
     /**
@@ -166,5 +172,9 @@ public class SubscriptionHandler {
 
     public static Subscription getNextSubscription() {
         return nextSubscription;
+    }
+
+    public static boolean hasValidSubscription() {
+        return getActiveSubscription() != null;
     }
 }

@@ -78,7 +78,7 @@ public class SubscriptionFragment extends RaisingFragment {
                         Log.d(TAG, "onViewCreated: Purchase list" + list);
                         //TODO: with Deferred the subscription list comes back as null but transaction has completed
                         list.forEach(purchase -> {
-                            if(SubscriptionHandler.validatePurchase(purchase)) {
+                            if (SubscriptionHandler.validatePurchase(purchase)) {
                                 handlePurchase(purchase);
                             }
                         });
@@ -172,19 +172,11 @@ public class SubscriptionFragment extends RaisingFragment {
     }
 
     private void grantPurchase(Purchase purchase) {
-        if (SubscriptionHandler.getActiveSubscription() == null) {
-            skuDetailsArrayList.forEach(skuDetails -> {
-                if (skuDetails.getSku().equals(purchase.getSku())) {
-                    SubscriptionHandler.setActiveSubscription(skuDetails, purchase.getPurchaseToken());
-                }
-            });
-        } else {
-            skuDetailsArrayList.forEach(skuDetails -> {
-                if (skuDetails.getSku().equals(purchase.getSku())) {
-                    SubscriptionHandler.setNextSubscription(skuDetails, purchase.getPurchaseToken());
-                }
-            });
-        }
+        skuDetailsArrayList.forEach(skuDetails -> {
+            if (skuDetails.getSku().equals(purchase.getSku())) {
+                SubscriptionHandler.setActiveSubscription(skuDetails, purchase.getPurchaseToken());
+            }
+        });
         refreshSubscriptionsLayout();
     }
 
@@ -236,23 +228,8 @@ public class SubscriptionFragment extends RaisingFragment {
             if (activeSubscriptionExists()) {
                 adjustNotSelectedSubscriptions(subscriptionTitle, SubscriptionHandler.getSkuDuration(skuDetails));
 
-                // adjust card of users current subscription
+                // adjust card of users active subscription
                 if (skuDetails.getSku().equals(SubscriptionHandler.getActiveSubscription().getSku())) {
-                    subscriptionDate.setVisibility(View.VISIBLE);
-                    String expiration = getString(R.string.subscription_expires) + " " + SubscriptionHandler.getActiveSubscription().getExpirationDateString();
-                    subscriptionDate.setText(expiration);
-                    // if next subscription != current subscription indicate that current subscription is ending
-                    if (!nextSubscriptionExists() || currentNotEqualNextSubscription()) {
-                        // signal that this subscription is ending
-                        card.setStrokeColor(getResources().getColor(R.color.raisingDarkGrey, null));
-                        card.setStrokeWidth(4);
-                        subscriptionTitle.setVisibility(View.VISIBLE);
-                        subscriptionTitle.setText(getString(R.string.subscription_ending));
-                    }
-                }
-
-                // adjust card of users next subscription
-                if (nextSubscriptionExists() && skuDetails.getSku().equals(SubscriptionHandler.getNextSubscription().getSku())) {
                     Drawable drawable = card.getBackground();
                     drawable = DrawableCompat.wrap(drawable);
                     drawable.setTint(getResources().getColor(R.color.raisingPositiveAccentLight, null));
@@ -261,17 +238,9 @@ public class SubscriptionFragment extends RaisingFragment {
                     card.setStrokeWidth(8);
                     subscriptionTitle.setVisibility(View.VISIBLE);
                     subscriptionDate.setVisibility(View.VISIBLE);
-                    // if current subscription and next subscription are the same
-                    if (currentEqualsNextSubscription()) {
-                        // if current subscription == next subscription the user has automatic extension
-                        subscriptionTitle.setText(getString(R.string.subscription_your_subscriptions));
-                        subscriptionDate.setText(getString(R.string.subscription_automatic_extension));
-                    } else {
-                        // if current subscription != next subscription the next subscription starts, when the current one expires
-                        subscriptionTitle.setText(getString(R.string.subscription_next));
-                        String nextSubscriptionStart = getString(R.string.subscription_activated) + " " + SubscriptionHandler.getActiveSubscription().getExpirationDateString();
-                        subscriptionDate.setText(nextSubscriptionStart);
-                    }
+
+                    subscriptionTitle.setText(getString(R.string.subscription_your_subscriptions));
+                    subscriptionDate.setText(getString(R.string.subscription_automatic_extension));
                 }
             }
             subscriptionsLayout.addView(subscriptionLayout);
@@ -344,7 +313,7 @@ public class SubscriptionFragment extends RaisingFragment {
      */
     private void adjustNotSelectedSubscriptions(TextView subscriptionTitle, int duration) {
         // adjust cards of shorter subscription types
-        if (duration < SubscriptionHandler.getActiveSubscription().getDuration()) {
+        if (duration < SubscriptionHandler.getSkuDuration(SubscriptionHandler.getActiveSubscription().getSkuDetails())) {
             // subscriptions cheaper than the one currently active, if current subscription != next subscription user cannot up-/downgrade
             if (currentEqualsNextSubscription()) {
                 subscriptionTitle.setVisibility(View.VISIBLE);
@@ -353,7 +322,7 @@ public class SubscriptionFragment extends RaisingFragment {
         }
 
         // adjust cards of longer subscription types
-        if (duration > SubscriptionHandler.getActiveSubscription().getDuration()) {
+        if (duration > SubscriptionHandler.getSkuDuration(SubscriptionHandler.getActiveSubscription().getSkuDetails())) {
             // subscriptions more expensive than current subscription, if current subscription != next subscription user cannot up-/downgrade
             if (currentEqualsNextSubscription()) {
                 subscriptionTitle.setVisibility(View.VISIBLE);
@@ -379,6 +348,6 @@ public class SubscriptionFragment extends RaisingFragment {
      * false, if user does not have a next subscription
      */
     private boolean nextSubscriptionExists() {
-        return (SubscriptionHandler.getActiveSubscription() != null);
+        return (SubscriptionHandler.getNextSubscription() != null);
     }
 }

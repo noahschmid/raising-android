@@ -27,6 +27,7 @@ import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
+import com.raising.app.util.SubscriptionHandler;
 import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.LeadsViewModel;
 import com.raising.app.viewModels.MatchesViewModel;
@@ -118,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                         + " logged in");
                 settingsViewModel.loadSettings();
                 accountViewModel.loadAccount();
+                SubscriptionHandler.loadSubscription();
                 hideBottomNavigation(false);
                 hideToolbar(false);
                 fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
