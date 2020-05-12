@@ -212,7 +212,6 @@ public class LeadsFragment extends RaisingFragment {
      * Filter leads by state and timestamp
      */
     private void filterLeads() {
-        Log.d(TAG, "filterLeads: Disable all views");
         today.clear();
         todayLayout.setVisibility(View.GONE);
         thisWeek.clear();
@@ -259,18 +258,14 @@ public class LeadsFragment extends RaisingFragment {
         if(leadState == LeadState.YOUR_TURN ) {
             if(today.size() == 0 && thisWeek.size() == 0 && thisMonth.size() == 0 && earlier.size() == 0 && leadsViewModel.getOpenRequests().size() == 0) {
                 emptyLeadsLayout.setVisibility(View.VISIBLE);
-                Log.d(TAG, "filterLeads: EmptyLeadsVisibility Visible");
             } else {
                 emptyLeadsLayout.setVisibility(View.GONE);
-                Log.d(TAG, "filterLeads: EmptyLeadsVisibility GONE");
             }
         } else {
             if (today.size() == 0 && thisWeek.size() == 0 && thisMonth.size() == 0 && earlier.size() == 0) {
                 emptyLeadsLayout.setVisibility(View.VISIBLE);
-                Log.d(TAG, "filterLeads: EmptyLeadsVisibility Visible");
             } else {
                 emptyLeadsLayout.setVisibility(View.GONE);
-                Log.d(TAG, "filterLeads: EmptyLeadsVisibility GONE");
             }
         }
 

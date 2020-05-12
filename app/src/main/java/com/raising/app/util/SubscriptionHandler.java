@@ -3,7 +3,6 @@ package com.raising.app.util;
 import android.os.Looper;
 import android.util.Log;
 
-import com.android.billingclient.api.AcknowledgePurchaseParams;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.SkuDetails;
@@ -13,6 +12,8 @@ import com.raising.app.models.Subscription;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -29,7 +30,6 @@ public class SubscriptionHandler {
     private static BillingClient billingClient;
 
     private static Subscription activeSubscription;
-    private static Subscription nextSubscription;
 
     private static final List<String> SKU_LIST = new ArrayList<>(Arrays.asList(YEARLY_SUBSCRIPTION_ID, SIX_MONTH_SUBSCRIPTION, THREE_MONTH_SUBSCRIPTION));
     private static ArrayList<SkuDetails> skuDetailsArrayList = new ArrayList<>();
@@ -94,13 +94,11 @@ public class SubscriptionHandler {
         ApiRequestHandler.performGetRequest("subscription/android",
                 response -> {
                     try {
+                        Log.d(TAG, "loadSubscription: Subscription loaded: " + response.toString());
                         String sku = response.getString("subscriptionId");
-                        //TODO: insert actual token
-                        String purchaseToken = "";
-                        Log.d(TAG, "loadSubscription: Subsription loaded: " + sku);
-                        if (getSkuDetailsFromSku(sku) != null) {
-                            setActiveSubscription(getSkuDetailsFromSku(sku), purchaseToken);
-                        }
+                        String purchaseToken = response.getString("purchaseToken");
+                        String expirationDate = response.getString("expiresDate");
+                        setActiveSubscriptionWithExpiration(sku, purchaseToken, expirationDate);
                     } catch (JSONException e) {
                         Log.e(TAG, "loadSubscription: JSONException loading subscription" + e.getMessage());
                         e.printStackTrace();
@@ -115,35 +113,45 @@ public class SubscriptionHandler {
     private static SkuDetails getSkuDetailsFromSku(String sku) {
         for (int i = 0; i < skuDetailsArrayList.size(); i++) {
             if (skuDetailsArrayList.get(i).getSku().equals(sku)) {
+                Log.d(TAG, "getSkuDetailsFromSku: " + skuDetailsArrayList.get(i).toString());
                 return skuDetailsArrayList.get(i);
             }
         }
         return null;
     }
 
-    /**
-     * Set the users current subscription, this only changes, if a subscription expires or the user selects his first subscription
-     *
-     * @param skuDetails The skuDetails of the chosen subscription
-     */
-    public static void setActiveSubscription(SkuDetails skuDetails, String purchaseToken) {
+    private static void setActiveSubscriptionWithExpiration(String sku, String purchaseToken, String expirationDate) {
         Subscription subscription = new Subscription();
-        subscription.setSku(skuDetails.getSku());
-        subscription.setSkuDetails(skuDetails);
+        subscription.setSku(sku);
         subscription.setPurchaseToken(purchaseToken);
 
-        //TODO: implement correct purchase and expiration dates
-
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        subscription.setPurchaseDate(calendar);
-        // set expiration date
-        calendar.add(Calendar.MONTH, getSkuDuration(skuDetails));
-        subscription.setExpirationDate(calendar);
+        try {
+            Date date = simpleDateFormat.parse(expirationDate);
+            Log.d(TAG, "setActiveSubscriptionWithExpiration: Parsed Date " + date);
+            if (date != null)
+                calendar.setTime(date);
+        } catch (ParseException e) {
+            Log.e(TAG, "setActiveSubscriptionWithExpiration: ParseException" + e.getMessage());
+        }
 
-        Log.d(TAG, "setCurrentSubscription: Selected subscription " + subscription.getSku()
-                + " " + subscription.getPurchaseDate().getTime().toString()
-                + " " + subscription.getExpirationDateString());
+        subscription.setExpirationDate(calendar);
+        subscription.setPurchaseDate(getRespectiveDate(calendar, getSkuDurationFromSku(sku), false));
+
+        Log.d(TAG, "setActiveSubscriptionWithExpiration: Selected subscription " + subscription.toString());
+        activeSubscription = subscription;
+    }
+
+
+    public static void setActiveSubscriptionWithPurchase(String sku, String purchaseToken, Calendar calendar) {
+        Subscription subscription = new Subscription();
+        subscription.setSku(sku);
+        subscription.setPurchaseToken(purchaseToken);
+
+        subscription.setPurchaseDate(calendar);
+        subscription.setExpirationDate(getRespectiveDate(calendar, getSkuDurationFromSku(sku), true));
+        Log.d(TAG, "setActiveSubscriptionWithPurchase: Selected Subscription " + subscription.toString());
         activeSubscription = subscription;
     }
 
@@ -153,25 +161,31 @@ public class SubscriptionHandler {
      * @param sku The skuDetails of the subscription, this contains a string of the duration
      * @return An integer value of the duration of the subscription
      */
-    public static int getSkuDuration(SkuDetails sku) {
-        switch (sku.getSubscriptionPeriod()) {
-            case "P1Y":
+    public static int getSkuDurationFromSku(String sku) {
+        switch (sku) {
+            case YEARLY_SUBSCRIPTION_ID:
                 return 12;
-            case "P6M":
+            case SIX_MONTH_SUBSCRIPTION:
                 return 6;
-            case "P3M":
+            case THREE_MONTH_SUBSCRIPTION:
                 return 3;
             default:
                 return 0;
         }
     }
 
-    public static Subscription getActiveSubscription() {
-        return activeSubscription;
+    public static Calendar getRespectiveDate(Calendar calendar, int subscriptionDuration, boolean calculateExpiration) {
+        if (calculateExpiration) {
+            calendar.add(Calendar.MONTH, subscriptionDuration);
+        } else {
+            calendar.add(Calendar.MONTH, (subscriptionDuration * (-1)));
+        }
+        Log.d(TAG, "getRespectiveDate: Calculated Date " + calendar.toString());
+        return calendar;
     }
 
-    public static Subscription getNextSubscription() {
-        return nextSubscription;
+    public static Subscription getActiveSubscription() {
+        return activeSubscription;
     }
 
     public static boolean hasValidSubscription() {

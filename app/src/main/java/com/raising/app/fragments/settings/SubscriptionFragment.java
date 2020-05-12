@@ -24,24 +24,16 @@ import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.SkuDetails;
-import com.android.billingclient.api.SkuDetailsParams;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.tabs.TabLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.Subscription;
-import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.SubscriptionHandler;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 
 public class SubscriptionFragment extends RaisingFragment {
     private final String TAG = "SubscriptionsFragment";
@@ -172,11 +164,9 @@ public class SubscriptionFragment extends RaisingFragment {
     }
 
     private void grantPurchase(Purchase purchase) {
-        skuDetailsArrayList.forEach(skuDetails -> {
-            if (skuDetails.getSku().equals(purchase.getSku())) {
-                SubscriptionHandler.setActiveSubscription(skuDetails, purchase.getPurchaseToken());
-            }
-        });
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        SubscriptionHandler.setActiveSubscriptionWithPurchase(purchase.getSku(), purchase.getPurchaseToken(), calendar);
         refreshSubscriptionsLayout();
     }
 
@@ -185,7 +175,8 @@ public class SubscriptionFragment extends RaisingFragment {
         subscriptionsLayout.removeAllViews();
 
         // sort skuDetails based on ascending durations
-        Collections.sort(skuDetailsArrayList, Comparator.comparingInt(SubscriptionHandler::getSkuDuration));
+        Collections.sort(skuDetailsArrayList, (o1, o2) ->
+                SubscriptionHandler.getSkuDurationFromSku(o1.getSku()) - SubscriptionHandler.getSkuDurationFromSku(o2.getSku()));
         skuDetailsArrayList.forEach(skuDetails -> {
             Log.d(TAG, "fillSubscriptionsList: SkuDetail" + skuDetails.getSku() + " " + skuDetails.getTitle() + " " + skuDetails.getPrice());
 
@@ -207,17 +198,17 @@ public class SubscriptionFragment extends RaisingFragment {
             subscriptionPriceWeek.setText(createPriceString(skuDetails, false));
             card.setOnClickListener(v -> processOnCardClick(skuDetails));
 
-            if (SubscriptionHandler.getNextSubscription() != null) {
+            if (SubscriptionHandler.getActiveSubscription() != null) {
                 btnManageSubscription.setVisibility(View.VISIBLE);
                 manageSubscriptionText.setVisibility(View.VISIBLE);
                 btnManageSubscription.setOnClickListener(v -> {
                             String baseUri = "https://play.google.com/store/account/subscriptions";
-                            if (!currentEqualsNextSubscription()) {
-                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(baseUri));
-                                startActivity(browserIntent);
-                            } else if (currentEqualsNextSubscription()) {
-                                String uri = baseUri + "?sku=" + SubscriptionHandler.getNextSubscription().getSku() + "&package=" + "com.raising.app";
+                            if(SubscriptionHandler.hasValidSubscription()) {
+                                String uri = baseUri + "?sku=" + SubscriptionHandler.getActiveSubscription().getSku() + "&package=" + "com.raising.app";
                                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                startActivity(browserIntent);
+                            } else {
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(baseUri));
                                 startActivity(browserIntent);
                             }
                             refreshSubscriptionsLayout();
@@ -226,7 +217,7 @@ public class SubscriptionFragment extends RaisingFragment {
             }
             // check if user has a subscription
             if (activeSubscriptionExists()) {
-                adjustNotSelectedSubscriptions(subscriptionTitle, SubscriptionHandler.getSkuDuration(skuDetails));
+                adjustNotSelectedSubscriptions(subscriptionTitle, SubscriptionHandler.getSkuDurationFromSku(skuDetails.getSku()));
 
                 // adjust card of users active subscription
                 if (skuDetails.getSku().equals(SubscriptionHandler.getActiveSubscription().getSku())) {
@@ -253,56 +244,21 @@ public class SubscriptionFragment extends RaisingFragment {
      * @param sku The skuDetails belonging to the card that was clicked
      */
     private void processOnCardClick(SkuDetails sku) {
-        if (currentNotEqualNextSubscription()) {
-            showSimpleDialog(getString(R.string.subscription_error_cannot_add_title), getString(R.string.subscription_error_cannot_add_text));
-        } else if (!activeSubscriptionExists()) {
-            // purchase subscription
-            if (showActionDialog(getString(R.string.subscription_dialog_subscribe_title),
-                    getString(R.string.subscribtion_dialog_subscribe_text))) {
-                showGoogleBilling(sku, false);
-            }
-        } else {
-            // up-/downgrade your subscription
-            if (showActionDialog(getString(R.string.subscription_dialog_subscribe_title),
-                    getString(R.string.subscribtion_dialog_subscribe_text))) {
-                showGoogleBilling(sku, true);
-            }
+        if(showActionDialog(getString(R.string.subscription_dialog_subscribe_title),
+                getString(R.string.subscribtion_dialog_subscribe_text))) {
+            showGoogleBilling(sku, SubscriptionHandler.hasValidSubscription());
         }
         refreshSubscriptionsLayout();
     }
 
     private String createPriceString(SkuDetails skuDetails, boolean isDuration) {
         if (isDuration) {
-            return (skuDetails.getOriginalPrice() + " / " + SubscriptionHandler.getSkuDuration(skuDetails) + " " + getString(R.string.subscription_months));
+            return (skuDetails.getOriginalPrice() + " / " + SubscriptionHandler.getSkuDurationFromSku(skuDetails.getSku()) + " " + getString(R.string.subscription_months));
         } else {
-            long pricePerWeek = (skuDetails.getOriginalPriceAmountMicros() / (4 * (SubscriptionHandler.getSkuDuration(skuDetails)))) / 1000000;
+            long pricePerWeek = (skuDetails.getOriginalPriceAmountMicros() / (4 * (SubscriptionHandler.getSkuDurationFromSku(skuDetails.getSku())))) / 1000000;
             Log.d(TAG, "createPriceString: pricePerWeek " + pricePerWeek + " " + skuDetails.getSku());
             return skuDetails.getPriceCurrencyCode() + " " + pricePerWeek + " / " + getString(R.string.subscriptions_weeks);
         }
-    }
-
-    /**
-     * Returns a boolean value wether the current and next subscription are equal, both also cannot be null
-     *
-     * @return true, if current and next subscription are equal
-     * false, if current is not the same as next subscription, or one subscription is null
-     */
-    private boolean currentEqualsNextSubscription() {
-        return (activeSubscriptionExists()
-                && nextSubscriptionExists()
-                && SubscriptionHandler.getActiveSubscription().getSku().equals(SubscriptionHandler.getNextSubscription().getSku()));
-    }
-
-    /**
-     * Returns a boolean value wether the current and next subscription are not equal, both also cannot be null
-     *
-     * @return true, if current and next subscription are not equal
-     * false, if current is the same as next subscription, or one subscription is null
-     */
-    private boolean currentNotEqualNextSubscription() {
-        return (activeSubscriptionExists()
-                && nextSubscriptionExists()
-                && !(SubscriptionHandler.getActiveSubscription().getSku().equals(SubscriptionHandler.getNextSubscription().getSku())));
     }
 
     /**
@@ -313,18 +269,18 @@ public class SubscriptionFragment extends RaisingFragment {
      */
     private void adjustNotSelectedSubscriptions(TextView subscriptionTitle, int duration) {
         // adjust cards of shorter subscription types
-        if (duration < SubscriptionHandler.getSkuDuration(SubscriptionHandler.getActiveSubscription().getSkuDetails())) {
+        if (duration < SubscriptionHandler.getSkuDurationFromSku(SubscriptionHandler.getActiveSubscription().getSku())) {
             // subscriptions cheaper than the one currently active, if current subscription != next subscription user cannot up-/downgrade
-            if (currentEqualsNextSubscription()) {
+            if (SubscriptionHandler.hasValidSubscription()) {
                 subscriptionTitle.setVisibility(View.VISIBLE);
                 subscriptionTitle.setText(getString(R.string.subscription_downgrade));
             }
         }
 
         // adjust cards of longer subscription types
-        if (duration > SubscriptionHandler.getSkuDuration(SubscriptionHandler.getActiveSubscription().getSkuDetails())) {
+        if (duration > SubscriptionHandler.getSkuDurationFromSku(SubscriptionHandler.getActiveSubscription().getSku())) {
             // subscriptions more expensive than current subscription, if current subscription != next subscription user cannot up-/downgrade
-            if (currentEqualsNextSubscription()) {
+            if (SubscriptionHandler.hasValidSubscription()) {
                 subscriptionTitle.setVisibility(View.VISIBLE);
                 subscriptionTitle.setText(getString(R.string.subscription_upgrade));
             }
@@ -339,15 +295,5 @@ public class SubscriptionFragment extends RaisingFragment {
      */
     private boolean activeSubscriptionExists() {
         return (SubscriptionHandler.getActiveSubscription() != null);
-    }
-
-    /**
-     * Returns a boolean wether the user has a next subscription
-     *
-     * @return true, if user has next subscription
-     * false, if user does not have a next subscription
-     */
-    private boolean nextSubscriptionExists() {
-        return (SubscriptionHandler.getNextSubscription() != null);
     }
 }

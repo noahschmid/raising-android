@@ -12,7 +12,6 @@ import lombok.Data;
 public class Subscription implements Serializable {
 
     private String sku;
-    private SkuDetails skuDetails;
     private String purchaseToken;
     private Calendar purchaseDate;
     private Calendar expirationDate;
