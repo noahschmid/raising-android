@@ -46,12 +46,12 @@ public class SettingsViewModel extends AndroidViewModel {
     public void loadSettings() {
         Log.d(TAG, "loadSettings: Loading Settings");
         updateDeviceToken();
-        viewState.setValue(ViewState.LOADING);
+        viewState.postValue(ViewState.LOADING);
         Log.d(TAG, "loadSettings: ViewState " + viewState.getValue().toString());
         PersonalSettings cachedSettings = getCachedSettings();
         if (cachedSettings != null) {
-            personalSettings.setValue(cachedSettings);
-            viewState.setValue(ViewState.CACHED);
+            personalSettings.postValue(cachedSettings);
+            viewState.postValue(ViewState.CACHED);
             Log.d(TAG, "loadSettings: ViewState " + viewState.getValue().toString());
         } else {
             getUserSettings();
@@ -59,7 +59,7 @@ public class SettingsViewModel extends AndroidViewModel {
     }
 
     private void updateDeviceToken() {
-        viewState.setValue(ViewState.LOADING);
+        viewState.postValue(ViewState.LOADING);
         JSONObject object = new JSONObject();
         // device specifications
         String deviceToken = FirebaseInstanceId.getInstance().getToken();
@@ -74,11 +74,11 @@ public class SettingsViewModel extends AndroidViewModel {
 
         ApiRequestHandler.performPatchRequest("settings",
                 response -> {
-                    viewState.setValue(ViewState.RESULT);
+                    viewState.postValue(ViewState.RESULT);
                     Log.d(TAG, "sendDeviceToken: Token updated " + deviceToken);
                     return null;
                 }, volleyError -> {
-                    viewState.setValue(ViewState.ERROR);
+                    viewState.postValue(ViewState.ERROR);
                     Log.e(TAG, "sendDeviceToken: Update failed " + volleyError.getMessage());
                     return null;
                 }, object);
@@ -87,7 +87,7 @@ public class SettingsViewModel extends AndroidViewModel {
     private void getUserSettings() {
         ApiRequestHandler.performGetRequest("settings",
                 response -> {
-                    viewState.setValue(ViewState.RESULT);
+                    viewState.postValue(ViewState.RESULT);
                     try {
                         personalSettings.getValue().setNumberOfMatches(response.getInt("numberOfMatches"));
                         JSONArray notificationSettings = response.getJSONArray("notificationTypes");
@@ -101,7 +101,7 @@ public class SettingsViewModel extends AndroidViewModel {
                     }
                     return null;
                 }, volleyError -> {
-                    viewState.setValue(ViewState.ERROR);
+                    viewState.postValue(ViewState.ERROR);
                     Log.d(TAG, "getUserSettings: Error fetching settings" + volleyError.toString());
                     return null;
                 });
@@ -113,8 +113,8 @@ public class SettingsViewModel extends AndroidViewModel {
      * @param settings The new object of personal settings
      */
     public void updatePersonalSettings(PersonalSettings settings) {
-        viewState.setValue(ViewState.LOADING);
-        personalSettings.setValue(settings);
+        viewState.postValue(ViewState.LOADING);
+        personalSettings.postValue(settings);
         cacheSettings(personalSettings.getValue());
 
         // device specifications
@@ -142,10 +142,10 @@ public class SettingsViewModel extends AndroidViewModel {
 
         ApiRequestHandler.performPatchRequest("settings",
                 response -> {
-                    viewState.setValue(ViewState.RESULT);
+                    viewState.postValue(ViewState.RESULT);
                     return null;
                 }, volleyError -> {
-                    viewState.setValue(ViewState.ERROR);
+                    viewState.postValue(ViewState.ERROR);
                     Log.e(TAG, "updatePersonalSettings: " + ApiRequestHandler.parseVolleyError(volleyError));
                     return null;
                 }, object);
@@ -161,7 +161,7 @@ public class SettingsViewModel extends AndroidViewModel {
             InternalStorageHandler.saveObject(settings,
                     "settings_" + AuthenticationHandler.getId());
         } catch (Exception e) {
-            viewState.setValue(ViewState.ERROR);
+            viewState.postValue(ViewState.ERROR);
             Log.e(TAG, "Error caching settings: " + e.getMessage());
         }
     }
@@ -178,7 +178,7 @@ public class SettingsViewModel extends AndroidViewModel {
                 Log.d(TAG, "getCachedSettings: No cached settings available");
             }
         } catch (Exception e) {
-            viewState.setValue(ViewState.ERROR);
+            viewState.postValue(ViewState.ERROR);
             Log.e(TAG, "getCachedSettings: Error while getting cached settings" + e.getMessage());
             addInitialSettings();
         }
@@ -189,7 +189,7 @@ public class SettingsViewModel extends AndroidViewModel {
      * Add initial settings for new users
      */
     public void addInitialSettings() {
-        viewState.setValue(ViewState.LOADING);
+        viewState.postValue(ViewState.LOADING);
         Log.d(TAG, "addInitialSettings: ViewState " + viewState.getValue().toString());
         PersonalSettings initialSettings = new PersonalSettings();
 
@@ -204,7 +204,7 @@ public class SettingsViewModel extends AndroidViewModel {
 
         //TODO: remove and replace with updatePersonalSettings(initialSettings); once backend supports all requests via PATCH
 
-        personalSettings.setValue(initialSettings);
+        personalSettings.postValue(initialSettings);
         cacheSettings(personalSettings.getValue());
 
         // device specifications
@@ -232,11 +232,11 @@ public class SettingsViewModel extends AndroidViewModel {
 
         ApiRequestHandler.performPatchRequest("settings",
                 response -> {
-                    viewState.setValue(ViewState.RESULT);
+                    viewState.postValue(ViewState.RESULT);
                     Log.d(TAG, "addInitialSettings: ViewState " + viewState.getValue().toString());
                     return null;
                 }, volleyError -> {
-                    viewState.setValue(ViewState.ERROR);
+                    viewState.postValue(ViewState.ERROR);
                     Log.d(TAG, "addInitialSettings: ViewState " + viewState.getValue().toString());
                     Log.e(TAG, "addInitialSettings: " + ApiRequestHandler.parseVolleyError(volleyError));
                     return null;

@@ -18,7 +18,7 @@ public class MatchingCriteriaComponent implements LifecycleObserver {
     private RecyclerView recyclerView;
     private MatchingCriteriaAdapter itemAdapter;
     private boolean singleSelect = false;
-    private ArrayList<MatchingCriteriaItem> items;
+    private ArrayList<MatchingCriteriaItem> items = new ArrayList<>();
 
     /**
      * Create a new Matching Criteria Component

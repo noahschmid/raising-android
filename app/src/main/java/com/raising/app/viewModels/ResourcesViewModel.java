@@ -43,7 +43,6 @@ public class ResourcesViewModel extends AndroidViewModel{
         super(application);
         viewState.setValue(ViewState.EMPTY);
         loadResources();
-        viewState.postValue(ViewState.EMPTY);
     }
 
     public void loadResources() {
@@ -51,9 +50,9 @@ public class ResourcesViewModel extends AndroidViewModel{
 
         if(cachedResources != null) {
             resources.postValue(cachedResources);
-            viewState.setValue(ViewState.CACHED);
+            viewState.postValue(ViewState.CACHED);
         } else {
-            viewState.setValue(ViewState.LOADING);
+            viewState.postValue(ViewState.LOADING);
         }
 /*
         try {

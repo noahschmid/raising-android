@@ -60,11 +60,11 @@ public class LeadsViewModel extends AndroidViewModel {
         ArrayList<Lead> cachedLeads = getCachedLeads();
 
         if(cachedLeads != null) {
-            leads.setValue(cachedLeads);
-            viewState.setValue(ViewState.CACHED);
+            leads.postValue(cachedLeads);
+            viewState.postValue(ViewState.CACHED);
             Log.d(TAG, "loadLeads: ViewState " + getViewState().getValue().toString());
         } else {
-            viewState.setValue(ViewState.LOADING);
+            viewState.postValue(ViewState.LOADING);
             Log.d(TAG, "loadLeads: ViewState " + getViewState().getValue().toString());
         }
 
@@ -73,13 +73,13 @@ public class LeadsViewModel extends AndroidViewModel {
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     gsonBuilder.registerTypeAdapter(Lead.class, new LeadsDeserializer());
                     Gson gson = gsonBuilder.create();
-                    leads.setValue(gson.fromJson(result.toString(), new TypeToken<List<Lead>>() {}.getType()));
-                    viewState.setValue(ViewState.RESULT);
+                    leads.postValue(gson.fromJson(result.toString(), new TypeToken<List<Lead>>() {}.getType()));
+                    viewState.postValue(ViewState.RESULT);
                     cacheLeads();
                     return null;
                 },
                 error -> {
-                    viewState.setValue(ViewState.ERROR);
+                    viewState.postValue(ViewState.ERROR);
                     Log.e(TAG, "loadLeads: " + ApiRequestHandler.parseVolleyError(error));
                     return null;
                 });
@@ -110,7 +110,7 @@ public class LeadsViewModel extends AndroidViewModel {
             InternalStorageHandler.saveObject(leads.getValue(),
                     "leads_" + AuthenticationHandler.getId());
         } catch(Exception e) {
-            viewState.setValue(ViewState.ERROR);
+            viewState.postValue(ViewState.ERROR);
             Log.e(TAG, "Error caching leads: " + e.getMessage());
         }
     }

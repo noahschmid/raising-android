@@ -486,7 +486,6 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         Bitmap logo = ((BitmapDrawable) profileImage.getDrawable()).getBitmap();
 
         try {
-            showLoadingPanel();
             if (editMode) {
                 if (profilePictureChanged) {
                     accountViewModel.updateProfilePicture(new Image(logo));
@@ -498,7 +497,6 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                 uploadImages(logo);
             }
         } catch (Exception e) {
-            dismissLoadingPanel();
             Log.d("RegisterInvestorImagesFragment", "Error in process inputs: " + e.getMessage());
         }
     }
@@ -556,6 +554,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     private void submitRegistration() {
         imagesUploaded.setValue(false);
         try {
+            viewStateViewModel.startLoading();
             RegistrationHandler.saveInvestor(investor);
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.registerTypeAdapter(Investor.class,
@@ -566,6 +565,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     errorCallback, new JSONObject(investor));
             Log.d("RegisterInvestorImagesFragment", investor);
         } catch (Exception e) {
+            viewStateViewModel.stopLoading();
             Log.e(TAG, "submitRegistration: " + e.getMessage());
             showGenericError();
             finishButton.setEnabled(true);
@@ -576,8 +576,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
      * Save private profile after login response and proceed to matches fragment
      */
     Function<JSONObject, Void> registerCallback = response -> {
-        Log.d(TAG, "registerCallback called");
-        //TODO: remove manually set loading panel
+        viewStateViewModel.stopLoading();
         try {
             Investor investor = RegistrationHandler.getInvestor();
             investor.setId(response.getLong("id"));
@@ -602,8 +601,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
      * Display error from backend
      */
     Function<VolleyError, Void> errorCallback = response -> {
-        //TODO: remove manually set loading panel
-        dismissLoadingPanel();
+        viewStateViewModel.stopLoading();
         try {
             if (response.networkResponse != null) {
                 JSONObject body = new JSONObject(new String(
