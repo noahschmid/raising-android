@@ -13,19 +13,20 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.raising.app.R;
+import com.raising.app.models.MatchingCriteriaItem;
 import com.raising.app.models.Model;
 
 import java.util.ArrayList;
 
 public class MatchingCriteriaAdapter extends RecyclerView.Adapter<MatchingCriteriaAdapter.ViewHolder> {
     private final String TAG = "MatchingCriteriaAdapter";
-    private ArrayList<? extends Model> recyclerItems;
+    private ArrayList<MatchingCriteriaItem> recyclerItems;
     private OnItemClickListener clickListener;
     private Context context;
     private boolean singleSelect;
     private boolean isLabelsLayout;
 
-    public MatchingCriteriaAdapter(Context context, ArrayList<? extends Model> recyclerItems, boolean singleSelect, boolean isLabelsLayout) {
+    public MatchingCriteriaAdapter(Context context, ArrayList<MatchingCriteriaItem> recyclerItems, boolean singleSelect, boolean isLabelsLayout) {
         this.recyclerItems = recyclerItems;
         this.context = context;
         this.singleSelect = singleSelect;
@@ -71,25 +72,20 @@ public class MatchingCriteriaAdapter extends RecyclerView.Adapter<MatchingCriter
             holder.background.getBackground().setTint(standardBackgroundColor);
         }
 
-        holder.icon.setOnClickListener(v -> {
+        holder.itemView.setOnClickListener(v -> {
             item.setChecked(!item.isChecked());
 
             if (item.isChecked()) {
-                holder.background.getBackground().setTint(selectedBackgroundColor);
-                holder.icon.setImageDrawable(iconChecked);
                 if (singleSelect) {
                     recyclerItems.forEach(i -> {
                         if (i.getId() != item.getId()) {
                             i.setChecked(false);
                         }
                     });
-                    notifyDataSetChanged();
                 }
-            } else {
-                holder.background.getBackground().setTint(standardBackgroundColor);
-                holder.icon.setImageDrawable(icon);
             }
             clickListener.onItemClick(position);
+            notifyDataSetChanged();
         });
     }
 
