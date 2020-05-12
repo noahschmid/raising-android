@@ -123,6 +123,8 @@ public class RaisingFragment extends Fragment {
         resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             if(state == ViewState.RESULT || state == ViewState.CACHED)
                 onResourcesLoaded();
+            if(state == ViewState.ERROR)
+                resourcesViewModel.loadResources();
         });
         resources = resourcesViewModel.getResources().getValue();
 
@@ -149,7 +151,7 @@ public class RaisingFragment extends Fragment {
                 Log.d(TAG, "processViewState: ERROR");
                 dismissLoadingPanel();
                 ToastHandler toastHandler = new ToastHandler(getContext());
-                toastHandler.showToast(getString(R.string.generic_error_title), Toast.LENGTH_LONG);
+                toastHandler.showToast(getString(R.string.billing_connection_failed_title), Toast.LENGTH_LONG);
                 viewStateViewModel.setViewState(ViewState.EMPTY);
                 break;
 
