@@ -68,6 +68,10 @@ public class ViewStateViewModel extends AndroidViewModel {
                 case ERROR:
                     viewState.postValue(ViewState.ERROR);
                     break;
+
+                case EXPIRED:
+                    viewState.postValue(ViewState.EXPIRED);
+                    break;
             }
         });
     }
