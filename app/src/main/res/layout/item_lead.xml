@@ -49,8 +49,8 @@
 
     <ImageView
         android:id="@+id/item_leads_status_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/leadsIconSize"
+        android:layout_height="@dimen/leadsIconSize"
         android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
         android:src="@drawable/ic_check"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -62,11 +62,21 @@
         style="@style/RaisingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/standardVerticalMargin"
+        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
         android:gravity="center|start"
         android:text="Percent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/item_leads_divider"
         app:layout_constraintEnd_toEndOf="@+id/item_leads_profile_image"
         app:layout_constraintStart_toStartOf="@+id/item_leads_profile_image"
         app:layout_constraintTop_toBottomOf="@+id/item_leads_profile_image" />
+
+    <View
+        android:id="@+id/item_leads_divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/raisingLightGrey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_leads_match_percent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
