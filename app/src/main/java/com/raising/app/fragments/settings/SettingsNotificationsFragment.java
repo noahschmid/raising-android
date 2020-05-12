@@ -79,7 +79,6 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         connectionSwitch = view.findViewById(R.id.notifications_switch_connection);
 
         settingsViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
-            //processViewState(viewState);
             if(viewState == ViewState.CACHED || viewState == ViewState.RESULT) {
                 Log.d(TAG, "onViewCreated: Receive personal settings");
                 personalSettings = settingsViewModel.getPersonalSettings().getValue();
