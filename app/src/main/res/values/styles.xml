@@ -19,8 +19,8 @@
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
-    
-   <!-- Text Styles -->
+
+    <!-- Text Styles -->
     <style name="RaisingText">
         <item name="android:textColor">@color/raisingTextColor</item>
         <item name="android:textColorHint">@color/raisingTextColor</item>
@@ -70,7 +70,7 @@
     </style>
 
 
-   <!-- Button Styles -->
+    <!-- Button Styles -->
     <style name="GeneralButtonStyle">
         <item name="android:drawableTint">@color/raisingTextColorLight</item>
         <item name="android:textColorHint">@color/raisingTextColorLight</item>
@@ -171,4 +171,13 @@
         <item name="colorControlHighlight">@color/raisingRippleColorLight</item>
     </style>
 
+    <style name="RaisingSmallDivider">
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="background">@color/raisingLightGrey</item>
+    </style>
+
+    <style name="RaisingMediumDivider" parent="RaisingSmallDivider">
+        <item name="android:layout_height">5dp</item>
+    </style>
 </resources>
