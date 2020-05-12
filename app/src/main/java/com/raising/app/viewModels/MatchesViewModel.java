@@ -55,10 +55,20 @@ public class MatchesViewModel extends AndroidViewModel {
     public void runMatching() {
         ApiRequestHandler.performPostRequest("match/run",
                 response -> {
+                    loadMatches();
                     return null;
                 },
                 error -> {
                     Log.e(TAG, "runMatching: " + ApiRequestHandler.parseVolleyError(error));
+                    if(error.networkResponse != null) {
+                        if(error.networkResponse.statusCode == 403) {
+                            viewState.postValue(ViewState.EXPIRED);
+                        } else {
+                            viewState.postValue(ViewState.ERROR);
+                        }
+                    } else {
+                        viewState.postValue(ViewState.ERROR);
+                    }
                     return null;
                 }, new JSONObject());
     }
@@ -66,11 +76,11 @@ public class MatchesViewModel extends AndroidViewModel {
     public void loadMatches() {
         ArrayList<Match> cachedMatchList = getCachedMatches();
         if(cachedMatchList != null) {
-            viewState.setValue(ViewState.CACHED);
-            matches.setValue(cachedMatchList);
+            viewState.postValue(ViewState.CACHED);
+            matches.postValue(cachedMatchList);
         } else {
-            viewState.setValue(ViewState.LOADING);
-            matches.setValue(new ArrayList<>());
+            viewState.postValue(ViewState.LOADING);
+            matches.postValue(new ArrayList<>());
         }
 
         ApiRequestHandler.performArrayGetRequest("match",
@@ -88,14 +98,22 @@ public class MatchesViewModel extends AndroidViewModel {
                                     -1 : (lhs.getMatchingPercent() < rhs.getMatchingPercent() ) ? 1 : 0;
                         }
                     });
-                    matches.setValue(matchList);
+                    matches.postValue(matchList);
                     Log.d(TAG, "loadMatches: fetched " + matchList.size() + " new matches");
-                    viewState.setValue(ViewState.RESULT);
+                    viewState.postValue(ViewState.RESULT);
                     cacheMatches();
                     return null;
                 },
                 err -> {
-                    viewState.setValue(ViewState.ERROR);
+                    if(err.networkResponse != null) {
+                        if(err.networkResponse.statusCode == 403) {
+                            viewState.postValue(ViewState.EXPIRED);
+                        } else {
+                            viewState.postValue(ViewState.ERROR);
+                        }
+                    } else {
+                        viewState.postValue(ViewState.ERROR);
+                    }
                     return null;
                 });
     }
@@ -112,7 +130,7 @@ public class MatchesViewModel extends AndroidViewModel {
                         "matches_" + AuthenticationHandler.getId());
             }
         } catch (Exception e) {
-            viewState.setValue(ViewState.ERROR);
+            viewState.postValue(ViewState.ERROR);
             Log.e(TAG, "Error while loading cached matches: " + e.getMessage());
         }
 

@@ -11,18 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
+import com.google.android.flexbox.FlexboxLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Startup;
 import com.raising.app.util.RegistrationHandler;
+import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaAdapter;
+import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaComponent;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class RegisterStartupLabelsFragment extends RaisingFragment {
-    private LinearLayout labelsLayout;
+    private MatchingCriteriaComponent labelsLayout;
 
     private Startup startup;
     private boolean editMode = false;
@@ -50,6 +54,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupLabels.setHint(getString(R.string.myProfile_apply_changes));
+            btnStartupLabels.setVisibility(View.INVISIBLE);
             startup = (Startup)currentAccount;
             hideBottomNavigation(false);
             editMode = true;
@@ -57,16 +62,16 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
             startup = RegistrationHandler.getStartup();
         }
 
-        labelsLayout = view.findViewById(R.id.register_startup_pitch_labels);
+        MatchingCriteriaAdapter.OnItemClickListener clickListener = position -> {
+            if(editMode) {
+                btnStartupLabels.setVisibility(View.VISIBLE);
+            }
+        };
 
-        resources.getLabels().forEach(label -> {
-            CheckBox cb = new CheckBox(getContext());
-            cb.setText(label.getName());
-            cb.setContentDescription(String.valueOf(label.getId()));
-            labelsLayout.addView(cb);
-        });
+        labelsLayout = new MatchingCriteriaComponent(view.findViewById(R.id.register_startup_pitch_labels), resources.getLabels(),
+                false, clickListener, true);
 
-        startup.getLabels().forEach(label -> tickCheckbox(labelsLayout, label));
+        startup.getLabels().forEach(label -> labelsLayout.setChecked(label));
     }
 
     @Override
@@ -77,15 +82,9 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
     }
 
     private void processInformation() {
-        ArrayList<Long> labels = new ArrayList<>();
-        for (int i = 0; i < labelsLayout.getChildCount(); ++i) {
-            View v = labelsLayout.getChildAt(i);
-            if(((CheckBox)v).isChecked() && ((String)((CheckBox)v).getContentDescription()).length() > 0) {
-                labels.add(Long.parseLong((String)((CheckBox)v).getContentDescription()));
-            }
-        }
+        ArrayList<Long> labels = labelsLayout.getSelected();
 
-        if(labels.size() > 4) {
+        if(labels.size() > 3) {
             showSimpleDialog(getString(R.string.register_label_error_title), getString(R.string.register_label_error_text));
             return;
         }

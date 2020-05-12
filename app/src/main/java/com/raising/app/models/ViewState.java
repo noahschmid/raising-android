@@ -6,5 +6,6 @@ public enum ViewState {
     ERROR,
     UPDATED,
     RESULT,
-    EMPTY
+    EMPTY,
+    EXPIRED
 }

@@ -58,7 +58,7 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
             case HANDSHAKE:
                 if(stateEnum == LeadState.YOUR_TURN || stateEnum == LeadState.PENDING) {
                     tintColor = R.color.raisingSecondaryDark;
-                    drawableId = R.drawable.ic_handshake_24dp;
+                    drawableId = R.drawable.ic_raising_handshake_full;
                 } else if(stateEnum == LeadState.CLOSED) {
                     tintColor = R.color.raisingPositive;
                     drawableId = R.drawable.ic_check_circle_24dp;
@@ -91,22 +91,12 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
                             recyclerItem.getProfilePictureId())
                     .centerCrop()
                     .apply(RequestOptions.circleCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                     .placeholder(R.drawable.ic_placeholder_24dp)
                     .into(holder.profilePicture);
         } else {
             holder.profilePicture.setImageDrawable(InternalStorageHandler.getContext()
                     .getResources().getDrawable(R.drawable.ic_placeholder_24dp));
-        }
-
-        switch (stateEnum) {
-            case YOUR_TURN:
-                //holder.statusIcon.setVisibility(View.GONE);
-                break;
-            case PENDING:
-            case CLOSED:
-                break;
         }
     }
 

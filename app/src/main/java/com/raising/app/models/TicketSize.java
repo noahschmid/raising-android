@@ -10,6 +10,7 @@ import lombok.Data;
 public class TicketSize implements Serializable, Model {
     private long id;
     private int ticketSize;
+    private boolean checked = false;
 
     public String getName() { return toString("CHF", new String[] {"k", "M", "B"}); }
 

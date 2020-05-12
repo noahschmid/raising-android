@@ -161,6 +161,11 @@ public class ShareholderInputFragment extends RaisingFragment {
                         return;
                     }
 
+                    if(Float.parseFloat(privateEquityShare) > 100) {
+                        showSimpleDialog(getString(R.string.register_dialog_title), getString(R.string.register_stakeholder_high_equity));
+                        return;
+                    }
+
                     shareholder.setPrivateShareholder(true);
                     shareholder.setCountryId(countryId);
                     shareholder.setLastName(lastName);
@@ -171,7 +176,7 @@ public class ShareholderInputFragment extends RaisingFragment {
                     String name = corporateNameInput.getText().toString();
                     String corporateBody = corporateBodyInput.getText().toString();
                     String website = corporateWebsiteInput.getText().toString();
-                    Float corporateEquityShare = Float.parseFloat(corporateEquityInput.getText().toString());
+                    String corporateEquityShare = corporateEquityInput.getText().toString();
 
                     int corporateBodyId = -1;
                     for (CorporateBody body : resources.getCorporateBodies()) {
@@ -181,15 +186,19 @@ public class ShareholderInputFragment extends RaisingFragment {
                     }
 
                     if (name.length() == 0 || corporateBody.length() == 0 || countryId == -1 ||
-                            corporateBodyId == -1 || website.length() == 0 ||
-                            corporateEquityShare == 0) {
+                            corporateBodyId == -1 ||  corporateEquityShare.length() == 0) {
                         showSimpleDialog(getString(R.string.register_dialog_title),
                                 getString(R.string.register_dialog_text_empty_credentials));
                         return;
                     }
 
+                    if(Float.parseFloat(corporateEquityShare) > 100) {
+                        showSimpleDialog(getString(R.string.register_dialog_title), getString(R.string.register_stakeholder_high_equity));
+                        return;
+                    }
+
                     shareholder.setCorporateBodyId(corporateBodyId);
-                    shareholder.setEquityShare(corporateEquityShare);
+                    shareholder.setEquityShare(Float.parseFloat(corporateEquityShare));
                     shareholder.setCorpName(name);
                     shareholder.setWebsite(website);
                     shareholder.setCountryId(countryId);
@@ -236,7 +245,7 @@ public class ShareholderInputFragment extends RaisingFragment {
                                     ApiRequestHandler.errorHandler,
                                     params);
                         } catch (Exception e) {
-                            displayGenericError();
+                            showGenericError();
                             Log.e("shareholderInput",
                                     "Could not add shareholder: " + e.getMessage());
                         }

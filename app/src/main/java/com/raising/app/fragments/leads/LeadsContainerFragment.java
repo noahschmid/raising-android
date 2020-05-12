@@ -64,9 +64,4 @@ public class LeadsContainerFragment extends RaisingFragment {
 
         return view;
     }
-
-
-    public void changeToFragment(Fragment fragment) {
-        changeFragment(fragment);
-    }
 }

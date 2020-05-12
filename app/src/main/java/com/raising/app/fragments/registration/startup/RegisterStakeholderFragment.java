@@ -98,6 +98,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
+            finishButton.setVisibility(View.INVISIBLE);
             startup = (Startup)accountViewModel.getAccount().getValue();
             editMode = true;
             hideBottomNavigation(false);
@@ -202,12 +203,14 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                         int position = getArguments().getInt("editIndex");
                         founderList.set(position, founder);
                         founderAdapter.notifyItemChanged(position);
+                        finishButton.setVisibility(View.VISIBLE);
                         getArguments().putBoolean("editFounder", false);
                     }
 
                     if(!founderList.contains(founder)) {
                         founderList.add(founder);
                         founderAdapter.notifyDataSetChanged();
+                        finishButton.setVisibility(View.VISIBLE);
                     }
                 });
     }
@@ -243,12 +246,14 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                             result -> {
                                 founderList.remove(position);
                                 founderAdapter.notifyItemRemoved(position);
+                                finishButton.setVisibility(View.VISIBLE);
                                 return null;
                             },
                             ApiRequestHandler.errorHandler);
                 } else {
                     founderList.remove(position);
                     founderAdapter.notifyItemRemoved(position);
+                    finishButton.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -269,15 +274,16 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                         int position = getArguments().getInt("editIndex");
                         boardMemberList.set(position, boardMember);
                         boardMemberAdapter.notifyItemChanged(position);
+                        finishButton.setVisibility(View.VISIBLE);
                         getArguments().putBoolean("editBoardMember", false);
                     }
 
                     if(!boardMemberList.contains(boardMember)) {
                         boardMemberList.add(boardMember);
                         boardMemberAdapter.notifyDataSetChanged();
+                        finishButton.setVisibility(View.VISIBLE);
                     }
                 });
-
     }
 
     /**
@@ -310,12 +316,14 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                             result -> {
                                 boardMemberList.remove(position);
                                 boardMemberAdapter.notifyItemRemoved(position);
+                                finishButton.setVisibility(View.VISIBLE);
                         return null;
                             },
                             ApiRequestHandler.errorHandler);
                 } else {
                     boardMemberList.remove(position);
                     boardMemberAdapter.notifyItemRemoved(position);
+                    finishButton.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -337,12 +345,14 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                         int position = getArguments().getInt("editIndex");
                         shareholderList.set(position, shareholder);
                         shareholderAdapter.notifyItemChanged(position);
+                        finishButton.setVisibility(View.VISIBLE);
                         getArguments().putBoolean("editShareholder", false);
                     }
 
                     if(!shareholderList.contains(shareholder)) {
                         shareholderList.add(shareholder);
                         shareholderAdapter.notifyDataSetChanged();
+                        finishButton.setVisibility(View.VISIBLE);
                     }
                 });
     }
@@ -378,12 +388,14 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                             result -> {
                                 shareholderList.remove(position);
                                 shareholderAdapter.notifyItemRemoved(position);
+                                finishButton.setVisibility(View.VISIBLE);
                                 return null;
                             },
                             ApiRequestHandler.errorHandler);
                 } else {
                     shareholderList.remove(position);
                     shareholderAdapter.notifyItemRemoved(position);
+                    finishButton.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -422,8 +434,6 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             return;
         }
 
-        //TODO: remove manually set loading panel
-        showLoadingPanel();
         try {
             if(!editMode) {
                 startup.clearFounders();
@@ -454,6 +464,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                 Gson gson = gsonBuilder.create();
                 String startup = gson.toJson(RegistrationHandler.getStartup());
                 JSONObject jsonStartup = new JSONObject(startup);
+                viewStateViewModel.startLoading();
                 ApiRequestHandler.performPostRequest("startup/register", registerCallback,
                         errorCallback, jsonStartup);
                 Log.d("RegistrationString", startup);
@@ -485,8 +496,8 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                 popCurrentFragment(this);
             }
         } catch (IOException | JSONException e) {
+            viewStateViewModel.stopLoading();
             //TODO: remove manually set loading panel
-            dismissLoadingPanel();
             Log.e("RegisterStakeholderFragment", "Error in processInputs: " +
                     e.getMessage());
         }
@@ -496,8 +507,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
      * Cancel ongoing registration as request was successful and proceed to login page
      */
     Function<JSONObject, Void> registerCallback = response -> {
-        //TODO: remove manually set loading panel
-        dismissLoadingPanel();
+        viewStateViewModel.stopLoading();
         try {
             startup = RegistrationHandler.getStartup();
             startup.setId(response.getLong("id"));
@@ -513,16 +523,14 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             }
 
         } catch (Exception e ){
-            showSimpleDialog(getString(R.string.generic_error_title),
-                    getString(R.string.generic_error_text));
+            showGenericError();
             Log.d("StartupStakeholder", "" + e.getMessage());
         }
         return null;
     };
 
     Function<VolleyError, Void> errorCallback = response -> {
-        //TODO: remove manually set loading panel
-        dismissLoadingPanel();
+        viewStateViewModel.stopLoading();
         try {
             if(response.networkResponse != null) {
                 if (response.networkResponse.statusCode == 500) {
@@ -537,8 +545,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             Log.d("InvestorImagesErrorException", "" + e.getMessage());
         }
 
-        showSimpleDialog(getString(R.string.generic_error_title),
-                getString(R.string.generic_error_text));
+        showGenericError();
         finishButton.setEnabled(true);
         return null;
     };

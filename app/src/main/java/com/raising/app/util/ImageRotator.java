@@ -77,21 +77,4 @@ public class ImageRotator {
 
         return rotateBitmap(bitmap, orientation);
     }
-
-    private static File persistImage(Bitmap bitmap, String name) {
-        File filesDir = InternalStorageHandler.getContext().getFilesDir();
-        File imageFile = new File(filesDir, name + ".jpg");
-
-        OutputStream os;
-        try {
-            os = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
-            os.flush();
-            os.close();
-            return imageFile;
-        } catch (Exception e) {
-            Log.e("persistImage", "Error writing bitmap", e);
-            return null;
-        }
-    }
 }

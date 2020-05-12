@@ -20,6 +20,7 @@ import com.raising.app.models.ContactData;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
+import com.raising.app.util.SubscriptionHandler;
 
 public class ContactDataInput extends RaisingFragment {
     private EditText phoneNumberInput;
@@ -62,12 +63,7 @@ public class ContactDataInput extends RaisingFragment {
      * Setup save button (add on click listener)
      */
     private void setupButton() {
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                processInputs();
-            }
-        });
+        saveButton.setOnClickListener(v -> processInputs());
     }
 
     /**
@@ -90,6 +86,8 @@ public class ContactDataInput extends RaisingFragment {
             AuthenticationHandler.login(contactDetails.getEmail(),
                     token, accountId, isStartup);
             accountViewModel.loadAccount();
+            settingsViewModel.loadSettings();
+            SubscriptionHandler.loadSubscription();
             AccountService.loadContactData(AuthenticationHandler.getId());
             hideBottomNavigation(false);
 
@@ -102,8 +100,7 @@ public class ContactDataInput extends RaisingFragment {
         } catch (Exception e) {
             Log.e("ContactDetailsInput", "Error while saving contact details: " +
                     e.getMessage());
-            showSimpleDialog(getString(R.string.generic_error_title),
-                    getString(R.string.generic_error_text));
+            showGenericError();
         }
     }
 }

@@ -53,8 +53,7 @@ public class LeadsOpenRequestAdapter extends RecyclerView.Adapter<LeadsOpenReque
                             recyclerItem.getProfilePictureId())
                     .centerCrop()
                     .apply(RequestOptions.circleCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                     .placeholder(R.drawable.ic_placeholder_24dp)
                     .into(holder.image);
         } else {

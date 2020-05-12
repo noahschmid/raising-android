@@ -31,6 +31,7 @@
     <string name="submit_text"> Submit </string>
     <string name="register_button_text"> Continue </string>
     <string name="register_button_finish_text"> Finish </string>
+    <string name="try_again_text"> Try again</string>
 
     <string name="simple_dialog_invalid_input_title">Invalid inputs</string>
 
@@ -65,11 +66,22 @@
     <string name="toolbar_title_forgot_email"> Forgot Password</string>
 
     <string name="toolbar_title_reset_password"> Reset Password </string>
+    <string name="reset_password_success_title">Password reset</string>
+    <string name="reset_password_success_text">Your password has successfully been reset. You can now log in with your new password.</string>
 
     <string name="toolbar_title_contact_details"> Complete your Profile </string>
 
 
     <!-- Strings used for Registration -->
+    <string name="registration_information_dialog_title"> Additional Information</string>
+    <string name="registration_information_dialog_description">Describe yourself in one sentence</string>
+    <string name="registration_information_dialog_pitch">Write a pitch in less than 250 words </string>
+    <string name="registration_information_dialog_uid">UID is a national identification number for all companies. If you do not know your UID click on ‘Find UID’.</string>
+    <string name="registration_information_dialog_fte">FTE stands for Full Time Employees. Potential matches may be interested in your employment status.</string>
+    <string name="registration_information_dialog_committed">Tell us if you have already achieved some of the target scope, that you have specified above.</string>
+    <string name="registration_information_dialog_scope">With the scope you can define how much money you would like to raise during this current financing phase.</string>
+    <string name="registration_information_label">A label is an award given to a startup upon completing a certain program or reaching predefined values \n(max. 3 Labels)</string>
+
     <string name="toolbar_title_login_information"> Login Information</string>
     <string name="register_first_name"> First Name* </string>
     <string name="register_last_name"> Last Name* </string>
@@ -91,15 +103,20 @@
     <string name="register_profile_phone"> Phone Number* </string>
 
     <string name="toolbar_title_matching_criteria"> Matching Criteria</string>
-    <string name="register_matching_ticket_size"> Ticket Size </string>
-    <string name="register_matching_investor"> Type of investor </string>
-    <string name="register_matching_phase"> Phase </string>
-    <string name="register_matching_industry"> Industry </string>
-    <string name="register_matching_support"> Desired involvement </string>
-    <string name="register_matching_geographics_input"> Geographic preferences </string>
+    <string name="startup_matching_ticket_size_text">What preferred amounts of money should investors invest?</string>
+    <string name="startup_matching_type_investor_text">What type of investor are you looking for?</string>
+    <string name="startup_matching_phase_text">What stage of financing are you in?</string>
+    <string name="startup_matching_industry_text">What industry are you in?</string>
+    <string name="startup_matching_involvement_text">What kind of involvement do you desire from an investor?</string>
+    <string name="investor_matching_ticket_size_text">What preferred amounts of money would you like to invest?</string>
+    <string name="investor_matching_type_investor_text">What type of investor are you?</string>
+    <string name="investor_matching_phase_text">What stage of financing are you interested in?</string>
+    <string name="investor_matching_industry_text">What are your target industries?</string>
+    <string name="investor_matching_involvement_text">What kind of involvement can you bring to startups?</string>
+    <string name="investor_matching_geographics_text">Which are your preferred regions for startups?</string>
     <string name="register_matching_geographics"> Geographics </string>
 
-    <string name="toolbar_title_pitch"> Description &amp; Pitch </string>
+    <string name="toolbar_title_pitch"> Pitch </string>
     <string name="register_pitch_sentence"> Description* </string>
     <string name="register_sentence_helper_text"> Describe yourself in one sentence.</string>
     <string name="register_pitch"> Pitch* </string>
@@ -119,26 +136,28 @@
     <string name="toolbar_title_company_information"> Company Information </string>
     <string name="register_company_name"> Company* </string>
     <string name="register_company_uid"> UID* </string>
+    <string name="register_company_uid_helper">Pattern: CHE-XXX.XXX.XXX</string>
     <string name="register_company_phone"> Phone Number* </string>
     <string name="register_company_website"> Website </string>
     <string name="register_company_country"> Country* </string>
-    <string name="register_uid_snackbar_find"> Find UID </string>
+    <string name="register_uid_find"> Find UID </string>
     <string name="register_uid_link"> https://www.bfs.admin.ch/bfs/en/home/register/unternehmensregister/unternehmens-identifikationsnummer.html </string>
-    <string name="register_uid_helper_text"> UID is a national identification number for all companies. </string>
 
     <string name="toolbar_title_company_figures"> Facts and Figures </string>
     <string name="register_company_revenue"> Revenue* </string>
     <string name="register_company_breakeven"> Break-Even Year* </string>
-    <string name="register_company_fte"> FTE* </string>
+    <string name="break_even_picker_title">Select Breakeven Year</string>
+    <string name="register_company_fte"> Full Time Employee* </string>
     <string name="register_company_markets"> Current Markets* </string>
     <string name="register_company_founding_year"> Founding Year* </string>
+    <string name="founding_picker_title">Select Founding Year</string>
     <string name="register_fte_helper_text"> FTE stands for Full Time Employees</string>
     <string name="register_company_error_fte">FTE should be greater than 0</string>
     <string name="register_company_error_break_even"> Break-Even Year should be after the Founding Year </string>
 
     <string name="toolbar_title_labels"> Labels </string>
     <string name="register_label_error_title"> Too many Labels</string>
-    <string name="register_label_error_text"> Please do not choose more than 4 labels</string>
+    <string name="register_label_error_text"> Please do not choose more than 3 labels</string>
 
     <string name="toolbar_title_video"> Video </string>
 
@@ -148,9 +167,9 @@
     <string name="register_financial_closing_time"> Closing Time* </string>
     <string name="register_financial_scope"> Scope </string>
     <string name="register_financial_scope_"> Scope* </string>
-    <string name="register_financial_completed">Completed</string>
-    <string name="register_completed_helper_text"> Have you completed some of your target scope? </string>
-    <string name="register_financial_error_completed"> Completed should not be greater than Scope </string>
+    <string name="register_financial_committed">Committed</string>
+    <string name="register_committed_helper_text"> Have you completed some of your target scope? </string>
+    <string name="register_financial_error_committed"> Committed should not be greater than Scope </string>
 
     <string name="toolbar_title_stakeholder"> Stakeholder </string>
     <string name="register_stakeholder_founder"> Founders* </string>
@@ -178,12 +197,14 @@
     <string name="register_stakeholder_shareholder_corporate"> Corporate Shareholder </string>
     <string name="register_stakeholder_shareholder_corporate_body"> Corporate Body* </string>
     <string name="register_stakeholder_shareholder_website"> Website </string>
+    <string name="register_stakeholder_high_equity">A Shareholder cannot have more than 100% equity</string>
     <string name="register_stakeholder_error_equity"> Shareholders have more than 100% equity share.</string>
 
     <!-- Strings used for Match List -->
     <string name="toolbar_title_match_list"> Matches of the Week </string>
-    <string name="empty_matchList_text"> You are done! </string>
-    <string name="empty_matchList_text_2"> Enjoy the rest of your week! </string>
+    <string name="empty_matchList_text"> There are no more matches left this week </string>
+    <string name="empty_matchList_text_2"> Next matches will be available next Monday</string>
+    <string name="empty_matchlist_text_3"> Enjoy the rest of your week! </string>
 
     <!-- Strings used for Leads -->
     <string name="toolbar_title_leads"> Leads </string>
@@ -195,7 +216,7 @@
     <string name="leads_tab_today"> Today </string>
     <string name="leads_tab_this_week"> This Week </string>
     <string name="leads_tab_earlier">Earlier</string>
-    <string name="leads_no_current_leads_text"> You currently do not have any leads to display under this category</string>
+    <string name="leads_no_current_leads_text"> You don\'t have any leads under this category!</string>
     <string name="toolbar_title_open_requests"> Open Requests</string>
     <string name="leads_no_open_requests"> You currently don\'t have any open requests!</string>
 
@@ -238,11 +259,12 @@
     <string name="settings_about_graphics"> Graphics and Design </string>
     <string name="settings_about_graphics_text"> Olivier Stähli</string>
 
-    <string name="settings_notifications"> Notifications </string>
-    <string name="settings_notifications_toggle_all"> Toggle all Notifications</string>
-    <string name="settings_notifications_matchlist"> New Matchlist is available</string>
-    <string name="settings_notifications_contact"> I get a new contact request</string>
-    <string name="settings_notifications_connection"> I make a successful connection</string>
+    <string name="settings_general"> General </string>
+    <string name="settings_general_toggle_all"> Toggle all Notifications</string>
+    <string name="settings_general_matchlist"> New Matchlist is available</string>
+    <string name="settings_general_leads">I get a new lead</string>
+    <string name="settings_general_contact"> I get a new contact request</string>
+    <string name="settings_general_connection"> I make a successful connection</string>
 
     <string name="settings_report_problem"> Report a Problem </string>
     <string name="settings_feedback"> Give Feedback</string>
@@ -264,15 +286,12 @@
 
     <!-- Strings used for Public Profile -->
     <string name="toolbar_my_public_profile"> My Public Profile</string>
+    <string name="profile_lead_added_message"> Added a new Lead</string>
+    <string name="profile_lead_decline_message">Match declined</string>
     <string name="public_profile_website"> Read more on their website </string>
     <string name="public_profile_matching_information"> Matching Information </string>
-    <string name="investor_matching_scope"> Investment Scope </string>
     <string name="investor_matching_min_ticket"> Minimal Ticket Size </string>
     <string name="investor_matching_max_ticket"> Maximal Ticket Size </string>
-    <string name="investor_matching_investor_type"> Investor Type </string>
-    <string name="investor_matching_phase"> Preferred Investment Phases </string>
-    <string name="investor_matching_industry"> Interested in these Industries </string>
-    <string name="investor_matching_involvement"> Desired Form of Involvement </string>
     <string name="public_profile_pitch"> Pitch:</string>
     <string name="startup_profile_key_figures"> Key Figures </string>
     <string name="startup_public_profile_revenue"> Revenue </string>
@@ -284,7 +303,7 @@
     <string name="startup_public_profile_type"> Type of investment </string>
     <string name="startup_public_profile_valuation"> Pre Money Valuation </string>
     <string name="startup_public_profile_closing_time"> Closing Time </string>
-    <string name="startup_public_profile_completed"> Completed </string>
+    <string name="startup_public_profile_committed"> Committed </string>
     <string name="startup_public_profile_founder"> Founders </string>
     <string name="startup_public_profile_education"> Education </string>
     <string name="startup_public_profile_profession"> Profession </string>
@@ -295,10 +314,10 @@
     <!-- Strings used for Subscription -->
     <string name="toolbar_profile_subscription"> Subscription</string>
     <string name="subscription_error_cannot_add_title"> Subscription active!</string>
-    <string name="subscription_error_cannot_add_text"> You already have an active subscription</string>
+    <string name="subscription_error_cannot_add_text"> You cannot change your subscription since you have an ending subscription already.</string>
     <string name="subscription_your_subscriptions">Your active subscription</string>
     <string name="subscription_dialog_subscribe_title"> Subscribe to Rai$ing</string>
-    <string name="subscribtion_dialog_subscribe_text"> You are about to purchase a subscription. \nDo you want to proceed?</string>
+    <string name="subscribtion_dialog_subscribe_text"> You are about to purchase a subscription from Rai$ing. \nDo you want to proceed?</string>
     <string name="subscription_ending"> Ending Subscription</string>
     <string name="subscription_next"> Next Subscription</string>
     <string name="subscription_downgrade"> Downgrade to </string>
@@ -313,11 +332,15 @@
     <string name="subscriptions_weeks"> Week</string>
     <string name="subscription_activated"> Will be activated: </string>
     <string name="subscription_expires"> Expiration Date: </string>
-    <string name="subscription_cancel"> Cancel Subscription</string>
+    <string name="subscription_manage"> Manage your subscription on Google Play</string>
+    <string name="subscription_google_play"> Google Play </string>
     <string name="subscription_cancel_text"> Are you sure you want to cancel your subscription?</string>
     <string name="subscription_cancel_confirmation_title"> Subscription Cancelled</string>
     <string name="subscription_cancel_confirmation_text"> You have successfully cancelled your subscription to Rai$ing. \n \n</string>
     <string name="subscription_subscribe">Subscribe</string>
+    <string name="billing_connection_failed_title">No connection</string>
+    <string name="billing_connection_failed_text"> We are currently unable to connect to Google\'s Billing Server</string>
+    <string name="billing_connection_issue_text"> There is an issue with Google\'s Billing Service</string>
 
     <!-- Strings used in ForgotPasswordScreens -->
     <string name="reset_email_input_placeholder"> E-Mail </string>
@@ -364,12 +387,18 @@
     <string name="not_logged_in_text">You are not logged in!</string>
     <string name="no_profile_text">Looks like you have no profile yet!</string>
     <string name="contact_input_title">Complete your profile</string>
-    <string name="contact_input_description">Seems like we\'ve lost some information about you! Please fill in the missing details so you can continue using Raising.</string>
+    <string name="contact_input_description">This looks like a new device. Please enter your mobile number to allow for an exchange of mobile numbers later on!</string>
     <string name="phone_number">Phone Number</string>
     <string name="invalid_uid_text">Entered UID is invalid!</string>
     <string name="wrong_reset_code">Entered code is invalid!</string>
     <string name="permissionTitle">Missing Permissions</string>
     <string name="permissionText">We need permission to your phone\'s storage in order for you to upload pictures.</string>
+    <string name="leads_tab_this_month">This Month</string>
+
+    <!-- Strings used in custom elements -->
+    <string name="year_picker_title">Select Year</string>
+    <string name="session_expired_title">Session expired</string>
+    <string name="session_expired_text">Please log in again to your account</string>
 
     <string-array name="revenue_units">
         <item>K</item>

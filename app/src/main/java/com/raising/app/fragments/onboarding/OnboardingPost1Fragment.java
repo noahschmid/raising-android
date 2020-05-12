@@ -22,7 +22,7 @@ public class OnboardingPost1Fragment extends RaisingFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         hideBottomNavigation(true);
-        customizeAppBar(" ", false);
+        hideToolbar(true);
         return inflater.inflate(R.layout.fragment_onboarding_post1, container, false);
     }
 
@@ -33,7 +33,6 @@ public class OnboardingPost1Fragment extends RaisingFragment {
         Bundle args = new Bundle();
         if (getArguments() != null && getArguments().getBoolean("settings")) {
             args.putBoolean("settings", getArguments().getBoolean("settings"));
-            customizeAppBar(getString(R.string.toolbar_title_onboarding), false);
         }
 
         view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {
@@ -61,5 +60,6 @@ public class OnboardingPost1Fragment extends RaisingFragment {
         super.onDestroy();
 
         hideBottomNavigation(false);
+        hideToolbar(false);
     }
 }

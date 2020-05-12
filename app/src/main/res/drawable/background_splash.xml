@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-<item
-    android:drawable="@color/gray"/>
-
-<item>
-    <bitmap
+    <item
+        android:drawable="@color/raisingWhite"
+        android:gravity="fill_horizontal|fill_vertical" />
+    <item
+        android:drawable="@drawable/raising_splash_background"
+        android:gravity="center_horizontal|bottom"
+        android:width="400dp"
+        android:bottom="-350dp"
+        android:height="700dp">
+    </item>
+    <item
+        android:drawable="@drawable/ic_raising_schrift_large"
         android:gravity="center"
-        android:src="@drawable/logo_min"/>
-</item>
-
+        android:bottom="100dp"/>
 </layer-list>

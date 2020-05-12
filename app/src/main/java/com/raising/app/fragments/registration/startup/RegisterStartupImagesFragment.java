@@ -3,7 +3,6 @@ package com.raising.app.fragments.registration.startup;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -20,49 +19,34 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.flexbox.FlexboxLayout;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.raising.app.R;
-import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Image;
 import com.raising.app.models.Startup;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
-import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.ImageRotator;
 import com.raising.app.util.ImageUploader;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.Serializer;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 public class RegisterStartupImagesFragment extends RaisingFragment {
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -103,12 +87,12 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        inflater = (LayoutInflater)getContext().getSystemService
+        inflater = (LayoutInflater) getContext().getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
 
         profileImage = view.findViewById(R.id.register_startup_profile_image);
         profileImage.setOnClickListener(v -> {
-            if(permissionGranted) {
+            if (permissionGranted) {
                 showImageMenu(true);
             } else {
                 checkPermissions();
@@ -120,21 +104,22 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
         deleteProfileImageButton = view.findViewById(R.id.button_delete_profile_img);
         deleteProfileImageButton.setVisibility(View.GONE);
-        deleteProfileImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                profileImageOverlay.setVisibility(View.VISIBLE);
-                deleteProfileImageButton.setVisibility(View.GONE);
-                profileImage.setImageBitmap(null);
-            }
+        deleteProfileImageButton.setOnClickListener(v -> {
+            profileImageOverlay.setVisibility(View.VISIBLE);
+            deleteProfileImageButton.setVisibility(View.GONE);
+            profileImage.setImageBitmap(null);
         });
 
         finishButton = view.findViewById(R.id.button_startup_images);
-        finishButton.setOnClickListener(v -> { finishButton.setEnabled(false); processInputs(); });
+        finishButton.setOnClickListener(v -> {
+            finishButton.setEnabled(false);
+            processInputs();
+        });
 
-        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+        if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_images_progress).setVisibility(View.INVISIBLE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
+            finishButton.setVisibility(View.INVISIBLE);
             startup = (Startup) accountViewModel.getAccount().getValue();
             editMode = true;
             hideBottomNavigation(false);
@@ -151,17 +136,20 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
      * Add an image view at the end of the gallery with an + drawable
      */
     private void addNewGalleryPlaceholder() {
-        if(gallery.size() >= 9) {
+        if (gallery.size() >= 9) {
             return;
         }
 
         final View galleryObject = inflater.inflate(R.layout.item_gallery, null);
         ImageView galleryImage = galleryObject.findViewById(R.id.gallery_image);
+        galleryImage.setContentDescription("placeholder");
         galleryImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(permissionGranted) {
-                    showImageMenu(false);
+                if (permissionGranted) {
+                    if (galleryImage.getContentDescription() == "placeholder") {
+                        showImageMenu(false);
+                    }
                 } else {
                     checkPermissions();
                 }
@@ -175,7 +163,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
     }
 
     private void loadImages() {
-        if(startup.getProfilePictureId() > 0) {
+        if (startup.getProfilePictureId() > 0) {
             Glide
                     .with(this)
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
@@ -186,12 +174,12 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                     .placeholder(R.drawable.ic_person_24dp)
                     .into(profileImage);
             profileImageOverlay.setVisibility(View.GONE);
-            deleteProfileImageButton.setVisibility(View.VISIBLE);
+            deleteProfileImageButton.setVisibility(View.GONE);
         }
 
-        if(startup.getGalleryIds() != null) {
+        if (startup.getGalleryIds() != null) {
             startup.getGalleryIds().forEach(imageId -> {
-                if(imageId > 0) {
+                if (imageId > 0) {
                     Glide.with(this)
                             .asBitmap()
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -229,6 +217,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
     /**
      * Process media selected from gallery/camera
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -236,7 +225,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(data == null)
+        if (data == null)
             return;
 
         switch (requestCode) {
@@ -244,6 +233,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                 Bitmap image = (Bitmap) data.getExtras().get("data");
                 addImageToGallery(new Image(image));
                 galleryChanged = true;
+                finishButton.setVisibility(View.VISIBLE);
                 break;
 
             case REQUEST_GALLERY_FETCH:
@@ -252,6 +242,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                     image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
                     addImageToGallery(new Image(ImageRotator.checkRotation(getPath(imageUri), image)));
                     galleryChanged = true;
+                    finishButton.setVisibility(View.VISIBLE);
                 } catch (Exception e) {
                     Log.d("StartupImages", e.getMessage());
                 }
@@ -261,6 +252,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                 image = (Bitmap) data.getExtras().get("data");
                 setProfileImage(image);
                 profilePictureChanged = true;
+                finishButton.setVisibility(View.VISIBLE);
                 break;
 
             case REQUEST_IMAGE_FETCH:
@@ -269,6 +261,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                     image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
                     setProfileImage(ImageRotator.checkRotation(getPath(imageUri), image));
                     profilePictureChanged = true;
+                    finishButton.setVisibility(View.VISIBLE);
                 } catch (Exception e) {
                     Log.d("StartupImages", e.getMessage());
                 }
@@ -284,10 +277,10 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
      * Check whether the needed read/write permissions to external storage are granted and if not
      * show dialog
      */
-    private void checkPermissions(){
+    private void checkPermissions() {
         if (ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED||
+                != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(getContext(),
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
@@ -307,6 +300,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
     /**
      * Callback after granting or denying external storage permission
+     *
      * @param requestCode
      * @param permissions
      * @param grantResults
@@ -328,12 +322,15 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
     /**
      * Set the chosen profile image
+     *
      * @param image
      */
     private void setProfileImage(Bitmap image) {
         try {
             profileImage.setImageBitmap(image);
-            deleteProfileImageButton.setVisibility(View.VISIBLE);
+            if (startup.getProfilePictureId() == -1) {
+                deleteProfileImageButton.setVisibility(View.VISIBLE);
+            }
             profileImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             profileImageOverlay.setVisibility(View.GONE);
         } catch (NullPointerException e) {
@@ -343,18 +340,21 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
     /**
      * Add a new image to the gallery
+     *
      * @param image
      */
     private void addImageToGallery(Image image) {
         final View galleryObject;
-        if(addGalleryImage == null) {
+        if (addGalleryImage == null) {
             galleryObject = inflater.inflate(R.layout.item_gallery, null);
         } else {
             galleryObject = addGalleryImage;
-            galleryObject.setOnClickListener(null);
         }
 
+        galleryObject.setOnClickListener(null);
+
         ImageView galleryImage = galleryObject.findViewById(R.id.gallery_image);
+        galleryImage.setContentDescription("gallery");
         gallery.add(image);
         galleryImage.setImageBitmap(image.getImage());
         AppCompatButton deleteButton = galleryObject.findViewById(R.id.button_delete_gallery_img);
@@ -364,7 +364,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             public void onClick(View v) {
                 galleryObject.setVisibility(View.GONE);
                 galleryLayout.removeView(galleryObject);
-                if(image.getId() != -1) {
+                if (image.getId() != -1) {
                     ApiRequestHandler.performDeleteRequest("media/gallery/" + image.getId(),
                             success -> {
                                 startup.getGalleryIds().remove(image.getId());
@@ -381,7 +381,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             }
         });
 
-        if(addGalleryImage == null) {
+        if (addGalleryImage == null) {
             galleryLayout.addView(galleryObject);
         }
         addNewGalleryPlaceholder();
@@ -389,11 +389,12 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
     /**
      * Show menu where user can choose between taking a new photo or choosing an existing one
+     *
      * @param profileImage true, if user adds profile picture
      *                     false, if user adds picture to gallery
      */
     private void showImageMenu(boolean profileImage) {
-        final String [] options = {getString(R.string.image_action_dialog_take),
+        final String[] options = {getString(R.string.image_action_dialog_take),
                 getString(R.string.image_action_dialog_choose), getString(R.string.cancel_text)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
@@ -436,8 +437,15 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
      * Process the given inputs
      */
     private void processInputs() {
-        if(((BitmapDrawable)profileImage.getDrawable()).getBitmap() == null ||
-                profileImage.getDrawable().getIntrinsicWidth()  == 0 ||
+        if (profileImage.getDrawable() == null) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_no_picture_text));
+            finishButton.setEnabled(true);
+            return;
+        }
+
+        if (((BitmapDrawable) profileImage.getDrawable()).getBitmap() == null ||
+                profileImage.getDrawable().getIntrinsicWidth() == 0 ||
                 profileImage.getDrawable().getIntrinsicHeight() == 0 ||
                 profileImage.getDrawable() == getResources().getDrawable(
                         R.drawable.ic_add_24dp, Objects.requireNonNull(getContext()).getTheme())) {
@@ -447,12 +455,12 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             return;
         }
 
-        Bitmap logo = ((BitmapDrawable)profileImage.getDrawable()).getBitmap();
-        if(editMode) {
-            if(profilePictureChanged) {
+        Bitmap logo = ((BitmapDrawable) profileImage.getDrawable()).getBitmap();
+        if (editMode) {
+            if (profilePictureChanged) {
                 accountViewModel.updateProfilePicture(new Image(logo));
             }
-            if(galleryChanged) {
+            if (galleryChanged) {
                 accountViewModel.updateGallery(gallery);
             }
         } else {
@@ -462,28 +470,29 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
 
     /**
      * Upload profile picture to backend server
+     *
      * @param logo the profile picture
      */
     private void uploadImages(Bitmap logo) {
         List<Bitmap> bitmaps = new ArrayList<>();
         gallery.forEach(img -> {
-            if(img.getId() < 1) {
+            if (img.getId() < 1) {
                 bitmaps.add(img.getImage());
             }
         });
         new ImageUploader(logo, bitmaps, response -> {
             try {
-                if(response.has("profileResponse")) {
+                if (response.has("profileResponse")) {
                     JSONObject pResponse = response.getJSONObject("profileResponse");
                     startup.setProfilePictureId(pResponse.getLong("id"));
                 }
 
-                if(response.has("galleryResponse")) {
+                if (response.has("galleryResponse")) {
                     JSONArray gResponse = response.getJSONArray("galleryResponse");
-                    if(startup.getGalleryIds() == null) {
+                    if (startup.getGalleryIds() == null) {
                         startup.setGalleryIds(new ArrayList<>());
                     }
-                    for(int i = 0; i < gResponse.length(); ++i) {
+                    for (int i = 0; i < gResponse.length(); ++i) {
                         startup.getGalleryIds().add(gResponse.getLong(i));
                     }
                 }
@@ -495,12 +504,12 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
             } catch (Exception e) {
                 Log.e(TAG, "uploadImages: " + e.getMessage());
                 finishButton.setEnabled(true);
-                displayGenericError();
+                showGenericError();
             }
 
             return null;
         }, error -> {
-            Log.e(TAG, "upload images: " + error.toString() );
+            Log.e(TAG, "upload images: " + error.toString());
             finishButton.setEnabled(true);
             return null;
         }).execute();

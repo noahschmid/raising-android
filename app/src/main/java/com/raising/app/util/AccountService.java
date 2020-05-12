@@ -3,14 +3,19 @@ package com.raising.app.util;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.raising.app.R;
 import com.raising.app.models.Account;
 import com.raising.app.models.ContactData;
 import com.raising.app.models.Investor;
 import com.raising.app.models.Startup;
+import com.raising.app.models.ViewState;
+import com.raising.app.viewModels.ViewStateViewModel;
 
 import org.json.JSONObject;
 
@@ -106,6 +111,13 @@ public class AccountService {
      * Error callback function
      */
     private static Function<VolleyError, Void> errorCallback = error -> {
+        if(error.networkResponse != null) {
+            if(error.networkResponse.statusCode == 403) {
+                ViewStateViewModel viewStateViewModel = ViewModelProviders
+                        .of(InternalStorageHandler.getActivity()).get(ViewStateViewModel.class);
+                viewStateViewModel.setViewState(ViewState.EXPIRED);
+            }
+        }
         Log.e(TAG, "Error while fetching profile: " +
                 ApiRequestHandler.parseVolleyError(error));
         return null;

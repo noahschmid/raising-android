@@ -7,10 +7,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.raising.app.R;
 import com.raising.app.models.Model;
+import com.raising.app.util.CircleImageDrawable;
 
 import java.util.ArrayList;
 
@@ -33,8 +35,14 @@ public class PublicProfileMatchingAdapter extends RecyclerView.Adapter<PublicPro
     @Override
     public void onBindViewHolder(@NonNull PublicProfileMatchingAdapter.ViewHolder holder, int position) {
         Model recyclerItem = recyclerItems.get(position);
-        // TODO: replace with actual icon
-        holder.matchingCriterionIcon.setImageResource(R.drawable.ic_android_24dp);
+        /*
+        int standardBackgroundColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.raisingSecondaryAccent);
+        int standardForegroundColor = R.color.raisingSecondaryDark;
+
+        CircleImageDrawable icon = new CircleImageDrawable(recyclerItem.getImage(), 1,
+                standardBackgroundColor, standardForegroundColor);
+         */
+        holder.matchingCriterionIcon.setImageBitmap(recyclerItem.getImage());
         holder.matchingCriterionText.setText(recyclerItem.getName());
     }
 

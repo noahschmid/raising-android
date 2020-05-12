@@ -9,7 +9,7 @@
 
     <Button
         android:id="@+id/button_register_as_startup"
-        style="@style/ButtonConfirmRegistration"
+        style="@style/ButtonRegistrationAndProfile"
         android:layout_width="0dp"
         android:layout_height="@dimen/inputFormHeight"
         android:layout_marginStart="@dimen/standardHorizontalMargin"
@@ -23,7 +23,7 @@
 
     <Button
         android:id="@+id/button_register_as_investor"
-        style="@style/ButtonConfirmRegistration"
+        style="@style/ButtonRegistrationAndProfile"
         android:layout_width="0dp"
         android:layout_height="@dimen/inputFormHeight"
         android:hint="@string/register_select_investor_button"
@@ -34,14 +34,13 @@
 
     <TextView
         android:id="@+id/text_select_type"
+        style="@style/RaisingText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/standardHorizontalMargin"
         android:layout_marginEnd="@dimen/standardHorizontalMargin"
         android:gravity="center"
         android:hint="@string/register_select_type_text"
-        android:textColorHint="@color/raisingTextColor"
-        android:textSize="@dimen/raisingTextFontSize"
         app:layout_constraintBottom_toTopOf="@+id/button_register_as_startup"
         app:layout_constraintEnd_toEndOf="@+id/button_register_as_startup"
         app:layout_constraintStart_toStartOf="@+id/button_register_as_startup"

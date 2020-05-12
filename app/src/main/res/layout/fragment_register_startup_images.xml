@@ -18,13 +18,12 @@
 
             <TextView
                 android:id="@+id/text_startup_images_add_profile_picture"
+                style="@style/RaisingSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_images_add_profile_text"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingSubtitleFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_image_profile_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -78,18 +77,17 @@
                     android:layout_height="32dp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:background="@drawable/ic_trash_can_red_32dp"
+                    android:background="@drawable/ic_trash_can"
                     android:visibility="visible" />
             </RelativeLayout>
 
             <TextView
                 android:id="@+id/text_startup_images_add_gallery"
+                style="@style/RaisingSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_images_add_gallery"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingSubtitleFontSize"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_images_gallery"
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_image_profile_layout"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_image_profile_layout"
@@ -108,8 +106,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/registration_images_progress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_startup_images_add_gallery">
-            </com.google.android.flexbox.FlexboxLayout>
+                app:layout_constraintTop_toBottomOf="@+id/text_startup_images_add_gallery"/>
 
             <LinearLayout
                 android:id="@+id/registration_images_progress"
@@ -169,7 +166,7 @@
 
             <Button
                 android:id="@+id/button_startup_images"
-                style="@style/ButtonConfirmRegistration"
+                style="@style/ButtonRegistrationAndProfile"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"

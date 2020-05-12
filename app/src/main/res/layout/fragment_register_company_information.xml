@@ -36,7 +36,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/register_input_company_name"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight" />
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:inputType="textCapWords" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -75,7 +76,6 @@
                     android:id="@+id/register_input_company_website"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"
-                    android:inputType="none"
                     app:endIconMode="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,7 +91,9 @@
                 app:layout_constraintBottom_toTopOf="@+id/register_company_country"
                 app:layout_constraintEnd_toEndOf="@+id/register_company_website"
                 app:layout_constraintStart_toStartOf="@+id/register_company_website"
-                app:layout_constraintTop_toBottomOf="@+id/register_company_website">
+                app:layout_constraintTop_toBottomOf="@+id/register_company_website"
+                app:helperTextEnabled="true"
+                app:helperText="@string/register_company_uid_helper">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/register_input_company_uid"
@@ -178,7 +180,7 @@
 
             <Button
                 android:id="@+id/button_company_information"
-                style="@style/ButtonConfirmRegistration"
+                style="@style/ButtonRegistrationAndProfile"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"

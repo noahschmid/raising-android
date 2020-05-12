@@ -1,6 +1,5 @@
 package com.raising.app.util;
 
-import android.app.Activity;
 import android.content.Context;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +22,7 @@ public class InternalStorageHandler {
     public static void setActivity(AppCompatActivity activity) { InternalStorageHandler.activity = activity; }
 
     public static Context getContext() { return context; }
-    public static Activity getActivity() { return activity; }
+    public static AppCompatActivity getActivity() { return activity; }
 
     /**
      * Load object from internal storage
@@ -99,5 +98,12 @@ public class InternalStorageHandler {
         isr.close();
         fis.close();
         return result;
+    }
+
+    public static void deleteFile(String filename) {
+        if(!exists(filename))
+            return;
+
+        context.deleteFile(filename);
     }
 }

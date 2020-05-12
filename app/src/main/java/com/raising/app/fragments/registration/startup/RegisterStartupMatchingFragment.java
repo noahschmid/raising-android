@@ -11,25 +11,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.slider.Slider;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Startup;
 import com.raising.app.util.RegistrationHandler;
+import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaAdapter;
+import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaComponent;
 import com.raising.app.viewModels.AccountViewModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class RegisterStartupMatchingFragment extends RaisingFragment
-        implements View.OnClickListener {
+public class RegisterStartupMatchingFragment extends RaisingFragment {
     private Slider ticketSize;
-    private LinearLayout investorTypeLayout, supportLayout, industryLayout;
-    private RadioGroup investmentPhaseGroup;
+    private Button btnStartUpMatching;
+    private MatchingCriteriaComponent investorTypeCriteria, supportCriteria, industryCriteria,
+            investmentPhaseCriteria;
     private TextView ticketSizeText;
 
     private int minimumTicketSize, maximumTicketSize;
@@ -69,13 +75,29 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
 
         prepareTicketSizeSlider(view);
 
-        investorTypeLayout = view.findViewById(R.id.register_startup_investor_type_layout);
-        supportLayout = view.findViewById(R.id.register_support_matching_support_layout);
-        investmentPhaseGroup = view.findViewById(R.id.register_startup_matching_radio_phase);
-        industryLayout = view.findViewById(R.id.register_startup_matching_industry_layout);
+        MatchingCriteriaAdapter.OnItemClickListener clickListener = new MatchingCriteriaAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                if(editMode) {
+                    btnStartUpMatching.setVisibility(View.VISIBLE);
+                }
+            }
+        };
 
-        Button btnStartUpMatching = view.findViewById(R.id.button_startup_matching);
-        btnStartUpMatching.setOnClickListener(this);
+        investorTypeCriteria = new MatchingCriteriaComponent(view.findViewById(R.id.register_startup_investor_type_layout),
+                resources.getInvestorTypes(), false, clickListener);
+
+        supportCriteria = new MatchingCriteriaComponent(view.findViewById(R.id.register_support_matching_support_layout),
+                resources.getSupports(), false, clickListener);
+
+        investmentPhaseCriteria = new MatchingCriteriaComponent(view.findViewById(R.id.register_startup_matching_radio_phase),
+                resources.getInvestmentPhases(), true, clickListener);
+
+        industryCriteria = new MatchingCriteriaComponent(view.findViewById(R.id.register_startup_matching_industry_layout),
+                resources.getIndustries(), false, clickListener);
+
+        btnStartUpMatching = view.findViewById(R.id.button_startup_matching);
+        btnStartUpMatching.setOnClickListener(v -> processMatchingInformation());
 
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
@@ -89,10 +111,11 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
 
         if(startup.getTicketMinId() != 0 && startup.getTicketMaxId() != 0)
             ticketSize.setValues((float)startup.getTicketMinId(), (float)startup.getTicketMaxId());
+        if(editMode) {
+            btnStartUpMatching.setVisibility(View.INVISIBLE);
+        }
 
-        setupLists();
         restoreLists();
-
     }
 
     @Override
@@ -102,29 +125,16 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
     }
 
     /**
-     * Load all necessary items into list
-     */
-    private void setupLists() {
-        setupRadioGroup(resources.getInvestmentPhases(), investmentPhaseGroup);
-        setupCheckboxes(resources.getIndustries(), industryLayout);
-        setupCheckboxes(resources.getInvestorTypes(), investorTypeLayout);
-        setupCheckboxes(resources.getSupports(), supportLayout);
-    }
-
-    /**
      * Restore values of lists from previous entered data (saved in RegistrationHandler)
      */
     private void restoreLists() {
-        startup.getInvestorTypes().forEach(type ->
-                tickCheckbox(investorTypeLayout, type));
+        startup.getInvestorTypes().forEach(type -> investorTypeCriteria.setChecked(type));
 
-        startup.getIndustries().forEach(industry ->
-                tickCheckbox(industryLayout, industry));
+        startup.getIndustries().forEach(industry -> industryCriteria.setChecked(industry));
 
-        tickRadioButton(investmentPhaseGroup, startup.getInvestmentPhaseId());
+        investmentPhaseCriteria.setChecked(startup.getInvestmentPhaseId());
 
-        startup.getSupport().forEach(support ->
-                tickCheckbox(supportLayout, support));
+        startup.getSupport().forEach(support -> supportCriteria.setChecked(support));
     }
 
 
@@ -136,27 +146,16 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         Log.d("debugMessage", "onDestroy()");
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_startup_matching:
-                processMatchingInformation();
-                break;
-            default:
-                break;
-        }
-    }
-
     /**
      * Check if all information is valid and save it
      */
     private void processMatchingInformation() {
-        ArrayList<Long> industries = getSelectedCheckboxIds(industryLayout);
+        ArrayList<Long> industries = industryCriteria.getSelected();
 
-        long investmentPhaseId = getSelectedRadioId(investmentPhaseGroup);
+        long investmentPhaseId = investmentPhaseCriteria.getSingleSelected();
 
-        ArrayList<Long> support = getSelectedCheckboxIds(supportLayout);
-        ArrayList<Long> investorTypes = getSelectedCheckboxIds(investorTypeLayout);
+        ArrayList<Long> support = supportCriteria.getSelected();
+        ArrayList<Long> investorTypes = investorTypeCriteria.getSelected();
 
         if(industries.size() == 0 || investmentPhaseId == -1 || support.size() == 0 ||
         investorTypes.size() == 0) {
@@ -202,11 +201,11 @@ public class RegisterStartupMatchingFragment extends RaisingFragment
         ticketSizeText = view.findViewById(R.id.register_startup_matching_ticket_size_text);
         ticketSize = view.findViewById(R.id.register_startup_matching_ticket_size);
         ticketSize.addOnChangeListener(new Slider.OnChangeListener() {
-
             @Override
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                 ticketSizeText.setText(adaptSliderValues(
                         (int) slider.getMaximumValue(), (int) slider.getMinimumValue()));
+                btnStartUpMatching.setVisibility(View.VISIBLE);
             }
         });
 

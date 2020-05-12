@@ -20,6 +20,7 @@ import com.raising.app.fragments.registration.startup.stakeholderInputs.viewMode
 import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.RaisingTextWatcher;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
@@ -103,7 +104,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
 
                 if (firstName.length() == 0 || lastName.length() == 0
                         || profession.length() == 0 || boardPosition.length() == 0
-                        || memberSince.length() == 0 || countryId == -1) {
+                        || memberSince.length() == 0  || education.length() == 0 || countryId == -1) {
                     showSimpleDialog(getString(R.string.register_dialog_title),
                             getString(R.string.register_dialog_text_empty_credentials));
                     return;
@@ -118,7 +119,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
                 boardMember.setEducation(education);
                 boardMember.setTitle(firstName + " " + lastName + ", " + boardPosition);
 
-                if(boardMember.getId() != -1) {
+                if (boardMember.getId() != -1) {
                     try {
                         Gson gson = new Gson();
                         JSONObject params = new JSONObject(gson.toJson(boardMember));
@@ -136,7 +137,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
                                         e.getMessage());
                     }
                 } else {
-                    if(AuthenticationHandler.isLoggedIn()) {
+                    if (AuthenticationHandler.isLoggedIn()) {
                         Gson gson = new Gson();
                         try {
                             JSONObject params = new JSONObject(gson.toJson(boardMember));
@@ -151,7 +152,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
                                     ApiRequestHandler.errorHandler,
                                     params);
                         } catch (Exception e) {
-                            displayGenericError();
+                            showGenericError();
                             Log.e("BoardMemberInput",
                                     "Could not add boardmember: " + e.getMessage());
                         }
@@ -167,7 +168,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
             boardMember = new BoardMember();
         } else {
             customizeAppBar(getString(R.string.toolbar_title_edit_board), true);
-            if(boardMember.getId() != -1) {
+            if (boardMember.getId() != -1) {
                 hideBottomNavigation(false);
             }
             editMode = true;
@@ -183,7 +184,19 @@ public class BoardMemberInputFragment extends RaisingFragment {
                 countryInput.setText(resources.getCountry(boardMember.getCountryId()).getName());
         }
 
-        memberSinceInput.setOnClickListener(v -> showYearPicker("Select year", memberSinceInput));
+        memberSinceInput.setOnClickListener(v -> {
+            if (boardMember.getMemberSince() != null) {
+                showYearPicker(getString(R.string.year_picker_title), memberSinceInput, Integer.parseInt(boardMember.getMemberSince()));
+            } else {
+                showYearPicker(getString(R.string.year_picker_title), memberSinceInput);
+            }
+        });
+
+        memberSinceInput.addTextChangedListener((RaisingTextWatcher) (s, start, before, count) -> {
+            if(memberSinceInput.getText().toString().length() != 0) {
+                boardMember.setMemberSince(memberSinceInput.getText().toString());
+            }
+        });
     }
 
     @Override

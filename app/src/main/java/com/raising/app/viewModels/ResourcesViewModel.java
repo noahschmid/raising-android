@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.common.api.Api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.raising.app.R;
@@ -28,6 +29,8 @@ import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.Resources;
 import com.raising.app.util.ResourcesDeserializer;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class ResourcesViewModel extends AndroidViewModel{
@@ -40,34 +43,36 @@ public class ResourcesViewModel extends AndroidViewModel{
         super(application);
         viewState.setValue(ViewState.EMPTY);
         loadResources();
-        viewState.setValue(ViewState.EMPTY);
     }
 
     public void loadResources() {
         Resources cachedResources = getCachedResources();
 
         if(cachedResources != null) {
-            resources.setValue(cachedResources);
-            viewState.setValue(ViewState.CACHED);
-            Log.d(TAG, "loadResources: ViewState" + getViewState().getValue().toString());
+            resources.postValue(cachedResources);
+            viewState.postValue(ViewState.CACHED);
         } else {
-            viewState.setValue(ViewState.LOADING);
-            Log.d(TAG, "loadResources: ViewState" + getViewState().getValue().toString());
+            viewState.postValue(ViewState.LOADING);
         }
-
+/*
+        try {
+            JSONObject result = ApiRequestHandler.performSynchronousGetRequest("public/");
+        } catch (Exception e) {
+            Log.e(TAG, "loadResources: " + e.getMessage());
+        }*/
         ApiRequestHandler.performGetRequest("public/", result -> {
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     gsonBuilder.registerTypeAdapter(Resources.class, new ResourcesDeserializer());
                     Gson gson = gsonBuilder.create();
-                    resources.setValue(gson.fromJson(result.toString(), Resources.class));
-                    viewState.setValue(ViewState.RESULT);
+                    resources.postValue(gson.fromJson(result.toString(), Resources.class));
+                    viewState.postValue(ViewState.RESULT);
                     Log.d(TAG, "loadResources: ViewState" + getViewState().getValue().toString());
                     Log.d(TAG, "loadResources: resources successfuly loaded");
                     return null;
                 },
                 error -> {
                     if(viewState.getValue() != ViewState.CACHED) {
-                        viewState.setValue(ViewState.ERROR);
+                        viewState.postValue(ViewState.ERROR);
                         Log.d(TAG, "loadResources: ViewState" + getViewState().getValue().toString());
                     }
                     return null;
@@ -84,7 +89,7 @@ public class ResourcesViewModel extends AndroidViewModel{
                 return (Resources) InternalStorageHandler.loadObject("resources");
             }
         } catch (Exception e) {
-            viewState.setValue(ViewState.ERROR);
+            viewState.postValue(ViewState.ERROR);
             Log.d(TAG, "getCachedResources: ViewState" + getViewState().getValue().toString());
             Log.e(TAG, "Error while loading cached resources: " + e.getMessage());
         }

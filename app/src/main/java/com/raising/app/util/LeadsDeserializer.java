@@ -175,7 +175,7 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
     private Timestamp parseTimestamp(String timestamp) {
             try {
                 String timestampString = timestamp.substring(0, 10);
-                Log.d(TAG, "deserialize: " + timestampString);
+                // Log.d(TAG, "deserialize: " + timestampString);
                 Date date = new SimpleDateFormat("yyyy-MM-dd").parse(timestampString);
                 return new Timestamp(date.getTime());
             } catch(Exception e) {
