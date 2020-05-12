@@ -64,8 +64,8 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         leadsViewModel = ViewModelProviders.of(getActivity())
                 .get(LeadsViewModel.class);
 
-        leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> processViewState(state));
-        processViewState(leadsViewModel.getViewState().getValue());
+        //leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> processViewState(state));
+        //processViewState(leadsViewModel.getViewState().getValue());
         openRequestItems = new ArrayList<>();
 
         resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {

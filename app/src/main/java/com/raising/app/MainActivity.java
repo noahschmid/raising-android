@@ -224,27 +224,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        FragmentManager manager = getSupportFragmentManager();
-        List<Fragment> fragments = manager.getFragments();
-        fragments.forEach(fragment -> {
-            if (fragment != null && fragment.isVisible()) {
-                Log.d(TAG, "onBackPressed: Fragment: " + fragment);
-                if (fragment.getClass().equals(RegisterLoginInformationFragment.class) && RegistrationHandler.isInProgress(getApplicationContext())) {
-                    RegisterLoginInformationFragment mFragment = (RegisterLoginInformationFragment) fragment;
-                    if (mFragment.showActionDialog(getString(R.string.register_dialog_cancel_registration_title),
-                            getString(R.string.register_dialog_cancel_registration_text))) {
-                        super.onBackPressed();
-                    }
-                } else {
-                    super.onBackPressed();
-                    Log.d(TAG, "onBackPressed: regular execution");
-                }
-            }
-        });
-    }
-
     public void disablePreOnboarding() {
         try {
             InternalStorageHandler.saveObject(true, "onboarding");

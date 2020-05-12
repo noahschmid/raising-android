@@ -99,4 +99,11 @@ public class InternalStorageHandler {
         fis.close();
         return result;
     }
+
+    public static void deleteFile(String filename) {
+        if(!exists(filename))
+            return;
+
+        context.deleteFile(filename);
+    }
 }

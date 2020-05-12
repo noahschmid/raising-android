@@ -79,7 +79,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         connectionSwitch = view.findViewById(R.id.notifications_switch_connection);
 
         settingsViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
-            processViewState(viewState);
+            //processViewState(viewState);
             if(viewState == ViewState.CACHED || viewState == ViewState.RESULT) {
                 Log.d(TAG, "onViewCreated: Receive personal settings");
                 personalSettings = settingsViewModel.getPersonalSettings().getValue();
@@ -120,7 +120,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
                 btnNotifications.setVisibility(View.GONE);
             }
         });
-        processViewState(settingsViewModel.getViewState().getValue());
+        //processViewState(settingsViewModel.getViewState().getValue());
         settingsViewModel.loadSettings();
 
         // set on check changed listeners to all buttons to detect user interaction

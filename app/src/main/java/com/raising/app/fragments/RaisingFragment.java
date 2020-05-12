@@ -67,6 +67,7 @@ import com.whiteelephant.monthpicker.MonthPickerDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class RaisingFragment extends Fragment {
     final private String TAG = "RaisingFragment";
@@ -102,30 +103,7 @@ public class RaisingFragment extends Fragment {
         }
 
         viewStateViewModel = ViewModelProviders.of(getActivity()).get(ViewStateViewModel.class);
-        viewStateViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
-            switch (viewState) {
-                case LOADING:
-                    showLoadingPanel();
-                    break;
-                case RESULT:
-                    dismissLoadingPanel();
-                    break;
-
-                case ERROR:
-                    dismissLoadingPanel();
-                    ToastHandler toastHandler = new ToastHandler(getContext());
-                    toastHandler.showToast(getString(R.string.generic_error_title), Toast.LENGTH_LONG);
-                    viewStateViewModel.setViewState(ViewState.EMPTY);
-                    break;
-
-                case EXPIRED:
-                    showSimpleDialog(getString(R.string.session_expired_title), getString(R.string.session_expired_text));
-                    AuthenticationHandler.logout();
-                    clearBackstackAndReplace(new LoginFragment());
-                    viewStateViewModel.setViewState(ViewState.EMPTY);
-                    break;
-            }
-        });
+        viewStateViewModel.getViewState().observe(getViewLifecycleOwner(), this::processViewState);
 
         accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
         accountViewModel.getAccount().observe(getViewLifecycleOwner(), account -> currentAccount = account);
@@ -149,21 +127,39 @@ public class RaisingFragment extends Fragment {
         resources = resourcesViewModel.getResources().getValue();
 
 
-        processViewState(viewStateViewModel.getViewState().getValue());
+        processViewState(Objects.requireNonNull(viewStateViewModel.getViewState().getValue()));
     }
 
-    protected void processViewState(ViewState viewState) {
+    /**
+     * Process the global view state
+     * @param viewState state of currently displayed view
+     */
+    private void processViewState(ViewState viewState) {
         switch (viewState) {
             case LOADING:
+                Log.d(TAG, "processViewState: LOADING");
                 showLoadingPanel();
                 break;
             case RESULT:
-            case CACHED:
+                Log.d(TAG, "processViewState: RESULT");
                 dismissLoadingPanel();
-                onResourcesLoaded();
                 break;
+
             case ERROR:
+                Log.d(TAG, "processViewState: ERROR");
                 dismissLoadingPanel();
+                ToastHandler toastHandler = new ToastHandler(getContext());
+                toastHandler.showToast(getString(R.string.generic_error_title), Toast.LENGTH_LONG);
+                viewStateViewModel.setViewState(ViewState.EMPTY);
+                break;
+
+            case EXPIRED:
+                Log.d(TAG, "processViewState: EXPIRED");
+                dismissLoadingPanel();
+                showSimpleDialog(getString(R.string.session_expired_title), getString(R.string.session_expired_text));
+                AuthenticationHandler.logout();
+                clearBackstackAndReplace(new LoginFragment());
+                viewStateViewModel.setViewState(ViewState.EMPTY);
                 break;
         }
     }
@@ -690,11 +686,6 @@ public class RaisingFragment extends Fragment {
             Log.e("RaisingFragment", "No overlay layout found!");
             return;
         }
-        ++processesLoading;
-
-        if (processesLoading > 1) {
-            return;
-        }
 
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -703,13 +694,6 @@ public class RaisingFragment extends Fragment {
     }
 
     protected void dismissLoadingPanel() {
-       /* --processesLoading;
-        if (loadingPanel == null || processesLoading != 0) {
-            if (processesLoading < 0)
-                processesLoading = 0;
-            return;
-        }*/
-
         loadingPanel.setVisibility(View.GONE);
         if (getActivity() != null) {
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);

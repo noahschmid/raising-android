@@ -152,7 +152,6 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         account.setLastName(lastName);
         account.setEmail(email);
 
-        showLoadingPanel();
         try {
             if(!email.equals(AuthenticationHandler.getEmail()) ||
                     !AuthenticationHandler.isLoggedIn()) {
@@ -165,14 +164,12 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
                 accountViewModel.update(account);
             }
         } catch(Exception e) {
-            dismissLoadingPanel();
             Log.e("RegisterLoginInformation", "" + e.getMessage());
             return;
         }
     }
 
     Function<JSONObject, Void> callback = response -> {
-        dismissLoadingPanel();
 
         final String firstName = firstNameInput.getText().toString();
         final String lastName = lastNameInput.getText().toString();
@@ -198,7 +195,6 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     };
 
     Function<VolleyError, Void> errorHandler = error -> {
-        dismissLoadingPanel();
         try {
             if(error.networkResponse.statusCode == 400) {
                 showSimpleDialog(

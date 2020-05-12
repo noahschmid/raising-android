@@ -1,6 +1,7 @@
 package com.raising.app.viewModels;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 public class ViewStateViewModel extends AndroidViewModel {
     private MutableLiveData<ViewState> viewState = new MutableLiveData<ViewState>();
     private ArrayList<LiveData<ViewState>> viewModelStates = new ArrayList<>();
+    private boolean loading = false;
+    private static String TAG = "ViewStateViewModel";
 
     public ViewStateViewModel(@NonNull Application application) {
         super(application);
@@ -26,7 +29,22 @@ public class ViewStateViewModel extends AndroidViewModel {
         return viewState;
     }
 
-    public void setViewState(ViewState state) { this.viewState.setValue(state); }
+    public void setViewState(ViewState state) { this.viewState.postValue(state); }
+
+    public void startLoading() {
+        this.loading = true;
+        viewState.postValue(ViewState.LOADING);
+        Log.d(TAG, "startLoading");
+    }
+
+    public void stopLoading() {
+        this.loading = false;
+        if(!stateExists(ViewState.LOADING)) {
+            viewState.postValue(ViewState.RESULT);
+        }
+
+        Log.d(TAG, "stopLoading: " + viewState.getValue());
+    }
 
     /**
      *
@@ -65,6 +83,9 @@ public class ViewStateViewModel extends AndroidViewModel {
                 return true;
             }
         }
+
+        if(state == ViewState.LOADING)
+            return loading;
         return false;
     }
 }

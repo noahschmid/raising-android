@@ -434,8 +434,6 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             return;
         }
 
-        //TODO: remove manually set loading panel
-        showLoadingPanel();
         try {
             if(!editMode) {
                 startup.clearFounders();
@@ -466,6 +464,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                 Gson gson = gsonBuilder.create();
                 String startup = gson.toJson(RegistrationHandler.getStartup());
                 JSONObject jsonStartup = new JSONObject(startup);
+                viewStateViewModel.startLoading();
                 ApiRequestHandler.performPostRequest("startup/register", registerCallback,
                         errorCallback, jsonStartup);
                 Log.d("RegistrationString", startup);
@@ -497,8 +496,8 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                 popCurrentFragment(this);
             }
         } catch (IOException | JSONException e) {
+            viewStateViewModel.stopLoading();
             //TODO: remove manually set loading panel
-            dismissLoadingPanel();
             Log.e("RegisterStakeholderFragment", "Error in processInputs: " +
                     e.getMessage());
         }
@@ -508,8 +507,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
      * Cancel ongoing registration as request was successful and proceed to login page
      */
     Function<JSONObject, Void> registerCallback = response -> {
-        //TODO: remove manually set loading panel
-        dismissLoadingPanel();
+        viewStateViewModel.stopLoading();
         try {
             startup = RegistrationHandler.getStartup();
             startup.setId(response.getLong("id"));
@@ -532,8 +530,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     };
 
     Function<VolleyError, Void> errorCallback = response -> {
-        //TODO: remove manually set loading panel
-        dismissLoadingPanel();
+        viewStateViewModel.stopLoading();
         try {
             if(response.networkResponse != null) {
                 if (response.networkResponse.statusCode == 500) {
