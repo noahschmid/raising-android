@@ -2,6 +2,7 @@ package com.raising.app.util.matchingCriteriaComponent;
 
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ public class MatchingCriteriaAdapter extends RecyclerView.Adapter<MatchingCriter
     @Override
     public void onBindViewHolder(@NonNull MatchingCriteriaAdapter.ViewHolder holder, int position) {
         Model item = recyclerItems.get(position);
+        Log.d(TAG, "onBindViewHolder: RecylcerItem" + recyclerItems.get(position).getName() + " " + recyclerItems.get(position).isChecked());
 
         int standardBackgroundColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.raisingSecondaryAccent);
         int standardForegroundColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.raisingSecondaryDark);

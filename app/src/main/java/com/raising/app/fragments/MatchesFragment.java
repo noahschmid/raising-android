@@ -62,6 +62,7 @@ public class MatchesFragment extends RaisingFragment {
         emptyMatchListLayout.setVisibility(View.GONE);
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> matchesViewModel.loadMatches());
 
         matchesViewModel = ViewModelProviders.of(getActivity())
                 .get(MatchesViewModel.class);
@@ -69,36 +70,21 @@ public class MatchesFragment extends RaisingFragment {
         matchesViewModel.runMatching();
         matchesViewModel.loadMatches();
 
-        matchesViewModel.getMatches().observe(getViewLifecycleOwner(), matches -> {
-            if(viewStateViewModel.getViewState().getValue() != ViewState.RESULT)
-                return;
-            ArrayList<Match> matchList = matchesViewModel.getMatches().getValue();
-            processItems(matchList);
-        });
-
-        processViewState(matchesViewModel.getViewState().getValue());
         matchListItems = new ArrayList<>();
 
         resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
-            if (state == ViewState.CACHED || state == ViewState.RESULT) {
-                ArrayList<Match> matchList = matchesViewModel.getMatches().getValue();
-                processItems(matchList);
+            Log.d(TAG, "onViewCreated: Resources Observer ViewState: " + state);
+            if (state == ViewState.RESULT || state == ViewState.CACHED ) {
+                matchesViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
+                    Log.d(TAG, "onViewCreated: Matches Observer ViewState: " + viewState);
+                    if (viewState == ViewState.RESULT || viewState == ViewState.CACHED) {
+                        processItems(matchesViewModel.getMatches().getValue());
+                    }
+                });
             }
         });
+
         matchListAdapter = new MatchListAdapter(matchListItems);
-
-        matchListItems.forEach(item -> {
-            Log.d(TAG, "matchListItems: " + item.getAccountId() + " " + item.getAttribute() + item.getName());
-        });
-
-        matchesViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
-            processViewState(viewState);
-            if (viewState == ViewState.CACHED || viewState == ViewState.RESULT) {
-                processItems(matchesViewModel.getMatches().getValue());
-            }
-        });
-
-        swipeRefreshLayout.setOnRefreshListener(() -> matchesViewModel.loadMatches());
 
         // prepare match list recycler view
         matchList = view.findViewById(R.id.matchList);
@@ -129,32 +115,32 @@ public class MatchesFragment extends RaisingFragment {
      * @param matches
      */
     private void processItems(List<Match> matches) {
-        if (resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
-                resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
-            matchListItems.clear();
-            matches.forEach(match -> {
-                MatchListItem matchItem = new MatchListItem();
-                matchItem.setDescription(match.getDescription());
-                matchItem.setRelationshipId(match.getId());
-                matchItem.setAccountId(match.getAccountId());
-                matchItem.setScore(match.getMatchingPercent());
-                matchItem.setStartup(match.isStartup());
-                matchItem.setPictureId(match.getProfilePictureId());
-                if (matchItem.isStartup()) {
-                    matchItem.setAttribute(resources.getInvestmentPhase(
-                            match.getInvestmentPhaseId()).getName());
-                    matchItem.setName(match.getCompanyName());
-                } else {
-                    matchItem.setAttribute(resources.getInvestorType(
-                            match.getInvestorTypeId()).getName());
-                    matchItem.setName(match.getFirstName() + " " + match.getLastName());
-                }
+        Log.d(TAG, "processItems: ");
+        emptyMatchListLayout.setVisibility(View.GONE);
+        matchListItems.clear();
+        matches.forEach(match -> {
+            MatchListItem matchItem = new MatchListItem();
+            matchItem.setDescription(match.getDescription());
+            matchItem.setRelationshipId(match.getId());
+            matchItem.setAccountId(match.getAccountId());
+            matchItem.setScore(match.getMatchingPercent());
+            matchItem.setStartup(match.isStartup());
+            matchItem.setPictureId(match.getProfilePictureId());
+            if (matchItem.isStartup()) {
+                matchItem.setAttribute(resources.getInvestmentPhase(
+                        match.getInvestmentPhaseId()).getName());
+                matchItem.setName(match.getCompanyName());
+            } else {
+                matchItem.setAttribute(resources.getInvestorType(
+                        match.getInvestorTypeId()).getName());
+                matchItem.setName(match.getFirstName() + " " + match.getLastName());
+            }
 
-                matchListItems.add(matchItem);
-            });
-
-            matchListAdapter.notifyDataSetChanged();
-        }
+            matchListItems.add(matchItem);
+        });
+        matchListItems.forEach(item ->
+                Log.d(TAG, "matchListItems: " + item.getAccountId() + " " + item.getAttribute() + " " + item.getName() + " " + item.getScore()));
+        matchListAdapter.notifyDataSetChanged();
 
         if (matchListItems.size() == 0 && resourcesViewModel.getViewState().getValue() == ViewState.RESULT)
             emptyMatchListLayout.setVisibility(View.VISIBLE);

@@ -122,6 +122,7 @@ public class RaisingFragment extends Fragment {
                     showSimpleDialog(getString(R.string.session_expired_title), getString(R.string.session_expired_text));
                     AuthenticationHandler.logout();
                     clearBackstackAndReplace(new LoginFragment());
+                    viewStateViewModel.setViewState(ViewState.EMPTY);
                     break;
             }
         });
