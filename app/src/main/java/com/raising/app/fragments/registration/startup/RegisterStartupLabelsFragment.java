@@ -31,6 +31,8 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
     private Startup startup;
     private boolean editMode = false;
 
+    Button btnStartupLabels;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,15 +43,10 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_labels), true);
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        Button btnStartupLabels = view.findViewById(R.id.button_startup_labels);
+        btnStartupLabels = view.findViewById(R.id.button_startup_labels);
         btnStartupLabels.setOnClickListener(v -> processInformation());
+
+        setupViewModel();
 
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
@@ -62,16 +59,26 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
             startup = RegistrationHandler.getStartup();
         }
 
+        return view;
+    }
+
+    @Override
+    public void onResourcesLoaded() {
         MatchingCriteriaAdapter.OnItemClickListener clickListener = position -> {
             if(editMode) {
                 btnStartupLabels.setVisibility(View.VISIBLE);
             }
         };
 
-        labelsLayout = new MatchingCriteriaComponent(view.findViewById(R.id.register_startup_pitch_labels), resources.getLabels(),
-                false, clickListener, true);
+        labelsLayout = new MatchingCriteriaComponent(getView().findViewById(R.id.register_startup_pitch_labels),
+                resources.getLabels(), false, clickListener, true);
 
         startup.getLabels().forEach(label -> labelsLayout.setChecked(label));
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

@@ -44,12 +44,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         customizeAppBar(getString(R.string.toolbar_title_profile_information), true);
         hideBottomNavigation(true);
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        setupViewModel();
 
         //define input views and button
         profileCompanyInput = view.findViewById(R.id.register_input_profile_company);
@@ -74,8 +69,11 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
             contactDetails = RegistrationHandler.getContactData();
         }
 
-        setupCountryPicker();
+        return view;
+    }
 
+    @Override
+    public void onResourcesLoaded() {
         // fill views with users existing data
         profileCompanyInput.setText(investor.getCompanyName());
         profileWebsiteInput.setText(investor.getWebsite());
@@ -89,6 +87,13 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         profileCountryInput.setShowSoftInputOnFocus(false);
         if (investor.getCountryId() != -1)
             countryId = (int) investor.getCountryId();
+
+        setupCountryPicker();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         // if editmode, add text watchers after initial filling with users data
         if (editMode) {

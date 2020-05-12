@@ -56,12 +56,8 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_company_figures), true);
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        btnCompanyFigures = view.findViewById(R.id.button_company_figures);
+        btnCompanyFigures.setOnClickListener(v -> processInformation());
 
         //define input views and button
         companyFteInput = view.findViewById(R.id.register_input_company_fte);
@@ -69,9 +65,30 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
         companyMarketsButton = view.findViewById(R.id.register_button_company_markets);
         companyFoundingInput = view.findViewById(R.id.register_input_company_founding_year);
 
-        btnCompanyFigures = view.findViewById(R.id.button_company_figures);
-        btnCompanyFigures.setOnClickListener(v -> processInformation());
+        companyRevenueInput = view.findViewById(R.id.register_input_company_revenue);
 
+        setupViewModel();
+
+        //adjust fragment if this fragment is used for profile
+        if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
+            btnCompanyFigures.setHint(getString(R.string.myProfile_apply_changes));
+            btnCompanyFigures.setVisibility(View.INVISIBLE);
+            editMode = true;
+            startup = (Startup) accountViewModel.getAccount().getValue();
+            hideBottomNavigation(false);
+        } else {
+            startup = RegistrationHandler.getStartup();
+        }
+
+        return view;
+    }
+
+    /**
+     * If resources are ready, fill view with information
+     */
+    @Override
+    public void onResourcesLoaded() {
         ArrayList<Revenue> revenues = resources.getRevenues();
         ArrayList<String> values = new ArrayList<>();
         revenues.forEach(rev -> values.add(rev.toString(getString(R.string.currency),
@@ -79,8 +96,6 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
 
         NoFilterArrayAdapter<String> adapterRevenue = new NoFilterArrayAdapter<String>(getContext(),
                 R.layout.item_dropdown_menu, values);
-
-        companyRevenueInput = view.findViewById(R.id.register_input_company_revenue);
         companyRevenueInput.setAdapter(adapterRevenue);
 
         companyRevenueInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -99,17 +114,6 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
             }
         });
 
-        //adjust fragment if this fragment is used for profile
-        if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
-            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
-            btnCompanyFigures.setHint(getString(R.string.myProfile_apply_changes));
-            btnCompanyFigures.setVisibility(View.INVISIBLE);
-            editMode = true;
-            startup = (Startup) accountViewModel.getAccount().getValue();
-            hideBottomNavigation(false);
-        } else {
-            startup = RegistrationHandler.getStartup();
-        }
 
         // fill views with users existing data
         if (startup.getRevenueMinId() > -1) {
@@ -120,28 +124,6 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
                     .getRevenueString(startup.getRevenueMinId()), false);
         }
 
-        if (startup.getNumberOfFte() > 0)
-            companyFteInput.setText(Integer.toString(startup.getNumberOfFte()));
-        if (startup.getFoundingYear() > 0)
-            companyFoundingInput.setText(Integer.toString(startup.getFoundingYear()));
-        if (startup.getBreakEvenYear() > 0)
-            companyBreakevenInput.setText(Integer.toString(startup.getBreakEvenYear()));
-
-        companyBreakevenInput.setOnClickListener(v -> {
-            if (startup.getBreakEvenYear() > 0) {
-                showYearPicker(getString(R.string.break_even_picker_title), companyBreakevenInput, Integer.parseInt(companyBreakevenInput.getText().toString()));
-            } else {
-                showYearPicker(getString(R.string.break_even_picker_title), companyBreakevenInput);
-            }
-        });
-
-        companyFoundingInput.setOnClickListener(v -> {
-            if (startup.getFoundingYear() > 0) {
-                showYearPicker(getString(R.string.founding_picker_title), companyFoundingInput, Integer.parseInt(companyFoundingInput.getText().toString()));
-            } else {
-                showYearPicker(getString(R.string.founding_picker_title), companyFoundingInput);
-            }
-        });
 
         // Markets picker
         marketItems = new ArrayList<>();
@@ -162,7 +144,6 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
                 marketsPicker.dismiss();
 
             marketsPicker.showDialog(getActivity(), dialog -> {
-                Log.d(TAG, "onDismiss: ");
                 checkIfMarketsChanged(marketsPicker.getResult());
             });
         });
@@ -180,6 +161,35 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
         if (selected.size() > 0) {
             marketsPicker.setSelectedById(selected);
         }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (startup.getNumberOfFte() > 0)
+            companyFteInput.setText(Integer.toString(startup.getNumberOfFte()));
+        if (startup.getFoundingYear() > 0)
+            companyFoundingInput.setText(Integer.toString(startup.getFoundingYear()));
+        if (startup.getBreakEvenYear() > 0)
+            companyBreakevenInput.setText(Integer.toString(startup.getBreakEvenYear()));
+
+        companyBreakevenInput.setOnClickListener(v -> {
+            if (startup.getBreakEvenYear() > 0) {
+                showYearPicker(getString(R.string.break_even_picker_title), companyBreakevenInput,
+                        Integer.parseInt(companyBreakevenInput.getText().toString()));
+            } else {
+                showYearPicker(getString(R.string.break_even_picker_title), companyBreakevenInput);
+            }
+        });
+
+        companyFoundingInput.setOnClickListener(v -> {
+            if (startup.getFoundingYear() > 0) {
+                showYearPicker(getString(R.string.founding_picker_title), companyFoundingInput, Integer.parseInt(companyFoundingInput.getText().toString()));
+            } else {
+                showYearPicker(getString(R.string.founding_picker_title), companyFoundingInput);
+            }
+        });
 
         // if editmode, add text watchers after initial filling with users data
         if (editMode) {
@@ -210,9 +220,6 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
             return;
 
         btnCompanyFigures.setVisibility(View.VISIBLE);
-        Log.d(TAG, "onTextChanged: s: " + Integer.parseInt(s.toString()));
-        Log.d(TAG, "onTextChanged: Founding: " + Integer.parseInt(companyFoundingInput.getText().toString()));
-        Log.d(TAG, "onTextChanged: BreakEven: " + Integer.parseInt(companyBreakevenInput.getText().toString()));
     }
     
     /**
@@ -225,8 +232,6 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
             listId.add(pickerItem.getId());
         });
 
-        Log.d(TAG, "checkIfMarketsChanged: listId " + listId.toString());
-        Log.d(TAG, "checkIfMarketsChanged: selected " + selected.toString());
         if(!listId.equals(selected)) {
             btnCompanyFigures.setVisibility(View.VISIBLE);
         }
