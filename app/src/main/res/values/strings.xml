@@ -80,7 +80,7 @@
     <string name="registration_information_dialog_fte">FTE stands for Full Time Employees. Potential matches may be interested in your employment status.</string>
     <string name="registration_information_dialog_committed">Tell us if you have already achieved some of the target scope, that you have specified above.</string>
     <string name="registration_information_dialog_scope">With the scope you can define how much money you would like to raise during this current financing phase.</string>
-    <string name="registration_information_label">A label is an award given to a startup upon completing a certain program or reaching predefined values \n(max. 4 Labels)</string>
+    <string name="registration_information_label">A label is an award given to a startup upon completing a certain program or reaching predefined values \n(max. 3 Labels)</string>
 
     <string name="toolbar_title_login_information"> Login Information</string>
     <string name="register_first_name"> First Name* </string>
@@ -157,7 +157,7 @@
 
     <string name="toolbar_title_labels"> Labels </string>
     <string name="register_label_error_title"> Too many Labels</string>
-    <string name="register_label_error_text"> Please do not choose more than 4 labels</string>
+    <string name="register_label_error_text"> Please do not choose more than 3 labels</string>
 
     <string name="toolbar_title_video"> Video </string>
 

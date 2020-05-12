@@ -59,6 +59,7 @@ public class SettingsViewModel extends AndroidViewModel {
     }
 
     private void updateDeviceToken() {
+        Log.d(TAG, "updateDeviceToken: ");
         viewState.setValue(ViewState.LOADING);
         JSONObject object = new JSONObject();
         // device specifications

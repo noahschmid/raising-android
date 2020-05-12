@@ -103,12 +103,11 @@
 
             <Button
                 android:id="@+id/register_button_company_markets"
-                style="@style/PrimaryOutlineButton"
+                style="@style/CountryPickerButton"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_company_markets"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
                 app:layout_constraintEnd_toEndOf="@+id/register_company_breakeven"
                 app:layout_constraintStart_toStartOf="@+id/register_company_breakeven"

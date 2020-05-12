@@ -14,7 +14,7 @@
     <dimen name="matchListPictureSize"> 60dp </dimen>
     <dimen name="matchListPercentChartSize"> 70dp </dimen>
     <dimen name="matchingCriteriaOuterIconSize">60dp</dimen>
-    <dimen name="matchingCriteriaInnerIconSize">40dp</dimen>
+    <dimen name="matchingCriteriaInnerIconSize">35dp</dimen>
 
     <dimen name="openRequestsPictureSize"> 40dp </dimen>
     <dimen name="leadsContactPictureSize"> 100dp</dimen>

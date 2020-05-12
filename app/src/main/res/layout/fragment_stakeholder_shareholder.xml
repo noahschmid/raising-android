@@ -141,8 +141,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMargin"
-                        android:layout_marginEnd="@dimen/standardHorizontalMargin"
                         android:layout_marginTop="@dimen/standardFragmentTitleMargin"
+                        android:layout_marginEnd="@dimen/standardHorizontalMargin"
                         android:layout_marginBottom="@dimen/standardFragmentTitleMargin"
                         android:text="@string/register_stakeholder_shareholder_type"
                         app:layout_constraintBottom_toTopOf="@+id/shareholder_first_name"
@@ -283,6 +283,8 @@
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:text="@string/cancel_text"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder" />
@@ -295,6 +297,8 @@
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:text="@string/add_text"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/stakeholder_corporate_shareholder"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder" />

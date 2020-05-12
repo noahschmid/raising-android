@@ -94,6 +94,7 @@ public class LeadsFragment extends RaisingFragment {
             TAG = "LeadsFragment" + leadState;
             // prepare leadsViewModel for usage
 
+            Log.d(TAG, "onViewCreated: ");
             leadsViewModel.loadLeads();
 
             todayAdapter = new LeadsAdapter(today, leadState);

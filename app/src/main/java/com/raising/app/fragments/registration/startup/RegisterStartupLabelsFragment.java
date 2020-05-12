@@ -84,7 +84,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
     private void processInformation() {
         ArrayList<Long> labels = labelsLayout.getSelected();
 
-        if(labels.size() > 4) {
+        if(labels.size() > 3) {
             showSimpleDialog(getString(R.string.register_label_error_title), getString(R.string.register_label_error_text));
             return;
         }

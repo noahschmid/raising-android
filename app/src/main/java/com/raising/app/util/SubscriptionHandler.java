@@ -42,6 +42,7 @@ public class SubscriptionHandler {
      * Fetch all subscriptions from the billing server and store them in a variable
      */
     public static ArrayList<SkuDetails> getSkuDetails() {
+        skuDetailsArrayList.clear();
         SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
         params.setSkusList(SKU_LIST).setType(BillingClient.SkuType.SUBS);
         billingClient.querySkuDetailsAsync(params.build(),

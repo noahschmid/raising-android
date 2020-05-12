@@ -94,8 +94,8 @@ public class SubscriptionFragment extends RaisingFragment {
                 .enablePendingPurchases()
                 .build();
 
-        startBillingConnection();
         SubscriptionHandler.setBillingClient(billingClient);
+        startBillingConnection();
     }
 
     private void startBillingConnection() {
@@ -172,6 +172,7 @@ public class SubscriptionFragment extends RaisingFragment {
 
 
     private void refreshSubscriptionsLayout() {
+        Log.d(TAG, "refreshSubscriptionsLayout: ");
         subscriptionsLayout.removeAllViews();
 
         // sort skuDetails based on ascending durations

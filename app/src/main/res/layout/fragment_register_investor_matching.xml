@@ -177,14 +177,13 @@
 
             <Button
                 android:id="@+id/register_investor_matching_geographics_button"
-                style="@style/PrimaryOutlineButton"
+                style="@style/CountryPickerButton"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_matching_geographics"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -114,10 +114,4 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         AuthenticationHandler.logout();
         clearBackstackAndReplace(new LoginFragment());
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: Updating Settings");
-    }
 }

@@ -43,7 +43,7 @@ public class MatchingCriteriaComponent implements LifecycleObserver {
         layoutManager.setFlexWrap(FlexWrap.WRAP);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setJustifyContent(JustifyContent.SPACE_EVENLY);
-        layoutManager.setAlignItems(AlignItems.BASELINE);
+        layoutManager.setAlignItems(AlignItems.FLEX_START);
         this.recyclerView.setLayoutManager(layoutManager);
         this.recyclerView.setAdapter(itemAdapter);
         this.singleSelect = singleSelect;
@@ -67,7 +67,7 @@ public class MatchingCriteriaComponent implements LifecycleObserver {
         layoutManager.setFlexWrap(FlexWrap.WRAP);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setJustifyContent(JustifyContent.SPACE_EVENLY);
-        layoutManager.setAlignItems(AlignItems.BASELINE);
+        layoutManager.setAlignItems(AlignItems.FLEX_START);
         this.recyclerView.setLayoutManager(layoutManager);
         this.recyclerView.setAdapter(itemAdapter);
         this.singleSelect = singleSelect;

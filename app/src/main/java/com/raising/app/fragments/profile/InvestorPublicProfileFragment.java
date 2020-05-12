@@ -170,7 +170,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             ApiRequestHandler.performPostRequest("match/" + relationshipId + "/accept",
                     res -> {
                         matchesViewModel.removeMatch(relationshipId);
-                        showInformationToast(getString(R.string.profile_lead_added_message));
                         popCurrentFragment(fragment);
                         return null;
                     },
@@ -190,7 +189,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
                     res -> {
                         matchesViewModel.removeMatch(relationshipId);
-                        showInformationToast(getString(R.string.profile_lead_decline_message));
                         popCurrentFragment(fragment);
                         return null;
                     },

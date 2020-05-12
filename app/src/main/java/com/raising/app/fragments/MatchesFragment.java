@@ -43,46 +43,41 @@ public class MatchesFragment extends RaisingFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: ");
 
         customizeAppBar(getString(R.string.toolbar_title_match_list), false);
+        matchesViewModel = ViewModelProviders.of(getActivity())
+                .get(MatchesViewModel.class);
 
         return inflater.inflate(R.layout.fragment_matches, container, false);
     }
 
     @Override
     public void onResourcesLoaded() {
-
+        Log.d(TAG, "onResourcesLoaded: ");
+        matchesViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
+            Log.d(TAG, "onViewCreated: Matches Observer ViewState: " + viewState);
+            if (viewState == ViewState.RESULT || viewState == ViewState.CACHED) {
+                processItems(matchesViewModel.getMatches().getValue());
+            }
+        });
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG, "onViewCreated: ");
 
         emptyMatchListLayout = view.findViewById(R.id.empty_matchList_layout);
         emptyMatchListLayout.setVisibility(View.GONE);
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> matchesViewModel.loadMatches());
-
-        matchesViewModel = ViewModelProviders.of(getActivity())
-                .get(MatchesViewModel.class);
-
+        
         matchesViewModel.runMatching();
         matchesViewModel.loadMatches();
 
         matchListItems = new ArrayList<>();
-
-        resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
-            Log.d(TAG, "onViewCreated: Resources Observer ViewState: " + state);
-            if (state == ViewState.RESULT || state == ViewState.CACHED ) {
-                matchesViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
-                    Log.d(TAG, "onViewCreated: Matches Observer ViewState: " + viewState);
-                    if (viewState == ViewState.RESULT || viewState == ViewState.CACHED) {
-                        processItems(matchesViewModel.getMatches().getValue());
-                    }
-                });
-            }
-        });
 
         matchListAdapter = new MatchListAdapter(matchListItems);
 
@@ -138,8 +133,7 @@ public class MatchesFragment extends RaisingFragment {
 
             matchListItems.add(matchItem);
         });
-        matchListItems.forEach(item ->
-                Log.d(TAG, "matchListItems: " + item.getAccountId() + " " + item.getAttribute() + " " + item.getName() + " " + item.getScore()));
+        // matchListItems.forEach(item -> Log.d(TAG, "matchListItems: " + item.getAccountId() + " " + item.getAttribute() + " " + item.getName() + " " + item.getScore()));
         matchListAdapter.notifyDataSetChanged();
 
         if (matchListItems.size() == 0 && resourcesViewModel.getViewState().getValue() == ViewState.RESULT)

@@ -4,10 +4,14 @@
         android:drawable="@color/raisingWhite"
         android:gravity="fill_horizontal|fill_vertical" />
     <item
-        android:drawable="@drawable/ic_splash_background"
+        android:drawable="@drawable/raising_splash_background"
         android:gravity="center_horizontal|bottom"
-        android:bottom="-70dp"/>
+        android:width="400dp"
+        android:bottom="-350dp"
+        android:height="700dp">
+    </item>
     <item
         android:drawable="@drawable/ic_raising_schrift_large"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:bottom="100dp"/>
 </layer-list>
