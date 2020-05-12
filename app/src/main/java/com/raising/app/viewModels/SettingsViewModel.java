@@ -78,9 +78,17 @@ public class SettingsViewModel extends AndroidViewModel {
                     viewState.postValue(ViewState.RESULT);
                     Log.d(TAG, "sendDeviceToken: Token updated " + deviceToken);
                     return null;
-                }, volleyError -> {
-                    viewState.postValue(ViewState.ERROR);
-                    Log.e(TAG, "sendDeviceToken: Update failed " + volleyError.getMessage());
+                }, error -> {
+                    if(error.networkResponse != null) {
+                        if(error.networkResponse.statusCode == 403) {
+                            viewState.postValue(ViewState.EXPIRED);
+                        } else {
+                            viewState.postValue(ViewState.ERROR);
+                        }
+                    } else {
+                        viewState.postValue(ViewState.ERROR);
+                    }
+                    Log.e(TAG, "sendDeviceToken: Update failed " + error.getMessage());
                     return null;
                 }, object);
     }

@@ -72,7 +72,15 @@ public class ResourcesViewModel extends AndroidViewModel{
                 },
                 error -> {
                     if(viewState.getValue() != ViewState.CACHED) {
-                        viewState.postValue(ViewState.ERROR);
+                        if(error.networkResponse != null) {
+                            if(error.networkResponse.statusCode == 403) {
+                                viewState.postValue(ViewState.EXPIRED);
+                            } else {
+                                viewState.postValue(ViewState.ERROR);
+                            }
+                        } else {
+                            viewState.postValue(ViewState.ERROR);
+                        }
                         Log.d(TAG, "loadResources: ViewState" + getViewState().getValue().toString());
                     }
                     return null;

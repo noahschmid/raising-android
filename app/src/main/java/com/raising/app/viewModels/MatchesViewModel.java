@@ -60,6 +60,8 @@ public class MatchesViewModel extends AndroidViewModel {
                 },
                 error -> {
                     Log.e(TAG, "runMatching: " + ApiRequestHandler.parseVolleyError(error));
+
+                    Log.e(TAG, "runMatching: " + error.networkResponse.statusCode );
                     if(error.networkResponse != null) {
                         if(error.networkResponse.statusCode == 403) {
                             viewState.postValue(ViewState.EXPIRED);

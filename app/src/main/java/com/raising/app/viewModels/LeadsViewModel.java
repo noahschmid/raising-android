@@ -79,7 +79,15 @@ public class LeadsViewModel extends AndroidViewModel {
                     return null;
                 },
                 error -> {
-                    viewState.postValue(ViewState.ERROR);
+                    if(error.networkResponse != null) {
+                        if(error.networkResponse.statusCode == 403) {
+                            viewState.postValue(ViewState.EXPIRED);
+                        } else {
+                            viewState.postValue(ViewState.ERROR);
+                        }
+                    } else {
+                        viewState.postValue(ViewState.ERROR);
+                    }
                     Log.e(TAG, "loadLeads: " + ApiRequestHandler.parseVolleyError(error));
                     return null;
                 });

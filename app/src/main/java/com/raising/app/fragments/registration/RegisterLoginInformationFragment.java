@@ -158,6 +158,8 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
                 HashMap<String, String> params = new HashMap<>();
                 params.put("email", email);
 
+                viewStateViewModel.startLoading();
+
                 ApiRequestHandler.performPostRequest("account/valid",
                         callback, errorHandler, new JSONObject(params));
             } else {
@@ -170,11 +172,12 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     }
 
     Function<JSONObject, Void> callback = response -> {
-
         final String firstName = firstNameInput.getText().toString();
         final String lastName = lastNameInput.getText().toString();
         final String email = emailInput.getText().toString();
         final String password = passwordInput.getText().toString();
+
+        viewStateViewModel.stopLoading();
 
         try {
             if(!editMode) {
@@ -195,6 +198,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     };
 
     Function<VolleyError, Void> errorHandler = error -> {
+        viewStateViewModel.stopLoading();
         try {
             if(error.networkResponse.statusCode == 400) {
                 showSimpleDialog(

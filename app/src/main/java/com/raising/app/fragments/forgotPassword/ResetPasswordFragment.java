@@ -80,9 +80,11 @@ public class ResetPasswordFragment extends RaisingFragment {
             HashMap<String, String> params = new HashMap<>();
             params.put("code", code);
             params.put("password", password);
+            viewStateViewModel.startLoading();
             GenericRequest loginRequest = new GenericRequest(
                     resetEndpoint, new JSONObject(params),
                     response -> {
+                        viewStateViewModel.stopLoading();
                         showSimpleDialog(getString(R.string.reset_password_success_title), getString(R.string.reset_password_success_text));
                         changeFragment(new LoginFragment());
                         /*
@@ -113,14 +115,15 @@ public class ResetPasswordFragment extends RaisingFragment {
                         }
                         */
                     }, error -> {
-                Log.d("debugMessage", error.toString());
-                if (error.networkResponse.statusCode == 500) {
-                    showSimpleDialog(getString(R.string.generic_error_title),
-                            getString(R.string.wrong_reset_code));
-                } else {
-                    showGenericError();
-                }
-            }) {
+                        viewStateViewModel.stopLoading();
+                        Log.d("debugMessage", error.toString());
+                        if (error.networkResponse.statusCode == 500) {
+                            showSimpleDialog(getString(R.string.generic_error_title),
+                                    getString(R.string.wrong_reset_code));
+                        } else {
+                            showGenericError();
+                        }
+                    }) {
                 @Override
                 public String getBodyContentType() {
                     return "application/json; charset=utf-8";
