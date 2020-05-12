@@ -30,6 +30,7 @@ import com.raising.app.R;
 import com.raising.app.fragments.forgotPassword.ForgotPasswordFragment;
 
 import com.raising.app.util.RegistrationHandler;
+import com.raising.app.util.SubscriptionHandler;
 
 import org.json.JSONObject;
 
@@ -54,16 +55,9 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         hideBottomNavigation(true);
-        customizeAppBar(getString(R.string.toolbar_title_login), false);
+        hideToolbar(true);
 
-        // if registration was in progress but user pressed back button, cancel it
-        if (RegistrationHandler.isInProgress(getContext())) {
-            if(RegistrationHandler.shouldCancel())
-                RegistrationHandler.cancel();
-            else
-                changeFragment(new RegisterLoginInformationFragment(),
-                        "RegisterLoginInformationFragment");
-        }
+        RegistrationHandler.isInProgress(getContext());
         return view;
     }
 
@@ -86,6 +80,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
     public void onDestroyView() {
         super.onDestroyView();
 
+        hideToolbar(false);
         hideBottomNavigation(false);
     }
 
@@ -137,7 +132,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
             params.put("email", email);
             params.put("password", password);
             Log.d(TAG, "login: Login Params" + params);
-            showLoadingPanel();
+            viewStateViewModel.startLoading();
             JsonObjectRequest loginRequest = new JsonObjectRequest(
                     loginEndpoint, new JSONObject(params),
                     new Response.Listener<JSONObject>() {
@@ -145,7 +140,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                         public void onResponse(JSONObject response) {
                             Log.d("LoginFragment", "login successful.");
                             try {
-                                dismissLoadingPanel();
+                                viewStateViewModel.stopLoading();
                                 boolean isStartup = response.getBoolean("startup");
                                 if(!isStartup && !response.getBoolean("investor")) {
                                     showSimpleDialog(getString(R.string.generic_error_title),
@@ -158,6 +153,8 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                                             response.getString("token"),
                                             response.getLong("id"), isStartup);
                                     accountViewModel.loadAccount();
+                                    settingsViewModel.loadSettings();
+                                    SubscriptionHandler.loadSubscription();
 
                                     if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
                                         clearBackstackAndReplace(new OnboardingPost1Fragment());
@@ -175,7 +172,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                                     changeFragment(fragment);
                                 }
                             } catch(Exception e) {
-                                dismissLoadingPanel();
+                                viewStateViewModel.stopLoading();
                                 showSimpleDialog(getString(R.string.generic_error_title),
                                         e.getMessage());
                             }
@@ -183,7 +180,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    dismissLoadingPanel();
+                    viewStateViewModel.stopLoading();
                     try {
                         if(error.networkResponse.statusCode == 500 ||
                         error.networkResponse.statusCode == 403) {

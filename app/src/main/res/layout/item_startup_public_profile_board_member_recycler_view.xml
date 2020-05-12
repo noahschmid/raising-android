@@ -11,9 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="BoardPosition"
-        android:textColor="@color/raisingTextColor"
-        android:textSize="@dimen/raisingTextFontSize"
-        android:textStyle="bold"
+        style="@style/RaisingTextBold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,8 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:text="Name"
-        android:textColor="@color/raisingTextColor"
-        android:textSize="@dimen/raisingTextFontSize"
+        style="@style/RaisingText"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_board_position"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_startup_board_position" />
@@ -33,9 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/startup_public_profile_member_since"
-        android:textColorHint="@color/raisingTextColor"
-        android:textSize="@dimen/raisingTextFontSize"
-        android:textStyle="bold"
+        style="@style/RaisingTextBold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_startup_board_position" />
 
@@ -45,8 +40,7 @@
         android:layout_height="0dp"
         android:gravity="center|end"
         android:text="Member Since"
-        android:textColor="@color/raisingTextColor"
-        android:textSize="@dimen/raisingTextFontSize"
+        style="@style/RaisingText"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_board_member_since_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_startup_board_member_since_title" />
@@ -56,9 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/startup_public_profile_profession"
-        android:textColorHint="@color/raisingTextColor"
-        android:textSize="@dimen/raisingTextFontSize"
-        android:textStyle="bold"
+        style="@style/RaisingTextBold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_startup_board_member_since_title" />
 
@@ -68,8 +60,7 @@
         android:layout_height="0dp"
         android:gravity="center|end"
         android:text="Profession"
-        android:textColor="@color/raisingTextColor"
-        android:textSize="@dimen/raisingTextFontSize"
+        style="@style/RaisingText"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_board_profession_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_startup_board_profession_title" />
@@ -79,9 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/startup_public_profile_education"
-        android:textColorHint="@color/raisingTextColor"
-        android:textSize="@dimen/raisingTextFontSize"
-        android:textStyle="bold"
+        style="@style/RaisingTextBold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_startup_board_profession_title" />
 
@@ -91,8 +80,7 @@
         android:layout_height="0dp"
         android:gravity="center|end"
         android:text="Education"
-        android:textColor="@color/raisingTextColor"
-        android:textSize="@dimen/raisingTextFontSize"
+        style="@style/RaisingText"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_board_edicatuon_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_startup_board_edicatuon_title" />

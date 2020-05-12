@@ -2,13 +2,26 @@ package com.raising.app.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.AlertDialog;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
@@ -16,6 +29,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
@@ -25,10 +39,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.MainActivity;
 import com.raising.app.R;
@@ -36,6 +54,7 @@ import com.raising.app.models.Account;
 import com.raising.app.models.Model;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.Resources;
 import com.raising.app.util.SimpleMessageDialog;
@@ -43,10 +62,12 @@ import com.raising.app.util.ToastHandler;
 import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 import com.raising.app.viewModels.SettingsViewModel;
+import com.raising.app.viewModels.ViewStateViewModel;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class RaisingFragment extends Fragment {
     final private String TAG = "RaisingFragment";
@@ -56,6 +77,7 @@ public class RaisingFragment extends Fragment {
     protected AccountViewModel accountViewModel;
     protected ResourcesViewModel resourcesViewModel;
     protected SettingsViewModel settingsViewModel;
+    protected ViewStateViewModel viewStateViewModel;
     protected Resources resources;
     protected Account currentAccount;
     private int processesLoading = 0;
@@ -79,83 +101,86 @@ public class RaisingFragment extends Fragment {
             overlayLayout.addView(loadingPanel);
             loadingPanel.setVisibility(View.GONE);
         }
-        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
-        accountViewModel.getAccount().observe(getViewLifecycleOwner(), account -> {
-            currentAccount = account;
-        });
-        currentAccount = accountViewModel.getAccount().getValue();
-        accountViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
-            Log.d(TAG, "onViewCreated: ViewState: " + viewState.toString());
-            switch (viewState) {
-                case LOADING:
-                    showLoadingPanel();
-                    break;
-                case RESULT:
-                case CACHED:
-                    dismissLoadingPanel();
-                    break;
-                case UPDATED:
-                    currentAccount = accountViewModel.getAccount().getValue();
-                    dismissLoadingPanel();
-                    onAccountUpdated();
-                    break;
 
-                case ERROR:
-                    dismissLoadingPanel();
-                    ToastHandler toastHandler = new ToastHandler(getContext());
-                    toastHandler.showToast(getString(R.string.generic_error_title), Toast.LENGTH_LONG);
-                    accountViewModel.loadAccount();
-                    break;
+        viewStateViewModel = ViewModelProviders.of(getActivity()).get(ViewStateViewModel.class);
+        viewStateViewModel.getViewState().observe(getViewLifecycleOwner(), this::processViewState);
+
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
+        accountViewModel.getAccount().observe(getViewLifecycleOwner(), account -> currentAccount = account);
+        accountViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+            if (state.equals(ViewState.UPDATED)) {
+                currentAccount = accountViewModel.getAccount().getValue();
+                dismissLoadingPanel();
+                onAccountUpdated();
             }
         });
+        currentAccount = accountViewModel.getAccount().getValue();
 
         settingsViewModel = ViewModelProviders.of(getActivity()).get(SettingsViewModel.class);
-        settingsViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
-            processViewState(viewState);
-        });
 
         resourcesViewModel = ViewModelProviders.of(getActivity()).get(ResourcesViewModel.class);
-        resourcesViewModel.getResources().observe(getViewLifecycleOwner(), resources -> {
-            this.resources = resources;
-        });
-        resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
-            processViewState(viewState);
+        resourcesViewModel.getResources().observe(getViewLifecycleOwner(), resources -> this.resources = resources);
+        resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+            if(state == ViewState.RESULT || state == ViewState.CACHED)
+                onResourcesLoaded();
         });
         resources = resourcesViewModel.getResources().getValue();
 
-        processViewState(resourcesViewModel.getViewState().getValue());
-        processViewState(accountViewModel.getViewState().getValue());
-        processViewState(settingsViewModel.getViewState().getValue());
+
+        processViewState(Objects.requireNonNull(viewStateViewModel.getViewState().getValue()));
+    }
+
+    /**
+     * Process the global view state
+     * @param viewState state of currently displayed view
+     */
+    private void processViewState(ViewState viewState) {
+        switch (viewState) {
+            case LOADING:
+                Log.d(TAG, "processViewState: LOADING");
+                showLoadingPanel();
+                break;
+            case RESULT:
+                Log.d(TAG, "processViewState: RESULT");
+                dismissLoadingPanel();
+                break;
+
+            case ERROR:
+                Log.d(TAG, "processViewState: ERROR");
+                dismissLoadingPanel();
+                ToastHandler toastHandler = new ToastHandler(getContext());
+                toastHandler.showToast(getString(R.string.generic_error_title), Toast.LENGTH_LONG);
+                viewStateViewModel.setViewState(ViewState.EMPTY);
+                break;
+
+            case EXPIRED:
+                Log.d(TAG, "processViewState: EXPIRED");
+                viewStateViewModel.setViewState(ViewState.EMPTY);
+                dismissLoadingPanel();
+
+                if(!AuthenticationHandler.isLoggedIn())
+                    return;
+
+                showSimpleDialog(getString(R.string.session_expired_title), getString(R.string.session_expired_text));
+                AuthenticationHandler.logout();
+                clearBackstackAndReplace(new LoginFragment());
+                break;
+        }
     }
 
     /**
      * Get path from uri
+     *
      * @param uri
      * @return
      */
     public String getPath(Uri uri) {
-        String[] projection = { MediaStore.Images.Media.DATA };
+        String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = getActivity().managedQuery(uri, projection, null, null, null);
         getActivity().startManagingCursor(cursor);
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
-    }
-
-    protected void processViewState(ViewState viewState) {
-        switch (viewState) {
-            case LOADING:
-                showLoadingPanel();
-                break;
-            case RESULT:
-            case CACHED:
-                dismissLoadingPanel();
-                onResourcesLoaded();
-                break;
-            case ERROR:
-                dismissLoadingPanel();
-                break;
-        }
     }
 
     /**
@@ -165,7 +190,7 @@ public class RaisingFragment extends Fragment {
      * @param imageView where to load the image into
      */
     protected void loadProfileImage(long id, ImageView imageView) {
-        if(id <= 0) {
+        if (id <= 0) {
             imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_placeholder_24dp));
         } else {
             Glide
@@ -193,16 +218,8 @@ public class RaisingFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         } catch (NullPointerException e) {
-            Log.e("RaisingFragment", "Error while changing Fragment: " + e.getMessage());
+            Log.e(TAG, "Error while changing Fragment: " + e.getMessage());
         }
-    }
-
-    /**
-     * Display a generic "oops something went wrong" message
-     */
-    public void displayGenericError() {
-        showSimpleDialog(getString(R.string.generic_error_title),
-                getString(R.string.generic_error_text));
     }
 
     /**
@@ -222,6 +239,32 @@ public class RaisingFragment extends Fragment {
         } catch (NullPointerException e) {
             Log.e("RaisingFragment", "Error while changing Fragment: " +
                     e.getMessage());
+        }
+    }
+
+    protected void changeFragmentWithAnimation(Fragment fragment) {
+        try {
+            getActivitiesFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.animation_slide_in_right, R.anim.animation_slide_out_left, R.anim.animation_slide_in_left, R.anim.animation_slide_out_right)
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        } catch (NullPointerException e) {
+            Log.d(TAG, "changeFragmentWithAnimation: Error while changing fragment" + e.getMessage());
+        }
+    }
+
+    protected void changeFragmentWithAnimation(Fragment fragment, String name) {
+        try {
+            getActivitiesFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.animation_slide_in_right, R.anim.animation_slide_out_left, R.anim.animation_slide_in_left, R.anim.animation_slide_out_right)
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(name)
+                    .commit();
+        } catch (NullPointerException e) {
+            Log.d(TAG, "changeFragmentWithAnimation: Error while changing fragment" + e.getMessage());
         }
     }
 
@@ -275,6 +318,19 @@ public class RaisingFragment extends Fragment {
     }
 
     /**
+     * Call {@link com.raising.app.MainActivity#hideToolbar(boolean)}
+     *
+     * @param isHidden if true, the toolbar should be hidden
+     *                 if false, the toolbar should be visible
+     */
+    protected void hideToolbar(boolean isHidden) {
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null) {
+            activity.hideToolbar(isHidden);
+        }
+    }
+
+    /**
      * Call {@link com.raising.app.MainActivity#customizeActionBar(String, boolean)}
      *
      * @param title          The title of the action bar
@@ -316,6 +372,19 @@ public class RaisingFragment extends Fragment {
         return null;
     }
 
+    protected void showInformationToast(String message) {
+        ToastHandler toastHandler = new ToastHandler(getContext());
+        toastHandler.showToast(message, Toast.LENGTH_LONG);
+    }
+
+    /**
+     * Display a generic "oops something went wrong" message
+     */
+    protected void showGenericError() {
+        showSimpleDialog(getString(R.string.generic_error_title),
+                getString(R.string.generic_error_text));
+    }
+
     /**
      * Opens a simple dialog, which can only be accepted
      *
@@ -331,20 +400,23 @@ public class RaisingFragment extends Fragment {
 
     /**
      * Create and show an alert dialog, which allows the user to either decline or accept a message
-     * @param title The title of the dialog
-     * @param message The message of the dialog
+     *
+     * @param title          The title of the dialog
+     * @param message        The message of the dialog
+     * @param positiveButton The string of the positive button
+     * @param negativeButton The string of the negative button
      * @return true, if user has accepted the dialog, false, if user has declined the dialog
      */
-    public boolean showAlertDialog(String title, String message) {
+    public boolean showActionDialog(String title, String message, String positiveButton, String negativeButton) {
         final boolean[] confirmDialog = {false};
         new AlertDialog.Builder(getContext())
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(getString(R.string.yes_text), (dialog, which) -> {
+                .setPositiveButton(positiveButton, (dialog, which) -> {
                     Log.d(TAG, "AlertDialog onClick");
                     confirmDialog[0] = true;
                 })
-                .setNegativeButton(getString(R.string.cancel_text), (dialog, which) -> {
+                .setNegativeButton(negativeButton, (dialog, which) -> {
                     confirmDialog[0] = false;
                 })
                 .show()
@@ -353,9 +425,22 @@ public class RaisingFragment extends Fragment {
                 });
         try {
             Looper.loop();
-        } catch (RuntimeException e) {}
+        } catch (RuntimeException e) {
+        }
 
         return confirmDialog[0];
+    }
+
+    /**
+     * Extend a simple request with "Yes" and "Cancel" to then create an action dialog.
+     * Call {@link com.raising.app.fragments.RaisingFragment#showActionDialog(String, String, String, String)}
+     *
+     * @param title   The title of the action dialog
+     * @param message The message of the action dialog
+     * @return The return value of {@link com.raising.app.fragments.RaisingFragment#showActionDialog(String, String, String, String)}
+     */
+    public boolean showActionDialog(String title, String message) {
+        return showActionDialog(title, message, getString(R.string.yes_text), getString(R.string.cancel_text));
     }
 
     /**
@@ -428,12 +513,31 @@ public class RaisingFragment extends Fragment {
      * @param list   the items to add
      * @param layout where to add to
      */
-    protected void setupCheckboxes(ArrayList<? extends Model> list, LinearLayout layout) {
+    protected void setupCheckboxes(ArrayList<? extends Model> list, FlexboxLayout layout) {
         list.forEach(item -> {
+            LinearLayout wrapper = new LinearLayout(getContext());
+            wrapper.setOrientation(LinearLayout.VERTICAL);
+            wrapper.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             CheckBox cb = new CheckBox(getContext());
-            cb.setText(item.getName());
             cb.setContentDescription(String.valueOf(item.getId()));
-            layout.addView(cb);
+            StateListDrawable cbImage = new StateListDrawable();
+            Bitmap iconBitmap = Bitmap.createScaledBitmap(item.getImage(), 100, 100, true);
+            RoundedBitmapDrawable icon = RoundedBitmapDrawableFactory.create(getResources(), iconBitmap);
+            RoundedBitmapDrawable iconChecked = RoundedBitmapDrawableFactory.create(getResources(), iconBitmap);
+            icon.setCornerRadius(50);
+            icon.setAntiAlias(true);
+            iconChecked.setCornerRadius(50);
+            iconChecked.setTint(getResources().getColor(R.color.raisingPrimary));
+            cbImage.addState(new int[]{android.R.attr.state_checked}, iconChecked);
+            cbImage.addState(new int[]{-android.R.attr.state_checked}, icon);
+            cb.setButtonDrawable(cbImage);
+            wrapper.addView(cb);
+            TextView label = new TextView(getContext());
+            label.setText(item.getName());
+            label.setSingleLine(false);
+            label.setMaxWidth(40);
+            wrapper.addView(label);
+            layout.addView(wrapper);
         });
     }
 
@@ -458,11 +562,15 @@ public class RaisingFragment extends Fragment {
      * @param layout
      * @param id
      */
-    protected void tickCheckbox(LinearLayout layout, long id) {
+    protected void tickCheckbox(FlexboxLayout layout, long id) {
         for (int i = 0; i < layout.getChildCount(); ++i) {
-            CheckBox cb = (CheckBox) layout.getChildAt(i);
-            if (Long.parseLong((String) cb.getContentDescription()) == id) {
-                cb.setChecked(true);
+            if(layout.getChildAt(i) instanceof LinearLayout) {
+                if(((LinearLayout)layout.getChildAt(i)).getChildAt(0) instanceof  CheckBox) {
+                    CheckBox cb = (CheckBox) ((LinearLayout) layout.getChildAt(i)).getChildAt(0);
+                    if (Long.parseLong((String) cb.getContentDescription()) == id) {
+                        cb.setChecked(true);
+                    }
+                }
             }
         }
     }
@@ -488,12 +596,16 @@ public class RaisingFragment extends Fragment {
      * @param layout
      * @return
      */
-    protected ArrayList<Long> getSelectedCheckboxIds(LinearLayout layout) {
+    protected ArrayList<Long> getSelectedCheckboxIds(FlexboxLayout layout) {
         ArrayList<Long> results = new ArrayList<>();
         for (int i = 0; i < layout.getChildCount(); ++i) {
-            View v = layout.getChildAt(i);
-            if (((CheckBox) v).isChecked() && ((String) ((CheckBox) v).getContentDescription()).length() > 0) {
-                results.add(Long.parseLong((String) ((CheckBox) v).getContentDescription()));
+            if(layout.getChildAt(i) instanceof LinearLayout) {
+                if (((LinearLayout) layout.getChildAt(i)).getChildAt(0) instanceof CheckBox) {
+                    CheckBox v = (CheckBox)((LinearLayout) layout.getChildAt(i)).getChildAt(0);
+                    if (v.isChecked() && ((String)v.getContentDescription()).length() > 0) {
+                        results.add(Long.parseLong((String) ((CheckBox) v).getContentDescription()));
+                    }
+                }
             }
         }
 
@@ -528,27 +640,25 @@ public class RaisingFragment extends Fragment {
     /**
      * Show year picker
      *
-     * @param title      title of the picker
-     * @param inputField the field to print the output to
+     * @param title         title of the picker
+     * @param inputField    the field to print the output to
+     * @param activatedYear the activated year of the picker
      */
-    protected void showYearPicker(String title, EditText inputField) {
+    protected void showYearPicker(String title, EditText inputField, int activatedYear) {
         Calendar today = Calendar.getInstance();
         MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(getContext(),
-                new MonthPickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(int selectedMonth, int selectedYear) { // on date set }
-                    }
+                (selectedMonth, selectedYear) -> { // on date set }
                 }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
 
         builder.setActivatedMonth(Calendar.JULY).setMinYear(1900)
-                .setActivatedYear(today.get(Calendar.YEAR));
-                // check for founding year picker, founding year cannot be in the future
-                if(title.contains("founding")) {
-                    builder.setMaxYear(today.get(Calendar.YEAR));
-                } else {
-                    builder.setMaxYear(today.get(Calendar.YEAR) + 200);
-                }
-                builder.setMinMonth(Calendar.FEBRUARY)
+                .setActivatedYear(activatedYear);
+        // check for founding year picker, founding year cannot be in the future
+        if (title.contains("founding")) {
+            builder.setMaxYear(today.get(Calendar.YEAR));
+        } else {
+            builder.setMaxYear(today.get(Calendar.YEAR) + 200);
+        }
+        builder.setMinMonth(Calendar.FEBRUARY)
                 .setTitle(title)
                 .showYearOnly()
                 .setOnYearChangedListener(new MonthPickerDialog.OnYearChangedListener() {
@@ -559,19 +669,25 @@ public class RaisingFragment extends Fragment {
                 })
                 .build()
                 .show();
+        inputField.setText(String.valueOf(activatedYear));
+    }
 
-        inputField.setText(String.valueOf(today.get(Calendar.YEAR)));
+    /**
+     * Delegate year picker based on title, inputField and current date
+     *
+     * @param title      title of the picker
+     * @param inputField the field to print the output to
+     *                   <p>
+     *                   Call {@link com.raising.app.fragments.RaisingFragment#showYearPicker(String, EditText, int)}
+     */
+    protected void showYearPicker(String title, EditText inputField) {
+        Calendar today = Calendar.getInstance();
+        showYearPicker(title, inputField, today.get(Calendar.YEAR));
     }
 
     protected void showLoadingPanel() {
-        Log.d(TAG, "showLoadingPanel: called");
         if (overlayLayout == null) {
             Log.e("RaisingFragment", "No overlay layout found!");
-            return;
-        }
-        ++processesLoading;
-
-        if (processesLoading > 1) {
             return;
         }
 
@@ -582,23 +698,15 @@ public class RaisingFragment extends Fragment {
     }
 
     protected void dismissLoadingPanel() {
-        Log.d(TAG, "dismissLoadingPanel: called");
-       /* --processesLoading;
-        if (loadingPanel == null || processesLoading != 0) {
-            if (processesLoading < 0)
-                processesLoading = 0;
-            return;
-        }*/
-
         loadingPanel.setVisibility(View.GONE);
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         }
     }
 
     protected void disablePreOnboarding() {
         MainActivity activity = (MainActivity) getActivity();
-        if(activity != null) {
+        if (activity != null) {
             activity.disablePreOnboarding();
         }
     }
@@ -606,7 +714,7 @@ public class RaisingFragment extends Fragment {
     protected boolean isDisablePostOnboarding() {
         boolean disablePostOnboarding = false;
         try {
-            if(!(InternalStorageHandler.exists("postOnboarding"))) {
+            if (!(InternalStorageHandler.exists("postOnboarding"))) {
                 return false;
             } else {
                 disablePostOnboarding = (boolean) InternalStorageHandler.loadObject("postOnboarding");
@@ -619,14 +727,14 @@ public class RaisingFragment extends Fragment {
 
     protected void disablePostOnboarding() {
         MainActivity activity = (MainActivity) getActivity();
-        if(activity != null) {
+        if (activity != null) {
             activity.disablePostOnboarding();
         }
     }
 
     protected boolean isFirstAppLaunch() {
         MainActivity activity = (MainActivity) getActivity();
-        if(activity != null) {
+        if (activity != null) {
             return activity.isFirstAppLaunch();
         }
         return false;

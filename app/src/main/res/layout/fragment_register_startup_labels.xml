@@ -16,7 +16,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/register_startup_labels_information"
+                style="@style/RaisingTextBold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                android:gravity="center"
+                android:hint="@string/registration_information_label"
+                app:layout_constraintBottom_toTopOf="@+id/register_startup_pitch_labels"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/register_startup_pitch_labels"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -24,11 +41,11 @@
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:orientation="vertical"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/register_startup_labels_information"
                 app:layout_constraintVertical_bias="0.0" />
 
             <LinearLayout
@@ -89,7 +106,7 @@
 
             <Button
                 android:id="@+id/button_startup_labels"
-                style="@style/ButtonConfirmRegistration"
+                style="@style/ButtonRegistrationAndProfile"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"

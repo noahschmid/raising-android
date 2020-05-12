@@ -24,13 +24,13 @@
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.35" />
+            app:layout_constraintVertical_bias="0.38" />
 
         <ImageView
             android:id="@+id/imageView14"
-            android:layout_width="500dp"
+            android:layout_width="400dp"
             android:layout_height="0dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="60dp"
             android:foregroundGravity="center"
             android:src="@drawable/raising_splash_background"
             app:layout_constraintDimensionRatio="0.5"
@@ -52,7 +52,7 @@
 
             <TextView
                 android:id="@+id/text_onboarding_skip"
-                style="@style/RaisingText"
+                style="@style/RaisingSmallerTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMarginSmall"
@@ -63,7 +63,6 @@
                 android:paddingEnd="@dimen/onboardingTextHorizontalPadding"
                 android:paddingBottom="@dimen/onboardingTextVerticalPadding"
                 android:textColorHint="@color/raisingWhite"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/linearLayout"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -72,7 +71,7 @@
 
             <TextView
                 android:id="@+id/text_onboarding_next"
-                style="@style/RaisingText"
+                style="@style/RaisingTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMarginSmall"
@@ -83,7 +82,6 @@
                 android:paddingEnd="@dimen/onboardingTextHorizontalPadding"
                 android:paddingBottom="@dimen/onboardingTextVerticalPadding"
                 android:textColorHint="@color/raisingWhite"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -96,9 +94,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="@+id/text_onboarding_next"
-                app:layout_constraintEnd_toStartOf="@+id/text_onboarding_next"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/text_onboarding_skip"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/text_onboarding_next">
 
                 <ImageView

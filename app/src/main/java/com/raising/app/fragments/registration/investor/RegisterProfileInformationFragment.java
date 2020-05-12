@@ -18,14 +18,16 @@ import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.ContactData;
 import com.raising.app.models.Investor;
 import com.raising.app.util.AccountService;
+import com.raising.app.util.RaisingTextWatcher;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
 
-public class RegisterProfileInformationFragment extends RaisingFragment implements View.OnClickListener {
+public class RegisterProfileInformationFragment extends RaisingFragment implements RaisingTextWatcher {
     private EditText profileCompanyInput, profileWebsiteInput, profilePhoneInput, profileCountryInput;
     private CustomPicker customPicker;
+    private Button btnProfileInformation;
     private int countryId = -1;
     private boolean editMode = false;
     private ContactData contactDetails;
@@ -49,17 +51,20 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //define input views and button
         profileCompanyInput = view.findViewById(R.id.register_input_profile_company);
         profileWebsiteInput = view.findViewById(R.id.register_input_profile_website);
         profilePhoneInput = view.findViewById(R.id.register_input_profile_phone);
         profileCountryInput = view.findViewById(R.id.register_input_profile_countries);
 
-        Button btnProfileInformation = view.findViewById(R.id.button_profile_information);
-        btnProfileInformation.setOnClickListener(this);
+        btnProfileInformation = view.findViewById(R.id.button_profile_information);
+        btnProfileInformation.setOnClickListener(v -> processProfileInformation());
 
-        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+        //adjust fragment if this fragment is used for profile
+        if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnProfileInformation.setHint(getString(R.string.myProfile_apply_changes));
+            btnProfileInformation.setVisibility(View.INVISIBLE);
             investor = (Investor) accountViewModel.getAccount().getValue();
             contactDetails = AccountService.getContactData();
             editMode = true;
@@ -71,18 +76,27 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
 
         setupCountryPicker();
 
+        // fill views with users existing data
         profileCompanyInput.setText(investor.getCompanyName());
         profileWebsiteInput.setText(investor.getWebsite());
 
-        if(resources.getCountry(investor.getCountryId()) != null)
+        if (resources.getCountry(investor.getCountryId()) != null)
             profileCountryInput.setText(
                     resources.getCountry(investor.getCountryId()).getName());
 
         profilePhoneInput.setText(contactDetails.getPhone());
 
         profileCountryInput.setShowSoftInputOnFocus(false);
-        if(investor.getCountryId() != -1)
-            countryId = (int)investor.getCountryId();
+        if (investor.getCountryId() != -1)
+            countryId = (int) investor.getCountryId();
+
+        // if editmode, add text watchers after initial filling with users data
+        if (editMode) {
+            profileCompanyInput.addTextChangedListener(this);
+            profileWebsiteInput.addTextChangedListener(this);
+            profilePhoneInput.addTextChangedListener(this);
+            profileCountryInput.addTextChangedListener(this);
+        }
     }
 
     private void setupCountryPicker() {
@@ -94,7 +108,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
                             @Override
                             public void onSelectItem(PickerItem country) {
                                 profileCountryInput.setText(country.getName());
-                                countryId = (int)country.getId();
+                                countryId = (int) country.getId();
                             }
                         })
                         .setItems(resources.getCountries());
@@ -104,8 +118,8 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         profileCountryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    if(!customPicker.instanceRunning())
+                if (hasFocus) {
+                    if (!customPicker.instanceRunning())
                         customPicker.showDialog(getActivity());
                 }
             }
@@ -114,7 +128,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         profileCountryInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(customPicker.instanceRunning())
+                if (customPicker.instanceRunning())
                     customPicker.dismiss();
 
                 customPicker.showDialog(getActivity());
@@ -130,20 +144,14 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
     }
 
     @Override
-    public void onClick(View view) {
-        switch(view.getId()) {
-            case R.id.button_profile_information:
-                processProfileInformation();
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
     protected void onAccountUpdated() {
         popCurrentFragment(this);
         accountViewModel.updateCompleted();
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        btnProfileInformation.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -153,20 +161,20 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
     private void processProfileInformation() {
         String companyName = profileCompanyInput.getText().toString();
         contactDetails.setPhone(profilePhoneInput.getText().toString());
-        if(profileWebsiteInput.getText().toString().length() != 0 && !(profileWebsiteInput.getText().toString().contains("http"))) {
+        if (profileWebsiteInput.getText().toString().length() != 0 && !(profileWebsiteInput.getText().toString().contains("http"))) {
             String website = "http://" + profileWebsiteInput.getText().toString();
             investor.setWebsite(website);
         } else {
             investor.setWebsite(profileWebsiteInput.getText().toString());
         }
 
-        if(countryId == -1 || contactDetails.getPhone().length() == 0) {
+        if (countryId == -1 || contactDetails.getPhone().length() == 0) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
-        if(companyName.length() > getResources().getInteger(R.integer.raisingMaximumNameLength)) {
+        if (companyName.length() > getResources().getInteger(R.integer.raisingMaximumNameLength)) {
             showSimpleDialog(getString(R.string.register_dialog_title), getString(R.string.register_dialog_long_name));
             return;
         }
@@ -175,17 +183,16 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         investor.setCompanyName(companyName);
 
         try {
-            if(!editMode) {
+            if (!editMode) {
                 RegistrationHandler.saveContactData(contactDetails);
                 RegistrationHandler.saveInvestor(investor);
                 changeFragment(new RegisterInvestorMatchingFragment(),
                         "RegisterInvestorMatchingFragment");
             } else {
-                if(AccountService.saveContactData(contactDetails)) {
+                if (AccountService.saveContactData(contactDetails)) {
                     accountViewModel.update(investor);
                 } else {
-                    showSimpleDialog(getString(R.string.generic_error_title),
-                            getString(R.string.generic_error_text));
+                    showGenericError();
                 }
 
             }

@@ -13,31 +13,49 @@
         android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/scroll_layout">
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/empty_leads_fragment_text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
-                    <TextView
-                        style="@style/RaisingSubtitleText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/standardVerticalMarginSmall"
-                        android:gravity="center"
-                        android:hint="@string/leads_no_current_leads_text"
+                    <ImageView
+                        android:id="@+id/imageView16"
+                        android:layout_width="@dimen/emptyMatchlistIconSize"
+                        android:layout_height="@dimen/emptyMatchlistIconSize"
+                        android:layout_marginTop="@dimen/standardVerticalMargin"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
+                        android:src="@drawable/ic_emptyleads"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView29" />
+
+                    <TextView
+                        android:id="@+id/textView29"
+                        style="@style/RaisingSubtitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/standardHorizontalMargin"
+                        android:layout_marginTop="@dimen/standardVerticalMargin"
+                        android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
+                        android:gravity="center"
+                        android:hint="@string/leads_no_current_leads_text"
+                        app:layout_constraintBottom_toTopOf="@+id/imageView16"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -62,13 +80,11 @@
 
                     <TextView
                         android:id="@+id/textView4"
+                        style="@style/RaisingTextBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                         android:hint="@string/leads_open_requests"
-                        android:textColorHint="@color/raisingTextColor"
-                        android:textSize="@dimen/raisingTextFontSize"
-                        android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@+id/textView3"
                         app:layout_constraintStart_toEndOf="@+id/leads_open_requests_image"
                         app:layout_constraintTop_toTopOf="@+id/leads_open_requests_image"
@@ -76,11 +92,10 @@
 
                     <TextView
                         android:id="@+id/textView3"
+                        style="@style/RaisingHelperText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="@string/leads_open_requests_description"
-                        android:textColorHint="@color/raisingTextColor"
-                        android:textSize="@dimen/raisingSmallerTextFontSize"
                         app:layout_constraintBottom_toBottomOf="@+id/leads_open_requests_image"
                         app:layout_constraintStart_toStartOf="@+id/textView4"
                         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -90,7 +105,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
-                        android:foregroundGravity="center"
+                        android:layout_marginBottom="@dimen/standardVerticalMargin"
+                        android:foregroundGravity="bottom|right"
                         app:layout_constraintBottom_toBottomOf="@+id/leads_open_requests_image"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/leads_open_requests_image">
@@ -99,13 +115,19 @@
                             android:id="@+id/leads_open_requests_arrow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
+                            android:layout_gravity="bottom|end"
                             android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                             android:layout_marginTop="@dimen/standardVerticalMargin"
-                            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                            android:layout_marginBottom="@dimen/standardVerticalMargin"
                             android:src="@drawable/ic_keyboard_arrow_right_32dp"
                             android:tint="@color/raisingSecondaryDark" />
+
+                        <View
+                            android:id="@+id/leads_open_request_badge_layout"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="2dp"
+                            android:layout_marginBottom="6dp" />
                     </FrameLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -118,6 +140,7 @@
 
                     <TextView
                         android:id="@+id/leads_tab_today"
+                        style="@style/RaisingSubtitleBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
@@ -125,8 +148,6 @@
                         android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                         android:hint="@string/leads_tab_today"
                         android:textColorHint="@color/raisingPrimary"
-                        android:textSize="@dimen/raisingSubtitleFontSize"
-                        android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@+id/leads_tab_recycler_today"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -135,6 +156,7 @@
                         android:id="@+id/leads_tab_recycler_today"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/leads_tab_today"
                         tools:layout_editor_absoluteX="0dp" />
@@ -150,6 +172,7 @@
 
                     <TextView
                         android:id="@+id/leads_tab_this_week"
+                        style="@style/RaisingSubtitleBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
@@ -157,8 +180,6 @@
                         android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                         android:hint="@string/leads_tab_this_week"
                         android:textColorHint="@color/raisingPrimary"
-                        android:textSize="@dimen/raisingSubtitleFontSize"
-                        android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@+id/leads_tab_recycler_this_week"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -167,6 +188,7 @@
                         android:id="@+id/leads_tab_recycler_this_week"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/leads_tab_this_week" />
 
@@ -212,6 +234,7 @@
 
                     <TextView
                         android:id="@+id/leads_tab_earlier"
+                        style="@style/RaisingSubtitleBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
@@ -219,8 +242,6 @@
                         android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                         android:hint="@string/leads_tab_earlier"
                         android:textColorHint="@color/raisingPrimary"
-                        android:textSize="@dimen/raisingSubtitleFontSize"
-                        android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@+id/leads_tab_recycler_earlier"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -229,12 +250,11 @@
                         android:id="@+id/leads_tab_recycler_earlier"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/leads_tab_earlier" />
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

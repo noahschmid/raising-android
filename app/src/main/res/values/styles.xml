@@ -5,28 +5,10 @@
         <item name="colorPrimary">@color/raisingPrimary</item>
         <item name="colorPrimaryDark">@color/raisingPrimaryDark</item>
         <item name="colorAccent">@color/raisingPrimaryAccent</item>
+        <!-- Define font family -->
+        <item name="fontFamily">@font/raising_font</item>
         <!-- Define styling for Android soft navigation -->
         <item name="android:navigationBarColor">@color/raisingBlack</item>
-        <!-- Define styling for snackbar -->
-        <item name="snackbarStyle">@style/snackbar_style</item>
-        <item name="snackbarTextViewStyle">@style/snackbar_text_style</item>
-    </style>
-
-    <style name="RaisingText">
-        <item name="fontFamily">sans-serif</item>
-        <item name="android:textColor">@color/raisingTextColor</item>
-        <item name="android:textColorHint">@color/raisingTextColor</item>
-        <item name="android:textSize">@dimen/raisingTextFontSize</item>
-    </style>
-
-    <style name="RaisingSubtitleText" parent="RaisingText">
-        <item name="android:textSize">@dimen/raisingSubtitleFontSize</item>
-    </style>
-
-    <style name="RaisingDescriptionText" parent="RaisingText">
-        <item name="android:textSize"> @dimen/raisingSmallerTextFontSize</item>
-        <item name="android:textColor"> @color/gray</item>
-        <item name="android:textColorHint">@color/gray</item>
     </style>
 
     <style name="AppBarTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
@@ -34,28 +16,106 @@
         <item name="iconTint">@color/raisingWhite</item>
     </style>
 
-    <style name="snackbar_style" parent="Widget.MaterialComponents.Snackbar">
-        <item name="android:layout_marginBottom">@dimen/standardVerticalMargin</item>
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background_splash</item>
+    </style>
+    
+   <!-- Text Styles -->
+    <style name="RaisingText">
+        <item name="android:textColor">@color/raisingTextColor</item>
+        <item name="android:textColorHint">@color/raisingTextColor</item>
+        <item name="android:textSize">@dimen/raisingTextFontSize</item>
     </style>
 
-    <style name="snackbar_text_style" parent="Widget.MaterialComponents.Snackbar.TextView">
+    <style name="RaisingTextBold" parent="RaisingText">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="RaisingSmallerText" parent="RaisingText">
         <item name="android:textSize">@dimen/raisingSmallerTextFontSize</item>
     </style>
 
+    <style name="RaisingSmallerTextBold" parent="RaisingTextBold">
+        <item name="android:textSize">@dimen/raisingSmallerTextFontSize</item>
+    </style>
+
+    <style name="RaisingTitleNonBold" parent="RaisingTitle">
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="RaisingTitle" parent="RaisingTextBold">
+        <item name="android:textSize">@dimen/raisingTitleFontSize</item>
+    </style>
+
+    <style name="RaisingLargeTitle" parent="RaisingTextBold">
+        <item name="android:textSize">@dimen/raisingLargeTitleFontSize</item>
+    </style>
+
+    <style name="RaisingSubtitle" parent="RaisingText">
+        <item name="android:textSize">@dimen/raisingSubtitleFontSize</item>
+    </style>
+
+    <style name="RaisingSubtitleBold" parent="RaisingTextBold">
+        <item name="android:textSize">@dimen/raisingSubtitleFontSize</item>
+    </style>
+
+    <style name="RaisingHelperText" parent="RaisingText">
+        <item name="android:textSize">@dimen/raisingTextFontSize</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="RaisingSmallHelperText" parent="RaisingText">
+        <item name="android:textSize">@dimen/raisingSmallerTextFontSize</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+
+   <!-- Button Styles -->
+    <style name="GeneralButtonStyle">
+        <item name="android:drawableTint">@color/raisingTextColorLight</item>
+        <item name="android:textColorHint">@color/raisingTextColorLight</item>
+        <item name="android:backgroundTint">@color/raisingButtonBackgroundColor</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ButtonRegistrationAndProfile" parent="GeneralButtonStyle">
+        <item name="android:layout_height">@dimen/myProfileButtonHeight</item>
+        <item name="android:layout_marginBottom">@dimen/standardVerticalMargin</item>
+        <item name="android:textSize">@dimen/raisingTitleFontSize</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="CountryPickerButton">
+        <item name="strokeWidth">@dimen/outlinedButtonStrokeWidth</item>
+        <item name="strokeColor">@color/raisingPrimary</item>
+        <item name="android:textSize">@dimen/raisingSubtitleFontSize</item>
+        <item name="android:textColorHint">@color/raisingPrimary</item>
+        <item name="backgroundTint">@color/raisingWhite</item>
+    </style>
+
+    <style name="OpenRequestDeclineButton">
+        <item name="strokeWidth">@dimen/outlinedButtonStrokeWidth</item>
+        <item name="strokeColor">@color/raisingSecondary</item>
+        <item name="android:textSize">@dimen/raisingTextFontSize</item>
+        <item name="android:textColorHint">@color/raisingSecondary</item>
+        <item name="backgroundTint">@color/raisingWhite</item>
+    </style>
+
+    <style name="HandshakeContactButtonStyle" parent="GeneralButtonStyle">
+        <item name="android:layout_height">@dimen/leadsContactButtonHeight</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="backgroundColor">@color/raisingSecondaryDark</item>
+        <item name="android:textColor">@color/raisingWhite</item>
+        <item name="android:textColorHint">@color/raisingWhite</item>
+        <item name="android:textSize">@dimen/raisingSmallTextFontSize</item>
+    </style>
 
     <style name="DialogTheme" parent="Theme.MaterialComponents.Light.Dialog.MinWidth" />
 
     <style name="TextInputLayoutTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox" />
 
     <style name="TextInputExposedDropdownMenuTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu" />
-
-    <style name="GeneralButtonStyle">
-        <item name="android:layout_height">@dimen/myProfileButtonHeight</item>
-        <item name="android:drawableTint">@color/raisingWhite</item>
-        <item name="android:textColorHint">@color/raisingWhite</item>
-        <item name="android:backgroundTint">@color/raisingButtonBackgroundColor</item>
-        <item name="android:gravity">center|start</item>
-    </style>
 
     <style name="DialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
@@ -85,52 +145,6 @@
         <item name="android:background">@drawable/ic_bottomsheet_new_background</item>
     </style>
 
-    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/background_splash</item>
-    </style>
-
-    <style name="ButtonConfirmRegistration">
-        <item name="android:layout_marginBottom">@dimen/standardVerticalMargin</item>
-        <item name="android:textSize">@dimen/buttonFontSize</item>
-        <item name="android:backgroundTint">@color/raisingButtonBackgroundColor</item>
-        <item name="android:textColorHint">@color/raisingTextColorLight</item>
-    </style>
-
-    <style name="FragmentTitle">
-        <item name="android:layout_marginTop">@dimen/standardFragmentTitleMargin</item>
-        <item name="android:layout_marginBottom">@dimen/standardFragmentTitleMargin</item>
-        <item name="android:textSize">@dimen/raisingTitleFontSize</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColorHint">@color/raisingTextColor</item>
-    </style>
-
-    <style name="PrimaryOutlineButton">
-        <item name="strokeWidth">@dimen/outlinedButtonStrokeWidth</item>
-        <item name="strokeColor">@color/raisingPrimary</item>
-        <item name="android:textSize">@dimen/popupButtonFontSize</item>
-        <item name="android:textColorHint">@color/raisingPrimary</item>
-        <item name="backgroundTint">@color/raisingWhite</item>
-    </style>
-
-    <style name="OpenRequestDeclineButton">
-        <item name="strokeWidth">@dimen/outlinedButtonStrokeWidth</item>
-        <item name="strokeColor">@color/raisingSecondary</item>
-        <item name="android:textSize">@dimen/raisingTextFontSize</item>
-        <item name="android:textColorHint">@color/raisingSecondary</item>
-        <item name="backgroundTint">@color/raisingWhite</item>
-    </style>
-
-    <style name="StakeholderRecyclerItem">
-        <item name="cardCornerRadius">2dp</item>
-        <item name="strokeWidth">1dp</item>
-        <item name="strokeColor">@color/raisingPrimary</item>
-    </style>
-
-    <style name="PublicProfileRoundButton">
-        <item name="backgroundTint">@color/raisingWhite</item>
-        <item name="android:radius">20dp</item>
-    </style>
-
     <style name="HandshakeTabLayoutStyle" parent="Widget.MaterialComponents.TabLayout">
         <item name="android:background">@color/raisingWhite</item>
         <item name="tabTextColor">@color/raisingSecondaryLight</item>
@@ -139,31 +153,22 @@
         <item name="tabIndicatorColor">@color/raisingSecondaryDark</item>
     </style>
 
-    <style name="HandshakeContactCardView">
-        <item name="cardCornerRadius">2dp</item>
-        <item name="android:backgroundTint">@color/raisingSecondaryAccent</item>
-        <item name="android:layout_height">@dimen/leadsContactCardHeight</item>
+    <style name="SelectableItemBackgroundWhite">
+        <item name="android:theme">@style/SelectableItemThemeWhite</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
     </style>
 
-    <style name="HandshakeContactButtonStyle" parent="GeneralButtonStyle">
-        <item name="android:layout_height">@dimen/leadsContactButtonHeight</item>
-        <item name="android:minWidth">0dp</item>
-        <item name="backgroundColor">@color/raisingSecondaryDark</item>
-        <item name="android:textColor">@color/raisingWhite</item>
-        <item name="android:textColorHint">@color/raisingWhite</item>
-        <item name="android:textSize">@dimen/raisingSmallTextFontSize</item>
+    <style name="SelectableItemThemeWhite">
+        <item name="colorControlHighlight">@color/raisingRippleColor</item>
     </style>
 
-    <style name="RaisingSwitchButtonStyle">
-        <item name="thumbTint">@color/raisingPrimary</item>
-        <item name="trackTint">@color/raisingPrimaryLight</item>
+    <style name="SelectableItemBackgroundColored">
+        <item name="android:theme">@style/SelectableItemThemeColored</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
     </style>
 
-    <style name="RaisingStandardParagraph" parent="RaisingText">
-        <item name="android:textSize">@dimen/raisingTextFontSize</item>
+    <style name="SelectableItemThemeColored">
+        <item name="colorControlHighlight">@color/raisingRippleColorLight</item>
     </style>
 
-    <style name="RaisingStandardParagraphBold" parent="RaisingStandardParagraph">
-        <item name="android:textStyle">bold</item>
-    </style>
 </resources>

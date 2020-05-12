@@ -1,17 +1,14 @@
 package com.raising.app.viewModels;
 
 import android.app.Application;
-import android.app.Person;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.gson.Gson;
 import com.raising.app.models.NotificationSettings;
 import com.raising.app.models.PersonalSettings;
 import com.raising.app.models.ViewState;
@@ -34,6 +31,7 @@ public class SettingsViewModel extends AndroidViewModel {
     public SettingsViewModel(@NonNull Application application) {
         super(application);
         personalSettings.setValue(new PersonalSettings());
+        personalSettings.getValue().setNotificationSettings(new ArrayList<>());
         viewState.setValue(ViewState.EMPTY);
     }
 
@@ -47,20 +45,67 @@ public class SettingsViewModel extends AndroidViewModel {
 
     public void loadSettings() {
         Log.d(TAG, "loadSettings: Loading Settings");
-        viewState.setValue(ViewState.LOADING);
+        updateDeviceToken();
+        viewState.postValue(ViewState.LOADING);
         Log.d(TAG, "loadSettings: ViewState " + viewState.getValue().toString());
         PersonalSettings cachedSettings = getCachedSettings();
         if (cachedSettings != null) {
-            personalSettings.setValue(cachedSettings);
-            viewState.setValue(ViewState.CACHED);
+            personalSettings.postValue(cachedSettings);
+            viewState.postValue(ViewState.CACHED);
             Log.d(TAG, "loadSettings: ViewState " + viewState.getValue().toString());
         } else {
-            // TODO: once server supports GET replace with GET request
-            addInitialSettings();
-            loadSettings();
+            getUserSettings();
+        }
+    }
+
+    private void updateDeviceToken() {
+        Log.d(TAG, "updateDeviceToken: ");
+        viewState.postValue(ViewState.LOADING);
+        JSONObject object = new JSONObject();
+        // device specifications
+        String deviceToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "sendDeviceToken: DeviceToken " + deviceToken);
+
+        try {
+            object.put("token", deviceToken);
+            object.put("device", "ANDROID");
+        } catch (JSONException e) {
+            Log.e(TAG, "sendDeviceToken: JSONException " + e.getMessage());
         }
 
-        //TODO: get personal settings from server
+        ApiRequestHandler.performPatchRequest("settings",
+                response -> {
+                    viewState.postValue(ViewState.RESULT);
+                    Log.d(TAG, "sendDeviceToken: Token updated " + deviceToken);
+                    return null;
+                }, volleyError -> {
+                    viewState.postValue(ViewState.ERROR);
+                    Log.e(TAG, "sendDeviceToken: Update failed " + volleyError.getMessage());
+                    return null;
+                }, object);
+    }
+
+    private void getUserSettings() {
+        ApiRequestHandler.performGetRequest("settings",
+                response -> {
+                    viewState.postValue(ViewState.RESULT);
+                    try {
+                        personalSettings.getValue().setNumberOfMatches(response.getInt("numberOfMatches"));
+                        JSONArray notificationSettings = response.getJSONArray("notificationTypes");
+                        for (int i = 0; i < notificationSettings.length(); i++) {
+                            personalSettings.getValue().getNotificationSettings().add(Enum.valueOf(NotificationSettings.class, notificationSettings.getString(i)));
+                        }
+                        Log.d(TAG, "getUserSettings: Personal Settings" + personalSettings.getValue());
+                        cacheSettings(personalSettings.getValue());
+                    } catch (JSONException e) {
+                        Log.e(TAG, "getUserSettings: Error getting JSON" + e.getMessage());
+                    }
+                    return null;
+                }, volleyError -> {
+                    viewState.postValue(ViewState.ERROR);
+                    Log.d(TAG, "getUserSettings: Error fetching settings" + volleyError.toString());
+                    return null;
+                });
     }
 
     /**
@@ -69,15 +114,14 @@ public class SettingsViewModel extends AndroidViewModel {
      * @param settings The new object of personal settings
      */
     public void updatePersonalSettings(PersonalSettings settings) {
-        viewState.setValue(ViewState.LOADING);
-        personalSettings.setValue(settings);
+        viewState.postValue(ViewState.LOADING);
+        personalSettings.postValue(settings);
         cacheSettings(personalSettings.getValue());
 
         // device specifications
         String deviceToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "updatePersonalSettings: DeviceToken: " + deviceToken);
 
-        /*
         JSONObject object = new JSONObject();
         ArrayList<String> notificationSettingsStrings = new ArrayList<>();
         personalSettings.getValue().getNotificationSettings().forEach(notificationSettings -> {
@@ -90,25 +134,22 @@ public class SettingsViewModel extends AndroidViewModel {
 
             //TODO: add following fields, once backend supports these values
 
-            // object.put("language", personalSettings.getValue().getLanguage());
-            // object.put("numberOfMatches", personalSettings.getValue().getNumberOfMatches());
+            object.put("numberOfMatches", personalSettings.getValue().getNumberOfMatches());
 
             Log.d(TAG, "updatePersonalSettings: JSONObject" + object.toString());
         } catch (JSONException e) {
             Log.e(TAG, "updatePersonalSettings: JSONException" + e.getMessage());
         }
 
-        ApiRequestHandler.performPatchRequest("device",
+        ApiRequestHandler.performPatchRequest("settings",
                 response -> {
-                    viewState.setValue(ViewState.RESULT);
+                    viewState.postValue(ViewState.RESULT);
                     return null;
                 }, volleyError -> {
-                    viewState.setValue(ViewState.ERROR);
+                    viewState.postValue(ViewState.ERROR);
                     Log.e(TAG, "updatePersonalSettings: " + ApiRequestHandler.parseVolleyError(volleyError));
                     return null;
                 }, object);
-        */
-
     }
 
     /**
@@ -121,7 +162,7 @@ public class SettingsViewModel extends AndroidViewModel {
             InternalStorageHandler.saveObject(settings,
                     "settings_" + AuthenticationHandler.getId());
         } catch (Exception e) {
-            viewState.setValue(ViewState.ERROR);
+            viewState.postValue(ViewState.ERROR);
             Log.e(TAG, "Error caching settings: " + e.getMessage());
         }
     }
@@ -138,8 +179,9 @@ public class SettingsViewModel extends AndroidViewModel {
                 Log.d(TAG, "getCachedSettings: No cached settings available");
             }
         } catch (Exception e) {
-            viewState.setValue(ViewState.ERROR);
+            viewState.postValue(ViewState.ERROR);
             Log.e(TAG, "getCachedSettings: Error while getting cached settings" + e.getMessage());
+            addInitialSettings();
         }
         return null;
     }
@@ -148,11 +190,10 @@ public class SettingsViewModel extends AndroidViewModel {
      * Add initial settings for new users
      */
     public void addInitialSettings() {
-        viewState.setValue(ViewState.LOADING);
+        viewState.postValue(ViewState.LOADING);
         Log.d(TAG, "addInitialSettings: ViewState " + viewState.getValue().toString());
         PersonalSettings initialSettings = new PersonalSettings();
 
-        initialSettings.setLanguage("English");
         initialSettings.setNumberOfMatches(5);
 
         ArrayList<NotificationSettings> notificationSettings = new ArrayList<>();
@@ -164,10 +205,9 @@ public class SettingsViewModel extends AndroidViewModel {
 
         //TODO: remove and replace with updatePersonalSettings(initialSettings); once backend supports all requests via PATCH
 
-        personalSettings.setValue(initialSettings);
+        personalSettings.postValue(initialSettings);
         cacheSettings(personalSettings.getValue());
 
-        /*
         // device specifications
         String deviceToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "addInitialSettings: DeviceToken: " + deviceToken);
@@ -184,26 +224,23 @@ public class SettingsViewModel extends AndroidViewModel {
 
             //TODO: add following fields, once backend supports these values
 
-            // object.put("language", personalSettings.getValue().getLanguage());
-            // object.put("numberOfMatches", personalSettings.getValue().getNumberOfMatches());
+            object.put("numberOfMatches", personalSettings.getValue().getNumberOfMatches());
 
             Log.d(TAG, "addInitialSettings: JSONObject" + object.toString());
         } catch (JSONException e) {
             Log.e(TAG, "addInitialSettings: JSONException" + e.getMessage());
         }
 
-        ApiRequestHandler.performPostRequest("device",
+        ApiRequestHandler.performPatchRequest("settings",
                 response -> {
-                    viewState.setValue(ViewState.RESULT);
-                    Log.d(TAG, "addInitialSettings: ViewState " + viewState.getValue().toString() );
+                    viewState.postValue(ViewState.RESULT);
+                    Log.d(TAG, "addInitialSettings: ViewState " + viewState.getValue().toString());
                     return null;
                 }, volleyError -> {
-                    viewState.setValue(ViewState.ERROR);
+                    viewState.postValue(ViewState.ERROR);
                     Log.d(TAG, "addInitialSettings: ViewState " + viewState.getValue().toString());
                     Log.e(TAG, "addInitialSettings: " + ApiRequestHandler.parseVolleyError(volleyError));
                     return null;
                 }, object);
-
-         */
     }
 }

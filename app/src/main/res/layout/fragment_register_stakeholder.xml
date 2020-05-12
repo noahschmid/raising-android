@@ -22,9 +22,7 @@
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_stakeholder_founder"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingSubtitleFontSize"
-                android:textStyle="bold"
+                style="@style/RaisingSubtitleBold"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_founder_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_founder_recycler_view"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -35,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintBottom_toTopOf="@+id/button_add_founder"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -63,9 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_stakeholder_board_member"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingSubtitleFontSize"
-                android:textStyle="bold"
+                style="@style/RaisingSubtitleBold"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_board_member_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_board_member_recycler_view"
                 app:layout_constraintTop_toBottomOf="@+id/button_add_founder" />
@@ -74,6 +71,7 @@
                 android:id="@+id/stakeholder_board_member_recycler_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintBottom_toTopOf="@+id/button_add_board_member"
                 app:layout_constraintEnd_toEndOf="@+id/stakeholder_founder_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_founder_recycler_view"
@@ -102,9 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/register_stakeholder_shareholder"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/raisingSubtitleFontSize"
-                android:textStyle="bold"
+                style="@style/RaisingSubtitleBold"
                 app:layout_constraintBottom_toTopOf="@+id/stakeholder_shareholder_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_shareholder_recycler_view"
                 app:layout_constraintTop_toBottomOf="@+id/button_add_board_member" />
@@ -113,6 +109,7 @@
                 android:id="@+id/stakeholder_shareholder_recycler_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintBottom_toTopOf="@+id/button_add_shareholder"
                 app:layout_constraintEnd_toEndOf="@+id/stakeholder_board_member_recycler_view"
                 app:layout_constraintStart_toStartOf="@+id/stakeholder_board_member_recycler_view"
@@ -140,15 +137,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/button_stakeholder"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_add_shareholder"
-                app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintVertical_chainStyle="packed">
 
                 <ImageView
@@ -199,7 +193,7 @@
 
             <Button
                 android:id="@+id/button_stakeholder"
-                style="@style/ButtonConfirmRegistration"
+                style="@style/ButtonRegistrationAndProfile"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"

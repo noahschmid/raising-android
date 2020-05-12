@@ -72,19 +72,6 @@
                 app:layout_constraintStart_toStartOf="@+id/login_password"
                 app:layout_constraintTop_toBottomOf="@+id/login_password" />
 
-            <TextView
-                android:id="@+id/text_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/login_welcome_text"
-                android:textColorHint="@color/raisingTextColor"
-                android:textSize="@dimen/loginScreenFontSize"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/login_email"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <Button
                 android:id="@+id/button_login_forgot_password"
                 style="?android:attr/borderlessButtonStyle"
@@ -110,6 +97,7 @@
                 android:hint="@string/login_register_text"
                 android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/button_login_forgot_password"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -117,6 +105,19 @@
                 app:layout_constraintVertical_bias="0.40"
                 app:layout_constraintVertical_chainStyle="packed"
                 app:rippleColor="@color/raisingRippleColor"/>
+
+            <ImageView
+                android:id="@+id/imageView20"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginEnd="60dp"
+                android:src="@drawable/ic_raising_schrift"
+                app:layout_constraintBottom_toTopOf="@+id/login_email"
+                app:layout_constraintDimensionRatio="3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

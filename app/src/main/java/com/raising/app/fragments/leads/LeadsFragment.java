@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +42,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class LeadsFragment extends RaisingFragment {
-
-    private final String TAG = "HandshakeTabFragment";
+    private String TAG;
 
     private LeadState leadState;
     private LeadsViewModel leadsViewModel;
@@ -50,7 +50,6 @@ public class LeadsFragment extends RaisingFragment {
     private ArrayList<Lead> today, thisWeek, thisMonth, earlier;
     private ConstraintLayout todayLayout, thisWeekLayout, thisMonthLayout, earlierLayout, emptyLeadsLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private boolean observersSet = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,14 +65,11 @@ public class LeadsFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         emptyLeadsLayout = view.findViewById(R.id.empty_leads_fragment_text);
+        emptyLeadsLayout.setVisibility(View.GONE);
+        Log.d(TAG, "onViewCreated: EmptyLeadsVisibility GONE");
 
         swipeRefreshLayout = view.findViewById(R.id.leads_swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                leadsViewModel.loadLeads();
-            }
-        });
+        swipeRefreshLayout.setOnRefreshListener(() -> leadsViewModel.loadLeads());
 
         today = new ArrayList<>();
         thisWeek = new ArrayList<>();
@@ -89,15 +85,16 @@ public class LeadsFragment extends RaisingFragment {
         thisWeekLayout.setVisibility(View.GONE);
         thisMonthLayout.setVisibility(View.GONE);
         earlierLayout.setVisibility(View.GONE);
-        emptyLeadsLayout.setVisibility(View.GONE);
 
         getView().findViewById(R.id.leads_open_requests).setVisibility(View.GONE);
 
         // check for leads state
         if (getArguments() != null) {
             leadState = (LeadState) getArguments().getSerializable("leadsState");
+            TAG = "LeadsFragment" + leadState;
             // prepare leadsViewModel for usage
 
+            Log.d(TAG, "onViewCreated: ");
             leadsViewModel.loadLeads();
 
             todayAdapter = new LeadsAdapter(today, leadState);
@@ -113,40 +110,25 @@ public class LeadsFragment extends RaisingFragment {
             if (resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
                     resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
                 leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
-                    processLeadsViewState(state);
+                    if(state == ViewState.RESULT || state == ViewState.CACHED) {
+                        loadData();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
                 });
-                processLeadsViewState(leadsViewModel.getViewState().getValue());
-
-                observersSet = true;
+                if(leadsViewModel.getViewState().getValue() == ViewState.RESULT
+                        || leadsViewModel.getViewState().getValue() == ViewState.CACHED) {
+                    loadData();
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
         }
     }
 
     @Override
-    protected void onResourcesLoaded() {
-        if (!observersSet && leadState != null) {
-            leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
-                processLeadsViewState(state);
-            });
-            processLeadsViewState(leadsViewModel.getViewState().getValue());
-        }
-    }
-
-    /**
-     * @param state
-     */
-    private void processLeadsViewState(ViewState state) {
-        switch (state) {
-            case CACHED:
-            case RESULT:
-                dismissLoadingPanel();
-                loadData();
-                swipeRefreshLayout.setRefreshing(false);
-                break;
-            case LOADING:
-                showLoadingPanel();
-                break;
-        }
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+        leadsViewModel.loadLeads();
     }
 
     /**
@@ -204,14 +186,11 @@ public class LeadsFragment extends RaisingFragment {
         ConstraintLayout openRequests = getView().findViewById(R.id.leads_open_requests);
         ImageView openRequestsArrow = getView().findViewById(R.id.leads_open_requests_arrow);
         FrameLayout openRequestsArrowLayout = getView().findViewById(R.id.leads_open_request_arrow_layout);
-        boolean showEmptyLeadsText = false;
         if (!(leadState.equals(LeadState.YOUR_TURN))) {
             openRequests.setVisibility(View.GONE);
-            showEmptyLeadsText = true;
         } else {
             if (leadsViewModel.getOpenRequests().size() == 0) {
                 openRequests.setVisibility(View.GONE);
-                showEmptyLeadsText = true;
             } else {
                 openRequests.setVisibility(View.VISIBLE);
                 ImageView image = getView().findViewById(R.id.leads_open_requests_image);
@@ -220,16 +199,14 @@ public class LeadsFragment extends RaisingFragment {
                 BadgeDrawable badge = BadgeDrawable.create(Objects.requireNonNull(this.getContext()));
                 badge.setNumber(leadsViewModel.getOpenRequests().size());
                 badge.setBadgeGravity(BadgeDrawable.TOP_START);
-                BadgeUtils.attachBadgeDrawable(badge, openRequestsArrow, openRequestsArrowLayout);
+                View badgeLayout = getView().findViewById(R.id.leads_open_request_badge_layout);
+                BadgeUtils.attachBadgeDrawable(badge, badgeLayout, openRequestsArrowLayout);
                 openRequests.setOnClickListener(v ->
                         ((RaisingFragment) getParentFragment())
                                 .changeFragment(new LeadsOpenRequestsFragment()));
             }
         }
         filterLeads();
-        if (today.size() == 0 && thisWeek.size() == 0 && earlier.size() == 0 && showEmptyLeadsText) {
-            emptyLeadsLayout.setVisibility(View.VISIBLE);
-        }
     }
 
     /**
@@ -237,12 +214,15 @@ public class LeadsFragment extends RaisingFragment {
      */
     private void filterLeads() {
         today.clear();
-        thisWeek.clear();
-        thisMonth.clear();
-        earlier.clear();
         todayLayout.setVisibility(View.GONE);
+        thisWeek.clear();
         thisWeekLayout.setVisibility(View.GONE);
+        thisMonth.clear();
+        thisMonthLayout.setVisibility(View.GONE);
+        earlier.clear();
         earlierLayout.setVisibility(View.GONE);
+
+        emptyLeadsLayout.setVisibility(View.GONE);
 
         leadsViewModel.getLeads().getValue().forEach(lead -> {
             if (lead.getState() == leadState) {
@@ -274,6 +254,21 @@ public class LeadsFragment extends RaisingFragment {
                 }
             }
         });
+
+        // hide empty leads layout
+        if(leadState == LeadState.YOUR_TURN ) {
+            if(today.size() == 0 && thisWeek.size() == 0 && thisMonth.size() == 0 && earlier.size() == 0 && leadsViewModel.getOpenRequests().size() == 0) {
+                emptyLeadsLayout.setVisibility(View.VISIBLE);
+            } else {
+                emptyLeadsLayout.setVisibility(View.GONE);
+            }
+        } else {
+            if (today.size() == 0 && thisWeek.size() == 0 && thisMonth.size() == 0 && earlier.size() == 0) {
+                emptyLeadsLayout.setVisibility(View.VISIBLE);
+            } else {
+                emptyLeadsLayout.setVisibility(View.GONE);
+            }
+        }
 
         todayAdapter.notifyDataSetChanged();
         thisWeekAdapter.notifyDataSetChanged();

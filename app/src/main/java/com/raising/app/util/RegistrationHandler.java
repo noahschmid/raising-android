@@ -54,7 +54,7 @@ public class RegistrationHandler {
             startup.setPassword(account.getPassword());
             contactData.setEmail(account.getEmail());
             isStartup = true;
-            InternalStorageHandler.saveObject(contactData, "rgstr_startup");
+            InternalStorageHandler.saveObject(startup, "rgstr_contact");
         }
         else{
             investor.setFirstName(account.getFirstName());
@@ -64,7 +64,7 @@ public class RegistrationHandler {
             investor.setPassword(account.getPassword());
             contactData.setEmail(account.getEmail());
             isStartup = false;
-            InternalStorageHandler.saveObject(contactData, "rgstr_investor");
+            InternalStorageHandler.saveObject(investor, "rgstr_investor");
         }
         saveRegistrationState();
         InternalStorageHandler.saveObject(contactData, "rgstr_contact");
@@ -98,15 +98,16 @@ public class RegistrationHandler {
     public static Startup getStartup() { return startup; }
     public static ContactData getContactData() { return contactData; }
 
+
     /**
      * Cancel current registration process
      */
-    public static void cancel() {
-        context.deleteFile("rgstr_contact");
-        context.deleteFile("rgstr_account");
-        context.deleteFile("rgstr");
-        context.deleteFile("rgstr_startup");
-        context.deleteFile("rgstr_investor");
+    private static void cancel() {
+        InternalStorageHandler.deleteFile("rgstr_contact");
+        InternalStorageHandler.deleteFile("rgstr_account");
+        InternalStorageHandler.deleteFile("rgstr");
+        InternalStorageHandler.deleteFile("rgstr_startup");
+        InternalStorageHandler.deleteFile("rgstr_investor");
 
         investor = new Investor();
         startup = new Startup();
@@ -123,6 +124,7 @@ public class RegistrationHandler {
             return false;
 
         try {
+            Log.d("RegistrationHandler", "isInProgress: ");
             FileInputStream fis = context.openFileInput("rgstr");
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader bufferedReader = new BufferedReader(isr);
@@ -169,6 +171,9 @@ public class RegistrationHandler {
      * @return
      */
     public static Account loadAccount() {
+        if(!InternalStorageHandler.exists("rgstr_account")) {
+            return new Account();
+        }
         try {
             return (Account) InternalStorageHandler.loadObject("rgstr_account");
         } catch (Exception e) {
@@ -181,6 +186,9 @@ public class RegistrationHandler {
      * @return
      */
     public static Investor loadInvestor() {
+        if(!InternalStorageHandler.exists("rgstr_investor")) {
+            return new Investor();
+        }
         try {
             return (Investor) InternalStorageHandler.loadObject("rgstr_investor");
         } catch (Exception e) {
@@ -194,6 +202,9 @@ public class RegistrationHandler {
      * @return
      */
     public static Startup loadStartup() {
+        if(!InternalStorageHandler.exists("rgstr_startup")) {
+            return new Startup();
+        }
         try {
             return (Startup) InternalStorageHandler.loadObject("rgstr_startup");
         } catch (Exception e) {
@@ -207,6 +218,9 @@ public class RegistrationHandler {
      * @return
      */
     public static ContactData loadContactData() {
+        if(!InternalStorageHandler.exists("rgstr_contact")) {
+            return new ContactData();
+        }
         try {
             return (ContactData) InternalStorageHandler.loadObject("rgstr_contact");
         } catch (Exception e) {

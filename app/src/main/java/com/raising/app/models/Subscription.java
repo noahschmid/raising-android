@@ -1,5 +1,7 @@
 package com.raising.app.models;
 
+import com.android.billingclient.api.SkuDetails;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -10,9 +12,7 @@ import lombok.Data;
 public class Subscription implements Serializable {
 
     private String sku;
-    private String skuToken;
-    private int subscriptionPrice;
-    private int duration;
+    private String purchaseToken;
     private Calendar purchaseDate;
     private Calendar expirationDate;
 

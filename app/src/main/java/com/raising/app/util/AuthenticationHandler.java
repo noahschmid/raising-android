@@ -3,6 +3,7 @@ package com.raising.app.util;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -48,8 +49,6 @@ public class AuthenticationHandler {
         loggedIn = true;
 
         ContactDataHandler.init();
-
-        loadSettings();
     }
 
     public static String getToken() { return token; }
@@ -105,19 +104,10 @@ public class AuthenticationHandler {
 
             ContactDataHandler.init();
 
-            loadSettings();
-
             Log.i("AuthenticationHandler", "Auto login with accountId " + accountId);
         } catch(Exception e) {
             Log.e("AuthenticationHandler", "Error while initializing: " +  e.getMessage());
         }
     }
-
-    public static void loadSettings() {
-        SettingsViewModel settingsViewModel = ViewModelProviders.of((FragmentActivity) InternalStorageHandler.getActivity())
-                .get(SettingsViewModel.class);
-        settingsViewModel.loadSettings();
-    }
-
     public static boolean isLoggedIn() { return loggedIn; }
 }

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -41,6 +42,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.flexbox.FlexboxLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.models.Label;
 import com.raising.app.models.Model;
 import com.raising.app.models.EquityChartLegendItem;
 import com.raising.app.models.Startup;
@@ -70,7 +72,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
     private ImageSwitcher imageSwitcher;
     private ImageButton profileRequest, profileDecline, btnPrevious, btnNext;
-    private TextView imageIndex, matchingPercent, profileName, profileLocation, profileSentence,
+    private TextView imageIndex, matchingPercent, profileName, profileLocation, profileLabels, profileSentence,
             profilePitch, profileWebsite;
     private LinearLayout labelsLayout;
     private TextView startupScope, startupMinTicket, startupMaxTicket;
@@ -166,6 +168,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         matchingPercent = view.findViewById(R.id.text_startup_public_profile_matching_percent);
         profileName = view.findViewById(R.id.text_startup_public_profile_name);
         labelsLayout = view.findViewById(R.id.layout_startup_public_profile_labels);
+        profileLabels = view.findViewById(R.id.text_startup_public_profile_labels);
         profileLocation = view.findViewById(R.id.text_startup_public_profile_location);
         profileSentence = view.findViewById(R.id.text_startup_public_profile_sentence);
         profilePitch = view.findViewById(R.id.text_startup_public_profile_pitch);
@@ -215,52 +218,42 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         startupMarkets.setVisibility(View.GONE);
 
         Fragment fragment = this;
-        profileRequest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                leadsRequest = true;
-                leadsDecline = false;
+        profileRequest.setOnClickListener(v -> {
+            leadsRequest = true;
+            leadsDecline = false;
 
-                colorHandshakeButtonBackground(profileRequest, R.color.raisingDarkGrey);
-
-                ApiRequestHandler.performPostRequest("match/" + relationshipId + "/accept",
-                        res -> {
-                            matchesViewModel.removeMatch(relationshipId);
-                            popCurrentFragment(fragment);
-                            return null;
-                        },
-                        err -> {
-                            displayGenericError();
-                            Log.e(TAG, "manageHandshakeButtons: " +
-                                    ApiRequestHandler.parseVolleyError(err) );
-                            return null;
-                        },
-                        new JSONObject());
-            }
+            ApiRequestHandler.performPostRequest("match/" + relationshipId + "/accept",
+                    res -> {
+                        matchesViewModel.removeMatch(relationshipId);
+                        popCurrentFragment(fragment);
+                        return null;
+                    },
+                    err -> {
+                        showGenericError();
+                        Log.e(TAG, "manageHandshakeButtons: " +
+                                ApiRequestHandler.parseVolleyError(err) );
+                        return null;
+                    },
+                    new JSONObject());
         });
 
-        profileDecline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                leadsDecline = true;
-                leadsRequest = false;
+        profileDecline.setOnClickListener(v -> {
+            leadsDecline = true;
+            leadsRequest = false;
 
-                colorHandshakeButtonBackground(profileDecline, R.color.raisingDarkGrey);
-
-                ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
-                        res -> {
-                            matchesViewModel.removeMatch(relationshipId);
-                            popCurrentFragment(fragment);
-                            return null;
-                        },
-                        err -> {
-                            displayGenericError();
-                            Log.e(TAG, "manageHandshakeButtons: " +
-                                    ApiRequestHandler.parseVolleyError(err) );
-                            return null;
-                        },
-                        new JSONObject());
-            }
+            ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
+                    res -> {
+                        matchesViewModel.removeMatch(relationshipId);
+                        popCurrentFragment(fragment);
+                        return null;
+                    },
+                    err -> {
+                        showGenericError();
+                        Log.e(TAG, "manageHandshakeButtons: " +
+                                ApiRequestHandler.parseVolleyError(err) );
+                        return null;
+                    },
+                    new JSONObject());
         });
     }
 
@@ -268,80 +261,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
      * Load the startups data into the different views
      */
     private void loadData() {
-        startupScope.setText(resources.formatMoneyAmount(startup.getScope()));
-        startupMinTicket.setText(resources.getTicketSize(startup.getTicketMinId())
-                .toString(getString(R.string.currency),
-                        getResources().getStringArray(R.array.revenue_units)));
-        startupMaxTicket.setText(resources.getTicketSize(startup.getTicketMaxId())
-                .toString(getString(R.string.currency),
-                        getResources().getStringArray(R.array.revenue_units)));
-        profileName.setText(startup.getCompanyName());
-        profileSentence.setText(startup.getDescription());
-        profilePitch.setText(startup.getPitch());
-        startupRevenue.setText(resources.getRevenueString(
-                startup.getRevenueMinId()));
-        startupBreakEven.setText(String.valueOf(startup.getBreakEvenYear()));
-        startupFoundingYear.setText(String.valueOf(startup.getFoundingYear()));
-        startupFte.setText(String.valueOf(startup.getNumberOfFte()));
-
         customizeAppBar(startup.getCompanyName(), true);
 
-        startupInvestmentType.setText(resources.getFinanceType(
-                startup.getFinanceTypeId()).getName());
-        DateFormat toFormat = new SimpleDateFormat("MM.dd.yyyy");
-        DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date closing = fromFormat.parse(startup.getClosingTime());
-            startupClosingTime.setText(toFormat.format(closing));
-        } catch (ParseException e) {
-            startupClosingTime.setText("");
-            Log.e("StartupPublicProfile", "Error while parsing closing time: " +
-                    e.getMessage());
-        }
-        startupCompleted.setText(resources.formatMoneyAmount(startup.getRaised()));
-        completedProgress.setMax(startup.getScope());
-        completedProgress.setProgress(startup.getRaised());
-        profileLocation.setText(resources.getCountry(startup.getCountryId()).getName());
-
-        String matchingScore = matchScore + "% " + "Match";
-        matchingPercent.setText(matchingScore);
-
-        //TODO: add labels to labelsLayout
-        startup.getInvestorTypes().forEach(type -> {
-            investorTypes.add((Model) resources.getInvestorType(type));
-        });
-
-        startup.getIndustries().forEach(industry -> {
-            industries.add(resources.getIndustry(industry));
-        });
-
-        investmentPhases.add(resources.getInvestmentPhase(startup.getInvestmentPhaseId()));
-        startup.getSupport().forEach(support -> {
-            supports.add(resources.getSupport(support));
-        });
-
-        typeAdapter.notifyDataSetChanged();
-        phaseAdapter.notifyDataSetChanged();
-        industryAdapter.notifyDataSetChanged();
-        supportAdapter.notifyDataSetChanged();
-
-        if (startup.getWebsite() == null || startup.getWebsite().equals("")) {
-            profileWebsite.setVisibility(View.GONE);
-        }
-
-        if (startup.getGallery() != null) {
-            startup.getGallery().forEach(image -> {
-                pictures.add(image.getImage());
-            });
-        }
-
-        // hide valuation fields, if they are empty
-        if (startup.getPreMoneyValuation() > 0) {
-            startupValuation.setText(resources.formatMoneyAmount(startup.getPreMoneyValuation()));
-        } else {
-            startupValuationTitle.setVisibility(View.GONE);
-            startupValuation.setVisibility(View.GONE);
-        }
         if(startup.getProfilePictureId() > 0) {
             Glide.with(this)
                     .asBitmap()
@@ -386,6 +307,102 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 }
             });
         }
+
+
+        if (startup.getGallery() != null) {
+            startup.getGallery().forEach(image -> {
+                pictures.add(image.getImage());
+            });
+        }
+
+        String matchingScore = matchScore + "% " + "Match";
+        matchingPercent.setText(matchingScore);
+
+        profileName.setText(startup.getCompanyName());
+        profileLocation.setText(resources.getCountry(startup.getCountryId()).getName());
+        profileSentence.setText(startup.getDescription());
+        profilePitch.setText(startup.getPitch());
+
+        if (startup.getWebsite() == null || startup.getWebsite().equals("")) {
+            profileWebsite.setVisibility(View.GONE);
+        }
+
+        // matching criteria
+        startup.getInvestorTypes().forEach(type -> {
+            investorTypes.add((Model) resources.getInvestorType(type));
+        });
+
+        investmentPhases.add(resources.getInvestmentPhase(startup.getInvestmentPhaseId()));
+
+        startup.getIndustries().forEach(industry -> {
+            industries.add(resources.getIndustry(industry));
+        });
+
+
+        startup.getSupport().forEach(support -> {
+            supports.add(resources.getSupport(support));
+        });
+
+        startupRevenue.setText(resources.getRevenueString(startup.getRevenueMinId()));
+        startupFte.setText(String.valueOf(startup.getNumberOfFte()));
+        startupFoundingYear.setText(String.valueOf(startup.getFoundingYear()));
+        startupBreakEven.setText(String.valueOf(startup.getBreakEvenYear()));
+
+        // pre money valuation
+        if (startup.getPreMoneyValuation() > 0) {
+            startupValuation.setText(resources.formatMoneyAmount(startup.getPreMoneyValuation()));
+        } else {
+            startupValuationTitle.setVisibility(View.GONE);
+            startupValuation.setVisibility(View.GONE);
+        }
+
+        startupInvestmentType.setText(resources.getFinanceType(startup.getFinanceTypeId()).getName());
+        startupScope.setText(resources.formatMoneyAmount(startup.getScope()));
+        startupMinTicket.setText(resources.getTicketSize(startup.getTicketMinId())
+                .toString(getString(R.string.currency), getResources().getStringArray(R.array.revenue_units)));
+        startupMaxTicket.setText(resources.getTicketSize(startup.getTicketMaxId())
+                .toString(getString(R.string.currency), getResources().getStringArray(R.array.revenue_units)));
+
+        // closing time
+        DateFormat toFormat = new SimpleDateFormat("MM.dd.yyyy");
+        DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date closing = fromFormat.parse(startup.getClosingTime());
+            startupClosingTime.setText(toFormat.format(closing));
+        } catch (ParseException e) {
+            startupClosingTime.setText("");
+            Log.e("StartupPublicProfile", "Error while parsing closing time: " +
+                    e.getMessage());
+        }
+
+        startupCompleted.setText(resources.formatMoneyAmount(startup.getRaised()));
+        completedProgress.setMax(startup.getScope());
+        completedProgress.setProgress(startup.getRaised());
+
+        if(startup.getLabels().size() == 0) {
+            profileLabels.setVisibility(View.GONE);
+            labelsLayout.setVisibility(View.GONE);
+        } else {
+            resources.getLabels().forEach(label -> {
+                startup.getLabels().forEach(startupLabel -> {
+                    if(label.getId() == startupLabel) {
+                        View view = getLayoutInflater().inflate(R.layout.item_public_profile_label, null);
+                        ((TextView) view.findViewById(R.id.public_profile_label_name)).setText(label.getName());
+                        ((ImageView) view.findViewById(R.id.public_profile_label_icon)).setImageBitmap(label.getImage());
+                        view.setLayoutParams(
+                                new LinearLayout.LayoutParams(
+                                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+                        labelsLayout.addView(view);
+                    }
+                });
+            });
+        }
+
+        typeAdapter.notifyDataSetChanged();
+        phaseAdapter.notifyDataSetChanged();
+        industryAdapter.notifyDataSetChanged();
+        supportAdapter.notifyDataSetChanged();
 
         loadStakeholders();
         profileLayout.setVisibility(View.VISIBLE);
@@ -462,12 +479,12 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             switch (handshakeState) {
                 case HANDSHAKE:
                 case INVESTOR_ACCEPTED:
-                    colorHandshakeButtonBackground(profileRequest, R.color.raisingPositive);
+                    profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept_green));
                     profileRequest.setEnabled(false);
                     profileDecline.setEnabled(false);
                     break;
                 case INVESTOR_DECLINED:
-                    colorHandshakeButtonBackground(profileDecline, R.color.raisingNegative);
+                    profileDecline.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_decline_red));
                     profileRequest.setEnabled(false);
                     profileDecline.setEnabled(false);
                     break;
@@ -514,15 +531,6 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             return imageView;
         });
 
-        //TODO @lorenz : add animation to imageswitcher
-        /*
-        imageSwitcher.setInAnimation(
-                AnimationUtils.loadAnimation(this.getContext(), R.anim.public_profile_gallery_in));
-        imageSwitcher.setOutAnimation(
-                AnimationUtils.loadAnimation(this.getContext(), R.anim.public_profile_gallery_out));
-
-         */
-
         if (currentImageIndex == 0) {
             btnPrevious.setVisibility(View.GONE);
         } else {
@@ -535,6 +543,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         }
 
         btnPrevious.setOnClickListener(v -> {
+            imageSwitcher.setInAnimation(this.getContext(), R.anim.animation_slide_in_left);
+            imageSwitcher.setOutAnimation(this.getContext(), R.anim.animation_slide_out_right);
             if (currentImageIndex == 0) {
                 btnPrevious.setVisibility(View.GONE);
             }
@@ -555,6 +565,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         });
 
         btnNext.setOnClickListener(v -> {
+            imageSwitcher.setInAnimation(this.getContext(), R.anim.animation_slide_in_right);
+            imageSwitcher.setOutAnimation(this.getContext(), R.anim.animation_slide_out_left);
             if (currentImageIndex == pictures.size() - 1) {
                 btnNext.setVisibility(View.GONE);
             }

@@ -2,10 +2,9 @@
 <resources>
 
     <dimen name="inputFormHeight"> 60dp </dimen>
-    <dimen name="checkBoxHeight"> 40dp </dimen>
 
     <dimen name="authenticationButtonHeight"> 60dp </dimen>
-    <dimen name="myProfileButtonHeight"> 60dp </dimen>
+    <dimen name="myProfileButtonHeight"> 55dp </dimen>
 
     <dimen name="leadsContactButtonHeight"> 40dp </dimen>
 
@@ -14,14 +13,15 @@
 
     <dimen name="matchListPictureSize"> 60dp </dimen>
     <dimen name="matchListPercentChartSize"> 70dp </dimen>
+    <dimen name="matchingCriteriaOuterIconSize">60dp</dimen>
+    <dimen name="matchingCriteriaInnerIconSize">35dp</dimen>
 
     <dimen name="openRequestsPictureSize"> 40dp </dimen>
     <dimen name="leadsContactPictureSize"> 100dp</dimen>
 
     <dimen name="publicProfileEquityChartSize"> 225dp </dimen>
     <dimen name="publicProfileEquityLegendColorSize"> 30dp </dimen>
-
-    <dimen name="publicProfileMatchingInformationIconSize"> 32dp </dimen>
+    <dimen name="publicProfileMatchingInformationIconSize"> 40dp </dimen>
 
     <dimen name="standardHorizontalMargin"> 32dp </dimen>
     <dimen name="standardHorizontalMarginSmall"> 16dp </dimen>
@@ -31,11 +31,9 @@
     <dimen name="standardVerticalMargin"> 16dp </dimen>
     <dimen name="standardFragmentTitleMargin"> 16dp </dimen>
 
-    <dimen name="myProfileButtonMargin"> 4dp </dimen>
-
-    <dimen name="inputOneSentenceDescriptionHeight"> 100dp </dimen>
+    <dimen name="inputOneSentenceDescriptionHeight"> 80dp </dimen>
     <dimen name="inputPitchHeight"> 150dp </dimen>
-    <dimen name="inputPitchMaxHeight"> 400dp </dimen>
+    <dimen name="inputPitchMaxHeight"> 300dp </dimen>
 
     <dimen name="raisingLargeTitleFontSize"> 22sp </dimen>
     <dimen name="raisingTitleFontSize"> 20sp </dimen>
@@ -45,7 +43,10 @@
     <dimen name="raisingSmallTextFontSize"> 12sp </dimen>
 
     <dimen name="buttonFontSize"> 18sp </dimen>
-    <dimen name="loginScreenFontSize"> 30sp </dimen>
+
+    <dimen name="emptyMatchlistIconSize"> 150dp</dimen>
+    <dimen name="settingsIconSize"> 35dp</dimen>
+    <dimen name="settingsCardHeight"> 65dp</dimen>
 
     <dimen name="inputDropdownItemPadding"> 16dp </dimen>
 
@@ -56,4 +57,5 @@
     <dimen name="onboardingPanelBottomMargin"> 75dp</dimen>
     <dimen name="onboardingTextVerticalPadding"> 8dp</dimen>
     <dimen name="onboardingTextHorizontalPadding"> 16dp</dimen>
+    <dimen name="onboardingNextButtonWidth"> 75dp</dimen>
 </resources>

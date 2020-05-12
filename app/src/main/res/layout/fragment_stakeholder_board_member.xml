@@ -155,24 +155,28 @@
 
             <Button
                 android:id="@+id/button_cancel_board_member"
-                style="@style/ButtonConfirmRegistration"
+                style="@style/ButtonRegistrationAndProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:text="@string/cancel_text"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/board_member_country" />
 
             <Button
                 android:id="@+id/button_add_board_member"
-                style="@style/ButtonConfirmRegistration"
+                style="@style/ButtonRegistrationAndProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:text="@string/add_text"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="normal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/board_member_country" />
 

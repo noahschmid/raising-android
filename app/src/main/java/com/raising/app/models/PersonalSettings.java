@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Data
 public class PersonalSettings implements Serializable {
-    private String language;
     private int numberOfMatches;
 
     ArrayList<NotificationSettings> notificationSettings;

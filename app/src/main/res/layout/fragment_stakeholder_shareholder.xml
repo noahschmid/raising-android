@@ -137,11 +137,13 @@
 
                     <TextView
                         android:id="@+id/text_shareholder_type"
-                        style="@style/FragmentTitle"
+                        style="@style/RaisingTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginEnd="32dp"
+                        android:layout_marginStart="@dimen/standardHorizontalMargin"
+                        android:layout_marginTop="@dimen/standardFragmentTitleMargin"
+                        android:layout_marginEnd="@dimen/standardHorizontalMargin"
+                        android:layout_marginBottom="@dimen/standardFragmentTitleMargin"
                         android:text="@string/register_stakeholder_shareholder_type"
                         app:layout_constraintBottom_toTopOf="@+id/shareholder_first_name"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -275,24 +277,28 @@
 
             <Button
                 android:id="@+id/button_cancel_shareholder"
-                style="@style/ButtonConfirmRegistration"
+                style="@style/ButtonRegistrationAndProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:text="@string/cancel_text"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder" />
 
             <Button
                 android:id="@+id/button_add_shareholder"
-                style="@style/ButtonConfirmRegistration"
+                style="@style/ButtonRegistrationAndProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:text="@string/add_text"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/stakeholder_corporate_shareholder"
                 app:layout_constraintTop_toBottomOf="@+id/stakeholder_corporate_shareholder" />

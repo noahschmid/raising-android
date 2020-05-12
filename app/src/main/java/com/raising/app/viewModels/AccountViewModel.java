@@ -51,11 +51,11 @@ public class AccountViewModel extends AndroidViewModel {
     }
 
     public void updateCompleted() {
-        viewState.setValue(ViewState.RESULT);
+        viewState.postValue(ViewState.RESULT);
     }
 
     public void setAccount(Account account) {
-        currentAccount.setValue(account);
+        currentAccount.postValue(account);
     }
 
     /**
@@ -70,19 +70,19 @@ public class AccountViewModel extends AndroidViewModel {
 
         Account account = getCachedAccount();
         if (account != null) {
-            currentAccount.setValue(account);
-            viewState.setValue(ViewState.CACHED);
+            currentAccount.postValue(account);
+            viewState.postValue(ViewState.CACHED);
             Log.d(TAG, "loadAccountC1: ViewState" + getViewState().getValue().toString());
         } else {
-            viewState.setValue(ViewState.LOADING);
+            viewState.postValue(ViewState.LOADING);
             Log.d(TAG, "loadAccountL1: ViewState" + getViewState().getValue().toString());
         }
 
         if (AuthenticationHandler.isStartup()) {
             AccountService.getStartupAccount(AuthenticationHandler.getId(),
                     startup -> {
-                        currentAccount.setValue(startup);
-                        viewState.setValue(ViewState.RESULT);
+                        currentAccount.postValue(startup);
+                        viewState.postValue(ViewState.RESULT);
                         Log.d(TAG, "loadAccountR1: ViewState" + getViewState().getValue().toString());
                         cacheAccount();
                         return null;
@@ -90,8 +90,8 @@ public class AccountViewModel extends AndroidViewModel {
         } else {
             AccountService.getInvestorAccount(AuthenticationHandler.getId(),
                     investor -> {
-                        currentAccount.setValue(investor);
-                        viewState.setValue(ViewState.RESULT);
+                        currentAccount.postValue(investor);
+                        viewState.postValue(ViewState.RESULT);
                         Log.d(TAG, "loadAccountR2: ViewState" + getViewState().getValue().toString());
                         cacheAccount();
                         return null;

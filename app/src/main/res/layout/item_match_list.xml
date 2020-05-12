@@ -1,98 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/item_matchList_card"
+    android:id="@+id/item_matchList"
+    style="@style/SelectableItemBackgroundWhite"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/item_matchList_profile_image"
+        android:layout_width="@dimen/matchListPictureSize"
+        android:layout_height="@dimen/matchListPictureSize"
+        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+        android:layout_marginTop="@dimen/standardVerticalMargin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/item_matchList_profile_image"
-            android:layout_width="@dimen/matchListPictureSize"
-            android:layout_height="@dimen/matchListPictureSize"
-            android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-            android:layout_marginTop="@dimen/standardVerticalMargin"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/item_matchList_name"
+        style="@style/RaisingTextBold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+        android:layout_marginEnd="@dimen/standardHorizontalMargin"
+        android:text="Name"
+        app:layout_constraintBottom_toTopOf="@+id/item_matchList_attributes"
+        app:layout_constraintEnd_toStartOf="@+id/pie_layout"
+        app:layout_constraintStart_toEndOf="@+id/item_matchList_profile_image"
+        app:layout_constraintTop_toTopOf="@+id/item_matchList_profile_image"
+        app:layout_constraintVertical_chainStyle="packed" />
 
-        <TextView
-            android:id="@+id/item_matchList_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-            android:layout_marginEnd="@dimen/standardHorizontalMargin"
-            android:text="Name"
-            android:fontFamily="sans-serif"
-            android:textColor="@color/raisingTextColor"
-            android:textSize="@dimen/raisingTextFontSize"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/item_matchList_attributes"
-            app:layout_constraintEnd_toStartOf="@+id/pie_layout"
-            app:layout_constraintStart_toEndOf="@+id/item_matchList_profile_image"
-            app:layout_constraintTop_toTopOf="@+id/item_matchList_profile_image"
-            app:layout_constraintVertical_chainStyle="packed" />
+    <TextView
+        android:id="@+id/item_matchList_attributes"
+        style="@style/RaisingHelperText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Attribut"
+        app:layout_constraintBottom_toBottomOf="@+id/item_matchList_profile_image"
+        app:layout_constraintStart_toStartOf="@+id/item_matchList_name"
+        app:layout_constraintTop_toBottomOf="@+id/item_matchList_name" />
 
-        <TextView
-            android:id="@+id/item_matchList_attributes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Attribut"
-            android:fontFamily="sans-serif-light"
-            android:textColor="@color/raisingTextColor"
-            android:textSize="@dimen/raisingTextFontSize"
-            app:layout_constraintBottom_toBottomOf="@+id/item_matchList_profile_image"
-            app:layout_constraintStart_toStartOf="@+id/item_matchList_name"
-            app:layout_constraintTop_toBottomOf="@+id/item_matchList_name" />
+    <TextView
+        android:id="@+id/item_matchList_sentence"
+        style="@style/RaisingText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+        android:layout_marginTop="@dimen/standardVerticalMarginSmall"
+        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+        android:layout_marginBottom="@dimen/standardVerticalMargin"
+        android:text="Sentence"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_matchList_profile_image" />
 
-        <TextView
-            android:id="@+id/item_matchList_sentence"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-            android:layout_marginTop="@dimen/standardVerticalMarginSmall"
-            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-            android:layout_marginBottom="@dimen/standardVerticalMargin"
-            android:text="Sentence"
-            android:textColor="@color/raisingTextColor"
-            android:textSize="@dimen/raisingTextFontSize"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_matchList_profile_image" />
+    <FrameLayout
+        android:id="@+id/pie_layout"
+        android:layout_width="@dimen/matchListPercentChartSize"
+        android:layout_height="@dimen/matchListPercentChartSize"
+        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+        app:layout_constraintBottom_toBottomOf="@+id/item_matchList_profile_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/item_matchList_profile_image">
 
-        <FrameLayout
-            android:id="@+id/pie_layout"
-            android:layout_width="@dimen/matchListPercentChartSize"
-            android:layout_height="@dimen/matchListPercentChartSize"
-            app:layout_constraintBottom_toBottomOf="@+id/item_matchList_profile_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-            app:layout_constraintTop_toTopOf="@+id/item_matchList_profile_image"
-            >
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/item_matchList_chart"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" />
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/item_matchList_chart"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
 
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-                <TextView
-                    android:id="@+id/item_matchList_match_percent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:fontFamily="sans-serif"
-                    android:text="100%"
-                    android:textColor="@color/raisingTextColor"
-                    android:textSize="@dimen/raisingTextFontSize"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/item_matchList_match_percent"
+                style="@style/RaisingTextBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="100%" />
 
-            </RelativeLayout>
-        </FrameLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</com.google.android.material.card.MaterialCardView>
+        </RelativeLayout>
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
