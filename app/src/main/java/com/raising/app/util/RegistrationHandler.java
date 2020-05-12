@@ -54,7 +54,7 @@ public class RegistrationHandler {
             startup.setPassword(account.getPassword());
             contactData.setEmail(account.getEmail());
             isStartup = true;
-            InternalStorageHandler.saveObject(contactData, "rgstr_startup");
+            InternalStorageHandler.saveObject(startup, "rgstr_contact");
         }
         else{
             investor.setFirstName(account.getFirstName());
@@ -64,7 +64,7 @@ public class RegistrationHandler {
             investor.setPassword(account.getPassword());
             contactData.setEmail(account.getEmail());
             isStartup = false;
-            InternalStorageHandler.saveObject(contactData, "rgstr_investor");
+            InternalStorageHandler.saveObject(investor, "rgstr_investor");
         }
         saveRegistrationState();
         InternalStorageHandler.saveObject(contactData, "rgstr_contact");

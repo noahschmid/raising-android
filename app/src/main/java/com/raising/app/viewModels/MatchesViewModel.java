@@ -55,10 +55,20 @@ public class MatchesViewModel extends AndroidViewModel {
     public void runMatching() {
         ApiRequestHandler.performPostRequest("match/run",
                 response -> {
+                    loadMatches();
                     return null;
                 },
                 error -> {
                     Log.e(TAG, "runMatching: " + ApiRequestHandler.parseVolleyError(error));
+                    if(error.networkResponse != null) {
+                        if(error.networkResponse.statusCode == 403) {
+                            viewState.postValue(ViewState.EXPIRED);
+                        } else {
+                            viewState.postValue(ViewState.ERROR);
+                        }
+                    } else {
+                        viewState.postValue(ViewState.ERROR);
+                    }
                     return null;
                 }, new JSONObject());
     }
@@ -95,7 +105,15 @@ public class MatchesViewModel extends AndroidViewModel {
                     return null;
                 },
                 err -> {
-                    viewState.postValue(ViewState.ERROR);
+                    if(err.networkResponse != null) {
+                        if(err.networkResponse.statusCode == 403) {
+                            viewState.postValue(ViewState.EXPIRED);
+                        } else {
+                            viewState.postValue(ViewState.ERROR);
+                        }
+                    } else {
+                        viewState.postValue(ViewState.ERROR);
+                    }
                     return null;
                 });
     }
