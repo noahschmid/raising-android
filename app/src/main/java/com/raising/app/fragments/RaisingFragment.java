@@ -90,10 +90,6 @@ public class RaisingFragment extends Fragment {
     protected void onResourcesLoaded() {
     }
 
-    public void setupViewModel() {
-        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

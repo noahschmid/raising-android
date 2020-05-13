@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
+import com.raising.app.viewModels.AccountViewModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,7 +62,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
         companyNameInput = view.findViewById(R.id.register_input_company_name);
         companyUidInput = view.findViewById(R.id.register_input_company_uid);
 
-        setupViewModel();
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
         //adjust fragment if this fragment is used for profile
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
@@ -108,13 +110,8 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
 
             countryPicker.showDialog(getActivity());
         });
-    }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        TextInputLayout companyUidLayout = view.findViewById(R.id.register_company_uid);
+        TextInputLayout companyUidLayout = getView().findViewById(R.id.register_company_uid);
         companyUidLayout.setEndIconOnClickListener(v ->
                 new AlertDialog.Builder(getContext())
                         .setTitle(getString(R.string.registration_information_dialog_title))
@@ -143,6 +140,11 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
             companyPhoneInput.addTextChangedListener(this);
             companyCountryInput.addTextChangedListener(this);
         }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

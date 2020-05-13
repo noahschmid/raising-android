@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import com.raising.app.models.Startup;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaAdapter;
 import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaComponent;
+import com.raising.app.viewModels.AccountViewModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +48,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
         btnStartupLabels = view.findViewById(R.id.button_startup_labels);
         btnStartupLabels.setOnClickListener(v -> processInformation());
 
-        setupViewModel();
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);

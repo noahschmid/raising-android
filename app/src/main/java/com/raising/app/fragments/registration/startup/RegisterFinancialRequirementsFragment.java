@@ -17,6 +17,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
@@ -26,6 +27,7 @@ import com.raising.app.models.Startup;
 import com.raising.app.util.NoFilterArrayAdapter;
 import com.raising.app.util.RaisingTextWatcher;
 import com.raising.app.util.RegistrationHandler;
+import com.raising.app.viewModels.AccountViewModel;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -66,7 +68,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         financialClosingTimeInput = view.findViewById(R.id.register_input_financial_closing_time);
         financialClosingTimeInput.setOnClickListener(v -> prepareDatePicker());
 
-        setupViewModel();
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
         //adjust fragment if this fragment is used for profile
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
@@ -117,19 +119,14 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
                 }
             }
         });
-    }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        TextInputLayout financialCompletedLayout = view.findViewById(R.id.register_financial_completed);
+        TextInputLayout financialCompletedLayout = getView().findViewById(R.id.register_financial_completed);
         financialCompletedLayout.setEndIconOnClickListener(v -> {
             showSimpleDialog(getString(R.string.registration_information_dialog_title),
                     getString(R.string.registration_information_dialog_committed));
         });
 
-        TextInputLayout financialScopeLayout = view.findViewById(R.id.register_financial_scope);
+        TextInputLayout financialScopeLayout = getView().findViewById(R.id.register_financial_scope);
         financialScopeLayout.setEndIconOnClickListener(v -> {
             showSimpleDialog(getString(R.string.registration_information_dialog_title),
                     getString(R.string.registration_information_dialog_scope));
@@ -187,6 +184,11 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
             completedInput.addTextChangedListener(this);
             financialTypeInput.addTextChangedListener(this);
         }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

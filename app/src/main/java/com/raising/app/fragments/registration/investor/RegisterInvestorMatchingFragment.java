@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintHelper;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaAdapter;
 import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaComponent;
+import com.raising.app.viewModels.AccountViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +67,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_matching_criteria), true);
 
-        setupViewModel();
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
         btnInvestorMatching = view.findViewById(R.id.button_investor_matching);
         btnInvestorMatching.setOnClickListener(v -> processMatchingInformation());

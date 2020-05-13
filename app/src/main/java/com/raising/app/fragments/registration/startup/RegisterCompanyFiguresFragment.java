@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.raising.app.util.RaisingTextWatcher;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
+import com.raising.app.viewModels.AccountViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +69,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
 
         companyRevenueInput = view.findViewById(R.id.register_input_company_revenue);
 
-        setupViewModel();
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
         //adjust fragment if this fragment is used for profile
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
@@ -161,11 +163,6 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
         if (selected.size() > 0) {
             marketsPicker.setSelectedById(selected);
         }
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
         if (startup.getNumberOfFte() > 0)
             companyFteInput.setText(Integer.toString(startup.getNumberOfFte()));
@@ -201,6 +198,11 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
     protected void onAccountUpdated() {
         popCurrentFragment(this);
         accountViewModel.updateCompleted();
@@ -215,6 +217,9 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if(s.length() == 0)
+            return;
+
         if(Integer.parseInt(s.toString()) == startup.getFoundingYear()
                 || Integer.parseInt(s.toString()) == startup.getBreakEvenYear())
             return;

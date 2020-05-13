@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
+import com.raising.app.viewModels.AccountViewModel;
 
 public class RegisterProfileInformationFragment extends RaisingFragment implements RaisingTextWatcher {
     private EditText profileCompanyInput, profileWebsiteInput, profilePhoneInput, profileCountryInput;
@@ -44,7 +46,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         customizeAppBar(getString(R.string.toolbar_title_profile_information), true);
         hideBottomNavigation(true);
 
-        setupViewModel();
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
         //define input views and button
         profileCompanyInput = view.findViewById(R.id.register_input_profile_company);
