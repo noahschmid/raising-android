@@ -480,28 +480,18 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 case HANDSHAKE:
                 case INVESTOR_ACCEPTED:
                     profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept_green));
+                    profileDecline.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_decline_disabled));
                     profileRequest.setEnabled(false);
                     profileDecline.setEnabled(false);
                     break;
                 case INVESTOR_DECLINED:
+                    profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept_disabled));
                     profileDecline.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_decline_red));
                     profileRequest.setEnabled(false);
                     profileDecline.setEnabled(false);
                     break;
             }
         }
-    }
-
-    /**
-     * Set the needed color for the leads buttons
-     * @param button The button where the color should change
-     * @param color The new color of the button
-     */
-    private void colorHandshakeButtonBackground(View button, int color) {
-        Drawable drawable = button.getBackground();
-        drawable = DrawableCompat.wrap(drawable);
-        drawable.setTint(getResources().getColor(color));
-        button.setBackground(drawable);
     }
 
     /**

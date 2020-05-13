@@ -233,20 +233,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         recyclerInvolvement.setAdapter(supportAdapter);
     }
 
-
-    /**
-     * Set the needed color for the leads buttons
-     *
-     * @param button The button where the color should change
-     * @param color  The new color of the button
-     */
-    private void colorHandshakeButtonBackground(View button, int color) {
-        Drawable drawable = button.getBackground();
-        drawable = DrawableCompat.wrap(drawable);
-        drawable.setTint(getResources().getColor(color));
-        button.setBackground(drawable);
-    }
-
     /**
      * Toggle the handshake buttons based on the current state of the handshake
      */
@@ -256,10 +242,12 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                 case HANDSHAKE:
                 case STARTUP_ACCEPTED:
                     profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept_green));
+                    profileDecline.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_decline_disabled));
                     profileRequest.setEnabled(false);
                     profileDecline.setEnabled(false);
                     break;
                 case STARTUP_DECLINED:
+                    profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept_disabled));
                     profileDecline.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_decline_red));
                     profileRequest.setEnabled(false);
                     profileDecline.setEnabled(false);
