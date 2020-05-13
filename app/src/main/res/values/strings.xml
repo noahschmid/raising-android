@@ -405,6 +405,7 @@
     <string name="year_picker_title">Select Year</string>
     <string name="session_expired_title">Session expired</string>
     <string name="session_expired_text">Please log in again to your account</string>
+    <string name="forgot_password_hint">Please enter your registered email. We will send you an email containing further information on how to reset your password.</string>
 
     <string-array name="revenue_units">
         <item>K</item>
