@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,7 +28,10 @@ import com.android.billingclient.api.SkuDetails;
 import com.google.android.material.card.MaterialCardView;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.models.ViewState;
 import com.raising.app.util.SubscriptionHandler;
+import com.raising.app.viewModels.SettingsViewModel;
+import com.raising.app.viewModels.ViewStateViewModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,6 +43,8 @@ public class SubscriptionFragment extends RaisingFragment {
     private final String TAG = "SubscriptionsFragment";
     private BillingClient billingClient;
     private ArrayList<SkuDetails> skuDetailsArrayList = new ArrayList<>();
+
+    private ViewStateViewModel viewStateViewModel;
 
     private LinearLayout subscriptionsLayout;
     private Button btnManageSubscription;
@@ -54,6 +60,8 @@ public class SubscriptionFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        viewStateViewModel = ViewModelProviders.of(getActivity()).get(ViewStateViewModel.class);
 
         // declare views used for subscriptions
         subscriptionsLayout = view.findViewById(R.id.subscriptions_layout);
