@@ -11,7 +11,7 @@
     <dimen name="leadsContactCardHeight"> 55dp </dimen>
     <dimen name="leadsIconSize">32dp</dimen>
 
-    <dimen name="matchListPictureSize"> 60dp </dimen>
+    <dimen name="matchListPictureSize"> 70dp </dimen>
     <dimen name="matchListPercentChartSize"> 70dp </dimen>
 
     <dimen name="matchingCriteriaOuterIconSize">60dp</dimen>

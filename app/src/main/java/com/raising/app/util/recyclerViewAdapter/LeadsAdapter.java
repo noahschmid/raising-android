@@ -75,12 +75,8 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
         drawable.setTint(ContextCompat.getColor(holder.statusIcon.getContext(), tintColor));
         holder.statusIcon.setImageDrawable(drawable);
 
-        // Default: set visibility of warning to gone
-        holder.warning.setVisibility(View.GONE);
-
         holder.name.setText(recyclerItem.getTitle());
         holder.attribute.setText(recyclerItem.getAttribute());
-        holder.matchingPercent.setText(recyclerItem.getHandshakePercentString());
 
 
         if(recyclerItem.getProfilePictureId() > 0) {
@@ -121,8 +117,8 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView name, attribute, matchingPercent;
-        private ImageView profilePicture, statusIcon, warning;
+        private TextView name, attribute;
+        private ImageView profilePicture, statusIcon;
 
         public ViewHolder(@NonNull View itemView, OnItemClickListener itemClickListener, OnClickListener clickListener) {
             super(itemView);
@@ -131,17 +127,6 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
             name = itemView.findViewById(R.id.item_leads_name);
 
             statusIcon = itemView.findViewById(R.id.item_leads_status_icon);
-            warning = itemView.findViewById(R.id.item_leads_warning);
-
-            matchingPercent = itemView.findViewById(R.id.item_leads_match_percent);
-            matchingPercent.setOnClickListener(v -> {
-                if(clickListener != null) {
-                    int position = getAdapterPosition();
-                    if(position != RecyclerView.NO_POSITION) {
-                        clickListener.onClick(position);
-                    }
-                }
-            });
 
             profilePicture = itemView.findViewById(R.id.item_leads_profile_image);
             profilePicture.setOnClickListener(v -> {

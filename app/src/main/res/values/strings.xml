@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RaisingMVP</string>
+    <string name="app_name">Rai$ingMVP</string>
 
     <!-- Strings used in bottom navigation -->
     <string name="navigation_matches"> Matches </string>
@@ -16,6 +16,7 @@
     <string name="add_text"> Add </string>
     <string name="edit_text"> Edit</string>
     <string name="accept_text"> Accept </string>
+    <string name="accepted_text">Accepted</string>
     <string name="decline_text"> Decline </string>
     <string name="declined_text"> Declined </string>
     <string name="request_text"> Request </string>
@@ -53,7 +54,6 @@
 
     <!-- Strings used for Login, ForgotPassword -->
     <string name="toolbar_title_login"> Login </string>
-    <string name="login_welcome_text"> Welcome to Raising </string>
     <string name="login_button_text"> Login </string>
     <string name="login_email"> E-Mail </string>
     <string name="login_password"> Password</string>
@@ -250,10 +250,10 @@
     <string name="settings_language"> Language </string>
     <string name="settings_weekly_matches"> Number of weekly Matches</string>
 
-    <string name="settings_about"> About Rai$ing </string>
-    <string name="settings_about_paragraph1">Rai$ing is a product of the Swiss Entrepreneurs Foundation (SwissEF). It builds on the need to make financing rounds more efficient for startups, SMEs and investors. Based on the registered profiles, suitable companies and investors are quickly networked.</string>
-    <string name="settings_about_paragraph2">Rai$ing was developed in collaboration with Ubique Innovations AG and a team of Computer Science students from the University of Berne.</string>
-    <string name="settings_about_paragraph3">Rai$ing is based on an idea by Peter Stähli, the founder and CEO of the Swiss Economic Forum.</string>
+    <string name="settings_about"> About RAI$ING </string>
+    <string name="settings_about_paragraph1">RAI$ING is a product of the Swiss Entrepreneurs Foundation (SwissEF). It builds on the need to make financing rounds more efficient for startups, SMEs and investors. Based on the registered profiles, suitable companies and investors are quickly networked.</string>
+    <string name="settings_about_paragraph2">RAI$ING was developed in collaboration with Ubique Innovations AG and a team of Computer Science students from the University of Berne.</string>
+    <string name="settings_about_paragraph3">RAI$ING is based on an idea by Peter Stähli, the founder and CEO of the Swiss Economic Forum.</string>
     <string name="settings_about_sponsorship"> Sponsorship</string>
     <string name="settings_about_sponsorship_text"> Swiss Enterpreneurs Foundation \nBundesgasse 35 \n3001 Bern \ninfo@swissef.ch</string>
     <string name="settings_about_idea"> Idea and specification sheet </string>
@@ -275,10 +275,10 @@
     <string name="settings_report_problem"> Report a Problem </string>
     <string name="settings_feedback"> Give Feedback</string>
     <string name="settings_target_email_address"> lorenz.caliezi@students.unibe.ch</string>
-    <string name="settings_problem_report_subject"> Problem Report Rai$ing</string>
-    <string name="settings_problem_report_body"> I would like to report a problem with your app Rai$ing</string>
-    <string name="settings_feedback_subject"> Feedback for Rai$ing</string>
-    <string name="settings_feedback_body"> I would like to give my feedback to your app Rai$ing</string>
+    <string name="settings_problem_report_subject"> Problem Report RAI$ING</string>
+    <string name="settings_problem_report_body"> I would like to report a problem with your app RAI$ING</string>
+    <string name="settings_feedback_subject"> Feedback for RAI$ING</string>
+    <string name="settings_feedback_body"> I would like to give my feedback to your app RAI$ING</string>
     <string name="settings_onboarding"> How it works</string>
 
     <string name="settings_logout"> Logout</string>
@@ -322,14 +322,14 @@
     <string name="subscription_error_cannot_add_title"> Subscription active!</string>
     <string name="subscription_error_cannot_add_text"> You cannot change your subscription since you have an ending subscription already.</string>
     <string name="subscription_your_subscriptions">Your active subscription</string>
-    <string name="subscription_dialog_subscribe_title"> Subscribe to Rai$ing</string>
-    <string name="subscribtion_dialog_subscribe_text"> You are about to purchase a subscription from Rai$ing. \nDo you want to proceed?</string>
+    <string name="subscription_dialog_subscribe_title"> Subscribe to RAI$ING</string>
+    <string name="subscribtion_dialog_subscribe_text"> You are about to purchase a subscription from RAI$ING. \nDo you want to proceed?</string>
     <string name="subscription_ending"> Ending Subscription</string>
     <string name="subscription_next"> Next Subscription</string>
     <string name="subscription_downgrade"> Downgrade to </string>
     <string name="subscription_upgrade"> Upgrade to</string>
     <string name="subscription_automatic_extension">Automatic extension active</string>
-    <string name="subscription_paragraph_1">Subscribe to Rai$ing to unlock the full potential of our app</string>
+    <string name="subscription_paragraph_1">Subscribe to RAI$ING to unlock the full potential of our app</string>
     <string name="subscription_paragraph_2">Your subscription is automatically renewed</string>
     <string name="subscription_benefits_1">Access to possible investment partners, that match your profile</string>
     <string name="subscription_benefits_2">Overview over key figures and a pitch of a possible investment partner</string>
@@ -342,7 +342,7 @@
     <string name="subscription_google_play"> Google Play </string>
     <string name="subscription_cancel_text"> Are you sure you want to cancel your subscription?</string>
     <string name="subscription_cancel_confirmation_title"> Subscription Cancelled</string>
-    <string name="subscription_cancel_confirmation_text"> You have successfully cancelled your subscription to Rai$ing. \n \n</string>
+    <string name="subscription_cancel_confirmation_text"> You have successfully cancelled your subscription to RAI$ING. \n \n</string>
     <string name="subscription_subscribe">Subscribe</string>
     <string name="billing_connection_failed_title">Connection failed</string>
     <string name="billing_connection_failed_text"> We are currently unable to connect to Google\'s Billing Server</string>
@@ -356,6 +356,7 @@
     <string name="forgot_dialog_title"> Password reset code sent </string>
     <string name="forgot_dialog_text"> Check your email for further information </string>
     <string name="forgot_reset_text"> Enter the code, that you have received via email </string>
+    <string name="forgot_password_hint">Please enter your registered email. We will send you an email containing further information on how to reset your password.</string>
     <string name="reset_password_input_placeholder"> New Password </string>
     <string name="reset_code_input_placeholder"> Reset Code</string>
     <string name="reset_button_text"> Reset Password </string>
@@ -405,7 +406,6 @@
     <string name="year_picker_title">Select Year</string>
     <string name="session_expired_title">Session expired</string>
     <string name="session_expired_text">Please log in again to your account</string>
-    <string name="forgot_password_hint">Please enter your registered email. We will send you an email containing further information on how to reset your password.</string>
 
     <string-array name="revenue_units">
         <item>K</item>

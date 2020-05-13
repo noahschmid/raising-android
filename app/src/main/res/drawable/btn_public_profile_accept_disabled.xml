@@ -4,7 +4,7 @@
         <shape>
             <size android:height="48dp" android:width="48dp" />
             <corners android:radius="24dp"/>
-            <solid android:color="@color/gray" />
+            <solid android:color="@color/raisingGrey" />
         </shape>
     </item>
     <item android:drawable="@drawable/ic_check" />
