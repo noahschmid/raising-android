@@ -17,11 +17,13 @@ import android.view.ViewGroup;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.UnlockPremiumFragment;
 import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.SubscriptionHandler;
 import com.raising.app.util.recyclerViewAdapter.LeadsOpenRequestAdapter;
 import com.raising.app.viewModels.LeadsViewModel;
 
@@ -64,25 +66,23 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         leadsViewModel = ViewModelProviders.of(getActivity())
                 .get(LeadsViewModel.class);
 
-        //leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> processViewState(state));
-        //processViewState(leadsViewModel.getViewState().getValue());
         openRequestItems = new ArrayList<>();
 
         resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             Log.d(TAG, "onViewCreated: ResourceViewModel ViewState: " + state.toString());
         });
+    }
 
-        // populate open requests
-        if (resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
-                resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
-            leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
-                if(state == ViewState.RESULT || state == ViewState.CACHED) {
-                    Log.d(TAG, "onViewCreated: ResourcesViewState " + resourcesViewModel.getViewState().getValue());
-                    Log.d(TAG, "onViewCreated: LeadsViewState " + state);
-                    populateOpenRequests();
-                }
-            });
-        }
+    @Override
+    protected void onResourcesLoaded() {
+        Log.d(TAG, "onResourcesLoaded: ");
+        leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+            if(state == ViewState.RESULT || state == ViewState.CACHED) {
+                Log.d(TAG, "onViewCreated: ResourcesViewState " + resourcesViewModel.getViewState().getValue());
+                Log.d(TAG, "onViewCreated: LeadsViewState " + state);
+                populateOpenRequests();
+            }
+        });
     }
 
     private void populateOpenRequests() {
@@ -109,56 +109,64 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         LeadsOpenRequestAdapter adapter = new LeadsOpenRequestAdapter(openRequestItems);
         openRequestRecycler.setAdapter(adapter);
 
-        adapter.setOnClickListener(new LeadsOpenRequestAdapter.OnClickListener() {
-            @Override
-            public void onClickAccept(int position) {
-                String endpoint = "match/" + openRequestItems.get(position).getId() + "/accept";
-                ApiRequestHandler.performPostRequest(endpoint, v -> {
-                            openRequestItems.remove(position);
-                            adapter.notifyItemRemoved(position);
-                            checkForEmptyLayout();
-                            return null;
-                        },
-                        err -> {
-                            showGenericError();
-                            Log.e(TAG, "onClickAccept: " + ApiRequestHandler.parseVolleyError(err));
-                            return null;
-                        },
-                        new JSONObject());
-            }
+        // check for valid subscription
+        if(SubscriptionHandler.hasValidSubscription()) {
+            adapter.setOnClickListener(new LeadsOpenRequestAdapter.OnClickListener() {
+                @Override
+                public void onClickAccept(int position) {
+                    String endpoint = "match/" + openRequestItems.get(position).getId() + "/accept";
+                    ApiRequestHandler.performPostRequest(endpoint, v -> {
+                                openRequestItems.remove(position);
+                                adapter.notifyItemRemoved(position);
+                                checkForEmptyLayout();
+                                return null;
+                            },
+                            err -> {
+                                showGenericError();
+                                Log.e(TAG, "onClickAccept: " + ApiRequestHandler.parseVolleyError(err));
+                                return null;
+                            },
+                            new JSONObject());
+                }
 
-            @Override
-            public void onClickDecline(int position) {
-                String endpoint = "match/" + openRequestItems.get(position).getId() + "/decline";
-                ApiRequestHandler.performPostRequest(endpoint, v -> {
-                            openRequestItems.remove(position);
-                            adapter.notifyItemRemoved(position);
-                            checkForEmptyLayout();
-                            return null;
-                        },
-                        err -> {
-                            showGenericError();
-                            Log.e(TAG, "onClickAccept: " + ApiRequestHandler.parseVolleyError(err));
-                            return null;
-                        },
-                        new JSONObject());
-            }
-        });
+                @Override
+                public void onClickDecline(int position) {
+                    String endpoint = "match/" + openRequestItems.get(position).getId() + "/decline";
+                    ApiRequestHandler.performPostRequest(endpoint, v -> {
+                                openRequestItems.remove(position);
+                                adapter.notifyItemRemoved(position);
+                                checkForEmptyLayout();
+                                return null;
+                            },
+                            err -> {
+                                showGenericError();
+                                Log.e(TAG, "onClickAccept: " + ApiRequestHandler.parseVolleyError(err));
+                                return null;
+                            },
+                            new JSONObject());
+                }
+            });
+        }
 
         adapter.setOnItemClickListener(position -> {
-            Bundle args = new Bundle();
-            args.putLong("id", openRequestItems.get(position).getAccountId());
-            args.putInt("score", openRequestItems.get(position).getMatchingPercent());
-            args.putLong("relationshipId", openRequestItems.get(position).getId());
-            args.putString("title", openRequestItems.get(position).getTitle());
-            if (openRequestItems.get(position).isStartup()) {
-                Fragment fragment = new StartupPublicProfileFragment();
-                fragment.setArguments(args);
-                changeFragment(fragment, "StartupPublicProfileFragment");
+            // check for valid subscription
+            if(!SubscriptionHandler.hasValidSubscription()) {
+                changeFragment(new UnlockPremiumFragment());
             } else {
-                Fragment fragment = new InvestorPublicProfileFragment();
-                fragment.setArguments(args);
-                changeFragment(fragment, "InvestorPublicProfileFragment");
+                Bundle args = new Bundle();
+                args.putLong("id", openRequestItems.get(position).getAccountId());
+                args.putInt("score", openRequestItems.get(position).getMatchingPercent());
+                args.putLong("relationshipId", openRequestItems.get(position).getId());
+                args.putString("title", openRequestItems.get(position).getTitle());
+                if (openRequestItems.get(position).isStartup()) {
+                    Fragment fragment = new StartupPublicProfileFragment();
+                    fragment.setArguments(args);
+                    changeFragment(fragment, "StartupPublicProfileFragment");
+                } else {
+                    Fragment fragment = new InvestorPublicProfileFragment();
+                    fragment.setArguments(args);
+                    changeFragment(fragment, "InvestorPublicProfileFragment");
+                }
             }
         });
     }

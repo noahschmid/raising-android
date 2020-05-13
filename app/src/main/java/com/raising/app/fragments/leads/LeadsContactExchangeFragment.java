@@ -50,20 +50,21 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        contactImage = view.findViewById(R.id.leads_contact_picture);
+        contactName = view.findViewById(R.id.leads_contact_name);
+        contactMail = view.findViewById(R.id.leads_contact_mail);
+        contactPhone = view.findViewById(R.id.leads_contact_phone);
+
+        btnInteract = view.findViewById(R.id.button_leads_contact_interact);
+        saveContact = view.findViewById(R.id.leads_contact_save_contact);
+
         if(getArguments() != null) {
             lead = (Lead)getArguments().getSerializable("lead");
             contactData = ContactDataHandler.getContactData(lead.getAccountId());
 
-            contactImage = view.findViewById(R.id.leads_contact_picture);
             loadProfileImage(lead.getProfilePictureId(), contactImage);
-            contactName = view.findViewById(R.id.leads_contact_name);
+
             contactName.setText(lead.getTitle());
-
-            contactMail = view.findViewById(R.id.leads_contact_mail);
-            contactPhone = view.findViewById(R.id.leads_contact_phone);
-
-            saveContact = view.findViewById(R.id.leads_contact_save_contact);
-            btnInteract = view.findViewById(R.id.button_leads_contact_interact);
 
             if(contactData != null) {
 

@@ -1,16 +1,13 @@
 package com.raising.app;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -20,7 +17,6 @@ import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.onboarding.OnboardingPre1Fragment;
 import com.raising.app.fragments.profile.ContactDataInput;
-import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.fragments.settings.SettingsFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
 import com.raising.app.util.AccountService;
@@ -36,7 +32,6 @@ import com.raising.app.viewModels.SettingsViewModel;
 import com.raising.app.viewModels.ViewStateViewModel;
 
 import java.io.IOException;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     AccountViewModel accountViewModel;
@@ -130,40 +125,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                    Fragment selected = null;
-                    if (!AuthenticationHandler.isLoggedIn()) {
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fragment_container, new LoginFragment())
-                                .commit();
-                        return true;
-                    } else {
-                        switch (item.getItemId()) {
-                            case R.id.nav_matches:
-                                selected = new MatchesFragment();
-                                break;
-                            case R.id.nav_leads:
-                                selected = new LeadsContainerFragment();
-                                break;
-                            case R.id.nav_profile:
-                                selected = new MyProfileFragment();
-                                break;
-                            case R.id.nav_settings:
-                                selected = new SettingsFragment();
-                                break;
-                            default:
-                                return false;
-                        }
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fragment_container, selected)
-                                .commit();
-                        return true;
+            item -> {
+                Fragment selected = null;
+                if (!AuthenticationHandler.isLoggedIn()) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new LoginFragment())
+                            .commit();
+                    return true;
+                } else {
+                    switch (item.getItemId()) {
+                        case R.id.nav_matches:
+                            selected = new MatchesFragment();
+                            break;
+                        case R.id.nav_leads:
+                            selected = new LeadsContainerFragment();
+                            break;
+                        case R.id.nav_profile:
+                            selected = new MyProfileFragment();
+                            break;
+                        case R.id.nav_settings:
+                            selected = new SettingsFragment();
+                            break;
+                        default:
+                            return false;
                     }
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, selected)
+                            .commit();
+                    return true;
                 }
             };
 
@@ -183,6 +174,16 @@ public class MainActivity extends AppCompatActivity {
      */
     public void hideToolbar(boolean isHidden) {
         findViewById(R.id.raising_app_bar).setVisibility(isHidden ? View.GONE : View.VISIBLE);
+    }
+
+    /**
+     * Reset the selected item of the bottom navigation to the default value
+     *
+     * @param selectedId The id of the navigation element, that should be selected
+     */
+    public void selectBottomNavigation(int selectedId) {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(selectedId);
     }
 
     /**

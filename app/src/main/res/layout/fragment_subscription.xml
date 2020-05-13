@@ -133,7 +133,7 @@
                 style="@style/ButtonRegistrationAndProfile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:backgroundTint="@color/raisingButtonBackgroundColor"
                 android:hint="@string/subscription_google_play"
                 app:layout_constraintBottom_toBottomOf="parent"

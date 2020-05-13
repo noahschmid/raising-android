@@ -69,6 +69,7 @@ public class SettingsViewModel extends AndroidViewModel {
             Log.e(TAG, "sendDeviceToken: JSONException " + e.getMessage());
         }
 
+        Log.d(TAG, "updateDeviceToken: " + object);
         ApiRequestHandler.performPatchRequest("settings",
                 response -> {
                     viewState.postValue(ViewState.RESULT);

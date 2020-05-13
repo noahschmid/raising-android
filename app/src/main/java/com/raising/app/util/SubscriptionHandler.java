@@ -47,6 +47,7 @@ public class SubscriptionHandler {
      * @param billingClient the currently used billing client
      */
     public static void setBillingClient(BillingClient billingClient) {
+        Log.d(TAG, "setBillingClient: ");
         SubscriptionHandler.billingClient = billingClient;
     }
 
@@ -78,6 +79,7 @@ public class SubscriptionHandler {
      * Fetch all subscriptions from the Google Billing server and store them in a variable
      */
     public static ArrayList<SkuDetails> getSkuDetails() {
+        Log.d(TAG, "getSkuDetails: ");
         skuDetailsArrayList.clear();
         SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
         params.setSkusList(SKU_LIST).setType(BillingClient.SkuType.SUBS);
@@ -105,6 +107,7 @@ public class SubscriptionHandler {
      * @return true if subscription is valid, false if subscription is invalid
      */
     public static boolean validatePurchase(Purchase purchase) {
+        Log.d(TAG, "validatePurchase: ");
         JSONObject object = new JSONObject();
         try {
             object.put("purchaseToken", purchase.getPurchaseToken());
@@ -137,6 +140,7 @@ public class SubscriptionHandler {
      * @return The skuDetails of the given sku, if there is no skuDetails with the given sku, return null
      */
     private static SkuDetails getSkuDetailsFromSku(String sku) {
+        Log.d(TAG, "getSkuDetailsFromSku: ");
         for (int i = 0; i < skuDetailsArrayList.size(); i++) {
             if (skuDetailsArrayList.get(i).getSku().equals(sku)) {
                 Log.d(TAG, "getSkuDetailsFromSku: " + skuDetailsArrayList.get(i).toString());
@@ -154,6 +158,7 @@ public class SubscriptionHandler {
      * @param expirationDate A String representation of the expiration date of the users subscription
      */
     private static void setActiveSubscriptionWithExpiration(String sku, String purchaseToken, String expirationDate) {
+        Log.d(TAG, "setActiveSubscriptionWithExpiration: ");
         Subscription subscription = new Subscription();
         subscription.setSku(sku);
         subscription.setPurchaseToken(purchaseToken);
@@ -184,6 +189,7 @@ public class SubscriptionHandler {
      * @param calendar A calendar instance containing the purchase date of the subscription
      */
     public static void setActiveSubscriptionWithPurchase(String sku, String purchaseToken, Calendar calendar) {
+        Log.d(TAG, "setActiveSubscriptionWithPurchase: ");
         Subscription subscription = new Subscription();
         subscription.setSku(sku);
         subscription.setPurchaseToken(purchaseToken);
@@ -201,6 +207,7 @@ public class SubscriptionHandler {
      * @return An integer value of the duration of the subscription
      */
     public static int getSkuDurationFromSku(String sku) {
+        Log.d(TAG, "getSkuDurationFromSku: ");
         switch (sku) {
             case YEARLY_SUBSCRIPTION_ID:
                 return 12;
@@ -221,6 +228,7 @@ public class SubscriptionHandler {
      * @return A calendar instance containing the calculated date
      */
     private static Calendar getRespectiveDate(Calendar calendar, int subscriptionDuration, boolean calculateExpiration) {
+        Log.d(TAG, "getRespectiveDate: ");
         if (calculateExpiration) {
             calendar.add(Calendar.MONTH, subscriptionDuration);
         } else {
@@ -235,6 +243,7 @@ public class SubscriptionHandler {
      * @return The users active subscription, null if the user does not have a subscription
      */
     public static Subscription getActiveSubscription() {
+        Log.d(TAG, "getActiveSubscription: ");
         return activeSubscription;
     }
 
@@ -244,6 +253,7 @@ public class SubscriptionHandler {
      *         false, if user does not have a valid subscription
      */
     public static boolean hasValidSubscription() {
+        Log.d(TAG, "hasValidSubscription: ");
         return getActiveSubscription() != null;
     }
 }

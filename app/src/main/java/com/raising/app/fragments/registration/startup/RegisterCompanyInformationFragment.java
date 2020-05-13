@@ -93,12 +93,9 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
                 new CustomPicker.Builder()
                         .with(getContext())
                         .canSearch(true)
-                        .listener(new OnCustomPickerListener() {
-                            @Override
-                            public void onSelectItem(PickerItem country) {
-                                companyCountryInput.setText(country.getName());
-                                countrySelected = (Country) country;
-                            }
+                        .listener(country -> {
+                            companyCountryInput.setText(country.getName());
+                            countrySelected = (Country) country;
                         })
                         .setItems(resources.getCountries());
 

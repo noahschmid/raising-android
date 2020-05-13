@@ -97,7 +97,6 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         imagesUploaded.setValue(false);
-
         imagesUploaded.observe(getViewLifecycleOwner(),
                 value -> {
                     if (value.booleanValue() == true) {
@@ -122,13 +121,10 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
         deleteProfileImageButton = view.findViewById(R.id.button_delete_profile_img);
         deleteProfileImageButton.setVisibility(View.GONE);
-        deleteProfileImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                profileImageOverlay.setVisibility(View.VISIBLE);
-                deleteProfileImageButton.setVisibility(View.GONE);
-                profileImage.setImageBitmap(null);
-            }
+        deleteProfileImageButton.setOnClickListener(v -> {
+            profileImageOverlay.setVisibility(View.VISIBLE);
+            deleteProfileImageButton.setVisibility(View.GONE);
+            profileImage.setImageBitmap(null);
         });
 
         finishButton = view.findViewById(R.id.button_investor_images);
@@ -165,16 +161,13 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         final View galleryObject = inflater.inflate(R.layout.item_gallery, null);
         ImageView galleryImage = galleryObject.findViewById(R.id.gallery_image);
         galleryImage.setContentDescription("placeholder");
-        galleryImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (permissionGranted) {
-                    if (galleryImage.getContentDescription() == "placeholder") {
-                        showImageMenu(false);
-                    }
-                } else {
-                    checkPermissions();
+        galleryImage.setOnClickListener(v -> {
+            if (permissionGranted) {
+                if (galleryImage.getContentDescription() == "placeholder") {
+                    showImageMenu(false);
                 }
+            } else {
+                checkPermissions();
             }
         });
         galleryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_24dp));
@@ -384,27 +377,24 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         galleryImage.setImageBitmap(image.getImage());
         AppCompatButton deleteButton = galleryObject.findViewById(R.id.button_delete_gallery_img);
         deleteButton.setVisibility(View.VISIBLE);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                galleryObject.setVisibility(View.GONE);
-                galleryLayout.removeView(galleryObject);
-                if (image.getId() != -1) {
-                    ApiRequestHandler.performDeleteRequest("media/gallery/" + image.getId(),
-                            success -> {
-                                investor.getGalleryIds().remove(image.getId());
-                                return null;
-                            },
-                            error -> {
-                                return null;
-                            });
-                    gallery.remove(image);
-                    if (addGalleryImage == null) {
-                        addNewGalleryPlaceholder();
-                    }
-                } else {
-                    investor.getGalleryIds().remove(image.getId());
+        deleteButton.setOnClickListener(v -> {
+            galleryObject.setVisibility(View.GONE);
+            galleryLayout.removeView(galleryObject);
+            if (image.getId() != -1) {
+                ApiRequestHandler.performDeleteRequest("media/gallery/" + image.getId(),
+                        success -> {
+                            investor.getGalleryIds().remove(image.getId());
+                            return null;
+                        },
+                        error -> {
+                            return null;
+                        });
+                gallery.remove(image);
+                if (addGalleryImage == null) {
+                    addNewGalleryPlaceholder();
                 }
+            } else {
+                investor.getGalleryIds().remove(image.getId());
             }
         });
 
