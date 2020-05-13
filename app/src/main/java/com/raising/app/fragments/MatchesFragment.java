@@ -22,11 +22,13 @@ import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.Match;
 import com.raising.app.models.MatchListItem;
 import com.raising.app.util.SubscriptionHandler;
+import com.raising.app.util.TabOrigin;
 import com.raising.app.util.recyclerViewAdapter.MatchListAdapter;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.recyclerViewAdapter.RecyclerViewMargin;
 import com.raising.app.viewModels.MatchesViewModel;
 import com.raising.app.viewModels.SettingsViewModel;
+import com.raising.app.viewModels.TabViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +48,17 @@ public class MatchesFragment extends RaisingFragment {
                              @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: ");
 
+        setTab(TabOrigin.MATCHES);
+
         customizeAppBar(getString(R.string.toolbar_title_match_list), false);
         matchesViewModel = ViewModelProviders.of(getActivity())
                 .get(MatchesViewModel.class);
+        tabViewModel = ViewModelProviders.of(getActivity())
+                .get(TabViewModel.class);
+
+        if(tabViewModel.getCurrentMatchesFragment() != null) {
+            changeFragment(tabViewModel.getCurrentMatchesFragment());
+        }
 
         return inflater.inflate(R.layout.fragment_matches, container, false);
     }

@@ -51,7 +51,6 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
         switch (recyclerItem.getHandshakeState()) {
             case STARTUP_ACCEPTED:
             case INVESTOR_ACCEPTED:
-                //TODO: insert one hand
                 tintColor = R.color.raisingSecondaryDark;
                 drawableId = R.drawable.ic_raising_handshake_left;
                 break;

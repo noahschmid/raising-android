@@ -2,8 +2,11 @@ package com.raising.app.fragments.leads;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
@@ -15,6 +18,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.util.HandshakePageAdapter;
+import com.raising.app.util.TabOrigin;
+import com.raising.app.viewModels.TabViewModel;
 
 public class LeadsContainerFragment extends RaisingFragment {
     private TabLayout tabLayout;
@@ -30,6 +35,21 @@ public class LeadsContainerFragment extends RaisingFragment {
 
         customizeAppBar(getString(R.string.toolbar_title_leads), false);
 
+        setTab(TabOrigin.LEADS);
+
+        tabViewModel = ViewModelProviders.of(getActivity())
+                .get(TabViewModel.class);
+
+        if(tabViewModel.getCurrentLeadsFragment() != null) {
+            changeFragment(tabViewModel.getCurrentLeadsFragment());
+        }
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         tabLayout = view.findViewById(R.id.leads_tab_layout);
         yourTurn = view.findViewById(R.id.tab_your_turn);
         pending = view.findViewById(R.id.tab_pending);
@@ -42,11 +62,10 @@ public class LeadsContainerFragment extends RaisingFragment {
                 tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
 
-        viewPager.setCurrentItem(tabLayout.getSelectedTabPosition());
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                tabViewModel.setCurrentLeadsTab(tab.getPosition());
                 viewPager.setCurrentItem(tab.getPosition());
             }
 
@@ -60,8 +79,9 @@ public class LeadsContainerFragment extends RaisingFragment {
 
             }
         });
+
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-        return view;
+        viewPager.setCurrentItem(tabViewModel.getCurrentLeadsTab());
     }
 }

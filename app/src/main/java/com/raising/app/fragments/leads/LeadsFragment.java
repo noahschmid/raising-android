@@ -33,8 +33,10 @@ import com.raising.app.models.leads.LeadState;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.SubscriptionHandler;
+import com.raising.app.util.TabOrigin;
 import com.raising.app.util.recyclerViewAdapter.LeadsAdapter;
 import com.raising.app.viewModels.LeadsViewModel;
+import com.raising.app.viewModels.TabViewModel;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -58,6 +60,7 @@ public class LeadsFragment extends RaisingFragment {
                              Bundle savedInstanceState) {
         leadsViewModel = ViewModelProviders.of(getActivity())
                 .get(LeadsViewModel.class);
+
         return inflater.inflate(R.layout.fragment_leads, container, false);
     }
 
