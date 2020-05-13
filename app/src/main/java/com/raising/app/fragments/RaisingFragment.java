@@ -30,7 +30,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -105,7 +107,9 @@ public class RaisingFragment extends Fragment {
         viewStateViewModel = ViewModelProviders.of(getActivity()).get(ViewStateViewModel.class);
         viewStateViewModel.getViewState().observe(getViewLifecycleOwner(), this::processViewState);
 
-        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
+        if(accountViewModel == null) {
+            accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
+        }
         accountViewModel.getAccount().observe(getViewLifecycleOwner(), account -> currentAccount = account);
         accountViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             if (state.equals(ViewState.UPDATED)) {

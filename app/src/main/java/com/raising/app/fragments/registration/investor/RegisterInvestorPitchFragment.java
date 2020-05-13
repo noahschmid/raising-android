@@ -51,6 +51,7 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         return view;
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

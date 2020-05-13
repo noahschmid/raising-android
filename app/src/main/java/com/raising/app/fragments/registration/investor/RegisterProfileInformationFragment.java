@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
+import com.raising.app.viewModels.AccountViewModel;
 
 public class RegisterProfileInformationFragment extends RaisingFragment implements RaisingTextWatcher {
     private EditText profileCompanyInput, profileWebsiteInput, profilePhoneInput, profileCountryInput;
@@ -44,12 +46,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         customizeAppBar(getString(R.string.toolbar_title_profile_information), true);
         hideBottomNavigation(true);
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
         //define input views and button
         profileCompanyInput = view.findViewById(R.id.register_input_profile_company);
@@ -74,8 +71,11 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
             contactDetails = RegistrationHandler.getContactData();
         }
 
-        setupCountryPicker();
+        return view;
+    }
 
+    @Override
+    public void onResourcesLoaded() {
         // fill views with users existing data
         profileCompanyInput.setText(investor.getCompanyName());
         profileWebsiteInput.setText(investor.getWebsite());
@@ -89,6 +89,13 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         profileCountryInput.setShowSoftInputOnFocus(false);
         if (investor.getCountryId() != -1)
             countryId = (int) investor.getCountryId();
+
+        setupCountryPicker();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         // if editmode, add text watchers after initial filling with users data
         if (editMode) {

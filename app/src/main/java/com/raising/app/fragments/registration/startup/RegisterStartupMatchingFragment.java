@@ -60,15 +60,29 @@ public class RegisterStartupMatchingFragment extends RaisingFragment {
 
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_matching_criteria), true);
+
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
+
+        btnStartUpMatching = view.findViewById(R.id.button_startup_matching);
+        btnStartUpMatching.setOnClickListener(v -> processMatchingInformation());
+
+        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
+            btnStartUpMatching.setHint(getString(R.string.myProfile_apply_changes));
+            editMode = true;
+            startup = (Startup)accountViewModel.getAccount().getValue();
+            hideBottomNavigation(false);
+        } else {
+            startup = RegistrationHandler.getStartup();
+        }
+
+
         return view;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
-
+    public void onResourcesLoaded() {
+        View view = getView();
         ticketSizeSteps = resources.getTicketSizeValues();
         ticketSizeStrings = resources.getTicketSizeStrings(getString(R.string.currency),
                 getResources().getStringArray(R.array.revenue_units));
@@ -96,19 +110,6 @@ public class RegisterStartupMatchingFragment extends RaisingFragment {
         industryCriteria = new MatchingCriteriaComponent(view.findViewById(R.id.register_startup_matching_industry_layout),
                 resources.getIndustries(), false, clickListener);
 
-        btnStartUpMatching = view.findViewById(R.id.button_startup_matching);
-        btnStartUpMatching.setOnClickListener(v -> processMatchingInformation());
-
-        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
-            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
-            btnStartUpMatching.setHint(getString(R.string.myProfile_apply_changes));
-            editMode = true;
-            startup = (Startup)accountViewModel.getAccount().getValue();
-            hideBottomNavigation(false);
-        } else {
-            startup = RegistrationHandler.getStartup();
-        }
-
         if(startup.getTicketMinId() != 0 && startup.getTicketMaxId() != 0)
             ticketSize.setValues((float)startup.getTicketMinId(), (float)startup.getTicketMaxId());
         if(editMode) {
@@ -116,6 +117,12 @@ public class RegisterStartupMatchingFragment extends RaisingFragment {
         }
 
         restoreLists();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import com.raising.app.models.Startup;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaAdapter;
 import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaComponent;
+import com.raising.app.viewModels.AccountViewModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
 
     private Startup startup;
     private boolean editMode = false;
+
+    Button btnStartupLabels;
 
 
     @Override
@@ -41,15 +45,10 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_labels), true);
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        Button btnStartupLabels = view.findViewById(R.id.button_startup_labels);
+        btnStartupLabels = view.findViewById(R.id.button_startup_labels);
         btnStartupLabels.setOnClickListener(v -> processInformation());
+
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
@@ -62,16 +61,26 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
             startup = RegistrationHandler.getStartup();
         }
 
+        return view;
+    }
+
+    @Override
+    public void onResourcesLoaded() {
         MatchingCriteriaAdapter.OnItemClickListener clickListener = position -> {
             if(editMode) {
                 btnStartupLabels.setVisibility(View.VISIBLE);
             }
         };
 
-        labelsLayout = new MatchingCriteriaComponent(view.findViewById(R.id.register_startup_pitch_labels), resources.getLabels(),
-                false, clickListener, true);
+        labelsLayout = new MatchingCriteriaComponent(getView().findViewById(R.id.register_startup_pitch_labels),
+                resources.getLabels(), false, clickListener, true);
 
         startup.getLabels().forEach(label -> labelsLayout.setChecked(label));
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

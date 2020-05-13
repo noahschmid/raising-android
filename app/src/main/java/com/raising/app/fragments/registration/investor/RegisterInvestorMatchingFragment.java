@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintHelper;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaAdapter;
 import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaComponent;
+import com.raising.app.viewModels.AccountViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,21 +67,12 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_matching_criteria), true);
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        geographicsButton = view.findViewById(R.id.register_investor_matching_geographics_button);
-
-        ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
         btnInvestorMatching = view.findViewById(R.id.button_investor_matching);
         btnInvestorMatching.setOnClickListener(v -> processMatchingInformation());
-
-        investor = null;
+        geographicsButton = view.findViewById(R.id.register_investor_matching_geographics_button);
+        ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
 
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
@@ -91,6 +84,12 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
             investor = RegistrationHandler.getInvestor();
         }
 
+        return view;
+    }
+
+    @Override
+    public void onResourcesLoaded() {
+        View view = getView();
         pickerItems = new ArrayList<>();
         pickerItems.addAll(resources.getContinents());
         pickerItems.addAll(resources.getCountries());
@@ -161,6 +160,11 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
         }
 
         restoreLists();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     /**

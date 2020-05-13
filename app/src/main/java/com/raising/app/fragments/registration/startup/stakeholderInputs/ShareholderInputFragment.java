@@ -66,8 +66,9 @@ public class ShareholderInputFragment extends RaisingFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onResourcesLoaded() {
+        View view = getView();
+
         shareholderViewModel = new ViewModelProvider(requireActivity()).get(ShareholderViewModel.class);
 
         privateFirstNameInput = view.findViewById(R.id.input_shareholder_first_name);
@@ -320,6 +321,11 @@ public class ShareholderInputFragment extends RaisingFragment {
                         .setItems(resources.getCountries());
 
         countryPicker = builder.build();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

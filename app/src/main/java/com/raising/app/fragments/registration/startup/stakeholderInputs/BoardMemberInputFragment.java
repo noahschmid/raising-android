@@ -53,8 +53,8 @@ public class BoardMemberInputFragment extends RaisingFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onResourcesLoaded() {
+        View view = getView();
         boardMemberViewModel = new ViewModelProvider(requireActivity()).get(BoardMemberViewModel.class);
 
         boardFirstNameInput = view.findViewById(R.id.input_board_member_first_name);
@@ -197,6 +197,11 @@ public class BoardMemberInputFragment extends RaisingFragment {
                 boardMember.setMemberSince(memberSinceInput.getText().toString());
             }
         });
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

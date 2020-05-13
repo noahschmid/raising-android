@@ -52,8 +52,8 @@ public class FounderInputFragment extends RaisingFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onResourcesLoaded() {
+        View view = getView();
 
         founderViewModel = new ViewModelProvider(requireActivity()).get(FounderViewModel.class);
 
@@ -177,6 +177,11 @@ public class FounderInputFragment extends RaisingFragment {
                 founderCountryInput.setText(resources.getCountry(countryId).getName());
             }
         }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
