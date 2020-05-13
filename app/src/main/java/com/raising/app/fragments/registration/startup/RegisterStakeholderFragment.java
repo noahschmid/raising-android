@@ -241,15 +241,20 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             @Override
             public void onClickDelete(int position) {
                 if(editMode) {
-                    ApiRequestHandler.performDeleteRequest("startup/founder/" +
-                                    founderList.get(position).getId(),
-                            result -> {
-                                founderList.remove(position);
-                                founderAdapter.notifyItemRemoved(position);
-                                finishButton.setVisibility(View.VISIBLE);
-                                return null;
-                            },
-                            ApiRequestHandler.errorHandler);
+                    if(founderList.get(position).getId() != -1) {
+                        ApiRequestHandler.performDeleteRequest("startup/founder/" +
+                                        founderList.get(position).getId(),
+                                result -> {
+                                    founderList.remove(position);
+                                    founderAdapter.notifyItemRemoved(position);
+                                    finishButton.setVisibility(View.VISIBLE);
+                                    return null;
+                                },
+                                ApiRequestHandler.errorHandler);
+                    } else {
+                        founderList.remove(position);
+                        founderAdapter.notifyItemRemoved(position);
+                    }
                 } else {
                     founderList.remove(position);
                     founderAdapter.notifyItemRemoved(position);
@@ -311,15 +316,20 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             @Override
             public void onClickDelete(int position) {
                 if(editMode) {
-                    ApiRequestHandler.performDeleteRequest("startup/boardmember/" +
-                            boardMemberList.get(position).getId(),
-                            result -> {
-                                boardMemberList.remove(position);
-                                boardMemberAdapter.notifyItemRemoved(position);
-                                finishButton.setVisibility(View.VISIBLE);
-                        return null;
-                            },
-                            ApiRequestHandler.errorHandler);
+                    if(boardMemberList.get(position).getId() != -1) {
+                        ApiRequestHandler.performDeleteRequest("startup/boardmember/" +
+                                boardMemberList.get(position).getId(),
+                                result -> {
+                                    boardMemberList.remove(position);
+                                    boardMemberAdapter.notifyItemRemoved(position);
+                                    finishButton.setVisibility(View.VISIBLE);
+                            return null;
+                                },
+                                ApiRequestHandler.errorHandler);
+                    } else {
+                        boardMemberList.remove(position);
+                        boardMemberAdapter.notifyItemRemoved(position);
+                    }
                 } else {
                     boardMemberList.remove(position);
                     boardMemberAdapter.notifyItemRemoved(position);
@@ -383,15 +393,20 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             @Override
             public void onClickDelete(int position) {
                 if(editMode) {
-                    ApiRequestHandler.performDeleteRequest("startup/shareholder/" +
-                                    shareholderList.get(position).getId(),
-                            result -> {
-                                shareholderList.remove(position);
-                                shareholderAdapter.notifyItemRemoved(position);
-                                finishButton.setVisibility(View.VISIBLE);
-                                return null;
-                            },
-                            ApiRequestHandler.errorHandler);
+                    if(shareholderList.get(position).getId() != -1) {
+                        ApiRequestHandler.performDeleteRequest("startup/shareholder/" +
+                                        shareholderList.get(position).getId(),
+                                result -> {
+                                    shareholderList.remove(position);
+                                    shareholderAdapter.notifyItemRemoved(position);
+                                    finishButton.setVisibility(View.VISIBLE);
+                                    return null;
+                                },
+                                ApiRequestHandler.errorHandler);
+                    } else {
+                        shareholderList.remove(position);
+                        shareholderAdapter.notifyItemRemoved(position);
+                    }
                 } else {
                     shareholderList.remove(position);
                     shareholderAdapter.notifyItemRemoved(position);
