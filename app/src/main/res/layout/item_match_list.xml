@@ -70,7 +70,9 @@
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/item_matchList_chart"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"/>
+            android:layout_height="fill_parent"
+            android:focusable="false"
+            android:clickable="false"/>
 
         <RelativeLayout
             android:layout_width="fill_parent"

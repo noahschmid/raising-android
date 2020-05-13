@@ -70,7 +70,7 @@ public class RegisterStartupMatchingFragment extends RaisingFragment {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartUpMatching.setHint(getString(R.string.myProfile_apply_changes));
             editMode = true;
-            startup = (Startup)accountViewModel.getAccount().getValue();
+            startup = (Startup) accountViewModel.getAccount().getValue();
             hideBottomNavigation(false);
         } else {
             startup = RegistrationHandler.getStartup();

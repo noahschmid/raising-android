@@ -150,12 +150,12 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/shareholder_equity_share" />
 
-                    <RadioGroup
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/private_shareholder_type"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/standardVerticalMargin"
-                        android:orientation="vertical"
+                        android:nestedScrollingEnabled="false"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/text_shareholder_type"
                         app:layout_constraintHorizontal_bias="0.0"

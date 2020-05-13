@@ -21,6 +21,7 @@ import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.Match;
 import com.raising.app.models.MatchListItem;
+import com.raising.app.util.SubscriptionHandler;
 import com.raising.app.util.recyclerViewAdapter.MatchListAdapter;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.recyclerViewAdapter.RecyclerViewMargin;
@@ -85,21 +86,26 @@ public class MatchesFragment extends RaisingFragment {
         matchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         matchList.setAdapter(matchListAdapter);
         matchListAdapter.setOnItemClickListener(position -> {
-            Bundle args = new Bundle();
-            MatchListItem item = matchListItems.get(position);
-            args.putLong("id", item.getAccountId());
-            args.putLong("relationshipId", item.getRelationshipId());
-            args.putInt("score", item.getScore());
-            args.putString("title", item.getName());
-            customizeAppBar(item.getName(), true);
-            if (matchListItems.get(position).isStartup()) {
-                StartupPublicProfileFragment publicProfile = new StartupPublicProfileFragment();
-                publicProfile.setArguments(args);
-                changeFragment(publicProfile);
+            // check if user has valid subscription
+            if(!SubscriptionHandler.hasValidSubscription()) {
+                changeFragment(new UnlockPremiumFragment());
             } else {
-                InvestorPublicProfileFragment publicProfile = new InvestorPublicProfileFragment();
-                publicProfile.setArguments(args);
-                changeFragment(publicProfile);
+                Bundle args = new Bundle();
+                MatchListItem item = matchListItems.get(position);
+                args.putLong("id", item.getAccountId());
+                args.putLong("relationshipId", item.getRelationshipId());
+                args.putInt("score", item.getScore());
+                args.putString("title", item.getName());
+                customizeAppBar(item.getName(), true);
+                if (matchListItems.get(position).isStartup()) {
+                    StartupPublicProfileFragment publicProfile = new StartupPublicProfileFragment();
+                    publicProfile.setArguments(args);
+                    changeFragment(publicProfile);
+                } else {
+                    InvestorPublicProfileFragment publicProfile = new InvestorPublicProfileFragment();
+                    publicProfile.setArguments(args);
+                    changeFragment(publicProfile);
+                }
             }
         });
     }
@@ -132,7 +138,6 @@ public class MatchesFragment extends RaisingFragment {
 
             matchListItems.add(matchItem);
         });
-        // matchListItems.forEach(item -> Log.d(TAG, "matchListItems: " + item.getAccountId() + " " + item.getAttribute() + " " + item.getName() + " " + item.getScore()));
         matchListAdapter.notifyDataSetChanged();
 
         if (matchListItems.size() == 0 && resourcesViewModel.getViewState().getValue() == ViewState.RESULT)

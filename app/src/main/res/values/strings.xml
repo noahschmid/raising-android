@@ -147,7 +147,7 @@
     <string name="register_company_revenue"> Revenue* </string>
     <string name="register_company_breakeven"> Break-Even Year* </string>
     <string name="break_even_picker_title">Select Breakeven Year</string>
-    <string name="register_company_fte"> Full Time Employee* </string>
+    <string name="register_company_fte"> Full Time Employees* </string>
     <string name="register_company_markets"> Current Markets* </string>
     <string name="register_company_founding_year"> Founding Year* </string>
     <string name="founding_picker_title">Select Founding Year</string>
@@ -206,6 +206,9 @@
     <string name="empty_matchList_text_2"> Next matches will be available next Monday</string>
     <string name="empty_matchlist_text_3"> Enjoy the rest of your week! </string>
 
+    <string name="unlock_premium_title"> Go Pro</string>
+    <string name="unlock_premium_body">Unlock to see more details and get in touch with your matches</string>
+
     <!-- Strings used for Leads -->
     <string name="toolbar_title_leads"> Leads </string>
     <string name="leads_your_turn"> Your turn </string>
@@ -248,6 +251,9 @@
     <string name="settings_weekly_matches"> Number of weekly Matches</string>
 
     <string name="settings_about"> About Rai$ing </string>
+    <string name="settings_about_paragraph1">Rai$ing is a product of the Swiss Entrepreneurs Foundation (SwissEF). It builds on the need to make financing rounds more efficient for startups, SMEs and investors. Based on the registered profiles, suitable companies and investors are quickly networked.</string>
+    <string name="settings_about_paragraph2">Rai$ing was developed in collaboration with Ubique Innovations AG and a team of Computer Science students from the University of Berne.</string>
+    <string name="settings_about_paragraph3">Rai$ing is based on an idea by Peter Stähli, the founder and CEO of the Swiss Economic Forum.</string>
     <string name="settings_about_sponsorship"> Sponsorship</string>
     <string name="settings_about_sponsorship_text"> Swiss Enterpreneurs Foundation \nBundesgasse 35 \n3001 Bern \ninfo@swissef.ch</string>
     <string name="settings_about_idea"> Idea and specification sheet </string>
@@ -268,7 +274,7 @@
 
     <string name="settings_report_problem"> Report a Problem </string>
     <string name="settings_feedback"> Give Feedback</string>
-    <string name="settings_target_email_address"> lorenz.caliezi@gmail.com</string>
+    <string name="settings_target_email_address"> lorenz.caliezi@students.unibe.ch</string>
     <string name="settings_problem_report_subject"> Problem Report Rai$ing</string>
     <string name="settings_problem_report_body"> I would like to report a problem with your app Rai$ing</string>
     <string name="settings_feedback_subject"> Feedback for Rai$ing</string>

@@ -53,6 +53,7 @@ public class SubscriptionFragment extends RaisingFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         customizeAppBar(getString(R.string.toolbar_profile_subscription), true);
         return inflater.inflate(R.layout.fragment_subscription, container, false);
     }

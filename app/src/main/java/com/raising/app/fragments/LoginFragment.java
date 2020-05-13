@@ -45,10 +45,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
 
     final private String loginEndpoint = ApiRequestHandler.getDomain() + "account/login";
 
-    public static LoginFragment newInstance() {
-        return new LoginFragment();
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -135,70 +131,64 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
             viewStateViewModel.startLoading();
             JsonObjectRequest loginRequest = new JsonObjectRequest(
                     loginEndpoint, new JSONObject(params),
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.d("LoginFragment", "login successful.");
-                            try {
-                                viewStateViewModel.stopLoading();
-                                boolean isStartup = response.getBoolean("startup");
-                                if(!isStartup && !response.getBoolean("investor")) {
-                                    showSimpleDialog(getString(R.string.generic_error_title),
-                                            getString(R.string.no_profile_text));
-                                    return;
-                                }
-
-                                if(AccountService.loadContactData(response.getLong("id"))) {
-                                    AuthenticationHandler.login(email,
-                                            response.getString("token"),
-                                            response.getLong("id"), isStartup);
-                                    accountViewModel.loadAccount();
-                                    settingsViewModel.loadSettings();
-                                    SubscriptionHandler.loadSubscription();
-
-                                    if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
-                                        clearBackstackAndReplace(new OnboardingPost1Fragment());
-                                    } else {
-                                        clearBackstackAndReplace(new MatchesFragment());
-                                    }
-                                } else {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putBoolean("isStartup", isStartup);
-                                    bundle.putString("email", email);
-                                    bundle.putString("token", response.getString("token"));
-                                    bundle.putLong("id", response.getLong("id"));
-                                    Fragment fragment = new ContactDataInput();
-                                    fragment.setArguments(bundle);
-                                    changeFragment(fragment);
-                                }
-                            } catch(Exception e) {
-                                viewStateViewModel.stopLoading();
+                    response -> {
+                        Log.d("LoginFragment", "login successful.");
+                        try {
+                            viewStateViewModel.stopLoading();
+                            boolean isStartup = response.getBoolean("startup");
+                            if(!isStartup && !response.getBoolean("investor")) {
                                 showSimpleDialog(getString(R.string.generic_error_title),
-                                        e.getMessage());
+                                        getString(R.string.no_profile_text));
+                                return;
                             }
+
+                            if(AccountService.loadContactData(response.getLong("id"))) {
+                                AuthenticationHandler.login(email,
+                                        response.getString("token"),
+                                        response.getLong("id"), isStartup);
+                                accountViewModel.loadAccount();
+                                settingsViewModel.loadSettings();
+                                SubscriptionHandler.loadSubscription();
+
+                                if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
+                                    clearBackstackAndReplace(new OnboardingPost1Fragment());
+                                } else {
+                                    clearBackstackAndReplace(new MatchesFragment());
+                                }
+                            } else {
+                                Bundle bundle = new Bundle();
+                                bundle.putBoolean("isStartup", isStartup);
+                                bundle.putString("email", email);
+                                bundle.putString("token", response.getString("token"));
+                                bundle.putLong("id", response.getLong("id"));
+                                Fragment fragment = new ContactDataInput();
+                                fragment.setArguments(bundle);
+                                changeFragment(fragment);
+                            }
+                        } catch(Exception e) {
+                            viewStateViewModel.stopLoading();
+                            showSimpleDialog(getString(R.string.generic_error_title),
+                                    e.getMessage());
                         }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    viewStateViewModel.stopLoading();
-                    try {
-                        if(error.networkResponse.statusCode == 500 ||
-                        error.networkResponse.statusCode == 403) {
+                    }, error -> {
+                        viewStateViewModel.stopLoading();
+                        try {
+                            if(error.networkResponse.statusCode == 500 ||
+                            error.networkResponse.statusCode == 403) {
+                                showSimpleDialog(
+                                        getString(R.string.login_dialog_title),
+                                        getString(R.string.login_dialog_text_403)
+                                );
+                            }
+                        } catch (NullPointerException e) {
                             showSimpleDialog(
-                                    getString(R.string.login_dialog_title),
-                                    getString(R.string.login_dialog_text_403)
+                                    getString(R.string.login_dialog_server_error_title),
+                                    getString(R.string.login_dialog_server_error_text)
                             );
+                            Log.d("debugMessage", e.toString());
+                            Log.d("debugMessage", error.toString());
                         }
-                    } catch (NullPointerException e) {
-                        showSimpleDialog(
-                                getString(R.string.login_dialog_server_error_title),
-                                getString(R.string.login_dialog_server_error_text)
-                        );
-                        Log.d("debugMessage", e.toString());
-                        Log.d("debugMessage", error.toString());
-                    }
-                }
-            }){
+                    }){
                 @Override
                 public String getBodyContentType() {
                     return "application/json; charset=utf-8";

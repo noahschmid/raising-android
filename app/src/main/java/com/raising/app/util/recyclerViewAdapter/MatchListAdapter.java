@@ -96,6 +96,8 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
 
         percentChart.setUsePercentValues(true);
         percentChart.setRotationEnabled(false);
+        percentChart.setHighlightPerTapEnabled(false);
+        percentChart.setFocusable(false);
 
         percentChart.invalidate();
     }

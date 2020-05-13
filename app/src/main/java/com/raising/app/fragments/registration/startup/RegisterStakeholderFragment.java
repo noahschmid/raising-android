@@ -50,7 +50,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.function.Function;
 
-public class RegisterStakeholderFragment extends RaisingFragment implements View.OnClickListener {
+public class RegisterStakeholderFragment extends RaisingFragment {
     private FounderViewModel founderViewModel;
     private BoardMemberViewModel boardMemberViewModel;
     private ShareholderViewModel shareholderViewModel;
@@ -93,7 +93,10 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         super.onViewCreated(view, savedInstanceState);
 
         finishButton = view.findViewById(R.id.button_stakeholder);
-        finishButton.setOnClickListener(this);
+        finishButton.setOnClickListener(v -> {
+            finishButton.setEnabled(false);
+            processInputs();
+        });
 
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
@@ -383,7 +386,13 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             @Override
             public void onClickDelete(int position) {
                 if(editMode) {
-                    ApiRequestHandler.performDeleteRequest("startup/shareholder/" +
+                    String endpoint;
+                    if(((Shareholder) shareholderList.get(position)).isPrivateShareholder()) {
+                        endpoint = "startup/privateshareholder/";
+                    } else {
+                        endpoint = "startup/corporateshareholder/";
+                    }
+                    ApiRequestHandler.performDeleteRequest(endpoint +
                                     shareholderList.get(position).getId(),
                             result -> {
                                 shareholderList.remove(position);
@@ -399,18 +408,6 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                 }
             }
         });
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_stakeholder:
-                finishButton.setEnabled(false);
-                processInputs();
-                break;
-            default:
-                break;
-        }
     }
 
     /**

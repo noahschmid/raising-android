@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class RegisterStartupLabelsFragment extends RaisingFragment {
+    private final String TAG = "RegisterStartupLabelsFragment";
     private MatchingCriteriaComponent labelsLayout;
 
     private Startup startup;
@@ -54,7 +55,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupLabels.setHint(getString(R.string.myProfile_apply_changes));
             btnStartupLabels.setVisibility(View.INVISIBLE);
-            startup = (Startup)currentAccount;
+            startup = (Startup) accountViewModel.getAccount().getValue();
             hideBottomNavigation(false);
             editMode = true;
         } else {
@@ -75,7 +76,11 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
         labelsLayout = new MatchingCriteriaComponent(getView().findViewById(R.id.register_startup_pitch_labels),
                 resources.getLabels(), false, clickListener, true);
 
-        startup.getLabels().forEach(label -> labelsLayout.setChecked(label));
+        Log.d(TAG, "onResourcesLoaded: " + startup);
+        if(startup != null && startup.getLabels() != null) {
+            Log.d(TAG, "onResourcesLoaded: " + startup.getLabels());
+            startup.getLabels().forEach(label -> labelsLayout.setChecked(label));
+        }
     }
 
     @Override

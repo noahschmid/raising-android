@@ -111,6 +111,7 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
 
     private void logout() {
         Log.d("debugMessage", "logout()");
+        selectBottomNavigation(R.id.nav_matches);
         AuthenticationHandler.logout();
         clearBackstackAndReplace(new LoginFragment());
     }

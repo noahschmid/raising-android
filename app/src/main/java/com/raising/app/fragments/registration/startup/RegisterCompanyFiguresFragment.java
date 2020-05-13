@@ -100,18 +100,15 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
                 R.layout.item_dropdown_menu, values);
         companyRevenueInput.setAdapter(adapterRevenue);
 
-        companyRevenueInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String itemName = (String) adapterRevenue.getItem(i);
+        companyRevenueInput.setOnItemClickListener((AdapterView.OnItemClickListener) (adapterView, view, i, l) -> {
+            String itemName = (String) adapterRevenue.getItem(i);
 
-                for (Revenue rev : revenues) {
-                    if (rev.toString(getString(R.string.currency),
-                            getResources().getStringArray(R.array.revenue_units)).equals(itemName)) {
-                        revenueMinId = rev.getRevenueMinId();
-                        revenueMaxId = rev.getRevenueMaxId();
-                        break;
-                    }
+            for (Revenue rev : revenues) {
+                if (rev.toString(getString(R.string.currency),
+                        getResources().getStringArray(R.array.revenue_units)).equals(itemName)) {
+                    revenueMinId = rev.getRevenueMinId();
+                    revenueMaxId = rev.getRevenueMaxId();
+                    break;
                 }
             }
         });

@@ -25,12 +25,14 @@ import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.UnlockPremiumFragment;
 import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.leads.InteractionState;
 import com.raising.app.models.leads.LeadState;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
+import com.raising.app.util.SubscriptionHandler;
 import com.raising.app.util.recyclerViewAdapter.LeadsAdapter;
 import com.raising.app.viewModels.LeadsViewModel;
 
@@ -110,12 +112,12 @@ public class LeadsFragment extends RaisingFragment {
             if (resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
                     resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
                 leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
-                    if(state == ViewState.RESULT || state == ViewState.CACHED) {
+                    if (state == ViewState.RESULT || state == ViewState.CACHED) {
                         loadData();
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 });
-                if(leadsViewModel.getViewState().getValue() == ViewState.RESULT
+                if (leadsViewModel.getViewState().getValue() == ViewState.RESULT
                         || leadsViewModel.getViewState().getValue() == ViewState.CACHED) {
                     loadData();
                     swipeRefreshLayout.setRefreshing(false);
@@ -143,37 +145,47 @@ public class LeadsFragment extends RaisingFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(position -> {
-            Bundle args = new Bundle();
+            // check if user has valid subscription
+            if (!SubscriptionHandler.hasValidSubscription()) {
+                ((RaisingFragment) getParentFragment()).changeFragment(new UnlockPremiumFragment());
+            } else {
+                Bundle args = new Bundle();
 
-            args.putSerializable("lead", leads.get(position));
-            Fragment contactFragment = new LeadsInteractionFragment();
+                args.putSerializable("lead", leads.get(position));
+                Fragment contactFragment = new LeadsInteractionFragment();
 
-            if ((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_ACCEPTED)
-                    || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_ACCEPTED)) {
-                args.putBoolean("disableContact", true);
-            } else if ((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_DECLINED)
-                    || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_DECLINED)) {
-                args.putBoolean("declinedContact", true);
+                if ((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_ACCEPTED)
+                        || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_ACCEPTED)) {
+                    args.putBoolean("disableContact", true);
+                } else if ((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_DECLINED)
+                        || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_DECLINED)) {
+                    args.putBoolean("declinedContact", true);
+                }
+                contactFragment.setArguments(args);
+                ((RaisingFragment) getParentFragment()).changeFragment(contactFragment);
             }
-            contactFragment.setArguments(args);
-            ((RaisingFragment) getParentFragment()).changeFragment(contactFragment);
         });
 
         adapter.setOnClickListener(position -> {
-            Bundle args = new Bundle();
-            args.putLong("id", leads.get(position).getAccountId());
-            args.putInt("score", leads.get(position).getMatchingPercent());
-            args.putString("title", leads.get(position).getTitle());
-            args.putLong("relationshipId", leads.get(position).getId());
-            args.putSerializable("handshakeState", leads.get(position).getHandshakeState());
-            if(leads.get(position).isStartup()) {
-                Fragment fragment = new StartupPublicProfileFragment();
-                fragment.setArguments(args);
-                ((RaisingFragment) getParentFragment()).changeFragment(fragment);
+            // check if user has valid subscription
+            if (!SubscriptionHandler.hasValidSubscription()) {
+                ((RaisingFragment) getParentFragment()).changeFragment(new UnlockPremiumFragment());
             } else {
-                Fragment fragment = new InvestorPublicProfileFragment();
-                fragment.setArguments(args);
-                ((RaisingFragment) getParentFragment()).changeFragment(fragment);
+                Bundle args = new Bundle();
+                args.putLong("id", leads.get(position).getAccountId());
+                args.putInt("score", leads.get(position).getMatchingPercent());
+                args.putString("title", leads.get(position).getTitle());
+                args.putLong("relationshipId", leads.get(position).getId());
+                args.putSerializable("handshakeState", leads.get(position).getHandshakeState());
+                if (leads.get(position).isStartup()) {
+                    Fragment fragment = new StartupPublicProfileFragment();
+                    fragment.setArguments(args);
+                    ((RaisingFragment) getParentFragment()).changeFragment(fragment);
+                } else {
+                    Fragment fragment = new InvestorPublicProfileFragment();
+                    fragment.setArguments(args);
+                    ((RaisingFragment) getParentFragment()).changeFragment(fragment);
+                }
             }
         });
     }
@@ -201,9 +213,9 @@ public class LeadsFragment extends RaisingFragment {
                 badge.setBadgeGravity(BadgeDrawable.TOP_START);
                 View badgeLayout = getView().findViewById(R.id.leads_open_request_badge_layout);
                 BadgeUtils.attachBadgeDrawable(badge, badgeLayout, openRequestsArrowLayout);
-                openRequests.setOnClickListener(v ->
-                        ((RaisingFragment) getParentFragment())
-                                .changeFragment(new LeadsOpenRequestsFragment()));
+                openRequests.setOnClickListener(v -> {
+                    ((RaisingFragment) getParentFragment()).changeFragment(new LeadsOpenRequestsFragment());
+                });
             }
         }
         filterLeads();
@@ -256,8 +268,8 @@ public class LeadsFragment extends RaisingFragment {
         });
 
         // hide empty leads layout
-        if(leadState == LeadState.YOUR_TURN ) {
-            if(today.size() == 0 && thisWeek.size() == 0 && thisMonth.size() == 0 && earlier.size() == 0 && leadsViewModel.getOpenRequests().size() == 0) {
+        if (leadState == LeadState.YOUR_TURN) {
+            if (today.size() == 0 && thisWeek.size() == 0 && thisMonth.size() == 0 && earlier.size() == 0 && leadsViewModel.getOpenRequests().size() == 0) {
                 emptyLeadsLayout.setVisibility(View.VISIBLE);
             } else {
                 emptyLeadsLayout.setVisibility(View.GONE);
