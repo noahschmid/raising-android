@@ -67,8 +67,6 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
     boolean profilePictureChanged = false;
     boolean galleryChanged = false;
 
-    private int successfulUploads = 0;
-
     List<Image> gallery = new ArrayList<>();
 
     @Override
@@ -480,6 +478,7 @@ public class RegisterStartupImagesFragment extends RaisingFragment {
                 bitmaps.add(img.getImage());
             }
         });
+
         new ImageUploader(logo, bitmaps, response -> {
             try {
                 if (response.has("profileResponse")) {

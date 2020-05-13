@@ -53,7 +53,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
         hideBottomNavigation(true);
         hideToolbar(true);
 
-        RegistrationHandler.isInProgress(getContext());
         return view;
     }
 
@@ -211,7 +210,9 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
      */
     private void goToRegisterFragment() {
         try {
-            RegistrationHandler.begin();
+            if(!RegistrationHandler.isInProgress()) {
+                RegistrationHandler.begin();
+            }
             changeFragment(new RegisterLoginInformationFragment(),
                     "RegisterLoginInformationFragment");
             Log.d("debugMessage", "success");
