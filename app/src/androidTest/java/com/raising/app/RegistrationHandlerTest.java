@@ -7,6 +7,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.raising.app.models.Account;
 import com.raising.app.models.ContactData;
+import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
 
 import org.junit.Before;
@@ -24,7 +25,8 @@ public class RegistrationHandlerTest {
     @Before
     public void setup() {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        RegistrationHandler.setContext(context);
+        InternalStorageHandler.setContext(context);
+        RegistrationHandler.init();
     }
 
     @Test

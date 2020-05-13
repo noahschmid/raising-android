@@ -49,13 +49,9 @@ public class SettingsViewModel extends AndroidViewModel {
         viewState.postValue(ViewState.LOADING);
         Log.d(TAG, "loadSettings: ViewState " + viewState.getValue().toString());
         PersonalSettings cachedSettings = getCachedSettings();
-        if (cachedSettings != null) {
-            personalSettings.postValue(cachedSettings);
-            viewState.postValue(ViewState.CACHED);
-            Log.d(TAG, "loadSettings: ViewState " + viewState.getValue().toString());
-        } else {
-            getUserSettings();
-        }
+        personalSettings.postValue(cachedSettings);
+        viewState.postValue(ViewState.CACHED);
+        getUserSettings();
     }
 
     private void updateDeviceToken() {
@@ -111,7 +107,9 @@ public class SettingsViewModel extends AndroidViewModel {
                     }
                     return null;
                 }, volleyError -> {
-                    viewState.postValue(ViewState.ERROR);
+                    if(viewState.getValue() != ViewState.CACHED) {
+                        viewState.postValue(ViewState.ERROR);
+                    }
                     Log.d(TAG, "getUserSettings: Error fetching settings" + volleyError.toString());
                     return null;
                 });

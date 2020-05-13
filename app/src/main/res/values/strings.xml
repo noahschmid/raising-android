@@ -356,6 +356,7 @@
     <string name="forgot_dialog_title"> Password reset code sent </string>
     <string name="forgot_dialog_text"> Check your email for further information </string>
     <string name="forgot_reset_text"> Enter the code, that you have received via email </string>
+    <string name="forgot_password_hint">Please enter your registered email. We will send you an email containing further information on how to reset your password.</string>
     <string name="reset_password_input_placeholder"> New Password </string>
     <string name="reset_code_input_placeholder"> Reset Code</string>
     <string name="reset_button_text"> Reset Password </string>
