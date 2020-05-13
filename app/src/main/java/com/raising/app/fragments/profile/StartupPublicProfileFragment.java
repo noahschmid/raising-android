@@ -69,11 +69,11 @@ import java.util.Objects;
 
 public class StartupPublicProfileFragment extends RaisingFragment {
     private static final String TAG = "StartupPublicProfile";
-
     private ImageSwitcher imageSwitcher;
     private ImageButton profileRequest, profileDecline, btnPrevious, btnNext;
+    private CardView matchingSummary;
     private TextView imageIndex, matchingPercent, profileName, profileLocation, profileLabels, profileSentence,
-            profilePitch, profileWebsite;
+            profilePitch, profileWebsite, textRequested, textDeclined;
     private LinearLayout labelsLayout;
     private TextView startupScope, startupMinTicket, startupMaxTicket;
     private RecyclerView recyclerInvestorType, recyclerPhase, recyclerIndustry, recyclerInvolvement;
@@ -114,6 +114,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             return view;
         }
 
+        matchingSummary = view.findViewById(R.id.startup_public_profile_matching_summary);
+
         if (getArguments().getSerializable("startup") != null) {
             Log.d("StartupPublicProfile", "name: " + ((Startup) getArguments()
                     .getSerializable("startup")).getName());
@@ -121,7 +123,6 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             Log.i("startup", startup.toString());
             customizeAppBar(getString(R.string.toolbar_my_public_profile), true);
             // hide matching summary, if user accesses own public profile
-            CardView matchingSummary = view.findViewById(R.id.startup_public_profile_matching_summary);
             matchingSummary.setVisibility(View.GONE);
         } else {
             AccountService.getStartupAccount(getArguments().getLong("id"), startup -> {
@@ -142,6 +143,9 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        textRequested = view.findViewById(R.id.text_startup_accept);
+        textDeclined = view.findViewById(R.id.text_startup_decline);
 
         inflater = (LayoutInflater) getContext().getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
@@ -479,18 +483,22 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             switch (handshakeState) {
                 case HANDSHAKE:
                 case INVESTOR_ACCEPTED:
+                    matchingSummary.getBackground().setTint(ContextCompat.getColor(this.getContext(), R.color.raisingPositiveAccent));
                     profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept_green));
-                    profileDecline.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_decline_disabled));
-                    profileRequest.setEnabled(false);
-                    profileDecline.setEnabled(false);
+                    profileDecline.setVisibility(View.GONE);
+                    textDeclined.setVisibility(View.GONE);
+                    textRequested.setText(getString(R.string.accepted_text));
                     break;
                 case INVESTOR_DECLINED:
-                    profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept_disabled));
+                    matchingSummary.getBackground().setTint(ContextCompat.getColor(this.getContext(), R.color.raisingNegativeAccent));
                     profileDecline.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_decline_red));
-                    profileRequest.setEnabled(false);
-                    profileDecline.setEnabled(false);
+                    profileRequest.setVisibility(View.GONE);
+                    textRequested.setVisibility(View.GONE);
+                    textDeclined.setText(getString(R.string.declined_text));
                     break;
             }
+            profileRequest.setEnabled(false);
+            profileDecline.setEnabled(false);
         }
     }
 
@@ -633,7 +641,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         // if equity share total is below 100, add filler element to complete round pie chart
         if(overallEquityShare < 100) {
             pieEntries.add(new PieEntry(maximumEquityShare, ""));
-            pieChartColors.add(transparentColorIndex, getResources().getColor(R.color.gray, null));
+            pieChartColors.add(transparentColorIndex, getResources().getColor(R.color.raisingGrey, null));
         }
 
 

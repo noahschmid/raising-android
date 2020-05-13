@@ -21,10 +21,11 @@ import com.raising.app.models.NotificationSettings;
 import com.raising.app.models.PersonalSettings;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.NoFilterArrayAdapter;
+import com.raising.app.util.RaisingTextWatcher;
 
 import java.util.ArrayList;
 
-public class SettingsNotificationsFragment extends RaisingFragment implements CompoundButton.OnCheckedChangeListener {
+public class SettingsNotificationsFragment extends RaisingFragment implements CompoundButton.OnCheckedChangeListener, RaisingTextWatcher {
     private final String TAG = "SettingsNotificationsFragment";
     private AutoCompleteTextView matchNumberInput;
     private SwitchMaterial generalSwitch, matchlistSwitch, leadsSwitch, requestSwitch, connectionSwitch;
@@ -59,6 +60,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
                 R.layout.item_dropdown_menu, integers);
         matchNumberInput = view.findViewById(R.id.settings_matches_input);
         matchNumberInput.setAdapter(adapter);
+        matchNumberInput.addTextChangedListener(this);
 
         generalSwitch = view.findViewById(R.id.notifications_switch_general);
         generalSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -127,6 +129,11 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         leadsSwitch.setOnCheckedChangeListener(this);
         requestSwitch.setOnCheckedChangeListener(this);
         connectionSwitch.setOnCheckedChangeListener(this);
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        btnNotifications.setVisibility(View.VISIBLE);
     }
 
     private void populateSettings() {

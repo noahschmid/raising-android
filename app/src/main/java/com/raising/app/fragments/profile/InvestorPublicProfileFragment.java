@@ -49,8 +49,9 @@ import java.util.Objects;
 
 public class InvestorPublicProfileFragment extends RaisingFragment {
     private static final String TAG = "InvestorPublicProfile";
+    private CardView matchingSummary;
     private TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch, profileSentence, profileWebsite;
-    private TextView minTicketSize, maxTicketSize;
+    private TextView minTicketSize, maxTicketSize, textRequested, textDeclined;
     private ImageView locationPin;
     private ImageButton profileRequest, profileDecline, btnPrevious, btnNext;
     private Investor investor;
@@ -83,6 +84,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         if (getArguments() == null) {
             return view;
         }
+        matchingSummary = view.findViewById(R.id.investor_public_profile_matching_summary);
 
         if (getArguments().getSerializable("investor") != null) {
             Log.d("InvestorPublicProfile", "name: " + ((Investor) getArguments()
@@ -90,7 +92,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             investor = (Investor) getArguments().getSerializable("investor");
             customizeAppBar(getString(R.string.toolbar_my_public_profile), true);
             // hide matching summary, if user accesses own public profile
-            CardView matchingSummary = view.findViewById(R.id.investor_public_profile_matching_summary);
             matchingSummary.setVisibility(View.GONE);
         } else {
             AccountService.getInvestorAccount(getArguments().getLong("id"), investor -> {
@@ -110,6 +111,9 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        textRequested = view.findViewById(R.id.text_investor_request);
+        textDeclined = view.findViewById(R.id.text_investor_decline);
 
         imageIndex = view.findViewById(R.id.text_investor_profile_gallery_image_index);
         btnPrevious = view.findViewById(R.id.button_investor_gallery_previous);
@@ -241,18 +245,22 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             switch (handshakeState) {
                 case HANDSHAKE:
                 case STARTUP_ACCEPTED:
+                    matchingSummary.getBackground().setTint(ContextCompat.getColor(this.getContext(), R.color.raisingPositiveAccent));
                     profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept_green));
-                    profileDecline.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_decline_disabled));
-                    profileRequest.setEnabled(false);
-                    profileDecline.setEnabled(false);
+                    profileDecline.setVisibility(View.GONE);
+                    textDeclined.setVisibility(View.GONE);
+                    textRequested.setText(getString(R.string.accepted_text));
                     break;
                 case STARTUP_DECLINED:
-                    profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept_disabled));
+                    matchingSummary.getBackground().setTint(ContextCompat.getColor(this.getContext(), R.color.raisingNegativeAccent));
                     profileDecline.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_decline_red));
-                    profileRequest.setEnabled(false);
-                    profileDecline.setEnabled(false);
+                    profileRequest.setVisibility(View.GONE);
+                    textRequested.setVisibility(View.GONE);
+                    textDeclined.setText(getString(R.string.declined_text));
                     break;
             }
+            profileRequest.setEnabled(false);
+            profileDecline.setEnabled(false);
         }
     }
 

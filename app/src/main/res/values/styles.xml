@@ -22,6 +22,7 @@
 
     <!-- Text Styles -->
     <style name="RaisingText">
+        <item name="android:lineSpacingExtra">2dp</item>
         <item name="android:textColor">@color/raisingTextColor</item>
         <item name="android:textColorHint">@color/raisingTextColor</item>
         <item name="android:textSize">@dimen/raisingTextFontSize</item>

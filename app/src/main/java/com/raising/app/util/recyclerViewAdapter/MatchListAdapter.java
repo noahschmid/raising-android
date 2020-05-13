@@ -74,7 +74,7 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
 
         // helper array to define colors of the pie chart
         int [] colors = {
-                ContextCompat.getColor(percentChart.getContext(), R.color.gray),
+                ContextCompat.getColor(percentChart.getContext(), R.color.raisingGrey),
                 ContextCompat.getColor(percentChart.getContext(), android.R.color.transparent)};
 
         PieDataSet dataSet = new PieDataSet(pieEntries, "Matching Percentage");
