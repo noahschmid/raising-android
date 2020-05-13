@@ -56,16 +56,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         InternalStorageHandler.setContext(getApplicationContext());
+        InternalStorageHandler.setActivity(this);
         AuthenticationHandler.init();
+        RegistrationHandler.init();
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         toolbar = findViewById(R.id.raising_app_bar);
         // setSupportActionBar(toolbar);
-
-        RegistrationHandler.setContext(getApplicationContext());
-        InternalStorageHandler.setActivity(this);
 
         viewStateViewModel = new ViewModelProvider(this).get(ViewStateViewModel.class);
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);

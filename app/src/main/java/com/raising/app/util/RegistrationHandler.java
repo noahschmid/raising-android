@@ -19,8 +19,6 @@ public class RegistrationHandler {
     private static final String freeEmailEndpoint = "account/valid";
 
     private static boolean inProgress = false;
-    private static Context context;
-    private static boolean cancelAllowed = false;
     private static boolean isStartup = false;
 
     private static String accountType;
@@ -29,15 +27,7 @@ public class RegistrationHandler {
     private static Startup startup = new Startup();
     private static ContactData contactData = new ContactData();
 
-    public static void setContext(Context ctx) {
-        context = ctx;
-    }
-
-    public static boolean shouldCancel() {
-        return cancelAllowed;
-    }
-
-    public static void setCancelAllowed(boolean allowed) { cancelAllowed = allowed; }
+    public static boolean isInProgress() { return inProgress; }
 
     /**
      * Set the type of the account (startup or investor)
@@ -66,7 +56,8 @@ public class RegistrationHandler {
             isStartup = false;
             InternalStorageHandler.saveObject(investor, "rgstr_investor");
         }
-        saveRegistrationState();
+        saveAccountType();
+        InternalStorageHandler.saveObject(account, "rgstr_contact");
         InternalStorageHandler.saveObject(contactData, "rgstr_contact");
     }
     public static String getAccountType() { return accountType; }
@@ -117,15 +108,14 @@ public class RegistrationHandler {
      * Check whether currently a registration is in progress
      * @return true if registration is in progress else false
      */
-    public static boolean isInProgress(Context ctx) {
-        context = ctx;
-        File file = context.getFileStreamPath("rgstr");
-        if(!file.exists())
+    public static boolean init() {
+        if(!InternalStorageHandler.exists("rgstr"))
             return false;
 
         try {
-            Log.d("RegistrationHandler", "isInProgress: ");
-            FileInputStream fis = context.openFileInput("rgstr");
+            inProgress = true;
+
+            FileInputStream fis = InternalStorageHandler.getContext().openFileInput("rgstr");
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader bufferedReader = new BufferedReader(isr);
 
@@ -135,10 +125,13 @@ public class RegistrationHandler {
 
             account = loadAccount();
             contactData = loadContactData();
-            investor = loadInvestor();
-            startup = loadStartup();
+            if (accountType.equals("investor")) {
+                investor = loadInvestor();
+            } else if (accountType.equals("startup")) {
+                startup = loadStartup();
+            }
         } catch(Exception e) {
-            Log.e("RegistrationHandler", e.getMessage());
+            Log.e("RegistrationHandler", "" + e.getMessage());
             return false;
         }
         return true;
@@ -158,10 +151,10 @@ public class RegistrationHandler {
     }
 
     /**
-     * Save current page and account type
+     * Save account type
      * @throws IOException
      */
-    private static void saveRegistrationState() throws IOException {
+    private static void saveAccountType() throws IOException {
         String registrationInfo = accountType;
         InternalStorageHandler.saveString(registrationInfo, "rgstr");
     }

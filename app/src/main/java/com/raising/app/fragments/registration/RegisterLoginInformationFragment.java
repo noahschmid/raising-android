@@ -50,8 +50,6 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_login_information), true);
 
-        RegistrationHandler.setCancelAllowed(true);
-
         return view;
     }
 
@@ -78,6 +76,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
             account.setEmail(AuthenticationHandler.getEmail());
             view.findViewById(R.id.register_password).setVisibility(View.GONE);
         } else {
+            Log.d(TAG, "onViewCreated: getting account from registration handler");
             account = RegistrationHandler.getAccount();
         }
 
