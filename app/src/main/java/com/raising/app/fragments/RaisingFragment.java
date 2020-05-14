@@ -330,14 +330,23 @@ public class RaisingFragment extends Fragment {
      * @param fragment the fragment to display next
      */
     protected void clearBackstackAndReplace(RaisingFragment fragment) {
+        clearBackstack();
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
+    }
+
+    /**
+     * Clear all fragments on the backstack
+     *
+     */
+    protected void clearBackstack() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
             fm.popBackStack();
         }
-
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-        transaction.commit();
     }
 
     /**

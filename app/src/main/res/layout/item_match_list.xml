@@ -22,7 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-        android:layout_marginEnd="@dimen/standardHorizontalMargin"
+        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
         android:text="Name"
         app:layout_constraintBottom_toTopOf="@+id/item_matchList_attributes"
         app:layout_constraintEnd_toStartOf="@+id/pie_layout"

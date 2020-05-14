@@ -46,12 +46,15 @@ public class SettingsViewModel extends AndroidViewModel {
     public void loadSettings() {
         Log.d(TAG, "loadSettings: Loading Settings");
         updateDeviceToken();
-        viewState.postValue(ViewState.LOADING);
-        Log.d(TAG, "loadSettings: ViewState " + viewState.getValue().toString());
+        viewState.setValue(ViewState.LOADING);
         PersonalSettings cachedSettings = getCachedSettings();
-        personalSettings.postValue(cachedSettings);
-        viewState.postValue(ViewState.CACHED);
+        Log.d(TAG, "loadSettings: Cached Settings " + cachedSettings);
+        if(cachedSettings != null) {
+            personalSettings.setValue(cachedSettings);
+            viewState.setValue(ViewState.CACHED);
+        }
         getUserSettings();
+        Log.d(TAG, "loadSettings: Loaded settings " + personalSettings.getValue());
     }
 
     private void updateDeviceToken() {
@@ -102,7 +105,7 @@ public class SettingsViewModel extends AndroidViewModel {
                         }
                         Log.d(TAG, "getUserSettings: Personal Settings" + personalSettings.getValue());
                         cacheSettings(personalSettings.getValue());
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         Log.e(TAG, "getUserSettings: Error getting JSON" + e.getMessage());
                     }
                     return null;
