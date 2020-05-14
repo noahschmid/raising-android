@@ -45,18 +45,16 @@ public class SettingsViewModel extends AndroidViewModel {
     }
 
     public void loadSettings() {
-        Log.d(TAG, "loadSettings: Loading Settings");
         updateDeviceToken();
         viewState.setValue(ViewState.LOADING);
-        Log.d(TAG, "loadSettings: ViewState " + viewState.getValue().toString());
         PersonalSettings cachedSettings = getCachedSettings();
         personalSettings.setValue(cachedSettings);
         if(cachedSettings != null) {
+            Log.d(TAG, "loadSettings: Loaded Cached Settings " + cachedSettings);
             personalSettings.setValue(cachedSettings);
             viewState.setValue(ViewState.CACHED);
         }
         getUserSettings();
-        Log.d(TAG, "loadSettings: Loaded settings " + personalSettings.getValue());
     }
 
     private void updateDeviceToken() {
@@ -101,8 +99,10 @@ public class SettingsViewModel extends AndroidViewModel {
                     viewState.postValue(ViewState.RESULT);
                     try {
                         personalSettings.setValue(new PersonalSettings());
+                        personalSettings.getValue().setNotificationSettings(new ArrayList<>());
                         personalSettings.getValue().setNumberOfMatches(response.getInt("numberOfMatches"));
                         JSONArray notificationSettings = response.getJSONArray("notificationTypes");
+                        Log.d(TAG, "getUserSettings: " + notificationSettings);
                         for (int i = 0; i < notificationSettings.length(); i++) {
                             personalSettings.getValue().getNotificationSettings().add(Enum.valueOf(NotificationSettings.class, notificationSettings.getString(i)));
                         }

@@ -70,7 +70,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     private ImageSwitcher imageSwitcher;
     private ImageButton profileRequest, profileDecline, btnPrevious, btnNext;
     private CardView matchingSummary;
-    private TextView imageIndex, matchingPercent, profileName, profileLocation, profileLabels, profileSentence,
+    private TextView imageIndex, matchingPercent, profileName, profileLocation, profileLabels,
             profilePitch, profileWebsite, textRequested, textDeclined;
     private LinearLayout labelsLayout;
     private TextView startupScope, startupMinTicket, startupMaxTicket;
@@ -172,7 +172,6 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         labelsLayout = view.findViewById(R.id.layout_startup_public_profile_labels);
         profileLabels = view.findViewById(R.id.text_startup_public_profile_labels);
         profileLocation = view.findViewById(R.id.text_startup_public_profile_location);
-        profileSentence = view.findViewById(R.id.text_startup_public_profile_sentence);
         profilePitch = view.findViewById(R.id.text_startup_public_profile_pitch);
 
         profileWebsite = view.findViewById(R.id.text_startup_public_profile_website);
@@ -322,7 +321,6 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         profileName.setText(startup.getCompanyName());
         profileLocation.setText(resources.getCountry(startup.getCountryId()).getName());
-        profileSentence.setText(startup.getDescription());
         profilePitch.setText(startup.getPitch());
 
         if (startup.getWebsite() == null || startup.getWebsite().equals("")) {

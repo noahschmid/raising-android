@@ -15,10 +15,10 @@
         android:layout_marginStart="@dimen/standardHorizontalMargin"
         android:layout_marginEnd="@dimen/standardHorizontalMargin"
         android:hint="@string/register_select_startup_button"
-        app:layout_constraintBottom_toTopOf="@+id/button_register_as_investor"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_register_as_investor"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <Button
@@ -27,10 +27,11 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/inputFormHeight"
         android:hint="@string/register_select_investor_button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button_register_as_startup"
         app:layout_constraintEnd_toEndOf="@+id/button_register_as_startup"
         app:layout_constraintStart_toStartOf="@+id/button_register_as_startup"
-        app:layout_constraintTop_toBottomOf="@+id/button_register_as_startup" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/text_select_type"
@@ -41,7 +42,7 @@
         android:layout_marginEnd="@dimen/standardHorizontalMargin"
         android:gravity="center"
         android:hint="@string/register_select_type_text"
-        app:layout_constraintBottom_toTopOf="@+id/button_register_as_startup"
+        app:layout_constraintBottom_toTopOf="@+id/button_register_as_investor"
         app:layout_constraintEnd_toEndOf="@+id/button_register_as_startup"
         app:layout_constraintStart_toStartOf="@+id/button_register_as_startup"
         app:layout_constraintTop_toTopOf="parent" />

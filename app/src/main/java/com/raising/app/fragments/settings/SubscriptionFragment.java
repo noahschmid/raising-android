@@ -103,6 +103,7 @@ public class SubscriptionFragment extends RaisingFragment {
                 })
                 .enablePendingPurchases()
                 .build();
+        Log.d(TAG, "onViewCreated: " + SubscriptionHandler.getActiveSubscription());
 
         SubscriptionHandler.setBillingClient(billingClient);
         startBillingConnection();
@@ -132,6 +133,7 @@ public class SubscriptionFragment extends RaisingFragment {
         if (billingClient.isFeatureSupported("subscriptions").getResponseCode() == BillingClient.BillingResponseCode.OK
                 && billingClient.isFeatureSupported("subscriptionsUpdate").getResponseCode() == BillingClient.BillingResponseCode.OK) {
             BillingFlowParams flowParams;
+            /*
             if (hasSubscription) {
                 Log.d(TAG, "showGoogleBilling: Change subscription");
                 flowParams = BillingFlowParams.newBuilder()
@@ -139,12 +141,12 @@ public class SubscriptionFragment extends RaisingFragment {
                         .setOldSku(SubscriptionHandler.getActiveSubscription().getSku(),
                                 SubscriptionHandler.getActiveSubscription().getPurchaseToken())
                         .build();
-            } else {
-                Log.d(TAG, "showGoogleBilling: New subscription");
-                flowParams = BillingFlowParams.newBuilder()
-                        .setSkuDetails(skuDetails)
-                        .build();
-            }
+            } else { */
+            Log.d(TAG, "showGoogleBilling: New subscription");
+            flowParams = BillingFlowParams.newBuilder()
+                    .setSkuDetails(skuDetails)
+                    .build();
+            // }
             BillingResult responseCode = billingClient.launchBillingFlow(this.getActivity(), flowParams);
             Log.d(TAG, "showGoogleBilling: BillingResponseCodeMessage: " + responseCode.getDebugMessage());
         }
@@ -199,11 +201,9 @@ public class SubscriptionFragment extends RaisingFragment {
             TextView subscriptionTitle = subscriptionLayout.findViewById(R.id.subscription_title);
             TextView subscriptionPriceDuration = subscriptionLayout.findViewById(R.id.subscription_price_duration);
             TextView subscriptionPriceWeek = subscriptionLayout.findViewById(R.id.subscription_price_week);
-            TextView subscriptionDate = subscriptionLayout.findViewById(R.id.subscription_expiration);
 
             // hide views that are not needed for unselected subscriptions
             subscriptionTitle.setVisibility(View.GONE);
-            subscriptionDate.setVisibility(View.INVISIBLE);
 
             subscriptionPriceDuration.setText(createPriceString(skuDetails, true));
             subscriptionPriceWeek.setText(createPriceString(skuDetails, false));
@@ -214,7 +214,7 @@ public class SubscriptionFragment extends RaisingFragment {
                 manageSubscriptionText.setVisibility(View.VISIBLE);
                 btnManageSubscription.setOnClickListener(v -> {
                             String baseUri = "https://play.google.com/store/account/subscriptions";
-                            if(SubscriptionHandler.hasValidSubscription()) {
+                            if (SubscriptionHandler.hasValidSubscription()) {
                                 String uri = baseUri + "?sku=" + SubscriptionHandler.getActiveSubscription().getSku() + "&package=" + "com.raising.app";
                                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                                 startActivity(browserIntent);
@@ -239,10 +239,8 @@ public class SubscriptionFragment extends RaisingFragment {
                     card.setStrokeColor(getResources().getColor(R.color.raisingDarkGrey, null));
                     card.setStrokeWidth(8);
                     subscriptionTitle.setVisibility(View.VISIBLE);
-                    subscriptionDate.setVisibility(View.VISIBLE);
 
                     subscriptionTitle.setText(getString(R.string.subscription_your_subscriptions));
-                    subscriptionDate.setText(getString(R.string.subscription_automatic_extension));
                 }
             }
             subscriptionsLayout.addView(subscriptionLayout);
@@ -255,7 +253,7 @@ public class SubscriptionFragment extends RaisingFragment {
      * @param sku The skuDetails belonging to the card that was clicked
      */
     private void processOnCardClick(SkuDetails sku) {
-        if(showActionDialog(getString(R.string.subscription_dialog_subscribe_title),
+        if (showActionDialog(getString(R.string.subscription_dialog_subscribe_title),
                 getString(R.string.subscribtion_dialog_subscribe_text))) {
             showGoogleBilling(sku, SubscriptionHandler.hasValidSubscription());
         }

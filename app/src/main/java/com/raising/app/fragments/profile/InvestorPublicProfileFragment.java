@@ -49,7 +49,7 @@ import java.util.Objects;
 public class InvestorPublicProfileFragment extends RaisingFragment {
     private static final String TAG = "InvestorPublicProfile";
     private CardView matchingSummary;
-    private TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch, profileSentence, profileWebsite;
+    private TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch, profileWebsite;
     private TextView minTicketSize, maxTicketSize, textRequested, textDeclined;
     private ImageView locationPin;
     private ImageButton profileRequest, profileDecline, btnPrevious, btnNext;
@@ -144,7 +144,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         profileLocation = view.findViewById(R.id.text_investor_public_profile_location);
         locationPin = view.findViewById(R.id.investor_public_profile_location_pin);
         profilePitch = view.findViewById(R.id.text_investor_public_profile_pitch);
-        profileSentence = view.findViewById(R.id.text_investor_public_profile_sentence);
 
         profileWebsite = view.findViewById(R.id.button_investor_public_profile_website);
         profileWebsite.setOnClickListener(v -> {
@@ -281,7 +280,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                         getResources().getStringArray(R.array.revenue_units)));
         profileName.setText(investor.getFirstName() + " " + investor.getLastName());
         profilePitch.setText(investor.getPitch());
-        profileSentence.setText(investor.getDescription());
         String matchingScore = matchScore + "% " + "Match";
         matchingPercent.setText(matchingScore);
 

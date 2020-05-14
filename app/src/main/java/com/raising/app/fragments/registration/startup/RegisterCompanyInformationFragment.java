@@ -67,7 +67,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnCompanyInformation.setHint(getString(R.string.myProfile_apply_changes));
-            btnCompanyInformation.setVisibility(View.INVISIBLE);
+            btnCompanyInformation.setEnabled(false);
             editMode = true;
             startup = (Startup) accountViewModel.getAccount().getValue();
             contactDetails = AccountService.getContactData();
@@ -145,7 +145,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        btnCompanyInformation.setVisibility(View.VISIBLE);
+        btnCompanyInformation.setEnabled(true);
     }
 
     @Override

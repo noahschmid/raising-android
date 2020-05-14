@@ -20,6 +20,7 @@
         android:background="@color/raisingPrimary"
         app:itemIconTint="@color/raisingWhite"
         app:itemTextColor="@color/raisingWhite"
+        app:itemIconSize="32dp"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

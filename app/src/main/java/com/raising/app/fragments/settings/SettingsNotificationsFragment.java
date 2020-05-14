@@ -64,7 +64,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
 
         generalSwitch = view.findViewById(R.id.notifications_switch_general);
         generalSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            btnNotifications.setVisibility(View.VISIBLE);
+            btnNotifications.setEnabled(true);
             if (isChecked) {
                 specificSettings.setVisibility(View.VISIBLE);
             } else {
@@ -87,8 +87,8 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
                 populateSettings();
 
                 if (personalSettings != null) {
+                    Log.d(TAG, "onViewCreated: " + personalSettings);
                     personalSettings.getNotificationSettings().forEach(notificationSettings -> {
-                        Log.d(TAG, "onViewCreated: Setting: " + notificationSettings.name());
                         switch (notificationSettings) {
                             case NEVER:
                                 generalSwitch.setChecked(false);
@@ -118,7 +118,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
                     generalSwitch.setChecked(false);
                 }
                 // hide button that confirms the changes
-                btnNotifications.setVisibility(View.GONE);
+                btnNotifications.setEnabled(false);
             }
         });
         //processViewState(settingsViewModel.getViewState().getValue());
@@ -133,7 +133,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        btnNotifications.setVisibility(View.VISIBLE);
+        btnNotifications.setEnabled(true);
     }
 
     private void populateSettings() {
@@ -175,6 +175,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         personalSettings.setNotificationSettings(newNotificationSettings);
         settingsViewModel.updatePersonalSettings(personalSettings);
 
+        resetTab();
         popFragment(this);
     }
 
@@ -186,7 +187,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
             case R.id.notifications_switch_leads:
             case R.id.notifications_switch_request:
             case R.id.notifications_switch_connection:
-                btnNotifications.setVisibility(View.VISIBLE);
+                btnNotifications.setEnabled(true);
                 break;
         }
     }

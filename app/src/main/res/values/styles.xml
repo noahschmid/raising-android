@@ -70,12 +70,12 @@
         <item name="android:textStyle">italic</item>
     </style>
 
-
     <!-- Button Styles -->
     <style name="GeneralButtonStyle">
         <item name="android:drawableTint">@color/raisingTextColorLight</item>
-        <item name="android:textColorHint">@color/raisingTextColorLight</item>
-        <item name="android:backgroundTint">@color/raisingButtonBackgroundColor</item>
+        <item name="android:textColorHint">@color/btn_registration_profile_text</item>
+        <item name="android:textColor">@color/btn_registration_profile_text</item>
+        <item name="android:backgroundTint">@color/btn_registration_profile_background</item>
         <item name="android:gravity">center</item>
     </style>
 

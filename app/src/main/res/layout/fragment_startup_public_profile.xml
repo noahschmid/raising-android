@@ -225,41 +225,19 @@
                 app:layout_constraintTop_toTopOf="@+id/startup_public_profile_location_pin" />
 
             <TextView
-                android:id="@+id/text_startup_public_profile_sentence"
-                style="@style/RaisingText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                android:text="Sentence"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_startup_public_profile_labels" />
-
-            <TextView
-                android:id="@+id/text_startup_pitch_title"
-                style="@style/RaisingTextBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:hint="@string/public_profile_pitch"
-                app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_pitch"
-                app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_sentence" />
-
-            <TextView
                 android:id="@+id/text_startup_public_profile_pitch"
                 style="@style/RaisingText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:text="Pitch"
                 app:layout_constraintBottom_toTopOf="@+id/text_startup_public_profile_website"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_startup_pitch_title" />
+                app:layout_constraintTop_toBottomOf="@+id/layout_startup_public_profile_labels" />
 
             <TextView
                 android:id="@+id/text_startup_public_profile_website"

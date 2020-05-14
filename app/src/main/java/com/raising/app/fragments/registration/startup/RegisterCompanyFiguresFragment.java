@@ -73,7 +73,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnCompanyFigures.setHint(getString(R.string.myProfile_apply_changes));
-            btnCompanyFigures.setVisibility(View.INVISIBLE);
+            btnCompanyFigures.setEnabled(false);
             editMode = true;
             startup = (Startup) accountViewModel.getAccount().getValue();
             hideBottomNavigation(false);
@@ -219,7 +219,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
                 || Integer.parseInt(s.toString()) == startup.getBreakEvenYear())
             return;
 
-        btnCompanyFigures.setVisibility(View.VISIBLE);
+        btnCompanyFigures.setEnabled(true);
     }
     
     /**
@@ -233,7 +233,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
         });
 
         if(!listId.equals(selected)) {
-            btnCompanyFigures.setVisibility(View.VISIBLE);
+            btnCompanyFigures.setEnabled(true);
         }
     }
 

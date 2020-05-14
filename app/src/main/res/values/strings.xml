@@ -114,7 +114,7 @@
     <string name="investor_matching_industry_text">What are your target industries?</string>
     <string name="investor_matching_involvement_text">What kind of involvement can you bring to startups?</string>
     <string name="investor_matching_geographics_text">Which are your preferred regions for startups?</string>
-    <string name="register_matching_geographics"> Geographics </string>
+    <string name="register_matching_geographics">Select Geographics </string>
 
     <string name="toolbar_title_pitch"> Pitch </string>
     <string name="register_pitch_sentence"> Description* </string>
@@ -202,6 +202,8 @@
     <string name="register_stakeholder_high_equity">A Shareholder cannot have more than 100% equity</string>
     <string name="register_stakeholder_error_equity"> Shareholders have more than 100% equity share.</string>
 
+    <string name="text_registration_complete">Complete Registration</string>
+
     <!-- Strings used for Match List -->
     <string name="toolbar_title_match_list"> Matches of the Week </string>
     <string name="empty_matchList_text"> There are no more matches left this week </string>
@@ -264,7 +266,7 @@
     <string name="settings_about_supervision"> Supervision</string>
     <string name="settings_about_supervision_text"> Ubique Innovations AG, Zürich</string>
     <string name="settings_about_management"> Project Management and Implementation</string>
-    <string name="settings_about_management_text"> University of Bern, Computer Science \nLorenz Caliezi \nNoah Schmid \nAdrian Jörg \nManuel Schüpbach \nOlivier Stähli</string>
+    <string name="settings_about_management_text"> University of Bern, Computer Science \nNoah Schmid \nAdrian Jörg \nManuel Schüpbach \nOlivier Stähli \nLorenz Caliezi</string>
     <string name="settings_about_graphics"> Graphics and Design </string>
     <string name="settings_about_graphics_text"> Olivier Stähli</string>
 
@@ -331,7 +333,6 @@
     <string name="subscription_next"> Next Subscription</string>
     <string name="subscription_downgrade"> Downgrade to </string>
     <string name="subscription_upgrade"> Upgrade to</string>
-    <string name="subscription_automatic_extension">Automatic extension active</string>
     <string name="subscription_paragraph_1">Subscribe to RAI$ING to unlock the full potential of our app</string>
     <string name="subscription_paragraph_2">Your subscription is automatically renewed</string>
     <string name="subscription_benefits_1">Access to possible investment partners, that match your profile</string>

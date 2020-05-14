@@ -83,12 +83,9 @@ public class RegisterStartupMatchingFragment extends RaisingFragment {
 
         prepareTicketSizeSlider(view);
 
-        MatchingCriteriaAdapter.OnItemClickListener clickListener = new MatchingCriteriaAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                if(editMode) {
-                    btnStartUpMatching.setVisibility(View.VISIBLE);
-                }
+        MatchingCriteriaAdapter.OnItemClickListener clickListener = position -> {
+            if(editMode) {
+                btnStartUpMatching.setEnabled(true);
             }
         };
 
@@ -107,7 +104,7 @@ public class RegisterStartupMatchingFragment extends RaisingFragment {
         if(startup.getTicketMinId() != 0 && startup.getTicketMaxId() != 0)
             ticketSize.setValues((float)startup.getTicketMinId(), (float)startup.getTicketMaxId());
         if(editMode) {
-            btnStartUpMatching.setVisibility(View.INVISIBLE);
+            btnStartUpMatching.setEnabled(false);
         }
 
         restoreLists();
@@ -207,7 +204,7 @@ public class RegisterStartupMatchingFragment extends RaisingFragment {
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                 ticketSizeText.setText(adaptSliderValues(
                         (int) slider.getMaximumValue(), (int) slider.getMinimumValue()));
-                btnStartUpMatching.setVisibility(View.VISIBLE);
+                btnStartUpMatching.setEnabled(true);
             }
         });
 

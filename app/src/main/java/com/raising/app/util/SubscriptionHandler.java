@@ -44,6 +44,7 @@ public class SubscriptionHandler {
 
     /**
      * Give the SubscriptionHandler a reference to the Google Billing Client
+     *
      * @param billingClient the currently used billing client
      */
     public static void setBillingClient(BillingClient billingClient) {
@@ -63,6 +64,7 @@ public class SubscriptionHandler {
                         String sku = response.getString("subscriptionId");
                         String purchaseToken = response.getString("purchaseToken");
                         String expirationDate = response.getString("expiresDate");
+                        Log.d(TAG, "loadSubscription: " + expirationDate);
                         setActiveSubscriptionWithExpiration(sku, purchaseToken, expirationDate);
                     } catch (JSONException e) {
                         Log.e(TAG, "loadSubscription: JSONException loading subscription" + e.getMessage());
@@ -103,6 +105,7 @@ public class SubscriptionHandler {
 
     /**
      * Check with our backend, if a purchased subscription is valid
+     *
      * @param purchase The purchased subscription that is to be invalidated
      * @return true if subscription is valid, false if subscription is invalid
      */
@@ -136,6 +139,7 @@ public class SubscriptionHandler {
 
     /**
      * Helper function that retrieves skuDetails from our list based on the sku
+     *
      * @param sku The sku whose details should be fetched
      * @return The skuDetails of the given sku, if there is no skuDetails with the given sku, return null
      */
@@ -153,17 +157,14 @@ public class SubscriptionHandler {
     /**
      * Set users active subscription with a known expiration date.
      * This is only used, when setting a subscription that is fetched from our backend
-     * @param sku The sku of the users subscription
-     * @param purchaseToken The purchaseToken of the users subscription
+     *
+     * @param sku            The sku of the users subscription
+     * @param purchaseToken  The purchaseToken of the users subscription
      * @param expirationDate A String representation of the expiration date of the users subscription
      */
     private static void setActiveSubscriptionWithExpiration(String sku, String purchaseToken, String expirationDate) {
-        Log.d(TAG, "setActiveSubscriptionWithExpiration: ");
-        Subscription subscription = new Subscription();
-        subscription.setSku(sku);
-        subscription.setPurchaseToken(purchaseToken);
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        // get date from String
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         Calendar calendar = Calendar.getInstance();
         try {
             Date date = simpleDateFormat.parse(expirationDate);
@@ -174,22 +175,40 @@ public class SubscriptionHandler {
             Log.e(TAG, "setActiveSubscriptionWithExpiration: ParseException" + e.getMessage());
         }
 
-        subscription.setExpirationDate(calendar);
-        subscription.setPurchaseDate(getRespectiveDate(calendar, getSkuDurationFromSku(sku), false));
+        if(verifySubscription(calendar)) {
+            Log.d(TAG, "setActiveSubscriptionWithExpiration: Subscription verified");
+            Subscription subscription = new Subscription();
+            subscription.setSku(sku);
+            subscription.setPurchaseToken(purchaseToken);
 
-        Log.d(TAG, "setActiveSubscriptionWithExpiration: Selected subscription " + subscription.toString());
-        activeSubscription = subscription;
+            subscription.setExpirationDate(calendar);
+            subscription.setPurchaseDate(getRespectiveDate(calendar, getSkuDurationFromSku(sku), false));
+
+            Log.d(TAG, "setActiveSubscriptionWithExpiration: Selected subscription " + subscription.toString());
+            activeSubscription = subscription;
+        }
+    }
+
+    /**
+     * Helper method, that determines if the date given in calendar is before or after the current date
+     * @param expirationDate The expiration date of a subscription
+     * @return true, if expiration is after today, which means the subscription is valid
+     *         false, if expiration is before today
+     */
+    private static boolean verifySubscription(Calendar expirationDate) {
+        Log.d(TAG, "verifySubscription: " + !(expirationDate.getTime().before(new Date())) + " Expiration: " + expirationDate.getTime() + " Today: " + new Date());
+        return !(expirationDate.getTime().before(new Date()));
     }
 
     /**
      * Set users active subscription with a known purchase date.
      * This is used, if the users buys a subscription via our app.
-     * @param sku The sku of the users subscription
+     *
+     * @param sku           The sku of the users subscription
      * @param purchaseToken The purchaseToken of the users subscription
-     * @param calendar A calendar instance containing the purchase date of the subscription
+     * @param calendar      A calendar instance containing the purchase date of the subscription
      */
     public static void setActiveSubscriptionWithPurchase(String sku, String purchaseToken, Calendar calendar) {
-        Log.d(TAG, "setActiveSubscriptionWithPurchase: ");
         Subscription subscription = new Subscription();
         subscription.setSku(sku);
         subscription.setPurchaseToken(purchaseToken);
@@ -207,7 +226,6 @@ public class SubscriptionHandler {
      * @return An integer value of the duration of the subscription
      */
     public static int getSkuDurationFromSku(String sku) {
-        Log.d(TAG, "getSkuDurationFromSku: ");
         switch (sku) {
             case YEARLY_SUBSCRIPTION_ID:
                 return 12;
@@ -222,13 +240,13 @@ public class SubscriptionHandler {
 
     /**
      * Calculate the purchase / expiration date of a subscription based on the duration
-     * @param calendar A calendar instance containing either the purchase or the expiration date
+     *
+     * @param calendar             A calendar instance containing either the purchase or the expiration date
      * @param subscriptionDuration The duration of the subscription whose purchase / expiration date should be calculated
-     * @param calculateExpiration true if an expiration date should be calculated, false if a purchase date should be calculated
+     * @param calculateExpiration  true if an expiration date should be calculated, false if a purchase date should be calculated
      * @return A calendar instance containing the calculated date
      */
     private static Calendar getRespectiveDate(Calendar calendar, int subscriptionDuration, boolean calculateExpiration) {
-        Log.d(TAG, "getRespectiveDate: ");
         if (calculateExpiration) {
             calendar.add(Calendar.MONTH, subscriptionDuration);
         } else {
@@ -240,21 +258,25 @@ public class SubscriptionHandler {
 
     /**
      * Get the users active subscription
+     *
      * @return The users active subscription, null if the user does not have a subscription
      */
     public static Subscription getActiveSubscription() {
-        Log.d(TAG, "getActiveSubscription: ");
         return activeSubscription;
     }
 
     /**
      * Check if the user has a valid subscription
+     *
      * @return true, if user has valid subscription
-     *         false, if user does not have a valid subscription
+     * false, if user does not have a valid subscription
      */
     public static boolean hasValidSubscription() {
-        Log.d(TAG, "hasValidSubscription: ");
-        // return getActiveSubscription() != null;
+        //return getActiveSubscription() != null;
         return true;
+    }
+
+    public static void removeSubscription() {
+        activeSubscription = null;
     }
 }

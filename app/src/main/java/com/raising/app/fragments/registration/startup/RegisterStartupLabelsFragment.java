@@ -50,7 +50,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupLabels.setHint(getString(R.string.myProfile_apply_changes));
-            btnStartupLabels.setVisibility(View.INVISIBLE);
+            btnStartupLabels.setEnabled(false);
             startup = (Startup) accountViewModel.getAccount().getValue();
             hideBottomNavigation(false);
             editMode = true;
@@ -65,7 +65,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
     public void onResourcesLoaded() {
         MatchingCriteriaAdapter.OnItemClickListener clickListener = position -> {
             if(editMode) {
-                btnStartupLabels.setVisibility(View.VISIBLE);
+                btnStartupLabels.setEnabled(true);
             }
         };
 
