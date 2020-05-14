@@ -8,13 +8,15 @@
 
     <TextView
         android:id="@+id/text_startup_founder_education"
-        android:layout_width="wrap_content"
+        style="@style/RaisingText"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
         android:gravity="center|end"
         android:text="Education"
-        style="@style/RaisingText"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_founder_education_title"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/text_startup_founder_education_title"
         app:layout_constraintTop_toTopOf="@+id/text_startup_founder_education_title" />
 
     <TextView
@@ -37,11 +39,14 @@
 
     <TextView
         android:id="@+id/text_startup_founder_name"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:text="Name"
         style="@style/RaisingText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+        android:gravity="center|end"
+        android:text="Name"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_founder_position"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/text_startup_founder_position"
         app:layout_constraintTop_toTopOf="@+id/text_startup_founder_position" />
 </androidx.constraintlayout.widget.ConstraintLayout>

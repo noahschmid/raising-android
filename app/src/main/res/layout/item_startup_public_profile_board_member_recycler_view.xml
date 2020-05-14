@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,80 +7,89 @@
 
     <TextView
         android:id="@+id/text_startup_board_position"
+        style="@style/RaisingTextBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="BoardPosition"
-        style="@style/RaisingTextBold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_startup_board_member_name"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:text="Name"
         style="@style/RaisingText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+        android:gravity="center|end"
+        android:text="Name"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_board_position"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/text_startup_board_position"
         app:layout_constraintTop_toTopOf="@+id/text_startup_board_position" />
 
     <TextView
         android:id="@+id/text_startup_board_member_since_title"
+        style="@style/RaisingTextBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/startup_public_profile_member_since"
-        style="@style/RaisingTextBold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_startup_board_position" />
 
     <TextView
         android:id="@+id/text_startup_board_member_since"
-        android:layout_width="wrap_content"
+        style="@style/RaisingText"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
         android:gravity="center|end"
         android:text="Member Since"
-        style="@style/RaisingText"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_board_member_since_title"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/text_startup_board_member_since_title"
         app:layout_constraintTop_toTopOf="@+id/text_startup_board_member_since_title" />
 
     <TextView
         android:id="@+id/text_startup_board_profession_title"
+        style="@style/RaisingTextBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/startup_public_profile_profession"
-        style="@style/RaisingTextBold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_startup_board_member_since_title" />
 
     <TextView
         android:id="@+id/text_startup_board_profession"
-        android:layout_width="wrap_content"
+        style="@style/RaisingText"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
         android:gravity="center|end"
         android:text="Profession"
-        style="@style/RaisingText"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_board_profession_title"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/text_startup_board_profession_title"
         app:layout_constraintTop_toTopOf="@+id/text_startup_board_profession_title" />
 
     <TextView
         android:id="@+id/text_startup_board_edicatuon_title"
+        style="@style/RaisingTextBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/startup_public_profile_education"
-        style="@style/RaisingTextBold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_startup_board_profession_title" />
 
     <TextView
         android:id="@+id/text_startup_board_education"
-        android:layout_width="wrap_content"
+        style="@style/RaisingText"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
         android:gravity="center|end"
         android:text="Education"
-        style="@style/RaisingText"
         app:layout_constraintBottom_toBottomOf="@+id/text_startup_board_edicatuon_title"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/text_startup_board_edicatuon_title"
         app:layout_constraintTop_toTopOf="@+id/text_startup_board_edicatuon_title" />
 </androidx.constraintlayout.widget.ConstraintLayout>

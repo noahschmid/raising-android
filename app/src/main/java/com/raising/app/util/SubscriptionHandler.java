@@ -254,7 +254,7 @@ public class SubscriptionHandler {
      */
     public static boolean hasValidSubscription() {
         Log.d(TAG, "hasValidSubscription: ");
-        return getActiveSubscription() != null;
-        // return true;
+        // return getActiveSubscription() != null;
+        return true;
     }
 }
