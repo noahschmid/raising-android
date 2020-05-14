@@ -56,6 +56,7 @@ public class SettingsViewModel extends AndroidViewModel {
             viewState.setValue(ViewState.CACHED);
         }
         getUserSettings();
+        Log.d(TAG, "loadSettings: Loaded settings " + personalSettings.getValue());
     }
 
     private void updateDeviceToken() {
