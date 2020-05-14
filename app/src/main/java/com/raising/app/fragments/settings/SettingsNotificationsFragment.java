@@ -169,7 +169,9 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
                 newNotificationSettings.add(NotificationSettings.CONNECTION);
             }
         }
-        personalSettings.setNumberOfMatches(Integer.parseInt(matchNumberInput.getText().toString()));
+        if(matchNumberInput.getText().toString().length() != 0) {
+            personalSettings.setNumberOfMatches(Integer.parseInt(matchNumberInput.getText().toString()));
+        }
         personalSettings.setNotificationSettings(newNotificationSettings);
         settingsViewModel.updatePersonalSettings(personalSettings);
 

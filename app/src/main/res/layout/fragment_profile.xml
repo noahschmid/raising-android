@@ -822,7 +822,7 @@
                         android:layout_height="@dimen/settingsIconSize"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                        android:src="@drawable/ic_raising_profile_information"
+                        android:src="@drawable/ic_raising_profile"
                         android:tint="@color/raisingSecondaryDark"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/profile_investor_profile_information_text"

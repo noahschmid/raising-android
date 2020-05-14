@@ -159,7 +159,7 @@
             android:layout_marginTop="@dimen/standardVerticalMargin"
             android:layout_marginEnd="@dimen/onboardingIconOuterMargin"
             android:layout_marginBottom="@dimen/standardVerticalMargin"
-            android:src="@drawable/onboarding_matches"
+            android:src="@drawable/raising_onboarding1"
             app:layout_constraintBottom_toTopOf="@+id/textView5"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="parent"

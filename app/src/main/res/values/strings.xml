@@ -47,8 +47,8 @@
     <string name="onboarding_pre_3_text"> Get contact information if the other party is interested as well \n  </string>
     <string name="onboarding_post_1_text"> Once a week you will get new matches. If you click on a match you can see more details</string>
     <string name="onboarding_post_2_title"> Details</string>
-    <string name="onboarding_post_2_text"> After reading the details you can either request or decline the match</string>
-    <string name="onboarding_post_3_text"> After you requested a match, the match becomes a lead. If the other party also accepted the match, you can get in touch with each other</string>
+    <string name="onboarding_post_2_text"> After reading the details you can either request or decline the match \n</string>
+    <string name="onboarding_post_3_text"> After you requested a match, the match becomes a lead. If the other party also accepted the match, you can get in touch</string>
     <string name="onboarding_post_4_text"> Request the other party for one of the provided interactions to receive their contact details</string>
     <string name="onboarding_post_6_title"> Good Luck!</string>
 
@@ -170,6 +170,8 @@
     <string name="register_financial_committed">Committed</string>
     <string name="register_committed_helper_text"> Have you completed some of your target scope? </string>
     <string name="register_financial_error_committed"> Committed should not be greater than Scope </string>
+    <string name="register_financial_error_high_scope">Scope should be smaller than 2 Billion</string>
+    <string name="register_financial_error_low_scope">SCope should be greater than 20\'000 </string>
 
     <string name="toolbar_title_stakeholder"> Stakeholder </string>
     <string name="register_stakeholder_founder"> Founders* </string>
@@ -206,6 +208,7 @@
     <string name="empty_matchList_text_2"> Next matches will be available next Monday</string>
     <string name="empty_matchlist_text_3"> Enjoy the rest of your week! </string>
 
+    <string name="unlock_now">Unlock now</string>
     <string name="unlock_premium_title"> Go Pro</string>
     <string name="unlock_premium_body">Unlock to see more details and get in touch with your matches</string>
 
@@ -265,7 +268,7 @@
     <string name="settings_about_graphics"> Graphics and Design </string>
     <string name="settings_about_graphics_text"> Olivier Stähli</string>
 
-    <string name="settings_general"> General </string>
+    <string name="settings_general"> General Settings </string>
     <string name="settings_general_toggle_all"> Toggle all Notifications</string>
     <string name="settings_general_matchlist"> New Matchlist is available</string>
     <string name="settings_general_leads">I get a new lead</string>
