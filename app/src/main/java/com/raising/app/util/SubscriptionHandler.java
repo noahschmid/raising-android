@@ -272,7 +272,8 @@ public class SubscriptionHandler {
      * false, if user does not have a valid subscription
      */
     public static boolean hasValidSubscription() {
-        return getActiveSubscription() != null;
+        //return getActiveSubscription() != null;
+        return true;
     }
 
     public static void removeSubscription() {

@@ -133,6 +133,7 @@ public class SubscriptionFragment extends RaisingFragment {
         if (billingClient.isFeatureSupported("subscriptions").getResponseCode() == BillingClient.BillingResponseCode.OK
                 && billingClient.isFeatureSupported("subscriptionsUpdate").getResponseCode() == BillingClient.BillingResponseCode.OK) {
             BillingFlowParams flowParams;
+            /*
             if (hasSubscription) {
                 Log.d(TAG, "showGoogleBilling: Change subscription");
                 flowParams = BillingFlowParams.newBuilder()
@@ -140,12 +141,12 @@ public class SubscriptionFragment extends RaisingFragment {
                         .setOldSku(SubscriptionHandler.getActiveSubscription().getSku(),
                                 SubscriptionHandler.getActiveSubscription().getPurchaseToken())
                         .build();
-            } else {
-                Log.d(TAG, "showGoogleBilling: New subscription");
-                flowParams = BillingFlowParams.newBuilder()
-                        .setSkuDetails(skuDetails)
-                        .build();
-            }
+            } else { */
+            Log.d(TAG, "showGoogleBilling: New subscription");
+            flowParams = BillingFlowParams.newBuilder()
+                    .setSkuDetails(skuDetails)
+                    .build();
+            // }
             BillingResult responseCode = billingClient.launchBillingFlow(this.getActivity(), flowParams);
             Log.d(TAG, "showGoogleBilling: BillingResponseCodeMessage: " + responseCode.getDebugMessage());
         }
@@ -213,7 +214,7 @@ public class SubscriptionFragment extends RaisingFragment {
                 manageSubscriptionText.setVisibility(View.VISIBLE);
                 btnManageSubscription.setOnClickListener(v -> {
                             String baseUri = "https://play.google.com/store/account/subscriptions";
-                            if(SubscriptionHandler.hasValidSubscription()) {
+                            if (SubscriptionHandler.hasValidSubscription()) {
                                 String uri = baseUri + "?sku=" + SubscriptionHandler.getActiveSubscription().getSku() + "&package=" + "com.raising.app";
                                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                                 startActivity(browserIntent);
@@ -252,7 +253,7 @@ public class SubscriptionFragment extends RaisingFragment {
      * @param sku The skuDetails belonging to the card that was clicked
      */
     private void processOnCardClick(SkuDetails sku) {
-        if(showActionDialog(getString(R.string.subscription_dialog_subscribe_title),
+        if (showActionDialog(getString(R.string.subscription_dialog_subscribe_title),
                 getString(R.string.subscribtion_dialog_subscribe_text))) {
             showGoogleBilling(sku, SubscriptionHandler.hasValidSubscription());
         }
