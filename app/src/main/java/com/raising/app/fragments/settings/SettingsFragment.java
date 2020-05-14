@@ -37,8 +37,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         tabViewModel = ViewModelProviders.of(getActivity())
                 .get(TabViewModel.class);
 
-        clearBackstack();
-
         if(tabViewModel.getCurrentSettingsFragment() != null) {
             changeFragment(tabViewModel.getCurrentSettingsFragment());
         }

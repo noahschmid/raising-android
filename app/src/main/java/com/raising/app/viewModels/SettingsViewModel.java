@@ -192,7 +192,7 @@ public class SettingsViewModel extends AndroidViewModel {
                 Log.d(TAG, "getCachedSettings: No cached settings available");
             }
         } catch (Exception e) {
-            viewState.postValue(ViewState.ERROR);
+            viewState.setValue(ViewState.ERROR);
             Log.e(TAG, "getCachedSettings: Error while getting cached settings" + e.getMessage());
             addInitialSettings();
         }
@@ -203,7 +203,7 @@ public class SettingsViewModel extends AndroidViewModel {
      * Add initial settings for new users
      */
     public void addInitialSettings() {
-        viewState.postValue(ViewState.LOADING);
+        viewState.setValue(ViewState.LOADING);
         Log.d(TAG, "addInitialSettings: ViewState " + viewState.getValue().toString());
         PersonalSettings initialSettings = new PersonalSettings();
 

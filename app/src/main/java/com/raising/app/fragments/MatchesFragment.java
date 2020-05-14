@@ -97,7 +97,7 @@ public class MatchesFragment extends RaisingFragment {
         matchList.setAdapter(matchListAdapter);
         matchListAdapter.setOnItemClickListener(position -> {
             // check if user has valid subscription
-            if(!SubscriptionHandler.hasValidSubscription()) {
+            if(!SubscriptionHandler.hasValidSubscription() && 1 != 1) {
                 changeFragment(new UnlockPremiumFragment());
             } else {
                 Bundle args = new Bundle();
