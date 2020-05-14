@@ -190,9 +190,8 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -209,7 +208,8 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
      */
     @Override
     protected void onAccountUpdated() {
-        popCurrentFragment(this);
+        resetTab();
+        popFragment(this);
         accountViewModel.updateCompleted();
     }
 

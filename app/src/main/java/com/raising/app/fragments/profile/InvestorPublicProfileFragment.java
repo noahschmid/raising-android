@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -180,7 +179,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             ApiRequestHandler.performPostRequest("match/" + relationshipId + "/accept",
                     res -> {
                         matchesViewModel.removeMatch(relationshipId);
-                        popCurrentFragment(fragment);
+                        popFragment(fragment);
                         return null;
                     },
                     err -> {
@@ -199,7 +198,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
             ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
                     res -> {
                         matchesViewModel.removeMatch(relationshipId);
-                        popCurrentFragment(fragment);
+                        popFragment(fragment);
                         return null;
                     },
                     err -> {

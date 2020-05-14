@@ -266,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
         if(f instanceof RaisingFragment) {
             // do something with f
             ((RaisingFragment) f).resetTab();
+
         }
 
         super.onBackPressed();

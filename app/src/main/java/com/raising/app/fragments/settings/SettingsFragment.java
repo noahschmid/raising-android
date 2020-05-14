@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
@@ -32,12 +33,16 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
                              @Nullable Bundle savedInstanceState) {
 
         customizeAppBar(getString(R.string.toolbar_title_settings), false);
-        setTab(TabOrigin.SETTINGS);
+        setBase(TabOrigin.SETTINGS);
 
         tabViewModel = ViewModelProviders.of(getActivity())
                 .get(TabViewModel.class);
 
         if(tabViewModel.getCurrentSettingsFragment() != null) {
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            for (int i = 0; i < fm.getBackStackEntryCount() - 1; ++i) {
+                fm.popBackStack();
+            }
             changeFragment(tabViewModel.getCurrentSettingsFragment());
         }
 

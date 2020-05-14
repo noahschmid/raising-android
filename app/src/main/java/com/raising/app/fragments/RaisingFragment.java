@@ -75,7 +75,7 @@ public class RaisingFragment extends Fragment {
     protected Account currentAccount;
 
     private TabOrigin origin = TabOrigin.NONE;
-    private TabOrigin current = TabOrigin.NONE;
+    private TabOrigin base = TabOrigin.NONE;
 
     protected void onAccountUpdated() {
     }
@@ -83,8 +83,8 @@ public class RaisingFragment extends Fragment {
     protected void onResourcesLoaded() {
     }
 
-    protected void setTab(TabOrigin tab) {
-        this.current = tab;
+    protected void setBase(TabOrigin tab) {
+        this.base = tab;
     }
 
     @Override
@@ -221,15 +221,15 @@ public class RaisingFragment extends Fragment {
      */
     public void changeFragment(Fragment fragment) {
         try {
-            if(current != TabOrigin.NONE) {
+            if(base != TabOrigin.NONE) {
                 Bundle bundle = fragment.getArguments();
                 if(bundle == null) {
                     bundle = new Bundle();
                 }
-                bundle.putString("origin", current.toString());
+                bundle.putString("origin", base.toString());
                 fragment.setArguments(bundle);
 
-                switch (current) {
+                switch (base) {
                     case MATCHES:
                         tabViewModel.setCurrentMatchesFragment(fragment);
                         break;
@@ -263,15 +263,15 @@ public class RaisingFragment extends Fragment {
      */
     protected void changeFragment(Fragment fragment, String name) {
         try {
-            if(current != TabOrigin.NONE) {
+            if(base != TabOrigin.NONE) {
                 Bundle bundle = fragment.getArguments();
                 if(bundle == null) {
                     bundle = new Bundle();
                 }
-                bundle.putString("origin", current.toString());
+                bundle.putString("origin", base.toString());
                 fragment.setArguments(bundle);
 
-                switch (current) {
+                switch (base) {
                     case MATCHES:
                         tabViewModel.setCurrentMatchesFragment(fragment);
                         break;
@@ -329,7 +329,7 @@ public class RaisingFragment extends Fragment {
      *
      * @param fragment the fragment to display next
      */
-    protected void clearBackstackAndReplace(RaisingFragment fragment) {
+    protected void clearBackstackAndReplace(Fragment fragment) {
         clearBackstack();
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -569,15 +569,15 @@ public class RaisingFragment extends Fragment {
     }
 
     /**
-     * Leaves the currentFragment and removes currentFragment from the backstack
-     * Currently only works, if currentFragment is on top of the stack
+     * Leaves the fragment and removes fragment from the backstack
+     * Currently only works, if fragment is on top of the stack
      *
-     * @param currentFragment The fragment that is to be removed
+     * @param fragment The fragment that is to be removed
      * @author Lorenz Caliezi 23.03.2020
      */
-    protected void popCurrentFragment(Fragment currentFragment) {
+    protected void popFragment(Fragment fragment) {
         FragmentManager fragmentManager = getActivitiesFragmentManager();
-        fragmentManager.beginTransaction().remove(currentFragment);
+        fragmentManager.beginTransaction().remove(fragment);
         fragmentManager.popBackStackImmediate();
         accountViewModel.updateCompleted();
     }
@@ -708,8 +708,8 @@ public class RaisingFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         dismissLoadingPanel();
+        super.onDestroyView();
     }
 
     public void resetTab() {

@@ -27,7 +27,6 @@ import com.raising.app.util.RaisingTextWatcher;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
-import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
 import com.raising.app.viewModels.AccountViewModel;
 
 import java.io.IOException;
@@ -154,15 +153,15 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
         if (!editMode)
             return;
 
+        resetTab();
         AccountService.saveContactData(contactDetails);
-        popCurrentFragment(this);
+        popFragment(this);
     }
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 
     /**

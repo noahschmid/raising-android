@@ -175,7 +175,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         personalSettings.setNotificationSettings(newNotificationSettings);
         settingsViewModel.updatePersonalSettings(personalSettings);
 
-        popCurrentFragment(this);
+        popFragment(this);
     }
 
     // show button to apply changes only, when changes happened

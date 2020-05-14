@@ -45,8 +45,8 @@ public class RegisterSelectTypeFragment extends RaisingFragment implements View.
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 
     @Override

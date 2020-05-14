@@ -73,10 +73,10 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         hideToolbar(false);
         hideBottomNavigation(false);
+
+        super.onDestroyView();
     }
 
     @Override

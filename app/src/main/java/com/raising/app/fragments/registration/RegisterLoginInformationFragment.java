@@ -1,6 +1,5 @@
 package com.raising.app.fragments.registration;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,11 +15,7 @@ import android.widget.EditText;
 import com.android.volley.VolleyError;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.fragments.profile.MyProfileFragment;
 import com.raising.app.models.Account;
-import com.raising.app.models.Investor;
-import com.raising.app.models.Startup;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.RaisingTextWatcher;
@@ -31,8 +26,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.function.Function;
-
-import lombok.Getter;
 
 public class RegisterLoginInformationFragment extends RaisingFragment implements RaisingTextWatcher {
     private final String TAG = "RegisterLoginInformationFragment";
@@ -96,15 +89,16 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         Log.d(TAG, "onDestroyView: ");
         hideBottomNavigation(false);
+        super.onDestroyView();
 
     }
 
     @Override
     public void onAccountUpdated() {
-        popCurrentFragment(this);
+        resetTab();
+        popFragment(this);
         accountViewModel.updateCompleted();
     }
 

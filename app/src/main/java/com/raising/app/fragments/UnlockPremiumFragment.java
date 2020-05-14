@@ -34,22 +34,22 @@ public class UnlockPremiumFragment extends RaisingFragment {
 
         Button btnUnlockPremium = view.findViewById(R.id.button_unlock_premium);
 
+        resetTab();
+
         btnUnlockPremium.setOnClickListener(v -> {
             Fragment fragment = new SubscriptionFragment();
             Bundle bundle = new Bundle();
             bundle.putString("origin", TabOrigin.SETTINGS.toString());
             fragment.setArguments(bundle);
-            clearBackstack();
             tabViewModel.setCurrentSettingsFragment(fragment);
+            clearBackstack();
             selectBottomNavigation(R.id.nav_settings);
-
         });
     }
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 }

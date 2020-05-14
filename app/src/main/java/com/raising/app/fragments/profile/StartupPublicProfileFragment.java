@@ -2,7 +2,6 @@ package com.raising.app.fragments.profile;
 
 import android.content.Context;
 import android.content.Intent;
-import android.gesture.GesturePoint;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -14,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,7 +41,6 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.flexbox.FlexboxLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.models.Label;
 import com.raising.app.models.Model;
 import com.raising.app.models.EquityChartLegendItem;
 import com.raising.app.models.Startup;
@@ -230,7 +227,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             ApiRequestHandler.performPostRequest("match/" + relationshipId + "/accept",
                     res -> {
                         matchesViewModel.removeMatch(relationshipId);
-                        popCurrentFragment(fragment);
+                        popFragment(fragment);
                         return null;
                     },
                     err -> {
@@ -249,7 +246,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
                     res -> {
                         matchesViewModel.removeMatch(relationshipId);
-                        popCurrentFragment(fragment);
+                        popFragment(fragment);
                         return null;
                     },
                     err -> {

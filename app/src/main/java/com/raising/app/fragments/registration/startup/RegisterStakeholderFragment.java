@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,14 +29,12 @@ import com.raising.app.fragments.registration.startup.stakeholderInputs.Sharehol
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.BoardMemberViewModel;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.FounderViewModel;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.ShareholderViewModel;
-import com.raising.app.models.Investor;
 import com.raising.app.models.Startup;
 import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.models.stakeholder.Shareholder;
 import com.raising.app.models.stakeholder.StakeholderItem;
 import com.raising.app.util.ApiRequestHandler;
-import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.Serializer;
 import com.raising.app.util.recyclerViewAdapter.StakeholderAdapter;
@@ -153,9 +150,8 @@ public class RegisterStakeholderFragment extends RaisingFragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 
     @Override
@@ -505,7 +501,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                 startup.setPrivateShareholders(privShareholders);
                 startup.setCorporateShareholders(corpShareholders);
 
-                popCurrentFragment(this);
+                popFragment(this);
             }
         } catch (IOException | JSONException e) {
             viewStateViewModel.stopLoading();
