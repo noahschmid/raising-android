@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SettingsViewModel extends AndroidViewModel {
     private final String TAG = "SettingsViewModel";
@@ -31,7 +32,7 @@ public class SettingsViewModel extends AndroidViewModel {
     public SettingsViewModel(@NonNull Application application) {
         super(application);
         personalSettings.setValue(new PersonalSettings());
-        personalSettings.getValue().setNotificationSettings(new ArrayList<>());
+        Objects.requireNonNull(personalSettings.getValue()).setNotificationSettings(new ArrayList<>());
         viewState.setValue(ViewState.EMPTY);
     }
 
@@ -46,11 +47,14 @@ public class SettingsViewModel extends AndroidViewModel {
     public void loadSettings() {
         Log.d(TAG, "loadSettings: Loading Settings");
         updateDeviceToken();
-        viewState.postValue(ViewState.LOADING);
+        viewState.setValue(ViewState.LOADING);
         Log.d(TAG, "loadSettings: ViewState " + viewState.getValue().toString());
         PersonalSettings cachedSettings = getCachedSettings();
-        personalSettings.postValue(cachedSettings);
-        viewState.postValue(ViewState.CACHED);
+        personalSettings.setValue(cachedSettings);
+        if(cachedSettings != null) {
+            personalSettings.setValue(cachedSettings);
+            viewState.setValue(ViewState.CACHED);
+        }
         getUserSettings();
     }
 
@@ -95,6 +99,7 @@ public class SettingsViewModel extends AndroidViewModel {
                 response -> {
                     viewState.postValue(ViewState.RESULT);
                     try {
+                        personalSettings.setValue(new PersonalSettings());
                         personalSettings.getValue().setNumberOfMatches(response.getInt("numberOfMatches"));
                         JSONArray notificationSettings = response.getJSONArray("notificationTypes");
                         for (int i = 0; i < notificationSettings.length(); i++) {
@@ -102,7 +107,7 @@ public class SettingsViewModel extends AndroidViewModel {
                         }
                         Log.d(TAG, "getUserSettings: Personal Settings" + personalSettings.getValue());
                         cacheSettings(personalSettings.getValue());
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         Log.e(TAG, "getUserSettings: Error getting JSON" + e.getMessage());
                     }
                     return null;
