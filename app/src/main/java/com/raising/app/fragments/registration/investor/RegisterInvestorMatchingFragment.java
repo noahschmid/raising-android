@@ -97,15 +97,12 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
         if(investor.getTicketMinId() != 0 && investor.getTicketMaxId() != 0)
             ticketSize.setValues((float)investor.getTicketMinId(), (float)investor.getTicketMaxId());
         if(editMode) {
-            btnInvestorMatching.setVisibility(View.INVISIBLE);
+            btnInvestorMatching.setEnabled(false);
         }
 
-        MatchingCriteriaAdapter.OnItemClickListener clickListener = new MatchingCriteriaAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                if(editMode) {
-                    btnInvestorMatching.setVisibility(View.VISIBLE);
-                }
+        MatchingCriteriaAdapter.OnItemClickListener clickListener = position -> {
+            if(editMode) {
+                btnInvestorMatching.setEnabled(true);
             }
         };
 
@@ -184,7 +181,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
         Log.d(TAG, "checkIfMarketsChanged: listId " + listId.toString());
         Log.d(TAG, "checkIfMarketsChanged: selected " + selected.toString());
         if(!listId.equals(selected)) {
-            btnInvestorMatching.setVisibility(View.VISIBLE);
+            btnInvestorMatching.setEnabled(true);
         }
     }
 
@@ -283,14 +280,10 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
     private void prepareTicketSizeSlider(View view) {
         ticketSizeText = view.findViewById(R.id.register_investor_matching_ticket_size_text);
         ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
-        ticketSize.addOnChangeListener(new Slider.OnChangeListener() {
-
-            @Override
-            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-                ticketSizeText.setText(adaptSliderValues(
-                        (int) slider.getMaximumValue(), (int) slider.getMinimumValue()));
-                btnInvestorMatching.setVisibility(View.VISIBLE);
-            }
+        ticketSize.addOnChangeListener((slider, value, fromUser) -> {
+            ticketSizeText.setText(adaptSliderValues(
+                    (int) slider.getMaximumValue(), (int) slider.getMinimumValue()));
+            btnInvestorMatching.setEnabled(true);
         });
         ticketSize.setValueFrom((float) 1);
         ticketSize.setValueTo(ticketSizeSteps.length);

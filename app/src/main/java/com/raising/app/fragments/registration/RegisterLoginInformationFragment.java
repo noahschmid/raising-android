@@ -62,7 +62,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         //adjust fragment if this fragment is used for profile
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             btnLoginInformation.setHint(getString(R.string.myProfile_apply_changes));
-            btnLoginInformation.setVisibility(View.INVISIBLE);
+            btnLoginInformation.setEnabled(false);
             editMode = true;
             hideBottomNavigation(false);
             account = currentAccount;
@@ -105,7 +105,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         Log.d(TAG, "onTextChanged: Text has changed");
-        btnLoginInformation.setVisibility(View.VISIBLE);
+        btnLoginInformation.setEnabled(true);
     }
 
     /**

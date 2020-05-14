@@ -74,7 +74,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnFinancialRequirements.setHint(getString(R.string.myProfile_apply_changes));
-            btnFinancialRequirements.setVisibility(View.INVISIBLE);
+            btnFinancialRequirements.setEnabled(false);
             editMode = true;
             startup = (Startup) accountViewModel.getAccount().getValue();
             hideBottomNavigation(false);
@@ -215,7 +215,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        btnFinancialRequirements.setVisibility(View.VISIBLE);
+        btnFinancialRequirements.setEnabled(true);
     }
 
     /**

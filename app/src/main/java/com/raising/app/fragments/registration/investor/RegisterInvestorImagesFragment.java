@@ -136,7 +136,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_images_progress).setVisibility(View.INVISIBLE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
-            finishButton.setVisibility(View.INVISIBLE);
+            finishButton.setEnabled(false);
             investor = (Investor) accountViewModel.getAccount().getValue();
             editMode = true;
             hideBottomNavigation(false);
@@ -252,7 +252,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                 Bitmap image = (Bitmap) data.getExtras().get("data");
                 addImageToGallery(new Image(image));
                 galleryChanged = true;
-                finishButton.setVisibility(View.VISIBLE);
+                finishButton.setEnabled(true);
                 break;
 
             case REQUEST_GALLERY_FETCH:
@@ -261,7 +261,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
                     addImageToGallery(new Image(ImageRotator.checkRotation(getPath(imageUri), image)));
                     galleryChanged = true;
-                    finishButton.setVisibility(View.VISIBLE);
+                    finishButton.setEnabled(true);
                 } catch (Exception e) {
                     Log.d("InvestorImages", "" + e.getMessage());
                 }
@@ -271,7 +271,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                 image = (Bitmap) data.getExtras().get("data");
                 setProfileImage(image);
                 profilePictureChanged = true;
-                finishButton.setVisibility(View.VISIBLE);
+                finishButton.setEnabled(true);
                 break;
 
             case REQUEST_IMAGE_FETCH:
@@ -280,7 +280,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
                     image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
                     setProfileImage(ImageRotator.checkRotation(getPath(imageUri), image));
                     profilePictureChanged = true;
-                    finishButton.setVisibility(View.VISIBLE);
+                    finishButton.setEnabled(true);
                 } catch (Exception e) {
                     Log.d("InvestorImages", e.getMessage());
                 }

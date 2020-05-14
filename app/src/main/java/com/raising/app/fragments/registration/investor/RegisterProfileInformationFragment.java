@@ -61,7 +61,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnProfileInformation.setHint(getString(R.string.myProfile_apply_changes));
-            btnProfileInformation.setVisibility(View.INVISIBLE);
+            btnProfileInformation.setEnabled(false);
             investor = (Investor) accountViewModel.getAccount().getValue();
             contactDetails = AccountService.getContactData();
             editMode = true;
@@ -111,35 +111,26 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
                 new CustomPicker.Builder()
                         .with(getContext())
                         .canSearch(true)
-                        .listener(new OnCustomPickerListener() {
-                            @Override
-                            public void onSelectItem(PickerItem country) {
-                                profileCountryInput.setText(country.getName());
-                                countryId = (int) country.getId();
-                            }
+                        .listener(country -> {
+                            profileCountryInput.setText(country.getName());
+                            countryId = (int) country.getId();
                         })
                         .setItems(resources.getCountries());
 
         customPicker = builder.build();
 
-        profileCountryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    if (!customPicker.instanceRunning())
-                        customPicker.showDialog(getActivity());
-                }
+        profileCountryInput.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                if (!customPicker.instanceRunning())
+                    customPicker.showDialog(getActivity());
             }
         });
 
-        profileCountryInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (customPicker.instanceRunning())
-                    customPicker.dismiss();
+        profileCountryInput.setOnClickListener(v -> {
+            if (customPicker.instanceRunning())
+                customPicker.dismiss();
 
-                customPicker.showDialog(getActivity());
-            }
+            customPicker.showDialog(getActivity());
         });
     }
 
@@ -158,7 +149,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        btnProfileInformation.setVisibility(View.VISIBLE);
+        btnProfileInformation.setEnabled(true);
     }
 
     /**

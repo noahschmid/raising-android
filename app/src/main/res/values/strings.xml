@@ -114,7 +114,7 @@
     <string name="investor_matching_industry_text">What are your target industries?</string>
     <string name="investor_matching_involvement_text">What kind of involvement can you bring to startups?</string>
     <string name="investor_matching_geographics_text">Which are your preferred regions for startups?</string>
-    <string name="register_matching_geographics"> Geographics </string>
+    <string name="register_matching_geographics">Select Geographics </string>
 
     <string name="toolbar_title_pitch"> Pitch </string>
     <string name="register_pitch_sentence"> Description* </string>
@@ -201,6 +201,8 @@
     <string name="register_stakeholder_shareholder_website"> Website </string>
     <string name="register_stakeholder_high_equity">A Shareholder cannot have more than 100% equity</string>
     <string name="register_stakeholder_error_equity"> Shareholders have more than 100% equity share.</string>
+
+    <string name="text_registration_complete">Complete Registration</string>
 
     <!-- Strings used for Match List -->
     <string name="toolbar_title_match_list"> Matches of the Week </string>

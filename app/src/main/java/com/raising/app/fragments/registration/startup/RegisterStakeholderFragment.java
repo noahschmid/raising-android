@@ -98,7 +98,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
-            finishButton.setVisibility(View.INVISIBLE);
+            finishButton.setEnabled(false);
             startup = (Startup) accountViewModel.getAccount().getValue();
             editMode = true;
             hideBottomNavigation(false);
@@ -202,14 +202,14 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                         int position = getArguments().getInt("editIndex");
                         founderList.set(position, founder);
                         founderAdapter.notifyItemChanged(position);
-                        finishButton.setVisibility(View.VISIBLE);
+                        finishButton.setEnabled(true);
                         getArguments().putBoolean("editFounder", false);
                     }
 
                     if (!founderList.contains(founder)) {
                         founderList.add(founder);
                         founderAdapter.notifyDataSetChanged();
-                        finishButton.setVisibility(View.VISIBLE);
+                        finishButton.setEnabled(true);
                     }
                 });
     }
@@ -246,7 +246,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                                 result -> {
                                     founderList.remove(position);
                                     founderAdapter.notifyItemRemoved(position);
-                                    finishButton.setVisibility(View.VISIBLE);
+                                    finishButton.setEnabled(true);
                                     return null;
                                 },
                                 ApiRequestHandler.errorHandler);
@@ -257,7 +257,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                 } else {
                     founderList.remove(position);
                     founderAdapter.notifyItemRemoved(position);
-                    finishButton.setVisibility(View.VISIBLE);
+                    finishButton.setEnabled(true);
                 }
             }
         });
@@ -278,14 +278,14 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                         int position = getArguments().getInt("editIndex");
                         boardMemberList.set(position, boardMember);
                         boardMemberAdapter.notifyItemChanged(position);
-                        finishButton.setVisibility(View.VISIBLE);
+                        finishButton.setEnabled(true);
                         getArguments().putBoolean("editBoardMember", false);
                     }
 
                     if (!boardMemberList.contains(boardMember)) {
                         boardMemberList.add(boardMember);
                         boardMemberAdapter.notifyDataSetChanged();
-                        finishButton.setVisibility(View.VISIBLE);
+                        finishButton.setEnabled(true);
                     }
                 });
     }
@@ -321,7 +321,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                                 result -> {
                                     boardMemberList.remove(position);
                                     boardMemberAdapter.notifyItemRemoved(position);
-                                    finishButton.setVisibility(View.VISIBLE);
+                                    finishButton.setEnabled(true);
                                     return null;
                                 },
                                 ApiRequestHandler.errorHandler);
@@ -332,7 +332,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                 } else {
                     boardMemberList.remove(position);
                     boardMemberAdapter.notifyItemRemoved(position);
-                    finishButton.setVisibility(View.VISIBLE);
+                    finishButton.setEnabled(true);
                 }
             }
         });
@@ -354,14 +354,14 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                         int position = getArguments().getInt("editIndex");
                         shareholderList.set(position, shareholder);
                         shareholderAdapter.notifyItemChanged(position);
-                        finishButton.setVisibility(View.VISIBLE);
+                        finishButton.setEnabled(true);
                         getArguments().putBoolean("editShareholder", false);
                     }
 
                     if (!shareholderList.contains(shareholder)) {
                         shareholderList.add(shareholder);
                         shareholderAdapter.notifyDataSetChanged();
-                        finishButton.setVisibility(View.VISIBLE);
+                        finishButton.setEnabled(true);
                     }
                 });
     }
@@ -404,7 +404,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                                 result -> {
                                     shareholderList.remove(position);
                                     shareholderAdapter.notifyItemRemoved(position);
-                                    finishButton.setVisibility(View.VISIBLE);
+                                    finishButton.setEnabled(true);
                                     return null;
                                 },
                                 ApiRequestHandler.errorHandler);
@@ -415,7 +415,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                 } else {
                     shareholderList.remove(position);
                     shareholderAdapter.notifyItemRemoved(position);
-                    finishButton.setVisibility(View.VISIBLE);
+                    finishButton.setEnabled(true);
                 }
             }
         });

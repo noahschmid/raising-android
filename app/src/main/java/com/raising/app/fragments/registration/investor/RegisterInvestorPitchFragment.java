@@ -22,7 +22,7 @@ import com.raising.app.util.RegistrationHandler;
 
 import java.io.IOException;
 
-public class RegisterInvestorPitchFragment extends RaisingFragment implements View.OnClickListener, RaisingTextWatcher {
+public class RegisterInvestorPitchFragment extends RaisingFragment implements RaisingTextWatcher {
     private EditText sentenceInput, pitchInput;
     private TextInputLayout sentenceLayout, pitchLayout;
     private Button btnInvestorPitch;
@@ -53,13 +53,13 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
         pitchInput = view.findViewById(R.id.register_input_investor_pitch_pitch);
 
         btnInvestorPitch = view.findViewById(R.id.button_investor_pitch);
-        btnInvestorPitch.setOnClickListener(this);
+        btnInvestorPitch.setOnClickListener(v -> processInputs());
 
         //adjust fragment if this fragment is used for profile
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnInvestorPitch.setHint(getString(R.string.myProfile_apply_changes));
-            btnInvestorPitch.setVisibility(View.INVISIBLE);
+            btnInvestorPitch.setEnabled(false);
             investor = (Investor) accountViewModel.getAccount().getValue();
             editMode = true;
             hideBottomNavigation(false);
@@ -109,18 +109,7 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        btnInvestorPitch.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_investor_pitch:
-                processInputs();
-                break;
-            default:
-                break;
-        }
+        btnInvestorPitch.setEnabled(true);
     }
 
     /**

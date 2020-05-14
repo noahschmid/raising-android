@@ -62,7 +62,7 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupPitch.setHint(getString(R.string.myProfile_apply_changes));
-            btnStartupPitch.setVisibility(View.INVISIBLE);
+            btnStartupPitch.setEnabled(false);
             startup = (Startup) accountViewModel.getAccount().getValue();
             editMode = true;
             hideBottomNavigation(false);
@@ -76,17 +76,14 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
         prepareSentenceLayout(startup.getDescription());
         preparePitchLayout(startup.getPitch());
 
-        pitchInput.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                v.getParent().requestDisallowInterceptTouchEvent(true);
-                switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                    case MotionEvent.ACTION_SCROLL:
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                        return true;
-                }
-                return false;
+        pitchInput.setOnTouchListener((v, event) -> {
+            v.getParent().requestDisallowInterceptTouchEvent(true);
+            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_SCROLL:
+                    v.getParent().requestDisallowInterceptTouchEvent(false);
+                    return true;
             }
+            return false;
         });
 
         // if editmode, add text watchers after initial filling with users data
@@ -112,7 +109,7 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        btnStartupPitch.setVisibility(View.VISIBLE);
+        btnStartupPitch.setEnabled(true);
     }
 
     /**
