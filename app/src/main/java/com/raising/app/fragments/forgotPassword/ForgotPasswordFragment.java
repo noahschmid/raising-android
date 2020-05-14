@@ -50,9 +50,8 @@ public class ForgotPasswordFragment extends RaisingFragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 
     /**

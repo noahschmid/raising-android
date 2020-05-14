@@ -1,11 +1,9 @@
 package com.raising.app.fragments.registration.investor;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintHelper;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
@@ -13,13 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.slider.Slider;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
@@ -195,17 +188,12 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
 
-        hideBottomNavigation(false);
-    }
 
     @Override
     protected void onAccountUpdated() {
         resetTab();
-        popCurrentFragment(this);
+        popFragment(this);
         accountViewModel.updateCompleted();
     }
 

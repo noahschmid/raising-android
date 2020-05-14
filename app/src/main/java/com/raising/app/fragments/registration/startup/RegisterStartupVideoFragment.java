@@ -1,7 +1,6 @@
 package com.raising.app.fragments.registration.startup;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -23,10 +21,8 @@ import android.widget.VideoView;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Startup;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.RegistrationHandler;
 
-import java.io.IOException;
 import java.util.Objects;
 
 public class RegisterStartupVideoFragment extends RaisingFragment {
@@ -123,9 +119,8 @@ public class RegisterStartupVideoFragment extends RaisingFragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 
     @Override
@@ -170,7 +165,7 @@ public class RegisterStartupVideoFragment extends RaisingFragment {
         if(!editMode) {
             changeFragment(new RegisterFinancialRequirementsFragment());
         } else {
-            popCurrentFragment(this);
+            popFragment(this);
         }
     }
 }

@@ -186,15 +186,15 @@ public class FounderInputFragment extends RaisingFragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 
     /**
-     * {@link RaisingFragment#popCurrentFragment(androidx.fragment.app.Fragment)}
+     * {@link RaisingFragment#popFragment(androidx.fragment.app.Fragment)}
      */
     private void leaveFounderFragment() {
-        popCurrentFragment(this);
+        popFragment(this);
     }
 }
 

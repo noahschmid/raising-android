@@ -27,8 +27,6 @@ import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.NoFilterArrayAdapter;
 import com.raising.app.util.customPicker.CustomPicker;
-import com.raising.app.util.customPicker.PickerItem;
-import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
 import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaAdapter;
 import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaComponent;
 
@@ -171,9 +169,8 @@ public class ShareholderInputFragment extends RaisingFragment {
     @Override
     public void onDestroyView() {
         Log.d(TAG, "onDestroyView: ");
-        super.onDestroyView();
-
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 
     private void loadData() {
@@ -352,6 +349,6 @@ public class ShareholderInputFragment extends RaisingFragment {
 
     private void leaveShareholderFragment() {
         Log.d(TAG, "leaveShareholderFragment: ");
-        popCurrentFragment(this);
+        popFragment(this);
     }
 }

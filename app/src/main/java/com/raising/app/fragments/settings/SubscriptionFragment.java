@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Objects;
 
 public class SubscriptionFragment extends RaisingFragment {
     private final String TAG = "SubscriptionsFragment";
@@ -191,7 +192,7 @@ public class SubscriptionFragment extends RaisingFragment {
             Log.d(TAG, "fillSubscriptionsList: SkuDetail" + skuDetails.getSku() + " " + skuDetails.getTitle() + " " + skuDetails.getPrice());
 
             // setup layout for unselected subscriptions
-            View subscriptionLayout = getActivity().getLayoutInflater().inflate(R.layout.item_subscription_detail, null);
+            View subscriptionLayout = Objects.requireNonNull(getActivity()).getLayoutInflater().inflate(R.layout.item_subscription_detail, null);
 
             // gather all views of a subscription card
             MaterialCardView card = subscriptionLayout.findViewById(R.id.card_subscription);

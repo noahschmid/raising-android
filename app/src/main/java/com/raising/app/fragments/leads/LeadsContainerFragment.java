@@ -35,7 +35,7 @@ public class LeadsContainerFragment extends RaisingFragment {
 
         customizeAppBar(getString(R.string.toolbar_title_leads), false);
 
-        setTab(TabOrigin.LEADS);
+        setBase(TabOrigin.LEADS);
 
         tabViewModel = ViewModelProviders.of(getActivity())
                 .get(TabViewModel.class);

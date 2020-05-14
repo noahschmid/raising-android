@@ -11,11 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 
-import com.google.android.flexbox.FlexboxLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Startup;
@@ -89,9 +85,8 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 
     private void processInformation() {
@@ -119,7 +114,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
     @Override
     protected void onAccountUpdated() {
         resetTab();
-        popCurrentFragment(this);
+        popFragment(this);
         accountViewModel.updateCompleted();
     }
 }

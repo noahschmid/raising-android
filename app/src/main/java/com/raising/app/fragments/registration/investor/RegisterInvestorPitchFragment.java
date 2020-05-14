@@ -13,25 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.android.volley.VolleyError;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.gson.Gson;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.fragments.LoginFragment;
-import com.raising.app.models.Account;
 import com.raising.app.models.Investor;
-import com.raising.app.util.AccountService;
-import com.raising.app.util.ApiRequestHandler;
-import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.RaisingTextWatcher;
 import com.raising.app.util.RegistrationHandler;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.function.Function;
 
 public class RegisterInvestorPitchFragment extends RaisingFragment implements View.OnClickListener, RaisingTextWatcher {
     private EditText sentenceInput, pitchInput;
@@ -108,15 +97,14 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
     @Override
     protected void onAccountUpdated() {
         resetTab();
-        popCurrentFragment(this);
+        popFragment(this);
         accountViewModel.updateCompleted();
     }
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 
     @Override

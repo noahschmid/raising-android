@@ -145,15 +145,14 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 
     @Override
     protected void onAccountUpdated() {
         resetTab();
-        popCurrentFragment(this);
+        popFragment(this);
         accountViewModel.updateCompleted();
     }
 

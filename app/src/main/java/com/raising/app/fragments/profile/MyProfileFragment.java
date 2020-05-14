@@ -51,7 +51,7 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
                              @Nullable Bundle savedInstanceState) {
 
         customizeAppBar(getString(R.string.toolbar_title_my_profile), false);
-        setTab(TabOrigin.PROFILE);
+        setBase(TabOrigin.PROFILE);
 
         tabViewModel = ViewModelProviders.of(getActivity())
                 .get(TabViewModel.class);

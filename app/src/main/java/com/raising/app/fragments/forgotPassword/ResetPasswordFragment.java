@@ -66,9 +66,8 @@ public class ResetPasswordFragment extends RaisingFragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 
     /**

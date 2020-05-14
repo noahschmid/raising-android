@@ -48,7 +48,7 @@ public class MatchesFragment extends RaisingFragment {
                              @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: ");
 
-        setTab(TabOrigin.MATCHES);
+        setBase(TabOrigin.MATCHES);
 
         customizeAppBar(getString(R.string.toolbar_title_match_list), false);
         matchesViewModel = ViewModelProviders.of(getActivity())
@@ -97,7 +97,7 @@ public class MatchesFragment extends RaisingFragment {
         matchList.setAdapter(matchListAdapter);
         matchListAdapter.setOnItemClickListener(position -> {
             // check if user has valid subscription
-            if(!SubscriptionHandler.hasValidSubscription() && 1 != 1) {
+            if(!SubscriptionHandler.hasValidSubscription()) {
                 changeFragment(new UnlockPremiumFragment());
             } else {
                 Bundle args = new Bundle();
