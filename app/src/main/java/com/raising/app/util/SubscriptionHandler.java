@@ -163,8 +163,6 @@ public class SubscriptionHandler {
      * @param expirationDate A String representation of the expiration date of the users subscription
      */
     private static void setActiveSubscriptionWithExpiration(String sku, String purchaseToken, String expirationDate) {
-        Log.d(TAG, "setActiveSubscriptionWithExpiration: ");
-
         // get date from String
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         Calendar calendar = Calendar.getInstance();
@@ -198,7 +196,7 @@ public class SubscriptionHandler {
      *         false, if expiration is before today
      */
     private static boolean verifySubscription(Calendar expirationDate) {
-        Log.d(TAG, "verifySubscription: Expiration: " + expirationDate.getTime() + " Today: " + new Date());
+        Log.d(TAG, "verifySubscription: " + !(expirationDate.getTime().before(new Date())) + " Expiration: " + expirationDate.getTime() + " Today: " + new Date());
         return !(expirationDate.getTime().before(new Date()));
     }
 
@@ -211,7 +209,6 @@ public class SubscriptionHandler {
      * @param calendar      A calendar instance containing the purchase date of the subscription
      */
     public static void setActiveSubscriptionWithPurchase(String sku, String purchaseToken, Calendar calendar) {
-        Log.d(TAG, "setActiveSubscriptionWithPurchase: ");
         Subscription subscription = new Subscription();
         subscription.setSku(sku);
         subscription.setPurchaseToken(purchaseToken);
@@ -250,7 +247,6 @@ public class SubscriptionHandler {
      * @return A calendar instance containing the calculated date
      */
     private static Calendar getRespectiveDate(Calendar calendar, int subscriptionDuration, boolean calculateExpiration) {
-        Log.d(TAG, "getRespectiveDate: ");
         if (calculateExpiration) {
             calendar.add(Calendar.MONTH, subscriptionDuration);
         } else {

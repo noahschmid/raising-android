@@ -266,7 +266,7 @@
     <string name="settings_about_supervision"> Supervision</string>
     <string name="settings_about_supervision_text"> Ubique Innovations AG, Zürich</string>
     <string name="settings_about_management"> Project Management and Implementation</string>
-    <string name="settings_about_management_text"> University of Bern, Computer Science \nLorenz Caliezi \nNoah Schmid \nAdrian Jörg \nManuel Schüpbach \nOlivier Stähli</string>
+    <string name="settings_about_management_text"> University of Bern, Computer Science \nNoah Schmid \nAdrian Jörg \nManuel Schüpbach \nOlivier Stähli \nLorenz Caliezi</string>
     <string name="settings_about_graphics"> Graphics and Design </string>
     <string name="settings_about_graphics_text"> Olivier Stähli</string>
 
