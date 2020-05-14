@@ -102,6 +102,7 @@ public class SubscriptionFragment extends RaisingFragment {
                 })
                 .enablePendingPurchases()
                 .build();
+        Log.d(TAG, "onViewCreated: " + SubscriptionHandler.getActiveSubscription());
 
         SubscriptionHandler.setBillingClient(billingClient);
         startBillingConnection();
@@ -198,11 +199,9 @@ public class SubscriptionFragment extends RaisingFragment {
             TextView subscriptionTitle = subscriptionLayout.findViewById(R.id.subscription_title);
             TextView subscriptionPriceDuration = subscriptionLayout.findViewById(R.id.subscription_price_duration);
             TextView subscriptionPriceWeek = subscriptionLayout.findViewById(R.id.subscription_price_week);
-            TextView subscriptionDate = subscriptionLayout.findViewById(R.id.subscription_expiration);
 
             // hide views that are not needed for unselected subscriptions
             subscriptionTitle.setVisibility(View.GONE);
-            subscriptionDate.setVisibility(View.INVISIBLE);
 
             subscriptionPriceDuration.setText(createPriceString(skuDetails, true));
             subscriptionPriceWeek.setText(createPriceString(skuDetails, false));
@@ -238,10 +237,8 @@ public class SubscriptionFragment extends RaisingFragment {
                     card.setStrokeColor(getResources().getColor(R.color.raisingDarkGrey, null));
                     card.setStrokeWidth(8);
                     subscriptionTitle.setVisibility(View.VISIBLE);
-                    subscriptionDate.setVisibility(View.VISIBLE);
 
                     subscriptionTitle.setText(getString(R.string.subscription_your_subscriptions));
-                    subscriptionDate.setText(getString(R.string.subscription_automatic_extension));
                 }
             }
             subscriptionsLayout.addView(subscriptionLayout);

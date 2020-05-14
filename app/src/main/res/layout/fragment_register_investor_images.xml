@@ -100,7 +100,7 @@
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                app:justifyContent="space_between"
+                app:alignContent="flex_start"
                 app:alignItems="flex_start"
                 app:flexWrap="wrap"
                 app:layout_constraintBottom_toTopOf="@+id/registration_images_progress"

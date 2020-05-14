@@ -3,13 +3,6 @@ package com.raising.app.util;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProviders;
-
-import com.raising.app.viewModels.MatchesViewModel;
-import com.raising.app.viewModels.SettingsViewModel;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -79,6 +72,7 @@ public class AuthenticationHandler {
 
         AuthenticationHandler.token = null;
         AuthenticationHandler.accountId = -1;
+        SubscriptionHandler.removeSubscription();
         loggedIn = false;
     }
 

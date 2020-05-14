@@ -331,7 +331,6 @@
     <string name="subscription_next"> Next Subscription</string>
     <string name="subscription_downgrade"> Downgrade to </string>
     <string name="subscription_upgrade"> Upgrade to</string>
-    <string name="subscription_automatic_extension">Automatic extension active</string>
     <string name="subscription_paragraph_1">Subscribe to RAI$ING to unlock the full potential of our app</string>
     <string name="subscription_paragraph_2">Your subscription is automatically renewed</string>
     <string name="subscription_benefits_1">Access to possible investment partners, that match your profile</string>
