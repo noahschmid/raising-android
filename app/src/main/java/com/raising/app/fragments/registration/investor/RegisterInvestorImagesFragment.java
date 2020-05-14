@@ -230,6 +230,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
 
     @Override
     public void onAccountUpdated() {
+        resetTab();
         popCurrentFragment(this);
         accountViewModel.updateCompleted();
     }

@@ -154,6 +154,7 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
         if (!editMode)
             return;
 
+        resetTab();
         AccountService.saveContactData(contactDetails);
         popCurrentFragment(this);
     }

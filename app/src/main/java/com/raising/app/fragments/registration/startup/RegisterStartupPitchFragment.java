@@ -107,6 +107,7 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
 
     @Override
     protected void onAccountUpdated() {
+        resetTab();
         popCurrentFragment(this);
         accountViewModel.updateCompleted();
     }

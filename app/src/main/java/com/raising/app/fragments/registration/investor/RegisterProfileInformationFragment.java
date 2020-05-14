@@ -152,6 +152,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
 
     @Override
     protected void onAccountUpdated() {
+        resetTab();
         popCurrentFragment(this);
         accountViewModel.updateCompleted();
     }

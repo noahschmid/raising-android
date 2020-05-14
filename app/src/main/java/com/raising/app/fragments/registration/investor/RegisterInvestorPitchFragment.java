@@ -107,6 +107,7 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Vi
 
     @Override
     protected void onAccountUpdated() {
+        resetTab();
         popCurrentFragment(this);
         accountViewModel.updateCompleted();
     }

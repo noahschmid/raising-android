@@ -204,6 +204,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
 
     @Override
     protected void onAccountUpdated() {
+        resetTab();
         popCurrentFragment(this);
         accountViewModel.updateCompleted();
     }

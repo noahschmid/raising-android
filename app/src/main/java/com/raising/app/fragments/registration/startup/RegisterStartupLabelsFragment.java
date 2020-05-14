@@ -118,6 +118,7 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
 
     @Override
     protected void onAccountUpdated() {
+        resetTab();
         popCurrentFragment(this);
         accountViewModel.updateCompleted();
     }

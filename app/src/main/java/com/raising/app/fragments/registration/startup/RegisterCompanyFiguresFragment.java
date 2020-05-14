@@ -201,6 +201,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
 
     @Override
     protected void onAccountUpdated() {
+        resetTab();
         popCurrentFragment(this);
         accountViewModel.updateCompleted();
     }
