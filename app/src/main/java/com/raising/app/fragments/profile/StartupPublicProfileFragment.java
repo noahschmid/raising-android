@@ -653,6 +653,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
 
         FlexboxLayout pieChartLegend = view.findViewById(R.id.stakeholder_equity_chart_legend);
+        pieChartLegend.removeAllViews();
         legendItems.forEach(legendItem -> {
             final View legendItemView = inflater.inflate(R.layout.item_startup_public_profile_equity_chart_legend, null);
             TextView title = legendItemView.findViewById(R.id.item_legend_title);
