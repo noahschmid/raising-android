@@ -177,12 +177,15 @@
             <TextView
                 android:id="@+id/text_startup_public_profile_name"
                 style="@style/RaisingLargeTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                android:gravity="center|start"
                 android:text="Name"
                 android:textColor="@color/raisingPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/startup_public_profile_matching_summary" />
 

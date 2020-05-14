@@ -2,6 +2,7 @@ package com.raising.app.fragments.profile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.gesture.GesturePoint;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -426,6 +427,10 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 = new StartupProfileFounderAdapter(founderList);
         founderRecyclerView.setAdapter(founderListAdapter);
 
+        if(founderList.size() == 0) {
+            view.findViewById(R.id.text_profile_founders).setVisibility(View.GONE);
+        }
+
         // setup recycler view for board members
         ArrayList<BoardMember> boardMemberList = new ArrayList<>();
         boardMemberList.addAll(startup.getBoardMembers());
@@ -434,6 +439,10 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         StartupProfileBoardMemberAdapter boardMemberListAdapter
                 = new StartupProfileBoardMemberAdapter(boardMemberList);
         boardMemberRecyclerView.setAdapter(boardMemberListAdapter);
+
+        if(boardMemberList.size() == 0) {
+            view.findViewById(R.id.text_profile_board_member).setVisibility(View.GONE);
+        }
 
         // check if startup has shareholders, if true load pie chart, if false, hide all views
         if(startup.getCorporateShareholders().size() == 0
