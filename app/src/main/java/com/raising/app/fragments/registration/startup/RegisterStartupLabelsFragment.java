@@ -76,7 +76,6 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
         labelsLayout = new MatchingCriteriaComponent(getView().findViewById(R.id.register_startup_pitch_labels),
                 resources.getLabels(), false, clickListener, true);
 
-        Log.d(TAG, "onResourcesLoaded: " + startup);
         if(startup != null && startup.getLabels() != null) {
             Log.d(TAG, "onResourcesLoaded: " + startup.getLabels());
             startup.getLabels().forEach(label -> labelsLayout.setChecked(label));

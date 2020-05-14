@@ -47,10 +47,12 @@ import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.Resources;
 import com.raising.app.util.SimpleMessageDialog;
+import com.raising.app.util.TabOrigin;
 import com.raising.app.util.ToastHandler;
 import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 import com.raising.app.viewModels.SettingsViewModel;
+import com.raising.app.viewModels.TabViewModel;
 import com.raising.app.viewModels.ViewStateViewModel;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
@@ -67,14 +69,22 @@ public class RaisingFragment extends Fragment {
     protected ResourcesViewModel resourcesViewModel;
     protected SettingsViewModel settingsViewModel;
     protected ViewStateViewModel viewStateViewModel;
+    protected TabViewModel tabViewModel;
+
     protected Resources resources;
     protected Account currentAccount;
-    private int processesLoading = 0;
+
+    private TabOrigin origin = TabOrigin.NONE;
+    private TabOrigin current = TabOrigin.NONE;
 
     protected void onAccountUpdated() {
     }
 
     protected void onResourcesLoaded() {
+    }
+
+    protected void setTab(TabOrigin tab) {
+        this.current = tab;
     }
 
     @Override
@@ -83,6 +93,12 @@ public class RaisingFragment extends Fragment {
 
         loadingPanel = getLayoutInflater().inflate(R.layout.view_loading_panel, null);
         overlayLayout = view.findViewById(R.id.overlay_layout);
+
+        if(getArguments() != null) {
+            if (getArguments().getString("origin") != null) {
+                origin = TabOrigin.valueOf(getArguments().getString("origin"));
+            }
+        }
 
         if (overlayLayout != null) {
             overlayLayout.setFocusable(false);
@@ -108,7 +124,7 @@ public class RaisingFragment extends Fragment {
         currentAccount = accountViewModel.getAccount().getValue();
 
         settingsViewModel = ViewModelProviders.of(getActivity()).get(SettingsViewModel.class);
-
+        tabViewModel = ViewModelProviders.of(getActivity()).get(TabViewModel.class);
         resourcesViewModel = ViewModelProviders.of(getActivity()).get(ResourcesViewModel.class);
         resourcesViewModel.getResources().observe(getViewLifecycleOwner(), resources -> this.resources = resources);
         resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
@@ -205,6 +221,29 @@ public class RaisingFragment extends Fragment {
      */
     public void changeFragment(Fragment fragment) {
         try {
+            if(current != TabOrigin.NONE) {
+                Bundle bundle = fragment.getArguments();
+                if(bundle == null) {
+                    bundle = new Bundle();
+                }
+                bundle.putString("origin", current.toString());
+                fragment.setArguments(bundle);
+
+                switch (current) {
+                    case MATCHES:
+                        tabViewModel.setCurrentMatchesFragment(fragment);
+                        break;
+                    case LEADS:
+                        tabViewModel.setCurrentLeadsFragment(fragment);
+                        break;
+                    case SETTINGS:
+                        tabViewModel.setCurrentSettingsFragment(fragment);
+                        break;
+                    case PROFILE:
+                        tabViewModel.setCurrentProfileFragment(fragment);
+                        break;
+                }
+            }
             getActivitiesFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragment)
@@ -224,6 +263,30 @@ public class RaisingFragment extends Fragment {
      */
     protected void changeFragment(Fragment fragment, String name) {
         try {
+            if(current != TabOrigin.NONE) {
+                Bundle bundle = fragment.getArguments();
+                if(bundle == null) {
+                    bundle = new Bundle();
+                }
+                bundle.putString("origin", current.toString());
+                fragment.setArguments(bundle);
+
+                switch (current) {
+                    case MATCHES:
+                        tabViewModel.setCurrentMatchesFragment(fragment);
+                        break;
+                    case LEADS:
+                        tabViewModel.setCurrentLeadsFragment(fragment);
+                        break;
+                    case SETTINGS:
+                        tabViewModel.setCurrentSettingsFragment(fragment);
+                        break;
+                    case PROFILE:
+                        tabViewModel.setCurrentProfileFragment(fragment);
+                        break;
+                }
+            }
+
             getActivitiesFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragment)
@@ -638,6 +701,23 @@ public class RaisingFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         dismissLoadingPanel();
+    }
+
+    public void resetTab() {
+        switch (origin) {
+            case MATCHES:
+                tabViewModel.resetCurrentMatchesFragment();
+                break;
+            case LEADS:
+                tabViewModel.resetCurrentLeadsFragment();
+                break;
+            case SETTINGS:
+                tabViewModel.resetCurrentSettingsFragment();
+                break;
+            case PROFILE:
+                tabViewModel.resetCurrentProfileFragment();
+                break;
+        }
     }
 
     /**

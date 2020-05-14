@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,8 @@ import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.onboarding.OnboardingPost1Fragment;
 import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.TabOrigin;
+import com.raising.app.viewModels.TabViewModel;
 
 public class SettingsFragment extends RaisingFragment implements View.OnClickListener {
     private final String TAG = "SettingsFragment";
@@ -28,6 +32,16 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
                              @Nullable Bundle savedInstanceState) {
 
         customizeAppBar(getString(R.string.toolbar_title_settings), false);
+        setTab(TabOrigin.SETTINGS);
+
+        tabViewModel = ViewModelProviders.of(getActivity())
+                .get(TabViewModel.class);
+
+
+        if(tabViewModel.getCurrentSettingsFragment() != null) {
+            changeFragment(tabViewModel.getCurrentSettingsFragment());
+        }
+
         return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 

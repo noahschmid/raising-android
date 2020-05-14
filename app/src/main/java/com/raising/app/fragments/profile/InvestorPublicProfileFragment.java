@@ -73,6 +73,8 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     ArrayList<Bitmap> pictures;
     private int currentImageIndex = 0;
 
+    String origin = "";
+
     MatchesViewModel matchesViewModel;
 
     @Override
@@ -104,6 +106,10 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                 loadData(investor);
                 return null;
             });
+        }
+
+        if(getArguments().getString("origin") != null) {
+            origin = getArguments().getString("origin");
         }
         return view;
     }

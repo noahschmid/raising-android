@@ -2,6 +2,7 @@ package com.raising.app;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -12,6 +13,7 @@ import android.view.View;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.leads.LeadsContainerFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
@@ -29,6 +31,7 @@ import com.raising.app.viewModels.LeadsViewModel;
 import com.raising.app.viewModels.MatchesViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 import com.raising.app.viewModels.SettingsViewModel;
+import com.raising.app.viewModels.TabViewModel;
 import com.raising.app.viewModels.ViewStateViewModel;
 
 import java.io.IOException;
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     LeadsViewModel leadsViewModel;
     SettingsViewModel settingsViewModel;
     ViewStateViewModel viewStateViewModel;
+    TabViewModel tabViewModel;
 
     MaterialToolbar toolbar;
 
@@ -69,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         matchesViewModel = new ViewModelProvider(this).get(MatchesViewModel.class);
         leadsViewModel = new ViewModelProvider(this).get(LeadsViewModel.class);
         settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
+        tabViewModel = new ViewModelProvider(this).get(TabViewModel.class);
 
         viewStateViewModel.addViewModel(accountViewModel.getViewState(), this);
         viewStateViewModel.addViewModel(resourcesViewModel.getViewState(), this);
@@ -253,5 +258,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return (firstInstallTime == lastUpdateTime);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if(f instanceof RaisingFragment) {
+            // do something with f
+            ((RaisingFragment) f).resetTab();
+        }
+
+        super.onBackPressed();
     }
 }
