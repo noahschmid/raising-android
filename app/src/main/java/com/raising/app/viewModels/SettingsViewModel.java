@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SettingsViewModel extends AndroidViewModel {
     private final String TAG = "SettingsViewModel";
@@ -31,7 +32,7 @@ public class SettingsViewModel extends AndroidViewModel {
     public SettingsViewModel(@NonNull Application application) {
         super(application);
         personalSettings.setValue(new PersonalSettings());
-        personalSettings.getValue().setNotificationSettings(new ArrayList<>());
+        Objects.requireNonNull(personalSettings.getValue()).setNotificationSettings(new ArrayList<>());
         viewState.setValue(ViewState.EMPTY);
     }
 
@@ -47,8 +48,9 @@ public class SettingsViewModel extends AndroidViewModel {
         Log.d(TAG, "loadSettings: Loading Settings");
         updateDeviceToken();
         viewState.setValue(ViewState.LOADING);
+        Log.d(TAG, "loadSettings: ViewState " + viewState.getValue().toString());
         PersonalSettings cachedSettings = getCachedSettings();
-        Log.d(TAG, "loadSettings: Cached Settings " + cachedSettings);
+        personalSettings.setValue(cachedSettings);
         if(cachedSettings != null) {
             personalSettings.setValue(cachedSettings);
             viewState.setValue(ViewState.CACHED);
@@ -98,6 +100,7 @@ public class SettingsViewModel extends AndroidViewModel {
                 response -> {
                     viewState.postValue(ViewState.RESULT);
                     try {
+                        personalSettings.setValue(new PersonalSettings());
                         personalSettings.getValue().setNumberOfMatches(response.getInt("numberOfMatches"));
                         JSONArray notificationSettings = response.getJSONArray("notificationTypes");
                         for (int i = 0; i < notificationSettings.length(); i++) {
@@ -189,7 +192,7 @@ public class SettingsViewModel extends AndroidViewModel {
                 Log.d(TAG, "getCachedSettings: No cached settings available");
             }
         } catch (Exception e) {
-            viewState.postValue(ViewState.ERROR);
+            viewState.setValue(ViewState.ERROR);
             Log.e(TAG, "getCachedSettings: Error while getting cached settings" + e.getMessage());
             addInitialSettings();
         }
@@ -200,7 +203,7 @@ public class SettingsViewModel extends AndroidViewModel {
      * Add initial settings for new users
      */
     public void addInitialSettings() {
-        viewState.postValue(ViewState.LOADING);
+        viewState.setValue(ViewState.LOADING);
         Log.d(TAG, "addInitialSettings: ViewState " + viewState.getValue().toString());
         PersonalSettings initialSettings = new PersonalSettings();
 

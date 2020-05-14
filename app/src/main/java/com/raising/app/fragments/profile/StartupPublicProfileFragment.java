@@ -388,7 +388,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             profileLabels.setVisibility(View.GONE);
             labelsLayout.setVisibility(View.GONE);
         } else {
-            labelsLayout.removeAllViews();
+            labelsLayout.removeAllViewsInLayout();
             resources.getLabels().forEach(label -> {
                 startup.getLabels().forEach(startupLabel -> {
                     if(label.getId() == startupLabel) {
