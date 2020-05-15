@@ -284,6 +284,7 @@ public class LeadsFragment extends RaisingFragment {
                 emptyLeadsLayout.setVisibility(View.GONE);
             }
         }
+
         // notify recycler view adapters, that data has changed
         todayAdapter.notifyDataSetChanged();
         thisWeekAdapter.notifyDataSetChanged();

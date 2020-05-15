@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = getIntent();
                 if(intent.getExtras() != null && intent.getExtras().containsKey("interaction")) {
                     NotificationType type = NotificationType.valueOf(intent.getExtras().getString("interaction"));
-                    /*switch(type) {
+                    switch(type) {
                         case LEAD:
                         case CONNECTION:
                             long leadId = intent.getExtras().getLong("id");
@@ -151,12 +151,12 @@ public class MainActivity extends AppCompatActivity {
                             tabViewModel.setCurrentLeadsFragment(new LeadsOpenRequestsFragment());
                             selectBottomNavigation(R.id.nav_leads);
                             break;
-                        case REQUEST:*/
+                        case REQUEST:
                             tabViewModel.resetCurrentLeadsFragment();
                             tabViewModel.setCurrentLeadsTab(0);
                             selectBottomNavigation(R.id.nav_leads);
-                           /* break;
-                    }*/
+                            break;
+                    }
                 } else {
                     fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
                 }
