@@ -38,7 +38,7 @@ public class OnboardingPost4Fragment extends RaisingFragment {
         }
 
         view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {
-            resetTab();
+            tabViewModel.resetCurrentSettingsFragment();
             if(getArguments() != null && getArguments().getBoolean("settings")) {
                 clearBackstackAndReplace(new SettingsFragment());
             } else {
@@ -49,7 +49,7 @@ public class OnboardingPost4Fragment extends RaisingFragment {
 
         view.findViewById(R.id.text_onboarding_next).setOnClickListener(v -> {
             Fragment fragment = new OnboardingPost6Fragment();
-            resetTab();
+            tabViewModel.resetCurrentSettingsFragment();
             if(getArguments() != null && getArguments().getBoolean("settings")) {
                 fragment.setArguments(args);
                 changeFragment(fragment);
