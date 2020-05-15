@@ -1,8 +1,8 @@
 package com.raising.app.fragments.leads;
-​
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-​
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -11,14 +11,14 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-​
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-​
+
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.raising.app.R;
@@ -34,63 +34,63 @@ import com.raising.app.util.ImageHandler;
 import com.raising.app.util.SubscriptionHandler;
 import com.raising.app.util.recyclerViewAdapter.LeadsAdapter;
 import com.raising.app.viewModels.LeadsViewModel;
-​
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-​
+
 public class LeadsFragment extends RaisingFragment {
     private String TAG = "LeadsFragment";
-​
+
     private LeadState leadState;
     private LeadsViewModel leadsViewModel;
     private LeadsAdapter todayAdapter, thisWeekAdapter, thisMonthAdapter, earlierAdapter;
     private ArrayList<Lead> today, thisWeek, thisMonth, earlier;
     private ConstraintLayout todayLayout, thisWeekLayout, thisMonthLayout, earlierLayout, emptyLeadsLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
-​
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         leadsViewModel = ViewModelProviders.of(getActivity())
                 .get(LeadsViewModel.class);
-​
+
         return inflater.inflate(R.layout.fragment_leads, container, false);
     }
-​
+
     @SuppressLint("RestrictedApi")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-​
+
         // find all views and set their visibilities
         emptyLeadsLayout = view.findViewById(R.id.empty_leads_fragment_text);
         emptyLeadsLayout.setVisibility(View.GONE);
         Log.d(TAG, "onViewCreated: EmptyLeadsVisibility GONE");
-​
+
         swipeRefreshLayout = view.findViewById(R.id.leads_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> leadsViewModel.loadLeads());
-​
+
         today = new ArrayList<>();
         thisWeek = new ArrayList<>();
         thisMonth = new ArrayList<>();
         earlier = new ArrayList<>();
-​
+
         todayLayout = view.findViewById(R.id.leads_today);
         thisWeekLayout = view.findViewById(R.id.leads_this_week);
         thisMonthLayout = view.findViewById(R.id.leads_this_month);
         earlierLayout = view.findViewById(R.id.leads_earlier);
-​
+
         todayLayout.setVisibility(View.GONE);
         thisWeekLayout.setVisibility(View.GONE);
         thisMonthLayout.setVisibility(View.GONE);
         earlierLayout.setVisibility(View.GONE);
-​
+
         view.findViewById(R.id.leads_open_requests).setVisibility(View.GONE);
-​
+
         // check for leads state
         if (getArguments() != null) {
             leadState = (LeadState) getArguments().getSerializable("leadsState");
@@ -98,13 +98,13 @@ public class LeadsFragment extends RaisingFragment {
             leadsViewModel.loadLeads();
         }
     }
-​
+
     @Override
     public void onResume() {
         super.onResume();
         leadsViewModel.loadLeads();
     }
-​
+
     @Override
     public void onResourcesLoaded() {
         //prepare recycler view adapters and recycler views
@@ -112,12 +112,12 @@ public class LeadsFragment extends RaisingFragment {
         thisWeekAdapter = new LeadsAdapter(thisWeek, leadState);
         thisMonthAdapter = new LeadsAdapter(thisMonth, leadState);
         earlierAdapter = new LeadsAdapter(earlier, leadState);
-​
+
         setupRecyclerView(R.id.leads_tab_recycler_today, todayAdapter, today);
         setupRecyclerView(R.id.leads_tab_recycler_this_week, thisWeekAdapter, thisWeek);
         setupRecyclerView(R.id.leads_tab_recycler_this_month, thisMonthAdapter, thisMonth);
         setupRecyclerView(R.id.leads_tab_recycler_earlier, earlierAdapter, earlier);
-​
+
         // set observer for view state of leadsViewModel
         leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             if (state == ViewState.RESULT || state == ViewState.CACHED) {
@@ -125,14 +125,14 @@ public class LeadsFragment extends RaisingFragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-​
+
         if (leadsViewModel.getViewState().getValue() == ViewState.RESULT
                 || leadsViewModel.getViewState().getValue() == ViewState.CACHED) {
             filterLeads();
             swipeRefreshLayout.setRefreshing(false);
         }
     }
-​
+
     /**
      * Initialize recyclerview for leads. The leads are grouped by their timestamp.
      * Each timestamp has its own recycler view.
@@ -151,10 +151,10 @@ public class LeadsFragment extends RaisingFragment {
                 ((RaisingFragment) getParentFragment()).changeFragment(new UnlockPremiumFragment());
             } else {
                 Bundle args = new Bundle();
-​
+
                 args.putLong("leadId", leads.get(position).getId());
                 Fragment contactFragment = new LeadsInteractionFragment();
-​
+
                 if ((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_ACCEPTED)
                         || (leads.get(position).getHandshakeState() == InteractionState.STARTUP_ACCEPTED)) {
                     args.putBoolean("disableContact", true);
@@ -166,7 +166,7 @@ public class LeadsFragment extends RaisingFragment {
                 ((RaisingFragment) getParentFragment()).changeFragment(contactFragment);
             }
         });
-​
+
         adapter.setOnClickListener(position -> {
             // check if user has valid subscription
             if (!SubscriptionHandler.hasValidSubscription()) {
@@ -190,7 +190,7 @@ public class LeadsFragment extends RaisingFragment {
             }
         });
     }
-​
+
     /**
      * Prepare open requests layout and toggle its visibility
      */
@@ -220,7 +220,7 @@ public class LeadsFragment extends RaisingFragment {
             }
         }
     }
-​
+
     /**
      * Filter all leads based on their timestamps into four different categories.
      */
@@ -235,9 +235,9 @@ public class LeadsFragment extends RaisingFragment {
         thisMonthLayout.setVisibility(View.GONE);
         earlier.clear();
         earlierLayout.setVisibility(View.GONE);
-​
+
         emptyLeadsLayout.setVisibility(View.GONE);
-​
+
         // loop over all leads and filter them
         leadsViewModel.getLeads().getValue().forEach(lead -> {
             if (lead.getState() == leadState) {
@@ -253,7 +253,7 @@ public class LeadsFragment extends RaisingFragment {
                                 lead.getInvestorTypeId()).getName());
                     }
                 }
-​
+
                 if (daysSince(lead.getTimestamp()) < 1) {
                     today.add(lead);
                     todayLayout.setVisibility(View.VISIBLE);
@@ -269,7 +269,7 @@ public class LeadsFragment extends RaisingFragment {
                 }
             }
         });
-​
+
         // hide empty leads layout
         if (leadState == LeadState.YOUR_TURN) {
             if (today.size() == 0 && thisWeek.size() == 0 && thisMonth.size() == 0 && earlier.size() == 0 && leadsViewModel.getOpenRequests().size() == 0) {
@@ -284,14 +284,14 @@ public class LeadsFragment extends RaisingFragment {
                 emptyLeadsLayout.setVisibility(View.GONE);
             }
         }
-​
+
         // notify recycler view adapters, that data has changed
         todayAdapter.notifyDataSetChanged();
         thisWeekAdapter.notifyDataSetChanged();
         thisMonthAdapter.notifyDataSetChanged();
         earlierAdapter.notifyDataSetChanged();
     }
-​
+
     /**
      * Calculate difference from given date to today in days
      *
