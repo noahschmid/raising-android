@@ -6,19 +6,29 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.models.ContactData;
 import com.raising.app.models.leads.Interaction;
+import com.raising.app.models.leads.InteractionState;
 import com.raising.app.models.leads.Lead;
+import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.ContactDataHandler;
 import com.raising.app.util.LeadsInteraction;
+import com.raising.app.viewModels.LeadsViewModel;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +38,9 @@ public class LeadsInteractionFragment extends RaisingFragment {
     private long id;
     Lead contact;
     private List<LeadsInteraction> interactions = new ArrayList<>();
+    private Button closeContact;
 
+    private final String TAG = "LeadsInteractionFragment";
     private boolean disableContact, declinedContact;
 
     @Override
@@ -42,6 +54,12 @@ public class LeadsInteractionFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        closeContact = view.findViewById(R.id.button_close_contact);
+
+        if(contact.getHandshakeState() != InteractionState.HANDSHAKE) {
+            closeContact.setVisibility(View.GONE);
+        }
 
         if (getArguments() != null) {
             contact = (Lead) getArguments().getSerializable("lead");
@@ -74,6 +92,28 @@ public class LeadsInteractionFragment extends RaisingFragment {
             blurOverlay.setVisibility(View.VISIBLE);
             interactions.forEach(interaction -> {
                 interaction.enableButton(false);
+            });
+        }
+
+        Fragment fragment = this;
+        if(!disableContact && !declinedContact) {
+            closeContact.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String endpoint = "interaction/" + contact.getId() + "/decline";
+
+                    ApiRequestHandler.performPatchRequest(endpoint,
+                            res -> {
+                                resetTab();
+                                popFragment(fragment);
+                                return null;
+                            },
+                            err -> {
+                                Log.e(TAG, "updateRemoteInteraction: " + ApiRequestHandler.parseVolleyError(err));
+                                return null;
+                            },
+                            new JSONObject());
+                }
             });
         }
     }
