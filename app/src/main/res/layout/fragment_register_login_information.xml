@@ -145,7 +145,6 @@
                 android:id="@+id/login_information_helper_view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
                 app:layout_constraintBottom_toTopOf="@+id/button_login_information"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
