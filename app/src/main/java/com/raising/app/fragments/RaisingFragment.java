@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProviders;
 import android.app.AlertDialog;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,15 +37,19 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.MainActivity;
 import com.raising.app.R;
 import com.raising.app.models.Account;
+import com.raising.app.models.Image;
 import com.raising.app.models.Model;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.ImageHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.Resources;
 import com.raising.app.util.SimpleMessageDialog;
@@ -190,27 +196,6 @@ public class RaisingFragment extends Fragment {
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
-    }
-
-    /**
-     * Load profile image into image view
-     *
-     * @param id        id of the profile image
-     * @param imageView where to load the image into
-     */
-    protected void loadProfileImage(long id, ImageView imageView) {
-        if (id <= 0) {
-            imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_placeholder_24dp));
-        } else {
-            Glide
-                    .with(InternalStorageHandler.getContext())
-                    .load(ApiRequestHandler.getDomain() + "media/profilepicture/" + id)
-                    .centerCrop()
-                    .apply(RequestOptions.circleCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                    .placeholder(R.drawable.ic_placeholder_24dp)
-                    .into(imageView);
-        }
     }
 
     /**

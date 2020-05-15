@@ -19,6 +19,7 @@ import com.raising.app.R;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.leads.LeadState;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.ImageHandler;
 import com.raising.app.util.InternalStorageHandler;
 
 import java.util.ArrayList;
@@ -78,21 +79,7 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
         holder.name.setText(recyclerItem.getTitle());
         holder.attribute.setText(recyclerItem.getAttribute());
 
-
-        if(recyclerItem.getProfilePictureId() > 0) {
-            Glide
-                    .with(InternalStorageHandler.getContext())
-                    .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
-                            recyclerItem.getProfilePictureId())
-                    .centerCrop()
-                    .apply(RequestOptions.circleCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                    .placeholder(R.drawable.ic_placeholder_24dp)
-                    .into(holder.profilePicture);
-        } else {
-            holder.profilePicture.setImageDrawable(InternalStorageHandler.getContext()
-                    .getResources().getDrawable(R.drawable.ic_placeholder_24dp));
-        }
+        ImageHandler.loadProfileImage(recyclerItem.getProfilePictureId(), holder.profilePicture);
     }
 
     @Override

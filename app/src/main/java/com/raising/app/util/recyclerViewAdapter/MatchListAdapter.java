@@ -20,6 +20,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.raising.app.R;
 import com.raising.app.models.MatchListItem;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.ImageHandler;
 import com.raising.app.util.InternalStorageHandler;
 
 import java.util.ArrayList;
@@ -49,20 +50,8 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
         holder.attribute.setText(recyclerItem.getAttribute());
         holder.sentence.setText(recyclerItem.getDescription());
         holder.matchingPercent.setText(recyclerItem.getScore() + "%");
-        if(recyclerItem.getPictureId() > 0) {
-            Glide
-                    .with(InternalStorageHandler.getContext())
-                    .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
-                            recyclerItem.getPictureId())
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                    .apply(RequestOptions.circleCropTransform())
-                    .placeholder(R.drawable.ic_placeholder_24dp)
-                    .into(holder.profileImage);
-        } else {
-            holder.profileImage.setImageDrawable(InternalStorageHandler.getContext()
-                    .getResources().getDrawable(R.drawable.ic_placeholder_24dp));
-        }
+
+        ImageHandler.loadProfileImage(recyclerItem.getPictureId(), holder.profileImage);
         setupMatchingPercentGraphic(holder.matchingPercentGraphic, recyclerItem);
     }
 

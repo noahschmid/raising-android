@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -123,6 +124,13 @@ public class MainActivity extends AppCompatActivity {
                 SubscriptionHandler.loadSubscription();
                 hideBottomNavigation(false);
                 hideToolbar(false);
+
+                /* handle notification */
+                Intent intent = getIntent();
+                if(intent.getExtras() != null && intent.getExtras().containsKey("custom_key_1")) {
+                    String data = intent.getExtras().getString("custom_key_1");
+                }
+
                 fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
             }
         }

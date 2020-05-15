@@ -32,6 +32,8 @@ import com.raising.app.models.leads.InteractionState;
 import com.raising.app.models.leads.LeadState;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
+import com.raising.app.util.ImageHandler;
+import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.SubscriptionHandler;
 import com.raising.app.util.TabOrigin;
 import com.raising.app.util.recyclerViewAdapter.LeadsAdapter;
@@ -210,7 +212,7 @@ public class LeadsFragment extends RaisingFragment {
                 openRequests.setVisibility(View.VISIBLE);
                 ImageView image = getView().findViewById(R.id.leads_open_requests_image);
                 // set image of uppermost index in openRequests
-                loadProfileImage(leadsViewModel.getOpenRequests().get(0).getProfilePictureId(), image);
+                ImageHandler.loadProfileImage(leadsViewModel.getOpenRequests().get(0).getProfilePictureId(), image);
                 BadgeDrawable badge = BadgeDrawable.create(Objects.requireNonNull(this.getContext()));
                 badge.setNumber(leadsViewModel.getOpenRequests().size());
                 badge.setBadgeGravity(BadgeDrawable.TOP_START);
