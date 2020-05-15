@@ -22,6 +22,7 @@ import com.raising.app.models.ContactData;
 import com.raising.app.models.leads.InteractionType;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.util.ContactDataHandler;
+import com.raising.app.util.ImageHandler;
 import com.raising.app.util.InternalStorageHandler;
 
 import java.net.URLEncoder;
@@ -62,7 +63,7 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
             lead = (Lead)getArguments().getSerializable("lead");
             contactData = ContactDataHandler.getContactData(lead.getAccountId());
 
-            loadProfileImage(lead.getProfilePictureId(), contactImage);
+            ImageHandler.loadProfileImage(lead.getProfilePictureId(), contactImage);
 
             contactName.setText(lead.getTitle());
 

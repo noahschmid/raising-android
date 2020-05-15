@@ -1,12 +1,20 @@
 package com.raising.app.util;
 
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.raising.app.R;
+import com.raising.app.models.Image;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -105,5 +113,47 @@ public class InternalStorageHandler {
             return;
 
         context.deleteFile(filename);
+    }
+
+    /**
+     * Save a bitmap to internal storage
+     * @param bitmap bitmap that should be saved
+     * @param filename name of the file to be saved
+     * @return path to the saved file
+     */
+    public static String saveBitmap(Bitmap bitmap, String filename){
+        ContextWrapper cw = new ContextWrapper(InternalStorageHandler.getContext());
+        File directory = cw.getDir("images", Context.MODE_PRIVATE);
+        File mypath = new File(directory,filename);
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
+    }
+
+    /**
+     * Load a bitmap from the internal storage
+     * @param filename name to the file
+     * @return loaded bitmap or null
+     */
+    public static Bitmap loadBitmap(String filename) {
+        try {
+            File f=new File("images", filename);
+            Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
+            return bitmap;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
