@@ -32,7 +32,7 @@
 
     <dimen name="inputOneSentenceDescriptionHeight"> 80dp </dimen>
     <dimen name="inputPitchHeight"> 150dp </dimen>
-    <dimen name="inputPitchMaxHeight"> 300dp </dimen>
+    <dimen name="inputPitchMaxHeight"> 450dp </dimen>
 
     <dimen name="raisingLargeTitleFontSize"> 22sp </dimen>
     <dimen name="raisingTitleFontSize"> 20sp </dimen>

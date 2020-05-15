@@ -49,7 +49,7 @@ public class SettingsViewModel extends AndroidViewModel {
         viewState.setValue(ViewState.LOADING);
         PersonalSettings cachedSettings = getCachedSettings();
         personalSettings.setValue(cachedSettings);
-        if(cachedSettings != null) {
+        if (cachedSettings != null) {
             Log.d(TAG, "loadSettings: Loaded Cached Settings " + cachedSettings);
             personalSettings.setValue(cachedSettings);
             viewState.setValue(ViewState.CACHED);
@@ -79,8 +79,8 @@ public class SettingsViewModel extends AndroidViewModel {
                     Log.d(TAG, "sendDeviceToken: Token updated " + deviceToken);
                     return null;
                 }, error -> {
-                    if(error.networkResponse != null) {
-                        if(error.networkResponse.statusCode == 403) {
+                    if (error.networkResponse != null) {
+                        if (error.networkResponse.statusCode == 403) {
                             viewState.postValue(ViewState.EXPIRED);
                         } else {
                             viewState.postValue(ViewState.ERROR);
@@ -113,7 +113,7 @@ public class SettingsViewModel extends AndroidViewModel {
                     }
                     return null;
                 }, volleyError -> {
-                    if(viewState.getValue() != ViewState.CACHED) {
+                    if (viewState.getValue() != ViewState.CACHED) {
                         viewState.postValue(ViewState.ERROR);
                     }
                     Log.d(TAG, "getUserSettings: Error fetching settings" + volleyError.toString());
@@ -255,5 +255,20 @@ public class SettingsViewModel extends AndroidViewModel {
                     Log.e(TAG, "addInitialSettings: " + ApiRequestHandler.parseVolleyError(volleyError));
                     return null;
                 }, object);
+    }
+
+    /**
+     * Call the backend to inform, that user has logged out and the device token should be deleted.
+     * This prevents, that a user who is not logged in, does not receive any push notifications.
+     */
+    public void onLogoutResetToken() {
+        ApiRequestHandler.performPatchRequest("settings/deletetoken",
+                response -> {
+                    Log.d(TAG, "onLogoutResetToken: Token Reset");
+                    return null;
+                }, volleyError -> {
+                    Log.e(TAG, "onLogoutResetToken: " + volleyError.getMessage());
+                    return null;
+                }, new JSONObject());
     }
 }

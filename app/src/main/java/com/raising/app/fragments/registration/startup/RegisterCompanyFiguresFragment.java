@@ -217,10 +217,14 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
         if (s.length() == 0)
             return;
 
-        if (Integer.parseInt(s.toString()) == startup.getFoundingYear()
-                || Integer.parseInt(s.toString()) == startup.getBreakEvenYear())
+        try {
+            if (Integer.parseInt(s.toString()) == startup.getFoundingYear()
+                    || Integer.parseInt(s.toString()) == startup.getBreakEvenYear())
+                return;
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "onTextChanged: " + e.getMessage());
             return;
-
+        }
         btnCompanyFigures.setEnabled(true);
     }
 

@@ -8,5 +8,5 @@
 
     </corners>
 
-    <solid android:color="@color/raisingSecondaryAccent"></solid>
+    <solid android:color="@color/raisingSecondaryLight"></solid>
 </shape>

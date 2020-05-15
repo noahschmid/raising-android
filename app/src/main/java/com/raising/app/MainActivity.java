@@ -19,7 +19,9 @@ import com.raising.app.fragments.leads.LeadsContainerFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.onboarding.OnboardingPre1Fragment;
+import com.raising.app.fragments.onboarding.OnboardingPre2Fragment;
 import com.raising.app.fragments.profile.ContactDataInput;
+import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.fragments.settings.SettingsFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
 import com.raising.app.util.AccountService;
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (!AuthenticationHandler.isLoggedIn()) {
             hideBottomNavigation(true);
             hideToolbar(true);
-            fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
+            fragmentTransaction.replace(R.id.fragment_container, new RegisterLoginInformationFragment());
         } else {
             leadsViewModel.loadLeads();
             matchesViewModel.loadMatches();
@@ -145,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!AuthenticationHandler.isLoggedIn()) {
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fragment_container, new LoginFragment())
+                            .replace(R.id.fragment_container, new RegisterLoginInformationFragment())
                             .commit();
                     return true;
                 } else {
