@@ -47,6 +47,7 @@ public class OnboardingPost3Fragment extends RaisingFragment {
 
         view.findViewById(R.id.text_onboarding_next).setOnClickListener(v -> {
             Fragment fragment = new OnboardingPost4Fragment();
+            resetTab();
             if(getArguments() != null && getArguments().getBoolean("settings")) {
                 fragment.setArguments(args);
                 changeFragment(fragment);

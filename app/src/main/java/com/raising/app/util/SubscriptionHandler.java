@@ -8,7 +8,6 @@ import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.raising.app.models.Subscription;
-import com.raising.app.viewModels.ViewStateViewModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,6 +74,19 @@ public class SubscriptionHandler {
                     Log.e(TAG, "loadSubscription: Error loading subscription: " + volleyError.getMessage());
                     return null;
                 });
+    }
+
+    private static boolean verifySubscription() {
+        AtomicBoolean subscriptionVerified = new AtomicBoolean(false);
+        ApiRequestHandler.performGetRequest("/subscription/android/verify",
+                response -> {
+                    subscriptionVerified.set(true);
+                    return null;
+                }, volleyError -> {
+                    Log.e(TAG, "verifySubscription: Subscription invalid " + volleyError.getMessage());
+                    return null;
+                });
+        return true;
     }
 
     /**
@@ -282,7 +294,7 @@ public class SubscriptionHandler {
      * false, if user does not have a valid subscription
      */
     public static boolean hasValidSubscription() {
-        if(getActiveSubscription() != null) {
+        if (getActiveSubscription() != null) {
             verifySubscription(activeSubscription.getExpirationDate());
         }
         //return getActiveSubscription() != null;
