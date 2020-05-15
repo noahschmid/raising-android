@@ -50,6 +50,8 @@ public class LeadsContainerFragment extends RaisingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // find all views
         tabLayout = view.findViewById(R.id.leads_tab_layout);
         yourTurn = view.findViewById(R.id.tab_your_turn);
         pending = view.findViewById(R.id.tab_pending);
@@ -57,6 +59,7 @@ public class LeadsContainerFragment extends RaisingFragment {
 
         viewPager = view.findViewById(R.id.leads_view_pager);
 
+        // initialize pager adapter for view pager
         HandshakePageAdapter pagerAdapter = new HandshakePageAdapter(getChildFragmentManager(),
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
                 tabLayout.getTabCount());
@@ -71,12 +74,10 @@ public class LeadsContainerFragment extends RaisingFragment {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
 

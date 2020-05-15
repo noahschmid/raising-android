@@ -51,6 +51,7 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // find all views
         contactImage = view.findViewById(R.id.leads_contact_picture);
         contactName = view.findViewById(R.id.leads_contact_name);
         contactMail = view.findViewById(R.id.leads_contact_mail);
@@ -67,20 +68,18 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
 
             contactName.setText(lead.getTitle());
 
+            // fill fragment with contact data
             if(contactData != null) {
-
                 if(contactData.getEmail() != null) {
                     contactMail.setText(contactData.getEmail());
                 } else {
                     contactMail.setVisibility(View.GONE);
                 }
-
                 if(contactData.getPhone() != null) {
                     contactPhone.setText(contactData.getPhone());
                 } else {
                     contactPhone.setVisibility(View.GONE);
                 }
-
                 saveContact.setOnClickListener(v -> {
                     Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
                     intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
