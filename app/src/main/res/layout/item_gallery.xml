@@ -8,6 +8,8 @@
         android:id="@+id/register_investor_image_profile_layout"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
