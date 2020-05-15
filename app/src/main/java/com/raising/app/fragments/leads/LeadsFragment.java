@@ -48,7 +48,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class LeadsFragment extends RaisingFragment {
-    private String TAG;
+    private String TAG = "LeadsFragment";
 
     private LeadState leadState;
     private LeadsViewModel leadsViewModel;
@@ -64,6 +64,34 @@ public class LeadsFragment extends RaisingFragment {
                 .get(LeadsViewModel.class);
 
         return inflater.inflate(R.layout.fragment_leads, container, false);
+    }
+
+    @Override
+    public void onResourcesLoaded() {
+        todayAdapter = new LeadsAdapter(today, leadState);
+        thisWeekAdapter = new LeadsAdapter(thisWeek, leadState);
+        thisMonthAdapter = new LeadsAdapter(thisMonth, leadState);
+        earlierAdapter = new LeadsAdapter(earlier, leadState);
+
+        setupRecyclerView(R.id.leads_tab_recycler_today, todayAdapter, today);
+        setupRecyclerView(R.id.leads_tab_recycler_this_week, thisWeekAdapter, thisWeek);
+        setupRecyclerView(R.id.leads_tab_recycler_this_month, thisMonthAdapter, thisMonth);
+        setupRecyclerView(R.id.leads_tab_recycler_earlier, earlierAdapter, earlier);
+
+        if (resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
+                resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
+            leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+                if (state == ViewState.RESULT || state == ViewState.CACHED) {
+                    loadData();
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+            if (leadsViewModel.getViewState().getValue() == ViewState.RESULT
+                    || leadsViewModel.getViewState().getValue() == ViewState.CACHED) {
+                loadData();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -94,47 +122,18 @@ public class LeadsFragment extends RaisingFragment {
         earlierLayout.setVisibility(View.GONE);
 
         getView().findViewById(R.id.leads_open_requests).setVisibility(View.GONE);
-
+        
         // check for leads state
         if (getArguments() != null) {
             leadState = (LeadState) getArguments().getSerializable("leadsState");
             TAG = "LeadsFragment" + leadState;
-            // prepare leadsViewModel for usage
-
-            Log.d(TAG, "onViewCreated: ");
             leadsViewModel.loadLeads();
-
-            todayAdapter = new LeadsAdapter(today, leadState);
-            thisWeekAdapter = new LeadsAdapter(thisWeek, leadState);
-            thisMonthAdapter = new LeadsAdapter(thisMonth, leadState);
-            earlierAdapter = new LeadsAdapter(earlier, leadState);
-
-            setupRecyclerView(R.id.leads_tab_recycler_today, todayAdapter, today);
-            setupRecyclerView(R.id.leads_tab_recycler_this_week, thisWeekAdapter, thisWeek);
-            setupRecyclerView(R.id.leads_tab_recycler_this_month, thisMonthAdapter, thisMonth);
-            setupRecyclerView(R.id.leads_tab_recycler_earlier, earlierAdapter, earlier);
-
-            if (resourcesViewModel.getViewState().getValue() == ViewState.RESULT ||
-                    resourcesViewModel.getViewState().getValue() == ViewState.CACHED) {
-                leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
-                    if (state == ViewState.RESULT || state == ViewState.CACHED) {
-                        loadData();
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                });
-                if (leadsViewModel.getViewState().getValue() == ViewState.RESULT
-                        || leadsViewModel.getViewState().getValue() == ViewState.CACHED) {
-                    loadData();
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-            }
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: ");
         leadsViewModel.loadLeads();
     }
 
@@ -156,7 +155,7 @@ public class LeadsFragment extends RaisingFragment {
             } else {
                 Bundle args = new Bundle();
 
-                args.putSerializable("lead", leads.get(position));
+                args.putLong("leadId", leads.get(position).getId());
                 Fragment contactFragment = new LeadsInteractionFragment();
 
                 if ((leads.get(position).getHandshakeState() == InteractionState.INVESTOR_ACCEPTED)
@@ -201,7 +200,6 @@ public class LeadsFragment extends RaisingFragment {
     @SuppressLint("RestrictedApi")
     private void loadData() {
         ConstraintLayout openRequests = getView().findViewById(R.id.leads_open_requests);
-        ImageView openRequestsArrow = getView().findViewById(R.id.leads_open_requests_arrow);
         FrameLayout openRequestsArrowLayout = getView().findViewById(R.id.leads_open_request_arrow_layout);
         if (!(leadState.equals(LeadState.YOUR_TURN))) {
             openRequests.setVisibility(View.GONE);
