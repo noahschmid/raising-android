@@ -57,6 +57,8 @@ public class ContactDataInput extends RaisingFragment {
         setupButton();
 
         hideBottomNavigation(true);
+
+        viewStateViewModel.stopLoading();
     }
 
     /**

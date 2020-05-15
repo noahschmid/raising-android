@@ -57,10 +57,6 @@ public class LeadsInteractionFragment extends RaisingFragment {
 
         closeContact = view.findViewById(R.id.button_close_contact);
 
-        if(contact.getHandshakeState() != InteractionState.HANDSHAKE) {
-            closeContact.setVisibility(View.GONE);
-        }
-
         if (getArguments() != null) {
             contact = (Lead) getArguments().getSerializable("lead");
 
@@ -70,6 +66,10 @@ public class LeadsInteractionFragment extends RaisingFragment {
             if (getArguments().getBoolean("declinedContact")) {
                 declinedContact = true;
             }
+        }
+
+        if(contact.getHandshakeState() != InteractionState.HANDSHAKE) {
+            closeContact.setVisibility(View.GONE);
         }
 
         LinearLayout layout = view.findViewById(R.id.leads_contact_items_layout);
@@ -100,9 +100,9 @@ public class LeadsInteractionFragment extends RaisingFragment {
             closeContact.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String endpoint = "interaction/" + contact.getId() + "/decline";
+                    String endpoint = "match/" + contact.getId() + "/decline";
 
-                    ApiRequestHandler.performPatchRequest(endpoint,
+                    ApiRequestHandler.performPostRequest(endpoint,
                             res -> {
                                 resetTab();
                                 popFragment(fragment);
@@ -110,6 +110,7 @@ public class LeadsInteractionFragment extends RaisingFragment {
                             },
                             err -> {
                                 Log.e(TAG, "updateRemoteInteraction: " + ApiRequestHandler.parseVolleyError(err));
+                                showInformationToast("Action failed");
                                 return null;
                             },
                             new JSONObject());
