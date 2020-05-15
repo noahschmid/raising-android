@@ -99,17 +99,13 @@ public class LeadsFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // find all views and set their respective visibilities
         emptyLeadsLayout = view.findViewById(R.id.empty_leads_fragment_text);
         emptyLeadsLayout.setVisibility(View.GONE);
         Log.d(TAG, "onViewCreated: EmptyLeadsVisibility GONE");
 
         swipeRefreshLayout = view.findViewById(R.id.leads_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> leadsViewModel.loadLeads());
-
-        today = new ArrayList<>();
-        thisWeek = new ArrayList<>();
-        thisMonth = new ArrayList<>();
-        earlier = new ArrayList<>();
 
         todayLayout = view.findViewById(R.id.leads_today);
         thisWeekLayout = view.findViewById(R.id.leads_this_week);
@@ -121,8 +117,8 @@ public class LeadsFragment extends RaisingFragment {
         thisMonthLayout.setVisibility(View.GONE);
         earlierLayout.setVisibility(View.GONE);
 
-        getView().findViewById(R.id.leads_open_requests).setVisibility(View.GONE);
-        
+        view.findViewById(R.id.leads_open_requests).setVisibility(View.GONE);
+
         // check for leads state
         if (getArguments() != null) {
             leadState = (LeadState) getArguments().getSerializable("leadsState");
