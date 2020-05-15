@@ -30,12 +30,12 @@ public class OnboardingPre1Fragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {
-            resetTab();
-            disablePreOnboarding();
-            clearBackstackAndReplace(new RegisterLoginInformationFragment());
+        view.findViewById(R.id.onboarding_click_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeFragment(new OnboardingPre2Fragment());
+            }
         });
-        view.findViewById(R.id.text_onboarding_next).setOnClickListener(v -> changeFragment(new OnboardingPre2Fragment()));
     }
 
     @Override

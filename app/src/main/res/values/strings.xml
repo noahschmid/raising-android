@@ -42,6 +42,7 @@
 
     <!-- Strings used for Onboarding -->
     <string name="toolbar_title_onboarding"> How it works </string>
+    <string name="onboarding_press_to_continue">Press to continue</string>
     <string name="onboarding_pre_1_text"> Get weekly matches of startups / investors that match your personal interests.</string>
     <string name="onboarding_pre_2_text"> Read further information about matches and add them to your leads, if you are interested.</string>
     <string name="onboarding_pre_3_text"> Get contact information if the other party consents. \n  </string>

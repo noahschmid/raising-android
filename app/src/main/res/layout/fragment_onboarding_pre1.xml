@@ -8,6 +8,7 @@
     tools:context=".fragments.onboarding.OnboardingPre1Fragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/pre_onboarding_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -26,7 +27,7 @@
             app:layout_constraintVertical_bias="0.51" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout8"
+            android:id="@+id/onboarding_click_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/onboardingPanelBottomMargin"
@@ -49,6 +50,7 @@
                 android:paddingEnd="@dimen/onboardingTextHorizontalPadding"
                 android:paddingBottom="@dimen/onboardingTextVerticalPadding"
                 android:textColorHint="@color/raisingPrimary"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/linearLayout"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -62,13 +64,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
-                android:hint="@string/next_text"
                 android:backgroundTint="@color/raisingPrimaryDark"
+                android:hint="@string/next_text"
                 android:paddingStart="@dimen/onboardingTextHorizontalPadding"
                 android:paddingTop="@dimen/onboardingTextVerticalPadding"
                 android:paddingEnd="@dimen/onboardingTextHorizontalPadding"
                 android:paddingBottom="@dimen/onboardingTextVerticalPadding"
                 android:textColorHint="@color/raisingWhite"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -81,6 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/text_onboarding_next"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -119,6 +123,18 @@
                     android:src="@drawable/ic_circle_full_12dp"
                     android:tint="@color/raisingPrimaryAccent" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView9"
+                style="@style/RaisingSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/onboarding_press_to_continue"
+                android:textColorHint="@color/raisingGrey"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
