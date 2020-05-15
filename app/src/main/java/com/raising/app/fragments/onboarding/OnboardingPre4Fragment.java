@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.raising.app.R;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.RaisingFragment;
+import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
 
 public class OnboardingPre4Fragment extends RaisingFragment {
 
@@ -31,7 +32,7 @@ public class OnboardingPre4Fragment extends RaisingFragment {
         view.findViewById(R.id.text_onboarding_next).setOnClickListener(v -> {
             resetTab();
             disablePreOnboarding();
-            clearBackstackAndReplace(new LoginFragment());
+            clearBackstackAndReplace(new RegisterLoginInformationFragment());
         });
     }
 

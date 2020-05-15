@@ -21,23 +21,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="3.6"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4" />
-
-        <ImageView
-            android:id="@+id/imageView14"
-            android:layout_width="450dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="45dp"
-            android:foregroundGravity="center"
-            android:src="@drawable/raising_splash_background"
-            app:layout_constraintDimensionRatio="0.5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.509"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView13" />
+            app:layout_constraintVertical_bias="0.51" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout8"
@@ -62,21 +48,22 @@
                 android:paddingTop="@dimen/onboardingTextVerticalPadding"
                 android:paddingEnd="@dimen/onboardingTextHorizontalPadding"
                 android:paddingBottom="@dimen/onboardingTextVerticalPadding"
-                android:textColorHint="@color/raisingWhite"
+                android:textColorHint="@color/raisingPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/linearLayout"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/text_onboarding_next"
                 style="@style/RaisingTextBold"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/onboardingNextButtonWidth"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMarginSmall"
                 android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/next_text"
+                android:backgroundTint="@color/raisingPrimaryDark"
                 android:paddingStart="@dimen/onboardingTextHorizontalPadding"
                 android:paddingTop="@dimen/onboardingTextVerticalPadding"
                 android:paddingEnd="@dimen/onboardingTextHorizontalPadding"
@@ -86,7 +73,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/linearLayout"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:rippleColor="@color/raisingRippleColor" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -105,7 +93,7 @@
                     android:paddingStart="2dp"
                     android:paddingEnd="2dp"
                     android:src="@drawable/ic_circle_full_12dp"
-                    android:tint="@color/raisingWhite" />
+                    android:tint="@color/raisingPrimary" />
 
                 <ImageView
                     android:layout_width="wrap_content"
