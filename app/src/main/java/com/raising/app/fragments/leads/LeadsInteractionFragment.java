@@ -97,24 +97,20 @@ public class LeadsInteractionFragment extends RaisingFragment {
 
         Fragment fragment = this;
         if(!disableContact && !declinedContact) {
-            closeContact.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String endpoint = "match/" + contact.getId() + "/decline";
+            closeContact.setOnClickListener(v -> {
+                String endpoint = "match/" + contact.getId() + "/decline";
 
-                    ApiRequestHandler.performPostRequest(endpoint,
-                            res -> {
-                                resetTab();
-                                popFragment(fragment);
-                                return null;
-                            },
-                            err -> {
-                                Log.e(TAG, "updateRemoteInteraction: " + ApiRequestHandler.parseVolleyError(err));
-                                showInformationToast("Action failed");
-                                return null;
-                            },
-                            new JSONObject());
-                }
+                ApiRequestHandler.performPostRequest(endpoint,
+                        res -> {
+                            popCurrentFragment();
+                            return null;
+                        },
+                        err -> {
+                            Log.e(TAG, "updateRemoteInteraction: " + ApiRequestHandler.parseVolleyError(err));
+                            showInformationToast("Action failed");
+                            return null;
+                        },
+                        new JSONObject());
             });
         }
     }

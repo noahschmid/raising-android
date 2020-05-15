@@ -24,6 +24,7 @@
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/subscription_paragraph_1"
                 app:layout_constraintBottom_toTopOf="@+id/subscription_paragraph_2"
                 app:layout_constraintEnd_toEndOf="parent"
