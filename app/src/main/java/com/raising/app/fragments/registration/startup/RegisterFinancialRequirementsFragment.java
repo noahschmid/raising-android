@@ -237,28 +237,43 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         }
 
         // validate scope
-        if(Integer.parseInt(scopeInput.getText().toString()) > 2000000000) {
+        try {
+            if (Integer.parseInt(scopeInput.getText().toString()) > 2000000000) {
+                showSimpleDialog(getString(R.string.register_dialog_title),
+                        getString(R.string.register_financial_error_high_scope));
+                return;
+            }
+            if (Integer.parseInt(scopeInput.getText().toString()) < 20000 || Integer.parseInt(scopeInput.getText().toString()) == 0) {
+                showSimpleDialog(getString(R.string.register_dialog_title),
+                        getString(R.string.register_financial_error_low_scope));
+                return;
+            }
+            scope = Float.parseFloat(scopeInput.getText().toString());
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "processInputs: " + e.getMessage());
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_financial_error_high_scope));
             return;
         }
-        if (Integer.parseInt(scopeInput.getText().toString()) < 20000 || Integer.parseInt(scopeInput.getText().toString()) == 0) {
-            showSimpleDialog(getString(R.string.register_dialog_title),
-                    getString(R.string.register_financial_error_low_scope));
-            return;
-        }
-        scope = Float.parseFloat(scopeInput.getText().toString());
-
 
         // validate committed
-        if (committed > (int) scope) {
+        try {
+            if (committedInput.getText().length() != 0) {
+                committed = Integer.parseInt(committedInput.getText().toString());
+            }
+            if (committed > (int) scope) {
+                showSimpleDialog(getString(R.string.register_dialog_title),
+                        getString(R.string.register_financial_error_committed));
+                return;
+            }
+
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "processInputs: " + e.getMessage());
             showSimpleDialog(getString(R.string.register_dialog_title),
-                    getString(R.string.register_financial_error_committed));
+                    getString(R.string.register_financial_error_committed_large));
             return;
         }
-        if (committedInput.getText().length() != 0) {
-            committed = Integer.parseInt(committedInput.getText().toString());
-        }
+
 
         // validate closing time
         if (selectedDate.before(Calendar.getInstance())) {

@@ -226,7 +226,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             ApiRequestHandler.performPostRequest("match/" + relationshipId + "/accept",
                     res -> {
                         matchesViewModel.removeMatch(relationshipId);
-                        popFragment(fragment);
+                        changeToAcceptedLayout();
                         return null;
                     },
                     err -> {
@@ -245,7 +245,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
                     res -> {
                         matchesViewModel.removeMatch(relationshipId);
-                        popFragment(fragment);
+                        changeToDeclinedLayout();
                         return null;
                     },
                     err -> {
@@ -488,23 +488,40 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             switch (handshakeState) {
                 case HANDSHAKE:
                 case INVESTOR_ACCEPTED:
-                    matchingSummary.getBackground().setTint(ContextCompat.getColor(this.getContext(), R.color.raisingPositiveAccent));
-                    profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept_green));
-                    profileDecline.setVisibility(View.GONE);
-                    textDeclined.setVisibility(View.GONE);
-                    textRequested.setText(getString(R.string.accepted_text));
+                    changeToAcceptedLayout();
                     break;
                 case INVESTOR_DECLINED:
-                    matchingSummary.getBackground().setTint(ContextCompat.getColor(this.getContext(), R.color.raisingNegativeAccent));
-                    profileDecline.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_decline_red));
+                    changeToDeclinedLayout();
+                    break;
+                case STARTUP_DECLINED:
                     profileRequest.setVisibility(View.GONE);
                     textRequested.setVisibility(View.GONE);
-                    textDeclined.setText(getString(R.string.declined_text));
+                    profileRequest.setEnabled(false);
+                    profileDecline.setEnabled(false);
+                    changeToDeclinedLayout();
                     break;
             }
-            profileRequest.setEnabled(false);
-            profileDecline.setEnabled(false);
         }
+    }
+
+    private void changeToAcceptedLayout() {
+        matchingSummary.getBackground().setTint(ContextCompat.getColor(this.getContext(), R.color.raisingPositiveAccent));
+        profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept_green));
+        profileRequest.setEnabled(false);
+        profileDecline.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_decline));
+        profileDecline.setEnabled(true);
+        textDeclined.setText(getString(R.string.decline_text));
+        textRequested.setText(getString(R.string.accepted_text));
+    }
+
+    private void changeToDeclinedLayout() {
+        matchingSummary.getBackground().setTint(ContextCompat.getColor(this.getContext(), R.color.raisingNegativeAccent));
+        profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept));
+        profileRequest.setEnabled(true);
+        profileDecline.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_decline_red));
+        profileDecline.setEnabled(false);
+        textDeclined.setText(getString(R.string.declined_text));
+        textRequested.setText(getString(R.string.accept_text));
     }
 
     /**

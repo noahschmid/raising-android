@@ -11,9 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.raising.app.R;
+import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Account;
 import com.raising.app.util.ApiRequestHandler;
@@ -29,8 +32,9 @@ import java.util.function.Function;
 
 public class RegisterLoginInformationFragment extends RaisingFragment implements RaisingTextWatcher {
     private final String TAG = "RegisterLoginInformationFragment";
+    private ImageView imageLoginInformation;
     private EditText firstNameInput, lastNameInput, emailInput, passwordInput;
-    private Button btnLoginInformation;
+    private Button btnLoginInformation, btnHasAccount;
     private boolean load = false;
     private boolean editMode = false;
     private Account account;
@@ -41,7 +45,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         View view = inflater.inflate(R.layout.fragment_register_login_information, container, false);
 
         hideBottomNavigation(true);
-        customizeAppBar(getString(R.string.toolbar_title_login_information), true);
+        hideToolbar(true);
 
         return view;
     }
@@ -56,8 +60,13 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         emailInput = view.findViewById(R.id.register_input_email);
         passwordInput = view.findViewById(R.id.register_input_password);
 
+        imageLoginInformation = view.findViewById(R.id.image_register_login_information);
+
         btnLoginInformation = view.findViewById(R.id.button_login_information);
         btnLoginInformation.setOnClickListener(v -> processLoginInformation());
+
+        btnHasAccount = view.findViewById(R.id.button_login_information_has_account);
+        btnHasAccount.setOnClickListener(v -> changeFragment(new LoginFragment()));
 
         //adjust fragment if this fragment is used for profile
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
@@ -65,9 +74,14 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
             btnLoginInformation.setEnabled(false);
             editMode = true;
             hideBottomNavigation(false);
+            hideToolbar(false);
+            customizeAppBar(getString(R.string.toolbar_title_login_information), true);
             account = currentAccount;
             account.setEmail(AuthenticationHandler.getEmail());
             view.findViewById(R.id.register_password).setVisibility(View.GONE);
+            view.findViewById(R.id.login_information_helper_view).setVisibility(View.GONE);
+            btnHasAccount.setVisibility(View.GONE);
+            imageLoginInformation.setVisibility(View.GONE);
         } else {
             Log.d(TAG, "onViewCreated: getting account from registration handler");
             account = RegistrationHandler.getAccount();
@@ -89,8 +103,8 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
 
     @Override
     public void onDestroyView() {
-        Log.d(TAG, "onDestroyView: ");
         hideBottomNavigation(false);
+        hideToolbar(false);
         super.onDestroyView();
 
     }

@@ -184,7 +184,7 @@ public class SubscriptionHandler {
             subscription.setExpirationDate(calendar);
             subscription.setPurchaseDate(getRespectiveDate(calendar, getSkuDurationFromSku(sku), false));
 
-            Log.d(TAG, "setActiveSubscriptionWithExpiration: Selected subscription " + subscription.toString());
+            Log.d(TAG, "setActiveSubscriptionWithExpiration: Selected subscription " + subscription.getSku() + " Expiration: " + subscription.getExpirationDate().getTime());
             activeSubscription = subscription;
         }
     }

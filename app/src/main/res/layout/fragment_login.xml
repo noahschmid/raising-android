@@ -62,9 +62,8 @@
                 android:id="@+id/button_login"
                 style="@style/ButtonRegistrationAndProfile"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/myProfileButtonHeight"
+                android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:layout_marginBottom="1dp"
                 android:hint="@string/login_button_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/login_password"
@@ -94,16 +93,16 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/raisingWhite"
                 android:hint="@string/login_register_text"
+                android:backgroundTint="@color/raisingWhite"
                 android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingSubtitleFontSize"
                 android:textStyle="bold"
+                app:rippleColor="@color/raisingRippleColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_login_forgot_password"
-                app:rippleColor="@color/raisingRippleColor" />
+                app:layout_constraintTop_toBottomOf="@+id/button_login_forgot_password" />
 
             <ImageView
                 android:id="@+id/imageView20"

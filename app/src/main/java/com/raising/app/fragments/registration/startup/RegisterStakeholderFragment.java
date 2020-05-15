@@ -501,7 +501,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
                 startup.setPrivateShareholders(privShareholders);
                 startup.setCorporateShareholders(corpShareholders);
 
-                popFragment(this);
+                popCurrentFragment();
             }
         } catch (IOException | JSONException e) {
             viewStateViewModel.stopLoading();

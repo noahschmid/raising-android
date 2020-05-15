@@ -177,11 +177,13 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
 
         companyFoundingInput.setOnClickListener(v -> {
             if (startup.getFoundingYear() > 0) {
-                showYearPicker(getString(R.string.founding_picker_title), companyFoundingInput, Integer.parseInt(companyFoundingInput.getText().toString()));
+                showYearPicker(getString(R.string.founding_picker_title), companyFoundingInput,
+                        Integer.parseInt(companyFoundingInput.getText().toString()));
             } else {
                 showYearPicker(getString(R.string.founding_picker_title), companyFoundingInput);
             }
         });
+
 
         // if editmode, add text watchers after initial filling with users data
         if (editMode) {
@@ -212,18 +214,19 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if(s.length() == 0)
+        if (s.length() == 0)
             return;
 
-        if(Integer.parseInt(s.toString()) == startup.getFoundingYear()
+        if (Integer.parseInt(s.toString()) == startup.getFoundingYear()
                 || Integer.parseInt(s.toString()) == startup.getBreakEvenYear())
             return;
 
         btnCompanyFigures.setEnabled(true);
     }
-    
+
     /**
      * Checks if the user has changed his selection of markets
+     *
      * @param list The users new selection of markets after dismissing the custom picker
      */
     private void checkIfMarketsChanged(List<PickerItem> list) {
@@ -232,7 +235,7 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
             listId.add(pickerItem.getId());
         });
 
-        if(!listId.equals(selected)) {
+        if (!listId.equals(selected)) {
             btnCompanyFigures.setEnabled(true);
         }
     }
@@ -275,11 +278,19 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
         }
 
         // check if FTE-input is valid
-        if (Integer.parseInt(companyFteInput.getText().toString()) < 1) {
+        try {
+            if (Integer.parseInt(companyFteInput.getText().toString()) < 1) {
+                showSimpleDialog(getString(R.string.register_dialog_title),
+                        getString(R.string.register_company_error_fte));
+                return;
+            }
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "processInformation: " + e.getMessage());
             showSimpleDialog(getString(R.string.register_dialog_title),
-                    getString(R.string.register_company_error_fte));
+                    getString(R.string.register_company_error_large_fte));
             return;
         }
+
 
         // check if break-even year input is valid
         if (Integer.parseInt(companyBreakevenInput.getText().toString())
@@ -294,9 +305,16 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
             startup.setContinents(continents);
         }
 
-        startup.setBreakEvenYear(Integer.parseInt(companyBreakevenInput.getText().toString()));
-        startup.setFoundingYear(Integer.parseInt(companyFoundingInput.getText().toString()));
-        startup.setNumberOfFte(Integer.parseInt(companyFteInput.getText().toString()));
+        try {
+            startup.setBreakEvenYear(Integer.parseInt(companyBreakevenInput.getText().toString()));
+            startup.setFoundingYear(Integer.parseInt(companyFoundingInput.getText().toString()));
+            startup.setNumberOfFte(Integer.parseInt(companyFteInput.getText().toString()));
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "processInformation: " + e.getMessage());
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_company_error_number_format));
+            return;
+        }
 
         startup.setRevenueMinId(revenueMinId);
         startup.setRevenueMaxId(revenueMaxId);

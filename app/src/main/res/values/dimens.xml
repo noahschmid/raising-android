@@ -3,7 +3,6 @@
     <dimen name="inputFormHeight"> 60dp </dimen>
 
     <dimen name="authenticationButtonHeight"> 60dp </dimen>
-    <dimen name="myProfileButtonHeight"> 55dp </dimen>
 
     <dimen name="leadsContactButtonHeight"> 40dp </dimen>
     <dimen name="leadsTabHeight"> 60dp </dimen>

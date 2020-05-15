@@ -36,6 +36,7 @@ public class OnboardingPost1Fragment extends RaisingFragment {
         }
 
         view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {
+            resetTab();
             if(getArguments() != null && getArguments().getBoolean("settings")) {
                 clearBackstackAndReplace(new SettingsFragment());
             } else {

@@ -116,10 +116,8 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         String targetAddress = getString(R.string.settings_target_email_address);
         if(isProblemReport) {
             subject = getString(R.string.settings_problem_report_subject);
-            body = getString(R.string.settings_problem_report_body);
         } else {
             subject = getString(R.string.settings_feedback_subject);
-            body = getString(R.string.settings_feedback_body);
         }
 
         String uriText = "mailto:" + targetAddress + "?subject=" + subject + "&body=" + body;
@@ -129,6 +127,7 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
 
     private void logout() {
         Log.d("debugMessage", "logout()");
+        resetTab();
         selectBottomNavigation(R.id.nav_matches);
         AuthenticationHandler.logout();
         clearBackstackAndReplace(new LoginFragment());

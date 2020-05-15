@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.raising.app.R;
@@ -31,6 +32,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
     private SwitchMaterial generalSwitch, matchlistSwitch, leadsSwitch, requestSwitch, connectionSwitch;
     private ConstraintLayout specificSettings;
     private PersonalSettings personalSettings;
+    private TextView generalNotificationText;
     private Button btnNotifications;
 
     @Override
@@ -51,6 +53,8 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         specificSettings = view.findViewById(R.id.notifications_specific_settings);
         specificSettings.setVisibility(View.GONE);
 
+        generalNotificationText = view.findViewById(R.id.notifications_general);
+
         ArrayList<Integer> integers = new ArrayList<>();
         for(int i = 0; i < getResources().getInteger(R.integer.maximumWeeklyMatchesNumber); i++) {
             integers.add(i+1);
@@ -67,8 +71,10 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
             btnNotifications.setEnabled(true);
             if (isChecked) {
                 specificSettings.setVisibility(View.VISIBLE);
+                generalNotificationText.setText(getString(R.string.settings_general_disable_all));
             } else {
                 specificSettings.setVisibility(View.GONE);
+                generalNotificationText.setText(getString(R.string.settings_general_enable_all));
                 matchlistSwitch.setChecked(false);
                 leadsSwitch.setChecked(false);
                 requestSwitch.setChecked(false);

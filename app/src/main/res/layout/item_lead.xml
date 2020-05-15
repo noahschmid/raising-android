@@ -21,11 +21,14 @@
     <TextView
         android:id="@+id/item_leads_name"
         style="@style/RaisingTextBold"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+        android:gravity="center|start"
         android:text="Name"
         app:layout_constraintBottom_toTopOf="@+id/item_leads_attributes"
+        app:layout_constraintEnd_toStartOf="@+id/item_leads_status_icon"
         app:layout_constraintStart_toEndOf="@+id/item_leads_profile_image"
         app:layout_constraintTop_toTopOf="@+id/item_leads_profile_image"
         app:layout_constraintVertical_chainStyle="packed" />

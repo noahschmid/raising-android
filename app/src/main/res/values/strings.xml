@@ -42,15 +42,15 @@
 
     <!-- Strings used for Onboarding -->
     <string name="toolbar_title_onboarding"> How it works </string>
-    <string name="onboarding_pre_1_text"> Get weekly matches of startups / investors that match your personal interests</string>
-    <string name="onboarding_pre_2_text"> Read further information about matches and request them if you are interested</string>
-    <string name="onboarding_pre_3_text"> Get contact information if the other party is interested as well \n  </string>
-    <string name="onboarding_post_1_text"> Once a week you will get new matches. If you click on a match you can see more details</string>
+    <string name="onboarding_pre_1_text"> Get weekly matches of startups / investors that match your personal interests.</string>
+    <string name="onboarding_pre_2_text"> Read further information about matches and add them to your leads, if you are interested.</string>
+    <string name="onboarding_pre_3_text"> Get contact information if the other party consents. \n  </string>
+    <string name="onboarding_post_1_text"> Every Monday you will get new matches. Click on a match to see more details.</string>
     <string name="onboarding_post_2_title"> Details</string>
-    <string name="onboarding_post_2_text"> After reading the details you can either request or decline the match \n</string>
-    <string name="onboarding_post_3_text"> After you requested a match, the match becomes a lead. If the other party also accepted the match, you can get in touch</string>
-    <string name="onboarding_post_4_text"> Request the other party for one of the provided interactions to receive their contact details</string>
-    <string name="onboarding_post_6_title"> Good Luck!</string>
+    <string name="onboarding_post_2_text"> After reading the details you can either request or decline. \n</string>
+    <string name="onboarding_post_3_text"> Upon requesting a match, the match becomes a lead. If the other party also accepted the match, you can get in touch with each other.</string>
+    <string name="onboarding_post_4_text"> Request the other party for one of the provided interactions to receive their contact details.</string>
+    <string name="onboarding_post_6_title"> Happy Matching!</string>
 
     <!-- Strings used for Login, ForgotPassword -->
     <string name="toolbar_title_login"> Login </string>
@@ -74,15 +74,17 @@
 
     <!-- Strings used for Registration -->
     <string name="registration_information_dialog_title"> Additional Information</string>
-    <string name="registration_information_dialog_description">Describe yourself in one sentence</string>
-    <string name="registration_information_dialog_pitch">Write a pitch in less than 250 words </string>
-    <string name="registration_information_dialog_uid">UID is a national identification number for all companies. If you do not know your UID click on ‘Find UID’.</string>
-    <string name="registration_information_dialog_fte">FTE stands for Full Time Employees. Potential matches may be interested in your employment status.</string>
-    <string name="registration_information_dialog_committed">Tell us if you have already achieved some of the target scope, that you have specified above.</string>
-    <string name="registration_information_dialog_scope">With the scope you can define how much money you would like to raise during this current financing phase.</string>
-    <string name="registration_information_label">A label is an award given to a startup upon completing a certain program or reaching predefined values \n(max. 3 Labels)</string>
+    <string name="registration_information_dialog_description">Describe yourself in one sentence.</string>
+    <string name="registration_information_dialog_description_startup">Describe your startup in one sentence.</string>
+    <string name="registration_information_dialog_pitch">Write a pitch in less than 250 words. </string>
+    <string name="registration_information_dialog_uid">UID is a national identification number for all companies. If you do not know your UID, click on ‘Find UID’.</string>
+    <string name="registration_information_dialog_committed">Committed Funding describes the amount of money, that you have already raised in your current financing round.</string>
+    <string name="registration_information_dialog_scope">Scope is the total amount of money, that you would like to raise in your financing round.</string>
+    <string name="registration_information_label">A label is an award or certificate from an organization that recognizes outstanding startups. \n(max. 3 Labels)</string>
 
     <string name="toolbar_title_login_information"> Login Information</string>
+    <string name="text_login_information">New Account</string>
+    <string name="text_login_has_account">Already have an account?</string>
     <string name="register_first_name"> First Name* </string>
     <string name="register_last_name"> Last Name* </string>
     <string name="register_email"> E-Mail* </string>
@@ -92,7 +94,7 @@
     <string name="register_dialog_cancel_registration_text"> You are about to cancel your registration. \nDo you want to proceed? </string>
 
     <string name="toolbar_title_account_type"> Type of Account </string>
-    <string name="register_select_type_text"> Are you a startup or an investor? </string>
+    <string name="register_select_type_text"> Are you an investor or a startup?</string>
     <string name="register_select_investor_button"> Investor </string>
     <string name="register_select_startup_button"> Start Up</string>
 
@@ -103,16 +105,16 @@
     <string name="register_profile_phone"> Phone Number* </string>
 
     <string name="toolbar_title_matching_criteria"> Matching Criteria</string>
-    <string name="startup_matching_ticket_size_text">What preferred amounts of money should investors invest?</string>
-    <string name="startup_matching_type_investor_text">What type of investor are you looking for?</string>
-    <string name="startup_matching_phase_text">What stage of financing are you in?</string>
-    <string name="startup_matching_industry_text">What industry are you in?</string>
+    <string name="startup_matching_ticket_size_text">What is the range of your preferred investment sizes placed by investors?</string>
+    <string name="startup_matching_type_investor_text">What type of investors are you looking for?</string>
+    <string name="startup_matching_phase_text">What is your current investment phase?</string>
+    <string name="startup_matching_industry_text">Which industry contains the core business of your startup?</string>
     <string name="startup_matching_involvement_text">What kind of involvement do you desire from an investor?</string>
-    <string name="investor_matching_ticket_size_text">What preferred amounts of money would you like to invest?</string>
+    <string name="investor_matching_ticket_size_text">How much money would you like to invest?</string>
     <string name="investor_matching_type_investor_text">What type of investor are you?</string>
-    <string name="investor_matching_phase_text">What stage of financing are you interested in?</string>
-    <string name="investor_matching_industry_text">What are your target industries?</string>
-    <string name="investor_matching_involvement_text">What kind of involvement can you bring to startups?</string>
+    <string name="investor_matching_phase_text">What kind of financing rounds would you like to invest in?</string>
+    <string name="investor_matching_industry_text">What industries are you interested in?</string>
+    <string name="investor_matching_involvement_text">How would you like to be involved in a startup?</string>
     <string name="investor_matching_geographics_text">Which are your preferred regions for startups?</string>
     <string name="register_matching_geographics">Select Geographics </string>
 
@@ -153,7 +155,9 @@
     <string name="founding_picker_title">Select Founding Year</string>
     <string name="register_fte_helper_text"> FTE stands for Full Time Employees</string>
     <string name="register_company_error_fte">FTE should be greater than 0</string>
+    <string name="register_company_error_large_fte">The entered value for FTE is too large</string>
     <string name="register_company_error_break_even"> Break-Even Year should be after the Founding Year </string>
+    <string name="register_company_error_number_format">Numeric input is too high</string>
 
     <string name="toolbar_title_labels"> Labels </string>
     <string name="register_label_error_title"> Too many Labels</string>
@@ -167,9 +171,10 @@
     <string name="register_financial_closing_time"> Closing Time* </string>
     <string name="register_financial_scope"> Scope </string>
     <string name="register_financial_scope_"> Scope* </string>
-    <string name="register_financial_committed">Committed</string>
+    <string name="register_financial_committed">Committed Funding</string>
     <string name="register_committed_helper_text"> Have you completed some of your target scope? </string>
-    <string name="register_financial_error_committed"> Committed should not be greater than Scope </string>
+    <string name="register_financial_error_committed"> Committed Funding should not be greater than Scope </string>
+    <string name="register_financial_error_committed_large">Committed Funding value is too large</string>
     <string name="register_financial_error_high_scope">Scope should be smaller than 2 Billion</string>
     <string name="register_financial_error_low_scope">SCope should be greater than 20\'000 </string>
 
@@ -202,17 +207,16 @@
     <string name="register_stakeholder_high_equity">A Shareholder cannot have more than 100% equity</string>
     <string name="register_stakeholder_error_equity"> Shareholders have more than 100% equity share.</string>
 
-    <string name="text_registration_complete">Complete Registration</string>
+    <string name="text_registration_complete">Complete</string>
 
     <!-- Strings used for Match List -->
     <string name="toolbar_title_match_list"> Matches of the Week </string>
-    <string name="empty_matchList_text"> There are no more matches left this week </string>
-    <string name="empty_matchList_text_2"> Next matches will be available next Monday</string>
-    <string name="empty_matchlist_text_3"> Enjoy the rest of your week! </string>
+    <string name="empty_matchList_text"> New Matches will be available next Monday.</string>
+    <string name="empty_matchlist_text_2"> Enjoy the rest of your week! </string>
 
     <string name="unlock_now">Unlock now</string>
-    <string name="unlock_premium_title"> Go Pro</string>
-    <string name="unlock_premium_body">Unlock to see more details and get in touch with your matches</string>
+    <string name="unlock_premium_title"> Go Premium</string>
+    <string name="unlock_premium_body">Unlock Premium to see more details about your matches and to get in touch.</string>
 
     <!-- Strings used for Leads -->
     <string name="toolbar_title_leads"> Leads </string>
@@ -224,22 +228,21 @@
     <string name="leads_tab_today"> Today </string>
     <string name="leads_tab_this_week"> This Week </string>
     <string name="leads_tab_earlier">Earlier</string>
-    <string name="leads_no_current_leads_text"> You don\'t have any leads under this category!</string>
+    <string name="leads_no_current_leads_text"> You currently do not have any leads to display under this category.\n Start requesting new leads in your match list.</string>
     <string name="toolbar_title_open_requests"> Open Requests</string>
-    <string name="leads_no_open_requests"> You currently don\'t have any open requests!</string>
 
     <!-- Strings used for Lead-Contacts -->
     <string name="toolbar_title_contact"> Contact </string>
     <string name="leads_contact_disabled_contact_title"> Contact disabled!</string>
-    <string name="leads_contact_disabled_contact_text"> This user first needs to accept your request before you can start interacting with each other. </string>
-    <string name="leads_contact_declined_contact_text"> This user declined your request. Therefore no Contact can be initiated</string>
+    <string name="leads_contact_disabled_contact_text"> Before you can start an interaction, the user has to accept your request. </string>
+    <string name="leads_contact_declined_contact_text"> This user has declined you request. Therefore no contact can be initiated.</string>
     <string name="leads_contact_coffee"> Drink a Coffee</string>
-    <string name="leads_contact_coffee_subject_template"> RAI$ING: Drink a Coffee </string>
-    <string name="leads_contact_coffee_body_template"> We have matched on RAI$ING. Let us drink a coffee. </string>
-    <string name="leads_contact_business_plan_subject_template"> RAI$ING: Send Business Plan </string>
-    <string name="leads_contact_business_plan_body_template"> We have matched on RAI$ING. Let us exchange business plans. </string>
-    <string name="leads_contact_mail_subject_template"> RAI$ING: Send E-Mail </string>
-    <string name="leads_contact_mail_body_template"> We have matched on RAI$ING.</string>
+    <string name="leads_contact_coffee_subject_template"> Drink a Coffee </string>
+    <string name="leads_contact_coffee_body_template"> We have recently matched on Rai$ing and agreed to drink a coffee. </string>
+    <string name="leads_contact_business_plan_subject_template"> Send Business Plan </string>
+    <string name="leads_contact_business_plan_body_template"> We have recently matched on Rai$ing and agreed to exchange our business plans. </string>
+    <string name="leads_contact_mail_subject_template"> Send E-Mail </string>
+    <string name="leads_contact_mail_body_template"> We have recently matched on Rai$ing.</string>
     <string name="leads_contact_businessplan"> Read Business Plan</string>
     <string name="leads_contact_phone">Phone Call</string>
     <string name="leads_contact_email"> Send Email</string>
@@ -255,23 +258,20 @@
     <string name="settings_language"> Language </string>
     <string name="settings_weekly_matches"> Number of weekly Matches</string>
 
-    <string name="settings_about"> About RAI$ING </string>
-    <string name="settings_about_paragraph1">RAI$ING is a product of the Swiss Entrepreneurs Foundation (SwissEF). It builds on the need to make financing rounds more efficient for startups, SMEs and investors. Based on the registered profiles, suitable companies and investors are quickly networked.</string>
-    <string name="settings_about_paragraph2">RAI$ING was developed in collaboration with Ubique Innovations AG and a team of Computer Science students from the University of Berne.</string>
-    <string name="settings_about_paragraph3">RAI$ING is based on an idea by Peter Stähli, the founder and CEO of the Swiss Economic Forum.</string>
+    <string name="settings_about"> About Rai$ing </string>
+    <string name="settings_about_paragraph1">Rai$ing is a product of the Swiss Entrepreneurs Foundation (SwissEF). It builds on the need to make financing rounds more efficient for startups, SMEs and investors.
+        Based on the registered profiles, suitable companies and investors are quickly networked.</string>
+    <string name="settings_about_paragraph2">Rai$ing was developed in collaboration with Ubique Innovations AG and a team of Computer Science students from the University of Bern.</string>
     <string name="settings_about_sponsorship"> Sponsorship</string>
     <string name="settings_about_sponsorship_text"> Swiss Enterpreneurs Foundation \nBundesgasse 35 \n3001 Bern \ninfo@swissef.ch</string>
-    <string name="settings_about_idea"> Idea and specification sheet </string>
-    <string name="settings_about_idea_text"> Peter Stähli</string>
     <string name="settings_about_supervision"> Supervision</string>
     <string name="settings_about_supervision_text"> Ubique Innovations AG, Zürich</string>
     <string name="settings_about_management"> Project Management and Implementation</string>
     <string name="settings_about_management_text"> University of Bern, Computer Science \nNoah Schmid \nAdrian Jörg \nManuel Schüpbach \nOlivier Stähli \nLorenz Caliezi</string>
-    <string name="settings_about_graphics"> Graphics and Design </string>
-    <string name="settings_about_graphics_text"> Olivier Stähli</string>
 
     <string name="settings_general"> General Settings </string>
-    <string name="settings_general_toggle_all"> Toggle all Notifications</string>
+    <string name="settings_general_enable_all"> Enable all Notifications</string>
+    <string name="settings_general_disable_all"> Disable all Notifications</string>
     <string name="settings_general_matchlist"> New Matchlist is available</string>
     <string name="settings_general_leads">I get a new lead</string>
     <string name="settings_general_contact"> I get a new contact request</string>
@@ -280,10 +280,8 @@
     <string name="settings_report_problem"> Report a Problem </string>
     <string name="settings_feedback"> Give Feedback</string>
     <string name="settings_target_email_address"> lorenz.caliezi@students.unibe.ch</string>
-    <string name="settings_problem_report_subject"> Problem Report RAI$ING</string>
-    <string name="settings_problem_report_body"> I would like to report a problem with your app RAI$ING</string>
-    <string name="settings_feedback_subject"> Feedback for RAI$ING</string>
-    <string name="settings_feedback_body"> I would like to give my feedback to your app RAI$ING</string>
+    <string name="settings_problem_report_subject"> Problem Report Rai$ing</string>
+    <string name="settings_feedback_subject"> Feedback for Rai$ing</string>
     <string name="settings_onboarding"> How it works</string>
 
     <string name="settings_logout"> Logout</string>
@@ -314,7 +312,7 @@
     <string name="startup_public_profile_type"> Type of investment </string>
     <string name="startup_public_profile_valuation"> Pre Money Valuation </string>
     <string name="startup_public_profile_closing_time"> Closing Time </string>
-    <string name="startup_public_profile_committed"> Committed </string>
+    <string name="startup_public_profile_committed"> Committed Funding</string>
     <string name="startup_public_profile_founder"> Founders </string>
     <string name="startup_public_profile_education"> Education </string>
     <string name="startup_public_profile_profession"> Profession </string>
@@ -327,27 +325,19 @@
     <string name="subscription_error_cannot_add_title"> Subscription active!</string>
     <string name="subscription_error_cannot_add_text"> You cannot change your subscription since you have an ending subscription already.</string>
     <string name="subscription_your_subscriptions">Your active subscription</string>
-    <string name="subscription_dialog_subscribe_title"> Subscribe to RAI$ING</string>
-    <string name="subscribtion_dialog_subscribe_text"> You are about to purchase a subscription from RAI$ING. \nDo you want to proceed?</string>
-    <string name="subscription_ending"> Ending Subscription</string>
-    <string name="subscription_next"> Next Subscription</string>
+    <string name="subscription_dialog_subscribe_title"> Subscribe to Rai$ing</string>
+    <string name="subscribtion_dialog_subscribe_text"> You are about to purchase a subscription from Rai$ing. \nDo you want to proceed?</string>
     <string name="subscription_downgrade"> Downgrade to </string>
     <string name="subscription_upgrade"> Upgrade to</string>
-    <string name="subscription_paragraph_1">Subscribe to RAI$ING to unlock the full potential of our app</string>
-    <string name="subscription_paragraph_2">Your subscription is automatically renewed</string>
-    <string name="subscription_benefits_1">Access to possible investment partners, that match your profile</string>
-    <string name="subscription_benefits_2">Overview over key figures and a pitch of a possible investment partner</string>
-    <string name="subscription_benefits_3">Establish a contact and exchange personal contact information with your best possible investment partners</string>
+    <string name="subscription_paragraph_1">If you want to see the matches and be able to contact them, subscribe to the app for 3 months, 6 months or 1 year.</string>
+    <string name="subscription_paragraph_2">Your subscription is automatically renewed.</string>
+    <string name="subscription_benefits_1">Access to possible investment partners that match your personal preferences.</string>
+    <string name="subscription_benefits_2">Overview over key figures and interests of your leads.</string>
+    <string name="subscription_benefits_3">Exchange contact information with your leads.</string>
     <string name="subscription_months"> Months</string>
     <string name="subscriptions_weeks"> Week</string>
-    <string name="subscription_activated"> Will be activated: </string>
-    <string name="subscription_expires"> Expiration Date: </string>
     <string name="subscription_manage"> Manage your subscription on Google Play</string>
     <string name="subscription_google_play"> Google Play </string>
-    <string name="subscription_cancel_text"> Are you sure you want to cancel your subscription?</string>
-    <string name="subscription_cancel_confirmation_title"> Subscription Cancelled</string>
-    <string name="subscription_cancel_confirmation_text"> You have successfully cancelled your subscription to RAI$ING. \n \n</string>
-    <string name="subscription_subscribe">Subscribe</string>
     <string name="billing_connection_failed_title">Connection failed</string>
     <string name="billing_connection_failed_text"> We are currently unable to connect to Google\'s Billing Server</string>
     <string name="billing_connection_issue_text"> There is an issue with Google\'s Billing Service</string>
@@ -359,8 +349,8 @@
     <string name="forgot_dialog_text_no_input"> You must enter a valid address </string>
     <string name="forgot_dialog_title"> Password reset code sent </string>
     <string name="forgot_dialog_text"> Check your email for further information </string>
-    <string name="forgot_reset_text"> Enter the code, that you have received via email </string>
-    <string name="forgot_password_hint">Please enter your registered email. We will send you an email containing further information on how to reset your password.</string>
+    <string name="forgot_password_hint"> Please enter your registered email. \nWe will send you an email containing further information on how to reset your password.</string>
+    <string name="reset_password_hint">We have sent you a reset code via email. \nPlease enter this code and your new password to reset your password.</string>
     <string name="reset_password_input_placeholder"> New Password </string>
     <string name="reset_code_input_placeholder"> Reset Code</string>
     <string name="reset_button_text"> Reset Password </string>
@@ -398,7 +388,7 @@
     <string name="not_logged_in_text">You are not logged in!</string>
     <string name="no_profile_text">Looks like you have no profile yet!</string>
     <string name="contact_input_title">Complete your profile</string>
-    <string name="contact_input_description">This looks like a new device. Please enter your mobile number to allow for an exchange of mobile numbers later on!</string>
+    <string name="contact_input_description">Looks like you have signed in from a new device. Please enter your phone number to allow for an exchange of contact data.</string>
     <string name="phone_number">Phone Number</string>
     <string name="invalid_uid_text">Entered UID is invalid!</string>
     <string name="wrong_reset_code">Entered code is invalid!</string>

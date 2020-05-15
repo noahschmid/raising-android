@@ -5,10 +5,10 @@
     <color name="raisingPrimaryDark">#FF6B1318</color>
     <color name="raisingPrimaryAccent">#FFDEADAF</color>
 
-    <color name="raisingSecondary">#FF707F91</color>
-    <color name="raisingSecondaryLight">#FF97ABC4</color>
-    <color name="raisingSecondaryDark">#FF586473</color>
-    <color name="raisingSecondaryAccent">#FFCCD6D9</color>
+    <color name="raisingSecondary">#FF505A66</color>
+    <color name="raisingSecondaryLight">#FF707F91</color>
+    <color name="raisingSecondaryDark">#FF3D404A</color>
+    <color name="raisingSecondaryAccent">#FF97ABC4</color>
 
     <color name="raisingWhite">#FFFFFFFF</color>
     <color name="raisingWhiteTransparent">#88FFFFFF</color>

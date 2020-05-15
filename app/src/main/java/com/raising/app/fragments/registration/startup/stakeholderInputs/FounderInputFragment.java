@@ -28,7 +28,6 @@ import org.json.JSONObject;
 
 public class FounderInputFragment extends RaisingFragment {
     private FounderViewModel founderViewModel;
-
     private EditText founderFirstNameInput, founderLastNameInput,
             founderEducationInput, founderCompanyPositionInput, founderCountryInput;
 

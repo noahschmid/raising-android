@@ -30,6 +30,7 @@ public class OnboardingPre1Fragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {
+            resetTab();
             disablePreOnboarding();
             clearBackstackAndReplace(new LoginFragment());
         });

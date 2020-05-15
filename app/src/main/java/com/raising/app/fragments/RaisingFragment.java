@@ -583,6 +583,17 @@ public class RaisingFragment extends Fragment {
     }
 
     /**
+     * Remove current fragment from backstack
+     */
+    protected void popCurrentFragment() {
+        resetTab();
+        FragmentManager fragmentManager = getActivitiesFragmentManager();
+        fragmentManager.beginTransaction().remove(this);
+        fragmentManager.popBackStackImmediate();
+        accountViewModel.updateCompleted();
+    }
+
+    /**
      * Create checkbox group out of array list
      *
      * @param list   the items to add

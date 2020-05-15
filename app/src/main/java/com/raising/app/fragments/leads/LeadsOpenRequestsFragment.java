@@ -172,7 +172,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
 
     private void checkForEmptyLayout() {
         if (openRequestItems == null || openRequestItems.size() == 0) {
-            popFragment(this);
+            popCurrentFragment();
         }
     }
 }

@@ -20,10 +20,10 @@
             <TextView
                 android:id="@+id/register_startup_description_text"
                 style="@style/RaisingTextBold"
-                android:hint="@string/registration_information_dialog_description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:hint="@string/registration_information_dialog_description_startup"
                 app:layout_constraintBottom_toTopOf="@+id/register_startup_pitch_sentence"
                 app:layout_constraintEnd_toEndOf="@+id/register_startup_pitch_sentence"
                 app:layout_constraintStart_toStartOf="@+id/register_startup_pitch_sentence"

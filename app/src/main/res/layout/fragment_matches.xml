@@ -41,27 +41,12 @@
                         style="@style/RaisingTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/standardVerticalMarginSmall"
-                        android:text="@string/empty_matchList_text_2"
                         android:gravity="center"
-                        app:layout_constraintBottom_toTopOf="@+id/textView27"
-                        app:layout_constraintEnd_toEndOf="@+id/textView2"
-                        app:layout_constraintStart_toStartOf="@+id/textView2"
-                        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-                    <TextView
-                        android:id="@+id/textView2"
-                        style="@style/RaisingTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/standardVerticalMargin"
                         android:text="@string/empty_matchList_text"
-                        android:gravity="center"
-                        app:layout_constraintBottom_toTopOf="@+id/textView"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/textView27"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_chainStyle="packed" />
+                        app:layout_constraintVertical_chainStyle="packed"
+                        tools:layout_editor_absoluteX="7dp" />
 
                     <TextView
                         android:id="@+id/textView27"
@@ -73,7 +58,7 @@
                         android:layout_marginEnd="@dimen/standardHorizontalMargin"
                         android:layout_marginBottom="@dimen/standardVerticalMargin"
                         android:gravity="center"
-                        android:hint="@string/empty_matchlist_text_3"
+                        android:hint="@string/empty_matchlist_text_2"
                         app:layout_constraintBottom_toTopOf="@+id/imageView15"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

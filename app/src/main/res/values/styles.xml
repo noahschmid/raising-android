@@ -80,7 +80,7 @@
     </style>
 
     <style name="ButtonRegistrationAndProfile" parent="GeneralButtonStyle">
-        <item name="android:layout_height">@dimen/myProfileButtonHeight</item>
+        <item name="android:layout_height">@dimen/authenticationButtonHeight</item>
         <item name="android:layout_marginBottom">@dimen/standardVerticalMargin</item>
         <item name="android:textSize">@dimen/raisingTitleFontSize</item>
         <item name="android:gravity">center</item>
