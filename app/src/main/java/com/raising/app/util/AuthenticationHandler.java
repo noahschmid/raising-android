@@ -46,6 +46,8 @@ public class AuthenticationHandler {
 
     public static String getToken() { return token; }
 
+    public static void setToken(String newToken) { token = newToken; }
+
     public static boolean isStartup() { return isStartup; }
 
     /**

@@ -84,8 +84,6 @@ public class MatchesFragment extends RaisingFragment {
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> matchesViewModel.loadMatches());
-        
-        matchesViewModel.runMatching();
 
         matchListItems = new ArrayList<>();
 

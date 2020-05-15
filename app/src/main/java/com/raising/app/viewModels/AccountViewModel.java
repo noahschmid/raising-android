@@ -214,7 +214,14 @@ public class AccountViewModel extends AndroidViewModel {
 
         try {
             ApiRequestHandler.performPatchRequest(endpoint,
-                    v -> {
+                    response -> {
+                        try {
+                            AuthenticationHandler.setToken(response.getString("token"));
+                            Log.d(TAG, "update: token updated: " + response.getString("token"));
+                        } catch (JSONException e) {
+                            Log.e(TAG, "update: " + e.getMessage());
+                        }
+
                         if (update instanceof Startup) {
                             currentAccount.postValue((Startup) update);
                         } else if (update instanceof Investor) {

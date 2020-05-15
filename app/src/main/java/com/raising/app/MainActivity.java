@@ -24,6 +24,7 @@ import com.raising.app.fragments.settings.SettingsFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.ImageHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.SubscriptionHandler;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         InternalStorageHandler.setActivity(this);
         AuthenticationHandler.init();
         RegistrationHandler.init();
+        ImageHandler.init();
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -149,15 +151,19 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     switch (item.getItemId()) {
                         case R.id.nav_matches:
+                            tabViewModel.resetCurrentMatchesFragment();
                             selected = new MatchesFragment();
                             break;
                         case R.id.nav_leads:
+                            tabViewModel.resetCurrentLeadsFragment();
                             selected = new LeadsContainerFragment();
                             break;
                         case R.id.nav_profile:
+                            tabViewModel.resetCurrentProfileFragment();
                             selected = new MyProfileFragment();
                             break;
                         case R.id.nav_settings:
+                            tabViewModel.resetCurrentSettingsFragment();
                             selected = new SettingsFragment();
                             break;
                         default:

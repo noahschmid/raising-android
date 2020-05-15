@@ -14,10 +14,11 @@ import java.util.ArrayList;
 
 public class ImageCache {
     private ArrayList<ImageCacheItem> imageCacheItems = new ArrayList<>();
-    private static ArrayList<Image> images = new ArrayList<>();
+    private ArrayList<Image> images = new ArrayList<>();
 
-    private int cacheSize = 20;
-    private String tag = null;
+    private final String TAG = "ImageCache";
+    private int cacheSize;
+    private String tag;
 
     /**
      * Create a new cache for images
@@ -39,7 +40,7 @@ public class ImageCache {
         } else {
             images.set(0, image);
         }
-        /*
+/*
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -51,6 +52,11 @@ public class ImageCache {
                     InternalStorageHandler.saveBitmap(image.getImage(), filename);
                 } else {
                     imageCacheItems.get(0).setId(image.getId());
+                }
+                try {
+                    InternalStorageHandler.saveObject(imageCacheItems, tag);
+                } catch (Exception e) {
+                    Log.e(TAG, "run: " + e.getMessage());
                 }
             }
         });*/
@@ -71,13 +77,24 @@ public class ImageCache {
         return null;
     }
 
-    public ArrayList<Image> loadFromStorage() {
-        ArrayList<Image> cached = new ArrayList<>();
-        for(int i = 0; i < imageCacheItems.size(); ++i) {
-            cached.add(new Image(imageCacheItems.get(i).getId(),
-                    InternalStorageHandler.loadBitmap("images/" + imageCacheItems.get(i).getFilename())));
+    /**
+     * Retrieve images from storage
+     * @return
+     */
+    public void loadFromStorage() {
+        try {
+            imageCacheItems = (ArrayList<ImageCacheItem>)InternalStorageHandler.loadObject(tag);
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < imageCacheItems.size(); ++i) {
+                        images.add(new Image(imageCacheItems.get(i).getId(),
+                                InternalStorageHandler.loadBitmap("images/" + imageCacheItems.get(i).getFilename())));
+                    }
+                }
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "loadFromStorage: " + e.getMessage() );
         }
-
-        return cached;
     }
 }
