@@ -298,7 +298,7 @@ public class SubscriptionHandler {
             verifySubscription(activeSubscription.getExpirationDate());
         }
         //return getActiveSubscription() != null;
-        return true;
+        return false;
     }
 
     public static void removeSubscription() {

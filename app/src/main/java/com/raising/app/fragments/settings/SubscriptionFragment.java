@@ -194,7 +194,7 @@ public class SubscriptionFragment extends RaisingFragment {
             Log.d(TAG, "fillSubscriptionsList: SkuDetail" + skuDetails.getSku() + " " + skuDetails.getTitle() + " " + skuDetails.getPrice());
 
             // setup layout for unselected subscriptions
-            View subscriptionLayout = Objects.requireNonNull(getActivity()).getLayoutInflater().inflate(R.layout.item_subscription_detail, null);
+            View subscriptionLayout = (getActivity()).getLayoutInflater().inflate(R.layout.item_subscription_detail, null);
 
             // gather all views of a subscription card
             MaterialCardView card = subscriptionLayout.findViewById(R.id.card_subscription);

@@ -51,17 +51,6 @@ public class LeadsInteractionFragment extends RaisingFragment {
                              Bundle savedInstanceState) {
 
         customizeAppBar(getString(R.string.toolbar_title_contact), true);
-        leadsViewModel = ViewModelProviders.of(getActivity()).get(LeadsViewModel.class);
-        leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
-          if(state == ViewState.RESULT || state == ViewState.CACHED) {
-              processLeads();
-          }
-        });
-
-        if(leadsViewModel.getViewState().getValue() == ViewState.RESULT ||
-                leadsViewModel.getViewState().getValue() == ViewState.CACHED) {
-            processLeads();
-        }
 
         return inflater.inflate(R.layout.fragment_leads_interaction, container, false);
     }
@@ -71,6 +60,18 @@ public class LeadsInteractionFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         closeContact = view.findViewById(R.id.button_close_contact);
+
+        leadsViewModel = ViewModelProviders.of(getActivity()).get(LeadsViewModel.class);
+        leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+            if(state == ViewState.RESULT || state == ViewState.CACHED) {
+                processLeads();
+            }
+        });
+
+        if(leadsViewModel.getViewState().getValue() == ViewState.RESULT ||
+                leadsViewModel.getViewState().getValue() == ViewState.CACHED) {
+            processLeads();
+        }
 
         if (getArguments() != null) {
             leadId = getArguments().getLong("leadId");
