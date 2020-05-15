@@ -3,6 +3,7 @@ package com.raising.app.models;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class Account implements Serializable {
     private List<Image> gallery = new ArrayList<>();
     private long countryId = -1l;
     private String phone;
+    private Timestamp lastChanged;
 
     private List<Long> countries = new ArrayList<>();
     private List<Long> continents = new ArrayList<>();

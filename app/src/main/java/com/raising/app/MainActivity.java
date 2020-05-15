@@ -18,12 +18,16 @@ import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.leads.LeadsContainerFragment;
 import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
+import com.raising.app.fragments.leads.LeadsInteractionFragment;
+import com.raising.app.fragments.leads.LeadsOpenRequestsFragment;
 import com.raising.app.fragments.onboarding.OnboardingPre1Fragment;
 import com.raising.app.fragments.onboarding.OnboardingPre2Fragment;
 import com.raising.app.fragments.profile.ContactDataInput;
+import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.fragments.settings.SettingsFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
+import com.raising.app.models.NotificationType;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.ImageHandler;
@@ -131,11 +135,32 @@ public class MainActivity extends AppCompatActivity {
 
                 /* handle notification */
                 Intent intent = getIntent();
-                if(intent.getExtras() != null && intent.getExtras().containsKey("custom_key_1")) {
-                    String data = intent.getExtras().getString("custom_key_1");
+                if(intent.getExtras() != null && intent.getExtras().containsKey("interaction")) {
+                    NotificationType type = NotificationType.valueOf(intent.getExtras().getString("interaction"));
+                    switch(type) {
+                        case LEAD:
+                        case CONNECTION:
+                            long leadId = intent.getExtras().getLong("id");
+                            Fragment fragment = new LeadsInteractionFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putLong("leadId", leadId);
+                            fragment.setArguments(bundle);
+                            tabViewModel.setCurrentLeadsFragment(fragment);
+                            selectBottomNavigation(R.id.nav_leads);
+                            break;
+                        case MATCHLIST:
+                            tabViewModel.setCurrentLeadsFragment(new LeadsOpenRequestsFragment());
+                            selectBottomNavigation(R.id.nav_leads);
+                            break;
+                        case REQUEST:
+                            tabViewModel.resetCurrentLeadsFragment();
+                            tabViewModel.setCurrentLeadsTab(0);
+                            selectBottomNavigation(R.id.nav_leads);
+                            break;
+                    }
+                } else {
+                    fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
                 }
-
-                fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
             }
         }
         fragmentTransaction.commit();
@@ -153,19 +178,15 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     switch (item.getItemId()) {
                         case R.id.nav_matches:
-                            tabViewModel.resetCurrentMatchesFragment();
                             selected = new MatchesFragment();
                             break;
                         case R.id.nav_leads:
-                            tabViewModel.resetCurrentLeadsFragment();
                             selected = new LeadsContainerFragment();
                             break;
                         case R.id.nav_profile:
-                            tabViewModel.resetCurrentProfileFragment();
                             selected = new MyProfileFragment();
                             break;
                         case R.id.nav_settings:
-                            tabViewModel.resetCurrentSettingsFragment();
                             selected = new SettingsFragment();
                             break;
                         default:

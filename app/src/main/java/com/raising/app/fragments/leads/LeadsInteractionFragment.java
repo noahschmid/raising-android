@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.ContactData;
+import com.raising.app.models.ViewState;
 import com.raising.app.models.leads.Interaction;
 import com.raising.app.models.leads.InteractionState;
 import com.raising.app.models.leads.Lead;
@@ -42,12 +43,15 @@ public class LeadsInteractionFragment extends RaisingFragment {
 
     private final String TAG = "LeadsInteractionFragment";
     private boolean disableContact, declinedContact;
+    private long leadId;
 
+    private LeadsViewModel leadsViewModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         customizeAppBar(getString(R.string.toolbar_title_contact), true);
+
         return inflater.inflate(R.layout.fragment_leads_interaction, container, false);
     }
 
@@ -57,8 +61,20 @@ public class LeadsInteractionFragment extends RaisingFragment {
 
         closeContact = view.findViewById(R.id.button_close_contact);
 
+        leadsViewModel = ViewModelProviders.of(getActivity()).get(LeadsViewModel.class);
+        leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+            if(state == ViewState.RESULT || state == ViewState.CACHED) {
+                processLeads();
+            }
+        });
+
+        if(leadsViewModel.getViewState().getValue() == ViewState.RESULT ||
+                leadsViewModel.getViewState().getValue() == ViewState.CACHED) {
+            processLeads();
+        }
+
         if (getArguments() != null) {
-            contact = (Lead) getArguments().getSerializable("lead");
+            leadId = getArguments().getLong("leadId");
 
             if (getArguments().getBoolean("disableContact")) {
                 disableContact = true;
@@ -67,12 +83,28 @@ public class LeadsInteractionFragment extends RaisingFragment {
                 declinedContact = true;
             }
         }
+    }
+
+    protected void processLeads() {
+        View view = getView();
+
+        for(Lead lead : leadsViewModel.getLeads().getValue()) {
+            if(lead.getId() == leadId) {
+                contact = lead;
+                break;
+            }
+        }
+
+        if(contact == null)
+            return;
 
         if(contact.getHandshakeState() != InteractionState.HANDSHAKE) {
             closeContact.setVisibility(View.GONE);
         }
 
         LinearLayout layout = view.findViewById(R.id.leads_contact_items_layout);
+        layout.removeAllViewsInLayout();
+        interactions.clear();
         contact.getInteractions().forEach(interaction -> {
             interactions.add(new LeadsInteraction(interaction, layout, getActivity(), contact));
         });

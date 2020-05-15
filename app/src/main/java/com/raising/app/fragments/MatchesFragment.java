@@ -72,6 +72,11 @@ public class MatchesFragment extends RaisingFragment {
                 processItems(matchesViewModel.getMatches().getValue());
             }
         });
+
+        if(matchesViewModel.getViewState().getValue() == ViewState.RESULT ||
+        matchesViewModel.getViewState().getValue() == ViewState.CACHED) {
+            processItems(matchesViewModel.getMatches().getValue());
+        }
     }
 
     @Override
@@ -86,7 +91,6 @@ public class MatchesFragment extends RaisingFragment {
         swipeRefreshLayout.setOnRefreshListener(() -> matchesViewModel.loadMatches());
 
         matchListItems = new ArrayList<>();
-
         matchListAdapter = new MatchListAdapter(matchListItems);
         matchesViewModel.loadMatches();
 

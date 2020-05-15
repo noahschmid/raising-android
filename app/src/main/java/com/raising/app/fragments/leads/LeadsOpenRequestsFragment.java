@@ -43,6 +43,8 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
 
         customizeAppBar(getString(R.string.toolbar_title_open_requests), true);
 
+        Log.d(TAG, "onCreateView: ");
+
         return inflater.inflate(R.layout.fragment_leads_open_requests, container, false);
     }
 
@@ -51,7 +53,9 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         super.onResume();
         Log.d(TAG, "onResume: ");
         leadsViewModel.loadLeads();
-        checkForEmptyLayout();
+        if(leadsViewModel.getViewState().getValue() == ViewState.RESULT) {
+            populateOpenRequests();
+        }
     }
 
     @Override
@@ -77,11 +81,13 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         Log.d(TAG, "onResourcesLoaded: ");
         leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             if(state == ViewState.RESULT || state == ViewState.CACHED) {
-                Log.d(TAG, "onViewCreated: ResourcesViewState " + resourcesViewModel.getViewState().getValue());
-                Log.d(TAG, "onViewCreated: LeadsViewState " + state);
                 populateOpenRequests();
             }
         });
+
+        if(leadsViewModel.getViewState().getValue() == ViewState.RESULT) {
+            populateOpenRequests();
+        }
     }
 
     private void populateOpenRequests() {
