@@ -211,7 +211,7 @@
 
     <!-- Strings used for Match List -->
     <string name="toolbar_title_match_list"> Matches of the Week </string>
-    <string name="empty_matchList_text"> New Matches will be available next Monday.</string>
+    <string name="empty_matchList_text"> New Matches will be available next Monday</string>
     <string name="empty_matchlist_text_2"> Enjoy the rest of your week! </string>
 
     <string name="unlock_now">Unlock now</string>

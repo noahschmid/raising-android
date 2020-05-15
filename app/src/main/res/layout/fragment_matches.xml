@@ -39,29 +39,30 @@
                     <TextView
                         android:id="@+id/textView"
                         style="@style/RaisingTitle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                        android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                         android:gravity="center"
                         android:text="@string/empty_matchList_text"
                         app:layout_constraintBottom_toTopOf="@+id/textView27"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_chainStyle="packed"
-                        tools:layout_editor_absoluteX="7dp" />
+                        app:layout_constraintVertical_chainStyle="packed" />
 
                     <TextView
                         android:id="@+id/textView27"
                         style="@style/RaisingTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/standardHorizontalMargin"
                         android:layout_marginTop="@dimen/standardVerticalMarginSmall"
-                        android:layout_marginEnd="@dimen/standardHorizontalMargin"
                         android:layout_marginBottom="@dimen/standardVerticalMargin"
                         android:gravity="center"
                         android:hint="@string/empty_matchlist_text_2"
                         app:layout_constraintBottom_toTopOf="@+id/imageView15"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/textView"
+                        app:layout_constraintStart_toStartOf="@+id/textView"
                         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
                     <ImageView
