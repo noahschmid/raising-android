@@ -52,22 +52,7 @@
             android:windowSoftInputMode="adjustPan"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
-                <action android:name="CONNECTION" />
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="MATCHLIST" />
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="LEAD" />
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="REQUEST" />
+                <action android:name="NOTIFICATION" />
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
