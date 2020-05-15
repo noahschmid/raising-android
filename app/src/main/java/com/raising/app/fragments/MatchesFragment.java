@@ -88,6 +88,7 @@ public class MatchesFragment extends RaisingFragment {
         matchListItems = new ArrayList<>();
 
         matchListAdapter = new MatchListAdapter(matchListItems);
+        matchesViewModel.loadMatches();
 
         // prepare match list recycler view
         matchList = view.findViewById(R.id.matchList);
@@ -116,6 +117,11 @@ public class MatchesFragment extends RaisingFragment {
                 }
             }
         });
+
+        if (matchListItems.size() == 0 && resourcesViewModel.getViewState().getValue() == ViewState.RESULT) {
+            emptyMatchListLayout.setVisibility(View.VISIBLE);
+            Log.d(TAG, "processItems: Empty Layout visible");
+        }
     }
 
     /**
