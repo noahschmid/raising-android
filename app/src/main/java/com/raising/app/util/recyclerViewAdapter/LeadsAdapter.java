@@ -79,7 +79,7 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
         holder.name.setText(recyclerItem.getTitle());
         holder.attribute.setText(recyclerItem.getAttribute());
 
-        ImageHandler.loadProfileImage(recyclerItem.getProfilePictureId(), holder.profilePicture);
+        ImageHandler.loadProfileImage(recyclerItem, holder.profilePicture);
     }
 
     @Override

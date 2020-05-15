@@ -25,6 +25,7 @@ public class Lead implements Serializable {
     private long investmentPhaseId;
     private long investorTypeId;
     private Timestamp timestamp;
+    private Timestamp accountLastChanged;
 
     private LeadState state;
     private InteractionState handshakeState;

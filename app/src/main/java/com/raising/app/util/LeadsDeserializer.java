@@ -55,6 +55,9 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
             lead.setMatchingPercent(jsonObject.get("matchingPercent").getAsInt());
             lead.setProfilePictureId(jsonObject.get("profilePictureId").getAsLong());
 
+            if(jsonObject.has("accountLastChanged")) {
+                lead.setAccountLastChanged(Serializer.parseTimestamp(jsonObject.get("accountLastChanged").getAsString()));
+            }
             LeadState leadState = LeadState.PENDING;
 
             if(lead.getHandshakeState() == InteractionState.HANDSHAKE) {
@@ -67,7 +70,7 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
             ArrayList<Interaction> interactions = new ArrayList<>();
 
             if(jsonObject.get("lastchanged") != null) {
-                lead.setTimestamp(parseTimestamp(jsonObject.get("lastchanged").getAsString()));
+                lead.setTimestamp(Serializer.parseTimestamp(jsonObject.get("lastchanged").getAsString()));
             } else {
                 lead.setTimestamp(new Timestamp(new Date().getTime()));
             }
@@ -77,6 +80,7 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
                 Interaction interaction = new Interaction();
                 InteractionState state = InteractionState.EMPTY;
                 interaction.setId(obj.get("id").getAsLong());
+                interaction.setRelationshipId(lead.getId());
                 switch (obj.get("startupState").getAsString()) {
                     case "ACCEPTED":
                         state = InteractionState.STARTUP_ACCEPTED;
@@ -117,13 +121,13 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
                 }
 
                 if(obj.get("createdAt") != null) {
-                    Timestamp createdAt = parseTimestamp(obj.get("createdAt").getAsString());
+                    Timestamp createdAt = Serializer.parseTimestamp(obj.get("createdAt").getAsString());
                     if(createdAt.after(lead.getTimestamp()))
                         lead.setTimestamp(createdAt);
                 }
 
                 if(obj.get("acceptedAt") != null) {
-                    Timestamp acceptedAt = parseTimestamp(obj.get("acceptedAt").getAsString());
+                    Timestamp acceptedAt = Serializer.parseTimestamp(obj.get("acceptedAt").getAsString());
                     if(acceptedAt.after(lead.getTimestamp()))
                         lead.setTimestamp(acceptedAt);
                 }
@@ -164,23 +168,5 @@ public class LeadsDeserializer implements JsonDeserializer<Lead> {
             lead.setState(leadState);
 
             return lead;
-        }
-
-
-    /**
-     * Parse Timestamp object from ISO string
-     * @param timestamp
-     * @return
-     */
-    private Timestamp parseTimestamp(String timestamp) {
-            try {
-                String timestampString = timestamp.substring(0, 10);
-                // Log.d(TAG, "deserialize: " + timestampString);
-                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(timestampString);
-                return new Timestamp(date.getTime());
-            } catch(Exception e) {
-                Log.e(TAG, "deserialize: error parsing timestamp: " + e.getMessage() );
-                return new Timestamp(new Date().getTime());
-            }
         }
 }

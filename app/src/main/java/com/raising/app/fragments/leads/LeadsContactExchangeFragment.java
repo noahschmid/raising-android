@@ -64,7 +64,7 @@ public class LeadsContactExchangeFragment extends RaisingFragment {
             lead = (Lead)getArguments().getSerializable("lead");
             contactData = ContactDataHandler.getContactData(lead.getAccountId());
 
-            ImageHandler.loadProfileImage(lead.getProfilePictureId(), contactImage);
+            ImageHandler.loadProfileImage(lead, contactImage);
 
             contactName.setText(lead.getTitle());
 

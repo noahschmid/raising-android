@@ -25,7 +25,10 @@ import com.raising.app.models.stakeholder.Shareholder;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class StartupDeserializer implements JsonDeserializer<Startup> {
@@ -48,6 +51,8 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
         startup.setTicketMinId(jsonObject.get("ticketMinId").getAsInt());
         startup.setTicketMaxId(jsonObject.get("ticketMaxId").getAsInt());
         startup.setInvestmentPhaseId(jsonObject.get("investmentPhaseId").getAsInt());
+        startup.setLastChanged(Serializer.parseTimestamp(jsonObject.get("lastChanged").getAsString()));
+
         if(jsonObject.get("firstName") != null) {
             startup.setFirstName(jsonObject.get("firstName").getAsString());
         }

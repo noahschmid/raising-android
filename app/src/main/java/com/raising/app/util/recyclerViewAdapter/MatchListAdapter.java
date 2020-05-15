@@ -51,7 +51,7 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.View
         holder.sentence.setText(recyclerItem.getDescription());
         holder.matchingPercent.setText(recyclerItem.getScore() + "%");
 
-        ImageHandler.loadProfileImage(recyclerItem.getPictureId(), holder.profileImage);
+        ImageHandler.loadProfileImage(recyclerItem, holder.profileImage);
         setupMatchingPercentGraphic(holder.matchingPercentGraphic, recyclerItem);
     }
 

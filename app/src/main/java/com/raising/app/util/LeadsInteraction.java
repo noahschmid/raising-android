@@ -153,7 +153,7 @@ public class LeadsInteraction {
             cData.setAccountId(AuthenticationHandler.getId());
 
             params.put("data", new JSONObject(gson.toJson(cData)));
-            params.put("accountId", interaction.getPartnerId());
+            params.put("relationshipId", interaction.getRelationshipId());
 
             Log.d(TAG, "updateRemoteInteraction: " + params.toString());
 

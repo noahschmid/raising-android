@@ -139,6 +139,7 @@ public class MatchesFragment extends RaisingFragment {
         matches.forEach(match -> {
             MatchListItem matchItem = new MatchListItem();
             matchItem.setDescription(match.getDescription());
+            matchItem.setAccountLastChanged(match.getAccountLastChanged());
             matchItem.setRelationshipId(match.getId());
             matchItem.setAccountId(match.getAccountId());
             matchItem.setScore(match.getMatchingPercent());

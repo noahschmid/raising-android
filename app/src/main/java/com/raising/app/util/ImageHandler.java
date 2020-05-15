@@ -16,37 +16,19 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
 import com.raising.app.R;
+import com.raising.app.models.Account;
 import com.raising.app.models.Image;
+import com.raising.app.models.Match;
+import com.raising.app.models.MatchListItem;
+import com.raising.app.models.leads.Lead;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class ImageHandler {
-    // configure cache size here
-    private final static int PROFILE_PICTURES_CACHE_SIZE = 70;
-    private final static int GALLERY_PICTURES_CACHE_SIZE = 20;
-
-    private static ImageCache profilePictureCache = new ImageCache(PROFILE_PICTURES_CACHE_SIZE, "pp");
-    private static ImageCache galleryCache = new ImageCache(GALLERY_PICTURES_CACHE_SIZE, "gl");
-
     private static Drawable placeholder = InternalStorageHandler.getContext().getDrawable(R.drawable.ic_placeholder_24dp);
 
     private static final String TAG = "ImageHandler";
-
-    public static void init() {
-      //  profilePictureCache.loadFromStorage();
-    }
-
-    public static Drawable getProfilePicture(long id) {
-        Bitmap bitmap = profilePictureCache.get(id);
-
-        if(bitmap != null) {
-            Log.d(TAG, "getProfilePicture: Cache HIT id " + id);
-            return new BitmapDrawable(InternalStorageHandler.getContext().getResources(), bitmap);
-        }
-
-        Log.e(TAG, "getProfilePicture: Cache MISS id " + id);
-        return placeholder;
-    }
 
     /**
      * Load profile image into image view
@@ -54,7 +36,7 @@ public class ImageHandler {
      * @param id id of the profile image
      * @param imageView where to load the image into
      */
-    public static void loadProfileImage(long id, ImageView imageView) {
+    public static void loadProfileImage(long id, ImageView imageView, Timestamp timestamp) {
         if (id <= 0) {
             imageView.setImageDrawable(placeholder);
         } else {
@@ -64,10 +46,27 @@ public class ImageHandler {
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" + id)
                     .centerCrop()
                     .placeholder(placeholder)
-                    //.signature()
+                    .signature(new ObjectKey(timestamp.getTime()))
                     .apply(RequestOptions.circleCropTransform())
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                     .into(imageView);
         }
     }
+
+    public static void loadProfileImage(Lead lead, ImageView imageView) {
+        loadProfileImage(lead.getProfilePictureId(), imageView, lead.getAccountLastChanged());
+    }
+
+    public static void loadProfileImage(Match match, ImageView imageView) {
+        loadProfileImage(match.getProfilePictureId(), imageView, match.getAccountLastChanged());
+    }
+
+    public static void loadProfileImage(Account account, ImageView imageView) {
+        loadProfileImage(account.getProfilePictureId(), imageView, account.getLastChanged());
+    }
+
+    public static void loadProfileImage(MatchListItem matchListItem, ImageView imageView) {
+        loadProfileImage(matchListItem.getPictureId(), imageView, matchListItem.getAccountLastChanged());
+    }
+
 }

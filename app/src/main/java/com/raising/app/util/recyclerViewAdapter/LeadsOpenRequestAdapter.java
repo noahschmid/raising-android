@@ -47,7 +47,7 @@ public class LeadsOpenRequestAdapter extends RecyclerView.Adapter<LeadsOpenReque
         holder.name.setText(recyclerItem.getTitle());
         holder.attribute.setText(recyclerItem.getAttribute());
 
-        ImageHandler.loadProfileImage(recyclerItem.getProfilePictureId(), holder.image);
+        ImageHandler.loadProfileImage(recyclerItem, holder.image);
     }
 
     @Override

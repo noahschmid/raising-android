@@ -1,5 +1,7 @@
 package com.raising.app.util;
 
+import android.util.Log;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -11,7 +13,10 @@ import com.raising.app.models.Startup;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Serializer {
@@ -247,5 +252,23 @@ public class Serializer {
         });
 
         return array;
+    }
+
+     /**
+     * Parse Timestamp object from ISO string
+     * @param timestamp
+     * @return
+     */
+     public static Timestamp parseTimestamp(String timestamp) {
+        try {
+            String timestampString = timestamp.substring(0, 19);
+            timestampString = timestampString.replace('T', ' ');
+            Log.d("Serializer", "deserialize: " + timestampString);
+            Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(timestampString);
+            return new Timestamp(date.getTime());
+        } catch(Exception e) {
+            Log.e("Serializer", "deserialize: error parsing timestamp: " + e.getMessage() );
+            return new Timestamp(new Date().getTime());
+        }
     }
 }

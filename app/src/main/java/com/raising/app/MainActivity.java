@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         InternalStorageHandler.setActivity(this);
         AuthenticationHandler.init();
         RegistrationHandler.init();
-        ImageHandler.init();
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
