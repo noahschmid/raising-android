@@ -256,10 +256,12 @@ public class SubscriptionFragment extends RaisingFragment {
      * @param sku The skuDetails belonging to the card that was clicked
      */
     private void processOnCardClick(SkuDetails sku) {
-        if (showActionDialog(getString(R.string.subscription_dialog_subscribe_title),
-                getString(R.string.subscribtion_dialog_subscribe_text))) {
-            showGoogleBilling(sku, subscriptionViewModel.hasValidSubscription());
-        }
+        showActionDialog(getString(R.string.subscription_dialog_subscribe_title),
+                getString(R.string.subscribtion_dialog_subscribe_text),
+                () -> {
+                    showGoogleBilling(sku, subscriptionViewModel.hasValidSubscription());
+                    return null;
+                }, () -> null);
         refreshSubscriptionsLayout();
     }
 
