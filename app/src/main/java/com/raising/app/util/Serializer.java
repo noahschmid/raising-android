@@ -263,7 +263,6 @@ public class Serializer {
         try {
             String timestampString = timestamp.substring(0, 19);
             timestampString = timestampString.replace('T', ' ');
-            Log.d("Serializer", "deserialize: " + timestampString);
             Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(timestampString);
             return new Timestamp(date.getTime());
         } catch(Exception e) {

@@ -213,8 +213,7 @@ public class ShareholderInputFragment extends RaisingFragment {
                 corporateFrameLayout.setVisibility(View.VISIBLE);
 
                 if (shareholder.getCorporateBodyId() != -1)
-                    corporateNameInput.setText(resources.getCorporateBody(
-                            shareholder.getCorporateBodyId()).getName());
+                    corporateNameInput.setText(shareholder.getCorpName());
                 corporateBodyInput.setText(resources
                         .getCorporateBody(shareholder.getCorporateBodyId()).getName());
                 corporateWebsiteInput.setText(shareholder.getWebsite());

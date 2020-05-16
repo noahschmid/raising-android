@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 
 public class SettingsViewModel extends AndroidViewModel {
     private final String TAG = "SettingsViewModel";
@@ -261,13 +262,23 @@ public class SettingsViewModel extends AndroidViewModel {
      * Call the backend to inform, that user has logged out and the device token should be deleted.
      * This prevents, that a user who is not logged in, does not receive any push notifications.
      */
-    public void onLogoutResetToken() {
+    public void onLogoutResetToken(Callable<Void> callable) {
         ApiRequestHandler.performPatchRequest("settings/deletetoken",
                 response -> {
                     Log.d(TAG, "onLogoutResetToken: Token Reset");
+                    try {
+                        callable.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     return null;
                 }, volleyError -> {
                     Log.e(TAG, "onLogoutResetToken: " + volleyError.getMessage());
+                    try {
+                        callable.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     return null;
                 }, new JSONObject());
     }

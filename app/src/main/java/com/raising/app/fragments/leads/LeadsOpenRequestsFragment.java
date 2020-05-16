@@ -113,12 +113,13 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         LeadsOpenRequestAdapter adapter = new LeadsOpenRequestAdapter(openRequestItems);
         openRequestRecycler.setAdapter(adapter);
 
-        // check for valid subscription
-        if(subscriptionViewModel.hasValidSubscription()) {
-            // set the click listeners for accepting and declining an open request
-            adapter.setOnClickListener(new LeadsOpenRequestAdapter.OnClickListener() {
-                @Override
-                public void onClickAccept(int position) {
+        // set the click listeners for accepting and declining an open request
+        adapter.setOnClickListener(new LeadsOpenRequestAdapter.OnClickListener() {
+            @Override
+            public void onClickAccept(int position) {
+                Log.d(TAG, "onClickAccept: Accept open request");
+                // check for active subscription, if active perform action, else show unlock premium fragment
+                if(subscriptionViewModel.hasValidSubscription()) {
                     String endpoint = "match/" + openRequestItems.get(position).getId() + "/accept";
                     ApiRequestHandler.performPostRequest(endpoint, v -> {
                                 openRequestItems.remove(position);
@@ -132,10 +133,16 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
                                 return null;
                             },
                             new JSONObject());
+                } else {
+                    changeFragment(new UnlockPremiumFragment());
                 }
+            }
 
-                @Override
-                public void onClickDecline(int position) {
+            @Override
+            public void onClickDecline(int position) {
+                Log.d(TAG, "onClickDecline: Decline open request");
+                // check for active subscription, if active perform action, else show unlock premium fragment
+                if(subscriptionViewModel.hasValidSubscription()) {
                     String endpoint = "match/" + openRequestItems.get(position).getId() + "/decline";
                     ApiRequestHandler.performPostRequest(endpoint, v -> {
                                 openRequestItems.remove(position);
@@ -149,9 +156,11 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
                                 return null;
                             },
                             new JSONObject());
+                } else {
+                    changeFragment(new UnlockPremiumFragment());
                 }
-            });
-        }
+            }
+        });
 
         // set the item click listener, that takes you to the users public profile
         adapter.setOnItemClickListener(position -> {
