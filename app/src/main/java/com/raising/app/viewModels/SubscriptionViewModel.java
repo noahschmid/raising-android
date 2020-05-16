@@ -81,17 +81,8 @@ public class SubscriptionViewModel extends AndroidViewModel {
                         String purchaseToken = response.getString("purchaseToken");
                         String expirationDate = response.getString("expiresDate");
 
-                        ApiRequestHandler.performGetRequest("subscription/android/verify",
-                                v -> {
-                                    viewState.setValue(ViewState.RESULT);
-                                    setActiveSubscriptionWithExpiration(sku, purchaseToken, expirationDate);
-                                    return null;
-                                }, volleyError -> {
-                                    viewState.setValue(ViewState.RESULT);
-                                    Log.e(TAG, "verifySubscription: Subscription invalid " + volleyError.getMessage());
-                                    removeSubscription();
-                                    return null;
-                                });
+                        viewState.setValue(ViewState.RESULT);
+                        setActiveSubscriptionWithExpiration(sku, purchaseToken, expirationDate);
                     } catch (JSONException e) {
                         viewState.setValue(ViewState.ERROR);
                         Log.e(TAG, "loadSubscription: JSONException loading subscription" + e.getMessage());
@@ -99,8 +90,19 @@ public class SubscriptionViewModel extends AndroidViewModel {
                     }
                     return null;
                 }, volleyError -> {
-                    viewState.setValue(ViewState.ERROR);
-                    Log.e(TAG, "loadSubscription: Error loading subscription: " + volleyError.getMessage());
+                    if(volleyError.networkResponse != null) {
+                        if(volleyError.networkResponse.statusCode == 402) {
+                            viewState.setValue(ViewState.RESULT);
+                            removeSubscription();
+                        } else {
+                            viewState.setValue(ViewState.ERROR);
+                            Log.e(TAG, "loadSubscription: Error loading subscription: " + volleyError.getMessage());
+                        }
+                    } else {
+                        viewState.setValue(ViewState.ERROR);
+                        Log.e(TAG, "loadSubscription: Error loading subscription: " + volleyError.getMessage());
+                    }
+
                     return null;
                 });
     }
