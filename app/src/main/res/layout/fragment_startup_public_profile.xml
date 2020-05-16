@@ -198,7 +198,6 @@
                 android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                 android:gravity="start"
                 android:orientation="horizontal"
-                android:weightSum="3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -549,17 +548,6 @@
                 app:layout_constraintBottom_toBottomOf="@+id/text_profile_investment_type_title"
                 app:layout_constraintEnd_toEndOf="@+id/text_profile_fte"
                 app:layout_constraintTop_toTopOf="@+id/text_profile_investment_type_title" />
-
-            <ProgressBar
-                android:id="@+id/progress_profile_completed"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="80dp"
-                android:layout_height="0dp"
-                android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                android:progressTint="@color/raisingPrimary"
-                app:layout_constraintBottom_toBottomOf="@+id/text_profile_completed"
-                app:layout_constraintEnd_toStartOf="@+id/text_profile_completed"
-                app:layout_constraintTop_toTopOf="@+id/text_profile_completed" />
 
             <TextView
                 android:id="@+id/text_startup_public_profile_scope_title"

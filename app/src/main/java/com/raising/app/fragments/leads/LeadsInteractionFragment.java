@@ -85,7 +85,10 @@ public class LeadsInteractionFragment extends RaisingFragment {
         }
     }
 
-    protected void processLeads() {
+    /**
+     * Prepare the interaction fragments layout by inserting the interactions. If the interaction is not unlocked show a blur view and a information dialog.
+     */
+    private void processLeads() {
         View view = getView();
 
         for(Lead lead : leadsViewModel.getLeads().getValue()) {
@@ -127,7 +130,6 @@ public class LeadsInteractionFragment extends RaisingFragment {
             });
         }
 
-        Fragment fragment = this;
         if(!disableContact && !declinedContact) {
             closeContact.setOnClickListener(v -> {
                 String endpoint = "match/" + contact.getId() + "/decline";
@@ -147,6 +149,10 @@ public class LeadsInteractionFragment extends RaisingFragment {
         }
     }
 
+    /**
+     * Navigate user to ContactExchangeFragment
+     * @param interaction The interaction that should be displayed in the ContactExchangeFragment
+     */
     public void enterInteractionExchange(Interaction interaction) {
         Bundle args = new Bundle();
         args.putLong("id", contact.getId());

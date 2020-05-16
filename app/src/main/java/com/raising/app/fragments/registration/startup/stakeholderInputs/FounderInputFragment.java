@@ -30,6 +30,7 @@ public class FounderInputFragment extends RaisingFragment {
     private FounderViewModel founderViewModel;
     private EditText founderFirstNameInput, founderLastNameInput,
             founderEducationInput, founderCompanyPositionInput, founderCountryInput;
+    private Button btnCancelFounder, btnAddFounder;
 
     private Founder founder;
     private CustomPicker countryPicker;
@@ -46,6 +47,10 @@ public class FounderInputFragment extends RaisingFragment {
         return view;
     }
 
+    /**
+     * Allow to pass a founder to this fragment
+     * @param founder The founder that should be passed to this fragment
+     */
     public void passFounder(Founder founder) {
         this.founder = founder;
     }
@@ -56,109 +61,34 @@ public class FounderInputFragment extends RaisingFragment {
 
         founderViewModel = new ViewModelProvider(requireActivity()).get(FounderViewModel.class);
 
+        // find all views
         founderFirstNameInput = view.findViewById(R.id.input_founder_first_name);
         founderLastNameInput = view.findViewById(R.id.input_founder_last_name);
         founderEducationInput = view.findViewById(R.id.input_founder_education);
         founderCompanyPositionInput = view.findViewById(R.id.input_founder_poistion);
-
-        Button btnCancelFounder = view.findViewById(R.id.button_cancel_founder);
-        btnCancelFounder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                leaveFounderFragment();
-            }
-        });
-
-        Button btnAddFounder = view.findViewById(R.id.button_add_founder);
-        btnAddFounder.setOnClickListener(v -> {
-            String firstName = founderFirstNameInput.getText().toString();
-            String lastName = founderLastNameInput.getText().toString();
-            String companyPosition = founderCompanyPositionInput.getText().toString();
-            String education = founderEducationInput.getText().toString();
-
-            if(firstName.length() == 0 || lastName.length() == 0
-                    || companyPosition.length() == 0 || education.length() == 0 || countryId == -1) {
-                showSimpleDialog(getString(R.string.register_dialog_title),
-                        getString(R.string.register_dialog_text_empty_credentials));
-                return;
-            }
-
-            founder.setFirstName(firstName);
-            founder.setLastName(lastName);
-            founder.setPosition(companyPosition);
-            founder.setEducation(education);
-            founder.setCountryId(countryId);
-            founder.setTitle(firstName + " " + lastName + ", " + companyPosition);
-
-            if(founder.getId() != -1) {
-                try {
-                    Gson gson = new Gson();
-                    JSONObject params = new JSONObject(gson.toJson(founder));
-                    ApiRequestHandler.performPatchRequest("startup/founder/" +
-                                    founder.getId(), result -> {
-                                founderViewModel.select(founder);
-                                leaveFounderFragment();
-                                return null;
-                            },
-                            ApiRequestHandler.errorHandler,
-                            params);
-                } catch (Exception e) {
-                    Log.e("founderInput",
-                            "Error while updating board member: " +
-                                    e.getMessage());
-                }
-            } else {
-                if(AuthenticationHandler.isLoggedIn()) {
-                    Gson gson = new Gson();
-                    try {
-                        JSONObject params = new JSONObject(gson.toJson(founder));
-                        params.put("startupId", AuthenticationHandler.getId());
-                        Log.d("founderInput", "params: " + params.toString());
-                        ApiRequestHandler.performPostRequest("startup/founder",
-                                result -> {
-                                    founderViewModel.select(founder);
-                                    leaveFounderFragment();
-                                    return null;
-                                },
-                                ApiRequestHandler.errorHandler,
-                                params);
-                    } catch (Exception e) {
-                        showGenericError();
-                        Log.e("FounderInput",
-                                "Could not add founder: " + e.getMessage());
-                    }
-                } else {
-                    founderViewModel.select(founder);
-                    leaveFounderFragment();
-                }
-            }
-        });
-
-        //country picker
         founderCountryInput = view.findViewById(R.id.input_founder_country);
-        founderCountryInput.setShowSoftInputOnFocus(false);
-        CustomPicker.Builder builder =
-                new CustomPicker.Builder()
-                        .with(getContext())
-                        .canSearch(true)
-                        .listener(new OnCustomPickerListener() {
-                            @Override
-                            public void onSelectItem(PickerItem country) {
-                                founderCountryInput.setText(country.getName());
-                                countryId = (int)country.getId();
-                            }
-                        })
-                        .setItems(resources.getCountries());
 
-        countryPicker = builder.build();
+        btnCancelFounder = view.findViewById(R.id.button_cancel_founder);
+        btnCancelFounder.setOnClickListener(v -> leaveFounderFragment());
 
-        founderCountryInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                countryPicker.showDialog(getActivity());
-            }
-        });
+        btnAddFounder = view.findViewById(R.id.button_add_founder);
+        btnAddFounder.setOnClickListener(v -> processInputs());
 
+        prepareCountryPicker();
+
+        populateFragment();
+    }
+
+    @Override
+    public void onDestroyView() {
+        hideBottomNavigation(false);
+        super.onDestroyView();
+    }
+
+    /**
+     * Populate fragment with existing user data
+     */
+    private void populateFragment() {
         if(founder == null) {
             founder = new Founder();
         } else {
@@ -178,15 +108,90 @@ public class FounderInputFragment extends RaisingFragment {
         }
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    /**
+     * Prepare the country picker with resources and existing user data
+     */
+    private void prepareCountryPicker() {
+        CustomPicker.Builder builder =
+                new CustomPicker.Builder()
+                        .with(getContext())
+                        .canSearch(true)
+                        .listener(country -> {
+                            founderCountryInput.setText(country.getName());
+                            countryId = (int)country.getId();
+                        })
+                        .setItems(resources.getCountries());
+
+        countryPicker = builder.build();
+
+        founderCountryInput.setOnClickListener(v -> countryPicker.showDialog(getActivity()));
     }
 
-    @Override
-    public void onDestroyView() {
-        hideBottomNavigation(false);
-        super.onDestroyView();
+    /**
+     * Check the validity of user inputs, then handle the inputs
+     */
+    private void processInputs() {
+        String firstName = founderFirstNameInput.getText().toString();
+        String lastName = founderLastNameInput.getText().toString();
+        String companyPosition = founderCompanyPositionInput.getText().toString();
+        String education = founderEducationInput.getText().toString();
+
+        if(firstName.length() == 0 || lastName.length() == 0
+                || companyPosition.length() == 0 || education.length() == 0 || countryId == -1) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_dialog_text_empty_credentials));
+            return;
+        }
+
+        founder.setFirstName(firstName);
+        founder.setLastName(lastName);
+        founder.setPosition(companyPosition);
+        founder.setEducation(education);
+        founder.setCountryId(countryId);
+        founder.setTitle(firstName + " " + lastName + ", " + companyPosition);
+
+        if(founder.getId() != -1) {
+            try {
+                Gson gson = new Gson();
+                JSONObject params = new JSONObject(gson.toJson(founder));
+                ApiRequestHandler.performPatchRequest("startup/founder/" +
+                                founder.getId(), result -> {
+                            founderViewModel.select(founder);
+                            leaveFounderFragment();
+                            return null;
+                        },
+                        ApiRequestHandler.errorHandler,
+                        params);
+            } catch (Exception e) {
+                Log.e("founderInput",
+                        "Error while updating board member: " +
+                                e.getMessage());
+            }
+        } else {
+            if(AuthenticationHandler.isLoggedIn()) {
+                Gson gson = new Gson();
+                try {
+                    JSONObject params = new JSONObject(gson.toJson(founder));
+                    params.put("startupId", AuthenticationHandler.getId());
+                    Log.d("founderInput", "params: " + params.toString());
+                    ApiRequestHandler.performPostRequest("startup/founder",
+                            result -> {
+                                founderViewModel.select(founder);
+                                leaveFounderFragment();
+                                return null;
+                            },
+                            ApiRequestHandler.errorHandler,
+                            params);
+                } catch (Exception e) {
+                    showGenericError();
+                    Log.e("FounderInput",
+                            "Could not add founder: " + e.getMessage());
+                }
+            } else {
+                founderViewModel.select(founder);
+                leaveFounderFragment();
+            }
+        }
     }
 
     /**

@@ -19,7 +19,6 @@ public class SimpleMessageDialog extends DialogFragment {
      * @param dialogMessage The message, that should be displayed inside the dialog
      * @return Instance of AuthenticationDialog
      *
-     * @author Lorenz Caliezi 03.03.2020
      * @version 1.1
      */
     public SimpleMessageDialog newInstance(String dialogTitle, String dialogMessage) {
@@ -38,7 +37,6 @@ public class SimpleMessageDialog extends DialogFragment {
      * @param savedInstanceState Certain parameters for the new dialog
      * @return Instance of the fully built AuthenticationDialog
      *
-     * @author Lorenz Caliezi 02.03.2020
      * @version 1.0
      */
     @NonNull

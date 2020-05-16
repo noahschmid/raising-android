@@ -35,6 +35,7 @@ public class OnboardingPost3Fragment extends RaisingFragment {
             customizeAppBar(getString(R.string.toolbar_title_onboarding), false);
         }
 
+        // set the click listeners for next and skip buttons
         view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {
             tabViewModel.resetCurrentSettingsFragment();
             if(getArguments() != null && getArguments().getBoolean("settings")) {

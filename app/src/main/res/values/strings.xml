@@ -178,6 +178,7 @@
     <string name="register_financial_error_committed_large">Committed Funding value is too large</string>
     <string name="register_financial_error_high_scope">Scope should be smaller than 2 Billion</string>
     <string name="register_financial_error_low_scope">SCope should be greater than 20\'000 </string>
+    <string name="register_financial_error_valuation_large">Pre Money Valuation value is too large</string>
 
     <string name="toolbar_title_stakeholder"> Stakeholder </string>
     <string name="register_stakeholder_founder"> Founders* </string>

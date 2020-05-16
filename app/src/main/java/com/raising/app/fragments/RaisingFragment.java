@@ -202,7 +202,6 @@ public class RaisingFragment extends Fragment {
      * Change from the current fragment to the next
      *
      * @param fragment The fragment, that should be displayed next
-     * @author Lorenz Caliezi 09.03.2020
      */
     public void changeFragment(Fragment fragment) {
         try {
@@ -244,7 +243,6 @@ public class RaisingFragment extends Fragment {
      *
      * @param fragment The fragment, that should be displayed next
      * @param name     The transaction name
-     * @author Lorenz Caliezi 09.03.2020
      */
     protected void changeFragment(Fragment fragment, String name) {
         try {
@@ -359,7 +357,6 @@ public class RaisingFragment extends Fragment {
      *
      * @param isHidden if true, the bottomNavigation should be invisible,
      *                 if false, the bottomNavigation should be visible
-     * @author Lorenz Caliezi 06.03.2020
      */
     protected void hideBottomNavigation(boolean isHidden) {
         MainActivity activity = (MainActivity) getActivity();
@@ -420,7 +417,6 @@ public class RaisingFragment extends Fragment {
      * This methods retrieves an instance the SupportFragmentManager of the underlying activity
      *
      * @return Instance of SupportFragmentManager of used Activity
-     * @author Lorenz Caliezi 09.03.2020
      */
     protected FragmentManager getActivitiesFragmentManager() {
         try {
@@ -450,7 +446,6 @@ public class RaisingFragment extends Fragment {
      *
      * @param dialogTitle   The title of the simple message dialog
      * @param dialogMessage The message, that is to be displayed
-     * @author Lorenz Caliezi 09.03.2020
      */
     protected void showSimpleDialog(String dialogTitle, String dialogMessage) {
         SimpleMessageDialog dialog =
@@ -510,7 +505,6 @@ public class RaisingFragment extends Fragment {
      * @param textInput    The input of the layout with the limiter
      * @param WORD_MAXIMUM The limit of words, that the layout allows
      * @param currentText  The current text of the text view
-     * @author Lorenz Caliezi 18.03.2020
      */
     protected void prepareRestrictedTextLayout(final TextInputLayout textLayout, final EditText textInput, final int WORD_MAXIMUM, String currentText) {
         if (currentText == null || currentText.equals(" ")) {
@@ -558,7 +552,6 @@ public class RaisingFragment extends Fragment {
      * Currently only works, if fragment is on top of the stack
      *
      * @param fragment The fragment that is to be removed
-     * @author Lorenz Caliezi 23.03.2020
      */
     protected void popFragment(Fragment fragment) {
         FragmentManager fragmentManager = getActivitiesFragmentManager();

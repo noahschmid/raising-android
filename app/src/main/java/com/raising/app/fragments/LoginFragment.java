@@ -102,7 +102,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
      *      and then calls {@link #login(String, String)}.
      * Enables easier testing, since you can give login() some parameters.
      *
-     * @author Lorenz Caliezi 03.03.2020
      * @version 1.0
      */
     private void prepareLogin() {
@@ -206,7 +205,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
     /**
      * Change to the RegisterFragment, if user wants to register, not log in
      *
-     * @author Lorenz Caliezi 02.03.2020
      */
     private void goToRegisterFragment() {
         try {
@@ -225,7 +223,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
     /**
      * Change to ForgotPasswordEmailFragment, if the user wants to get a new password
      *
-     * @author Lorenz Caliezi 09.03.2020
      */
     private void goToForgotFragment() {
         changeFragment(new ForgotPasswordFragment(), "ForgotPasswordEmailFragment");

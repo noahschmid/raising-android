@@ -53,9 +53,10 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/register_input_startup_pitch_sentence"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputOneSentenceDescriptionHeight"
+                    android:layout_height="wrap_content"
                     android:gravity="start|top"
-                    android:inputType="text|textCapSentences|textMultiLine|textAutoComplete" />
+                    android:inputType="text|textCapSentences|textMultiLine|textAutoComplete"
+                    android:minHeight="@dimen/inputOneSentenceDescriptionHeight" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView

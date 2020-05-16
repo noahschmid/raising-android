@@ -2,8 +2,6 @@ package com.raising.app.fragments.registration.startup;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
@@ -56,10 +54,12 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_company_figures), true);
 
-        btnCompanyFigures = view.findViewById(R.id.button_company_figures);
-        btnCompanyFigures.setOnClickListener(v -> processInformation());
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
         //define input views and button
+        btnCompanyFigures = view.findViewById(R.id.button_company_figures);
+        btnCompanyFigures.setOnClickListener(v -> processInputs());
+
         companyFteInput = view.findViewById(R.id.register_input_company_fte);
         companyBreakevenInput = view.findViewById(R.id.register_input_company_breakeven);
         companyMarketsButton = view.findViewById(R.id.register_button_company_markets);
@@ -67,10 +67,11 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
 
         companyRevenueInput = view.findViewById(R.id.register_input_company_revenue);
 
-        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
-        //adjust fragment if this fragment is used for profile
+
+        // check if this fragment is opened for registration or for profile
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnCompanyFigures.setHint(getString(R.string.myProfile_apply_changes));
             btnCompanyFigures.setEnabled(false);
@@ -110,19 +111,53 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
                 }
             }
         });
+        prepareMarketsPicker();
 
+        populateFragment();
 
-        // fill views with users existing data
-        if (startup.getRevenueMinId() > -1) {
-            revenueMinId = startup.getRevenueMinId();
-            revenueMaxId = startup.getRevenueMaxId();
-
-            companyRevenueInput.setText(resources
-                    .getRevenueString(startup.getRevenueMinId()), false);
+        // if editmode, add text watchers after initial filling with users data
+        if (editMode) {
+            companyFteInput.addTextChangedListener(this);
+            companyBreakevenInput.addTextChangedListener(this);
+            companyFoundingInput.addTextChangedListener(this);
+            companyRevenueInput.addTextChangedListener(this);
         }
+    }
 
+    @Override
+    protected void onAccountUpdated() {
+        resetTab();
+        popFragment(this);
+        accountViewModel.updateCompleted();
+    }
 
-        // Markets picker
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        hideBottomNavigation(false);
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if (s.length() == 0)
+            return;
+
+        try {
+            if (Integer.parseInt(s.toString()) == startup.getFoundingYear()
+                    || Integer.parseInt(s.toString()) == startup.getBreakEvenYear())
+                return;
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "onTextChanged: " + e.getMessage());
+            return;
+        }
+        btnCompanyFigures.setEnabled(true);
+    }
+
+    /**
+     * Prepare the markets picker with resources and existing user data
+     */
+    private void prepareMarketsPicker() {
         marketItems = new ArrayList<>();
         marketItems.addAll(resources.getContinents());
         marketItems.addAll(resources.getCountries());
@@ -145,7 +180,6 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
             });
         });
 
-
         // restore selected markets
         if (startup.getContinents().size() > 0) {
             selected.addAll(startup.getContinents());
@@ -157,6 +191,19 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
 
         if (selected.size() > 0) {
             marketsPicker.setSelectedById(selected);
+        }
+    }
+
+    /**
+     * Populate the fragment with existing user data
+     */
+    private void populateFragment() {
+        if (startup.getRevenueMinId() > -1) {
+            revenueMinId = startup.getRevenueMinId();
+            revenueMaxId = startup.getRevenueMaxId();
+
+            companyRevenueInput.setText(resources
+                    .getRevenueString(startup.getRevenueMinId()), false);
         }
 
         if (startup.getNumberOfFte() > 0)
@@ -183,49 +230,6 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
                 showYearPicker(getString(R.string.founding_picker_title), companyFoundingInput);
             }
         });
-
-
-        // if editmode, add text watchers after initial filling with users data
-        if (editMode) {
-            companyFteInput.addTextChangedListener(this);
-            companyBreakevenInput.addTextChangedListener(this);
-            companyFoundingInput.addTextChangedListener(this);
-            companyRevenueInput.addTextChangedListener(this);
-        }
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
-    protected void onAccountUpdated() {
-        resetTab();
-        popFragment(this);
-        accountViewModel.updateCompleted();
-    }
-
-    @Override
-    public void onDestroyView() {
-        hideBottomNavigation(false);
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (s.length() == 0)
-            return;
-
-        try {
-            if (Integer.parseInt(s.toString()) == startup.getFoundingYear()
-                    || Integer.parseInt(s.toString()) == startup.getBreakEvenYear())
-                return;
-        } catch (NumberFormatException e) {
-            Log.e(TAG, "onTextChanged: " + e.getMessage());
-            return;
-        }
-        btnCompanyFigures.setEnabled(true);
     }
 
     /**
@@ -244,7 +248,10 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
         }
     }
 
-    private void processInformation() {
+    /**
+     * Check the validity of user inputs, then handle the inputs
+     */
+    private void processInputs() {
         if (companyBreakevenInput.getText().length() == 0 ||
                 companyFteInput.getText().length() == 0 ||
                 companyRevenueInput.getText().length() == 0 ||
@@ -273,14 +280,6 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
             }
         });
 
-        // check for countries and continents
-        if (countries.isEmpty() && continents.isEmpty() && startup.getCountries().isEmpty() &&
-                startup.getContinents().isEmpty()) {
-            showSimpleDialog(getString(R.string.register_dialog_title),
-                    getString(R.string.register_dialog_text_empty_credentials));
-            return;
-        }
-
         // check if FTE-input is valid
         try {
             if (Integer.parseInt(companyFteInput.getText().toString()) < 1) {
@@ -295,12 +294,19 @@ public class RegisterCompanyFiguresFragment extends RaisingFragment implements R
             return;
         }
 
-
         // check if break-even year input is valid
         if (Integer.parseInt(companyBreakevenInput.getText().toString())
                 < Integer.parseInt(companyFoundingInput.getText().toString())) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_company_error_break_even));
+            return;
+        }
+
+        // check for countries and continents
+        if (countries.isEmpty() && continents.isEmpty() && startup.getCountries().isEmpty() &&
+                startup.getContinents().isEmpty()) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 

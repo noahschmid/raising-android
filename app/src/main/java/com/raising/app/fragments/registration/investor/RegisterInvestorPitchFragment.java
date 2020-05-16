@@ -32,12 +32,10 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Ra
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_investor_pitch,
-                container, false);
 
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_pitch), true);
-        return view;
+        return inflater.inflate(R.layout.fragment_register_investor_pitch, container, false);
     }
 
 
@@ -55,8 +53,9 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Ra
         btnInvestorPitch = view.findViewById(R.id.button_investor_pitch);
         btnInvestorPitch.setOnClickListener(v -> processInputs());
 
-        //adjust fragment if this fragment is used for profile
+        // check if this fragment is opened for registration or for profile
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnInvestorPitch.setHint(getString(R.string.myProfile_apply_changes));
             btnInvestorPitch.setEnabled(false);
@@ -113,7 +112,7 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Ra
     }
 
     /**
-     * Process inputs, save them and submit registration
+     * Check the validity of users input, then handle the input
      */
     private void processInputs() {
         if(sentenceInput.getText().length() == 0 || pitchInput.getText().length() == 0) {
@@ -158,7 +157,6 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Ra
      * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int, String)}
      *
      * @param currentText The text, that is currently in this text view
-     * @author Lorenz Caliezi 18.03.2020
      */
     private void prepareSentenceLayout(String currentText) {
         prepareRestrictedTextLayout(sentenceLayout, sentenceInput, getResources().getInteger(R.integer.pitch_sentence_max_word), currentText);
@@ -168,7 +166,6 @@ public class RegisterInvestorPitchFragment extends RaisingFragment implements Ra
      * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int, String)}
      *
      * @param currentText The text, that is currently in this text view
-     * @author Lorenz Caliezi 18.03.2020
      */
     private void preparePitchLayout(String currentText) {
         prepareRestrictedTextLayout(pitchLayout, pitchInput, getResources().getInteger(R.integer.pitch_pitch_max_word), currentText);

@@ -83,13 +83,11 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_investor_images,
-                container, false);
 
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_profile_images), true);
 
-        return view;
+        return inflater.inflate(R.layout.fragment_register_investor_images, container, false);
     }
 
     @Override
@@ -116,6 +114,7 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             }
         });
 
+        // find views
         profileImageOverlay = view.findViewById(R.id.register_profile_image_overlay);
         galleryLayout = view.findViewById(R.id.register_investor_images_gallery);
 
@@ -133,7 +132,9 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             processInputs();
         });
 
+        // check if this fragment is opened for registration or for profile
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
             view.findViewById(R.id.registration_images_progress).setVisibility(View.INVISIBLE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
             finishButton.setEnabled(false);
@@ -148,6 +149,70 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         addNewGalleryPlaceholder();
 
         checkPermissions();
+    }
+
+    @Override
+    public void onDestroyView() {
+        hideBottomNavigation(false);
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onAccountUpdated() {
+        resetTab();
+        popFragment(this);
+        accountViewModel.updateCompleted();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null)
+            return;
+
+        switch (requestCode) {
+            case REQUEST_GALLERY_CAPTURE:
+                Bitmap image = (Bitmap) data.getExtras().get("data");
+                addImageToGallery(new Image(image));
+                galleryChanged = true;
+                finishButton.setEnabled(true);
+                break;
+
+            case REQUEST_GALLERY_FETCH:
+                Uri imageUri = data.getData();
+                try {
+                    image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
+                    addImageToGallery(new Image(ImageRotator.checkRotation(getPath(imageUri), image)));
+                    galleryChanged = true;
+                    finishButton.setEnabled(true);
+                } catch (Exception e) {
+                    Log.d("InvestorImages", "" + e.getMessage());
+                }
+                break;
+
+            case REQUEST_IMAGE_CAPTURE:
+                image = (Bitmap) data.getExtras().get("data");
+                setProfileImage(image);
+                profilePictureChanged = true;
+                finishButton.setEnabled(true);
+                break;
+
+            case REQUEST_IMAGE_FETCH:
+                imageUri = data.getData();
+                try {
+                    image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
+                    setProfileImage(ImageRotator.checkRotation(getPath(imageUri), image));
+                    profilePictureChanged = true;
+                    finishButton.setEnabled(true);
+                } catch (Exception e) {
+                    Log.d("InvestorImages", e.getMessage());
+                }
+                break;
+
+            default:
+                showSimpleDialog(getString(R.string.general_dialog_error_title),
+                        getString(R.string.general_dialog_error_text));
+        }
     }
 
     /**
@@ -220,77 +285,6 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         }
     }
 
-
-    @Override
-    public void onDestroyView() {
-        hideBottomNavigation(false);
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onAccountUpdated() {
-        resetTab();
-        popFragment(this);
-        accountViewModel.updateCompleted();
-    }
-
-    /**
-     * Process media selected from gallery/camera
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data == null)
-            return;
-
-        switch (requestCode) {
-            case REQUEST_GALLERY_CAPTURE:
-                Bitmap image = (Bitmap) data.getExtras().get("data");
-                addImageToGallery(new Image(image));
-                galleryChanged = true;
-                finishButton.setEnabled(true);
-                break;
-
-            case REQUEST_GALLERY_FETCH:
-                Uri imageUri = data.getData();
-                try {
-                    image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
-                    addImageToGallery(new Image(ImageRotator.checkRotation(getPath(imageUri), image)));
-                    galleryChanged = true;
-                    finishButton.setEnabled(true);
-                } catch (Exception e) {
-                    Log.d("InvestorImages", "" + e.getMessage());
-                }
-                break;
-
-            case REQUEST_IMAGE_CAPTURE:
-                image = (Bitmap) data.getExtras().get("data");
-                setProfileImage(image);
-                profilePictureChanged = true;
-                finishButton.setEnabled(true);
-                break;
-
-            case REQUEST_IMAGE_FETCH:
-                imageUri = data.getData();
-                try {
-                    image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
-                    setProfileImage(ImageRotator.checkRotation(getPath(imageUri), image));
-                    profilePictureChanged = true;
-                    finishButton.setEnabled(true);
-                } catch (Exception e) {
-                    Log.d("InvestorImages", e.getMessage());
-                }
-                break;
-
-            default:
-                showSimpleDialog(getString(R.string.general_dialog_error_title),
-                        getString(R.string.general_dialog_error_text));
-        }
-    }
 
     /**
      * Check whether the needed read/write permissions to external storage are granted and if not

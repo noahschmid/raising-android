@@ -59,7 +59,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/register_input_company_uid"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight" />
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -119,7 +120,8 @@
                     android:id="@+id/register_input_company_website"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"
-                    app:endIconMode="none" />
+                    app:endIconMode="none"
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout

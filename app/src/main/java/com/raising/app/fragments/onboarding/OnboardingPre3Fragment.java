@@ -30,6 +30,7 @@ public class OnboardingPre3Fragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // set the click listeners for next and skip buttons
         view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {
             resetTab();
             disablePreOnboarding();

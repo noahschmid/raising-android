@@ -26,6 +26,7 @@ public class OnboardingPre1Fragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // set the click listener for the layout to allow 'tap to continue'
         view.findViewById(R.id.onboarding_click_layout).setOnClickListener(v -> changeFragment(new OnboardingPre2Fragment()));
     }
 

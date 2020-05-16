@@ -22,8 +22,6 @@ import com.raising.app.util.AccountService;
 import com.raising.app.util.RaisingTextWatcher;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.customPicker.CustomPicker;
-import com.raising.app.util.customPicker.PickerItem;
-import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
 import com.raising.app.viewModels.AccountViewModel;
 
 public class RegisterProfileInformationFragment extends RaisingFragment implements RaisingTextWatcher {
@@ -55,10 +53,11 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         profileCountryInput = view.findViewById(R.id.register_input_profile_countries);
 
         btnProfileInformation = view.findViewById(R.id.button_profile_information);
-        btnProfileInformation.setOnClickListener(v -> processProfileInformation());
+        btnProfileInformation.setOnClickListener(v -> processInputs());
 
-        //adjust fragment if this fragment is used for profile
+        // check if this fragment is opened for registration or for profile
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnProfileInformation.setHint(getString(R.string.myProfile_apply_changes));
             btnProfileInformation.setEnabled(false);
@@ -75,8 +74,27 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // if editmode, add text watchers after initial filling with users data
+        if (editMode) {
+            profileCompanyInput.addTextChangedListener(this);
+            profileWebsiteInput.addTextChangedListener(this);
+            profilePhoneInput.addTextChangedListener(this);
+            profileCountryInput.addTextChangedListener(this);
+        }
+    }
+
+    @Override
     public void onResourcesLoaded() {
-        // fill views with users existing data
+        populateFragment();
+    }
+
+    /**
+     * Populate fragment with existing user data
+     */
+    private void populateFragment() {
         profileCompanyInput.setText(investor.getCompanyName());
         profileWebsiteInput.setText(investor.getWebsite());
 
@@ -93,19 +111,9 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         setupCountryPicker();
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // if editmode, add text watchers after initial filling with users data
-        if (editMode) {
-            profileCompanyInput.addTextChangedListener(this);
-            profileWebsiteInput.addTextChangedListener(this);
-            profilePhoneInput.addTextChangedListener(this);
-            profileCountryInput.addTextChangedListener(this);
-        }
-    }
-
+    /**
+     * Setup the country picker with resources and existing user data
+     */
     private void setupCountryPicker() {
         CustomPicker.Builder builder =
                 new CustomPicker.Builder()
@@ -153,10 +161,9 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
     }
 
     /**
-     * Check whether information is valid, then save profile information and
-     * switch to next fragment
+     * Check the validity of user inputs, then handle the inputs
      */
-    private void processProfileInformation() {
+    private void processInputs() {
         String companyName = profileCompanyInput.getText().toString();
         contactDetails.setPhone(profilePhoneInput.getText().toString());
         if (profileWebsiteInput.getText().toString().length() != 0 && !(profileWebsiteInput.getText().toString().contains("http"))) {

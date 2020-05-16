@@ -113,6 +113,10 @@ public class ShareholderInputFragment extends RaisingFragment {
 
     }
 
+    /**
+     * Allow to pass a shareholder to this fragment
+     * @param shareholder The shareholder that should be passed to this fragment
+     */
     public void passShareholder(Shareholder shareholder) {
         this.shareholder = shareholder;
     }
@@ -160,10 +164,10 @@ public class ShareholderInputFragment extends RaisingFragment {
         });
 
         // set click listeners for buttons
-        btnAddShareholder.setOnClickListener(v -> getNewShareholderData());
+        btnAddShareholder.setOnClickListener(v -> processInputs());
         btnCancelShareholder.setOnClickListener(v -> leaveShareholderFragment());
 
-        loadData();
+        populateFragment();
     }
 
     @Override
@@ -173,7 +177,10 @@ public class ShareholderInputFragment extends RaisingFragment {
         super.onDestroyView();
     }
 
-    private void loadData() {
+    /**
+     * Populate the fragment with existing user data
+     */
+    private void populateFragment() {
         Log.d(TAG, "loadData: ");
         if (shareholder != null) {
             btnAddShareholder.setText(getString(R.string.submit_text));
@@ -220,7 +227,10 @@ public class ShareholderInputFragment extends RaisingFragment {
         }
     }
 
-    private void getNewShareholderData() {
+    /**
+     * Check the validity of user inputs, then handle the inputs
+     */
+    private void processInputs() {
         Log.d(TAG, "getNewShareholderData: ");
         if (privateShareholder) {
             String firstName = privateFirstNameInput.getText().toString();
@@ -293,12 +303,15 @@ public class ShareholderInputFragment extends RaisingFragment {
             shareholder.setInvestorTypeId(-1);
             shareholder.setPrivateShareholder(false);
         }
-
-        updateExistingShareholder();
+        updateRemoteShareholder();
     }
 
-    private void updateExistingShareholder() {
+    /**
+     * Update the shareholder on our backend
+     */
+    private void updateRemoteShareholder() {
         Log.d(TAG, "updateExistingShareholder: ");
+        // if user has changed an existing shareholder
         if (shareholder.getId() != -1) {
             try {
                 Gson gson = new Gson();
@@ -319,6 +332,7 @@ public class ShareholderInputFragment extends RaisingFragment {
                                 e.getMessage());
             }
         } else {
+            // if user adds a new shareholder
             if (AuthenticationHandler.isLoggedIn()) {
                 Gson gson = new Gson();
                 String endpoint = shareholder.isPrivateShareholder() ?

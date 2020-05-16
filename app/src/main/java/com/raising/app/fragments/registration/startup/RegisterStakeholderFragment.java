@@ -56,8 +56,6 @@ public class RegisterStakeholderFragment extends RaisingFragment {
     private boolean editMode = false;
     private Startup startup;
 
-    int editedIndex;
-
     // hold references to the respective recycler views
     private RecyclerView founderRecyclerView, boardMemberRecyclerView, shareholderRecyclerView;
 
@@ -75,14 +73,11 @@ public class RegisterStakeholderFragment extends RaisingFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_stakeholder,
-                container, false);
-
 
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_stakeholder), true);
 
-        return view;
+        return inflater.inflate(R.layout.fragment_register_stakeholder, container, false);
     }
 
     @Override
@@ -95,7 +90,9 @@ public class RegisterStakeholderFragment extends RaisingFragment {
             processInputs();
         });
 
+        // check if this fragment is opened for registration or for profile
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
             finishButton.setEnabled(false);
@@ -369,7 +366,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
     /**
      * Creating the recycler view for the shareholder by linking the UI components and setting the adapter
      *
-     * @param view
+     * @param view The view containing this recycler view
      */
     private void createShareholderRecyclerView(View view) {
         shareholderRecyclerView = view.findViewById(R.id.stakeholder_shareholder_recycler_view);
@@ -422,7 +419,7 @@ public class RegisterStakeholderFragment extends RaisingFragment {
     }
 
     /**
-     * Process given inputs
+     * Check validity of user inputs, then handle the inputs
      */
     private void processInputs() {
         if (founderList.isEmpty() || boardMemberList.isEmpty()) {
@@ -444,64 +441,9 @@ public class RegisterStakeholderFragment extends RaisingFragment {
 
         try {
             if (!editMode) {
-                startup.clearFounders();
-                startup.clearCorporateShareholders();
-                startup.clearPrivateShareholders();
-                startup.clearBoardMembers();
-
-                founderList.forEach(founder -> {
-                    startup.addFounder((Founder) founder);
-                });
-
-                boardMemberList.forEach(boardMember -> {
-                    startup.addBoardMember((BoardMember) boardMember);
-                });
-
-                shareholderList.forEach(shareholder -> {
-                    if (((Shareholder) shareholder).isPrivateShareholder()) {
-                        startup.addPrivateShareholder((Shareholder) shareholder);
-                    } else {
-                        startup.addCorporateShareholder((Shareholder) shareholder);
-                    }
-                });
-
-                RegistrationHandler.saveStartup(startup);
-                GsonBuilder gsonBuilder = new GsonBuilder();
-                gsonBuilder.registerTypeAdapter(Startup.class,
-                        Serializer.StartupRegisterSerializer);
-                Gson gson = gsonBuilder.create();
-                String startup = gson.toJson(RegistrationHandler.getStartup());
-                JSONObject jsonStartup = new JSONObject(startup);
-                viewStateViewModel.startLoading();
-                ApiRequestHandler.performPostRequest("startup/register", registerCallback,
-                        errorCallback, jsonStartup);
-                Log.d("RegistrationString", startup);
+                registerNewStakeholders();
             } else {
-                ArrayList<Founder> founders = new ArrayList<>();
-                founderList.forEach(founder -> {
-                    founders.add((Founder) founder);
-                });
-                startup.setFounders(founders);
-
-                ArrayList<BoardMember> boardMembers = new ArrayList<>();
-                boardMemberList.forEach(boardMember -> {
-                    boardMembers.add((BoardMember) boardMember);
-                });
-                startup.setBoardMembers(boardMembers);
-
-                ArrayList<Shareholder> corpShareholders = new ArrayList<>();
-                ArrayList<Shareholder> privShareholders = new ArrayList<>();
-                shareholderList.forEach(shareholder -> {
-                    if (((Shareholder) shareholder).isPrivateShareholder()) {
-                        privShareholders.add((Shareholder) shareholder);
-                    } else {
-                        corpShareholders.add((Shareholder) shareholder);
-                    }
-                });
-                startup.setPrivateShareholders(privShareholders);
-                startup.setCorporateShareholders(corpShareholders);
-
-                popCurrentFragment();
+                updateExistingStakeholders();
             }
         } catch (IOException | JSONException e) {
             viewStateViewModel.stopLoading();
@@ -557,4 +499,75 @@ public class RegisterStakeholderFragment extends RaisingFragment {
         finishButton.setEnabled(true);
         return null;
     };
+
+    /**
+     * Add new stakeholders to account during registration
+     * @throws IOException
+     * @throws JSONException
+     */
+    private void registerNewStakeholders() throws IOException, JSONException {
+        startup.clearFounders();
+        startup.clearCorporateShareholders();
+        startup.clearPrivateShareholders();
+        startup.clearBoardMembers();
+
+        founderList.forEach(founder -> {
+            startup.addFounder((Founder) founder);
+        });
+
+        boardMemberList.forEach(boardMember -> {
+            startup.addBoardMember((BoardMember) boardMember);
+        });
+
+        shareholderList.forEach(shareholder -> {
+            if (((Shareholder) shareholder).isPrivateShareholder()) {
+                startup.addPrivateShareholder((Shareholder) shareholder);
+            } else {
+                startup.addCorporateShareholder((Shareholder) shareholder);
+            }
+        });
+
+        RegistrationHandler.saveStartup(startup);
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Startup.class,
+                Serializer.StartupRegisterSerializer);
+        Gson gson = gsonBuilder.create();
+        String startup = gson.toJson(RegistrationHandler.getStartup());
+        JSONObject jsonStartup = new JSONObject(startup);
+        viewStateViewModel.startLoading();
+        ApiRequestHandler.performPostRequest("startup/register", registerCallback,
+                errorCallback, jsonStartup);
+        Log.d("RegistrationString", startup);
+    }
+
+    /**
+     * Update existing accounts stakeholders
+     */
+    private void updateExistingStakeholders() {
+        ArrayList<Founder> founders = new ArrayList<>();
+        founderList.forEach(founder -> {
+            founders.add((Founder) founder);
+        });
+        startup.setFounders(founders);
+
+        ArrayList<BoardMember> boardMembers = new ArrayList<>();
+        boardMemberList.forEach(boardMember -> {
+            boardMembers.add((BoardMember) boardMember);
+        });
+        startup.setBoardMembers(boardMembers);
+
+        ArrayList<Shareholder> corpShareholders = new ArrayList<>();
+        ArrayList<Shareholder> privShareholders = new ArrayList<>();
+        shareholderList.forEach(shareholder -> {
+            if (((Shareholder) shareholder).isPrivateShareholder()) {
+                privShareholders.add((Shareholder) shareholder);
+            } else {
+                corpShareholders.add((Shareholder) shareholder);
+            }
+        });
+        startup.setPrivateShareholders(privShareholders);
+        startup.setCorporateShareholders(corpShareholders);
+
+        popCurrentFragment();
+    }
 }

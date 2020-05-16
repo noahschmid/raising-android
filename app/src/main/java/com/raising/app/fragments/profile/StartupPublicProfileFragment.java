@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -80,7 +79,6 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             supportAdapter;
     private TextView startupRevenue, startupBreakEven, startupFoundingYear, startupMarkets, startupFte,
             startupInvestmentType, startupValuation, startupValuationTitle, startupClosingTime, startupCompleted;
-    private ProgressBar completedProgress;
 
     private boolean leadsRequest = false;
     private boolean leadsDecline = false;
@@ -114,15 +112,17 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         matchingSummary = view.findViewById(R.id.startup_public_profile_matching_summary);
 
+        // check if this fragment is used for a public profile or for a profile overview
         if (getArguments().getSerializable("startup") != null) {
+            // this is used for a private profile overview
             Log.d("StartupPublicProfile", "name: " + ((Startup) getArguments()
                     .getSerializable("startup")).getName());
             startup = (Startup) getArguments().getSerializable("startup");
             Log.i("startup", startup.toString());
             customizeAppBar(getString(R.string.toolbar_my_public_profile), true);
-            // hide matching summary, if user accesses own public profile
             matchingSummary.setVisibility(View.GONE);
         } else {
+            // this is used for a public profile
             AccountService.getStartupAccount(getArguments().getLong("id"), startup -> {
                 matchScore = getArguments().getInt("score");
                 customizeAppBar(getArguments().getString("title"), true);
@@ -131,7 +131,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 this.startup = startup;
                 Log.i("startup", startup.toString());
                 prepareHandshakeButtons();
-                loadData();
+                populateFragment();
                 return null;
             });
         }
@@ -142,9 +142,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        textRequested = view.findViewById(R.id.text_startup_accept);
-        textDeclined = view.findViewById(R.id.text_startup_decline);
-
+        // find views
         inflater = (LayoutInflater) getContext().getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
         scrollView = view.findViewById(R.id.scroll_layout);
@@ -154,6 +152,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         matchesViewModel = ViewModelProviders.of(getActivity())
                 .get(MatchesViewModel.class);
 
+        // find views belonging to the image switcher and hide navigation before images are imported
         imageIndex = view.findViewById(R.id.text_startup_profile_gallery_image_index);
         btnPrevious = view.findViewById(R.id.button_startup_gallery_previous);
         btnNext = view.findViewById(R.id.button_startup_gallery_next);
@@ -163,8 +162,11 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         prepareImageSwitcher(view);
 
+        // find views for handshake buttons
         profileRequest = view.findViewById(R.id.button_startup_public_profile_accept);
         profileDecline = view.findViewById(R.id.button_startup_public_profile_decline);
+        textRequested = view.findViewById(R.id.text_startup_accept);
+        textDeclined = view.findViewById(R.id.text_startup_decline);
 
         // link general startup information
         matchingPercent = view.findViewById(R.id.text_startup_public_profile_matching_percent);
@@ -180,7 +182,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             if (website.length() == 0)
                 return;
             String uri;
-            if(website.startsWith("http://")) {
+            if (website.startsWith("http://")) {
                 uri = website;
             } else {
                 uri = "http://" + website;
@@ -207,10 +209,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         startupClosingTime = view.findViewById(R.id.text_profile_closing_time);
         startupCompleted = view.findViewById(R.id.text_profile_completed);
 
-        completedProgress = view.findViewById(R.id.progress_profile_completed);
-
         if (startup != null) {
-            loadData();
+            populateFragment();
         }
 
         // hide current markets as we currently don't know how to display it properly
@@ -218,7 +218,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         marketsTitle.setVisibility(View.GONE);
         startupMarkets.setVisibility(View.GONE);
 
-        Fragment fragment = this;
+        // set a click listener to accept a match
         profileRequest.setOnClickListener(v -> {
             leadsRequest = true;
             leadsDecline = false;
@@ -232,12 +232,13 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                     err -> {
                         showGenericError();
                         Log.e(TAG, "manageHandshakeButtons: " +
-                                ApiRequestHandler.parseVolleyError(err) );
+                                ApiRequestHandler.parseVolleyError(err));
                         return null;
                     },
                     new JSONObject());
         });
 
+        // set a click listeners to decline a match
         profileDecline.setOnClickListener(v -> {
             leadsDecline = true;
             leadsRequest = false;
@@ -251,7 +252,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                     err -> {
                         showGenericError();
                         Log.e(TAG, "manageHandshakeButtons: " +
-                                ApiRequestHandler.parseVolleyError(err) );
+                                ApiRequestHandler.parseVolleyError(err));
                         return null;
                     },
                     new JSONObject());
@@ -259,12 +260,13 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     }
 
     /**
-     * Load the startups data into the different views
+     * Populate the fragment with the startups data
      */
-    private void loadData() {
+    private void populateFragment() {
         customizeAppBar(startup.getCompanyName(), true);
 
-        if(startup.getProfilePictureId() > 0) {
+        // populate image switcher with startups images
+        if (startup.getProfilePictureId() > 0) {
             Glide.with(this)
                     .asBitmap()
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
@@ -286,9 +288,9 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                     });
         }
 
-        if(startup.getGalleryIds() != null) {
+        if (startup.getGalleryIds() != null) {
             startup.getGalleryIds().forEach(galleryId -> {
-                if(galleryId > 0) {
+                if (galleryId > 0) {
                     Glide.with(this)
                             .asBitmap()
                             .load(ApiRequestHandler.getDomain() + "media/gallery/" +
@@ -309,7 +311,6 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             });
         }
 
-
         if (startup.getGallery() != null) {
             startup.getGallery().forEach(image -> {
                 pictures.add(image.getImage());
@@ -319,6 +320,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         String matchingScore = matchScore + "% " + "Match";
         matchingPercent.setText(matchingScore);
 
+        // populate startups personal information
         profileName.setText(startup.getCompanyName());
         profileLocation.setText(resources.getCountry(startup.getCountryId()).getName());
         profilePitch.setText(startup.getPitch());
@@ -327,22 +329,34 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             profileWebsite.setVisibility(View.GONE);
         }
 
-        // matching criteria
-        startup.getInvestorTypes().forEach(type -> {
-            investorTypes.add((Model) resources.getInvestorType(type));
-        });
+        if (startup.getLabels().size() == 0) {
+            profileLabels.setVisibility(View.GONE);
+            labelsLayout.setVisibility(View.GONE);
+        } else {
+            labelsLayout.removeAllViewsInLayout();
+            resources.getLabels().forEach(label -> {
+                startup.getLabels().forEach(startupLabel -> {
+                    if (label.getId() == startupLabel) {
+                        View view = getLayoutInflater().inflate(R.layout.item_public_profile_label, null);
+                        ((TextView) view.findViewById(R.id.public_profile_label_name)).setText(label.getName());
+                        ((ImageView) view.findViewById(R.id.public_profile_label_icon)).setImageBitmap(label.getImage());
+                        view.setLayoutParams(
+                                new LinearLayout.LayoutParams(
+                                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+                        labelsLayout.addView(view);
+                    }
+                });
+            });
+        }
 
+        // populate startups matching criteria
+        startup.getInvestorTypes().forEach(type -> investorTypes.add((Model) resources.getInvestorType(type)));
         investmentPhases.add(resources.getInvestmentPhase(startup.getInvestmentPhaseId()));
+        startup.getIndustries().forEach(industry -> industries.add(resources.getIndustry(industry)));
+        startup.getSupport().forEach(support -> supports.add(resources.getSupport(support)));
 
-        startup.getIndustries().forEach(industry -> {
-            industries.add(resources.getIndustry(industry));
-        });
-
-
-        startup.getSupport().forEach(support -> {
-            supports.add(resources.getSupport(support));
-        });
-
+        // populate startups key figures
         startupRevenue.setText(resources.getRevenueString(startup.getRevenueMinId()));
         startupFte.setText(String.valueOf(startup.getNumberOfFte()));
         startupFoundingYear.setText(String.valueOf(startup.getFoundingYear()));
@@ -376,29 +390,6 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         }
 
         startupCompleted.setText(resources.formatMoneyAmount(startup.getRaised()));
-        completedProgress.setMax(startup.getScope());
-        completedProgress.setProgress(startup.getRaised());
-
-        if(startup.getLabels().size() == 0) {
-            profileLabels.setVisibility(View.GONE);
-            labelsLayout.setVisibility(View.GONE);
-        } else {
-            labelsLayout.removeAllViewsInLayout();
-            resources.getLabels().forEach(label -> {
-                startup.getLabels().forEach(startupLabel -> {
-                    if(label.getId() == startupLabel) {
-                        View view = getLayoutInflater().inflate(R.layout.item_public_profile_label, null);
-                        ((TextView) view.findViewById(R.id.public_profile_label_name)).setText(label.getName());
-                        ((ImageView) view.findViewById(R.id.public_profile_label_icon)).setImageBitmap(label.getImage());
-                        view.setLayoutParams(
-                                new LinearLayout.LayoutParams(
-                                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                                        ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-                        labelsLayout.addView(view);
-                    }
-                });
-            });
-        }
 
         typeAdapter.notifyDataSetChanged();
         phaseAdapter.notifyDataSetChanged();
@@ -407,51 +398,13 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
         loadStakeholders();
         profileLayout.setVisibility(View.VISIBLE);
-        scrollView.scrollTo(0,0);
+        scrollView.scrollTo(0, 0);
         scrollView.smoothScrollTo(0, 0);
-    }
-
-    private void loadStakeholders() {
-        View view = getView();
-        // setup recycler view for founders
-        ArrayList<Founder> founderList = new ArrayList<>();
-        founderList.addAll(startup.getFounders());
-        RecyclerView founderRecyclerView = view.findViewById(R.id.startup_profile_founder_list);
-        founderRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        StartupProfileFounderAdapter founderListAdapter
-                = new StartupProfileFounderAdapter(founderList);
-        founderRecyclerView.setAdapter(founderListAdapter);
-
-        if(founderList.size() == 0) {
-            view.findViewById(R.id.text_profile_founders).setVisibility(View.GONE);
-        }
-
-        // setup recycler view for board members
-        ArrayList<BoardMember> boardMemberList = new ArrayList<>();
-        boardMemberList.addAll(startup.getBoardMembers());
-        RecyclerView boardMemberRecyclerView = view.findViewById(R.id.startup_profile_board_member_list);
-        boardMemberRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        StartupProfileBoardMemberAdapter boardMemberListAdapter
-                = new StartupProfileBoardMemberAdapter(boardMemberList);
-        boardMemberRecyclerView.setAdapter(boardMemberListAdapter);
-
-        if(boardMemberList.size() == 0) {
-            view.findViewById(R.id.text_profile_board_member).setVisibility(View.GONE);
-        }
-
-        // check if startup has shareholders, if true load pie chart, if false, hide all views
-        if(startup.getCorporateShareholders().size() == 0
-                && startup.getPrivateShareholders().size() == 0) {
-            view.findViewById(R.id.text_profile_shareholder).setVisibility(View.GONE);
-            view.findViewById(R.id.stakeholder_equity_chart).setVisibility(View.GONE);
-            view.findViewById(R.id.stakeholder_equity_chart_legend).setVisibility(View.GONE);
-        } else {
-            setupShareholderPieChart(view);
-        }
     }
 
     /**
      * Prepare the recycler views used to display the matching criteria
+     *
      * @param view The view in which the recycler views will be displayed
      */
     private void initRecyclerViews(View view) {
@@ -481,10 +434,52 @@ public class StartupPublicProfileFragment extends RaisingFragment {
     }
 
     /**
-     * Toggle the handshake buttons based on the current state of the handshake
+     * Prepare and populate recycler views for startup stakeholders
+     */
+    private void loadStakeholders() {
+        View view = getView();
+        // setup recycler view for founders
+        ArrayList<Founder> founderList = new ArrayList<>();
+        founderList.addAll(startup.getFounders());
+        RecyclerView founderRecyclerView = view.findViewById(R.id.startup_profile_founder_list);
+        founderRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        StartupProfileFounderAdapter founderListAdapter
+                = new StartupProfileFounderAdapter(founderList);
+        founderRecyclerView.setAdapter(founderListAdapter);
+
+        if (founderList.size() == 0) {
+            view.findViewById(R.id.text_profile_founders).setVisibility(View.GONE);
+        }
+
+        // setup recycler view for board members
+        ArrayList<BoardMember> boardMemberList = new ArrayList<>();
+        boardMemberList.addAll(startup.getBoardMembers());
+        RecyclerView boardMemberRecyclerView = view.findViewById(R.id.startup_profile_board_member_list);
+        boardMemberRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        StartupProfileBoardMemberAdapter boardMemberListAdapter
+                = new StartupProfileBoardMemberAdapter(boardMemberList);
+        boardMemberRecyclerView.setAdapter(boardMemberListAdapter);
+
+        if (boardMemberList.size() == 0) {
+            view.findViewById(R.id.text_profile_board_member).setVisibility(View.GONE);
+        }
+
+        // check if startup has shareholders, if true load pie chart, if false, hide all views
+        if (startup.getCorporateShareholders().size() == 0
+                && startup.getPrivateShareholders().size() == 0) {
+            view.findViewById(R.id.text_profile_shareholder).setVisibility(View.GONE);
+            view.findViewById(R.id.stakeholder_equity_chart).setVisibility(View.GONE);
+            view.findViewById(R.id.stakeholder_equity_chart_legend).setVisibility(View.GONE);
+        } else {
+            setupShareholderPieChart(view);
+        }
+    }
+
+    /**
+     * Set the color and visibility of the handshake buttons based on the current handshake state
      */
     private void prepareHandshakeButtons() {
-        if(handshakeState != null) {
+        if (handshakeState != null) {
             switch (handshakeState) {
                 case HANDSHAKE:
                 case INVESTOR_ACCEPTED:
@@ -504,6 +499,9 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         }
     }
 
+    /**
+     * Change the matching summary layout to represent an accepted match.
+     */
     private void changeToAcceptedLayout() {
         matchingSummary.getBackground().setTint(ContextCompat.getColor(this.getContext(), R.color.raisingPositiveAccent));
         profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept_green));
@@ -514,6 +512,9 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         textRequested.setText(getString(R.string.accepted_text));
     }
 
+    /**
+     * Change the matching summary layout to represent a declined match
+     */
     private void changeToDeclinedLayout() {
         matchingSummary.getBackground().setTint(ContextCompat.getColor(this.getContext(), R.color.raisingNegativeAccent));
         profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept));
@@ -540,7 +541,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
 
-            if(pictures.size() == 0) {
+            if (pictures.size() == 0) {
                 imageView.setImageDrawable(getResources()
                         .getDrawable(R.drawable.ic_person_24dp));
             } else {
@@ -610,6 +611,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
     /**
      * Initializes and styles the pie chart used to display all shareholders
+     *
      * @param view The view, in which the pie chart should be displayed
      */
     private void setupShareholderPieChart(View view) {
@@ -627,11 +629,12 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         shareholders.addAll(startup.getCorporateShareholders());
 
         float overallEquityShare = 0;
-        for(int i = 0; i < shareholders.size(); i++) {
+        for (int i = 0; i < shareholders.size(); i++) {
             overallEquityShare += shareholders.get(i).getEquityShare();
         }
 
         int offset = 0;
+        // match all shareholders with a color and add them to legendItems
         for (int i = 0; i < shareholders.size(); i++) {
             int colorIndex = (i + offset) % (pieChartColorsTemplate.size() - 1);
             if (i % shareholders.size() == 0 && i != 0) {
@@ -654,19 +657,20 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         float maximumEquityShare = 100;
         //stores the index for the transparent color
         int transparentColorIndex = 0;
-        for(int i = 0; i < legendItems.size(); i++) {
+        // transfer all shareholders from legendItems to pieEntries
+        for (int i = 0; i < legendItems.size(); i++) {
             pieEntries.add(new PieEntry(legendItems.get(i).getEquityShare(), legendItems.get(i).getEquityShareString()));
             maximumEquityShare -= legendItems.get(i).getEquityShare();
             transparentColorIndex = i + 1;
         }
 
         // if equity share total is below 100, add filler element to complete round pie chart
-        if(overallEquityShare < 100) {
+        if (overallEquityShare < 100) {
             pieEntries.add(new PieEntry(maximumEquityShare, ""));
             pieChartColors.add(transparentColorIndex, getResources().getColor(R.color.raisingGrey, null));
         }
 
-
+        // populate the pie chart legend
         FlexboxLayout pieChartLegend = view.findViewById(R.id.stakeholder_equity_chart_legend);
         pieChartLegend.removeAllViews();
         legendItems.forEach(legendItem -> {
@@ -681,6 +685,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
             pieChartLegend.addView(legendItemView);
         });
 
+        // create and populate the pie chart
         PieDataSet pieDataSet = new PieDataSet(pieEntries, getString(R.string.startup_shareholder_chart_title));
         pieDataSet.setColors(pieChartColors);
 
@@ -695,7 +700,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
         pieChart.setHoleRadius(0f);
         pieChart.setTransparentCircleRadius(0f);
         // if the total equity is higher than 100, do not use a percent value chart. This will break
-        if(overallEquityShare < 100) {
+        if (overallEquityShare < 100) {
             pieChart.setUsePercentValues(true);
         }
         pieChart.invalidate();
@@ -703,6 +708,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
 
     /**
      * Populates a color array, which is then used for the shareholder pie chart
+     *
      * @return An array of color integers
      */
     private ArrayList<Integer> populateColorArray() {

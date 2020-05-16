@@ -29,6 +29,7 @@ public class OnboardingPre4Fragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // set the click listeners for next button
         view.findViewById(R.id.text_onboarding_next).setOnClickListener(v -> {
             resetTab();
             disablePreOnboarding();

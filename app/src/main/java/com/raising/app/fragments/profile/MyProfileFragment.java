@@ -66,9 +66,11 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // find wrapping layouts to hide/show the two different profile layouts
         startUpLayout = view.findViewById(R.id.myProfile_startUp_layout);
         investorLayout = view.findViewById(R.id.myProfile_investor_layout);
 
+        // show/hide the layout based on if the profile is for a startup or an investor
         if(AccountService.isStartup()) {
             startUpLayout.setVisibility(View.VISIBLE);
             investorLayout.setVisibility(View.GONE);
@@ -77,6 +79,7 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
             investorLayout.setVisibility(View.VISIBLE);
         }
 
+        // find all views and set their click listeners
         startupAccountInformation = view.findViewById(R.id.profile_startup_login_information_layout);
         startupAccountInformation.setOnClickListener(this);
 

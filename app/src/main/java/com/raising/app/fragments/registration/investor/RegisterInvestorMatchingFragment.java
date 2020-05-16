@@ -2,8 +2,6 @@ package com.raising.app.fragments.registration.investor;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
@@ -36,7 +34,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
     private CustomPicker customPicker;
     private TextView ticketSizeText;
     private MatchingCriteriaComponent industryCriteria, investmentPhaseCriteria, supportCriteria,
-        investorTypeCriteria;
+            investorTypeCriteria;
 
     private View fragmentView;
     private long investorType = -1;
@@ -45,8 +43,8 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
     private Investor investor;
 
     private int minimumTicketSize, maximumTicketSize;
-    private int [] ticketSizeSteps;
-    private String [] ticketSizeStrings;
+    private int[] ticketSizeSteps;
+    private String[] ticketSizeStrings;
 
     private boolean editMode = false;
 
@@ -63,11 +61,13 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
         accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
         btnInvestorMatching = view.findViewById(R.id.button_investor_matching);
-        btnInvestorMatching.setOnClickListener(v -> processMatchingInformation());
+        btnInvestorMatching.setOnClickListener(v -> processInputs());
         geographicsButton = view.findViewById(R.id.register_investor_matching_geographics_button);
         ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
 
-        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+        // check if this fragment is opened for registration or for profile
+        if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnInvestorMatching.setHint(getString(R.string.myProfile_apply_changes));
             investor = (Investor) accountViewModel.getAccount().getValue();
@@ -82,10 +82,14 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
 
     @Override
     public void onResourcesLoaded() {
+        populateFragment();
+    }
+
+    /**
+     * Populate the fragment with backend data
+     */
+    private void populateFragment() {
         View view = getView();
-        pickerItems = new ArrayList<>();
-        pickerItems.addAll(resources.getContinents());
-        pickerItems.addAll(resources.getCountries());
 
         ticketSizeStrings = resources.getTicketSizeStrings(getString(R.string.currency),
                 getResources().getStringArray(R.array.revenue_units));
@@ -94,14 +98,14 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
 
         prepareTicketSizeSlider(view);
 
-        if(investor.getTicketMinId() != 0 && investor.getTicketMaxId() != 0)
-            ticketSize.setValues((float)investor.getTicketMinId(), (float)investor.getTicketMaxId());
-        if(editMode) {
+        if (investor.getTicketMinId() != 0 && investor.getTicketMaxId() != 0)
+            ticketSize.setValues((float) investor.getTicketMinId(), (float) investor.getTicketMaxId());
+        if (editMode) {
             btnInvestorMatching.setEnabled(false);
         }
 
         MatchingCriteriaAdapter.OnItemClickListener clickListener = position -> {
-            if(editMode) {
+            if (editMode) {
                 btnInvestorMatching.setEnabled(true);
             }
         };
@@ -116,7 +120,19 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
                 resources.getSupports(), false, clickListener);
 
         investorTypeCriteria = new MatchingCriteriaComponent(view.findViewById(R.id.register_investor_matching_radio_investor),
-                resources.getInvestorTypes(),true, clickListener);
+                resources.getInvestorTypes(), true, clickListener);
+
+        setupCountryPicker();
+
+    }
+
+    /**
+     * Set up the country picker with resources and existing user data
+     */
+    private void setupCountryPicker() {
+        pickerItems = new ArrayList<>();
+        pickerItems.addAll(resources.getContinents());
+        pickerItems.addAll(resources.getCountries());
 
         CustomPicker.Builder builder =
                 new CustomPicker.Builder()
@@ -148,133 +164,12 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
         if(selected.size() > 0) {
             customPicker.setSelectedById(selected);
         }
-
         restoreLists();
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
     /**
-     * Restore values of lists from previous entered data
-     */
-    private void restoreLists() {
-        investorType = investor.getInvestorTypeId();
-        investor.getInvestmentPhases().forEach(phase -> investmentPhaseCriteria.setChecked(phase));
-        investor.getIndustries().forEach(industry -> industryCriteria.setChecked(industry));
-        investorTypeCriteria.setChecked(investor.getInvestorTypeId());
-        investor.getSupport().forEach(support -> supportCriteria.setChecked(support));
-    }
-
-    /**
-     * Checks if the user has changed his selection of markets
-     * @param list The users new selection of markets after dismissing the custom picker
-     */
-    private void checkIfMarketsChanged(List<PickerItem> list) {
-        ArrayList<Long> listId = new ArrayList<>();
-        list.forEach(pickerItem -> {
-            listId.add(pickerItem.getId());
-        });
-
-        Log.d(TAG, "checkIfMarketsChanged: listId " + listId.toString());
-        Log.d(TAG, "checkIfMarketsChanged: selected " + selected.toString());
-        if(!listId.equals(selected)) {
-            btnInvestorMatching.setEnabled(true);
-        }
-    }
-
-
-
-    @Override
-    protected void onAccountUpdated() {
-        resetTab();
-        popFragment(this);
-        accountViewModel.updateCompleted();
-    }
-
-    /**
-     * Check if all information is valid and save it
-     */
-    private void processMatchingInformation() {
-        investorType = investorTypeCriteria.getSingleSelected();
-        if(investorType == -1) {
-            showSimpleDialog(getString(R.string.register_dialog_title),
-                    getString(R.string.register_dialog_text_empty_credentials));
-            return;
-        }
-
-        investor.setTicketMinId((int)resources.getTicketSizes().get(
-                (int)ticketSize.getMinimumValue() - 1).getId());
-
-        investor.setTicketMaxId((int)resources.getTicketSizes().get(
-                (int)ticketSize.getMaximumValue() - 1).getId());
-
-        ArrayList<Long> industries = industryCriteria.getSelected();
-        ArrayList<Long> investmentPhases = investmentPhaseCriteria.getSelected();
-        ArrayList<Long> support = supportCriteria.getSelected();
-
-        ArrayList<Long> countries = new ArrayList<>();
-        ArrayList<Long> continents = new ArrayList<>();
-
-        // only add child objects (countries) if parent object (continent) isn't selected
-        // otherwise only add parent object
-        customPicker.getResult().forEach(item -> {
-            if(item instanceof Continent) {
-                continents.add(item.getId());
-                pickerItems.forEach(i -> {
-                    if(i instanceof Country) {
-                        i.setChecked(false);
-                    }
-                });
-            }
-
-            if(item instanceof Country) {
-                countries.add(item.getId());
-            }
-        });
-
-        if(industries.size() == 0 || investmentPhases.size() == 0 || support.size() == 0) {
-            showSimpleDialog(getString(R.string.register_dialog_title),
-                    getString(R.string.register_dialog_text_empty_credentials));
-            return;
-        }
-
-        // check for countries and continents
-        if (countries.isEmpty() && continents.isEmpty() && investor.getCountries().isEmpty() &&
-                investor.getContinents().isEmpty()) {
-            showSimpleDialog(getString(R.string.register_dialog_title),
-                    getString(R.string.register_dialog_text_empty_credentials));
-            return;
-        }
-
-        investor.setInvestmentPhases(investmentPhases);
-        investor.setIndustries(industries);
-        investor.setSupport(support);
-        investor.setInvestorTypeId(investorType);
-
-        if(!continents.isEmpty() || !countries.isEmpty()) {
-            investor.setContinents(continents);
-            investor.setCountries(countries);
-        }
-
-        try {
-            if(!editMode) {
-                RegistrationHandler.saveInvestor(investor);
-                changeFragment(new RegisterInvestorPitchFragment(),
-                        "RegisterInvestorPitchFragment");
-            } else {
-               accountViewModel.update(investor);
-            }
-        } catch (Exception e) {
-            Log.d("RegisterInvestorMatchingFragment",
-                    "Error while saving data: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Prepare the ticket size slider for optimal usage
+     * Prepare the ticket size slider for usage
+     *
      * @param view The view in which the slider lies
      */
     private void prepareTicketSizeSlider(View view) {
@@ -296,6 +191,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
 
     /**
      * Create the string representation of the currently selected slider values
+     *
      * @param maxValue The currently selected maximal value
      * @param minValue The currently selected minimal value
      * @return String representing the current slider selection
@@ -311,5 +207,120 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
         maximumTicketSize = ticketSizeSteps[maxValue - 1];
 
         return stringBuilder.toString();
+    }
+
+    /**
+     * Restore values of lists from previous entered data
+     */
+    private void restoreLists() {
+        investorType = investor.getInvestorTypeId();
+        investor.getInvestmentPhases().forEach(phase -> investmentPhaseCriteria.setChecked(phase));
+        investor.getIndustries().forEach(industry -> industryCriteria.setChecked(industry));
+        investorTypeCriteria.setChecked(investor.getInvestorTypeId());
+        investor.getSupport().forEach(support -> supportCriteria.setChecked(support));
+    }
+
+    /**
+     * Checks if the user has changed his selection of markets
+     *
+     * @param list The users new selection of markets after dismissing the custom picker
+     */
+    private void checkIfMarketsChanged(List<PickerItem> list) {
+        ArrayList<Long> listId = new ArrayList<>();
+        list.forEach(pickerItem -> {
+            listId.add(pickerItem.getId());
+        });
+
+        Log.d(TAG, "checkIfMarketsChanged: listId " + listId.toString());
+        Log.d(TAG, "checkIfMarketsChanged: selected " + selected.toString());
+        if (!listId.equals(selected)) {
+            btnInvestorMatching.setEnabled(true);
+        }
+    }
+
+    @Override
+    protected void onAccountUpdated() {
+        resetTab();
+        popFragment(this);
+        accountViewModel.updateCompleted();
+    }
+
+    /**
+     * Check the validity of user inputs, then handle the input
+     */
+    private void processInputs() {
+        investorType = investorTypeCriteria.getSingleSelected();
+        if (investorType == -1) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_dialog_text_empty_credentials));
+            return;
+        }
+
+        investor.setTicketMinId((int) resources.getTicketSizes().get(
+                (int) ticketSize.getMinimumValue() - 1).getId());
+
+        investor.setTicketMaxId((int) resources.getTicketSizes().get(
+                (int) ticketSize.getMaximumValue() - 1).getId());
+
+        ArrayList<Long> industries = industryCriteria.getSelected();
+        ArrayList<Long> investmentPhases = investmentPhaseCriteria.getSelected();
+        ArrayList<Long> support = supportCriteria.getSelected();
+
+        ArrayList<Long> countries = new ArrayList<>();
+        ArrayList<Long> continents = new ArrayList<>();
+
+        // only add child objects (countries) if parent object (continent) isn't selected
+        // otherwise only add parent object
+        customPicker.getResult().forEach(item -> {
+            if (item instanceof Continent) {
+                continents.add(item.getId());
+                pickerItems.forEach(i -> {
+                    if (i instanceof Country) {
+                        i.setChecked(false);
+                    }
+                });
+            }
+
+            if (item instanceof Country) {
+                countries.add(item.getId());
+            }
+        });
+
+        if (industries.size() == 0 || investmentPhases.size() == 0 || support.size() == 0) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_dialog_text_empty_credentials));
+            return;
+        }
+
+        // check for countries and continents
+        if (countries.isEmpty() && continents.isEmpty() && investor.getCountries().isEmpty() &&
+                investor.getContinents().isEmpty()) {
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_dialog_text_empty_credentials));
+            return;
+        }
+
+        investor.setInvestmentPhases(investmentPhases);
+        investor.setIndustries(industries);
+        investor.setSupport(support);
+        investor.setInvestorTypeId(investorType);
+
+        if (!continents.isEmpty() || !countries.isEmpty()) {
+            investor.setContinents(continents);
+            investor.setCountries(countries);
+        }
+
+        try {
+            if (!editMode) {
+                RegistrationHandler.saveInvestor(investor);
+                changeFragment(new RegisterInvestorPitchFragment(),
+                        "RegisterInvestorPitchFragment");
+            } else {
+                accountViewModel.update(investor);
+            }
+        } catch (Exception e) {
+            Log.d("RegisterInvestorMatchingFragment",
+                    "Error while saving data: " + e.getMessage());
+        }
     }
 }

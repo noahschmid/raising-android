@@ -42,9 +42,6 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
                              Bundle savedInstanceState) {
 
         customizeAppBar(getString(R.string.toolbar_title_open_requests), true);
-
-        Log.d(TAG, "onCreateView: ");
-
         return inflater.inflate(R.layout.fragment_leads_open_requests, container, false);
     }
 
@@ -54,7 +51,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         Log.d(TAG, "onResume: ");
         leadsViewModel.loadLeads();
         if(leadsViewModel.getViewState().getValue() == ViewState.RESULT) {
-            populateOpenRequests();
+            populateFragment();
         }
     }
 
@@ -81,16 +78,19 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         Log.d(TAG, "onResourcesLoaded: ");
         leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             if(state == ViewState.RESULT || state == ViewState.CACHED) {
-                populateOpenRequests();
+                populateFragment();
             }
         });
 
         if(leadsViewModel.getViewState().getValue() == ViewState.RESULT) {
-            populateOpenRequests();
+            populateFragment();
         }
     }
 
-    private void populateOpenRequests() {
+    /**
+     * Fill the open requests recycler view with data and connect click listeners
+     */
+    private void populateFragment() {
         openRequestItems.clear();
         ArrayList<Lead> openRequests = leadsViewModel.getOpenRequests();
 
@@ -116,6 +116,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
 
         // check for valid subscription
         if(SubscriptionHandler.hasValidSubscription()) {
+            // set the click listeners for accepting and declining an open request
             adapter.setOnClickListener(new LeadsOpenRequestAdapter.OnClickListener() {
                 @Override
                 public void onClickAccept(int position) {
@@ -153,6 +154,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
             });
         }
 
+        // set the item click listener, that takes you to the users public profile
         adapter.setOnItemClickListener(position -> {
             // check for valid subscription
             if(!SubscriptionHandler.hasValidSubscription()) {
@@ -176,6 +178,9 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         });
     }
 
+    /**
+     * Check if the open requests recycler view is empty. If it is empty remove the current fragment.
+     */
     private void checkForEmptyLayout() {
         if (openRequestItems == null || openRequestItems.size() == 0) {
             popCurrentFragment();

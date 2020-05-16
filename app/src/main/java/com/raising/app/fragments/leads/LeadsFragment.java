@@ -121,14 +121,14 @@ public class LeadsFragment extends RaisingFragment {
         // set observer for view state of leadsViewModel
         leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             if (state == ViewState.RESULT || state == ViewState.CACHED) {
-                filterLeads();
+                populateFragment();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
 
         if (leadsViewModel.getViewState().getValue() == ViewState.RESULT
                 || leadsViewModel.getViewState().getValue() == ViewState.CACHED) {
-            filterLeads();
+            populateFragment();
             swipeRefreshLayout.setRefreshing(false);
         }
     }
@@ -222,9 +222,10 @@ public class LeadsFragment extends RaisingFragment {
     }
 
     /**
-     * Filter all leads based on their timestamps into four different categories.
+     * Populate fragment by filtering the leads into four different categories
+     * and adding them to their respective recycler view
      */
-    private void filterLeads() {
+    private void populateFragment() {
         prepareOpenRequestsLayout();
         // initially clear all array lists and set everything invisible
         today.clear();

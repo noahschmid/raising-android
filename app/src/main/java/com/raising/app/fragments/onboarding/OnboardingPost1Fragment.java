@@ -35,6 +35,7 @@ public class OnboardingPost1Fragment extends RaisingFragment {
             args.putBoolean("settings", getArguments().getBoolean("settings"));
         }
 
+        // set the click listeners for next and skip buttons
         view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {
             tabViewModel.resetCurrentSettingsFragment();
             if(getArguments() != null && getArguments().getBoolean("settings")) {

@@ -161,7 +161,6 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
      * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int, String)}
      *
      * @param currentText The text, that is currently in this text view
-     * @author Lorenz Caliezi 18.03.2020
      */
     private void prepareSentenceLayout(String currentText) {
         prepareRestrictedTextLayout(sentenceLayout, sentenceInput, getResources().getInteger(R.integer.pitch_sentence_max_word), currentText);
@@ -171,7 +170,6 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
      * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int, String)}
      *
      * @param currentText The text, that is currently in this text view
-     * @author Lorenz Caliezi 18.03.2020
      */
     private void preparePitchLayout(String currentText) {
         prepareRestrictedTextLayout(pitchLayout, pitchInput, getResources().getInteger(R.integer.pitch_pitch_max_word), currentText);

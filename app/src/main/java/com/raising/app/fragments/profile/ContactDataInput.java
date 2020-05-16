@@ -33,6 +33,8 @@ public class ContactDataInput extends RaisingFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_contact_details), false);
 
         return inflater.inflate(R.layout.fragment_contact_details_input, container, false);
@@ -42,6 +44,12 @@ public class ContactDataInput extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // find views
+        phoneNumberInput = view.findViewById(R.id.contact_input_phone);
+        saveButton = view.findViewById(R.id.contact_input_save_button);
+        saveButton.setOnClickListener(v -> processInputs());
+
+        // prepare contactDetails object
         contactDetails = new ContactData();
         contactDetails.setEmail(this.getArguments().getString("email"));
         isStartup = this.getArguments().getBoolean("isStartup");
@@ -49,23 +57,9 @@ public class ContactDataInput extends RaisingFragment {
         accountId = this.getArguments().getLong("id");
         contactDetails.setAccountId(accountId);
 
-        phoneNumberInput = view.findViewById(R.id.contact_input_phone);
-        saveButton = view.findViewById(R.id.contact_input_save_button);
-
         Log.d("ContactDataInput", "onViewCreated: " + contactDetails.getEmail());
 
-        setupButton();
-
-        hideBottomNavigation(true);
-
         viewStateViewModel.stopLoading();
-    }
-
-    /**
-     * Setup save button (add on click listener)
-     */
-    private void setupButton() {
-        saveButton.setOnClickListener(v -> processInputs());
     }
 
     /**
@@ -78,7 +72,6 @@ public class ContactDataInput extends RaisingFragment {
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
-
         contactDetails.setPhone(phoneNumberInput.getText().toString());
 
         try {

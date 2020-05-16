@@ -35,6 +35,7 @@ public class OnboardingPost6Fragment extends RaisingFragment {
             customizeAppBar(getString(R.string.toolbar_title_onboarding), false);
         }
 
+        // set the click listeners for next button
         view.findViewById(R.id.text_onboarding_next).setOnClickListener(v -> {
             tabViewModel.resetCurrentSettingsFragment();
             if(getArguments() != null && getArguments().getBoolean("settings")) {
