@@ -18,6 +18,7 @@ public class Interaction implements Serializable {
         this.interactionType = type;
         this.partnerId = partnerId;
         this.id = id;
+        this.relationshipId = relationshipId;
     }
 
     public Interaction() {}
