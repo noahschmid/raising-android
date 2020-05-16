@@ -122,7 +122,7 @@ public class MatchesFragment extends RaisingFragment {
             }
         });
 
-        if (matchListItems.size() == 0 && resourcesViewModel.getViewState().getValue() == ViewState.RESULT) {
+        if (matchListItems.size() == 0 && matchesViewModel.getViewState().getValue() == ViewState.RESULT) {
             emptyMatchListLayout.setVisibility(View.VISIBLE);
             Log.d(TAG, "processItems: Empty Layout visible");
         }

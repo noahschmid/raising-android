@@ -143,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                             Fragment fragment = new LeadsInteractionFragment();
                             Bundle bundle = new Bundle();
                             bundle.putLong("leadId", leadId);
+                            Log.d(TAG, "onCreate: leadId "  + leadId);
                             fragment.setArguments(bundle);
                             tabViewModel.setCurrentLeadsFragment(fragment);
                             selectBottomNavigation(R.id.nav_leads);
