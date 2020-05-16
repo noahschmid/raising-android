@@ -36,18 +36,18 @@ public class OnboardingPost4Fragment extends RaisingFragment {
             args.putBoolean("settings", getArguments().getBoolean("settings"));
             customizeAppBar(getString(R.string.toolbar_title_onboarding), false);
             view.findViewById(R.id.text_onboarding_skip).setVisibility(View.GONE);
+        } else {
+            // set the click listeners for next and skip buttons
+            view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {
+                tabViewModel.resetCurrentSettingsFragment();
+                if (getArguments() != null && getArguments().getBoolean("settings")) {
+                    clearBackstackAndReplace(new SettingsFragment());
+                } else {
+                    disablePostOnboarding();
+                    clearBackstackAndReplace(new MatchesFragment());
+                }
+            });
         }
-
-        // set the click listeners for next and skip buttons
-        view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {
-            tabViewModel.resetCurrentSettingsFragment();
-            if(getArguments() != null && getArguments().getBoolean("settings")) {
-                clearBackstackAndReplace(new SettingsFragment());
-            } else {
-                disablePostOnboarding();
-                clearBackstackAndReplace(new MatchesFragment());
-            }
-        });
 
         view.findViewById(R.id.text_onboarding_next).setOnClickListener(v -> {
             Fragment fragment = new OnboardingPost6Fragment();
