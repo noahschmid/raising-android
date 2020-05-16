@@ -73,6 +73,7 @@ public class SubscriptionFragment extends RaisingFragment {
         subscriptionViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             if(state == ViewState.RESULT) {
                 skuDetailsArrayList = subscriptionViewModel.getSkuDetailsArrayList().getValue();
+                Log.d(TAG, "onViewCreated: " + skuDetailsArrayList);
                 refreshSubscriptionsLayout();
             }
         });
@@ -108,7 +109,6 @@ public class SubscriptionFragment extends RaisingFragment {
                 .build();
         Log.d(TAG, "onViewCreated: " + subscriptionViewModel.getActiveSubscription());
 
-        subscriptionViewModel.loadSkuDetails(billingClient);
         startBillingConnection();
     }
 

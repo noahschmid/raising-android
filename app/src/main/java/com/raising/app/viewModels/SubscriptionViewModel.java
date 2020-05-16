@@ -1,7 +1,6 @@
 package com.raising.app.viewModels;
 
 import android.app.Application;
-import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -33,7 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 public class SubscriptionViewModel extends AndroidViewModel {
-    private static final String TAG = "SubscriptionHandler";
+    private static final String TAG = "SubscriptionViewModel";
 
     private MutableLiveData<Subscription> activeSubscription = new MutableLiveData<>();
     private MutableLiveData<ViewState> viewState = new MutableLiveData<>();
@@ -118,15 +117,16 @@ public class SubscriptionViewModel extends AndroidViewModel {
         params.setSkusList(SKU_LIST).setType(BillingClient.SkuType.SUBS);
         billingClient.querySkuDetailsAsync(params.build(),
                 (billingResult, skuDetailsList) -> {
-                    viewState.setValue(ViewState.RESULT);
                     skuDetailsArrayList.getValue().clear();
                     loadSubscription();
-                    Log.d(TAG, "onViewCreated: SkuDetails" + skuDetailsList);
+                    Log.d(TAG, "loadSkuDetails: SkuDetails" + skuDetailsList);
                     if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
-                        Log.d(TAG, "getSkuDetails: Billing Response Code: " + billingResult.getResponseCode());
+                        Log.d(TAG, "loadSkuDetails: Billing Response Code: " + billingResult.getResponseCode());
                         skuDetailsArrayList.getValue().addAll(skuDetailsList);
+                        Log.d(TAG, "loadSkuDetails: " + skuDetailsArrayList.getValue());
+                        viewState.setValue(ViewState.RESULT);
                     } else {
-                        Log.d(TAG, "onSkuDetailsResponse: Bad response: " + billingResult.getDebugMessage());
+                        Log.d(TAG, "loadSkuDetails: Bad response: " + billingResult.getDebugMessage());
                     }
                 });
     }
@@ -150,11 +150,11 @@ public class SubscriptionViewModel extends AndroidViewModel {
 
         ApiRequestHandler.performPatchRequest("subscription/android",
                 response -> {
-                    Log.d(TAG, "validatePurchaseWithServer: Purchase valid");
+                    Log.d(TAG, "validatePurchase: Purchase valid");
                     callback.apply(null);
                     return null;
                 }, volleyError -> {
-                    Log.d(TAG, "validatePurchaseWithServer: Server Error " + volleyError.getMessage());
+                    Log.d(TAG, "validatePurchase: Server Error " + volleyError.getMessage());
                     return null;
                 }, object);
         return purchaseValid.get();
@@ -279,8 +279,7 @@ public class SubscriptionViewModel extends AndroidViewModel {
      * false, if user does not have a valid subscription
      */
     public boolean hasValidSubscription() {
-        return true;
-        //return getActiveSubscription().getValue() != null;
+        return getActiveSubscription().getValue() != null;
     }
 
     /**

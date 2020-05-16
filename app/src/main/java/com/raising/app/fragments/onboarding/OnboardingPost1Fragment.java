@@ -33,7 +33,7 @@ public class OnboardingPost1Fragment extends RaisingFragment {
         Bundle args = new Bundle();
         if (getArguments() != null && getArguments().getBoolean("settings")) {
             args.putBoolean("settings", getArguments().getBoolean("settings"));
-            view.findViewById(R.id.text_onboarding_skip).setVisibility(View.GONE);
+            view.findViewById(R.id.text_onboarding_skip).setVisibility(View.INVISIBLE);
         } else {
             // set the click listeners for next and skip buttons
             view.findViewById(R.id.text_onboarding_skip).setOnClickListener(v -> {
