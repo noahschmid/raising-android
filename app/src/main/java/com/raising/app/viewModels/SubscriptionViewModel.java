@@ -279,7 +279,8 @@ public class SubscriptionViewModel extends AndroidViewModel {
      * false, if user does not have a valid subscription
      */
     public boolean hasValidSubscription() {
-        return getActiveSubscription().getValue() != null;
+        return true;
+        //return getActiveSubscription().getValue() != null;
     }
 
     /**

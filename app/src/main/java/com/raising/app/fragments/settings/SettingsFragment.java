@@ -32,6 +32,9 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        hideToolbar(false);
+        hideBottomNavigation(false);
+
         customizeAppBar(getString(R.string.toolbar_title_settings), false);
         setBase(TabOrigin.SETTINGS);
 
@@ -87,7 +90,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
                 Bundle args = new Bundle();
                 args.putBoolean("settings", true);
                 fragment.setArguments(args);
-                clearBackstack();
                 changeFragment(fragment);
                 break;
             case R.id.settings_feedback_layout:
