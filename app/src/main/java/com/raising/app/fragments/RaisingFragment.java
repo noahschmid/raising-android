@@ -47,6 +47,7 @@ import com.raising.app.R;
 import com.raising.app.models.Account;
 import com.raising.app.models.Image;
 import com.raising.app.models.Model;
+import com.raising.app.models.Subscription;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
@@ -59,6 +60,7 @@ import com.raising.app.util.ToastHandler;
 import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 import com.raising.app.viewModels.SettingsViewModel;
+import com.raising.app.viewModels.SubscriptionViewModel;
 import com.raising.app.viewModels.TabViewModel;
 import com.raising.app.viewModels.ViewStateViewModel;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
@@ -77,6 +79,7 @@ public class RaisingFragment extends Fragment {
     protected ResourcesViewModel resourcesViewModel;
     protected SettingsViewModel settingsViewModel;
     protected ViewStateViewModel viewStateViewModel;
+    protected SubscriptionViewModel subscriptionViewModel;
     protected TabViewModel tabViewModel;
 
     protected Resources resources;
@@ -117,6 +120,8 @@ public class RaisingFragment extends Fragment {
 
         viewStateViewModel = ViewModelProviders.of(getActivity()).get(ViewStateViewModel.class);
         viewStateViewModel.getViewState().observe(getViewLifecycleOwner(), this::processViewState);
+
+        subscriptionViewModel = ViewModelProviders.of(getActivity()).get(SubscriptionViewModel.class);
 
         if(accountViewModel == null) {
             accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);

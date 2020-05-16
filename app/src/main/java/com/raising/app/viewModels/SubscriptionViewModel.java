@@ -1,13 +1,22 @@
-package com.raising.app.util;
+package com.raising.app.viewModels;
 
+import android.app.Application;
 import android.os.Looper;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
+import com.raising.app.models.PersonalSettings;
 import com.raising.app.models.Subscription;
+import com.raising.app.models.ViewState;
+import com.raising.app.util.ApiRequestHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,41 +28,51 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class SubscriptionHandler {
+public class SubscriptionViewModel extends AndroidViewModel {
     private static final String TAG = "SubscriptionHandler";
 
-    private static Subscription activeSubscription;
+    private MutableLiveData<Subscription> activeSubscription = new MutableLiveData<>();
+    private MutableLiveData<ViewState> viewState = new MutableLiveData<>();
 
-    private static final String YEARLY_SUBSCRIPTION_ID = "ch.swissef.raisingapp.subscription1y";
-    private static final String SIX_MONTH_SUBSCRIPTION = "ch.swissef.raisingapp.subscription6m";
-    private static final String THREE_MONTH_SUBSCRIPTION = "ch.swissef.raisingapp.subscription3m";
-    private static BillingClient billingClient;
+    private final String YEARLY_SUBSCRIPTION_ID = "ch.swissef.raisingapp.subscription1y";
+    private final String SIX_MONTH_SUBSCRIPTION = "ch.swissef.raisingapp.subscription6m";
+    private final String THREE_MONTH_SUBSCRIPTION = "ch.swissef.raisingapp.subscription3m";
+    private BillingClient billingClient;
 
     /**
      * A list containing all skus used in this app. Sku is an internal subscription id of Google Billing
      */
-    private static final List<String> SKU_LIST = new ArrayList<>(Arrays.asList(YEARLY_SUBSCRIPTION_ID, SIX_MONTH_SUBSCRIPTION, THREE_MONTH_SUBSCRIPTION));
+    private final List<String> SKU_LIST = new ArrayList<>(Arrays.asList(YEARLY_SUBSCRIPTION_ID,
+            SIX_MONTH_SUBSCRIPTION, THREE_MONTH_SUBSCRIPTION));
 
     /**
      * A list containing all skuDetails used in this app
      */
-    private static ArrayList<SkuDetails> skuDetailsArrayList = new ArrayList<>();
+    private MutableLiveData<ArrayList<SkuDetails>> skuDetailsArrayList = new MutableLiveData<>();
+
+    public SubscriptionViewModel(@NonNull Application application) {
+        super(application);
+        viewState.setValue(ViewState.EMPTY);
+        skuDetailsArrayList.setValue(new ArrayList<>());
+        activeSubscription.setValue(null);
+    }
+
+    public LiveData<ArrayList<SkuDetails>> getSkuDetailsArrayList() { return skuDetailsArrayList; }
 
     /**
-     * Give the SubscriptionHandler a reference to the Google Billing Client
-     *
-     * @param billingClient the currently used billing client
+     * Get state of view model
+     * @return get current state of view model
      */
-    public static void setBillingClient(BillingClient billingClient) {
-        SubscriptionHandler.billingClient = billingClient;
-    }
+    public LiveData<ViewState> getViewState() { return viewState; }
 
     /**
      * Check our backend for existing subscription and load the subscription
      */
-    public static void loadSubscription() {
+    public void loadSubscription() {
+        viewState.setValue(ViewState.LOADING);
         ApiRequestHandler.performGetRequest("subscription/android",
                 response -> {
                     try {
@@ -61,64 +80,52 @@ public class SubscriptionHandler {
                         String sku = response.getString("subscriptionId");
                         String purchaseToken = response.getString("purchaseToken");
                         String expirationDate = response.getString("expiresDate");
-                        setActiveSubscriptionWithExpiration(sku, purchaseToken, expirationDate);
+
+                        ApiRequestHandler.performGetRequest("subscription/android/verify",
+                                v -> {
+                                    viewState.setValue(ViewState.RESULT);
+                                    setActiveSubscriptionWithExpiration(sku, purchaseToken, expirationDate);
+                                    return null;
+                                }, volleyError -> {
+                                    viewState.setValue(ViewState.RESULT);
+                                    Log.e(TAG, "verifySubscription: Subscription invalid " + volleyError.getMessage());
+                                    removeSubscription();
+                                    return null;
+                                });
                     } catch (JSONException e) {
+                        viewState.setValue(ViewState.ERROR);
                         Log.e(TAG, "loadSubscription: JSONException loading subscription" + e.getMessage());
                         e.printStackTrace();
                     }
                     return null;
                 }, volleyError -> {
+                    viewState.setValue(ViewState.ERROR);
                     Log.e(TAG, "loadSubscription: Error loading subscription: " + volleyError.getMessage());
                     return null;
                 });
     }
 
     /**
-     * Verify the subscription via our backend. This checks, if the subscription has expired
-     * @return true, if the subscription is still valid
-     *         false, if the subscription is invalid
-     */
-    public static boolean verifySubscription() {
-        AtomicBoolean subscriptionVerified = new AtomicBoolean(false);
-        ApiRequestHandler.performGetRequest("subscription/android/verify",
-                response -> {
-                    subscriptionVerified.set(true);
-                    throw new RuntimeException();
-                }, volleyError -> {
-                    Log.e(TAG, "verifySubscription: Subscription invalid " + volleyError.getMessage());
-                    removeSubscription();
-                    return null;
-                });
-        try {
-            Looper.loop();
-        } catch (RuntimeException e) {
-        }
-        return subscriptionVerified.get();
-    }
-
-    /**
      * Fetch all subscriptions from the Google Billing server and store them in a variable
      */
-    public static ArrayList<SkuDetails> getSkuDetails() {
-        skuDetailsArrayList.clear();
+    public void loadSkuDetails(BillingClient billingClient) {
+        this.billingClient = billingClient;
+        viewState.setValue(ViewState.LOADING);
         SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
         params.setSkusList(SKU_LIST).setType(BillingClient.SkuType.SUBS);
         billingClient.querySkuDetailsAsync(params.build(),
                 (billingResult, skuDetailsList) -> {
+                    viewState.setValue(ViewState.RESULT);
+                    skuDetailsArrayList.getValue().clear();
+                    loadSubscription();
                     Log.d(TAG, "onViewCreated: SkuDetails" + skuDetailsList);
                     if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
                         Log.d(TAG, "getSkuDetails: Billing Response Code: " + billingResult.getResponseCode());
-                        skuDetailsArrayList.addAll(skuDetailsList);
-                        throw new RuntimeException();
+                        skuDetailsArrayList.getValue().addAll(skuDetailsList);
                     } else {
                         Log.d(TAG, "onSkuDetailsResponse: Bad response: " + billingResult.getDebugMessage());
                     }
                 });
-        try {
-            Looper.loop();
-        } catch (RuntimeException e) {
-        }
-        return skuDetailsArrayList;
     }
 
     /**
@@ -127,7 +134,7 @@ public class SubscriptionHandler {
      * @param purchase The purchased subscription that is to be invalidated
      * @return true if subscription is valid, false if subscription is invalid
      */
-    public static boolean validatePurchase(Purchase purchase) {
+    public boolean validatePurchase(Purchase purchase) {
         JSONObject object = new JSONObject();
         try {
             object.put("purchaseToken", purchase.getPurchaseToken());
@@ -160,11 +167,11 @@ public class SubscriptionHandler {
      * @param sku The sku whose details should be fetched
      * @return The skuDetails of the given sku, if there is no skuDetails with the given sku, return null
      */
-    private static SkuDetails getSkuDetailsFromSku(String sku) {
+    private SkuDetails getSkuDetailsFromSku(String sku) {
         Log.d(TAG, "getSkuDetailsFromSku: ");
-        for (int i = 0; i < skuDetailsArrayList.size(); i++) {
-            if (skuDetailsArrayList.get(i).getSku().equals(sku)) {
-                return skuDetailsArrayList.get(i);
+        for (int i = 0; i < skuDetailsArrayList.getValue().size(); i++) {
+            if (skuDetailsArrayList.getValue().get(i).getSku().equals(sku)) {
+                return skuDetailsArrayList.getValue().get(i);
             }
         }
         return null;
@@ -178,7 +185,7 @@ public class SubscriptionHandler {
      * @param purchaseToken  The purchaseToken of the users subscription
      * @param expirationDate A String representation of the expiration date of the users subscription
      */
-    private static void setActiveSubscriptionWithExpiration(String sku, String purchaseToken, String expirationDate) {
+    private void setActiveSubscriptionWithExpiration(String sku, String purchaseToken, String expirationDate) {
         // get date from String
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         Calendar calendar = Calendar.getInstance();
@@ -190,18 +197,16 @@ public class SubscriptionHandler {
             Log.e(TAG, "setActiveSubscriptionWithExpiration: ParseException" + e.getMessage());
         }
 
-        if (verifySubscription()) {
-            Log.d(TAG, "setActiveSubscriptionWithExpiration: Subscription verified");
-            Subscription subscription = new Subscription();
-            subscription.setSku(sku);
-            subscription.setPurchaseToken(purchaseToken);
+        Log.d(TAG, "setActiveSubscriptionWithExpiration: Subscription verified");
+        Subscription subscription = new Subscription();
+        subscription.setSku(sku);
+        subscription.setPurchaseToken(purchaseToken);
 
-            subscription.setExpirationDate(calendar);
-            subscription.setPurchaseDate(getRespectiveDate(calendar, getSkuDurationFromSku(sku), false));
+        subscription.setExpirationDate(calendar);
+        subscription.setPurchaseDate(getRespectiveDate(calendar, getSkuDurationFromSku(sku), false));
 
-            Log.d(TAG, "setActiveSubscriptionWithExpiration: Selected subscription " + subscription.getSku());
-            activeSubscription = subscription;
-        }
+        Log.d(TAG, "setActiveSubscriptionWithExpiration: Selected subscription " + subscription.getSku());
+        activeSubscription.setValue(subscription);
     }
 
     /**
@@ -212,7 +217,7 @@ public class SubscriptionHandler {
      * @param purchaseToken The purchaseToken of the users subscription
      * @param calendar      A calendar instance containing the purchase date of the subscription
      */
-    public static void setActiveSubscriptionWithPurchase(String sku, String purchaseToken, Calendar calendar) {
+    public void setActiveSubscriptionWithPurchase(String sku, String purchaseToken, Calendar calendar) {
         Subscription subscription = new Subscription();
         subscription.setSku(sku);
         subscription.setPurchaseToken(purchaseToken);
@@ -220,7 +225,7 @@ public class SubscriptionHandler {
         subscription.setPurchaseDate(calendar);
         subscription.setExpirationDate(getRespectiveDate(calendar, getSkuDurationFromSku(sku), true));
         Log.d(TAG, "setActiveSubscriptionWithPurchase: Selected Subscription " + subscription.toString());
-        activeSubscription = subscription;
+        activeSubscription.setValue(subscription);
     }
 
     /**
@@ -229,7 +234,7 @@ public class SubscriptionHandler {
      * @param sku The skuDetails of the subscription, this contains a string of the duration
      * @return An integer value of the duration of the subscription
      */
-    public static int getSkuDurationFromSku(String sku) {
+    public int getSkuDurationFromSku(String sku) {
         switch (sku) {
             case YEARLY_SUBSCRIPTION_ID:
                 return 12;
@@ -250,7 +255,7 @@ public class SubscriptionHandler {
      * @param calculateExpiration  true if an expiration date should be calculated, false if a purchase date should be calculated
      * @return A calendar instance containing the calculated date
      */
-    private static Calendar getRespectiveDate(Calendar calendar, int subscriptionDuration, boolean calculateExpiration) {
+    private Calendar getRespectiveDate(Calendar calendar, int subscriptionDuration, boolean calculateExpiration) {
         if (calculateExpiration) {
             calendar.add(Calendar.MONTH, subscriptionDuration);
         } else {
@@ -264,7 +269,7 @@ public class SubscriptionHandler {
      *
      * @return The users active subscription, null if the user does not have a subscription
      */
-    public static Subscription getActiveSubscription() {
+    public LiveData<Subscription> getActiveSubscription() {
         return activeSubscription;
     }
 
@@ -274,14 +279,14 @@ public class SubscriptionHandler {
      * @return true, if user has valid subscription
      * false, if user does not have a valid subscription
      */
-    public static boolean hasValidSubscription() {
+    public boolean hasValidSubscription() {
         return getActiveSubscription() != null;
     }
 
     /**
      * Remove the users current subscription
      */
-    public static void removeSubscription() {
-        activeSubscription = null;
+    public void removeSubscription() {
+        activeSubscription.setValue(null);
     }
 }

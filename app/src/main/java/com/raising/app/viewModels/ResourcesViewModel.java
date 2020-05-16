@@ -42,7 +42,6 @@ public class ResourcesViewModel extends AndroidViewModel{
     public ResourcesViewModel(@NonNull Application application) {
         super(application);
         viewState.setValue(ViewState.EMPTY);
-        loadResources();
     }
 
     public void loadResources() {
