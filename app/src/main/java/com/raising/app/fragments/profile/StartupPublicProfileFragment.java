@@ -33,6 +33,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.signature.ObjectKey;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -271,8 +272,8 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                     .asBitmap()
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
                             startup.getProfilePictureId())
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .signature(new ObjectKey(startup.getLastChanged().getTime()))
                     .into(new CustomTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, @Nullable
@@ -295,8 +296,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                             .asBitmap()
                             .load(ApiRequestHandler.getDomain() + "media/gallery/" +
                                     galleryId)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                             .into(new CustomTarget<Bitmap>() {
                                 @Override
                                 public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {

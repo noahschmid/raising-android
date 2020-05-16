@@ -30,6 +30,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.signature.ObjectKey;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Investor;
@@ -304,8 +305,8 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                     .asBitmap()
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
                             investor.getProfilePictureId())
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .signature(new ObjectKey(investor.getLastChanged().getTime()))
                     .into(new CustomTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, @Nullable
@@ -330,8 +331,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                             .asBitmap()
                             .load(ApiRequestHandler.getDomain() + "media/gallery/" +
                                     galleryId)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                             .placeholder(R.drawable.ic_hourglass_empty_black_24dp)
                             .into(new CustomTarget<Bitmap>() {
                                 @Override
