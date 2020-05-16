@@ -33,6 +33,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -54,6 +55,7 @@ import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -247,13 +249,20 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
      */
     private void loadImages() {
         if (investor.getProfilePictureId() > 0) {
+            ObjectKey signature;
+            if(investor.getLastChanged() != null) {
+                signature = new ObjectKey(investor.getLastChanged().getTime());
+            } else {
+                signature = new ObjectKey(new Date().getTime());
+            }
+
             Glide
                     .with(this)
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
                             investor.getProfilePictureId())
                     .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .signature(signature)
                     .placeholder(R.drawable.ic_person_24dp)
                     .into(profileImage);
             profileImageOverlay.setVisibility(View.GONE);
