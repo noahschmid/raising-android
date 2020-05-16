@@ -44,12 +44,13 @@ public class RegisterSelectTypeFragment extends RaisingFragment {
 
     @Override
     public void onDestroyView() {
-        hideBottomNavigation(false);
         super.onDestroyView();
+
+        hideBottomNavigation(false);
     }
 
     /**
-     * 
+     * Set account type of new account to investor
      */
     private void registerAsInvestor() {
         try {
@@ -62,6 +63,9 @@ public class RegisterSelectTypeFragment extends RaisingFragment {
         }
     }
 
+    /**
+     * Set account type of new account to startup
+     */
     private void registerAsStartup() {
         try {
             RegistrationHandler.setAccountType("startup");
