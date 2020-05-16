@@ -126,10 +126,9 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     }
 
     private void logout() {
-        Log.d("debugMessage", "logout()");
         settingsViewModel.onLogoutResetToken();
         selectBottomNavigation(R.id.nav_matches);
-        resetTab();
+        tabViewModel.resetAll();
         AuthenticationHandler.logout();
         clearBackstackAndReplace(new LoginFragment());
     }
