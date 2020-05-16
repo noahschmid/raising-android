@@ -135,7 +135,7 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
         for(JsonElement el : jsonObject.get("boardmembers").getAsJsonArray()) {
             JsonObject obj = el.getAsJsonObject();
             BoardMember boardMember = new BoardMember();
-            boardMember.setBoardPosition(obj.get("position").getAsString());
+            boardMember.setPosition(obj.get("position").getAsString());
             boardMember.setCountryId(obj.get("countryId").getAsInt());
             boardMember.setEducation(obj.get("education").getAsString());
             boardMember.setFirstName(obj.get("firstName").getAsString());
@@ -143,7 +143,7 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
             boardMember.setProfession(obj.get("profession").getAsString());
             boardMember.setMemberSince(obj.get("memberSince").getAsString());
             boardMember.setTitle(boardMember.getFirstName() + " " +
-                    boardMember.getLastName() + ", " + boardMember.getBoardPosition());
+                    boardMember.getLastName() + ", " + boardMember.getPosition());
             boardMember.setId(obj.get("id").getAsLong());
             startup.addBoardMember(boardMember);
         }

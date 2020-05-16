@@ -125,7 +125,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
             boardFirstNameInput.setText(boardMember.getFirstName());
             boardLastNameInput.setText(boardMember.getLastName());
             boardProfessionInput.setText(boardMember.getProfession());
-            boardPositionInput.setText(boardMember.getBoardPosition());
+            boardPositionInput.setText(boardMember.getPosition());
             memberSinceInput.setText(String.valueOf(boardMember.getMemberSince()));
             boardEducationInput.setText(boardMember.getEducation());
             if (boardMember.getCountryId() != -1)
@@ -171,7 +171,7 @@ public class BoardMemberInputFragment extends RaisingFragment {
         boardMember.setLastName(lastName);
         boardMember.setMemberSince(memberSince);
         boardMember.setProfession(profession);
-        boardMember.setBoardPosition(boardPosition);
+        boardMember.setPosition(boardPosition);
         boardMember.setEducation(education);
         boardMember.setTitle(firstName + " " + lastName + ", " + boardPosition);
 

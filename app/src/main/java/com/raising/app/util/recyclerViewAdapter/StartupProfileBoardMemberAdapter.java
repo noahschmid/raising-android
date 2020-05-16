@@ -34,7 +34,7 @@ public class StartupProfileBoardMemberAdapter extends RecyclerView.Adapter<Start
                                  int position) {
         BoardMember recyclerItem = recyclerItems.get(position);
 
-        holder.boardPosition.setText(recyclerItem.getBoardPosition());
+        holder.boardPosition.setText(recyclerItem.getPosition());
         String name = recyclerItem.getFirstName() + " " + recyclerItem.getLastName();
         holder.boardName.setText(name);
         holder.boardMemberSince.setText(recyclerItem.getMemberSince());

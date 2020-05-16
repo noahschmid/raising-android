@@ -200,7 +200,7 @@ public class Serializer {
                 boardMemberObject.addProperty("countryId", boardMember.getCountryId());
                 boardMemberObject.addProperty("education", boardMember.getEducation());
                 boardMemberObject.addProperty("lastName", boardMember.getLastName());
-                boardMemberObject.addProperty("position", boardMember.getBoardPosition());
+                boardMemberObject.addProperty("position", boardMember.getPosition());
                 boardMemberObject.addProperty("memberSince", boardMember.getMemberSince());
                 boardMemberObject.addProperty("profession", boardMember.getProfession());
 
