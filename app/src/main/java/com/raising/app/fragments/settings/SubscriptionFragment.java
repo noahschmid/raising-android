@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 
 public class SubscriptionFragment extends RaisingFragment {
     private final String TAG = "SubscriptionsFragment";
@@ -253,10 +254,12 @@ public class SubscriptionFragment extends RaisingFragment {
      * @param sku The skuDetails belonging to the card that was clicked
      */
     private void processOnCardClick(SkuDetails sku) {
-        if (showActionDialog(getString(R.string.subscription_dialog_subscribe_title),
-                getString(R.string.subscribtion_dialog_subscribe_text))) {
-            showGoogleBilling(sku, SubscriptionHandler.hasValidSubscription());
-        }
+        showActionDialog(getString(R.string.subscription_dialog_subscribe_title),
+                getString(R.string.subscribtion_dialog_subscribe_text),
+                () -> {
+                    showGoogleBilling(sku, SubscriptionHandler.hasValidSubscription());
+                    return null;
+                }, () -> null);
         refreshSubscriptionsLayout();
     }
 

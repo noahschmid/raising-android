@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.telecom.Call;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -65,6 +66,7 @@ import com.whiteelephant.monthpicker.MonthPickerDialog;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 
 public class RaisingFragment extends Fragment {
     final private String TAG = "RaisingFragment";
@@ -454,48 +456,46 @@ public class RaisingFragment extends Fragment {
     }
 
     /**
-     * Create and show an alert dialog, which allows the user to either decline or accept a message
-     *
-     * @param title          The title of the dialog
-     * @param message        The message of the dialog
-     * @param positiveButton The string of the positive button
-     * @param negativeButton The string of the negative button
-     * @return true, if user has accepted the dialog, false, if user has declined the dialog
+     * Show an action dialog which requires user input to proceed
+     * @param title The title of the dialog
+     * @param message The message of the dialog
+     * @param positiveButton The text of the positive button
+     * @param negativeButton The text of the negative button
+     * @param positiveCallable The callback which is called, when the user clicks the positive button
+     * @param negativeCallable The callback which is called, when the user clicks the negative button
      */
-    public boolean showActionDialog(String title, String message, String positiveButton, String negativeButton) {
-        final boolean[] confirmDialog = {false};
+    protected void showActionDialog(String title, String message, String positiveButton, String negativeButton, Callable<Void> positiveCallable, Callable<Void> negativeCallable) {
         new AlertDialog.Builder(getContext())
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(positiveButton, (dialog, which) -> {
                     Log.d(TAG, "AlertDialog onClick");
-                    confirmDialog[0] = true;
+                    try {
+                        positiveCallable.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 })
                 .setNegativeButton(negativeButton, (dialog, which) -> {
-                    confirmDialog[0] = false;
+                    try {
+                        negativeCallable.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 })
-                .show()
-                .setOnDismissListener(dialog -> {
-                    throw new RuntimeException();
-                });
-        try {
-            Looper.loop();
-        } catch (RuntimeException e) {
-        }
-
-        return confirmDialog[0];
+                .show();
     }
 
     /**
-     * Extend a simple request with "Yes" and "Cancel" to then create an action dialog.
-     * Call {@link com.raising.app.fragments.RaisingFragment#showActionDialog(String, String, String, String)}
-     *
-     * @param title   The title of the action dialog
-     * @param message The message of the action dialog
-     * @return The return value of {@link com.raising.app.fragments.RaisingFragment#showActionDialog(String, String, String, String)}
+     * Show an action dialog with standard texts for positive and negative buttons
+     * Call {@link com.raising.app.fragments.RaisingFragment#showActionDialog(String, String, String, String, Callable, Callable)}
+     * @param title The title of the dialog
+     * @param message The message of the dialog
+     * @param positiveCallable The callback that should be called when the user clicks the positive button
+     * @param negativeCallable The callback that should be called when the user clicks the negative button
      */
-    public boolean showActionDialog(String title, String message) {
-        return showActionDialog(title, message, getString(R.string.yes_text), getString(R.string.cancel_text));
+    protected void showActionDialog(String title, String message, Callable<Void> positiveCallable, Callable<Void> negativeCallable) {
+        showActionDialog(title, message, getString(R.string.yes_text), getString(R.string.cancel_text), positiveCallable, negativeCallable);
     }
 
     /**
