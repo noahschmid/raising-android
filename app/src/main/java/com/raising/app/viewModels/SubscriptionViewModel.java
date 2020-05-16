@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 
 public class SubscriptionViewModel extends AndroidViewModel {
     private static final String TAG = "SubscriptionHandler";
@@ -136,7 +137,7 @@ public class SubscriptionViewModel extends AndroidViewModel {
      * @param purchase The purchased subscription that is to be invalidated
      * @return true if subscription is valid, false if subscription is invalid
      */
-    public boolean validatePurchase(Purchase purchase) {
+    public boolean validatePurchase(Purchase purchase, Function<Void, Void> callback) {
         JSONObject object = new JSONObject();
         try {
             object.put("purchaseToken", purchase.getPurchaseToken());
@@ -150,16 +151,12 @@ public class SubscriptionViewModel extends AndroidViewModel {
         ApiRequestHandler.performPatchRequest("subscription/android",
                 response -> {
                     Log.d(TAG, "validatePurchaseWithServer: Purchase valid");
-                    purchaseValid.set(true);
-                    throw new RuntimeException();
+                    callback.apply(null);
+                    return null;
                 }, volleyError -> {
                     Log.d(TAG, "validatePurchaseWithServer: Server Error " + volleyError.getMessage());
                     return null;
                 }, object);
-        try {
-            Looper.loop();
-        } catch (RuntimeException e) {
-        }
         return purchaseValid.get();
     }
 
@@ -282,7 +279,7 @@ public class SubscriptionViewModel extends AndroidViewModel {
      * false, if user does not have a valid subscription
      */
     public boolean hasValidSubscription() {
-        return getActiveSubscription() != null;
+        return getActiveSubscription().getValue() != null;
     }
 
     /**
