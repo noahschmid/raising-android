@@ -23,6 +23,8 @@ import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.TabOrigin;
 import com.raising.app.viewModels.TabViewModel;
 
+import java.util.concurrent.Callable;
+
 public class SettingsFragment extends RaisingFragment implements View.OnClickListener {
     private final String TAG = "SettingsFragment";
     private ConstraintLayout subscriptionLayout, generalLayout, aboutLayout,
@@ -132,10 +134,12 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
      * Logout the current user
      */
     private void logout() {
-        settingsViewModel.onLogoutResetToken();
-        tabViewModel.resetAll();
-        AuthenticationHandler.logout();
-        selectBottomNavigation(R.id.nav_matches);
-        clearBackstackAndReplace(new LoginFragment());
+        settingsViewModel.onLogoutResetToken(() -> {
+            tabViewModel.resetAll();
+            AuthenticationHandler.logout();
+            selectBottomNavigation(R.id.nav_matches);
+            clearBackstackAndReplace(new LoginFragment());
+            return null;
+        });
     }
 }

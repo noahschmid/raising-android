@@ -343,7 +343,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                         view.setLayoutParams(
                                 new LinearLayout.LayoutParams(
                                         ViewGroup.LayoutParams.WRAP_CONTENT,
-                                        ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+                                        ViewGroup.LayoutParams.WRAP_CONTENT));
                         labelsLayout.addView(view);
                     }
                 });
