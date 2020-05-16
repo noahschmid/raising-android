@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.raising.app.R;
@@ -42,12 +41,12 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_login_information, container, false);
 
         hideBottomNavigation(true);
         hideToolbar(true);
 
-        return view;
+        return inflater.inflate(R.layout.fragment_register_login_information,
+                container, false);
     }
 
     @Override
@@ -63,13 +62,14 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         imageLoginInformation = view.findViewById(R.id.image_register_login_information);
 
         btnLoginInformation = view.findViewById(R.id.button_login_information);
-        btnLoginInformation.setOnClickListener(v -> processLoginInformation());
+        btnLoginInformation.setOnClickListener(v -> processInputs());
 
         btnHasAccount = view.findViewById(R.id.button_login_information_has_account);
         btnHasAccount.setOnClickListener(v -> changeFragment(new LoginFragment()));
 
-        //adjust fragment if this fragment is used for profile
+        // check if this fragment is opened for registration or for profile
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
             btnLoginInformation.setHint(getString(R.string.myProfile_apply_changes));
             btnLoginInformation.setEnabled(false);
             editMode = true;
@@ -86,12 +86,7 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
             Log.d(TAG, "onViewCreated: getting account from registration handler");
             account = RegistrationHandler.getAccount();
         }
-
-        // fill text inputs with existing user data
-        firstNameInput.setText(account.getFirstName());
-        lastNameInput.setText(account.getLastName());
-        emailInput.setText(account.getEmail());
-        passwordInput.setText(account.getPassword());
+        populateFragment();
 
         // if editmode, add text watchers after initial filling with users data
         if(editMode) {
@@ -123,9 +118,19 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     }
 
     /**
+     * Populate fragment with existing user data
+     */
+    private void populateFragment() {
+        firstNameInput.setText(account.getFirstName());
+        lastNameInput.setText(account.getLastName());
+        emailInput.setText(account.getEmail());
+        passwordInput.setText(account.getPassword());
+    }
+
+    /**
      * Check whether login information is valid and if so save them and move to next fragment
      */
-    private void processLoginInformation() {
+    private void processInputs() {
         final String firstName = firstNameInput.getText().toString();
         final String lastName = lastNameInput.getText().toString();
         final String email = emailInput.getText().toString();
@@ -178,6 +183,9 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         }
     }
 
+    /**
+     * This function gets called after a successful backend verification of the uniqueness of the email address
+     */
     Function<JSONObject, Void> callback = response -> {
         final String firstName = firstNameInput.getText().toString();
         final String lastName = lastNameInput.getText().toString();
@@ -204,6 +212,9 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         return null;
     };
 
+    /**
+     * This function gets called after a failed backend verification of the email address
+     */
     Function<VolleyError, Void> errorHandler = error -> {
         viewStateViewModel.stopLoading();
         try {

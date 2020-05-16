@@ -84,18 +84,6 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
             startup = RegistrationHandler.getStartup();
         }
 
-        TextInputLayout financialCommittedLayout = getView().findViewById(R.id.register_financial_committed);
-        financialCommittedLayout.setEndIconOnClickListener(v -> {
-            showSimpleDialog(getString(R.string.registration_information_dialog_title),
-                    getString(R.string.registration_information_dialog_committed));
-        });
-
-        TextInputLayout financialScopeLayout = getView().findViewById(R.id.register_financial_scope);
-        financialScopeLayout.setEndIconOnClickListener(v -> {
-            showSimpleDialog(getString(R.string.registration_information_dialog_title),
-                    getString(R.string.registration_information_dialog_scope));
-        });
-
         return view;
     }
 
@@ -128,6 +116,19 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
                 }
             }
         });
+
+        TextInputLayout financialCommittedLayout = getView().findViewById(R.id.register_financial_committed);
+        financialCommittedLayout.setEndIconOnClickListener(v -> {
+            showSimpleDialog(getString(R.string.registration_information_dialog_title),
+                    getString(R.string.registration_information_dialog_committed));
+        });
+
+        TextInputLayout financialScopeLayout = getView().findViewById(R.id.register_financial_scope);
+        financialScopeLayout.setEndIconOnClickListener(v -> {
+            showSimpleDialog(getString(R.string.registration_information_dialog_title),
+                    getString(R.string.registration_information_dialog_scope));
+        });
+
         populateFragment();
 
         // if editmode, add text watchers

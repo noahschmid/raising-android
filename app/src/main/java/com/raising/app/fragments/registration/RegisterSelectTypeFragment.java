@@ -19,28 +19,27 @@ import com.raising.app.util.RegistrationHandler;
 
 import java.io.IOException;
 
-public class RegisterSelectTypeFragment extends RaisingFragment implements View.OnClickListener {
+public class RegisterSelectTypeFragment extends RaisingFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_register_select_type, container, false);
-
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_account_type), true);
 
-        return view;
+        return inflater.inflate(R.layout.fragment_register_select_type, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // find all views
         Button btnSelectStartUp = view.findViewById(R.id.button_register_as_startup);
-        btnSelectStartUp.setOnClickListener(this);
+        btnSelectStartUp.setOnClickListener(v -> registerAsStartup());
         Button btnSelectInvestor = view.findViewById(R.id.button_register_as_investor);
-        btnSelectInvestor.setOnClickListener(this);
+        btnSelectInvestor.setOnClickListener(v -> registerAsInvestor());
     }
 
     @Override
@@ -49,30 +48,27 @@ public class RegisterSelectTypeFragment extends RaisingFragment implements View.
         super.onDestroyView();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.button_register_as_startup:
-                try {
-                    RegistrationHandler.setAccountType("startup");
-                    changeFragment(new RegisterCompanyInformationFragment(),
-                            "RegisterCompanyInformationFragment");
-                } catch (IOException e) {
-                    Log.d("debugMessage", e.getLocalizedMessage());
-                }
-                break;
-            case R.id.button_register_as_investor:
-                try {
-                    RegistrationHandler.setAccountType("investor");
-                    changeFragment(new RegisterProfileInformationFragment(),
-                            "RegisterProfileInformationFragment");
-                } catch (IOException e) {
-                    //TODO: Proper error handling
-                    Log.d("debugMessage", e.getLocalizedMessage());
-                }
-                break;
-            default:
-                break;
+    /**
+     * 
+     */
+    private void registerAsInvestor() {
+        try {
+            RegistrationHandler.setAccountType("investor");
+            changeFragment(new RegisterProfileInformationFragment(),
+                    "RegisterProfileInformationFragment");
+        } catch (IOException e) {
+            //TODO: Proper error handling
+            Log.d("debugMessage", e.getLocalizedMessage());
+        }
+    }
+
+    private void registerAsStartup() {
+        try {
+            RegistrationHandler.setAccountType("startup");
+            changeFragment(new RegisterCompanyInformationFragment(),
+                    "RegisterCompanyInformationFragment");
+        } catch (IOException e) {
+            Log.d("debugMessage", e.getLocalizedMessage());
         }
     }
 }

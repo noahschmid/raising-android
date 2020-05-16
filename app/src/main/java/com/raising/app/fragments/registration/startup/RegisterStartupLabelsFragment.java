@@ -2,8 +2,6 @@ package com.raising.app.fragments.registration.startup;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
@@ -43,11 +41,13 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
         customizeAppBar(getString(R.string.toolbar_title_labels), true);
 
         btnStartupLabels = view.findViewById(R.id.button_startup_labels);
-        btnStartupLabels.setOnClickListener(v -> processInformation());
+        btnStartupLabels.setOnClickListener(v -> processInputs());
 
         accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
+        // check if this fragment is opened for registration or for profile
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupLabels.setHint(getString(R.string.myProfile_apply_changes));
             btnStartupLabels.setEnabled(false);
@@ -79,24 +79,28 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
     public void onDestroyView() {
         hideBottomNavigation(false);
         super.onDestroyView();
     }
 
-    private void processInformation() {
+    @Override
+    protected void onAccountUpdated() {
+        resetTab();
+        popFragment(this);
+        accountViewModel.updateCompleted();
+    }
+
+    /**
+     * Check the validity of user inputs, then handle the inputs
+     */
+    private void processInputs() {
         ArrayList<Long> labels = labelsLayout.getSelected();
 
         if(labels.size() > 3) {
             showSimpleDialog(getString(R.string.register_label_error_title), getString(R.string.register_label_error_text));
             return;
         }
-
         startup.setLabels(labels);
 
         try {
@@ -110,11 +114,5 @@ public class RegisterStartupLabelsFragment extends RaisingFragment {
             Log.e("RegisterStartupLabels", "Error while saving startup labels");
         }
     }
-
-    @Override
-    protected void onAccountUpdated() {
-        resetTab();
-        popFragment(this);
-        accountViewModel.updateCompleted();
-    }
 }
+

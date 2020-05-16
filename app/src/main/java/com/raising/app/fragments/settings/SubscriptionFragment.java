@@ -106,6 +106,7 @@ public class SubscriptionFragment extends RaisingFragment {
         Log.d(TAG, "onViewCreated: " + SubscriptionHandler.getActiveSubscription());
 
         SubscriptionHandler.setBillingClient(billingClient);
+        SubscriptionHandler.verifySubscription();
         startBillingConnection();
     }
 
@@ -133,7 +134,6 @@ public class SubscriptionFragment extends RaisingFragment {
         if (billingClient.isFeatureSupported("subscriptions").getResponseCode() == BillingClient.BillingResponseCode.OK
                 && billingClient.isFeatureSupported("subscriptionsUpdate").getResponseCode() == BillingClient.BillingResponseCode.OK) {
             BillingFlowParams flowParams;
-            /*
             if (hasSubscription) {
                 Log.d(TAG, "showGoogleBilling: Change subscription");
                 flowParams = BillingFlowParams.newBuilder()
@@ -141,12 +141,12 @@ public class SubscriptionFragment extends RaisingFragment {
                         .setOldSku(SubscriptionHandler.getActiveSubscription().getSku(),
                                 SubscriptionHandler.getActiveSubscription().getPurchaseToken())
                         .build();
-            } else { */
-            Log.d(TAG, "showGoogleBilling: New subscription");
-            flowParams = BillingFlowParams.newBuilder()
-                    .setSkuDetails(skuDetails)
-                    .build();
-            // }
+            } else {
+                Log.d(TAG, "showGoogleBilling: New subscription");
+                flowParams = BillingFlowParams.newBuilder()
+                        .setSkuDetails(skuDetails)
+                        .build();
+            }
             BillingResult responseCode = billingClient.launchBillingFlow(this.getActivity(), flowParams);
             Log.d(TAG, "showGoogleBilling: BillingResponseCodeMessage: " + responseCode.getDebugMessage());
         }
@@ -277,21 +277,23 @@ public class SubscriptionFragment extends RaisingFragment {
      * @param duration          The duration of the subscription, where the title of the card should be adjusted
      */
     private void adjustNotSelectedSubscriptions(TextView subscriptionTitle, int duration) {
-        // adjust cards of shorter subscription types
-        if (duration < SubscriptionHandler.getSkuDurationFromSku(SubscriptionHandler.getActiveSubscription().getSku())) {
-            // subscriptions cheaper than the one currently active, if current subscription != next subscription user cannot up-/downgrade
-            if (SubscriptionHandler.hasValidSubscription()) {
-                subscriptionTitle.setVisibility(View.VISIBLE);
-                subscriptionTitle.setText(getString(R.string.subscription_downgrade));
+        if (SubscriptionHandler.getActiveSubscription() != null) {
+            // adjust cards of shorter subscription types
+            if (duration < SubscriptionHandler.getSkuDurationFromSku(SubscriptionHandler.getActiveSubscription().getSku())) {
+                // subscriptions cheaper than the one currently active, if current subscription != next subscription user cannot up-/downgrade
+                if (SubscriptionHandler.hasValidSubscription()) {
+                    subscriptionTitle.setVisibility(View.VISIBLE);
+                    subscriptionTitle.setText(getString(R.string.subscription_downgrade));
+                }
             }
-        }
 
-        // adjust cards of longer subscription types
-        if (duration > SubscriptionHandler.getSkuDurationFromSku(SubscriptionHandler.getActiveSubscription().getSku())) {
-            // subscriptions more expensive than current subscription, if current subscription != next subscription user cannot up-/downgrade
-            if (SubscriptionHandler.hasValidSubscription()) {
-                subscriptionTitle.setVisibility(View.VISIBLE);
-                subscriptionTitle.setText(getString(R.string.subscription_upgrade));
+            // adjust cards of longer subscription types
+            if (duration > SubscriptionHandler.getSkuDurationFromSku(SubscriptionHandler.getActiveSubscription().getSku())) {
+                // subscriptions more expensive than current subscription, if current subscription != next subscription user cannot up-/downgrade
+                if (SubscriptionHandler.hasValidSubscription()) {
+                    subscriptionTitle.setVisibility(View.VISIBLE);
+                    subscriptionTitle.setText(getString(R.string.subscription_upgrade));
+                }
             }
         }
     }

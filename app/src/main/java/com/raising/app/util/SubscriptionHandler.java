@@ -47,7 +47,6 @@ public class SubscriptionHandler {
      * @param billingClient the currently used billing client
      */
     public static void setBillingClient(BillingClient billingClient) {
-        Log.d(TAG, "setBillingClient: ");
         SubscriptionHandler.billingClient = billingClient;
     }
 
@@ -55,7 +54,6 @@ public class SubscriptionHandler {
      * Check our backend for existing subscription and load the subscription
      */
     public static void loadSubscription() {
-        Log.d(TAG, "loadSubscription: ");
         ApiRequestHandler.performGetRequest("subscription/android",
                 response -> {
                     try {
@@ -63,7 +61,6 @@ public class SubscriptionHandler {
                         String sku = response.getString("subscriptionId");
                         String purchaseToken = response.getString("purchaseToken");
                         String expirationDate = response.getString("expiresDate");
-                        Log.d(TAG, "loadSubscription: " + expirationDate);
                         setActiveSubscriptionWithExpiration(sku, purchaseToken, expirationDate);
                     } catch (JSONException e) {
                         Log.e(TAG, "loadSubscription: JSONException loading subscription" + e.getMessage());
@@ -76,24 +73,33 @@ public class SubscriptionHandler {
                 });
     }
 
-    private static boolean verifySubscription() {
+    /**
+     * Verify the subscription via our backend. This checks, if the subscription has expired
+     * @return true, if the subscription is still valid
+     *         false, if the subscription is invalid
+     */
+    public static boolean verifySubscription() {
         AtomicBoolean subscriptionVerified = new AtomicBoolean(false);
-        ApiRequestHandler.performGetRequest("/subscription/android/verify",
+        ApiRequestHandler.performGetRequest("subscription/android/verify",
                 response -> {
                     subscriptionVerified.set(true);
-                    return null;
+                    throw new RuntimeException();
                 }, volleyError -> {
                     Log.e(TAG, "verifySubscription: Subscription invalid " + volleyError.getMessage());
+                    removeSubscription();
                     return null;
                 });
-        return true;
+        try {
+            Looper.loop();
+        } catch (RuntimeException e) {
+        }
+        return subscriptionVerified.get();
     }
 
     /**
      * Fetch all subscriptions from the Google Billing server and store them in a variable
      */
     public static ArrayList<SkuDetails> getSkuDetails() {
-        Log.d(TAG, "getSkuDetails: ");
         skuDetailsArrayList.clear();
         SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
         params.setSkusList(SKU_LIST).setType(BillingClient.SkuType.SUBS);
@@ -122,7 +128,6 @@ public class SubscriptionHandler {
      * @return true if subscription is valid, false if subscription is invalid
      */
     public static boolean validatePurchase(Purchase purchase) {
-        Log.d(TAG, "validatePurchase: ");
         JSONObject object = new JSONObject();
         try {
             object.put("purchaseToken", purchase.getPurchaseToken());
@@ -159,7 +164,6 @@ public class SubscriptionHandler {
         Log.d(TAG, "getSkuDetailsFromSku: ");
         for (int i = 0; i < skuDetailsArrayList.size(); i++) {
             if (skuDetailsArrayList.get(i).getSku().equals(sku)) {
-                Log.d(TAG, "getSkuDetailsFromSku: " + skuDetailsArrayList.get(i).toString());
                 return skuDetailsArrayList.get(i);
             }
         }
@@ -180,14 +184,13 @@ public class SubscriptionHandler {
         Calendar calendar = Calendar.getInstance();
         try {
             Date date = simpleDateFormat.parse(expirationDate);
-            Log.d(TAG, "setActiveSubscriptionWithExpiration: Parsed Date " + date);
             if (date != null)
                 calendar.setTime(date);
         } catch (ParseException e) {
             Log.e(TAG, "setActiveSubscriptionWithExpiration: ParseException" + e.getMessage());
         }
 
-        if (verifySubscription(calendar)) {
+        if (verifySubscription()) {
             Log.d(TAG, "setActiveSubscriptionWithExpiration: Subscription verified");
             Subscription subscription = new Subscription();
             subscription.setSku(sku);
@@ -196,25 +199,8 @@ public class SubscriptionHandler {
             subscription.setExpirationDate(calendar);
             subscription.setPurchaseDate(getRespectiveDate(calendar, getSkuDurationFromSku(sku), false));
 
-            Log.d(TAG, "setActiveSubscriptionWithExpiration: Selected subscription " + subscription.getSku() + " Expiration: " + subscription.getExpirationDate().getTime());
+            Log.d(TAG, "setActiveSubscriptionWithExpiration: Selected subscription " + subscription.getSku());
             activeSubscription = subscription;
-        }
-    }
-
-    /**
-     * Helper method, that determines if the date given in calendar is before or after the current date
-     *
-     * @param expirationDate The expiration date of a subscription
-     * @return true, if expiration is after today, which means the subscription is valid
-     * false, if expiration is before today
-     */
-    private static boolean verifySubscription(Calendar expirationDate) {
-        Log.d(TAG, "verifySubscription: " + !(expirationDate.getTime().before(new Date())) + " Expiration: " + expirationDate.getTime() + " Today: " + new Date());
-        if (expirationDate.getTime().before(new Date())) {
-            activeSubscription = null;
-            return false;
-        } else {
-            return true;
         }
     }
 
@@ -233,7 +219,6 @@ public class SubscriptionHandler {
 
         subscription.setPurchaseDate(calendar);
         subscription.setExpirationDate(getRespectiveDate(calendar, getSkuDurationFromSku(sku), true));
-        Log.d(TAG, "setActiveSubscriptionWithPurchase: Expiration" + subscription.getExpirationDate().getTime());
         Log.d(TAG, "setActiveSubscriptionWithPurchase: Selected Subscription " + subscription.toString());
         activeSubscription = subscription;
     }
@@ -271,7 +256,6 @@ public class SubscriptionHandler {
         } else {
             calendar.add(Calendar.MONTH, (subscriptionDuration * (-1)));
         }
-        Log.d(TAG, "getRespectiveDate: Calculated Date " + calendar.toString());
         return calendar;
     }
 
@@ -281,9 +265,6 @@ public class SubscriptionHandler {
      * @return The users active subscription, null if the user does not have a subscription
      */
     public static Subscription getActiveSubscription() {
-        if (activeSubscription != null) {
-            verifySubscription(activeSubscription.getExpirationDate());
-        }
         return activeSubscription;
     }
 
@@ -294,12 +275,12 @@ public class SubscriptionHandler {
      * false, if user does not have a valid subscription
      */
     public static boolean hasValidSubscription() {
-        if (getActiveSubscription() != null) {
-            verifySubscription(activeSubscription.getExpirationDate());
-        }
-        return true;
+        return getActiveSubscription() != null;
     }
 
+    /**
+     * Remove the users current subscription
+     */
     public static void removeSubscription() {
         activeSubscription = null;
     }

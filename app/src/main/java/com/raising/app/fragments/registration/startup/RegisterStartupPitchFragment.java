@@ -33,13 +33,12 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_startup_pitch,
-                container, false);
 
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_pitch), true);
 
-        return view;
+        return inflater.inflate(R.layout.fragment_register_startup_pitch,
+                container, false);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -58,8 +57,9 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
         btnStartupPitch.setOnClickListener(v -> processInputs());
 
 
-        //adjust fragment if this fragment is used for profile
+        // check if this fragment is opened for registration or for profile
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupPitch.setHint(getString(R.string.myProfile_apply_changes));
             btnStartupPitch.setEnabled(false);
@@ -70,8 +70,7 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
             startup = RegistrationHandler.getStartup();
         }
 
-        pitchInput.setText(startup.getPitch());
-        sentenceInput.setText(startup.getDescription());
+        populateFragment();
 
         prepareSentenceLayout(startup.getDescription());
         preparePitchLayout(startup.getPitch());
@@ -96,8 +95,14 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
 
     @Override
     public void onDestroyView() {
-        hideBottomNavigation(false);
         super.onDestroyView();
+
+        hideBottomNavigation(false);
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        btnStartupPitch.setEnabled(true);
     }
 
     @Override
@@ -107,13 +112,16 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
         accountViewModel.updateCompleted();
     }
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        btnStartupPitch.setEnabled(true);
+    /**
+     * Populate the fragment with existing user data
+     */
+    private void populateFragment() {
+        pitchInput.setText(startup.getPitch());
+        sentenceInput.setText(startup.getDescription());
     }
 
     /**
-     * Process given inputs
+     * Check the validity of user inputs, then handle the inputs
      */
     private void processInputs() {
         String pitch = pitchInput.getText().toString();
@@ -151,7 +159,6 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
             } else {
                 accountViewModel.update(startup);
             }
-
         } catch (IOException e) {
             Log.e("RegisterStartupPitch", "Error while saving startup pitch");
         }

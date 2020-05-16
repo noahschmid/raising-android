@@ -127,9 +127,9 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
 
     private void logout() {
         settingsViewModel.onLogoutResetToken();
-        selectBottomNavigation(R.id.nav_matches);
         tabViewModel.resetAll();
         AuthenticationHandler.logout();
+        selectBottomNavigation(R.id.nav_matches);
         clearBackstackAndReplace(new LoginFragment());
     }
 }

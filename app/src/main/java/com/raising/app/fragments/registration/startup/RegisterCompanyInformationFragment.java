@@ -76,20 +76,6 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
             contactDetails = RegistrationHandler.getContactData();
         }
 
-        TextInputLayout companyUidLayout = getView().findViewById(R.id.register_company_uid);
-        companyUidLayout.setEndIconOnClickListener(v ->
-                new AlertDialog.Builder(getContext())
-                        .setTitle(getString(R.string.registration_information_dialog_title))
-                        .setMessage(getString(R.string.registration_information_dialog_uid))
-                        .setPositiveButton(getString(R.string.ok_text), (dialog, which) -> {
-                        })
-                        .setNegativeButton(getString(R.string.register_uid_find), (dialog, which) -> {
-                            Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                    Uri.parse(getString(R.string.register_uid_link)));
-                            startActivity(browserIntent);
-                        })
-                        .show());
-
         return view;
     }
 
@@ -106,6 +92,20 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
         companyWebsiteInput.setText(startup.getWebsite());
         companyUidInput.setText(startup.getUId());
         countrySelected = resources.getCountry(startup.getCountryId());
+
+        TextInputLayout companyUidLayout = getView().findViewById(R.id.register_company_uid);
+        companyUidLayout.setEndIconOnClickListener(v ->
+                new AlertDialog.Builder(getContext())
+                        .setTitle(getString(R.string.registration_information_dialog_title))
+                        .setMessage(getString(R.string.registration_information_dialog_uid))
+                        .setPositiveButton(getString(R.string.ok_text), (dialog, which) -> {
+                        })
+                        .setNegativeButton(getString(R.string.register_uid_find), (dialog, which) -> {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                    Uri.parse(getString(R.string.register_uid_link)));
+                            startActivity(browserIntent);
+                        })
+                        .show());
 
         // if editmode, add text watchers
         if(editMode) {

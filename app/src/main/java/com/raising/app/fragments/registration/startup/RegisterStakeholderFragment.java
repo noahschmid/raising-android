@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.function.Function;
 
 public class RegisterStakeholderFragment extends RaisingFragment {
+    private final String TAG = "RegisterStakeholderFragment";
     private FounderViewModel founderViewModel;
     private BoardMemberViewModel boardMemberViewModel;
     private ShareholderViewModel shareholderViewModel;
@@ -166,7 +167,6 @@ public class RegisterStakeholderFragment extends RaisingFragment {
         json = gson.toJson(shareholderList.toArray());
         getArguments().putString("shareholderList", json);
         shareholderViewModel.deselectShareholder();
-
     }
 
     @Override

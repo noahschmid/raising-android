@@ -378,7 +378,7 @@ public class StartupPublicProfileFragment extends RaisingFragment {
                 .toString(getString(R.string.currency), getResources().getStringArray(R.array.revenue_units)));
 
         // closing time
-        DateFormat toFormat = new SimpleDateFormat("MM.dd.yyyy");
+        DateFormat toFormat = new SimpleDateFormat("yyyy.MM.dd");
         DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date closing = fromFormat.parse(startup.getClosingTime());
