@@ -69,7 +69,6 @@ public class LeadsFragment extends RaisingFragment {
         // find all views and set their visibilities
         emptyLeadsLayout = view.findViewById(R.id.empty_leads_fragment_text);
         emptyLeadsLayout.setVisibility(View.GONE);
-        Log.d(TAG, "onViewCreated: EmptyLeadsVisibility GONE");
 
         swipeRefreshLayout = view.findViewById(R.id.leads_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> leadsViewModel.loadLeads());
