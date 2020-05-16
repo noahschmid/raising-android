@@ -87,7 +87,8 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
                 Bundle args = new Bundle();
                 args.putBoolean("settings", true);
                 fragment.setArguments(args);
-                clearBackstackAndReplace(fragment);
+                clearBackstack();
+                changeFragment(fragment);
                 break;
             case R.id.settings_feedback_layout:
                 contactRaising(false);

@@ -83,11 +83,9 @@ public class SubscriptionFragment extends RaisingFragment {
                     if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && list != null) {
                         Log.d(TAG, "onViewCreated: Purchase successful" + billingResult.getResponseCode());
                         Log.d(TAG, "onViewCreated: Purchase list" + list);
-                        //TODO: with Deferred the subscription list comes back as null but transaction has completed
+
                         list.forEach(purchase -> {
-                            if (subscriptionViewModel.validatePurchase(purchase)) {
-                                handlePurchase(purchase);
-                            }
+                            subscriptionViewModel.validatePurchase(purchase, v -> { handlePurchase(purchase); return null; });
                         });
                     } else {
                         Log.d(TAG, "onViewCreated: Purchase failed: " + billingResult.getResponseCode());
@@ -129,8 +127,14 @@ public class SubscriptionFragment extends RaisingFragment {
 
             @Override
             public void onBillingServiceDisconnected() {
-                showSimpleDialog(getString(R.string.billing_connection_failed_title),
-                        getString(R.string.billing_connection_failed_text));
+                try {
+                    if (getContext() != null) {
+                        showSimpleDialog(getString(R.string.billing_connection_failed_title),
+                                getString(R.string.billing_connection_failed_text));
+                    }
+                } catch (Exception e) {
+                    Log.d(TAG, "onBillingServiceDisconnected: " + e.getMessage());
+                }
             }
         });
     }
@@ -231,7 +235,7 @@ public class SubscriptionFragment extends RaisingFragment {
             subscriptionPriceWeek.setText(createPriceString(skuDetails, false));
             card.setOnClickListener(v -> processOnCardClick(skuDetails));
 
-            if (subscriptionViewModel.getActiveSubscription() != null) {
+            if (subscriptionViewModel.getActiveSubscription().getValue() != null) {
                 btnManageSubscription.setVisibility(View.VISIBLE);
                 manageSubscriptionText.setVisibility(View.VISIBLE);
                 btnManageSubscription.setOnClickListener(v -> {
@@ -309,7 +313,7 @@ public class SubscriptionFragment extends RaisingFragment {
      * @param duration          The duration of the subscription, where the title of the card should be adjusted
      */
     private void adjustNotSelectedSubscriptions(TextView subscriptionTitle, int duration) {
-        if (subscriptionViewModel.getActiveSubscription() != null) {
+        if (subscriptionViewModel.getActiveSubscription().getValue() != null) {
             // adjust cards of shorter subscription types
             if (duration < subscriptionViewModel.getSkuDurationFromSku(subscriptionViewModel.getActiveSubscription().getValue().getSku())) {
                 // subscriptions cheaper than the one currently active, if current subscription != next subscription user cannot up-/downgrade
@@ -337,6 +341,6 @@ public class SubscriptionFragment extends RaisingFragment {
      * false, if user does not have an active subscription
      */
     private boolean activeSubscriptionExists() {
-        return (subscriptionViewModel.getActiveSubscription() != null);
+        return (subscriptionViewModel.getActiveSubscription().getValue() != null);
     }
 }
