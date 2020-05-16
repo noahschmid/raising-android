@@ -73,6 +73,7 @@ public class SubscriptionFragment extends RaisingFragment {
         manageSubscriptionText = view.findViewById(R.id.subscription_manage_text);
         manageSubscriptionText.setVisibility(View.GONE);
 
+        // setup Google Billing client
         billingClient = BillingClient.newBuilder(getContext())
                 .setListener((billingResult, list) -> {
                     // onPurchasesUpdated
@@ -111,6 +112,9 @@ public class SubscriptionFragment extends RaisingFragment {
         startBillingConnection();
     }
 
+    /**
+     * Start connection to Google Billing client
+     */
     private void startBillingConnection() {
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
@@ -130,6 +134,12 @@ public class SubscriptionFragment extends RaisingFragment {
         });
     }
 
+    /**
+     * Show the Google Billing popover where the subscriptions can be purchased
+     * @param skuDetails The skuDetails of the subscription about to be purchased
+     * @param hasSubscription true, if user already has a subscription
+     *                        false, if user does not have a subscription
+     */
     private void showGoogleBilling(SkuDetails skuDetails, boolean hasSubscription) {
         Log.d(TAG, "showGoogleBilling: SkuDetails: " + skuDetails);
         if (billingClient.isFeatureSupported("subscriptions").getResponseCode() == BillingClient.BillingResponseCode.OK
@@ -153,6 +163,10 @@ public class SubscriptionFragment extends RaisingFragment {
         }
     }
 
+    /**
+     * Handle the purchase after it has been verified by our backend
+     * @param purchase The purchase the user has recently made
+     */
     private void handlePurchase(Purchase purchase) {
         Log.d(TAG, "handlePurchase: Purchase State " + purchase.getPurchaseState());
         if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
@@ -176,6 +190,10 @@ public class SubscriptionFragment extends RaisingFragment {
         }
     }
 
+    /**
+     * Grant the user the verified and acknowledged purchase
+     * @param purchase The purchase that should be granted to the user
+     */
     private void grantPurchase(Purchase purchase) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
@@ -183,7 +201,9 @@ public class SubscriptionFragment extends RaisingFragment {
         refreshSubscriptionsLayout();
     }
 
-
+    /**
+     * Refresh the layout of the SubscriptionFragment
+     */
     private void refreshSubscriptionsLayout() {
         Log.d(TAG, "refreshSubscriptionsLayout: ");
         subscriptionsLayout.removeAllViews();
@@ -249,7 +269,7 @@ public class SubscriptionFragment extends RaisingFragment {
     }
 
     /**
-     * Process a click on a certain card
+     * Process a click on a card
      *
      * @param sku The skuDetails belonging to the card that was clicked
      */
@@ -263,8 +283,15 @@ public class SubscriptionFragment extends RaisingFragment {
         refreshSubscriptionsLayout();
     }
 
-    private String createPriceString(SkuDetails skuDetails, boolean isDuration) {
-        if (isDuration) {
+    /**
+     * Create a price String from skuDetails
+     * @param skuDetails The skuDetails of which a price String should be created
+     * @param monthlyPrice true, if a monthly price string should be created
+     *                   false, if a weekly price string should be created
+     * @return A String representation of the skuDetails with either weekly or monthly price
+     */
+    private String createPriceString(SkuDetails skuDetails, boolean monthlyPrice) {
+        if (monthlyPrice) {
             return (skuDetails.getOriginalPrice() + " / " + SubscriptionHandler.getSkuDurationFromSku(skuDetails.getSku()) + " " + getString(R.string.subscription_months));
         } else {
             long pricePerWeek = (skuDetails.getOriginalPriceAmountMicros() / (4 * (SubscriptionHandler.getSkuDurationFromSku(skuDetails.getSku())))) / 1000000;

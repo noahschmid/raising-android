@@ -53,6 +53,7 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // find all views
         subscriptionLayout = view.findViewById(R.id.settings_subscription_layout);
         subscriptionLayout.setOnClickListener(this);
         generalLayout = view.findViewById(R.id.settings_notifications_layout);
@@ -67,12 +68,6 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         problemLayout.setOnClickListener(this);
         logoutLayout = view.findViewById(R.id.settings_logout_layout);
         logoutLayout.setOnClickListener(this);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        // TODO: Use the ViewModel
     }
 
     @Override
@@ -108,6 +103,11 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         }
     }
 
+    /**
+     * Open a new activity with the users preferred mail service to write a feedback/complaint mail
+     * @param isProblemReport true, if user wants to report a problem
+     *                        false, if user wants to give feedback
+     */
     private void contactRaising(boolean isProblemReport) {
         Intent interactionIntent = new Intent(Intent.ACTION_SENDTO);
         interactionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -125,6 +125,9 @@ public class SettingsFragment extends RaisingFragment implements View.OnClickLis
         startActivity(interactionIntent);
     }
 
+    /**
+     * Logout the current user
+     */
     private void logout() {
         settingsViewModel.onLogoutResetToken();
         tabViewModel.resetAll();

@@ -47,6 +47,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // find all views
         btnNotifications = view.findViewById(R.id.button_notifications);
         btnNotifications.setOnClickListener(v -> updateNotificationSettings());
 
@@ -66,6 +67,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         matchNumberInput.setAdapter(adapter);
         matchNumberInput.addTextChangedListener(this);
 
+        // prepare all switches for usage
         generalSwitch = view.findViewById(R.id.notifications_switch_general);
         generalSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             btnNotifications.setEnabled(true);
@@ -86,47 +88,15 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         requestSwitch = view.findViewById(R.id.notifications_switch_request);
         connectionSwitch = view.findViewById(R.id.notifications_switch_connection);
 
+        // observe the settings view model to detect changes
         settingsViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
             if(viewState == ViewState.CACHED || viewState == ViewState.RESULT) {
                 Log.d(TAG, "onViewCreated: Receive personal settings");
                 personalSettings = settingsViewModel.getPersonalSettings().getValue();
-                populateSettings();
-
-                if (personalSettings != null) {
-                    Log.d(TAG, "onViewCreated: " + personalSettings);
-                    personalSettings.getNotificationSettings().forEach(notificationSettings -> {
-                        switch (notificationSettings) {
-                            case NEVER:
-                                generalSwitch.setChecked(false);
-                                if(!generalSwitch.isChecked()) {
-                                    specificSettings.setVisibility(View.GONE);
-                                }
-                                break;
-                            case LEAD:
-                                leadsSwitch.setChecked(true);
-                                generalSwitch.setChecked(true);
-                                break;
-                            case REQUEST:
-                                requestSwitch.setChecked(true);
-                                generalSwitch.setChecked(true);
-                                break;
-                            case MATCHLIST:
-                                matchlistSwitch.setChecked(true);
-                                generalSwitch.setChecked(true);
-                                break;
-                            case CONNECTION:
-                                connectionSwitch.setChecked(true);
-                                generalSwitch.setChecked(true);
-                                break;
-                        }
-                    });
-                } else {
-                    generalSwitch.setChecked(false);
-                }
-                // hide button that confirms the changes
-                btnNotifications.setEnabled(false);
+                populateFragment();
             }
         });
+
         //processViewState(settingsViewModel.getViewState().getValue());
         settingsViewModel.loadSettings();
 
@@ -142,12 +112,47 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         btnNotifications.setEnabled(true);
     }
 
-    private void populateSettings() {
+    /**
+     * Populate the fragment with the users existing data
+     */
+    private void populateFragment() {
         if(personalSettings != null) {
             matchNumberInput.setText(String.valueOf(personalSettings.getNumberOfMatches()));
+
+            Log.d(TAG, "populateSettings: " + personalSettings);
+            personalSettings.getNotificationSettings().forEach(notificationSettings -> {
+                switch (notificationSettings) {
+                    case NEVER:
+                        generalSwitch.setChecked(false);
+                        if(!generalSwitch.isChecked()) {
+                            specificSettings.setVisibility(View.GONE);
+                        }
+                        break;
+                    case LEAD:
+                        leadsSwitch.setChecked(true);
+                        generalSwitch.setChecked(true);
+                        break;
+                    case REQUEST:
+                        requestSwitch.setChecked(true);
+                        generalSwitch.setChecked(true);
+                        break;
+                    case MATCHLIST:
+                        matchlistSwitch.setChecked(true);
+                        generalSwitch.setChecked(true);
+                        break;
+                    case CONNECTION:
+                        connectionSwitch.setChecked(true);
+                        generalSwitch.setChecked(true);
+                        break;
+                }
+            });
         } else {
             settingsViewModel.addInitialSettings();
+
+            generalSwitch.setChecked(false);
         }
+        // hide button that confirms the changes
+        btnNotifications.setEnabled(false);
     }
 
     /**

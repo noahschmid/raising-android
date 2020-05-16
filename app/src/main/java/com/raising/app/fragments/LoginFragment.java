@@ -48,12 +48,11 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         hideBottomNavigation(true);
         hideToolbar(true);
 
-        return view;
+        return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
     @Override
@@ -83,7 +82,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_login:
-                prepareLogin();
+                login();
                 break;
             case R.id.button_login_goTo_register:
                 goToRegisterFragment();
@@ -96,26 +95,13 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
         }
     }
 
-
-    /**
-     * Simple helper function that retrieves the users input from the layout
-     *      and then calls {@link #login(String, String)}.
-     * Enables easier testing, since you can give login() some parameters.
-     *
-     * @version 1.0
-     */
-    private void prepareLogin() {
-        String email = emailInput.getText().toString();
-        String password = passwordInput.getText().toString();
-        login(email, password);
-    }
-
     /**
      * Send login request to backend and process response
-     * @param email
-     * @param password
      */
-    private void login(String email, String password) {
+    private void login() {
+        String email = emailInput.getText().toString();
+        String password = passwordInput.getText().toString();
+
         if(email.length() == 0 || password.length() == 0) {
             showSimpleDialog(getString(R.string.login_dialog_title),
                     getString(R.string.login_dialog_text_empty_credentials));
@@ -204,7 +190,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
 
     /**
      * Change to the RegisterFragment, if user wants to register, not log in
-     *
      */
     private void goToRegisterFragment() {
         try {
@@ -222,7 +207,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
 
     /**
      * Change to ForgotPasswordEmailFragment, if the user wants to get a new password
-     *
      */
     private void goToForgotFragment() {
         changeFragment(new ForgotPasswordFragment(), "ForgotPasswordEmailFragment");
