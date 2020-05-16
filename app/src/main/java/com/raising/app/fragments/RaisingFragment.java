@@ -245,6 +245,40 @@ public class RaisingFragment extends Fragment {
         }
     }
 
+    public void changeFragmentWithoutBackstack(Fragment fragment) {
+        try {
+            if(base != TabOrigin.NONE) {
+                Bundle bundle = fragment.getArguments();
+                if(bundle == null) {
+                    bundle = new Bundle();
+                }
+                bundle.putString("origin", base.toString());
+                fragment.setArguments(bundle);
+
+                switch (base) {
+                    case MATCHES:
+                        tabViewModel.setCurrentMatchesFragment(fragment);
+                        break;
+                    case LEADS:
+                        tabViewModel.setCurrentLeadsFragment(fragment);
+                        break;
+                    case SETTINGS:
+                        tabViewModel.setCurrentSettingsFragment(fragment);
+                        break;
+                    case PROFILE:
+                        tabViewModel.setCurrentProfileFragment(fragment);
+                        break;
+                }
+            }
+            getActivitiesFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+        } catch (NullPointerException e) {
+            Log.e(TAG, "Error while changing Fragment: " + e.getMessage());
+        }
+    }
+
     /**
      * Change from the current fragment to the next
      *

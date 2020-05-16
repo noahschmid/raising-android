@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +40,7 @@ public class OnboardingPost6Fragment extends RaisingFragment {
         view.findViewById(R.id.text_onboarding_next).setOnClickListener(v -> {
             tabViewModel.resetCurrentSettingsFragment();
             if(getArguments() != null && getArguments().getBoolean("settings")) {
-                clearBackstackAndReplace(new SettingsFragment());
+                changeFragmentWithoutBackstack(new SettingsFragment());
             } else {
                 disablePostOnboarding();
                 clearBackstackAndReplace(new MatchesFragment());

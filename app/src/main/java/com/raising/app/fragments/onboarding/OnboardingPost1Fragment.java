@@ -33,6 +33,7 @@ public class OnboardingPost1Fragment extends RaisingFragment {
         Bundle args = new Bundle();
         if (getArguments() != null && getArguments().getBoolean("settings")) {
             args.putBoolean("settings", getArguments().getBoolean("settings"));
+            view.findViewById(R.id.text_onboarding_skip).setVisibility(View.GONE);
         }
 
         // set the click listeners for next and skip buttons
@@ -51,9 +52,9 @@ public class OnboardingPost1Fragment extends RaisingFragment {
             tabViewModel.resetCurrentSettingsFragment();
             if(getArguments() != null && getArguments().getBoolean("settings")) {
                 fragment.setArguments(args);
-                changeFragment(fragment);
+                changeFragmentWithoutBackstack(fragment);
             } else {
-                changeFragment(fragment);
+                changeFragmentWithoutBackstack(fragment);
             }
         });
     }
