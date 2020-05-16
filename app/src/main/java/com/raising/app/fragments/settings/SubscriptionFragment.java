@@ -124,9 +124,13 @@ public class SubscriptionFragment extends RaisingFragment {
 
             @Override
             public void onBillingServiceDisconnected() {
-                if(getContext() != null) {
-                    showSimpleDialog(getString(R.string.billing_connection_failed_title),
-                            getString(R.string.billing_connection_failed_text));
+                try {
+                    if (getContext() != null) {
+                        showSimpleDialog(getString(R.string.billing_connection_failed_title),
+                                getString(R.string.billing_connection_failed_text));
+                    }
+                } catch (Exception e) {
+                    Log.d(TAG, "onBillingServiceDisconnected: " + e.getMessage());
                 }
             }
         });
