@@ -233,6 +233,8 @@ public class AccountViewModel extends AndroidViewModel {
                         }
                         viewState.postValue(ViewState.UPDATED);
                         Log.d(TAG, "update: ViewState" + getViewState().getValue().toString());
+
+                        loadAccount();
                         return null;
                     }, error -> {
                         viewState.postValue(ViewState.ERROR);
@@ -274,6 +276,8 @@ public class AccountViewModel extends AndroidViewModel {
                         } else {
                             viewState.postValue(ViewState.UPDATED);
                         }
+
+                        loadAccount();
 
                     } catch (JSONException e) {
                         Log.e(TAG, "updateProfilePicture: " + e.getMessage());
@@ -317,6 +321,8 @@ public class AccountViewModel extends AndroidViewModel {
                         }
                     }
                 }
+
+                loadAccount();
 
                 viewState.postValue(ViewState.UPDATED);
             } catch (JSONException e) {
