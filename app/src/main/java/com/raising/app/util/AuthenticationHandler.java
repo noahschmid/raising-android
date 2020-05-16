@@ -3,6 +3,9 @@ package com.raising.app.util;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.lifecycle.ViewModelProviders;
+import com.raising.app.viewModels.SubscriptionViewModel;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,7 +18,6 @@ public class AuthenticationHandler {
     private static String email;
     private static boolean loggedIn = false;
     private static boolean isStartup = false;
-
 
     /**
      * Save the given access token and accountId in internal storage
@@ -74,7 +76,9 @@ public class AuthenticationHandler {
 
         AuthenticationHandler.token = null;
         AuthenticationHandler.accountId = -1;
-        SubscriptionHandler.removeSubscription();
+        SubscriptionViewModel subscriptionViewModel = ViewModelProviders.of(InternalStorageHandler.getActivity())
+                .get(SubscriptionViewModel.class);
+        subscriptionViewModel.removeSubscription();
         loggedIn = false;
     }
 

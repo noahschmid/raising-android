@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,13 +20,10 @@ import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.Match;
 import com.raising.app.models.MatchListItem;
-import com.raising.app.util.SubscriptionHandler;
 import com.raising.app.util.TabOrigin;
 import com.raising.app.util.recyclerViewAdapter.MatchListAdapter;
 import com.raising.app.models.ViewState;
-import com.raising.app.util.recyclerViewAdapter.RecyclerViewMargin;
 import com.raising.app.viewModels.MatchesViewModel;
-import com.raising.app.viewModels.SettingsViewModel;
 import com.raising.app.viewModels.TabViewModel;
 
 import java.util.ArrayList;
@@ -100,7 +96,7 @@ public class MatchesFragment extends RaisingFragment {
         matchList.setAdapter(matchListAdapter);
         matchListAdapter.setOnItemClickListener(position -> {
             // check if user has valid subscription
-            if(!SubscriptionHandler.hasValidSubscription()) {
+            if(!subscriptionViewModel.hasValidSubscription()) {
                 changeFragment(new UnlockPremiumFragment());
             } else {
                 Bundle args = new Bundle();

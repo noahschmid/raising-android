@@ -15,13 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.raising.app.fragments.onboarding.OnboardingPost1Fragment;
 import com.raising.app.fragments.profile.ContactDataInput;
 import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
-import com.raising.app.models.NotificationSettings;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
@@ -30,12 +27,10 @@ import com.raising.app.R;
 import com.raising.app.fragments.forgotPassword.ForgotPasswordFragment;
 
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.SubscriptionHandler;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -146,7 +141,7 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
                                         response.getLong("id"), isStartup);
                                 accountViewModel.loadAccount();
                                 settingsViewModel.loadSettings();
-                                SubscriptionHandler.loadSubscription();
+                                subscriptionViewModel.loadSubscription();
 
                                 if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
                                     clearBackstackAndReplace(new OnboardingPost1Fragment());

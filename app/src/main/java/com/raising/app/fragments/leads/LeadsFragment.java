@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,6 @@ import com.raising.app.models.leads.LeadState;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.ImageHandler;
-import com.raising.app.util.SubscriptionHandler;
 import com.raising.app.util.recyclerViewAdapter.LeadsAdapter;
 import com.raising.app.viewModels.LeadsViewModel;
 
@@ -146,7 +144,7 @@ public class LeadsFragment extends RaisingFragment {
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(position -> {
             // check if user has valid subscription
-            if (!SubscriptionHandler.hasValidSubscription()) {
+            if (!subscriptionViewModel.hasValidSubscription()) {
                 ((RaisingFragment) getParentFragment()).changeFragment(new UnlockPremiumFragment());
             } else {
                 Bundle args = new Bundle();
@@ -168,7 +166,7 @@ public class LeadsFragment extends RaisingFragment {
 
         adapter.setOnClickListener(position -> {
             // check if user has valid subscription
-            if (!SubscriptionHandler.hasValidSubscription()) {
+            if (!subscriptionViewModel.hasValidSubscription()) {
                 ((RaisingFragment) getParentFragment()).changeFragment(new UnlockPremiumFragment());
             } else {
                 Bundle args = new Bundle();

@@ -29,16 +29,12 @@ import com.google.android.material.card.MaterialCardView;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.ViewState;
-import com.raising.app.util.SubscriptionHandler;
-import com.raising.app.viewModels.SettingsViewModel;
 import com.raising.app.viewModels.ViewStateViewModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.Objects;
 
 public class SubscriptionFragment extends RaisingFragment {
     private final String TAG = "SubscriptionsFragment";
@@ -72,6 +68,15 @@ public class SubscriptionFragment extends RaisingFragment {
         manageSubscriptionText = view.findViewById(R.id.subscription_manage_text);
         manageSubscriptionText.setVisibility(View.GONE);
 
+        skuDetailsArrayList = subscriptionViewModel.getSkuDetailsArrayList().getValue();
+
+        subscriptionViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
+            if(state == ViewState.RESULT) {
+                skuDetailsArrayList = subscriptionViewModel.getSkuDetailsArrayList().getValue();
+                refreshSubscriptionsLayout();
+            }
+        });
+
         billingClient = BillingClient.newBuilder(getContext())
                 .setListener((billingResult, list) -> {
                     // onPurchasesUpdated
@@ -80,7 +85,7 @@ public class SubscriptionFragment extends RaisingFragment {
                         Log.d(TAG, "onViewCreated: Purchase list" + list);
                         //TODO: with Deferred the subscription list comes back as null but transaction has completed
                         list.forEach(purchase -> {
-                            if (SubscriptionHandler.validatePurchase(purchase)) {
+                            if (subscriptionViewModel.validatePurchase(purchase)) {
                                 handlePurchase(purchase);
                             }
                         });
@@ -103,10 +108,9 @@ public class SubscriptionFragment extends RaisingFragment {
                 })
                 .enablePendingPurchases()
                 .build();
-        Log.d(TAG, "onViewCreated: " + SubscriptionHandler.getActiveSubscription());
+        Log.d(TAG, "onViewCreated: " + subscriptionViewModel.getActiveSubscription());
 
-        SubscriptionHandler.setBillingClient(billingClient);
-        SubscriptionHandler.verifySubscription();
+        subscriptionViewModel.loadSkuDetails(billingClient);
         startBillingConnection();
     }
 
@@ -116,8 +120,7 @@ public class SubscriptionFragment extends RaisingFragment {
             public void onBillingSetupFinished(BillingResult billingResult) {
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     Log.d(TAG, "onBillingSetupFinished: Billing Response Code: " + billingResult.getResponseCode());
-                    skuDetailsArrayList = SubscriptionHandler.getSkuDetails();
-                    refreshSubscriptionsLayout();
+                    subscriptionViewModel.loadSkuDetails(billingClient);
                 }
             }
 
@@ -138,8 +141,8 @@ public class SubscriptionFragment extends RaisingFragment {
                 Log.d(TAG, "showGoogleBilling: Change subscription");
                 flowParams = BillingFlowParams.newBuilder()
                         .setSkuDetails(skuDetails)
-                        .setOldSku(SubscriptionHandler.getActiveSubscription().getSku(),
-                                SubscriptionHandler.getActiveSubscription().getPurchaseToken())
+                        .setOldSku(subscriptionViewModel.getActiveSubscription().getValue().getSku(),
+                                subscriptionViewModel.getActiveSubscription().getValue().getPurchaseToken())
                         .build();
             } else {
                 Log.d(TAG, "showGoogleBilling: New subscription");
@@ -178,7 +181,7 @@ public class SubscriptionFragment extends RaisingFragment {
     private void grantPurchase(Purchase purchase) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        SubscriptionHandler.setActiveSubscriptionWithPurchase(purchase.getSku(), purchase.getPurchaseToken(), calendar);
+        subscriptionViewModel.setActiveSubscriptionWithPurchase(purchase.getSku(), purchase.getPurchaseToken(), calendar);
         refreshSubscriptionsLayout();
     }
 
@@ -189,7 +192,7 @@ public class SubscriptionFragment extends RaisingFragment {
 
         // sort skuDetails based on ascending durations
         Collections.sort(skuDetailsArrayList, (o1, o2) ->
-                SubscriptionHandler.getSkuDurationFromSku(o1.getSku()) - SubscriptionHandler.getSkuDurationFromSku(o2.getSku()));
+                subscriptionViewModel.getSkuDurationFromSku(o1.getSku()) - subscriptionViewModel.getSkuDurationFromSku(o2.getSku()));
         skuDetailsArrayList.forEach(skuDetails -> {
             Log.d(TAG, "fillSubscriptionsList: SkuDetail" + skuDetails.getSku() + " " + skuDetails.getTitle() + " " + skuDetails.getPrice());
 
@@ -209,13 +212,13 @@ public class SubscriptionFragment extends RaisingFragment {
             subscriptionPriceWeek.setText(createPriceString(skuDetails, false));
             card.setOnClickListener(v -> processOnCardClick(skuDetails));
 
-            if (SubscriptionHandler.getActiveSubscription() != null) {
+            if (subscriptionViewModel.getActiveSubscription() != null) {
                 btnManageSubscription.setVisibility(View.VISIBLE);
                 manageSubscriptionText.setVisibility(View.VISIBLE);
                 btnManageSubscription.setOnClickListener(v -> {
                             String baseUri = "https://play.google.com/store/account/subscriptions";
-                            if (SubscriptionHandler.hasValidSubscription()) {
-                                String uri = baseUri + "?sku=" + SubscriptionHandler.getActiveSubscription().getSku() + "&package=" + "com.raising.app";
+                            if (subscriptionViewModel.hasValidSubscription()) {
+                                String uri = baseUri + "?sku=" + subscriptionViewModel.getActiveSubscription().getValue().getSku() + "&package=" + "com.raising.app";
                                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                                 startActivity(browserIntent);
                             } else {
@@ -228,10 +231,10 @@ public class SubscriptionFragment extends RaisingFragment {
             }
             // check if user has a subscription
             if (activeSubscriptionExists()) {
-                adjustNotSelectedSubscriptions(subscriptionTitle, SubscriptionHandler.getSkuDurationFromSku(skuDetails.getSku()));
+                adjustNotSelectedSubscriptions(subscriptionTitle, subscriptionViewModel.getSkuDurationFromSku(skuDetails.getSku()));
 
                 // adjust card of users active subscription
-                if (skuDetails.getSku().equals(SubscriptionHandler.getActiveSubscription().getSku())) {
+                if (skuDetails.getSku().equals(subscriptionViewModel.getActiveSubscription().getValue().getSku())) {
                     Drawable drawable = card.getBackground();
                     drawable = DrawableCompat.wrap(drawable);
                     drawable.setTint(getResources().getColor(R.color.raisingPositiveAccentLight, null));
@@ -255,16 +258,16 @@ public class SubscriptionFragment extends RaisingFragment {
     private void processOnCardClick(SkuDetails sku) {
         if (showActionDialog(getString(R.string.subscription_dialog_subscribe_title),
                 getString(R.string.subscribtion_dialog_subscribe_text))) {
-            showGoogleBilling(sku, SubscriptionHandler.hasValidSubscription());
+            showGoogleBilling(sku, subscriptionViewModel.hasValidSubscription());
         }
         refreshSubscriptionsLayout();
     }
 
     private String createPriceString(SkuDetails skuDetails, boolean isDuration) {
         if (isDuration) {
-            return (skuDetails.getOriginalPrice() + " / " + SubscriptionHandler.getSkuDurationFromSku(skuDetails.getSku()) + " " + getString(R.string.subscription_months));
+            return (skuDetails.getOriginalPrice() + " / " + subscriptionViewModel.getSkuDurationFromSku(skuDetails.getSku()) + " " + getString(R.string.subscription_months));
         } else {
-            long pricePerWeek = (skuDetails.getOriginalPriceAmountMicros() / (4 * (SubscriptionHandler.getSkuDurationFromSku(skuDetails.getSku())))) / 1000000;
+            long pricePerWeek = (skuDetails.getOriginalPriceAmountMicros() / (4 * (subscriptionViewModel.getSkuDurationFromSku(skuDetails.getSku())))) / 1000000;
             Log.d(TAG, "createPriceString: pricePerWeek " + pricePerWeek + " " + skuDetails.getSku());
             return skuDetails.getPriceCurrencyCode() + " " + pricePerWeek + " / " + getString(R.string.subscriptions_weeks);
         }
@@ -277,20 +280,20 @@ public class SubscriptionFragment extends RaisingFragment {
      * @param duration          The duration of the subscription, where the title of the card should be adjusted
      */
     private void adjustNotSelectedSubscriptions(TextView subscriptionTitle, int duration) {
-        if (SubscriptionHandler.getActiveSubscription() != null) {
+        if (subscriptionViewModel.getActiveSubscription() != null) {
             // adjust cards of shorter subscription types
-            if (duration < SubscriptionHandler.getSkuDurationFromSku(SubscriptionHandler.getActiveSubscription().getSku())) {
+            if (duration < subscriptionViewModel.getSkuDurationFromSku(subscriptionViewModel.getActiveSubscription().getValue().getSku())) {
                 // subscriptions cheaper than the one currently active, if current subscription != next subscription user cannot up-/downgrade
-                if (SubscriptionHandler.hasValidSubscription()) {
+                if (subscriptionViewModel.hasValidSubscription()) {
                     subscriptionTitle.setVisibility(View.VISIBLE);
                     subscriptionTitle.setText(getString(R.string.subscription_downgrade));
                 }
             }
 
             // adjust cards of longer subscription types
-            if (duration > SubscriptionHandler.getSkuDurationFromSku(SubscriptionHandler.getActiveSubscription().getSku())) {
+            if (duration > subscriptionViewModel.getSkuDurationFromSku(subscriptionViewModel.getActiveSubscription().getValue().getSku())) {
                 // subscriptions more expensive than current subscription, if current subscription != next subscription user cannot up-/downgrade
-                if (SubscriptionHandler.hasValidSubscription()) {
+                if (subscriptionViewModel.hasValidSubscription()) {
                     subscriptionTitle.setVisibility(View.VISIBLE);
                     subscriptionTitle.setText(getString(R.string.subscription_upgrade));
                 }
@@ -305,6 +308,6 @@ public class SubscriptionFragment extends RaisingFragment {
      * false, if user does not have an active subscription
      */
     private boolean activeSubscriptionExists() {
-        return (SubscriptionHandler.getActiveSubscription() != null);
+        return (subscriptionViewModel.getActiveSubscription() != null);
     }
 }

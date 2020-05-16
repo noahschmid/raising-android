@@ -22,7 +22,6 @@ import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.ApiRequestHandler;
-import com.raising.app.util.SubscriptionHandler;
 import com.raising.app.util.recyclerViewAdapter.LeadsOpenRequestAdapter;
 import com.raising.app.viewModels.LeadsViewModel;
 
@@ -115,7 +114,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         openRequestRecycler.setAdapter(adapter);
 
         // check for valid subscription
-        if(SubscriptionHandler.hasValidSubscription()) {
+        if(subscriptionViewModel.hasValidSubscription()) {
             // set the click listeners for accepting and declining an open request
             adapter.setOnClickListener(new LeadsOpenRequestAdapter.OnClickListener() {
                 @Override
@@ -157,7 +156,7 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
         // set the item click listener, that takes you to the users public profile
         adapter.setOnItemClickListener(position -> {
             // check for valid subscription
-            if(!SubscriptionHandler.hasValidSubscription()) {
+            if(!subscriptionViewModel.hasValidSubscription()) {
                 changeFragment(new UnlockPremiumFragment());
             } else {
                 Bundle args = new Bundle();

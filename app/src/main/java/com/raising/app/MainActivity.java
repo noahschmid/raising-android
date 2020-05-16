@@ -2,7 +2,6 @@ package com.raising.app;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -16,29 +15,25 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.leads.LeadsContainerFragment;
-import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
 import com.raising.app.fragments.leads.LeadsInteractionFragment;
 import com.raising.app.fragments.leads.LeadsOpenRequestsFragment;
 import com.raising.app.fragments.onboarding.OnboardingPre1Fragment;
-import com.raising.app.fragments.onboarding.OnboardingPre2Fragment;
 import com.raising.app.fragments.profile.ContactDataInput;
-import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.fragments.settings.SettingsFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
 import com.raising.app.models.NotificationType;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
-import com.raising.app.util.ImageHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.SubscriptionHandler;
 import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.LeadsViewModel;
 import com.raising.app.viewModels.MatchesViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 import com.raising.app.viewModels.SettingsViewModel;
+import com.raising.app.viewModels.SubscriptionViewModel;
 import com.raising.app.viewModels.TabViewModel;
 import com.raising.app.viewModels.ViewStateViewModel;
 
@@ -52,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     SettingsViewModel settingsViewModel;
     ViewStateViewModel viewStateViewModel;
     TabViewModel tabViewModel;
+    SubscriptionViewModel subscriptionViewModel;
 
     MaterialToolbar toolbar;
 
@@ -82,12 +78,14 @@ public class MainActivity extends AppCompatActivity {
         leadsViewModel = new ViewModelProvider(this).get(LeadsViewModel.class);
         settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
         tabViewModel = new ViewModelProvider(this).get(TabViewModel.class);
+        subscriptionViewModel = new ViewModelProvider(this).get(SubscriptionViewModel.class);
 
         viewStateViewModel.addViewModel(accountViewModel.getViewState(), this);
         viewStateViewModel.addViewModel(resourcesViewModel.getViewState(), this);
         viewStateViewModel.addViewModel(matchesViewModel.getViewState(), this);
         viewStateViewModel.addViewModel(leadsViewModel.getViewState(), this);
         viewStateViewModel.addViewModel(settingsViewModel.getViewState(), this);
+        viewStateViewModel.addViewModel(subscriptionViewModel.getViewState(), this);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
@@ -105,10 +103,12 @@ public class MainActivity extends AppCompatActivity {
             // if user has not completed his onboarding and this is a newly installed app
             fragmentTransaction.replace(R.id.fragment_container, new OnboardingPre1Fragment());
         } else if (!AuthenticationHandler.isLoggedIn()) {
+            resourcesViewModel.loadResources();
             hideBottomNavigation(true);
             hideToolbar(true);
             fragmentTransaction.replace(R.id.fragment_container, new RegisterLoginInformationFragment());
         } else {
+            resourcesViewModel.loadResources();
             leadsViewModel.loadLeads();
             matchesViewModel.loadMatches();
             if (!AccountService.loadContactData(AuthenticationHandler.getId())) {
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                         + " logged in");
                 settingsViewModel.loadSettings();
                 accountViewModel.loadAccount();
-                SubscriptionHandler.loadSubscription();
+                subscriptionViewModel.loadSubscription();
                 hideBottomNavigation(false);
                 hideToolbar(false);
 
@@ -139,11 +139,10 @@ public class MainActivity extends AppCompatActivity {
                     switch(type) {
                         case LEAD:
                         case CONNECTION:
-                            long leadId = intent.getExtras().getLong("id");
+                            long leadId = Long.parseLong(intent.getExtras().getString("relationshipId"));
                             Fragment fragment = new LeadsInteractionFragment();
                             Bundle bundle = new Bundle();
                             bundle.putLong("leadId", leadId);
-                            Log.d(TAG, "onCreate: leadId "  + leadId);
                             fragment.setArguments(bundle);
                             tabViewModel.setCurrentLeadsFragment(fragment);
                             selectBottomNavigation(R.id.nav_leads);
