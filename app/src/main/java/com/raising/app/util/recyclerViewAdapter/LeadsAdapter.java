@@ -19,6 +19,7 @@ import com.raising.app.R;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.models.leads.LeadState;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.ImageHandler;
 import com.raising.app.util.InternalStorageHandler;
 
 import java.util.ArrayList;
@@ -51,7 +52,6 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
         switch (recyclerItem.getHandshakeState()) {
             case STARTUP_ACCEPTED:
             case INVESTOR_ACCEPTED:
-                //TODO: insert one hand
                 tintColor = R.color.raisingSecondaryDark;
                 drawableId = R.drawable.ic_raising_handshake_left;
                 break;
@@ -76,28 +76,10 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
         drawable.setTint(ContextCompat.getColor(holder.statusIcon.getContext(), tintColor));
         holder.statusIcon.setImageDrawable(drawable);
 
-        // Default: set visibility of warning to gone
-        holder.warning.setVisibility(View.GONE);
-
         holder.name.setText(recyclerItem.getTitle());
         holder.attribute.setText(recyclerItem.getAttribute());
-        holder.matchingPercent.setText(recyclerItem.getHandshakePercentString());
 
-
-        if(recyclerItem.getProfilePictureId() > 0) {
-            Glide
-                    .with(InternalStorageHandler.getContext())
-                    .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
-                            recyclerItem.getProfilePictureId())
-                    .centerCrop()
-                    .apply(RequestOptions.circleCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                    .placeholder(R.drawable.ic_placeholder_24dp)
-                    .into(holder.profilePicture);
-        } else {
-            holder.profilePicture.setImageDrawable(InternalStorageHandler.getContext()
-                    .getResources().getDrawable(R.drawable.ic_placeholder_24dp));
-        }
+        ImageHandler.loadProfileImage(recyclerItem, holder.profilePicture);
     }
 
     @Override
@@ -122,8 +104,8 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView name, attribute, matchingPercent;
-        private ImageView profilePicture, statusIcon, warning;
+        private TextView name, attribute;
+        private ImageView profilePicture, statusIcon;
 
         public ViewHolder(@NonNull View itemView, OnItemClickListener itemClickListener, OnClickListener clickListener) {
             super(itemView);
@@ -132,17 +114,6 @@ public class LeadsAdapter extends RecyclerView.Adapter<LeadsAdapter.ViewHolder> 
             name = itemView.findViewById(R.id.item_leads_name);
 
             statusIcon = itemView.findViewById(R.id.item_leads_status_icon);
-            warning = itemView.findViewById(R.id.item_leads_warning);
-
-            matchingPercent = itemView.findViewById(R.id.item_leads_match_percent);
-            matchingPercent.setOnClickListener(v -> {
-                if(clickListener != null) {
-                    int position = getAdapterPosition();
-                    if(position != RecyclerView.NO_POSITION) {
-                        clickListener.onClick(position);
-                    }
-                }
-            });
 
             profilePicture = itemView.findViewById(R.id.item_leads_profile_image);
             profilePicture.setOnClickListener(v -> {

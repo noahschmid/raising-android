@@ -22,7 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-        android:layout_marginEnd="@dimen/standardHorizontalMargin"
+        android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
         android:text="Name"
         app:layout_constraintBottom_toTopOf="@+id/item_matchList_attributes"
         app:layout_constraintEnd_toStartOf="@+id/pie_layout"
@@ -48,12 +48,13 @@
         android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
         android:layout_marginTop="@dimen/standardVerticalMarginSmall"
         android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-        android:layout_marginBottom="@dimen/standardVerticalMargin"
+        android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
         android:text="Sentence"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/item_match_divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_matchList_profile_image" />
+        app:layout_constraintTop_toBottomOf="@+id/item_matchList_profile_image"
+        app:layout_constraintVertical_bias="1.0" />
 
     <FrameLayout
         android:id="@+id/pie_layout"
@@ -62,12 +63,16 @@
         android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
         app:layout_constraintBottom_toBottomOf="@+id/item_matchList_profile_image"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/item_matchList_profile_image">
+        app:layout_constraintTop_toTopOf="@+id/item_matchList_profile_image"
+        android:clickable="false"
+        android:focusable="false">
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/item_matchList_chart"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_height="fill_parent"
+            android:focusable="false"
+            android:clickable="false"/>
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -83,4 +88,14 @@
 
         </RelativeLayout>
     </FrameLayout>
+
+    <View
+        android:id="@+id/item_match_divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/raisingLightGrey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_matchList_sentence" />
 </androidx.constraintlayout.widget.ConstraintLayout>

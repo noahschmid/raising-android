@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,14 +29,12 @@ import com.raising.app.fragments.registration.startup.stakeholderInputs.Sharehol
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.BoardMemberViewModel;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.FounderViewModel;
 import com.raising.app.fragments.registration.startup.stakeholderInputs.viewModels.ShareholderViewModel;
-import com.raising.app.models.Investor;
 import com.raising.app.models.Startup;
 import com.raising.app.models.stakeholder.BoardMember;
 import com.raising.app.models.stakeholder.Founder;
 import com.raising.app.models.stakeholder.Shareholder;
 import com.raising.app.models.stakeholder.StakeholderItem;
 import com.raising.app.util.ApiRequestHandler;
-import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.Serializer;
 import com.raising.app.util.recyclerViewAdapter.StakeholderAdapter;
@@ -50,7 +47,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.function.Function;
 
-public class RegisterStakeholderFragment extends RaisingFragment implements View.OnClickListener {
+public class RegisterStakeholderFragment extends RaisingFragment {
+    private final String TAG = "RegisterStakeholderFragment";
     private FounderViewModel founderViewModel;
     private BoardMemberViewModel boardMemberViewModel;
     private ShareholderViewModel shareholderViewModel;
@@ -58,8 +56,6 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
     private boolean editMode = false;
     private Startup startup;
-
-    int editedIndex;
 
     // hold references to the respective recycler views
     private RecyclerView founderRecyclerView, boardMemberRecyclerView, shareholderRecyclerView;
@@ -78,14 +74,11 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_stakeholder,
-                container, false);
-
 
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_stakeholder), true);
 
-        return view;
+        return inflater.inflate(R.layout.fragment_register_stakeholder, container, false);
     }
 
     @Override
@@ -93,13 +86,18 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         super.onViewCreated(view, savedInstanceState);
 
         finishButton = view.findViewById(R.id.button_stakeholder);
-        finishButton.setOnClickListener(this);
+        finishButton.setOnClickListener(v -> {
+            finishButton.setEnabled(false);
+            processInputs();
+        });
 
-        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+        // check if this fragment is opened for registration or for profile
+        if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
-            finishButton.setVisibility(View.INVISIBLE);
-            startup = (Startup)accountViewModel.getAccount().getValue();
+            finishButton.setEnabled(false);
+            startup = (Startup) accountViewModel.getAccount().getValue();
             editMode = true;
             hideBottomNavigation(false);
         } else {
@@ -150,9 +148,8 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 
     @Override
@@ -170,7 +167,6 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         json = gson.toJson(shareholderList.toArray());
         getArguments().putString("shareholderList", json);
         shareholderViewModel.deselectShareholder();
-
     }
 
     @Override
@@ -199,18 +195,18 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         founderViewModel.getSelectedFounder().observe(getViewLifecycleOwner(),
                 founder -> {
                     founder.updateTitle();
-                    if(getArguments().getBoolean("editFounder")) {
+                    if (getArguments().getBoolean("editFounder")) {
                         int position = getArguments().getInt("editIndex");
                         founderList.set(position, founder);
                         founderAdapter.notifyItemChanged(position);
-                        finishButton.setVisibility(View.VISIBLE);
+                        finishButton.setEnabled(true);
                         getArguments().putBoolean("editFounder", false);
                     }
 
-                    if(!founderList.contains(founder)) {
+                    if (!founderList.contains(founder)) {
                         founderList.add(founder);
                         founderAdapter.notifyDataSetChanged();
-                        finishButton.setVisibility(View.VISIBLE);
+                        finishButton.setEnabled(true);
                     }
                 });
     }
@@ -240,20 +236,25 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
             @Override
             public void onClickDelete(int position) {
-                if(editMode) {
-                    ApiRequestHandler.performDeleteRequest("startup/founder/" +
-                                    founderList.get(position).getId(),
-                            result -> {
-                                founderList.remove(position);
-                                founderAdapter.notifyItemRemoved(position);
-                                finishButton.setVisibility(View.VISIBLE);
-                                return null;
-                            },
-                            ApiRequestHandler.errorHandler);
+                if (editMode) {
+                    if (founderList.get(position).getId() != -1) {
+                        ApiRequestHandler.performDeleteRequest("startup/founder/" +
+                                        founderList.get(position).getId(),
+                                result -> {
+                                    founderList.remove(position);
+                                    founderAdapter.notifyItemRemoved(position);
+                                    finishButton.setEnabled(true);
+                                    return null;
+                                },
+                                ApiRequestHandler.errorHandler);
+                    } else {
+                        founderList.remove(position);
+                        founderAdapter.notifyItemRemoved(position);
+                    }
                 } else {
                     founderList.remove(position);
                     founderAdapter.notifyItemRemoved(position);
-                    finishButton.setVisibility(View.VISIBLE);
+                    finishButton.setEnabled(true);
                 }
             }
         });
@@ -270,18 +271,18 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         boardMemberViewModel.getSelectedBoardMember().observe(getViewLifecycleOwner(),
                 boardMember -> {
                     boardMember.updateTitle();
-                    if(getArguments().getBoolean("editBoardMember")) {
+                    if (getArguments().getBoolean("editBoardMember")) {
                         int position = getArguments().getInt("editIndex");
                         boardMemberList.set(position, boardMember);
                         boardMemberAdapter.notifyItemChanged(position);
-                        finishButton.setVisibility(View.VISIBLE);
+                        finishButton.setEnabled(true);
                         getArguments().putBoolean("editBoardMember", false);
                     }
 
-                    if(!boardMemberList.contains(boardMember)) {
+                    if (!boardMemberList.contains(boardMember)) {
                         boardMemberList.add(boardMember);
                         boardMemberAdapter.notifyDataSetChanged();
-                        finishButton.setVisibility(View.VISIBLE);
+                        finishButton.setEnabled(true);
                     }
                 });
     }
@@ -310,20 +311,25 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
             @Override
             public void onClickDelete(int position) {
-                if(editMode) {
-                    ApiRequestHandler.performDeleteRequest("startup/boardmember/" +
-                            boardMemberList.get(position).getId(),
-                            result -> {
-                                boardMemberList.remove(position);
-                                boardMemberAdapter.notifyItemRemoved(position);
-                                finishButton.setVisibility(View.VISIBLE);
-                        return null;
-                            },
-                            ApiRequestHandler.errorHandler);
+                if (editMode) {
+                    if (boardMemberList.get(position).getId() != -1) {
+                        ApiRequestHandler.performDeleteRequest("startup/boardmember/" +
+                                        boardMemberList.get(position).getId(),
+                                result -> {
+                                    boardMemberList.remove(position);
+                                    boardMemberAdapter.notifyItemRemoved(position);
+                                    finishButton.setEnabled(true);
+                                    return null;
+                                },
+                                ApiRequestHandler.errorHandler);
+                    } else {
+                        boardMemberList.remove(position);
+                        boardMemberAdapter.notifyItemRemoved(position);
+                    }
                 } else {
                     boardMemberList.remove(position);
                     boardMemberAdapter.notifyItemRemoved(position);
-                    finishButton.setVisibility(View.VISIBLE);
+                    finishButton.setEnabled(true);
                 }
             }
         });
@@ -341,18 +347,18 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         shareholderViewModel.getSelectedShareholder().observe(getViewLifecycleOwner(),
                 shareholder -> {
                     shareholder.updateTitle();
-                    if(getArguments().getBoolean("editShareholder")) {
+                    if (getArguments().getBoolean("editShareholder")) {
                         int position = getArguments().getInt("editIndex");
                         shareholderList.set(position, shareholder);
                         shareholderAdapter.notifyItemChanged(position);
-                        finishButton.setVisibility(View.VISIBLE);
+                        finishButton.setEnabled(true);
                         getArguments().putBoolean("editShareholder", false);
                     }
 
-                    if(!shareholderList.contains(shareholder)) {
+                    if (!shareholderList.contains(shareholder)) {
                         shareholderList.add(shareholder);
                         shareholderAdapter.notifyDataSetChanged();
-                        finishButton.setVisibility(View.VISIBLE);
+                        finishButton.setEnabled(true);
                     }
                 });
     }
@@ -360,7 +366,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     /**
      * Creating the recycler view for the shareholder by linking the UI components and setting the adapter
      *
-     * @param view
+     * @param view The view containing this recycler view
      */
     private void createShareholderRecyclerView(View view) {
         shareholderRecyclerView = view.findViewById(R.id.stakeholder_shareholder_recycler_view);
@@ -374,7 +380,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
                 Shareholder selectedShareholder = ((Shareholder) shareholderList.get(position));
                 shareholderFragment.passShareholder(selectedShareholder);
                 changeFragment(shareholderFragment);
-                if(getArguments() != null) {
+                if (getArguments() != null) {
                     getArguments().putBoolean("editShareholder", true);
                     getArguments().putInt("editIndex", position);
                 }
@@ -382,39 +388,38 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
 
             @Override
             public void onClickDelete(int position) {
-                if(editMode) {
-                    ApiRequestHandler.performDeleteRequest("startup/shareholder/" +
-                                    shareholderList.get(position).getId(),
-                            result -> {
-                                shareholderList.remove(position);
-                                shareholderAdapter.notifyItemRemoved(position);
-                                finishButton.setVisibility(View.VISIBLE);
-                                return null;
-                            },
-                            ApiRequestHandler.errorHandler);
+                if (editMode) {
+                    if (shareholderList.get(position).getId() != -1) {
+                        String endpoint;
+                        if (((Shareholder) shareholderList.get(position)).isPrivateShareholder()) {
+                            endpoint = "startup/privateshareholder/";
+                        } else {
+                            endpoint = "startup/corporateshareholder/";
+                        }
+                        ApiRequestHandler.performDeleteRequest(endpoint +
+                                        shareholderList.get(position).getId(),
+                                result -> {
+                                    shareholderList.remove(position);
+                                    shareholderAdapter.notifyItemRemoved(position);
+                                    finishButton.setEnabled(true);
+                                    return null;
+                                },
+                                ApiRequestHandler.errorHandler);
+                    } else {
+                        shareholderList.remove(position);
+                        shareholderAdapter.notifyItemRemoved(position);
+                    }
                 } else {
                     shareholderList.remove(position);
                     shareholderAdapter.notifyItemRemoved(position);
-                    finishButton.setVisibility(View.VISIBLE);
+                    finishButton.setEnabled(true);
                 }
             }
         });
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_stakeholder:
-                finishButton.setEnabled(false);
-                processInputs();
-                break;
-            default:
-                break;
-        }
-    }
-
     /**
-     * Process given inputs
+     * Check validity of user inputs, then handle the inputs
      */
     private void processInputs() {
         if (founderList.isEmpty() || boardMemberList.isEmpty()) {
@@ -428,72 +433,17 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         for (StakeholderItem stakeholderItem : shareholderList) {
             totalEquity += ((Shareholder) stakeholderItem).getEquityShare();
         }
-        if(totalEquity > 100) {
+        if (totalEquity > 100) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_stakeholder_error_equity));
             return;
         }
 
         try {
-            if(!editMode) {
-                startup.clearFounders();
-                startup.clearCorporateShareholders();
-                startup.clearPrivateShareholders();
-                startup.clearBoardMembers();
-
-                founderList.forEach(founder -> {
-                    startup.addFounder((Founder)founder);
-                });
-
-                boardMemberList.forEach(boardMember -> {
-                    startup.addBoardMember((BoardMember)boardMember);
-                });
-
-                shareholderList.forEach(shareholder -> {
-                    if(((Shareholder)shareholder).isPrivateShareholder()) {
-                        startup.addPrivateShareholder((Shareholder)shareholder);
-                    } else {
-                        startup.addCorporateShareholder((Shareholder)shareholder);
-                    }
-                });
-
-                RegistrationHandler.saveStartup(startup);
-                GsonBuilder gsonBuilder = new GsonBuilder();
-                gsonBuilder.registerTypeAdapter(Startup.class,
-                        Serializer.StartupRegisterSerializer);
-                Gson gson = gsonBuilder.create();
-                String startup = gson.toJson(RegistrationHandler.getStartup());
-                JSONObject jsonStartup = new JSONObject(startup);
-                viewStateViewModel.startLoading();
-                ApiRequestHandler.performPostRequest("startup/register", registerCallback,
-                        errorCallback, jsonStartup);
-                Log.d("RegistrationString", startup);
+            if (!editMode) {
+                registerNewStakeholders();
             } else {
-                ArrayList<Founder> founders = new ArrayList<>();
-                founderList.forEach(founder -> {
-                    founders.add((Founder) founder);
-                });
-                startup.setFounders(founders);
-
-                ArrayList<BoardMember> boardMembers = new ArrayList<>();
-                boardMemberList.forEach(boardMember -> {
-                    boardMembers.add((BoardMember) boardMember);
-                });
-                startup.setBoardMembers(boardMembers);
-
-                ArrayList<Shareholder> corpShareholders = new ArrayList<>();
-                ArrayList<Shareholder> privShareholders = new ArrayList<>();
-                shareholderList.forEach(shareholder -> {
-                    if(((Shareholder)shareholder).isPrivateShareholder()) {
-                        privShareholders.add((Shareholder)shareholder);
-                    } else {
-                        corpShareholders.add((Shareholder)shareholder);
-                    }
-                });
-                startup.setPrivateShareholders(privShareholders);
-                startup.setCorporateShareholders(corpShareholders);
-
-                popCurrentFragment(this);
+                updateExistingStakeholders();
             }
         } catch (IOException | JSONException e) {
             viewStateViewModel.stopLoading();
@@ -516,13 +466,13 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             RegistrationHandler.finish(response.getLong("id"),
                     response.getString("token"), true);
 
-            if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
+            if (isFirstAppLaunch() && !isDisablePostOnboarding()) {
                 clearBackstackAndReplace(new OnboardingPost1Fragment());
             } else {
                 clearBackstackAndReplace(new MatchesFragment());
             }
 
-        } catch (Exception e ){
+        } catch (Exception e) {
             showGenericError();
             Log.d("StartupStakeholder", "" + e.getMessage());
         }
@@ -532,7 +482,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
     Function<VolleyError, Void> errorCallback = response -> {
         viewStateViewModel.stopLoading();
         try {
-            if(response.networkResponse != null) {
+            if (response.networkResponse != null) {
                 if (response.networkResponse.statusCode == 500) {
                     JSONObject body = new JSONObject(new String(
                             response.networkResponse.data, "UTF-8"));
@@ -541,7 +491,7 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
             } else {
                 clearBackstackAndReplace(new LoginFragment());
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.d("InvestorImagesErrorException", "" + e.getMessage());
         }
 
@@ -549,4 +499,75 @@ public class RegisterStakeholderFragment extends RaisingFragment implements View
         finishButton.setEnabled(true);
         return null;
     };
+
+    /**
+     * Add new stakeholders to account during registration
+     * @throws IOException
+     * @throws JSONException
+     */
+    private void registerNewStakeholders() throws IOException, JSONException {
+        startup.clearFounders();
+        startup.clearCorporateShareholders();
+        startup.clearPrivateShareholders();
+        startup.clearBoardMembers();
+
+        founderList.forEach(founder -> {
+            startup.addFounder((Founder) founder);
+        });
+
+        boardMemberList.forEach(boardMember -> {
+            startup.addBoardMember((BoardMember) boardMember);
+        });
+
+        shareholderList.forEach(shareholder -> {
+            if (((Shareholder) shareholder).isPrivateShareholder()) {
+                startup.addPrivateShareholder((Shareholder) shareholder);
+            } else {
+                startup.addCorporateShareholder((Shareholder) shareholder);
+            }
+        });
+
+        RegistrationHandler.saveStartup(startup);
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Startup.class,
+                Serializer.StartupRegisterSerializer);
+        Gson gson = gsonBuilder.create();
+        String startup = gson.toJson(RegistrationHandler.getStartup());
+        JSONObject jsonStartup = new JSONObject(startup);
+        viewStateViewModel.startLoading();
+        ApiRequestHandler.performPostRequest("startup/register", registerCallback,
+                errorCallback, jsonStartup);
+        Log.d("RegistrationString", startup);
+    }
+
+    /**
+     * Update existing accounts stakeholders
+     */
+    private void updateExistingStakeholders() {
+        ArrayList<Founder> founders = new ArrayList<>();
+        founderList.forEach(founder -> {
+            founders.add((Founder) founder);
+        });
+        startup.setFounders(founders);
+
+        ArrayList<BoardMember> boardMembers = new ArrayList<>();
+        boardMemberList.forEach(boardMember -> {
+            boardMembers.add((BoardMember) boardMember);
+        });
+        startup.setBoardMembers(boardMembers);
+
+        ArrayList<Shareholder> corpShareholders = new ArrayList<>();
+        ArrayList<Shareholder> privShareholders = new ArrayList<>();
+        shareholderList.forEach(shareholder -> {
+            if (((Shareholder) shareholder).isPrivateShareholder()) {
+                privShareholders.add((Shareholder) shareholder);
+            } else {
+                corpShareholders.add((Shareholder) shareholder);
+            }
+        });
+        startup.setPrivateShareholders(privShareholders);
+        startup.setCorporateShareholders(corpShareholders);
+
+        popCurrentFragment();
+    }
 }

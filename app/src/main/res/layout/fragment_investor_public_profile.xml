@@ -132,6 +132,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                         android:hint="@string/decline_text"
+                        android:textColor="@color/raisingWhite"
                         android:textColorHint="@color/raisingWhite"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/button_investor_public_profile_decline"
@@ -156,7 +157,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
-                        android:hint="@string/request_text"
+                        android:hint="@string/accept_text"
+                        android:textColor="@color/raisingWhite"
                         android:textColorHint="@color/raisingWhite"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/button_investor_public_profile_request"
@@ -168,12 +170,15 @@
             <TextView
                 android:id="@+id/text_investor_public_profile_name"
                 style="@style/RaisingLargeTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                android:gravity="center|start"
                 android:text="Name"
                 android:textColor="@color/raisingPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/investor_public_profile_matching_summary" />
 
@@ -198,40 +203,19 @@
                 app:layout_constraintTop_toTopOf="@+id/investor_public_profile_location_pin" />
 
             <TextView
-                android:id="@+id/text_investor_public_profile_sentence"
-                style="@style/RaisingText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                android:text="Sentence"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/investor_public_profile_location_pin"
-                app:layout_constraintTop_toBottomOf="@+id/investor_public_profile_location_pin" />
-
-            <TextView
-                android:id="@+id/text_investor_pitch_title"
-                style="@style/RaisingTextBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:hint="@string/public_profile_pitch"
-                app:layout_constraintStart_toStartOf="@+id/text_investor_public_profile_pitch"
-                app:layout_constraintTop_toBottomOf="@+id/text_investor_public_profile_sentence" />
-
-            <TextView
                 android:id="@+id/text_investor_public_profile_pitch"
                 style="@style/RaisingText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:text="Pitch"
                 app:layout_constraintBottom_toTopOf="@+id/button_investor_public_profile_website"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_investor_pitch_title" />
+                app:layout_constraintTop_toBottomOf="@+id/investor_public_profile_location_pin" />
 
             <TextView
                 android:id="@+id/button_investor_public_profile_website"

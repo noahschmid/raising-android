@@ -12,37 +12,62 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView31"
+            android:id="@+id/text_unlock_premium_title"
             style="@style/RaisingLargeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="tesetts"
+            android:hint="@string/unlock_premium_title"
             android:textColorHint="@color/raisingPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/text_unlock_premium_body"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.47"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
-            android:id="@+id/textView30"
+            android:id="@+id/text_unlock_premium_body"
             style="@style/RaisingTitleNonBold"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="asdfasdf"
+            android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
+            android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+            android:layout_marginBottom="@dimen/standardVerticalMargin"
+            android:gravity="center"
+            android:hint="@string/unlock_premium_body"
             android:textColorHint="@color/raisingPrimary"
-            app:layout_constraintBottom_toTopOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="@+id/textView31"
-            app:layout_constraintStart_toStartOf="@+id/textView31"
-            app:layout_constraintTop_toBottomOf="@+id/textView31" />
+            app:layout_constraintBottom_toTopOf="@+id/imageView21"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_unlock_premium_title" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/button_unlock_premium"
             style="@style/ButtonRegistrationAndProfile"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/standardHorizontalMargin"
+            android:layout_marginTop="@dimen/standardVerticalMargin"
             android:layout_marginEnd="@dimen/standardHorizontalMargin"
-            android:hint="Unlock now"
+            android:hint="@string/unlock_now"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView21" />
+
+        <ImageView
+            android:id="@+id/imageView21"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="@dimen/standardVerticalMargin"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="@dimen/standardVerticalMargin"
+            android:src="@drawable/raising_premium"
+            app:layout_constraintBottom_toTopOf="@+id/button_unlock_premium"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_unlock_premium_body" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

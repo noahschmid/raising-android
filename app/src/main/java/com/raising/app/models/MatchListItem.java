@@ -3,6 +3,7 @@ package com.raising.app.models;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import lombok.Data;
 
@@ -16,4 +17,5 @@ public class MatchListItem implements Serializable {
     private int score;
     private String attribute;
     private long pictureId;
+    private Timestamp accountLastChanged;
 }

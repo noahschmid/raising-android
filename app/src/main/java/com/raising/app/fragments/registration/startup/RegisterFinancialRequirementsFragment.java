@@ -17,6 +17,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
@@ -26,6 +27,7 @@ import com.raising.app.models.Startup;
 import com.raising.app.util.NoFilterArrayAdapter;
 import com.raising.app.util.RaisingTextWatcher;
 import com.raising.app.util.RegistrationHandler;
+import com.raising.app.viewModels.AccountViewModel;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -35,8 +37,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-public class RegisterFinancialRequirementsFragment extends RaisingFragment implements View.OnClickListener, RaisingTextWatcher {
-    private EditText financialValuationInput, financialClosingTimeInput, scopeInput, completedInput;
+public class RegisterFinancialRequirementsFragment extends RaisingFragment implements RaisingTextWatcher {
+    private EditText financialValuationInput, financialClosingTimeInput, scopeInput, committedInput;
     private AutoCompleteTextView financialTypeInput;
     private Button btnFinancialRequirements;
     private DatePickerDialog.OnDateSetListener dateSetListener;
@@ -47,6 +49,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
 
     final private String TAG = "RegisterFinancialRequirementsFragment";
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,66 +59,24 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_financial_requirements), true);
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        btnFinancialRequirements = view.findViewById(R.id.button_financial_requirements);
+        btnFinancialRequirements.setOnClickListener(v -> processInputs());
 
         //define input views and button
-        completedInput = view.findViewById(R.id.register_input_financial_completed);
+        committedInput = view.findViewById(R.id.register_input_financial_committed);
         scopeInput = view.findViewById(R.id.register_input_startup_financial_scope);
         financialValuationInput = view.findViewById(R.id.register_input_financial_valuation);
         financialClosingTimeInput = view.findViewById(R.id.register_input_financial_closing_time);
         financialClosingTimeInput.setOnClickListener(v -> prepareDatePicker());
 
-        btnFinancialRequirements = view.findViewById(R.id.button_financial_requirements);
-        btnFinancialRequirements.setOnClickListener(this);
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
-        TextInputLayout financialCompletedLayout = view.findViewById(R.id.register_financial_completed);
-        financialCompletedLayout.setEndIconOnClickListener(v -> {
-            showSimpleDialog(getString(R.string.registration_information_dialog_title),
-                    getString(R.string.registration_information_dialog_committed));
-        });
-
-        TextInputLayout financialScopeLayout = view.findViewById(R.id.register_financial_scope);
-        financialScopeLayout.setEndIconOnClickListener(v -> {
-            showSimpleDialog(getString(R.string.registration_information_dialog_title),
-                    getString(R.string.registration_information_dialog_scope));
-        });
-
-
-        ArrayList<FinanceType> financeTypes = resources.getFinanceTypes();
-        ArrayList<String> values = new ArrayList<>();
-        financeTypes.forEach(type -> values.add(type.getName()));
-
-        NoFilterArrayAdapter<String> adapterType = new NoFilterArrayAdapter(getContext(),
-                R.layout.item_dropdown_menu, values);
-
-        financialTypeInput = view.findViewById(R.id.register_input_financial_type);
-        financialTypeInput.setShowSoftInputOnFocus(false);
-        financialTypeInput.setAdapter(adapterType);
-
-        financialTypeInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String itemName = (String) adapterType.getItem(i);
-
-                for (FinanceType type : financeTypes) {
-                    if (type.getName().equals(itemName)) {
-                        financialTypeId = (int) type.getId();
-                        break;
-                    }
-                }
-            }
-        });
-
-        //adjust fragment if this fragment is used for profile
+        // check if this fragment is opened for registration or for profile
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnFinancialRequirements.setHint(getString(R.string.myProfile_apply_changes));
-            btnFinancialRequirements.setVisibility(View.INVISIBLE);
+            btnFinancialRequirements.setEnabled(false);
             editMode = true;
             startup = (Startup) accountViewModel.getAccount().getValue();
             hideBottomNavigation(false);
@@ -123,7 +84,89 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
             startup = RegistrationHandler.getStartup();
         }
 
-        // fill text inputs with existing user data
+        return view;
+    }
+
+    @Override
+    public void onResourcesLoaded() {
+        ArrayList<FinanceType> financeTypes = resources.getFinanceTypes();
+        ArrayList<String> values = new ArrayList<>();
+        financeTypes.forEach(type -> values.add(type.getName()));
+
+        NoFilterArrayAdapter<String> adapterType = new NoFilterArrayAdapter(getContext(),
+                R.layout.item_dropdown_menu, values);
+
+        financialTypeInput = getView().findViewById(R.id.register_input_financial_type);
+        financialTypeInput.setAdapter(adapterType);
+
+        if (startup.getFinanceTypeId() != -1) {
+            financialTypeInput.setText(resources.getFinanceType(
+                    startup.getFinanceTypeId()
+            ).getName());
+            financialTypeId = (int) startup.getFinanceTypeId();
+        }
+
+        financialTypeInput.setOnItemClickListener((AdapterView.OnItemClickListener) (adapterView, view, i, l) -> {
+            String itemName = (String) adapterType.getItem(i);
+
+            for (FinanceType type : financeTypes) {
+                if (type.getName().equals(itemName)) {
+                    financialTypeId = (int) type.getId();
+                    break;
+                }
+            }
+        });
+
+        TextInputLayout financialCommittedLayout = getView().findViewById(R.id.register_financial_committed);
+        financialCommittedLayout.setEndIconOnClickListener(v -> {
+            showSimpleDialog(getString(R.string.registration_information_dialog_title),
+                    getString(R.string.registration_information_dialog_committed));
+        });
+
+        TextInputLayout financialScopeLayout = getView().findViewById(R.id.register_financial_scope);
+        financialScopeLayout.setEndIconOnClickListener(v -> {
+            showSimpleDialog(getString(R.string.registration_information_dialog_title),
+                    getString(R.string.registration_information_dialog_scope));
+        });
+
+        populateFragment();
+
+        // if editmode, add text watchers
+        if (editMode) {
+            financialValuationInput.addTextChangedListener(this);
+            financialClosingTimeInput.addTextChangedListener(this);
+            scopeInput.addTextChangedListener(this);
+            committedInput.addTextChangedListener(this);
+            financialTypeInput.addTextChangedListener(this);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        hideBottomNavigation(false);
+        super.onDestroyView();
+    }
+
+    /**
+     * This method is called, when the account is update.
+     * The method pops the current fragment and signals to the view model, that the update is complete.
+     */
+    @Override
+    protected void onAccountUpdated() {
+        resetTab();
+        popFragment(this);
+        accountViewModel.updateCompleted();
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        btnFinancialRequirements.setEnabled(true);
+    }
+
+    /**
+     * Populate the fragment with existing user data
+     */
+    private void populateFragment() {
         if (startup.getClosingTime() != null) {
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -145,14 +188,7 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
             financialValuationInput.setText(String.valueOf(startup.getPreMoneyValuation()));
 
         if (startup.getRaised() > 0)
-            completedInput.setText(String.valueOf(startup.getRaised()));
-
-        if (startup.getFinanceTypeId() != -1) {
-            financialTypeInput.setText(resources.getFinanceType(
-                    startup.getFinanceTypeId()
-            ).getName());
-            financialTypeId = (int) startup.getFinanceTypeId();
-        }
+            committedInput.setText(String.valueOf(startup.getRaised()));
 
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             /**
@@ -173,86 +209,87 @@ public class RegisterFinancialRequirementsFragment extends RaisingFragment imple
                 selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             }
         };
-
-        // if editmode, add text watchers
-        if (editMode) {
-            financialValuationInput.addTextChangedListener(this);
-            financialClosingTimeInput.addTextChangedListener(this);
-            scopeInput.addTextChangedListener(this);
-            completedInput.addTextChangedListener(this);
-            financialTypeInput.addTextChangedListener(this);
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        hideBottomNavigation(false);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.button_financial_requirements) {
-            processInputs();
-        }
-    }
-
-    @Override
-    protected void onAccountUpdated() {
-        popCurrentFragment(this);
-        accountViewModel.updateCompleted();
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        btnFinancialRequirements.setVisibility(View.VISIBLE);
     }
 
     /**
-     * Process inputs and submit registration
+     * Check the validity of user inputs, then handle the inputs
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void processInputs() {
         Log.d("debugMessage", "processInputs");
+        int valuation = 0;
+        int scope = 0;
+        int committed = 0;
+
+        // check if all mandatory inputs have been filled
         if (scopeInput.getText().length() == 0 || selectedDate == null ||
-                financialTypeId == -1 ||
-                Integer.parseInt(scopeInput.getText().toString()) == 0) {
+                financialTypeId == -1) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
-        float valuation = 0;
+        // validate scope
+        try {
+            if (Integer.parseInt(scopeInput.getText().toString()) > 2000000000) {
+                showSimpleDialog(getString(R.string.register_dialog_title),
+                        getString(R.string.register_financial_error_high_scope));
+                return;
+            }
+            if (Integer.parseInt(scopeInput.getText().toString()) < 20000 || Integer.parseInt(scopeInput.getText().toString()) == 0) {
+                showSimpleDialog(getString(R.string.register_dialog_title),
+                        getString(R.string.register_financial_error_low_scope));
+                return;
+            }
+            scope = Integer.parseInt(scopeInput.getText().toString());
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "processInputs: " + e.getMessage());
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_financial_error_high_scope));
+            return;
+        }
 
-        if (financialValuationInput.getText().length() > 0)
-            valuation = Float.parseFloat(financialValuationInput.getText().toString());
+        // validate pre money valuation
+        try {
+            if (financialValuationInput.getText().length() > 0)
+                valuation = Integer.parseInt(financialValuationInput.getText().toString());
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "processInputs: " + e.getMessage());
+            showSimpleDialog(getString(R.string.register_dialog_title),
+                    getString(R.string.register_financial_error_valuation_large));
+            return;
+        }
 
-        // check if closing time is after current date
+        // validate closing time
         if (selectedDate.before(Calendar.getInstance())) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_invalid_date));
             return;
         }
 
-        float scope = Float.parseFloat(scopeInput.getText().toString());
-        int completed = 0;
-        if (completedInput.getText().length() != 0) {
-            completed = Integer.parseInt(completedInput.getText().toString());
-        }
+        // validate committed
+        try {
+            if (committedInput.getText().length() != 0) {
+                committed = Integer.parseInt(committedInput.getText().toString());
+            }
+            if (committed > (int) scope) {
+                showSimpleDialog(getString(R.string.register_dialog_title),
+                        getString(R.string.register_financial_error_committed));
+                return;
+            }
 
-        // check if completed is smaller than scope
-        if (completed > (int) scope) {
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "processInputs: " + e.getMessage());
             showSimpleDialog(getString(R.string.register_dialog_title),
-                    getString(R.string.register_financial_error_committed));
+                    getString(R.string.register_financial_error_committed_large));
             return;
         }
 
+        // set other values
         startup.setFinanceTypeId(financialTypeId);
         startup.setPreMoneyValuation((int) valuation);
         startup.setScope((int) scope);
-        startup.setRaised(completed);
+        startup.setRaised(committed);
 
         Date completedDate = selectedDate.getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");

@@ -45,9 +45,8 @@ public class MatchingCriteriaAdapter extends RecyclerView.Adapter<MatchingCriter
     @Override
     public void onBindViewHolder(@NonNull MatchingCriteriaAdapter.ViewHolder holder, int position) {
         Model item = recyclerItems.get(position);
-        Log.d(TAG, "onBindViewHolder: RecylcerItem" + recyclerItems.get(position).getName() + " " + recyclerItems.get(position).isChecked());
 
-        int standardBackgroundColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.raisingSecondaryAccent);
+        int standardBackgroundColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.raisingSecondaryLight);
         int standardForegroundColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.raisingSecondaryDark);
         int selectedBackgroundColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.raisingPrimaryAccent);
         int selectedForegroundColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.raisingPrimaryDark);

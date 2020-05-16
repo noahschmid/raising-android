@@ -18,7 +18,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Startup;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.RaisingTextWatcher;
 import com.raising.app.util.RegistrationHandler;
 
@@ -34,13 +33,12 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_startup_pitch,
-                container, false);
 
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_pitch), true);
 
-        return view;
+        return inflater.inflate(R.layout.fragment_register_startup_pitch,
+                container, false);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -59,11 +57,12 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
         btnStartupPitch.setOnClickListener(v -> processInputs());
 
 
-        //adjust fragment if this fragment is used for profile
+        // check if this fragment is opened for registration or for profile
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnStartupPitch.setHint(getString(R.string.myProfile_apply_changes));
-            btnStartupPitch.setVisibility(View.INVISIBLE);
+            btnStartupPitch.setEnabled(false);
             startup = (Startup) accountViewModel.getAccount().getValue();
             editMode = true;
             hideBottomNavigation(false);
@@ -71,23 +70,19 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
             startup = RegistrationHandler.getStartup();
         }
 
-        pitchInput.setText(startup.getPitch());
-        sentenceInput.setText(startup.getDescription());
+        populateFragment();
 
         prepareSentenceLayout(startup.getDescription());
         preparePitchLayout(startup.getPitch());
 
-        pitchInput.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                v.getParent().requestDisallowInterceptTouchEvent(true);
-                switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                    case MotionEvent.ACTION_SCROLL:
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                        return true;
-                }
-                return false;
+        pitchInput.setOnTouchListener((v, event) -> {
+            v.getParent().requestDisallowInterceptTouchEvent(true);
+            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_SCROLL:
+                    v.getParent().requestDisallowInterceptTouchEvent(false);
+                    return true;
             }
+            return false;
         });
 
         // if editmode, add text watchers after initial filling with users data
@@ -106,18 +101,27 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
     }
 
     @Override
-    protected void onAccountUpdated() {
-        popCurrentFragment(this);
-        accountViewModel.updateCompleted();
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        btnStartupPitch.setEnabled(true);
     }
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        btnStartupPitch.setVisibility(View.VISIBLE);
+    protected void onAccountUpdated() {
+        resetTab();
+        popFragment(this);
+        accountViewModel.updateCompleted();
     }
 
     /**
-     * Process given inputs
+     * Populate the fragment with existing user data
+     */
+    private void populateFragment() {
+        pitchInput.setText(startup.getPitch());
+        sentenceInput.setText(startup.getDescription());
+    }
+
+    /**
+     * Check the validity of user inputs, then handle the inputs
      */
     private void processInputs() {
         String pitch = pitchInput.getText().toString();
@@ -155,7 +159,6 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
             } else {
                 accountViewModel.update(startup);
             }
-
         } catch (IOException e) {
             Log.e("RegisterStartupPitch", "Error while saving startup pitch");
         }
@@ -165,7 +168,6 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
      * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int, String)}
      *
      * @param currentText The text, that is currently in this text view
-     * @author Lorenz Caliezi 18.03.2020
      */
     private void prepareSentenceLayout(String currentText) {
         prepareRestrictedTextLayout(sentenceLayout, sentenceInput, getResources().getInteger(R.integer.pitch_sentence_max_word), currentText);
@@ -175,7 +177,6 @@ public class RegisterStartupPitchFragment extends RaisingFragment implements Rai
      * Call {@link RaisingFragment#prepareRestrictedTextLayout(TextInputLayout, EditText, int, String)}
      *
      * @param currentText The text, that is currently in this text view
-     * @author Lorenz Caliezi 18.03.2020
      */
     private void preparePitchLayout(String currentText) {
         prepareRestrictedTextLayout(pitchLayout, pitchInput, getResources().getInteger(R.integer.pitch_pitch_max_word), currentText);

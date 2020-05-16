@@ -7,29 +7,21 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.AlertDialog;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Looper;
 import android.provider.MediaStore;
+import android.telecom.Call;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
@@ -45,29 +37,37 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.flexbox.AlignItems;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.textfield.TextInputLayout;
 import com.raising.app.MainActivity;
 import com.raising.app.R;
 import com.raising.app.models.Account;
+import com.raising.app.models.Image;
 import com.raising.app.models.Model;
+import com.raising.app.models.Subscription;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
+import com.raising.app.util.ImageHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.Resources;
 import com.raising.app.util.SimpleMessageDialog;
+import com.raising.app.util.TabOrigin;
 import com.raising.app.util.ToastHandler;
 import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 import com.raising.app.viewModels.SettingsViewModel;
+import com.raising.app.viewModels.SubscriptionViewModel;
+import com.raising.app.viewModels.TabViewModel;
 import com.raising.app.viewModels.ViewStateViewModel;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 
 public class RaisingFragment extends Fragment {
     final private String TAG = "RaisingFragment";
@@ -78,14 +78,23 @@ public class RaisingFragment extends Fragment {
     protected ResourcesViewModel resourcesViewModel;
     protected SettingsViewModel settingsViewModel;
     protected ViewStateViewModel viewStateViewModel;
+    protected SubscriptionViewModel subscriptionViewModel;
+    protected TabViewModel tabViewModel;
+
     protected Resources resources;
     protected Account currentAccount;
-    private int processesLoading = 0;
+
+    private TabOrigin origin = TabOrigin.NONE;
+    private TabOrigin base = TabOrigin.NONE;
 
     protected void onAccountUpdated() {
     }
 
     protected void onResourcesLoaded() {
+    }
+
+    protected void setBase(TabOrigin tab) {
+        this.base = tab;
     }
 
     @Override
@@ -94,6 +103,12 @@ public class RaisingFragment extends Fragment {
 
         loadingPanel = getLayoutInflater().inflate(R.layout.view_loading_panel, null);
         overlayLayout = view.findViewById(R.id.overlay_layout);
+
+        if(getArguments() != null) {
+            if (getArguments().getString("origin") != null) {
+                origin = TabOrigin.valueOf(getArguments().getString("origin"));
+            }
+        }
 
         if (overlayLayout != null) {
             overlayLayout.setFocusable(false);
@@ -105,7 +120,11 @@ public class RaisingFragment extends Fragment {
         viewStateViewModel = ViewModelProviders.of(getActivity()).get(ViewStateViewModel.class);
         viewStateViewModel.getViewState().observe(getViewLifecycleOwner(), this::processViewState);
 
-        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
+        subscriptionViewModel = ViewModelProviders.of(getActivity()).get(SubscriptionViewModel.class);
+
+        if(accountViewModel == null) {
+            accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
+        }
         accountViewModel.getAccount().observe(getViewLifecycleOwner(), account -> currentAccount = account);
         accountViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             if (state.equals(ViewState.UPDATED)) {
@@ -117,12 +136,14 @@ public class RaisingFragment extends Fragment {
         currentAccount = accountViewModel.getAccount().getValue();
 
         settingsViewModel = ViewModelProviders.of(getActivity()).get(SettingsViewModel.class);
-
+        tabViewModel = ViewModelProviders.of(getActivity()).get(TabViewModel.class);
         resourcesViewModel = ViewModelProviders.of(getActivity()).get(ResourcesViewModel.class);
         resourcesViewModel.getResources().observe(getViewLifecycleOwner(), resources -> this.resources = resources);
         resourcesViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             if(state == ViewState.RESULT || state == ViewState.CACHED)
                 onResourcesLoaded();
+            if(state == ViewState.ERROR)
+                resourcesViewModel.loadResources();
         });
         resources = resourcesViewModel.getResources().getValue();
 
@@ -149,7 +170,7 @@ public class RaisingFragment extends Fragment {
                 Log.d(TAG, "processViewState: ERROR");
                 dismissLoadingPanel();
                 ToastHandler toastHandler = new ToastHandler(getContext());
-                toastHandler.showToast(getString(R.string.generic_error_title), Toast.LENGTH_LONG);
+                toastHandler.showToast(getString(R.string.billing_connection_failed_title), Toast.LENGTH_LONG);
                 viewStateViewModel.setViewState(ViewState.EMPTY);
                 break;
 
@@ -184,38 +205,73 @@ public class RaisingFragment extends Fragment {
     }
 
     /**
-     * Load profile image into image view
-     *
-     * @param id        id of the profile image
-     * @param imageView where to load the image into
-     */
-    protected void loadProfileImage(long id, ImageView imageView) {
-        if (id <= 0) {
-            imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_placeholder_24dp));
-        } else {
-            Glide
-                    .with(InternalStorageHandler.getContext())
-                    .load(ApiRequestHandler.getDomain() + "media/profilepicture/" + id)
-                    .centerCrop()
-                    .apply(RequestOptions.circleCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                    .placeholder(R.drawable.ic_placeholder_24dp)
-                    .into(imageView);
-        }
-    }
-
-    /**
      * Change from the current fragment to the next
      *
      * @param fragment The fragment, that should be displayed next
-     * @author Lorenz Caliezi 09.03.2020
      */
     public void changeFragment(Fragment fragment) {
         try {
+            if(base != TabOrigin.NONE) {
+                Bundle bundle = fragment.getArguments();
+                if(bundle == null) {
+                    bundle = new Bundle();
+                }
+                bundle.putString("origin", base.toString());
+                fragment.setArguments(bundle);
+
+                switch (base) {
+                    case MATCHES:
+                        tabViewModel.setCurrentMatchesFragment(fragment);
+                        break;
+                    case LEADS:
+                        tabViewModel.setCurrentLeadsFragment(fragment);
+                        break;
+                    case SETTINGS:
+                        tabViewModel.setCurrentSettingsFragment(fragment);
+                        break;
+                    case PROFILE:
+                        tabViewModel.setCurrentProfileFragment(fragment);
+                        break;
+                }
+            }
             getActivitiesFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragment)
                     .addToBackStack(null)
+                    .commit();
+        } catch (NullPointerException e) {
+            Log.e(TAG, "Error while changing Fragment: " + e.getMessage());
+        }
+    }
+
+    public void changeFragmentWithoutBackstack(Fragment fragment) {
+        try {
+            if(base != TabOrigin.NONE) {
+                Bundle bundle = fragment.getArguments();
+                if(bundle == null) {
+                    bundle = new Bundle();
+                }
+                bundle.putString("origin", base.toString());
+                fragment.setArguments(bundle);
+
+                switch (base) {
+                    case MATCHES:
+                        tabViewModel.setCurrentMatchesFragment(fragment);
+                        break;
+                    case LEADS:
+                        tabViewModel.setCurrentLeadsFragment(fragment);
+                        break;
+                    case SETTINGS:
+                        tabViewModel.setCurrentSettingsFragment(fragment);
+                        break;
+                    case PROFILE:
+                        tabViewModel.setCurrentProfileFragment(fragment);
+                        break;
+                }
+            }
+            getActivitiesFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
                     .commit();
         } catch (NullPointerException e) {
             Log.e(TAG, "Error while changing Fragment: " + e.getMessage());
@@ -227,10 +283,33 @@ public class RaisingFragment extends Fragment {
      *
      * @param fragment The fragment, that should be displayed next
      * @param name     The transaction name
-     * @author Lorenz Caliezi 09.03.2020
      */
     protected void changeFragment(Fragment fragment, String name) {
         try {
+            if(base != TabOrigin.NONE) {
+                Bundle bundle = fragment.getArguments();
+                if(bundle == null) {
+                    bundle = new Bundle();
+                }
+                bundle.putString("origin", base.toString());
+                fragment.setArguments(bundle);
+
+                switch (base) {
+                    case MATCHES:
+                        tabViewModel.setCurrentMatchesFragment(fragment);
+                        break;
+                    case LEADS:
+                        tabViewModel.setCurrentLeadsFragment(fragment);
+                        break;
+                    case SETTINGS:
+                        tabViewModel.setCurrentSettingsFragment(fragment);
+                        break;
+                    case PROFILE:
+                        tabViewModel.setCurrentProfileFragment(fragment);
+                        break;
+                }
+            }
+
             getActivitiesFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragment)
@@ -273,15 +352,24 @@ public class RaisingFragment extends Fragment {
      *
      * @param fragment the fragment to display next
      */
-    protected void clearBackstackAndReplace(RaisingFragment fragment) {
+    protected void clearBackstackAndReplace(Fragment fragment) {
+        clearBackstack();
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
+    }
+
+    /**
+     * Clear all fragments on the backstack
+     *
+     */
+    protected void clearBackstack() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
             fm.popBackStack();
         }
-
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-        transaction.commit();
     }
 
     /**
@@ -309,7 +397,6 @@ public class RaisingFragment extends Fragment {
      *
      * @param isHidden if true, the bottomNavigation should be invisible,
      *                 if false, the bottomNavigation should be visible
-     * @author Lorenz Caliezi 06.03.2020
      */
     protected void hideBottomNavigation(boolean isHidden) {
         MainActivity activity = (MainActivity) getActivity();
@@ -327,6 +414,16 @@ public class RaisingFragment extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null) {
             activity.hideToolbar(isHidden);
+        }
+    }
+
+    /**
+     * Call {@link MainActivity#selectBottomNavigation(int)}
+     */
+    protected void selectBottomNavigation(int selectedId) {
+        MainActivity activity = (MainActivity) getActivity();
+        if(activity != null) {
+            activity.selectBottomNavigation(selectedId);
         }
     }
 
@@ -360,7 +457,6 @@ public class RaisingFragment extends Fragment {
      * This methods retrieves an instance the SupportFragmentManager of the underlying activity
      *
      * @return Instance of SupportFragmentManager of used Activity
-     * @author Lorenz Caliezi 09.03.2020
      */
     protected FragmentManager getActivitiesFragmentManager() {
         try {
@@ -390,7 +486,6 @@ public class RaisingFragment extends Fragment {
      *
      * @param dialogTitle   The title of the simple message dialog
      * @param dialogMessage The message, that is to be displayed
-     * @author Lorenz Caliezi 09.03.2020
      */
     protected void showSimpleDialog(String dialogTitle, String dialogMessage) {
         SimpleMessageDialog dialog =
@@ -399,48 +494,46 @@ public class RaisingFragment extends Fragment {
     }
 
     /**
-     * Create and show an alert dialog, which allows the user to either decline or accept a message
-     *
-     * @param title          The title of the dialog
-     * @param message        The message of the dialog
-     * @param positiveButton The string of the positive button
-     * @param negativeButton The string of the negative button
-     * @return true, if user has accepted the dialog, false, if user has declined the dialog
+     * Show an action dialog which requires user input to proceed
+     * @param title The title of the dialog
+     * @param message The message of the dialog
+     * @param positiveButton The text of the positive button
+     * @param negativeButton The text of the negative button
+     * @param positiveCallable The callback which is called, when the user clicks the positive button
+     * @param negativeCallable The callback which is called, when the user clicks the negative button
      */
-    public boolean showActionDialog(String title, String message, String positiveButton, String negativeButton) {
-        final boolean[] confirmDialog = {false};
+    protected void showActionDialog(String title, String message, String positiveButton, String negativeButton, Callable<Void> positiveCallable, Callable<Void> negativeCallable) {
         new AlertDialog.Builder(getContext())
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(positiveButton, (dialog, which) -> {
                     Log.d(TAG, "AlertDialog onClick");
-                    confirmDialog[0] = true;
+                    try {
+                        positiveCallable.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 })
                 .setNegativeButton(negativeButton, (dialog, which) -> {
-                    confirmDialog[0] = false;
+                    try {
+                        negativeCallable.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 })
-                .show()
-                .setOnDismissListener(dialog -> {
-                    throw new RuntimeException();
-                });
-        try {
-            Looper.loop();
-        } catch (RuntimeException e) {
-        }
-
-        return confirmDialog[0];
+                .show();
     }
 
     /**
-     * Extend a simple request with "Yes" and "Cancel" to then create an action dialog.
-     * Call {@link com.raising.app.fragments.RaisingFragment#showActionDialog(String, String, String, String)}
-     *
-     * @param title   The title of the action dialog
-     * @param message The message of the action dialog
-     * @return The return value of {@link com.raising.app.fragments.RaisingFragment#showActionDialog(String, String, String, String)}
+     * Show an action dialog with standard texts for positive and negative buttons
+     * Call {@link com.raising.app.fragments.RaisingFragment#showActionDialog(String, String, String, String, Callable, Callable)}
+     * @param title The title of the dialog
+     * @param message The message of the dialog
+     * @param positiveCallable The callback that should be called when the user clicks the positive button
+     * @param negativeCallable The callback that should be called when the user clicks the negative button
      */
-    public boolean showActionDialog(String title, String message) {
-        return showActionDialog(title, message, getString(R.string.yes_text), getString(R.string.cancel_text));
+    protected void showActionDialog(String title, String message, Callable<Void> positiveCallable, Callable<Void> negativeCallable) {
+        showActionDialog(title, message, getString(R.string.yes_text), getString(R.string.cancel_text), positiveCallable, negativeCallable);
     }
 
     /**
@@ -450,7 +543,6 @@ public class RaisingFragment extends Fragment {
      * @param textInput    The input of the layout with the limiter
      * @param WORD_MAXIMUM The limit of words, that the layout allows
      * @param currentText  The current text of the text view
-     * @author Lorenz Caliezi 18.03.2020
      */
     protected void prepareRestrictedTextLayout(final TextInputLayout textLayout, final EditText textInput, final int WORD_MAXIMUM, String currentText) {
         if (currentText == null || currentText.equals(" ")) {
@@ -494,15 +586,25 @@ public class RaisingFragment extends Fragment {
     }
 
     /**
-     * Leaves the currentFragment and removes currentFragment from the backstack
-     * Currently only works, if currentFragment is on top of the stack
+     * Leaves the fragment and removes fragment from the backstack
+     * Currently only works, if fragment is on top of the stack
      *
-     * @param currentFragment The fragment that is to be removed
-     * @author Lorenz Caliezi 23.03.2020
+     * @param fragment The fragment that is to be removed
      */
-    protected void popCurrentFragment(Fragment currentFragment) {
+    protected void popFragment(Fragment fragment) {
         FragmentManager fragmentManager = getActivitiesFragmentManager();
-        fragmentManager.beginTransaction().remove(currentFragment);
+        fragmentManager.beginTransaction().remove(fragment);
+        fragmentManager.popBackStackImmediate();
+        accountViewModel.updateCompleted();
+    }
+
+    /**
+     * Remove current fragment from backstack
+     */
+    protected void popCurrentFragment() {
+        resetTab();
+        FragmentManager fragmentManager = getActivitiesFragmentManager();
+        fragmentManager.beginTransaction().remove(this);
         fragmentManager.popBackStackImmediate();
         accountViewModel.updateCompleted();
     }
@@ -633,8 +735,25 @@ public class RaisingFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         dismissLoadingPanel();
+        super.onDestroyView();
+    }
+
+    public void resetTab() {
+        switch (origin) {
+            case MATCHES:
+                tabViewModel.resetCurrentMatchesFragment();
+                break;
+            case LEADS:
+                tabViewModel.resetCurrentLeadsFragment();
+                break;
+            case SETTINGS:
+                tabViewModel.resetCurrentSettingsFragment();
+                break;
+            case PROFILE:
+                tabViewModel.resetCurrentProfileFragment();
+                break;
+        }
     }
 
     /**

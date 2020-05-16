@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.raising.app.R;
@@ -21,15 +22,17 @@ import com.raising.app.models.NotificationSettings;
 import com.raising.app.models.PersonalSettings;
 import com.raising.app.models.ViewState;
 import com.raising.app.util.NoFilterArrayAdapter;
+import com.raising.app.util.RaisingTextWatcher;
 
 import java.util.ArrayList;
 
-public class SettingsNotificationsFragment extends RaisingFragment implements CompoundButton.OnCheckedChangeListener {
+public class SettingsNotificationsFragment extends RaisingFragment implements CompoundButton.OnCheckedChangeListener, RaisingTextWatcher {
     private final String TAG = "SettingsNotificationsFragment";
     private AutoCompleteTextView matchNumberInput;
     private SwitchMaterial generalSwitch, matchlistSwitch, leadsSwitch, requestSwitch, connectionSwitch;
     private ConstraintLayout specificSettings;
     private PersonalSettings personalSettings;
+    private TextView generalNotificationText;
     private Button btnNotifications;
 
     @Override
@@ -44,11 +47,14 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // find all views
         btnNotifications = view.findViewById(R.id.button_notifications);
         btnNotifications.setOnClickListener(v -> updateNotificationSettings());
 
         specificSettings = view.findViewById(R.id.notifications_specific_settings);
         specificSettings.setVisibility(View.GONE);
+
+        generalNotificationText = view.findViewById(R.id.notifications_general);
 
         ArrayList<Integer> integers = new ArrayList<>();
         for(int i = 0; i < getResources().getInteger(R.integer.maximumWeeklyMatchesNumber); i++) {
@@ -59,14 +65,18 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
                 R.layout.item_dropdown_menu, integers);
         matchNumberInput = view.findViewById(R.id.settings_matches_input);
         matchNumberInput.setAdapter(adapter);
+        matchNumberInput.addTextChangedListener(this);
 
+        // prepare all switches for usage
         generalSwitch = view.findViewById(R.id.notifications_switch_general);
         generalSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            btnNotifications.setVisibility(View.VISIBLE);
+            btnNotifications.setEnabled(true);
             if (isChecked) {
                 specificSettings.setVisibility(View.VISIBLE);
+                generalNotificationText.setText(getString(R.string.settings_general_disable_all));
             } else {
                 specificSettings.setVisibility(View.GONE);
+                generalNotificationText.setText(getString(R.string.settings_general_enable_all));
                 matchlistSwitch.setChecked(false);
                 leadsSwitch.setChecked(false);
                 requestSwitch.setChecked(false);
@@ -78,47 +88,15 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         requestSwitch = view.findViewById(R.id.notifications_switch_request);
         connectionSwitch = view.findViewById(R.id.notifications_switch_connection);
 
+        // observe the settings view model to detect changes
         settingsViewModel.getViewState().observe(getViewLifecycleOwner(), viewState -> {
             if(viewState == ViewState.CACHED || viewState == ViewState.RESULT) {
                 Log.d(TAG, "onViewCreated: Receive personal settings");
                 personalSettings = settingsViewModel.getPersonalSettings().getValue();
-                populateSettings();
-
-                if (personalSettings != null) {
-                    personalSettings.getNotificationSettings().forEach(notificationSettings -> {
-                        Log.d(TAG, "onViewCreated: Setting: " + notificationSettings.name());
-                        switch (notificationSettings) {
-                            case NEVER:
-                                generalSwitch.setChecked(false);
-                                if(!generalSwitch.isChecked()) {
-                                    specificSettings.setVisibility(View.GONE);
-                                }
-                                break;
-                            case LEAD:
-                                leadsSwitch.setChecked(true);
-                                generalSwitch.setChecked(true);
-                                break;
-                            case REQUEST:
-                                requestSwitch.setChecked(true);
-                                generalSwitch.setChecked(true);
-                                break;
-                            case MATCHLIST:
-                                matchlistSwitch.setChecked(true);
-                                generalSwitch.setChecked(true);
-                                break;
-                            case CONNECTION:
-                                connectionSwitch.setChecked(true);
-                                generalSwitch.setChecked(true);
-                                break;
-                        }
-                    });
-                } else {
-                    generalSwitch.setChecked(false);
-                }
-                // hide button that confirms the changes
-                btnNotifications.setVisibility(View.GONE);
+                populateFragment();
             }
         });
+
         //processViewState(settingsViewModel.getViewState().getValue());
         settingsViewModel.loadSettings();
 
@@ -129,12 +107,52 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
         connectionSwitch.setOnCheckedChangeListener(this);
     }
 
-    private void populateSettings() {
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        btnNotifications.setEnabled(true);
+    }
+
+    /**
+     * Populate the fragment with the users existing data
+     */
+    private void populateFragment() {
         if(personalSettings != null) {
             matchNumberInput.setText(String.valueOf(personalSettings.getNumberOfMatches()));
+
+            Log.d(TAG, "populateSettings: " + personalSettings);
+            personalSettings.getNotificationSettings().forEach(notificationSettings -> {
+                switch (notificationSettings) {
+                    case NEVER:
+                        generalSwitch.setChecked(false);
+                        if(!generalSwitch.isChecked()) {
+                            specificSettings.setVisibility(View.GONE);
+                        }
+                        break;
+                    case LEAD:
+                        leadsSwitch.setChecked(true);
+                        generalSwitch.setChecked(true);
+                        break;
+                    case REQUEST:
+                        requestSwitch.setChecked(true);
+                        generalSwitch.setChecked(true);
+                        break;
+                    case MATCHLIST:
+                        matchlistSwitch.setChecked(true);
+                        generalSwitch.setChecked(true);
+                        break;
+                    case CONNECTION:
+                        connectionSwitch.setChecked(true);
+                        generalSwitch.setChecked(true);
+                        break;
+                }
+            });
         } else {
             settingsViewModel.addInitialSettings();
+
+            generalSwitch.setChecked(false);
         }
+        // hide button that confirms the changes
+        btnNotifications.setEnabled(false);
     }
 
     /**
@@ -162,11 +180,14 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
                 newNotificationSettings.add(NotificationSettings.CONNECTION);
             }
         }
-        personalSettings.setNumberOfMatches(Integer.parseInt(matchNumberInput.getText().toString()));
+        if(matchNumberInput.getText().toString().length() != 0) {
+            personalSettings.setNumberOfMatches(Integer.parseInt(matchNumberInput.getText().toString()));
+        }
         personalSettings.setNotificationSettings(newNotificationSettings);
         settingsViewModel.updatePersonalSettings(personalSettings);
 
-        popCurrentFragment(this);
+        resetTab();
+        popFragment(this);
     }
 
     // show button to apply changes only, when changes happened
@@ -177,7 +198,7 @@ public class SettingsNotificationsFragment extends RaisingFragment implements Co
             case R.id.notifications_switch_leads:
             case R.id.notifications_switch_request:
             case R.id.notifications_switch_connection:
-                btnNotifications.setVisibility(View.VISIBLE);
+                btnNotifications.setEnabled(true);
                 break;
         }
     }

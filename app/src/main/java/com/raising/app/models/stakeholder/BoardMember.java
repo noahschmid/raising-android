@@ -9,7 +9,7 @@ public class BoardMember extends StakeholderItem implements Serializable {
         private String firstName;
         private String lastName;
         private String profession;
-        private String boardPosition;
+        private String position;
         private String memberSince;
         private String education;
         private int countryId;
@@ -25,13 +25,13 @@ public class BoardMember extends StakeholderItem implements Serializable {
             this.firstName = firstName;
             this.lastName = lastName;
             this.profession = profession;
-            this.boardPosition = boardPosition;
+            this.position = position;
             this.memberSince = memberSince;
             this.education = education;
             this.countryId = countryId;
         }
 
         public void updateTitle() {
-            setTitle(firstName + " " + lastName + ", " + boardPosition);
+            setTitle(firstName + " " + lastName + ", " + position);
         }
 }

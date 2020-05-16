@@ -150,10 +150,10 @@ public class LeadsInteraction {
             Gson gson = new Gson();
 
             ContactData cData = AccountService.getContactData();
-            cData.setAccountId(AuthenticationHandler.getId());
+            cData.setAccountId(interaction.getPartnerId());
 
             params.put("data", new JSONObject(gson.toJson(cData)));
-            params.put("accountId", interaction.getPartnerId());
+            params.put("relationshipId", interaction.getRelationshipId());
 
             Log.d(TAG, "updateRemoteInteraction: " + params.toString());
 

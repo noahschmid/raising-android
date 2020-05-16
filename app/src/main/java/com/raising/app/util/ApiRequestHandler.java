@@ -36,7 +36,7 @@ import static com.android.volley.VolleyLog.TAG;
 
 public class ApiRequestHandler {
     // -- CHOOSE SERVER --
-    private static final boolean CONNECT_TO_DEV_SERVER = true;
+    private static final boolean CONNECT_TO_DEV_SERVER = false;
 
     private static ApiRequestHandler instance;
     private RequestQueue requestQueue;
@@ -103,24 +103,18 @@ public class ApiRequestHandler {
             GenericRequest request = new GenericRequest(
                     getDomain() + endpoint,
                     params,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.d(TAG, "onResponse for " + endpoint);
-                            callback.apply(response);
+                    response -> {
+                        Log.d(TAG, "onResponse for " + endpoint);
+                        callback.apply(response);
+                    }, error -> {
+                        if(error.networkResponse != null) {
+                            Log.e(TAG, "onErrorResponse[" + error.networkResponse.statusCode +
+                                    "] for " + getDomain() + endpoint);
+                        } else {
+                            Log.e(TAG, "onErrorResponse for " + getDomain() + endpoint);
                         }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    if(error.networkResponse != null) {
-                        Log.e(TAG, "onErrorResponse[" + error.networkResponse.statusCode +
-                                "] for " + getDomain() + endpoint);
-                    } else {
-                        Log.e(TAG, "onErrorResponse for " + getDomain() + endpoint);
-                    }
-                    errorCallback.apply(error);
-                }
-            }) {
+                        errorCallback.apply(error);
+                    }) {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers = new HashMap<>();

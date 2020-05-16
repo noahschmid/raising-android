@@ -1,24 +1,16 @@
 package com.raising.app.fragments.registration.investor;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintHelper;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.slider.Slider;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
@@ -30,6 +22,7 @@ import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
 import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaAdapter;
 import com.raising.app.util.matchingCriteriaComponent.MatchingCriteriaComponent;
+import com.raising.app.viewModels.AccountViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +34,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
     private CustomPicker customPicker;
     private TextView ticketSizeText;
     private MatchingCriteriaComponent industryCriteria, investmentPhaseCriteria, supportCriteria,
-        investorTypeCriteria;
+            investorTypeCriteria;
 
     private View fragmentView;
     private long investorType = -1;
@@ -50,8 +43,8 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
     private Investor investor;
 
     private int minimumTicketSize, maximumTicketSize;
-    private int [] ticketSizeSteps;
-    private String [] ticketSizeStrings;
+    private int[] ticketSizeSteps;
+    private String[] ticketSizeStrings;
 
     private boolean editMode = false;
 
@@ -65,23 +58,16 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_matching_criteria), true);
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        geographicsButton = view.findViewById(R.id.register_investor_matching_geographics_button);
-
-        ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
         btnInvestorMatching = view.findViewById(R.id.button_investor_matching);
-        btnInvestorMatching.setOnClickListener(v -> processMatchingInformation());
+        btnInvestorMatching.setOnClickListener(v -> processInputs());
+        geographicsButton = view.findViewById(R.id.register_investor_matching_geographics_button);
+        ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
 
-        investor = null;
-
-        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+        // check if this fragment is opened for registration or for profile
+        if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnInvestorMatching.setHint(getString(R.string.myProfile_apply_changes));
             investor = (Investor) accountViewModel.getAccount().getValue();
@@ -91,9 +77,19 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
             investor = RegistrationHandler.getInvestor();
         }
 
-        pickerItems = new ArrayList<>();
-        pickerItems.addAll(resources.getContinents());
-        pickerItems.addAll(resources.getCountries());
+        return view;
+    }
+
+    @Override
+    public void onResourcesLoaded() {
+        populateFragment();
+    }
+
+    /**
+     * Populate the fragment with backend data
+     */
+    private void populateFragment() {
+        View view = getView();
 
         ticketSizeStrings = resources.getTicketSizeStrings(getString(R.string.currency),
                 getResources().getStringArray(R.array.revenue_units));
@@ -102,18 +98,15 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
 
         prepareTicketSizeSlider(view);
 
-        if(investor.getTicketMinId() != 0 && investor.getTicketMaxId() != 0)
-            ticketSize.setValues((float)investor.getTicketMinId(), (float)investor.getTicketMaxId());
-        if(editMode) {
-            btnInvestorMatching.setVisibility(View.INVISIBLE);
+        if (investor.getTicketMinId() != 0 && investor.getTicketMaxId() != 0)
+            ticketSize.setValues((float) investor.getTicketMinId(), (float) investor.getTicketMaxId());
+        if (editMode) {
+            btnInvestorMatching.setEnabled(false);
         }
 
-        MatchingCriteriaAdapter.OnItemClickListener clickListener = new MatchingCriteriaAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                if(editMode) {
-                    btnInvestorMatching.setVisibility(View.VISIBLE);
-                }
+        MatchingCriteriaAdapter.OnItemClickListener clickListener = position -> {
+            if (editMode) {
+                btnInvestorMatching.setEnabled(true);
             }
         };
 
@@ -127,7 +120,19 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
                 resources.getSupports(), false, clickListener);
 
         investorTypeCriteria = new MatchingCriteriaComponent(view.findViewById(R.id.register_investor_matching_radio_investor),
-                resources.getInvestorTypes(),true, clickListener);
+                resources.getInvestorTypes(), true, clickListener);
+
+        setupCountryPicker();
+
+    }
+
+    /**
+     * Set up the country picker with resources and existing user data
+     */
+    private void setupCountryPicker() {
+        pickerItems = new ArrayList<>();
+        pickerItems.addAll(resources.getContinents());
+        pickerItems.addAll(resources.getCountries());
 
         CustomPicker.Builder builder =
                 new CustomPicker.Builder()
@@ -159,8 +164,49 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
         if(selected.size() > 0) {
             customPicker.setSelectedById(selected);
         }
-
         restoreLists();
+    }
+
+    /**
+     * Prepare the ticket size slider for usage
+     *
+     * @param view The view in which the slider lies
+     */
+    private void prepareTicketSizeSlider(View view) {
+        ticketSizeText = view.findViewById(R.id.register_investor_matching_ticket_size_text);
+        ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
+        ticketSize.addOnChangeListener((slider, value, fromUser) -> {
+            ticketSizeText.setText(adaptSliderValues(
+                    (int) slider.getMaximumValue(), (int) slider.getMinimumValue()));
+            btnInvestorMatching.setEnabled(true);
+        });
+        ticketSize.setValueFrom((float) 1);
+        ticketSize.setValueTo(ticketSizeSteps.length);
+        ticketSize.setValues(
+                (float) getResources().getInteger(R.integer.ticket_size_slider_min_value),
+                (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
+        ticketSizeText.setText(adaptSliderValues(
+                (int) ticketSize.getMaximumValue(), (int) ticketSize.getMinimumValue()));
+    }
+
+    /**
+     * Create the string representation of the currently selected slider values
+     *
+     * @param maxValue The currently selected maximal value
+     * @param minValue The currently selected minimal value
+     * @return String representing the current slider selection
+     */
+    private String adaptSliderValues(int maxValue, int minValue) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(ticketSizeStrings[minValue - 1]);
+        minimumTicketSize = ticketSizeSteps[minValue - 1];
+
+        stringBuilder.append(" - ");
+        stringBuilder.append(ticketSizeStrings[maxValue - 1]);
+        maximumTicketSize = ticketSizeSteps[maxValue - 1];
+
+        return stringBuilder.toString();
     }
 
     /**
@@ -176,6 +222,7 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
 
     /**
      * Checks if the user has changed his selection of markets
+     *
      * @param list The users new selection of markets after dismissing the custom picker
      */
     private void checkIfMarketsChanged(List<PickerItem> list) {
@@ -186,40 +233,34 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
 
         Log.d(TAG, "checkIfMarketsChanged: listId " + listId.toString());
         Log.d(TAG, "checkIfMarketsChanged: selected " + selected.toString());
-        if(!listId.equals(selected)) {
-            btnInvestorMatching.setVisibility(View.VISIBLE);
+        if (!listId.equals(selected)) {
+            btnInvestorMatching.setEnabled(true);
         }
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        hideBottomNavigation(false);
-    }
-
-    @Override
     protected void onAccountUpdated() {
-        popCurrentFragment(this);
+        resetTab();
+        popFragment(this);
         accountViewModel.updateCompleted();
     }
 
     /**
-     * Check if all information is valid and save it
+     * Check the validity of user inputs, then handle the input
      */
-    private void processMatchingInformation() {
+    private void processInputs() {
         investorType = investorTypeCriteria.getSingleSelected();
-        if(investorType == -1) {
+        if (investorType == -1) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
-        investor.setTicketMinId((int)resources.getTicketSizes().get(
-                (int)ticketSize.getMinimumValue() - 1).getId());
+        investor.setTicketMinId((int) resources.getTicketSizes().get(
+                (int) ticketSize.getMinimumValue() - 1).getId());
 
-        investor.setTicketMaxId((int)resources.getTicketSizes().get(
-                (int)ticketSize.getMaximumValue() - 1).getId());
+        investor.setTicketMaxId((int) resources.getTicketSizes().get(
+                (int) ticketSize.getMaximumValue() - 1).getId());
 
         ArrayList<Long> industries = industryCriteria.getSelected();
         ArrayList<Long> investmentPhases = investmentPhaseCriteria.getSelected();
@@ -231,21 +272,21 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
         // only add child objects (countries) if parent object (continent) isn't selected
         // otherwise only add parent object
         customPicker.getResult().forEach(item -> {
-            if(item instanceof Continent) {
+            if (item instanceof Continent) {
                 continents.add(item.getId());
                 pickerItems.forEach(i -> {
-                    if(i instanceof Country) {
+                    if (i instanceof Country) {
                         i.setChecked(false);
                     }
                 });
             }
 
-            if(item instanceof Country) {
+            if (item instanceof Country) {
                 countries.add(item.getId());
             }
         });
 
-        if(industries.size() == 0 || investmentPhases.size() == 0 || support.size() == 0) {
+        if (industries.size() == 0 || investmentPhases.size() == 0 || support.size() == 0) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
@@ -264,66 +305,22 @@ public class RegisterInvestorMatchingFragment extends RaisingFragment {
         investor.setSupport(support);
         investor.setInvestorTypeId(investorType);
 
-        if(!continents.isEmpty() || !countries.isEmpty()) {
+        if (!continents.isEmpty() || !countries.isEmpty()) {
             investor.setContinents(continents);
             investor.setCountries(countries);
         }
 
         try {
-            if(!editMode) {
+            if (!editMode) {
                 RegistrationHandler.saveInvestor(investor);
                 changeFragment(new RegisterInvestorPitchFragment(),
                         "RegisterInvestorPitchFragment");
             } else {
-               accountViewModel.update(investor);
+                accountViewModel.update(investor);
             }
         } catch (Exception e) {
             Log.d("RegisterInvestorMatchingFragment",
                     "Error while saving data: " + e.getMessage());
         }
-    }
-
-    /**
-     * Prepare the ticket size slider for optimal usage
-     * @param view The view in which the slider lies
-     */
-    private void prepareTicketSizeSlider(View view) {
-        ticketSizeText = view.findViewById(R.id.register_investor_matching_ticket_size_text);
-        ticketSize = view.findViewById(R.id.register_investor_matching_ticket_size);
-        ticketSize.addOnChangeListener(new Slider.OnChangeListener() {
-
-            @Override
-            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-                ticketSizeText.setText(adaptSliderValues(
-                        (int) slider.getMaximumValue(), (int) slider.getMinimumValue()));
-                btnInvestorMatching.setVisibility(View.VISIBLE);
-            }
-        });
-        ticketSize.setValueFrom((float) 1);
-        ticketSize.setValueTo(ticketSizeSteps.length);
-        ticketSize.setValues(
-                (float) getResources().getInteger(R.integer.ticket_size_slider_min_value),
-                (float) getResources().getInteger(R.integer.ticket_size_slider_starting_value));
-        ticketSizeText.setText(adaptSliderValues(
-                (int) ticketSize.getMaximumValue(), (int) ticketSize.getMinimumValue()));
-    }
-
-    /**
-     * Create the string representation of the currently selected slider values
-     * @param maxValue The currently selected maximal value
-     * @param minValue The currently selected minimal value
-     * @return String representing the current slider selection
-     */
-    private String adaptSliderValues(int maxValue, int minValue) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.append(ticketSizeStrings[minValue - 1]);
-        minimumTicketSize = ticketSizeSteps[minValue - 1];
-
-        stringBuilder.append(" - ");
-        stringBuilder.append(ticketSizeStrings[maxValue - 1]);
-        maximumTicketSize = ticketSizeSteps[maxValue - 1];
-
-        return stringBuilder.toString();
     }
 }

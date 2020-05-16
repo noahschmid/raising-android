@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_financial_closing_time"
-                app:layout_constraintBottom_toTopOf="@+id/register_financial_completed"
+                app:layout_constraintBottom_toTopOf="@+id/register_financial_committed"
                 app:layout_constraintEnd_toEndOf="@+id/register_financial_valuation"
                 app:layout_constraintStart_toStartOf="@+id/register_financial_valuation"
                 app:layout_constraintTop_toBottomOf="@+id/register_financial_valuation">
@@ -100,7 +100,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/register_financial_completed"
+                android:id="@+id/register_financial_committed"
                 style="@style/TextInputLayoutTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/register_financial_closing_time">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/register_input_financial_completed"
+                    android:id="@+id/register_input_financial_committed"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"
                     android:inputType="numberDecimal" />
@@ -127,8 +127,8 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/button_financial_requirements"
-                app:layout_constraintEnd_toEndOf="@+id/register_financial_completed"
-                app:layout_constraintStart_toStartOf="@+id/register_financial_completed">
+                app:layout_constraintEnd_toEndOf="@+id/register_financial_committed"
+                app:layout_constraintStart_toStartOf="@+id/register_financial_committed">
 
                 <ImageView
                     android:layout_width="wrap_content"

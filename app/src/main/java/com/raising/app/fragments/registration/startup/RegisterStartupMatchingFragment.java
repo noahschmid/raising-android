@@ -3,7 +3,6 @@ package com.raising.app.fragments.registration.startup;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
@@ -11,14 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.slider.Slider;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
@@ -39,8 +32,8 @@ public class RegisterStartupMatchingFragment extends RaisingFragment {
     private TextView ticketSizeText;
 
     private int minimumTicketSize, maximumTicketSize;
-    private String [] ticketSizeStrings;
-    private int [] ticketSizeSteps;
+    private String[] ticketSizeStrings;
+    private int[] ticketSizeSteps;
     private Startup startup;
     private boolean editMode = false;
 
@@ -60,27 +53,39 @@ public class RegisterStartupMatchingFragment extends RaisingFragment {
 
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_matching_criteria), true);
+
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
+
+        btnStartUpMatching = view.findViewById(R.id.button_startup_matching);
+        btnStartUpMatching.setOnClickListener(v -> processInputs());
+
+        // check if this fragment is opened for registration or for profile
+        if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
+            btnStartUpMatching.setHint(getString(R.string.myProfile_apply_changes));
+            editMode = true;
+            startup = (Startup) accountViewModel.getAccount().getValue();
+            hideBottomNavigation(false);
+        } else {
+            startup = RegistrationHandler.getStartup();
+        }
         return view;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
-
+    public void onResourcesLoaded() {
+        View view = getView();
+        // prepare fragment for usage
         ticketSizeSteps = resources.getTicketSizeValues();
         ticketSizeStrings = resources.getTicketSizeStrings(getString(R.string.currency),
                 getResources().getStringArray(R.array.revenue_units));
 
         prepareTicketSizeSlider(view);
 
-        MatchingCriteriaAdapter.OnItemClickListener clickListener = new MatchingCriteriaAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                if(editMode) {
-                    btnStartUpMatching.setVisibility(View.VISIBLE);
-                }
+        MatchingCriteriaAdapter.OnItemClickListener clickListener = position -> {
+            if (editMode) {
+                btnStartUpMatching.setEnabled(true);
             }
         };
 
@@ -96,38 +101,33 @@ public class RegisterStartupMatchingFragment extends RaisingFragment {
         industryCriteria = new MatchingCriteriaComponent(view.findViewById(R.id.register_startup_matching_industry_layout),
                 resources.getIndustries(), false, clickListener);
 
-        btnStartUpMatching = view.findViewById(R.id.button_startup_matching);
-        btnStartUpMatching.setOnClickListener(v -> processMatchingInformation());
-
-        if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
-            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
-            btnStartUpMatching.setHint(getString(R.string.myProfile_apply_changes));
-            editMode = true;
-            startup = (Startup)accountViewModel.getAccount().getValue();
-            hideBottomNavigation(false);
-        } else {
-            startup = RegistrationHandler.getStartup();
+        if (editMode) {
+            btnStartUpMatching.setEnabled(false);
         }
+        populateFragment();
+    }
 
-        if(startup.getTicketMinId() != 0 && startup.getTicketMaxId() != 0)
-            ticketSize.setValues((float)startup.getTicketMinId(), (float)startup.getTicketMaxId());
-        if(editMode) {
-            btnStartUpMatching.setVisibility(View.INVISIBLE);
-        }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
 
-        restoreLists();
+        hideBottomNavigation(false);
     }
 
     @Override
     protected void onAccountUpdated() {
-        popCurrentFragment(this);
+        resetTab();
+        popFragment(this);
         accountViewModel.updateCompleted();
     }
 
     /**
      * Restore values of lists from previous entered data (saved in RegistrationHandler)
      */
-    private void restoreLists() {
+    private void populateFragment() {
+        if (startup.getTicketMinId() != 0 && startup.getTicketMaxId() != 0)
+            ticketSize.setValues((float) startup.getTicketMinId(), (float) startup.getTicketMaxId());
+
         startup.getInvestorTypes().forEach(type -> investorTypeCriteria.setChecked(type));
 
         startup.getIndustries().forEach(industry -> industryCriteria.setChecked(industry));
@@ -137,19 +137,10 @@ public class RegisterStartupMatchingFragment extends RaisingFragment {
         startup.getSupport().forEach(support -> supportCriteria.setChecked(support));
     }
 
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        hideBottomNavigation(false);
-        Log.d("debugMessage", "onDestroy()");
-    }
-
     /**
-     * Check if all information is valid and save it
+     * Check the validity of user inputs, then handle the inputs
      */
-    private void processMatchingInformation() {
+    private void processInputs() {
         ArrayList<Long> industries = industryCriteria.getSelected();
 
         long investmentPhaseId = investmentPhaseCriteria.getSingleSelected();
@@ -157,18 +148,18 @@ public class RegisterStartupMatchingFragment extends RaisingFragment {
         ArrayList<Long> support = supportCriteria.getSelected();
         ArrayList<Long> investorTypes = investorTypeCriteria.getSelected();
 
-        if(industries.size() == 0 || investmentPhaseId == -1 || support.size() == 0 ||
-        investorTypes.size() == 0) {
+        if (industries.size() == 0 || investmentPhaseId == -1 || support.size() == 0 ||
+                investorTypes.size() == 0) {
             showSimpleDialog(getString(R.string.register_dialog_title),
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
 
-        int ticketSizeMinId =  (int)resources.getTicketSizes().get(
-                (int)ticketSize.getMinimumValue() - 1).getId();
+        int ticketSizeMinId = (int) resources.getTicketSizes().get(
+                (int) ticketSize.getMinimumValue() - 1).getId();
 
-        int ticketSizeMaxId =  (int)resources.getTicketSizes().get(
-                (int)ticketSize.getMaximumValue() - 1).getId();
+        int ticketSizeMaxId = (int) resources.getTicketSizes().get(
+                (int) ticketSize.getMaximumValue() - 1).getId();
 
         startup.setTicketMaxId(ticketSizeMaxId);
         startup.setTicketMinId(ticketSizeMinId);
@@ -178,15 +169,13 @@ public class RegisterStartupMatchingFragment extends RaisingFragment {
         startup.setInvestmentPhaseId(investmentPhaseId);
 
         try {
-            if(!editMode) {
+            if (!editMode) {
                 RegistrationHandler.saveStartup(startup);
                 changeFragment(new RegisterStartupPitchFragment(),
                         "RegisterStartupPitchFragment");
             } else {
-
                 accountViewModel.update(startup);
             }
-
         } catch (IOException e) {
             Log.e("RegisterStartupMatching",
                     "Error in processInputs: " + e.getMessage());
@@ -195,6 +184,7 @@ public class RegisterStartupMatchingFragment extends RaisingFragment {
 
     /**
      * Prepare the ticket size slider for optimal usage
+     *
      * @param view The view in which the slider lies
      */
     private void prepareTicketSizeSlider(View view) {
@@ -205,7 +195,7 @@ public class RegisterStartupMatchingFragment extends RaisingFragment {
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                 ticketSizeText.setText(adaptSliderValues(
                         (int) slider.getMaximumValue(), (int) slider.getMinimumValue()));
-                btnStartUpMatching.setVisibility(View.VISIBLE);
+                btnStartUpMatching.setEnabled(true);
             }
         });
 
@@ -219,6 +209,7 @@ public class RegisterStartupMatchingFragment extends RaisingFragment {
 
     /**
      * Create the string representation of the currently selected slider values
+     *
      * @param maxValue The currently selected maximal value
      * @param minValue The currently selected minimal value
      * @return String representing the current slider selection

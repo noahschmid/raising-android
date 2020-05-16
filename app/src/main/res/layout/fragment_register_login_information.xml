@@ -16,20 +16,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/image_register_login_information"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="65dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="65dp"
+                android:src="@drawable/ic_raising_schrift"
+                app:layout_constraintDimensionRatio="3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/register_first_name"
                 style="@style/TextInputLayoutTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_first_name"
                 app:layout_constraintBottom_toTopOf="@+id/register_last_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_register_login_information"
                 app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintVertical_chainStyle="packed">
 
@@ -37,7 +51,7 @@
                     android:id="@+id/register_input_first_name"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"
-                    android:inputType="textCapWords"/>
+                    android:inputType="textCapWords" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -56,7 +70,7 @@
                     android:id="@+id/register_input_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"
-                    android:inputType="textCapWords"/>
+                    android:inputType="textCapWords" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -83,10 +97,10 @@
                 style="@style/TextInputLayoutTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/standardVerticalMargin"
+                android:layout_marginBottom="16dp"
                 android:hint="@string/register_password"
                 app:endIconMode="password_toggle"
-                app:layout_constraintBottom_toTopOf="@+id/button_login_information"
+                app:layout_constraintBottom_toTopOf="@+id/login_information_helper_view"
                 app:layout_constraintEnd_toEndOf="@+id/register_email"
                 app:layout_constraintStart_toStartOf="@+id/register_email"
                 app:layout_constraintTop_toBottomOf="@+id/register_email">
@@ -99,14 +113,42 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
+                android:id="@+id/button_login_information_has_account"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/raisingWhite"
+                android:hint="@string/text_login_has_account"
+                android:textColorHint="@color/raisingTextColor"
+                android:textSize="@dimen/raisingSubtitleFontSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/button_login_information"
+                app:layout_constraintStart_toStartOf="@+id/button_login_information"
+                app:layout_constraintTop_toBottomOf="@+id/button_login_information"
+                app:layout_constraintVertical_bias="0.0"
+                app:rippleColor="@color/raisingRippleColor" />
+
+            <Button
                 android:id="@+id/button_login_information"
                 style="@style/ButtonRegistrationAndProfile"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
-                android:hint="@string/register_button_text"
+                android:hint="@string/text_login_information"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/register_first_name"
-                app:layout_constraintStart_toStartOf="@+id/register_first_name" />
+                app:layout_constraintStart_toStartOf="@+id/register_first_name"
+                app:layout_constraintTop_toBottomOf="@+id/login_information_helper_view" />
+
+            <View
+                android:id="@+id/login_information_helper_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:layout_constraintBottom_toTopOf="@+id/button_login_information"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/register_password" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </FrameLayout>

@@ -1,42 +1,43 @@
 package com.raising.app;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.fragments.leads.LeadsContainerFragment;
-import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.MatchesFragment;
+import com.raising.app.fragments.leads.LeadsInteractionFragment;
+import com.raising.app.fragments.leads.LeadsOpenRequestsFragment;
 import com.raising.app.fragments.onboarding.OnboardingPre1Fragment;
 import com.raising.app.fragments.profile.ContactDataInput;
 import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
 import com.raising.app.fragments.settings.SettingsFragment;
 import com.raising.app.fragments.profile.MyProfileFragment;
+import com.raising.app.models.NotificationType;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.SubscriptionHandler;
 import com.raising.app.viewModels.AccountViewModel;
 import com.raising.app.viewModels.LeadsViewModel;
 import com.raising.app.viewModels.MatchesViewModel;
 import com.raising.app.viewModels.ResourcesViewModel;
 import com.raising.app.viewModels.SettingsViewModel;
+import com.raising.app.viewModels.SubscriptionViewModel;
+import com.raising.app.viewModels.TabViewModel;
 import com.raising.app.viewModels.ViewStateViewModel;
 
 import java.io.IOException;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     AccountViewModel accountViewModel;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     LeadsViewModel leadsViewModel;
     SettingsViewModel settingsViewModel;
     ViewStateViewModel viewStateViewModel;
+    TabViewModel tabViewModel;
+    SubscriptionViewModel subscriptionViewModel;
 
     MaterialToolbar toolbar;
 
@@ -53,10 +56,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d(TAG, "onCreate: activity created");
         setContentView(R.layout.activity_main);
 
         InternalStorageHandler.setContext(getApplicationContext());
+        InternalStorageHandler.setActivity(this);
         AuthenticationHandler.init();
+        RegistrationHandler.init();
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -64,21 +71,21 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.raising_app_bar);
         // setSupportActionBar(toolbar);
 
-        RegistrationHandler.setContext(getApplicationContext());
-        InternalStorageHandler.setActivity(this);
-
         viewStateViewModel = new ViewModelProvider(this).get(ViewStateViewModel.class);
         accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         resourcesViewModel = new ViewModelProvider(this).get(ResourcesViewModel.class);
         matchesViewModel = new ViewModelProvider(this).get(MatchesViewModel.class);
         leadsViewModel = new ViewModelProvider(this).get(LeadsViewModel.class);
         settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
+        tabViewModel = new ViewModelProvider(this).get(TabViewModel.class);
+        subscriptionViewModel = new ViewModelProvider(this).get(SubscriptionViewModel.class);
 
         viewStateViewModel.addViewModel(accountViewModel.getViewState(), this);
         viewStateViewModel.addViewModel(resourcesViewModel.getViewState(), this);
         viewStateViewModel.addViewModel(matchesViewModel.getViewState(), this);
         viewStateViewModel.addViewModel(leadsViewModel.getViewState(), this);
         viewStateViewModel.addViewModel(settingsViewModel.getViewState(), this);
+        viewStateViewModel.addViewModel(subscriptionViewModel.getViewState(), this);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
@@ -96,10 +103,12 @@ public class MainActivity extends AppCompatActivity {
             // if user has not completed his onboarding and this is a newly installed app
             fragmentTransaction.replace(R.id.fragment_container, new OnboardingPre1Fragment());
         } else if (!AuthenticationHandler.isLoggedIn()) {
+            resourcesViewModel.loadResources();
             hideBottomNavigation(true);
             hideToolbar(true);
-            fragmentTransaction.replace(R.id.fragment_container, new LoginFragment());
+            fragmentTransaction.replace(R.id.fragment_container, new RegisterLoginInformationFragment());
         } else {
+            resourcesViewModel.loadResources();
             leadsViewModel.loadLeads();
             matchesViewModel.loadMatches();
             if (!AccountService.loadContactData(AuthenticationHandler.getId())) {
@@ -119,50 +128,74 @@ public class MainActivity extends AppCompatActivity {
                         + " logged in");
                 settingsViewModel.loadSettings();
                 accountViewModel.loadAccount();
-                SubscriptionHandler.loadSubscription();
+                subscriptionViewModel.loadSubscription();
                 hideBottomNavigation(false);
                 hideToolbar(false);
-                fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
+
+                /* handle notification */
+                Intent intent = getIntent();
+                if(intent.getExtras() != null && intent.getExtras().containsKey("interaction")) {
+                    NotificationType type = NotificationType.valueOf(intent.getExtras().getString("interaction"));
+                    switch(type) {
+                        case LEAD:
+                        case CONNECTION:
+                            long leadId = Long.parseLong(intent.getExtras().getString("relationshipId"));
+                            Fragment fragment = new LeadsInteractionFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putLong("leadId", leadId);
+                            fragment.setArguments(bundle);
+                            tabViewModel.setCurrentLeadsFragment(fragment);
+                            selectBottomNavigation(R.id.nav_leads);
+                            break;
+                        case MATCHLIST:
+                            tabViewModel.setCurrentLeadsFragment(new LeadsOpenRequestsFragment());
+                            selectBottomNavigation(R.id.nav_leads);
+                            break;
+                        case REQUEST:
+                            tabViewModel.resetCurrentLeadsFragment();
+                            tabViewModel.setCurrentLeadsTab(0);
+                            selectBottomNavigation(R.id.nav_leads);
+                            break;
+                    }
+                } else {
+                    fragmentTransaction.add(R.id.fragment_container, new MatchesFragment());
+                }
             }
         }
         fragmentTransaction.commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                    Fragment selected = null;
-                    if (!AuthenticationHandler.isLoggedIn()) {
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fragment_container, new LoginFragment())
-                                .commit();
-                        return true;
-                    } else {
-                        switch (item.getItemId()) {
-                            case R.id.nav_matches:
-                                selected = new MatchesFragment();
-                                break;
-                            case R.id.nav_leads:
-                                selected = new LeadsContainerFragment();
-                                break;
-                            case R.id.nav_profile:
-                                selected = new MyProfileFragment();
-                                break;
-                            case R.id.nav_settings:
-                                selected = new SettingsFragment();
-                                break;
-                            default:
-                                return false;
-                        }
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fragment_container, selected)
-                                .commit();
-                        return true;
+            item -> {
+                Fragment selected = null;
+                if (!AuthenticationHandler.isLoggedIn()) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new RegisterLoginInformationFragment())
+                            .commit();
+                    return true;
+                } else {
+                    switch (item.getItemId()) {
+                        case R.id.nav_matches:
+                            selected = new MatchesFragment();
+                            break;
+                        case R.id.nav_leads:
+                            selected = new LeadsContainerFragment();
+                            break;
+                        case R.id.nav_profile:
+                            selected = new MyProfileFragment();
+                            break;
+                        case R.id.nav_settings:
+                            selected = new SettingsFragment();
+                            break;
+                        default:
+                            return false;
                     }
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, selected)
+                            .commit();
+                    return true;
                 }
             };
 
@@ -182,6 +215,16 @@ public class MainActivity extends AppCompatActivity {
      */
     public void hideToolbar(boolean isHidden) {
         findViewById(R.id.raising_app_bar).setVisibility(isHidden ? View.GONE : View.VISIBLE);
+    }
+
+    /**
+     * Reset the selected item of the bottom navigation to the default value
+     *
+     * @param selectedId The id of the navigation element, that should be selected
+     */
+    public void selectBottomNavigation(int selectedId) {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(selectedId);
     }
 
     /**
@@ -251,5 +294,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return (firstInstallTime == lastUpdateTime);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if(f instanceof RaisingFragment) {
+            // do something with f
+            ((RaisingFragment) f).resetTab();
+
+        }
+
+        super.onBackPressed();
     }
 }

@@ -1,6 +1,8 @@
 package com.raising.app.models;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.sql.Timestamp;
 
 import lombok.Data;
 
@@ -17,4 +19,5 @@ public class Match implements Serializable {
     private long accountId;
     private long investmentPhaseId;
     private long investorTypeId;
+    private Timestamp accountLastChanged = new Timestamp(new Date().getTime());
 }

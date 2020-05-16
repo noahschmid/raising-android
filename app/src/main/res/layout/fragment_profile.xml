@@ -66,7 +66,7 @@
                         android:layout_width="@dimen/settingsIconSize"
                         android:layout_height="@dimen/settingsIconSize"
                         android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/gray"
+                        android:tint="@color/raisingGrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -128,7 +128,7 @@
                         android:layout_width="@dimen/settingsIconSize"
                         android:layout_height="@dimen/settingsIconSize"
                         android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/gray"
+                        android:tint="@color/raisingGrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -192,7 +192,7 @@
                         android:layout_width="@dimen/settingsIconSize"
                         android:layout_height="@dimen/settingsIconSize"
                         android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/gray"
+                        android:tint="@color/raisingGrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -256,7 +256,7 @@
                         android:layout_width="@dimen/settingsIconSize"
                         android:layout_height="@dimen/settingsIconSize"
                         android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/gray"
+                        android:tint="@color/raisingGrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -320,7 +320,7 @@
                         android:layout_width="@dimen/settingsIconSize"
                         android:layout_height="@dimen/settingsIconSize"
                         android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/gray"
+                        android:tint="@color/raisingGrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -384,7 +384,7 @@
                         android:layout_width="@dimen/settingsIconSize"
                         android:layout_height="@dimen/settingsIconSize"
                         android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/gray"
+                        android:tint="@color/raisingGrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -448,7 +448,7 @@
                         android:layout_width="@dimen/settingsIconSize"
                         android:layout_height="@dimen/settingsIconSize"
                         android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/gray"
+                        android:tint="@color/raisingGrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -512,7 +512,7 @@
                         android:layout_width="@dimen/settingsIconSize"
                         android:layout_height="@dimen/settingsIconSize"
                         android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/gray"
+                        android:tint="@color/raisingGrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -576,7 +576,7 @@
                         android:layout_width="@dimen/settingsIconSize"
                         android:layout_height="@dimen/settingsIconSize"
                         android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/gray"
+                        android:tint="@color/raisingGrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -640,7 +640,7 @@
                         android:layout_width="@dimen/settingsIconSize"
                         android:layout_height="@dimen/settingsIconSize"
                         android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/gray"
+                        android:tint="@color/raisingGrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -710,7 +710,7 @@
                         android:layout_width="@dimen/settingsIconSize"
                         android:layout_height="@dimen/settingsIconSize"
                         android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/gray"
+                        android:tint="@color/raisingGrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -772,7 +772,7 @@
                         android:layout_width="@dimen/settingsIconSize"
                         android:layout_height="@dimen/settingsIconSize"
                         android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/gray"
+                        android:tint="@color/raisingGrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -822,7 +822,7 @@
                         android:layout_height="@dimen/settingsIconSize"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                        android:src="@drawable/ic_raising_profile_information"
+                        android:src="@drawable/ic_raising_profile"
                         android:tint="@color/raisingSecondaryDark"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/profile_investor_profile_information_text"
@@ -836,7 +836,7 @@
                         android:layout_width="@dimen/settingsIconSize"
                         android:layout_height="@dimen/settingsIconSize"
                         android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/gray"
+                        android:tint="@color/raisingGrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -900,7 +900,7 @@
                         android:layout_width="@dimen/settingsIconSize"
                         android:layout_height="@dimen/settingsIconSize"
                         android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/gray"
+                        android:tint="@color/raisingGrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -964,7 +964,7 @@
                         android:layout_width="@dimen/settingsIconSize"
                         android:layout_height="@dimen/settingsIconSize"
                         android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/gray"
+                        android:tint="@color/raisingGrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -988,7 +988,7 @@
                     style="@style/SelectableItemBackgroundWhite"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/settingsCardHeight"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/profile_divider_16"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/profile_divider_15"
@@ -1028,11 +1028,24 @@
                         android:layout_width="@dimen/settingsIconSize"
                         android:layout_height="@dimen/settingsIconSize"
                         android:src="@drawable/ic_keyboard_arrow_right_32dp"
-                        android:tint="@color/gray"
+                        android:tint="@color/raisingGrey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/profile_divider_16"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="72dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/raisingLightGrey"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/profile_investor_images_layout"
+                    app:layout_constraintVertical_bias="0.0" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>

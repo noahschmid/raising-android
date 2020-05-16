@@ -3,12 +3,8 @@ package com.raising.app.util;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
-
-import com.raising.app.viewModels.MatchesViewModel;
-import com.raising.app.viewModels.SettingsViewModel;
+import com.raising.app.viewModels.SubscriptionViewModel;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,7 +18,6 @@ public class AuthenticationHandler {
     private static String email;
     private static boolean loggedIn = false;
     private static boolean isStartup = false;
-
 
     /**
      * Save the given access token and accountId in internal storage
@@ -53,6 +48,8 @@ public class AuthenticationHandler {
 
     public static String getToken() { return token; }
 
+    public static void setToken(String newToken) { token = newToken; }
+
     public static boolean isStartup() { return isStartup; }
 
     /**
@@ -79,6 +76,9 @@ public class AuthenticationHandler {
 
         AuthenticationHandler.token = null;
         AuthenticationHandler.accountId = -1;
+        SubscriptionViewModel subscriptionViewModel = ViewModelProviders.of(InternalStorageHandler.getActivity())
+                .get(SubscriptionViewModel.class);
+        subscriptionViewModel.removeSubscription();
         loggedIn = false;
     }
 

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -22,30 +24,34 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 public class ForgotPasswordFragment extends RaisingFragment {
+    private final String TAG = "ForgotPasswordFragment";
     private EditText emailInput;
     private final String forgotEndpoint = ApiRequestHandler.getDomain() + "account/forgot";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_forgot_password, container, false);
-
-        emailInput = view.findViewById(R.id.forgot_input_email);
 
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_forgot_email), true);
 
+        return inflater.inflate(R.layout.fragment_forgot_password, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        emailInput = view.findViewById(R.id.forgot_input_email);
+
         Button btnSend = view.findViewById(R.id.button_forgot_reset);
         btnSend.setOnClickListener(v -> forgotPassword());
-
-        return view;
     }
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 
     /**
@@ -61,11 +67,13 @@ public class ForgotPasswordFragment extends RaisingFragment {
 
         Log.d("debugMessage", email);
         try {
+            viewStateViewModel.startLoading();
             HashMap<String, String> params = new HashMap<>();
             params.put("email", email);
             GenericRequest loginRequest = new GenericRequest(
                     forgotEndpoint, new JSONObject(params),
                     response -> {
+                        viewStateViewModel.stopLoading();
                         Fragment fragment = new ResetPasswordFragment();
                         Bundle bundle = new Bundle();
                         bundle.putString("email", email);
@@ -73,6 +81,7 @@ public class ForgotPasswordFragment extends RaisingFragment {
 
                         changeFragment(fragment);
                     }, error -> {
+                        viewStateViewModel.stopLoading();
                         Log.d("debugMessage", error.toString());
                 if (error.networkResponse.statusCode == 500) {
                     showSimpleDialog(
@@ -91,6 +100,7 @@ public class ForgotPasswordFragment extends RaisingFragment {
 
             ApiRequestHandler.getInstance(getContext()).addToRequestQueue(loginRequest);
         } catch (Exception e) {
+            viewStateViewModel.stopLoading();
             Log.d("debugMessage", e.getMessage());
             Log.d("debugMessage", e.toString());
         }

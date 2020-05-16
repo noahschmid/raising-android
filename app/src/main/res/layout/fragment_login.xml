@@ -30,6 +30,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.52"
                 app:layout_constraintVertical_chainStyle="packed">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -60,13 +61,11 @@
 
             <Button
                 android:id="@+id/button_login"
+                style="@style/ButtonRegistrationAndProfile"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/authenticationButtonHeight"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:backgroundTint="@color/raisingButtonBackgroundColor"
                 android:hint="@string/login_button_text"
-                android:textColorHint="@color/raisingTextColorLight"
-                android:textSize="@dimen/buttonFontSize"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/login_password"
                 app:layout_constraintStart_toStartOf="@+id/login_password"
@@ -82,36 +81,36 @@
                 android:shadowColor="@color/raisingWhite"
                 android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingSubtitleFontSize"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/button_login_goTo_register"
                 app:layout_constraintEnd_toEndOf="@+id/button_login_goTo_register"
                 app:layout_constraintStart_toStartOf="@+id/button_login_goTo_register"
-                app:layout_constraintTop_toBottomOf="@+id/button_login_goTo_register"
-                app:rippleColor="@color/raisingRippleColor"/>
+                app:layout_constraintTop_toBottomOf="@+id/button_login"
+                app:layout_constraintVertical_bias="0.3"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:rippleColor="@color/raisingRippleColor" />
 
             <Button
                 android:id="@+id/button_login_goTo_register"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/raisingWhite"
                 android:hint="@string/login_register_text"
+                android:backgroundTint="@color/raisingWhite"
                 android:textColorHint="@color/raisingTextColor"
                 android:textSize="@dimen/raisingSubtitleFontSize"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/button_login_forgot_password"
+                app:rippleColor="@color/raisingRippleColor"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_login"
-                app:layout_constraintVertical_bias="0.40"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:rippleColor="@color/raisingRippleColor"/>
+                app:layout_constraintTop_toBottomOf="@+id/button_login_forgot_password" />
 
             <ImageView
                 android:id="@+id/imageView20"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="60dp"
-                android:layout_marginEnd="60dp"
+                android:layout_marginStart="65dp"
+                android:layout_marginEnd="65dp"
                 android:src="@drawable/ic_raising_schrift"
                 app:layout_constraintBottom_toTopOf="@+id/login_email"
                 app:layout_constraintDimensionRatio="3"

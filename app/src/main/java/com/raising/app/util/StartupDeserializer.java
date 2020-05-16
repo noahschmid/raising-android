@@ -25,7 +25,10 @@ import com.raising.app.models.stakeholder.Shareholder;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class StartupDeserializer implements JsonDeserializer<Startup> {
@@ -48,6 +51,11 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
         startup.setTicketMinId(jsonObject.get("ticketMinId").getAsInt());
         startup.setTicketMaxId(jsonObject.get("ticketMaxId").getAsInt());
         startup.setInvestmentPhaseId(jsonObject.get("investmentPhaseId").getAsInt());
+
+        if(jsonObject.has("lastChanged")) {
+            Log.d("StartupDeserializer", "deserialize: " + jsonObject.get("lastChanged"));
+            startup.setLastChanged(Serializer.parseTimestamp(jsonObject.get("lastChanged").getAsString()));
+        }
         if(jsonObject.get("firstName") != null) {
             startup.setFirstName(jsonObject.get("firstName").getAsString());
         }
@@ -127,7 +135,7 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
         for(JsonElement el : jsonObject.get("boardmembers").getAsJsonArray()) {
             JsonObject obj = el.getAsJsonObject();
             BoardMember boardMember = new BoardMember();
-            boardMember.setBoardPosition(obj.get("position").getAsString());
+            boardMember.setPosition(obj.get("position").getAsString());
             boardMember.setCountryId(obj.get("countryId").getAsInt());
             boardMember.setEducation(obj.get("education").getAsString());
             boardMember.setFirstName(obj.get("firstName").getAsString());
@@ -135,7 +143,7 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
             boardMember.setProfession(obj.get("profession").getAsString());
             boardMember.setMemberSince(obj.get("memberSince").getAsString());
             boardMember.setTitle(boardMember.getFirstName() + " " +
-                    boardMember.getLastName() + ", " + boardMember.getBoardPosition());
+                    boardMember.getLastName() + ", " + boardMember.getPosition());
             boardMember.setId(obj.get("id").getAsLong());
             startup.addBoardMember(boardMember);
         }

@@ -17,11 +17,12 @@
     </style>
 
     <style name="SplashTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/background_splash</item>
+        <item name="android:background">@drawable/background_splash</item>
     </style>
-    
-   <!-- Text Styles -->
+
+    <!-- Text Styles -->
     <style name="RaisingText">
+        <item name="android:lineSpacingExtra">2dp</item>
         <item name="android:textColor">@color/raisingTextColor</item>
         <item name="android:textColorHint">@color/raisingTextColor</item>
         <item name="android:textSize">@dimen/raisingTextFontSize</item>
@@ -69,20 +70,19 @@
         <item name="android:textStyle">italic</item>
     </style>
 
-
-   <!-- Button Styles -->
+    <!-- Button Styles -->
     <style name="GeneralButtonStyle">
         <item name="android:drawableTint">@color/raisingTextColorLight</item>
-        <item name="android:textColorHint">@color/raisingTextColorLight</item>
-        <item name="android:backgroundTint">@color/raisingButtonBackgroundColor</item>
+        <item name="android:textColorHint">@color/btn_registration_profile_text</item>
+        <item name="android:textColor">@color/btn_registration_profile_text</item>
+        <item name="android:backgroundTint">@color/btn_registration_profile_background</item>
         <item name="android:gravity">center</item>
     </style>
 
     <style name="ButtonRegistrationAndProfile" parent="GeneralButtonStyle">
-        <item name="android:layout_height">@dimen/myProfileButtonHeight</item>
+        <item name="android:layout_height">@dimen/authenticationButtonHeight</item>
         <item name="android:layout_marginBottom">@dimen/standardVerticalMargin</item>
         <item name="android:textSize">@dimen/raisingTitleFontSize</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
     </style>
 
@@ -171,4 +171,13 @@
         <item name="colorControlHighlight">@color/raisingRippleColorLight</item>
     </style>
 
+    <style name="RaisingSmallDivider">
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="background">@color/raisingLightGrey</item>
+    </style>
+
+    <style name="RaisingMediumDivider" parent="RaisingSmallDivider">
+        <item name="android:layout_height">5dp</item>
+    </style>
 </resources>

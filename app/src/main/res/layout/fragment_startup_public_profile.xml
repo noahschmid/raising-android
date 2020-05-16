@@ -151,6 +151,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                         android:hint="@string/decline_text"
+                        android:textColor="@color/raisingWhite"
                         android:textColorHint="@color/raisingWhite"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/button_startup_public_profile_decline"
@@ -164,6 +165,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                         android:hint="@string/accept_text"
+                        android:textColor="@color/raisingWhite"
                         android:textColorHint="@color/raisingWhite"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/button_startup_public_profile_accept"
@@ -175,12 +177,15 @@
             <TextView
                 android:id="@+id/text_startup_public_profile_name"
                 style="@style/RaisingLargeTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                android:gravity="center|start"
                 android:text="Name"
                 android:textColor="@color/raisingPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/startup_public_profile_matching_summary" />
 
@@ -193,7 +198,6 @@
                 android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
                 android:gravity="start"
                 android:orientation="horizontal"
-                android:weightSum="3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -220,41 +224,19 @@
                 app:layout_constraintTop_toTopOf="@+id/startup_public_profile_location_pin" />
 
             <TextView
-                android:id="@+id/text_startup_public_profile_sentence"
-                style="@style/RaisingText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                android:text="Sentence"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_startup_public_profile_labels" />
-
-            <TextView
-                android:id="@+id/text_startup_pitch_title"
-                style="@style/RaisingTextBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/standardVerticalMargin"
-                android:hint="@string/public_profile_pitch"
-                app:layout_constraintStart_toStartOf="@+id/text_startup_public_profile_pitch"
-                app:layout_constraintTop_toBottomOf="@+id/text_startup_public_profile_sentence" />
-
-            <TextView
                 android:id="@+id/text_startup_public_profile_pitch"
                 style="@style/RaisingText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
-                android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
+                android:layout_marginEnd="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:text="Pitch"
                 app:layout_constraintBottom_toTopOf="@+id/text_startup_public_profile_website"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_startup_pitch_title" />
+                app:layout_constraintTop_toBottomOf="@+id/layout_startup_public_profile_labels" />
 
             <TextView
                 android:id="@+id/text_startup_public_profile_website"
@@ -566,17 +548,6 @@
                 app:layout_constraintBottom_toBottomOf="@+id/text_profile_investment_type_title"
                 app:layout_constraintEnd_toEndOf="@+id/text_profile_fte"
                 app:layout_constraintTop_toTopOf="@+id/text_profile_investment_type_title" />
-
-            <ProgressBar
-                android:id="@+id/progress_profile_completed"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="100dp"
-                android:layout_height="0dp"
-                android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
-                android:progressTint="@color/raisingPrimary"
-                app:layout_constraintBottom_toBottomOf="@+id/text_profile_completed"
-                app:layout_constraintEnd_toStartOf="@+id/text_profile_completed"
-                app:layout_constraintTop_toTopOf="@+id/text_profile_completed" />
 
             <TextView
                 android:id="@+id/text_startup_public_profile_scope_title"

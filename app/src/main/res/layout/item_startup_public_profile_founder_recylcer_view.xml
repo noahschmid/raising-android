@@ -6,42 +6,81 @@
     android:layout_height="wrap_content"
     android:paddingBottom="@dimen/standardVerticalMargin">
 
-    <TextView
-        android:id="@+id/text_startup_founder_education"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:gravity="center|end"
-        android:text="Education"
-        style="@style/RaisingText"
-        app:layout_constraintBottom_toBottomOf="@+id/text_startup_founder_education_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/text_startup_founder_education_title" />
-
-    <TextView
-        android:id="@+id/text_startup_founder_position"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout10"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Position"
-        style="@style/RaisingTextBold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout9"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/text_startup_founder_education_title"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/text_startup_founder_position"
+            style="@style/RaisingTextBold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+            android:gravity="start"
+            android:singleLine="false"
+            android:text="Position"
+            app:layout_constraintEnd_toStartOf="@+id/text_startup_founder_name"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintHorizontal_weight="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_startup_founder_name"
+            style="@style/RaisingText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
+            android:gravity="end"
+            android:singleLine="false"
+            android:text="Name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/text_startup_founder_position"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout9"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/startup_public_profile_education"
-        style="@style/RaisingTextBold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_startup_founder_position" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
 
-    <TextView
-        android:id="@+id/text_startup_founder_name"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:text="Name"
-        style="@style/RaisingText"
-        app:layout_constraintBottom_toBottomOf="@+id/text_startup_founder_position"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/text_startup_founder_position" />
+        <TextView
+            android:id="@+id/text_startup_founder_education"
+            style="@style/RaisingText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standardHorizontalMarginReallySmall"
+            android:gravity="end"
+            android:singleLine="false"
+            android:text="Education"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/text_startup_founder_education_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/text_startup_founder_education_title"
+            style="@style/RaisingTextBold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
+            android:hint="@string/startup_public_profile_education"
+            app:layout_constraintEnd_toStartOf="@+id/text_startup_founder_education"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintHorizontal_weight="0.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

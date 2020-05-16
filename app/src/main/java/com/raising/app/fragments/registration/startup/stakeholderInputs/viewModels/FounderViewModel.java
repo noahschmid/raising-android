@@ -17,7 +17,6 @@ public class FounderViewModel extends AndroidViewModel {
         super(application);
     }
 
-
     /**
      * Set a founder
      * @param founder The founder that is to be stored

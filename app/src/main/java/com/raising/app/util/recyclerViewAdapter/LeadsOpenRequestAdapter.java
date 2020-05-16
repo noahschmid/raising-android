@@ -18,6 +18,7 @@ import com.google.android.material.button.MaterialButton;
 import com.raising.app.R;
 import com.raising.app.models.leads.Lead;
 import com.raising.app.util.ApiRequestHandler;
+import com.raising.app.util.ImageHandler;
 import com.raising.app.util.InternalStorageHandler;
 
 import java.util.ArrayList;
@@ -46,20 +47,7 @@ public class LeadsOpenRequestAdapter extends RecyclerView.Adapter<LeadsOpenReque
         holder.name.setText(recyclerItem.getTitle());
         holder.attribute.setText(recyclerItem.getAttribute());
 
-        if(recyclerItem.getProfilePictureId() > 0) {
-            Glide
-                    .with(InternalStorageHandler.getContext())
-                    .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
-                            recyclerItem.getProfilePictureId())
-                    .centerCrop()
-                    .apply(RequestOptions.circleCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                    .placeholder(R.drawable.ic_placeholder_24dp)
-                    .into(holder.image);
-        } else {
-            holder.image.setImageDrawable(InternalStorageHandler.getContext()
-                    .getResources().getDrawable(R.drawable.ic_person_24dp));
-        }
+        ImageHandler.loadProfileImage(recyclerItem, holder.image);
     }
 
     @Override

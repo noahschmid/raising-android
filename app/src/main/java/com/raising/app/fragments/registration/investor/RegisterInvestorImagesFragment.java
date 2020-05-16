@@ -83,13 +83,11 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_investor_images,
-                container, false);
 
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_profile_images), true);
 
-        return view;
+        return inflater.inflate(R.layout.fragment_register_investor_images, container, false);
     }
 
     @Override
@@ -97,7 +95,6 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         imagesUploaded.setValue(false);
-
         imagesUploaded.observe(getViewLifecycleOwner(),
                 value -> {
                     if (value.booleanValue() == true) {
@@ -117,18 +114,16 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             }
         });
 
+        // find views
         profileImageOverlay = view.findViewById(R.id.register_profile_image_overlay);
         galleryLayout = view.findViewById(R.id.register_investor_images_gallery);
 
         deleteProfileImageButton = view.findViewById(R.id.button_delete_profile_img);
         deleteProfileImageButton.setVisibility(View.GONE);
-        deleteProfileImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                profileImageOverlay.setVisibility(View.VISIBLE);
-                deleteProfileImageButton.setVisibility(View.GONE);
-                profileImage.setImageBitmap(null);
-            }
+        deleteProfileImageButton.setOnClickListener(v -> {
+            profileImageOverlay.setVisibility(View.VISIBLE);
+            deleteProfileImageButton.setVisibility(View.GONE);
+            profileImage.setImageBitmap(null);
         });
 
         finishButton = view.findViewById(R.id.button_investor_images);
@@ -137,10 +132,12 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
             processInputs();
         });
 
+        // check if this fragment is opened for registration or for profile
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
             view.findViewById(R.id.registration_images_progress).setVisibility(View.INVISIBLE);
             finishButton.setHint(getString(R.string.myProfile_apply_changes));
-            finishButton.setVisibility(View.INVISIBLE);
+            finishButton.setEnabled(false);
             investor = (Investor) accountViewModel.getAccount().getValue();
             editMode = true;
             hideBottomNavigation(false);
@@ -154,6 +151,70 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         checkPermissions();
     }
 
+    @Override
+    public void onDestroyView() {
+        hideBottomNavigation(false);
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onAccountUpdated() {
+        resetTab();
+        popFragment(this);
+        accountViewModel.updateCompleted();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null)
+            return;
+
+        switch (requestCode) {
+            case REQUEST_GALLERY_CAPTURE:
+                Bitmap image = (Bitmap) data.getExtras().get("data");
+                addImageToGallery(new Image(image));
+                galleryChanged = true;
+                finishButton.setEnabled(true);
+                break;
+
+            case REQUEST_GALLERY_FETCH:
+                Uri imageUri = data.getData();
+                try {
+                    image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
+                    addImageToGallery(new Image(ImageRotator.checkRotation(getPath(imageUri), image)));
+                    galleryChanged = true;
+                    finishButton.setEnabled(true);
+                } catch (Exception e) {
+                    Log.d("InvestorImages", "" + e.getMessage());
+                }
+                break;
+
+            case REQUEST_IMAGE_CAPTURE:
+                image = (Bitmap) data.getExtras().get("data");
+                setProfileImage(image);
+                profilePictureChanged = true;
+                finishButton.setEnabled(true);
+                break;
+
+            case REQUEST_IMAGE_FETCH:
+                imageUri = data.getData();
+                try {
+                    image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
+                    setProfileImage(ImageRotator.checkRotation(getPath(imageUri), image));
+                    profilePictureChanged = true;
+                    finishButton.setEnabled(true);
+                } catch (Exception e) {
+                    Log.d("InvestorImages", e.getMessage());
+                }
+                break;
+
+            default:
+                showSimpleDialog(getString(R.string.general_dialog_error_title),
+                        getString(R.string.general_dialog_error_text));
+        }
+    }
+
     /**
      * Add an image view at the end of the gallery with an + drawable
      */
@@ -165,16 +226,13 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         final View galleryObject = inflater.inflate(R.layout.item_gallery, null);
         ImageView galleryImage = galleryObject.findViewById(R.id.gallery_image);
         galleryImage.setContentDescription("placeholder");
-        galleryImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (permissionGranted) {
-                    if (galleryImage.getContentDescription() == "placeholder") {
-                        showImageMenu(false);
-                    }
-                } else {
-                    checkPermissions();
+        galleryImage.setOnClickListener(v -> {
+            if (permissionGranted) {
+                if (galleryImage.getContentDescription() == "placeholder") {
+                    showImageMenu(false);
                 }
+            } else {
+                checkPermissions();
             }
         });
         galleryImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_24dp));
@@ -227,77 +285,6 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         }
     }
 
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        hideBottomNavigation(false);
-    }
-
-    @Override
-    public void onAccountUpdated() {
-        popCurrentFragment(this);
-        accountViewModel.updateCompleted();
-    }
-
-    /**
-     * Process media selected from gallery/camera
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data == null)
-            return;
-
-        switch (requestCode) {
-            case REQUEST_GALLERY_CAPTURE:
-                Bitmap image = (Bitmap) data.getExtras().get("data");
-                addImageToGallery(new Image(image));
-                galleryChanged = true;
-                finishButton.setVisibility(View.VISIBLE);
-                break;
-
-            case REQUEST_GALLERY_FETCH:
-                Uri imageUri = data.getData();
-                try {
-                    image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
-                    addImageToGallery(new Image(ImageRotator.checkRotation(getPath(imageUri), image)));
-                    galleryChanged = true;
-                    finishButton.setVisibility(View.VISIBLE);
-                } catch (Exception e) {
-                    Log.d("InvestorImages", "" + e.getMessage());
-                }
-                break;
-
-            case REQUEST_IMAGE_CAPTURE:
-                image = (Bitmap) data.getExtras().get("data");
-                setProfileImage(image);
-                profilePictureChanged = true;
-                finishButton.setVisibility(View.VISIBLE);
-                break;
-
-            case REQUEST_IMAGE_FETCH:
-                imageUri = data.getData();
-                try {
-                    image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
-                    setProfileImage(ImageRotator.checkRotation(getPath(imageUri), image));
-                    profilePictureChanged = true;
-                    finishButton.setVisibility(View.VISIBLE);
-                } catch (Exception e) {
-                    Log.d("InvestorImages", e.getMessage());
-                }
-                break;
-
-            default:
-                showSimpleDialog(getString(R.string.general_dialog_error_title),
-                        getString(R.string.general_dialog_error_text));
-        }
-    }
 
     /**
      * Check whether the needed read/write permissions to external storage are granted and if not
@@ -384,27 +371,24 @@ public class RegisterInvestorImagesFragment extends RaisingFragment {
         galleryImage.setImageBitmap(image.getImage());
         AppCompatButton deleteButton = galleryObject.findViewById(R.id.button_delete_gallery_img);
         deleteButton.setVisibility(View.VISIBLE);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                galleryObject.setVisibility(View.GONE);
-                galleryLayout.removeView(galleryObject);
-                if (image.getId() != -1) {
-                    ApiRequestHandler.performDeleteRequest("media/gallery/" + image.getId(),
-                            success -> {
-                                investor.getGalleryIds().remove(image.getId());
-                                return null;
-                            },
-                            error -> {
-                                return null;
-                            });
-                    gallery.remove(image);
-                    if (addGalleryImage == null) {
-                        addNewGalleryPlaceholder();
-                    }
-                } else {
-                    investor.getGalleryIds().remove(image.getId());
+        deleteButton.setOnClickListener(v -> {
+            galleryObject.setVisibility(View.GONE);
+            galleryLayout.removeView(galleryObject);
+            if (image.getId() != -1) {
+                ApiRequestHandler.performDeleteRequest("media/gallery/" + image.getId(),
+                        success -> {
+                            investor.getGalleryIds().remove(image.getId());
+                            return null;
+                        },
+                        error -> {
+                            return null;
+                        });
+                gallery.remove(image);
+                if (addGalleryImage == null) {
+                    addNewGalleryPlaceholder();
                 }
+            } else {
+                investor.getGalleryIds().remove(image.getId());
             }
         });
 

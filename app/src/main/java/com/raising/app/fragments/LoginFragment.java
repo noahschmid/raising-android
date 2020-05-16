@@ -15,13 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.raising.app.fragments.onboarding.OnboardingPost1Fragment;
 import com.raising.app.fragments.profile.ContactDataInput;
 import com.raising.app.fragments.registration.RegisterLoginInformationFragment;
-import com.raising.app.models.NotificationSettings;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
@@ -30,12 +27,10 @@ import com.raising.app.R;
 import com.raising.app.fragments.forgotPassword.ForgotPasswordFragment;
 
 import com.raising.app.util.RegistrationHandler;
-import com.raising.app.util.SubscriptionHandler;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -45,20 +40,14 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
 
     final private String loginEndpoint = ApiRequestHandler.getDomain() + "account/login";
 
-    public static LoginFragment newInstance() {
-        return new LoginFragment();
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         hideBottomNavigation(true);
         hideToolbar(true);
 
-        RegistrationHandler.isInProgress(getContext());
-        return view;
+        return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
     @Override
@@ -78,17 +67,17 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         hideToolbar(false);
         hideBottomNavigation(false);
+
+        super.onDestroyView();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_login:
-                prepareLogin();
+                login();
                 break;
             case R.id.button_login_goTo_register:
                 goToRegisterFragment();
@@ -101,27 +90,13 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
         }
     }
 
-
-    /**
-     * Simple helper function that retrieves the users input from the layout
-     *      and then calls {@link #login(String, String)}.
-     * Enables easier testing, since you can give login() some parameters.
-     *
-     * @author Lorenz Caliezi 03.03.2020
-     * @version 1.0
-     */
-    private void prepareLogin() {
-        String email = emailInput.getText().toString();
-        String password = passwordInput.getText().toString();
-        login(email, password);
-    }
-
     /**
      * Send login request to backend and process response
-     * @param email
-     * @param password
      */
-    private void login(String email, String password) {
+    private void login() {
+        String email = emailInput.getText().toString();
+        String password = passwordInput.getText().toString();
+
         if(email.length() == 0 || password.length() == 0) {
             showSimpleDialog(getString(R.string.login_dialog_title),
                     getString(R.string.login_dialog_text_empty_credentials));
@@ -135,70 +110,64 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
             viewStateViewModel.startLoading();
             JsonObjectRequest loginRequest = new JsonObjectRequest(
                     loginEndpoint, new JSONObject(params),
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.d("LoginFragment", "login successful.");
-                            try {
-                                viewStateViewModel.stopLoading();
-                                boolean isStartup = response.getBoolean("startup");
-                                if(!isStartup && !response.getBoolean("investor")) {
-                                    showSimpleDialog(getString(R.string.generic_error_title),
-                                            getString(R.string.no_profile_text));
-                                    return;
-                                }
-
-                                if(AccountService.loadContactData(response.getLong("id"))) {
-                                    AuthenticationHandler.login(email,
-                                            response.getString("token"),
-                                            response.getLong("id"), isStartup);
-                                    accountViewModel.loadAccount();
-                                    settingsViewModel.loadSettings();
-                                    SubscriptionHandler.loadSubscription();
-
-                                    if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
-                                        clearBackstackAndReplace(new OnboardingPost1Fragment());
-                                    } else {
-                                        clearBackstackAndReplace(new MatchesFragment());
-                                    }
-                                } else {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putBoolean("isStartup", isStartup);
-                                    bundle.putString("email", email);
-                                    bundle.putString("token", response.getString("token"));
-                                    bundle.putLong("id", response.getLong("id"));
-                                    Fragment fragment = new ContactDataInput();
-                                    fragment.setArguments(bundle);
-                                    changeFragment(fragment);
-                                }
-                            } catch(Exception e) {
-                                viewStateViewModel.stopLoading();
+                    response -> {
+                        Log.d("LoginFragment", "login successful.");
+                        try {
+                            viewStateViewModel.stopLoading();
+                            boolean isStartup = response.getBoolean("startup");
+                            if(!isStartup && !response.getBoolean("investor")) {
                                 showSimpleDialog(getString(R.string.generic_error_title),
-                                        e.getMessage());
+                                        getString(R.string.no_profile_text));
+                                return;
                             }
+
+                            if(AccountService.loadContactData(response.getLong("id"))) {
+                                AuthenticationHandler.login(email,
+                                        response.getString("token"),
+                                        response.getLong("id"), isStartup);
+                                accountViewModel.loadAccount();
+                                settingsViewModel.loadSettings();
+                                subscriptionViewModel.loadSubscription();
+
+                                if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
+                                    clearBackstackAndReplace(new OnboardingPost1Fragment());
+                                } else {
+                                    clearBackstackAndReplace(new MatchesFragment());
+                                }
+                            } else {
+                                Bundle bundle = new Bundle();
+                                bundle.putBoolean("isStartup", isStartup);
+                                bundle.putString("email", email);
+                                bundle.putString("token", response.getString("token"));
+                                bundle.putLong("id", response.getLong("id"));
+                                Fragment fragment = new ContactDataInput();
+                                fragment.setArguments(bundle);
+                                changeFragment(fragment);
+                            }
+                        } catch(Exception e) {
+                            viewStateViewModel.stopLoading();
+                            showSimpleDialog(getString(R.string.generic_error_title),
+                                    e.getMessage());
                         }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    viewStateViewModel.stopLoading();
-                    try {
-                        if(error.networkResponse.statusCode == 500 ||
-                        error.networkResponse.statusCode == 403) {
+                    }, error -> {
+                        viewStateViewModel.stopLoading();
+                        try {
+                            if(error.networkResponse.statusCode == 500 ||
+                            error.networkResponse.statusCode == 403) {
+                                showSimpleDialog(
+                                        getString(R.string.login_dialog_title),
+                                        getString(R.string.login_dialog_text_403)
+                                );
+                            }
+                        } catch (NullPointerException e) {
                             showSimpleDialog(
-                                    getString(R.string.login_dialog_title),
-                                    getString(R.string.login_dialog_text_403)
+                                    getString(R.string.login_dialog_server_error_title),
+                                    getString(R.string.login_dialog_server_error_text)
                             );
+                            Log.d("debugMessage", e.toString());
+                            Log.d("debugMessage", error.toString());
                         }
-                    } catch (NullPointerException e) {
-                        showSimpleDialog(
-                                getString(R.string.login_dialog_server_error_title),
-                                getString(R.string.login_dialog_server_error_text)
-                        );
-                        Log.d("debugMessage", e.toString());
-                        Log.d("debugMessage", error.toString());
-                    }
-                }
-            }){
+                    }){
                 @Override
                 public String getBodyContentType() {
                     return "application/json; charset=utf-8";
@@ -216,12 +185,12 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
 
     /**
      * Change to the RegisterFragment, if user wants to register, not log in
-     *
-     * @author Lorenz Caliezi 02.03.2020
      */
     private void goToRegisterFragment() {
         try {
-            RegistrationHandler.begin();
+            if(!RegistrationHandler.isInProgress()) {
+                RegistrationHandler.begin();
+            }
             changeFragment(new RegisterLoginInformationFragment(),
                     "RegisterLoginInformationFragment");
             Log.d("debugMessage", "success");
@@ -233,8 +202,6 @@ public class LoginFragment extends RaisingFragment implements View.OnClickListen
 
     /**
      * Change to ForgotPasswordEmailFragment, if the user wants to get a new password
-     *
-     * @author Lorenz Caliezi 09.03.2020
      */
     private void goToForgotFragment() {
         changeFragment(new ForgotPasswordFragment(), "ForgotPasswordEmailFragment");

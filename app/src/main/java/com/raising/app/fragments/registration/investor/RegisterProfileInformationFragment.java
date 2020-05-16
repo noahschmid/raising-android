@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,8 +22,7 @@ import com.raising.app.util.AccountService;
 import com.raising.app.util.RaisingTextWatcher;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.customPicker.CustomPicker;
-import com.raising.app.util.customPicker.PickerItem;
-import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
+import com.raising.app.viewModels.AccountViewModel;
 
 public class RegisterProfileInformationFragment extends RaisingFragment implements RaisingTextWatcher {
     private EditText profileCompanyInput, profileWebsiteInput, profilePhoneInput, profileCountryInput;
@@ -44,12 +44,7 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         customizeAppBar(getString(R.string.toolbar_title_profile_information), true);
         hideBottomNavigation(true);
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
         //define input views and button
         profileCompanyInput = view.findViewById(R.id.register_input_profile_company);
@@ -58,13 +53,14 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         profileCountryInput = view.findViewById(R.id.register_input_profile_countries);
 
         btnProfileInformation = view.findViewById(R.id.button_profile_information);
-        btnProfileInformation.setOnClickListener(v -> processProfileInformation());
+        btnProfileInformation.setOnClickListener(v -> processInputs());
 
-        //adjust fragment if this fragment is used for profile
+        // check if this fragment is opened for registration or for profile
         if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
             view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
             btnProfileInformation.setHint(getString(R.string.myProfile_apply_changes));
-            btnProfileInformation.setVisibility(View.INVISIBLE);
+            btnProfileInformation.setEnabled(false);
             investor = (Investor) accountViewModel.getAccount().getValue();
             contactDetails = AccountService.getContactData();
             editMode = true;
@@ -74,9 +70,31 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
             contactDetails = RegistrationHandler.getContactData();
         }
 
-        setupCountryPicker();
+        return view;
+    }
 
-        // fill views with users existing data
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // if editmode, add text watchers after initial filling with users data
+        if (editMode) {
+            profileCompanyInput.addTextChangedListener(this);
+            profileWebsiteInput.addTextChangedListener(this);
+            profilePhoneInput.addTextChangedListener(this);
+            profileCountryInput.addTextChangedListener(this);
+        }
+    }
+
+    @Override
+    public void onResourcesLoaded() {
+        populateFragment();
+    }
+
+    /**
+     * Populate fragment with existing user data
+     */
+    private void populateFragment() {
         profileCompanyInput.setText(investor.getCompanyName());
         profileWebsiteInput.setText(investor.getWebsite());
 
@@ -90,75 +108,62 @@ public class RegisterProfileInformationFragment extends RaisingFragment implemen
         if (investor.getCountryId() != -1)
             countryId = (int) investor.getCountryId();
 
-        // if editmode, add text watchers after initial filling with users data
-        if (editMode) {
-            profileCompanyInput.addTextChangedListener(this);
-            profileWebsiteInput.addTextChangedListener(this);
-            profilePhoneInput.addTextChangedListener(this);
-            profileCountryInput.addTextChangedListener(this);
-        }
+        setupCountryPicker();
     }
 
+    /**
+     * Setup the country picker with resources and existing user data
+     */
     private void setupCountryPicker() {
         CustomPicker.Builder builder =
                 new CustomPicker.Builder()
                         .with(getContext())
                         .canSearch(true)
-                        .listener(new OnCustomPickerListener() {
-                            @Override
-                            public void onSelectItem(PickerItem country) {
-                                profileCountryInput.setText(country.getName());
-                                countryId = (int) country.getId();
-                            }
+                        .listener(country -> {
+                            profileCountryInput.setText(country.getName());
+                            countryId = (int) country.getId();
                         })
                         .setItems(resources.getCountries());
 
         customPicker = builder.build();
 
-        profileCountryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    if (!customPicker.instanceRunning())
-                        customPicker.showDialog(getActivity());
-                }
+        profileCountryInput.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                if (!customPicker.instanceRunning())
+                    customPicker.showDialog(getActivity());
             }
         });
 
-        profileCountryInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (customPicker.instanceRunning())
-                    customPicker.dismiss();
+        profileCountryInput.setOnClickListener(v -> {
+            if (customPicker.instanceRunning())
+                customPicker.dismiss();
 
-                customPicker.showDialog(getActivity());
-            }
+            customPicker.showDialog(getActivity());
         });
     }
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 
     @Override
     protected void onAccountUpdated() {
-        popCurrentFragment(this);
+        resetTab();
+        popFragment(this);
         accountViewModel.updateCompleted();
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        btnProfileInformation.setVisibility(View.VISIBLE);
+        btnProfileInformation.setEnabled(true);
     }
 
     /**
-     * Check whether information is valid, then save profile information and
-     * switch to next fragment
+     * Check the validity of user inputs, then handle the inputs
      */
-    private void processProfileInformation() {
+    private void processInputs() {
         String companyName = profileCompanyInput.getText().toString();
         contactDetails.setPhone(profilePhoneInput.getText().toString());
         if (profileWebsiteInput.getText().toString().length() != 0 && !(profileWebsiteInput.getText().toString().contains("http"))) {

@@ -100,14 +100,6 @@
                     android:paddingStart="2dp"
                     android:paddingEnd="2dp"
                     android:src="@drawable/ic_circle_full_12dp"
-                    android:tint="@color/raisingPrimaryDark" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="2dp"
-                    android:paddingEnd="2dp"
-                    android:src="@drawable/ic_circle_full_12dp"
                     android:tint="@color/raisingPrimaryAccent" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

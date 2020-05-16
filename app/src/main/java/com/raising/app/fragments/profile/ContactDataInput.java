@@ -20,7 +20,6 @@ import com.raising.app.models.ContactData;
 import com.raising.app.util.AccountService;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
-import com.raising.app.util.SubscriptionHandler;
 
 public class ContactDataInput extends RaisingFragment {
     private EditText phoneNumberInput;
@@ -33,6 +32,8 @@ public class ContactDataInput extends RaisingFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_contact_details), false);
 
         return inflater.inflate(R.layout.fragment_contact_details_input, container, false);
@@ -42,6 +43,12 @@ public class ContactDataInput extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // find views
+        phoneNumberInput = view.findViewById(R.id.contact_input_phone);
+        saveButton = view.findViewById(R.id.contact_input_save_button);
+        saveButton.setOnClickListener(v -> processInputs());
+
+        // prepare contactDetails object
         contactDetails = new ContactData();
         contactDetails.setEmail(this.getArguments().getString("email"));
         isStartup = this.getArguments().getBoolean("isStartup");
@@ -49,21 +56,9 @@ public class ContactDataInput extends RaisingFragment {
         accountId = this.getArguments().getLong("id");
         contactDetails.setAccountId(accountId);
 
-        phoneNumberInput = view.findViewById(R.id.contact_input_phone);
-        saveButton = view.findViewById(R.id.contact_input_save_button);
-
         Log.d("ContactDataInput", "onViewCreated: " + contactDetails.getEmail());
 
-        setupButton();
-
-        hideBottomNavigation(true);
-    }
-
-    /**
-     * Setup save button (add on click listener)
-     */
-    private void setupButton() {
-        saveButton.setOnClickListener(v -> processInputs());
+        viewStateViewModel.stopLoading();
     }
 
     /**
@@ -76,7 +71,6 @@ public class ContactDataInput extends RaisingFragment {
                     getString(R.string.register_dialog_text_empty_credentials));
             return;
         }
-
         contactDetails.setPhone(phoneNumberInput.getText().toString());
 
         try {
@@ -87,7 +81,7 @@ public class ContactDataInput extends RaisingFragment {
                     token, accountId, isStartup);
             accountViewModel.loadAccount();
             settingsViewModel.loadSettings();
-            SubscriptionHandler.loadSubscription();
+            subscriptionViewModel.loadSubscription();
             AccountService.loadContactData(AuthenticationHandler.getId());
             hideBottomNavigation(false);
 

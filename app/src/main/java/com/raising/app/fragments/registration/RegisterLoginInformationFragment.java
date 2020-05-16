@@ -1,6 +1,5 @@
 package com.raising.app.fragments.registration;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,15 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.android.volley.VolleyError;
 import com.raising.app.R;
+import com.raising.app.fragments.LoginFragment;
 import com.raising.app.fragments.RaisingFragment;
-import com.raising.app.fragments.profile.MyProfileFragment;
 import com.raising.app.models.Account;
-import com.raising.app.models.Investor;
-import com.raising.app.models.Startup;
-import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.RaisingTextWatcher;
@@ -32,12 +29,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.function.Function;
 
-import lombok.Getter;
-
 public class RegisterLoginInformationFragment extends RaisingFragment implements RaisingTextWatcher {
     private final String TAG = "RegisterLoginInformationFragment";
+    private ImageView imageLoginInformation;
     private EditText firstNameInput, lastNameInput, emailInput, passwordInput;
-    private Button btnLoginInformation;
+    private Button btnLoginInformation, btnHasAccount;
     private boolean load = false;
     private boolean editMode = false;
     private Account account;
@@ -45,14 +41,12 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register_login_information, container, false);
 
         hideBottomNavigation(true);
-        customizeAppBar(getString(R.string.toolbar_title_login_information), true);
+        hideToolbar(true);
 
-        RegistrationHandler.setCancelAllowed(true);
-
-        return view;
+        return inflater.inflate(R.layout.fragment_register_login_information,
+                container, false);
     }
 
     @Override
@@ -65,27 +59,34 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         emailInput = view.findViewById(R.id.register_input_email);
         passwordInput = view.findViewById(R.id.register_input_password);
 
-        btnLoginInformation = view.findViewById(R.id.button_login_information);
-        btnLoginInformation.setOnClickListener(v -> processLoginInformation());
+        imageLoginInformation = view.findViewById(R.id.image_register_login_information);
 
-        //adjust fragment if this fragment is used for profile
+        btnLoginInformation = view.findViewById(R.id.button_login_information);
+        btnLoginInformation.setOnClickListener(v -> processInputs());
+
+        btnHasAccount = view.findViewById(R.id.button_login_information_has_account);
+        btnHasAccount.setOnClickListener(v -> changeFragment(new LoginFragment()));
+
+        // check if this fragment is opened for registration or for profile
         if(this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
             btnLoginInformation.setHint(getString(R.string.myProfile_apply_changes));
-            btnLoginInformation.setVisibility(View.INVISIBLE);
+            btnLoginInformation.setEnabled(false);
             editMode = true;
             hideBottomNavigation(false);
+            hideToolbar(false);
+            customizeAppBar(getString(R.string.toolbar_title_login_information), true);
             account = currentAccount;
             account.setEmail(AuthenticationHandler.getEmail());
             view.findViewById(R.id.register_password).setVisibility(View.GONE);
+            view.findViewById(R.id.login_information_helper_view).setVisibility(View.GONE);
+            btnHasAccount.setVisibility(View.GONE);
+            imageLoginInformation.setVisibility(View.GONE);
         } else {
+            Log.d(TAG, "onViewCreated: getting account from registration handler");
             account = RegistrationHandler.getAccount();
         }
-
-        // fill text inputs with existing user data
-        firstNameInput.setText(account.getFirstName());
-        lastNameInput.setText(account.getLastName());
-        emailInput.setText(account.getEmail());
-        passwordInput.setText(account.getPassword());
+        populateFragment();
 
         // if editmode, add text watchers after initial filling with users data
         if(editMode) {
@@ -97,28 +98,39 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-        Log.d(TAG, "onDestroyView: ");
         hideBottomNavigation(false);
+        hideToolbar(false);
+        super.onDestroyView();
 
     }
 
     @Override
     public void onAccountUpdated() {
-        popCurrentFragment(this);
+        resetTab();
+        popFragment(this);
         accountViewModel.updateCompleted();
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         Log.d(TAG, "onTextChanged: Text has changed");
-        btnLoginInformation.setVisibility(View.VISIBLE);
+        btnLoginInformation.setEnabled(true);
+    }
+
+    /**
+     * Populate fragment with existing user data
+     */
+    private void populateFragment() {
+        firstNameInput.setText(account.getFirstName());
+        lastNameInput.setText(account.getLastName());
+        emailInput.setText(account.getEmail());
+        passwordInput.setText(account.getPassword());
     }
 
     /**
      * Check whether login information is valid and if so save them and move to next fragment
      */
-    private void processLoginInformation() {
+    private void processInputs() {
         final String firstName = firstNameInput.getText().toString();
         final String lastName = lastNameInput.getText().toString();
         final String email = emailInput.getText().toString();
@@ -158,6 +170,8 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
                 HashMap<String, String> params = new HashMap<>();
                 params.put("email", email);
 
+                viewStateViewModel.startLoading();
+
                 ApiRequestHandler.performPostRequest("account/valid",
                         callback, errorHandler, new JSONObject(params));
             } else {
@@ -169,12 +183,16 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         }
     }
 
+    /**
+     * This function gets called after a successful backend verification of the uniqueness of the email address
+     */
     Function<JSONObject, Void> callback = response -> {
-
         final String firstName = firstNameInput.getText().toString();
         final String lastName = lastNameInput.getText().toString();
         final String email = emailInput.getText().toString();
         final String password = passwordInput.getText().toString();
+
+        viewStateViewModel.stopLoading();
 
         try {
             if(!editMode) {
@@ -194,7 +212,11 @@ public class RegisterLoginInformationFragment extends RaisingFragment implements
         return null;
     };
 
+    /**
+     * This function gets called after a failed backend verification of the email address
+     */
     Function<VolleyError, Void> errorHandler = error -> {
+        viewStateViewModel.stopLoading();
         try {
             if(error.networkResponse.statusCode == 400) {
                 showSimpleDialog(

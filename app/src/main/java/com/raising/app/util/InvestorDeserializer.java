@@ -23,7 +23,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class InvestorDeserializer implements JsonDeserializer<Investor> {
@@ -49,6 +52,9 @@ public class InvestorDeserializer implements JsonDeserializer<Investor> {
         investor.setTicketMaxId(jsonObject.get("ticketMaxId").getAsInt());
         investor.setInvestorTypeId(jsonObject.get("investorTypeId").getAsInt());
         investor.setCountryId(jsonObject.get("countryId").getAsLong());
+        if(jsonObject.has("lastChanged")) {
+            investor.setLastChanged(Serializer.parseTimestamp(jsonObject.get("lastChanged").getAsString()));
+        }
 
         if(jsonObject.get("profilePictureId") != null) {
             investor.setProfilePictureId(jsonObject.get("profilePictureId").getAsInt());

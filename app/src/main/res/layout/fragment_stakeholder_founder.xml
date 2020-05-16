@@ -40,7 +40,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_founder_first_name"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight" />
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -58,7 +59,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_founder_last_name"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight" />
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -68,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_stakeholder_position"
-                app:layout_constraintBottom_toTopOf="@+id/founder_education"
+                app:layout_constraintBottom_toTopOf="@+id/founder_country"
                 app:layout_constraintEnd_toEndOf="@+id/founder_last_name"
                 app:layout_constraintStart_toStartOf="@+id/founder_last_name"
                 app:layout_constraintTop_toBottomOf="@+id/founder_last_name">
@@ -76,7 +78,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_founder_poistion"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight" />
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -84,17 +87,19 @@
                 style="@style/TextInputLayoutTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:hint="@string/register_stakeholder_education"
-                app:layout_constraintBottom_toTopOf="@+id/founder_country"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/founder_position"
                 app:layout_constraintStart_toStartOf="@+id/founder_position"
-                app:layout_constraintTop_toBottomOf="@+id/founder_position">
+                app:layout_constraintTop_toBottomOf="@+id/founder_country">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_founder_education"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/inputFormHeight" />
+                    android:layout_height="@dimen/inputFormHeight"
+                    android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,16 +109,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/register_stakeholder_shareholder_country"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/founder_education"
                 app:layout_constraintEnd_toEndOf="@+id/founder_education"
                 app:layout_constraintStart_toStartOf="@+id/founder_education"
-                app:layout_constraintTop_toBottomOf="@+id/founder_education">
+                app:layout_constraintTop_toBottomOf="@+id/founder_position">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_founder_country"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/inputFormHeight"
-                    android:focusable="false" />
+                    android:focusable="false"
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -127,7 +133,7 @@
                 android:textSize="@dimen/raisingSubtitleFontSize"
                 android:textStyle="normal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/founder_country" />
+                app:layout_constraintTop_toBottomOf="@+id/founder_education" />
 
             <Button
                 android:id="@+id/button_cancel_founder"
@@ -140,7 +146,7 @@
                 android:textSize="@dimen/raisingSubtitleFontSize"
                 android:textStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/founder_country" />
+                app:layout_constraintTop_toBottomOf="@+id/founder_education" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

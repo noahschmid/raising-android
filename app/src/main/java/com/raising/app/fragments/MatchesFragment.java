@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,11 +20,11 @@ import com.raising.app.fragments.profile.InvestorPublicProfileFragment;
 import com.raising.app.fragments.profile.StartupPublicProfileFragment;
 import com.raising.app.models.Match;
 import com.raising.app.models.MatchListItem;
+import com.raising.app.util.TabOrigin;
 import com.raising.app.util.recyclerViewAdapter.MatchListAdapter;
 import com.raising.app.models.ViewState;
-import com.raising.app.util.recyclerViewAdapter.RecyclerViewMargin;
 import com.raising.app.viewModels.MatchesViewModel;
-import com.raising.app.viewModels.SettingsViewModel;
+import com.raising.app.viewModels.TabViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,9 +44,17 @@ public class MatchesFragment extends RaisingFragment {
                              @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: ");
 
+        setBase(TabOrigin.MATCHES);
+
         customizeAppBar(getString(R.string.toolbar_title_match_list), false);
         matchesViewModel = ViewModelProviders.of(getActivity())
                 .get(MatchesViewModel.class);
+        tabViewModel = ViewModelProviders.of(getActivity())
+                .get(TabViewModel.class);
+
+        if(tabViewModel.getCurrentMatchesFragment() != null) {
+            changeFragment(tabViewModel.getCurrentMatchesFragment());
+        }
 
         return inflater.inflate(R.layout.fragment_matches, container, false);
     }
@@ -61,6 +68,11 @@ public class MatchesFragment extends RaisingFragment {
                 processItems(matchesViewModel.getMatches().getValue());
             }
         });
+
+        if(matchesViewModel.getViewState().getValue() == ViewState.RESULT ||
+        matchesViewModel.getViewState().getValue() == ViewState.CACHED) {
+            processItems(matchesViewModel.getMatches().getValue());
+        }
     }
 
     @Override
@@ -73,35 +85,43 @@ public class MatchesFragment extends RaisingFragment {
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(() -> matchesViewModel.loadMatches());
-        
-        matchesViewModel.runMatching();
 
         matchListItems = new ArrayList<>();
-
         matchListAdapter = new MatchListAdapter(matchListItems);
+        matchesViewModel.loadMatches();
 
         // prepare match list recycler view
         matchList = view.findViewById(R.id.matchList);
         matchList.setLayoutManager(new LinearLayoutManager(this.getContext()));
         matchList.setAdapter(matchListAdapter);
         matchListAdapter.setOnItemClickListener(position -> {
-            Bundle args = new Bundle();
-            MatchListItem item = matchListItems.get(position);
-            args.putLong("id", item.getAccountId());
-            args.putLong("relationshipId", item.getRelationshipId());
-            args.putInt("score", item.getScore());
-            args.putString("title", item.getName());
-            customizeAppBar(item.getName(), true);
-            if (matchListItems.get(position).isStartup()) {
-                StartupPublicProfileFragment publicProfile = new StartupPublicProfileFragment();
-                publicProfile.setArguments(args);
-                changeFragment(publicProfile);
+            // check if user has valid subscription
+            if(!subscriptionViewModel.hasValidSubscription()) {
+                changeFragment(new UnlockPremiumFragment());
             } else {
-                InvestorPublicProfileFragment publicProfile = new InvestorPublicProfileFragment();
-                publicProfile.setArguments(args);
-                changeFragment(publicProfile);
+                Bundle args = new Bundle();
+                MatchListItem item = matchListItems.get(position);
+                args.putLong("id", item.getAccountId());
+                args.putLong("relationshipId", item.getRelationshipId());
+                args.putInt("score", item.getScore());
+                args.putString("title", item.getName());
+                customizeAppBar(item.getName(), true);
+                if (matchListItems.get(position).isStartup()) {
+                    StartupPublicProfileFragment publicProfile = new StartupPublicProfileFragment();
+                    publicProfile.setArguments(args);
+                    changeFragment(publicProfile);
+                } else {
+                    InvestorPublicProfileFragment publicProfile = new InvestorPublicProfileFragment();
+                    publicProfile.setArguments(args);
+                    changeFragment(publicProfile);
+                }
             }
         });
+
+        if (matchListItems.size() == 0 && matchesViewModel.getViewState().getValue() == ViewState.RESULT) {
+            emptyMatchListLayout.setVisibility(View.VISIBLE);
+            Log.d(TAG, "processItems: Empty Layout visible");
+        }
     }
 
     /**
@@ -115,6 +135,7 @@ public class MatchesFragment extends RaisingFragment {
         matches.forEach(match -> {
             MatchListItem matchItem = new MatchListItem();
             matchItem.setDescription(match.getDescription());
+            matchItem.setAccountLastChanged(match.getAccountLastChanged());
             matchItem.setRelationshipId(match.getId());
             matchItem.setAccountId(match.getAccountId());
             matchItem.setScore(match.getMatchingPercent());
@@ -132,11 +153,12 @@ public class MatchesFragment extends RaisingFragment {
 
             matchListItems.add(matchItem);
         });
-        // matchListItems.forEach(item -> Log.d(TAG, "matchListItems: " + item.getAccountId() + " " + item.getAttribute() + " " + item.getName() + " " + item.getScore()));
         matchListAdapter.notifyDataSetChanged();
 
-        if (matchListItems.size() == 0 && resourcesViewModel.getViewState().getValue() == ViewState.RESULT)
+        if (matchListItems.size() == 0 && matchesViewModel.getViewState().getValue() == ViewState.RESULT) {
             emptyMatchListLayout.setVisibility(View.VISIBLE);
+            Log.d(TAG, "processItems: Empty Layout visible");
+        }
         swipeRefreshLayout.setRefreshing(false);
     }
 

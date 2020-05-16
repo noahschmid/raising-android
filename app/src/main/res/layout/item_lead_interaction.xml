@@ -15,7 +15,7 @@
         android:layout_marginTop="@dimen/standardVerticalMargin"
         android:layout_marginEnd="@dimen/standardHorizontalMarginReallySmall"
         android:layout_marginBottom="@dimen/standardVerticalMargin"
-        android:backgroundTint="@color/raisingSecondaryAccent"
+        android:backgroundTint="@color/raisingSecondaryLight"
         app:cardCornerRadius="2dp"
         app:layout_constraintTop_toTopOf="parent">
 

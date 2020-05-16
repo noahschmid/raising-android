@@ -95,13 +95,13 @@
 
             <com.google.android.flexbox.FlexboxLayout
                 android:id="@+id/register_investor_images_gallery"
-                android:layout_width="0dp"
+                android:layout_width="270dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                app:alignContent="stretch"
-                app:alignItems="stretch"
+                app:justifyContent="flex_start"
+                app:alignItems="flex_start"
                 app:flexWrap="wrap"
                 app:layout_constraintBottom_toTopOf="@+id/registration_images_progress"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -151,7 +151,7 @@
                 android:layout_marginStart="@dimen/standardHorizontalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMargin"
                 android:layout_marginBottom="@dimen/standardVerticalMargin"
-                android:hint="@string/register_button_finish_text"
+                android:hint="@string/text_registration_complete"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

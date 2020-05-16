@@ -16,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
             <TextView
                 android:id="@+id/subscription_paragraph_1"
                 style="@style/RaisingText"
@@ -25,6 +24,7 @@
                 android:layout_marginStart="@dimen/standardHorizontalMarginSmall"
                 android:layout_marginTop="@dimen/standardVerticalMargin"
                 android:layout_marginEnd="@dimen/standardHorizontalMarginSmall"
+                android:layout_marginBottom="@dimen/standardVerticalMarginSmall"
                 android:hint="@string/subscription_paragraph_1"
                 app:layout_constraintBottom_toTopOf="@+id/subscription_paragraph_2"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -134,7 +134,7 @@
                 style="@style/ButtonRegistrationAndProfile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
+                android:layout_marginBottom="@dimen/standardVerticalMargin"
                 android:backgroundTint="@color/raisingButtonBackgroundColor"
                 android:hint="@string/subscription_google_play"
                 app:layout_constraintBottom_toBottomOf="parent"

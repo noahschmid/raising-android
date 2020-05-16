@@ -5,8 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +25,7 @@ import com.raising.app.util.RaisingTextWatcher;
 import com.raising.app.util.RegistrationHandler;
 import com.raising.app.util.customPicker.CustomPicker;
 import com.raising.app.util.customPicker.PickerItem;
-import com.raising.app.util.customPicker.listeners.OnCustomPickerListener;
+import com.raising.app.viewModels.AccountViewModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,12 +49,8 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_company_information), true);
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        btnCompanyInformation = view.findViewById(R.id.button_company_information);
+        btnCompanyInformation.setOnClickListener(v -> processInputs());
 
         //define input views and button
         companyCountryInput = view.findViewById(R.id.register_input_company_countries);
@@ -64,10 +59,41 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
         companyNameInput = view.findViewById(R.id.register_input_company_name);
         companyUidInput = view.findViewById(R.id.register_input_company_uid);
 
-        btnCompanyInformation = view.findViewById(R.id.button_company_information);
-        btnCompanyInformation.setOnClickListener(v -> processInformation());
+        accountViewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 
-        TextInputLayout companyUidLayout = view.findViewById(R.id.register_company_uid);
+        // check if this fragment is opened for registration or for profile
+        if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
+            // this fragment is opened via profile
+            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
+            btnCompanyInformation.setHint(getString(R.string.myProfile_apply_changes));
+            btnCompanyInformation.setEnabled(false);
+            editMode = true;
+            startup = (Startup) accountViewModel.getAccount().getValue();
+            contactDetails = AccountService.getContactData();
+            hideBottomNavigation(false);
+        } else {
+            startup = RegistrationHandler.getStartup();
+            contactDetails = RegistrationHandler.getContactData();
+        }
+
+        return view;
+    }
+
+    @Override
+    public void onResourcesLoaded() {
+        if (resources.getCountry(startup.getCountryId()) != null)
+            companyCountryInput.setText(resources.getCountry(startup.getCountryId()).getName());
+
+        prepareCountryPicker();
+
+        // fill text inputs with existing user data
+        companyNameInput.setText(startup.getCompanyName());
+        companyPhoneInput.setText(contactDetails.getPhone());
+        companyWebsiteInput.setText(startup.getWebsite());
+        companyUidInput.setText(startup.getUId());
+        countrySelected = resources.getCountry(startup.getCountryId());
+
+        TextInputLayout companyUidLayout = getView().findViewById(R.id.register_company_uid);
         companyUidLayout.setEndIconOnClickListener(v ->
                 new AlertDialog.Builder(getContext())
                         .setTitle(getString(R.string.registration_information_dialog_title))
@@ -81,54 +107,6 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
                         })
                         .show());
 
-        //adjust fragment if this fragment is used for profile
-        if (this.getArguments() != null && this.getArguments().getBoolean("editMode")) {
-            view.findViewById(R.id.registration_profile_progress).setVisibility(View.INVISIBLE);
-            btnCompanyInformation.setHint(getString(R.string.myProfile_apply_changes));
-            btnCompanyInformation.setVisibility(View.INVISIBLE);
-            editMode = true;
-            startup = (Startup) accountViewModel.getAccount().getValue();
-            contactDetails = AccountService.getContactData();
-            hideBottomNavigation(false);
-        } else {
-            startup = RegistrationHandler.getStartup();
-            contactDetails = RegistrationHandler.getContactData();
-        }
-
-        // fill text inputs with existing user data
-        companyNameInput.setText(startup.getCompanyName());
-        companyPhoneInput.setText(contactDetails.getPhone());
-        companyWebsiteInput.setText(startup.getWebsite());
-        companyUidInput.setText(startup.getUId());
-        if (resources.getCountry(startup.getCountryId()) != null)
-            companyCountryInput.setText(resources.getCountry(startup.getCountryId()).getName());
-        countrySelected = resources.getCountry(startup.getCountryId());
-
-        // Country picker
-        countryItems = new ArrayList<>();
-        resources.getCountries().forEach(country -> countryItems.add(new Country(country)));
-        CustomPicker.Builder pickerBuilder =
-                new CustomPicker.Builder()
-                        .with(getContext())
-                        .canSearch(true)
-                        .listener(new OnCustomPickerListener() {
-                            @Override
-                            public void onSelectItem(PickerItem country) {
-                                companyCountryInput.setText(country.getName());
-                                countrySelected = (Country) country;
-                            }
-                        })
-                        .setItems(resources.getCountries());
-
-        countryPicker = pickerBuilder.build();
-
-        companyCountryInput.setOnClickListener(v -> {
-            if (countryPicker.instanceRunning())
-                countryPicker.dismiss();
-
-            countryPicker.showDialog(getActivity());
-        });
-
         // if editmode, add text watchers
         if(editMode) {
             companyNameInput.addTextChangedListener(this);
@@ -141,29 +119,54 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        btnCompanyInformation.setVisibility(View.VISIBLE);
+        btnCompanyInformation.setEnabled(true);
     }
 
     @Override
     protected void onAccountUpdated() {
         if (!editMode)
             return;
-
+        resetTab();
         AccountService.saveContactData(contactDetails);
-        popCurrentFragment(this);
+        popFragment(this);
     }
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-
         hideBottomNavigation(false);
+        super.onDestroyView();
     }
 
     /**
-     * Process entered information
+     * Prepare the country picker with resources and existing user data
      */
-    private void processInformation() {
+    private void prepareCountryPicker() {
+        countryItems = new ArrayList<>();
+        resources.getCountries().forEach(country -> countryItems.add(new Country(country)));
+        CustomPicker.Builder pickerBuilder =
+                new CustomPicker.Builder()
+                        .with(getContext())
+                        .canSearch(true)
+                        .listener(country -> {
+                            companyCountryInput.setText(country.getName());
+                            countrySelected = (Country) country;
+                        })
+                        .setItems(resources.getCountries());
+
+        countryPicker = pickerBuilder.build();
+
+        companyCountryInput.setOnClickListener(v -> {
+            if (countryPicker.instanceRunning())
+                countryPicker.dismiss();
+
+            countryPicker.showDialog(getActivity());
+        });
+    }
+
+    /**
+     * Check the validity of the user inputs, then handle the inputs
+     */
+    private void processInputs() {
         if (companyNameInput.getText().length() == 0
                 || companyUidInput.getText().length() == 0
                 || companyPhoneInput.getText().length() == 0
@@ -216,8 +219,8 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
     /**
      * Check whether given uid is a valid one
      *
-     * @param uid
-     * @return
+     * @param uid A String representation of the UID that should be checked
+     * @return true, if UID is valid, false, if UID is invalid
      */
     private boolean isValidUid(String uid) {
         if (!uid.matches("[A-Z]{3}-\\d\\d\\d\\.\\d\\d\\d\\.\\d\\d\\d")) {
@@ -240,7 +243,6 @@ public class RegisterCompanyInformationFragment extends RaisingFragment implemen
         if (checksum == remainder) {
             return true;
         }
-
         return false;
     }
 }

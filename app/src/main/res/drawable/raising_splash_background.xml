@@ -5,7 +5,7 @@
         android:width="60dp"
         android:height="130dp" />
     <gradient
-        android:centerColor="@color/raisingPrimaryLight"
+        android:centerColor="#e88287"
         android:startColor="@color/raisingPrimary"
         android:angle="270"/>
 </shape>

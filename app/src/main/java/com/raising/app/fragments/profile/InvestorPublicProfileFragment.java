@@ -12,8 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +30,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.signature.ObjectKey;
 import com.raising.app.R;
 import com.raising.app.fragments.RaisingFragment;
 import com.raising.app.models.Investor;
@@ -49,8 +48,9 @@ import java.util.Objects;
 
 public class InvestorPublicProfileFragment extends RaisingFragment {
     private static final String TAG = "InvestorPublicProfile";
-    private TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch, profileSentence, profileWebsite;
-    private TextView minTicketSize, maxTicketSize;
+    private CardView matchingSummary;
+    private TextView imageIndex, matchingPercent, profileName, profileLocation, profilePitch, profileWebsite;
+    private TextView minTicketSize, maxTicketSize, textRequested, textDeclined;
     private ImageView locationPin;
     private ImageButton profileRequest, profileDecline, btnPrevious, btnNext;
     private Investor investor;
@@ -72,6 +72,8 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     ArrayList<Bitmap> pictures;
     private int currentImageIndex = 0;
 
+    String origin = "";
+
     MatchesViewModel matchesViewModel;
 
     @Override
@@ -83,16 +85,18 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         if (getArguments() == null) {
             return view;
         }
+        matchingSummary = view.findViewById(R.id.investor_public_profile_matching_summary);
 
+        // check if this fragment is used for a public profile or for a profile overview
         if (getArguments().getSerializable("investor") != null) {
+            // this is used for a private profile overview
             Log.d("InvestorPublicProfile", "name: " + ((Investor) getArguments()
                     .getSerializable("investor")).getName());
             investor = (Investor) getArguments().getSerializable("investor");
             customizeAppBar(getString(R.string.toolbar_my_public_profile), true);
-            // hide matching summary, if user accesses own public profile
-            CardView matchingSummary = view.findViewById(R.id.investor_public_profile_matching_summary);
             matchingSummary.setVisibility(View.GONE);
         } else {
+            // this is used for a public profile
             AccountService.getInvestorAccount(getArguments().getLong("id"), investor -> {
                 matchScore = getArguments().getInt("score");
                 relationshipId = getArguments().getLong("relationshipId");
@@ -100,9 +104,13 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                 handshakeState = (InteractionState) getArguments().getSerializable("handshakeState");
                 this.investor = investor;
                 prepareHandshakeButtons();
-                loadData(investor);
+                populateFragment(investor);
                 return null;
             });
+        }
+
+        if (getArguments().getString("origin") != null) {
+            origin = getArguments().getString("origin");
         }
         return view;
     }
@@ -111,6 +119,14 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        matchesViewModel = ViewModelProviders.of(getActivity())
+                .get(MatchesViewModel.class);
+
+        // find views
+        textRequested = view.findViewById(R.id.text_investor_request);
+        textDeclined = view.findViewById(R.id.text_investor_decline);
+
+        // find all views belonging to the image switcher and hide navigation before images are imported
         imageIndex = view.findViewById(R.id.text_investor_profile_gallery_image_index);
         btnPrevious = view.findViewById(R.id.button_investor_gallery_previous);
         btnNext = view.findViewById(R.id.button_investor_gallery_next);
@@ -118,9 +134,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         btnPrevious.setVisibility(View.GONE);
         btnNext.setVisibility(View.GONE);
 
-        matchesViewModel = ViewModelProviders.of(getActivity())
-                .get(MatchesViewModel.class);
-
+        // find views belonging to interaction card. This contains the handshake buttons used to accept and decline matches
         profileLayout = view.findViewById(R.id.profile_layout);
         profileLayout.setVisibility(View.INVISIBLE);
         pictures = new ArrayList<Bitmap>();
@@ -135,7 +149,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         profileLocation = view.findViewById(R.id.text_investor_public_profile_location);
         locationPin = view.findViewById(R.id.investor_public_profile_location_pin);
         profilePitch = view.findViewById(R.id.text_investor_public_profile_pitch);
-        profileSentence = view.findViewById(R.id.text_investor_public_profile_sentence);
 
         profileWebsite = view.findViewById(R.id.button_investor_public_profile_website);
         profileWebsite.setOnClickListener(v -> {
@@ -159,18 +172,17 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         initRecyclerViews(view);
 
         if (investor != null) {
-            loadData(investor);
+            populateFragment(investor);
         }
 
-        Fragment fragment = this;
+        // set click listener to request a match
         profileRequest.setOnClickListener(v -> {
             leadsRequest = true;
             leadsDecline = false;
-
             ApiRequestHandler.performPostRequest("match/" + relationshipId + "/accept",
                     res -> {
                         matchesViewModel.removeMatch(relationshipId);
-                        popCurrentFragment(fragment);
+                        changeToAcceptedLayout();
                         return null;
                     },
                     err -> {
@@ -182,14 +194,14 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                     new JSONObject());
         });
 
+        // set click listener to decline a match
         profileDecline.setOnClickListener(v -> {
             leadsDecline = true;
             leadsRequest = false;
-
             ApiRequestHandler.performPostRequest("match/" + relationshipId + "/decline",
                     res -> {
                         matchesViewModel.removeMatch(relationshipId);
-                        popCurrentFragment(fragment);
+                        changeToDeclinedLayout();
                         return null;
                     },
                     err -> {
@@ -233,99 +245,68 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         recyclerInvolvement.setAdapter(supportAdapter);
     }
 
-
     /**
-     * Set the needed color for the leads buttons
-     *
-     * @param button The button where the color should change
-     * @param color  The new color of the button
-     */
-    private void colorHandshakeButtonBackground(View button, int color) {
-        Drawable drawable = button.getBackground();
-        drawable = DrawableCompat.wrap(drawable);
-        drawable.setTint(getResources().getColor(color));
-        button.setBackground(drawable);
-    }
-
-    /**
-     * Toggle the handshake buttons based on the current state of the handshake
+     * Set the color and visibility of the handshake buttons based on the current handshake state
      */
     private void prepareHandshakeButtons() {
         if (handshakeState != null) {
             switch (handshakeState) {
                 case HANDSHAKE:
                 case STARTUP_ACCEPTED:
-                    profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept_green));
-                    profileRequest.setEnabled(false);
-                    profileDecline.setEnabled(false);
+                    changeToAcceptedLayout();
                     break;
                 case STARTUP_DECLINED:
-                    profileDecline.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_decline_red));
+                    changeToDeclinedLayout();
+                    break;
+                case INVESTOR_DECLINED:
+                    profileRequest.setVisibility(View.GONE);
+                    textRequested.setVisibility(View.GONE);
                     profileRequest.setEnabled(false);
                     profileDecline.setEnabled(false);
+                    changeToDeclinedLayout();
                     break;
             }
         }
     }
 
     /**
+     * Change the matching summary layout to represent an accepted match.
+     */
+    private void changeToAcceptedLayout() {
+        matchingSummary.getBackground().setTint(ContextCompat.getColor(this.getContext(), R.color.raisingPositiveAccent));
+        profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept_green));
+        profileRequest.setEnabled(false);
+        profileDecline.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_decline));
+        profileDecline.setEnabled(true);
+        textDeclined.setText(getString(R.string.decline_text));
+        textRequested.setText(getString(R.string.accepted_text));
+    }
+
+    /**
+     * Change the matching summary layout to represent a declined match
+     */
+    private void changeToDeclinedLayout() {
+        matchingSummary.getBackground().setTint(ContextCompat.getColor(this.getContext(), R.color.raisingNegativeAccent));
+        profileRequest.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_accept));
+        profileRequest.setEnabled(true);
+        profileDecline.setBackground(ContextCompat.getDrawable(this.getContext(), R.drawable.btn_public_profile_decline_red));
+        profileDecline.setEnabled(false);
+        textDeclined.setText(getString(R.string.declined_text));
+        textRequested.setText(getString(R.string.accept_text));
+    }
+
+    /**
      * Load the investors data into the different views
      */
-    private void loadData(Investor investor) {
-        minTicketSize.setText(resources.getTicketSize(investor.getTicketMinId())
-                .toString(getString(R.string.currency),
-                        getResources().getStringArray(R.array.revenue_units)));
-        maxTicketSize.setText(resources.getTicketSize(investor.getTicketMaxId())
-                .toString(getString(R.string.currency),
-                        getResources().getStringArray(R.array.revenue_units)));
-        profileName.setText(investor.getFirstName() + " " + investor.getLastName());
-        profilePitch.setText(investor.getPitch());
-        profileSentence.setText(investor.getDescription());
-        String matchingScore = matchScore + "% " + "Match";
-        matchingPercent.setText(matchingScore);
-
-        if (investor.getCountryId() > 0) {
-            profileLocation.setText(resources.getCountry(investor.getCountryId()).getName());
-        } else {
-            profileLocation.setVisibility(View.GONE);
-            locationPin.setVisibility(View.GONE);
-        }
-
-        investorTypes.add((Model) resources.getInvestorType(investor.getInvestorTypeId()));
-        investor.getIndustries().forEach(industry -> {
-            industries.add(resources.getIndustry(industry));
-        });
-        investor.getInvestmentPhases().forEach(phase -> {
-            investmentPhases.add(resources.getInvestmentPhase(phase));
-        });
-        investor.getSupport().forEach(support -> {
-            supports.add(resources.getSupport(support));
-        });
-        typeAdapter.notifyDataSetChanged();
-        phaseAdapter.notifyDataSetChanged();
-        industryAdapter.notifyDataSetChanged();
-        supportAdapter.notifyDataSetChanged();
-        if (investor.getWebsite() == null || investor.getWebsite().equals("")) {
-            profileWebsite.setVisibility(View.GONE);
-        }
-
-       /*
-       if(investor.getProfilePicture() != null) {
-           pictures.add(investor.getProfilePicture().getImage());
-       }
-
-       if(investor.getGallery() != null) {
-           investor.getGallery().forEach(image -> {
-               pictures.add(image.getImage());
-           });
-       }*/
+    private void populateFragment(Investor investor) {
+        // populate the image switcher with the investors images
         if (investor.getProfilePictureId() > 0) {
             Glide.with(this)
                     .asBitmap()
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" +
                             investor.getProfilePictureId())
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .signature(new ObjectKey(investor.getLastChanged().getTime()))
                     .into(new CustomTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, @Nullable
@@ -350,8 +331,7 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                             .asBitmap()
                             .load(ApiRequestHandler.getDomain() + "media/gallery/" +
                                     galleryId)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                             .placeholder(R.drawable.ic_hourglass_empty_black_24dp)
                             .into(new CustomTarget<Bitmap>() {
                                 @Override
@@ -374,11 +354,60 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
                 }
             });
         }
+        String matchingScore = matchScore + "% " + "Match";
+        matchingPercent.setText(matchingScore);
+
+        // populate investors personal information
+        profileName.setText(investor.getFirstName() + " " + investor.getLastName());
+        if (investor.getCountryId() > 0) {
+            profileLocation.setText(resources.getCountry(investor.getCountryId()).getName());
+        } else {
+            profileLocation.setVisibility(View.GONE);
+            locationPin.setVisibility(View.GONE);
+        }
+        profilePitch.setText(investor.getPitch());
+        if (investor.getWebsite() == null || investor.getWebsite().equals("")) {
+            profileWebsite.setVisibility(View.GONE);
+        }
+
+        // populate investors matching criteria
+        minTicketSize.setText(resources.getTicketSize(investor.getTicketMinId())
+                .toString(getString(R.string.currency),
+                        getResources().getStringArray(R.array.revenue_units)));
+        maxTicketSize.setText(resources.getTicketSize(investor.getTicketMaxId())
+                .toString(getString(R.string.currency),
+                        getResources().getStringArray(R.array.revenue_units)));
+
+
+        investorTypes.add((Model) resources.getInvestorType(investor.getInvestorTypeId()));
+        investor.getIndustries().forEach(industry -> {
+            industries.add(resources.getIndustry(industry));
+        });
+        investor.getInvestmentPhases().forEach(phase -> {
+            investmentPhases.add(resources.getInvestmentPhase(phase));
+        });
+        investor.getSupport().forEach(support -> {
+            supports.add(resources.getSupport(support));
+        });
+        typeAdapter.notifyDataSetChanged();
+        phaseAdapter.notifyDataSetChanged();
+        industryAdapter.notifyDataSetChanged();
+        supportAdapter.notifyDataSetChanged();
+
+       /*
+       if(investor.getProfilePicture() != null) {
+           pictures.add(investor.getProfilePicture().getImage());
+       }
+
+       if(investor.getGallery() != null) {
+           investor.getGallery().forEach(image -> {
+               pictures.add(image.getImage());
+           });
+       }*/
 
         profileLayout.setVisibility(View.VISIBLE);
         scrollView.scrollTo(0, 0);
         scrollView.smoothScrollTo(0, 0);
-
     }
 
     /**

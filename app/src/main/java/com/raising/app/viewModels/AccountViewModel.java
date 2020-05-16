@@ -139,11 +139,12 @@ public class AccountViewModel extends AndroidViewModel {
                 if (AuthenticationHandler.isStartup()) {
                     account = (Startup) InternalStorageHandler.loadObject("account_" +
                             AuthenticationHandler.getId());
+                    Log.d(TAG, "getCachedAccount: " + account);
                 } else {
                     account = (Investor) InternalStorageHandler.loadObject("account_" +
                             AuthenticationHandler.getId());
+                    Log.d(TAG, "getCachedAccount: " + account);
                 }
-
                 account.setEmail(AuthenticationHandler.getEmail());
             } catch (Exception e) {
                 Log.e("AccountViewModel", "Error loading cached account: " +
@@ -151,7 +152,6 @@ public class AccountViewModel extends AndroidViewModel {
                 account = null;
             }
         }
-
         return account;
     }
 
@@ -214,7 +214,14 @@ public class AccountViewModel extends AndroidViewModel {
 
         try {
             ApiRequestHandler.performPatchRequest(endpoint,
-                    v -> {
+                    response -> {
+                        try {
+                            AuthenticationHandler.setToken(response.getString("token"));
+                            Log.d(TAG, "update: token updated: " + response.getString("token"));
+                        } catch (JSONException e) {
+                            Log.e(TAG, "update: " + e.getMessage());
+                        }
+
                         if (update instanceof Startup) {
                             currentAccount.postValue((Startup) update);
                         } else if (update instanceof Investor) {

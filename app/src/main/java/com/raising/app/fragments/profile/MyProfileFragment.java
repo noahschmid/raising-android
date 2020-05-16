@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,8 @@ import com.raising.app.fragments.settings.SubscriptionFragment;
 import com.raising.app.models.Investor;
 import com.raising.app.models.Startup;
 import com.raising.app.util.AccountService;
+import com.raising.app.util.TabOrigin;
+import com.raising.app.viewModels.TabViewModel;
 
 public class MyProfileFragment extends RaisingFragment implements View.OnClickListener {
     private ConstraintLayout startUpLayout, investorLayout;
@@ -46,7 +49,16 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
         customizeAppBar(getString(R.string.toolbar_title_my_profile), false);
+        setBase(TabOrigin.PROFILE);
+
+        tabViewModel = ViewModelProviders.of(getActivity())
+                .get(TabViewModel.class);
+
+        if(tabViewModel.getCurrentProfileFragment() != null) {
+            changeFragment(tabViewModel.getCurrentProfileFragment());
+        }
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
@@ -54,9 +66,11 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // find wrapping layouts to hide/show the two different profile layouts
         startUpLayout = view.findViewById(R.id.myProfile_startUp_layout);
         investorLayout = view.findViewById(R.id.myProfile_investor_layout);
 
+        // show/hide the layout based on if the profile is for a startup or an investor
         if(AccountService.isStartup()) {
             startUpLayout.setVisibility(View.VISIBLE);
             investorLayout.setVisibility(View.GONE);
@@ -65,6 +79,7 @@ public class MyProfileFragment extends RaisingFragment implements View.OnClickLi
             investorLayout.setVisibility(View.VISIBLE);
         }
 
+        // find all views and set their click listeners
         startupAccountInformation = view.findViewById(R.id.profile_startup_login_information_layout);
         startupAccountInformation.setOnClickListener(this);
 

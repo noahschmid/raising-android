@@ -16,6 +16,7 @@ import com.raising.app.models.Account;
 import com.raising.app.models.Match;
 import com.raising.app.models.Match;
 import com.raising.app.models.ViewState;
+import com.raising.app.util.AccountService;
 import com.raising.app.util.ApiRequestHandler;
 import com.raising.app.util.AuthenticationHandler;
 import com.raising.app.util.InternalStorageHandler;
@@ -60,6 +61,8 @@ public class MatchesViewModel extends AndroidViewModel {
                 },
                 error -> {
                     Log.e(TAG, "runMatching: " + ApiRequestHandler.parseVolleyError(error));
+
+                    Log.e(TAG, "runMatching: " + error.networkResponse.statusCode );
                     if(error.networkResponse != null) {
                         if(error.networkResponse.statusCode == 403) {
                             viewState.postValue(ViewState.EXPIRED);

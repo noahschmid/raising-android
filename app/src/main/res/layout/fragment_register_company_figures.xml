@@ -111,7 +111,9 @@
                 app:layout_constraintBottom_toTopOf="@+id/registration_profile_progress"
                 app:layout_constraintEnd_toEndOf="@+id/register_company_breakeven"
                 app:layout_constraintStart_toStartOf="@+id/register_company_breakeven"
-                app:layout_constraintTop_toBottomOf="@+id/register_company_breakeven" />
+                app:layout_constraintTop_toBottomOf="@+id/register_company_breakeven"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <LinearLayout
                 android:id="@+id/registration_profile_progress"

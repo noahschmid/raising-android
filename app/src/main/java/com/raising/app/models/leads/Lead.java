@@ -25,6 +25,7 @@ public class Lead implements Serializable {
     private long investmentPhaseId;
     private long investorTypeId;
     private Timestamp timestamp;
+    private Timestamp accountLastChanged = new Timestamp(new Date().getTime());
 
     private LeadState state;
     private InteractionState handshakeState;
@@ -45,7 +46,7 @@ public class Lead implements Serializable {
                 return interaction;
         }
 
-        return new Interaction(-1, type, InteractionState.EMPTY, getAccountId());
+        return new Interaction(-1, id, type, InteractionState.EMPTY, getAccountId());
     }
 
     /**
@@ -67,9 +68,9 @@ public class Lead implements Serializable {
      */
     public void startInteraction(InteractionType type) {
         if(AuthenticationHandler.isStartup()) {
-            interactions.add(new Interaction(-1, type, InteractionState.STARTUP_ACCEPTED, getAccountId()));
+            interactions.add(new Interaction(-1, id, type, InteractionState.STARTUP_ACCEPTED, getAccountId()));
         } else {
-            interactions.add(new Interaction(-1, type, InteractionState.INVESTOR_ACCEPTED, getAccountId()));
+            interactions.add(new Interaction(-1, id, type, InteractionState.INVESTOR_ACCEPTED, getAccountId()));
         }
     }
 }

@@ -21,6 +21,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.concurrent.Callable;
 
 public class SettingsViewModel extends AndroidViewModel {
     private final String TAG = "SettingsViewModel";
@@ -31,7 +33,7 @@ public class SettingsViewModel extends AndroidViewModel {
     public SettingsViewModel(@NonNull Application application) {
         super(application);
         personalSettings.setValue(new PersonalSettings());
-        personalSettings.getValue().setNotificationSettings(new ArrayList<>());
+        Objects.requireNonNull(personalSettings.getValue()).setNotificationSettings(new ArrayList<>());
         viewState.setValue(ViewState.EMPTY);
     }
 
@@ -44,18 +46,16 @@ public class SettingsViewModel extends AndroidViewModel {
     }
 
     public void loadSettings() {
-        Log.d(TAG, "loadSettings: Loading Settings");
         updateDeviceToken();
-        viewState.postValue(ViewState.LOADING);
-        Log.d(TAG, "loadSettings: ViewState " + viewState.getValue().toString());
+        viewState.setValue(ViewState.LOADING);
         PersonalSettings cachedSettings = getCachedSettings();
+        personalSettings.setValue(cachedSettings);
         if (cachedSettings != null) {
-            personalSettings.postValue(cachedSettings);
-            viewState.postValue(ViewState.CACHED);
-            Log.d(TAG, "loadSettings: ViewState " + viewState.getValue().toString());
-        } else {
-            getUserSettings();
+            Log.d(TAG, "loadSettings: Loaded Cached Settings " + cachedSettings);
+            personalSettings.setValue(cachedSettings);
+            viewState.setValue(ViewState.CACHED);
         }
+        getUserSettings();
     }
 
     private void updateDeviceToken() {
@@ -73,14 +73,23 @@ public class SettingsViewModel extends AndroidViewModel {
             Log.e(TAG, "sendDeviceToken: JSONException " + e.getMessage());
         }
 
+        Log.d(TAG, "updateDeviceToken: " + object);
         ApiRequestHandler.performPatchRequest("settings",
                 response -> {
                     viewState.postValue(ViewState.RESULT);
                     Log.d(TAG, "sendDeviceToken: Token updated " + deviceToken);
                     return null;
-                }, volleyError -> {
-                    viewState.postValue(ViewState.ERROR);
-                    Log.e(TAG, "sendDeviceToken: Update failed " + volleyError.getMessage());
+                }, error -> {
+                    if (error.networkResponse != null) {
+                        if (error.networkResponse.statusCode == 403) {
+                            viewState.postValue(ViewState.EXPIRED);
+                        } else {
+                            viewState.postValue(ViewState.ERROR);
+                        }
+                    } else {
+                        viewState.postValue(ViewState.ERROR);
+                    }
+                    Log.e(TAG, "sendDeviceToken: Update failed " + error.getMessage());
                     return null;
                 }, object);
     }
@@ -90,19 +99,24 @@ public class SettingsViewModel extends AndroidViewModel {
                 response -> {
                     viewState.postValue(ViewState.RESULT);
                     try {
+                        personalSettings.setValue(new PersonalSettings());
+                        personalSettings.getValue().setNotificationSettings(new ArrayList<>());
                         personalSettings.getValue().setNumberOfMatches(response.getInt("numberOfMatches"));
                         JSONArray notificationSettings = response.getJSONArray("notificationTypes");
+                        Log.d(TAG, "getUserSettings: " + notificationSettings);
                         for (int i = 0; i < notificationSettings.length(); i++) {
                             personalSettings.getValue().getNotificationSettings().add(Enum.valueOf(NotificationSettings.class, notificationSettings.getString(i)));
                         }
                         Log.d(TAG, "getUserSettings: Personal Settings" + personalSettings.getValue());
                         cacheSettings(personalSettings.getValue());
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         Log.e(TAG, "getUserSettings: Error getting JSON" + e.getMessage());
                     }
                     return null;
                 }, volleyError -> {
-                    viewState.postValue(ViewState.ERROR);
+                    if (viewState.getValue() != ViewState.CACHED) {
+                        viewState.postValue(ViewState.ERROR);
+                    }
                     Log.d(TAG, "getUserSettings: Error fetching settings" + volleyError.toString());
                     return null;
                 });
@@ -179,7 +193,7 @@ public class SettingsViewModel extends AndroidViewModel {
                 Log.d(TAG, "getCachedSettings: No cached settings available");
             }
         } catch (Exception e) {
-            viewState.postValue(ViewState.ERROR);
+            viewState.setValue(ViewState.ERROR);
             Log.e(TAG, "getCachedSettings: Error while getting cached settings" + e.getMessage());
             addInitialSettings();
         }
@@ -190,7 +204,7 @@ public class SettingsViewModel extends AndroidViewModel {
      * Add initial settings for new users
      */
     public void addInitialSettings() {
-        viewState.postValue(ViewState.LOADING);
+        viewState.setValue(ViewState.LOADING);
         Log.d(TAG, "addInitialSettings: ViewState " + viewState.getValue().toString());
         PersonalSettings initialSettings = new PersonalSettings();
 
@@ -242,5 +256,30 @@ public class SettingsViewModel extends AndroidViewModel {
                     Log.e(TAG, "addInitialSettings: " + ApiRequestHandler.parseVolleyError(volleyError));
                     return null;
                 }, object);
+    }
+
+    /**
+     * Call the backend to inform, that user has logged out and the device token should be deleted.
+     * This prevents, that a user who is not logged in, does not receive any push notifications.
+     */
+    public void onLogoutResetToken(Callable<Void> callable) {
+        ApiRequestHandler.performPatchRequest("settings/deletetoken",
+                response -> {
+                    Log.d(TAG, "onLogoutResetToken: Token Reset");
+                    try {
+                        callable.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }, volleyError -> {
+                    Log.e(TAG, "onLogoutResetToken: " + volleyError.getMessage());
+                    try {
+                        callable.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }, new JSONObject());
     }
 }
