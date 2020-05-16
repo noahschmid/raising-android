@@ -45,4 +45,15 @@ public class TabViewModel extends AndroidViewModel {
     public void resetCurrentMatchesFragment() { currentMatchesFragment = null; }
     public void resetCurrentSettingsFragment() { currentSettingsFragment = null; }
     public void resetCurrentRegistrationFragment() { currentRegistrationFragment = null; }
+
+    /**
+     * Reset all tabs
+     */
+    public void resetAll() {
+        resetCurrentLeadsFragment();
+        resetCurrentSettingsFragment();
+        resetCurrentProfileFragment();
+        resetCurrentMatchesFragment();
+        resetCurrentRegistrationFragment();
+    }
 }
