@@ -51,8 +51,11 @@ public class StartupDeserializer implements JsonDeserializer<Startup> {
         startup.setTicketMinId(jsonObject.get("ticketMinId").getAsInt());
         startup.setTicketMaxId(jsonObject.get("ticketMaxId").getAsInt());
         startup.setInvestmentPhaseId(jsonObject.get("investmentPhaseId").getAsInt());
-        startup.setLastChanged(Serializer.parseTimestamp(jsonObject.get("lastChanged").getAsString()));
 
+        if(jsonObject.has("lastChanged")) {
+            Log.d("StartupDeserializer", "deserialize: " + jsonObject.get("lastChanged"));
+            startup.setLastChanged(Serializer.parseTimestamp(jsonObject.get("lastChanged").getAsString()));
+        }
         if(jsonObject.get("firstName") != null) {
             startup.setFirstName(jsonObject.get("firstName").getAsString());
         }
