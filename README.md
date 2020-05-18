@@ -1,4 +1,15 @@
-# raising-android
+<p align="center">
+  <a href="" rel="noopener">
+ <img width=550px height=200px src="docs-resources/raising_schrift.PNG" alt="Project logo"></a>
+</p>
+
+<h3 align="center">RAI$ING - Android</h3>
+
+---
+
+<p align="center"> Few lines describing your project.
+    <br> 
+</p>
 
 ## Table of contents
 1. [Initial Setup](#initial)
