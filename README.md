@@ -51,9 +51,11 @@ NOTE: Before using an emulator to start our app, keep in mind, that the emulator
 1. Contact [Lorenz Caliezi](mailto:lorenz.caliezi@students.unibe.ch?subject=[GitHub]%20Rai$ing). Your E-Mail body should contain the address of your Google Account.
 1. [Register as App-Tester](https://play.google.com/apps/internaltest/4700141989544110193)
 1. Download the app with one of the two following links:
+   
    [App with enabled subscriptions](https://play.google.com/apps/test/RQq5CHR3bp4/ahAJEhp-nFfHB_B3N5PCEw9YfftAHWOdRTuNFZOvp7w11ihraudI2cu6_zyAG2Z-6oDwn934mRQ4Mj5oT307gqb0tx)
+   
    [App with disabled subscriptions](https://play.google.com/apps/test/RQq5CHR3bp4/ahAJEhp-kYrn1_PgQOFXdfkfZF_aG5OK6-hKvLe4gh7xc-YqRC677TEbF7o2RWUb89V07KQV0fp4ct-0MWwDvxtWtp)
-  
+
 
 ## Further development <a name="development"/>
 
