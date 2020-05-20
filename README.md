@@ -14,8 +14,9 @@
 ## 📝 Table of Contents
 1. [Local Installation](#local)
 1. [Download from Play Store](#download)
-1. [Further development](#development)
+1. [Development](#development)
 1. [Documentation](#documentation)
+1. [Authors](#authors)
 
 ## Local Installation <a name="local"/>
 
@@ -57,10 +58,13 @@ NOTE: Before using an emulator to start our app, keep in mind, that the emulator
    [App with disabled subscriptions](https://play.google.com/apps/test/RQq5CHR3bp4/ahAJEhp-kYrn1_PgQOFXdfkfZF_aG5OK6-hKvLe4gh7xc-YqRC677TEbF7o2RWUb89V07KQV0fp4ct-0MWwDvxtWtp)
 
 
-## Further development <a name="development"/>
+## Development <a name="development"/>
+
+To navigate our projekt click on [Source](https://github.com/olistaehli/raising-android/tree/master/app/src/main) or [Tests](https://github.com/olistaehli/raising-android/tree/master/app/src/test/java/com/raising/app) to find the respective folders.
 
 Our inline code documentation should help you to get started.
-For additional information visit [Android documentations](https://developer.android.com/docs).
+For additional information about Android Development visit [Android documentations](https://developer.android.com/docs).
+
 
 ## Documentation <a name="documentation"/>
 
@@ -68,3 +72,9 @@ If you want to create the newest documentation of our project, follow these step
 1. In Android Studio, open the `Tools` menu and select `Generate JavaDoc..`
 1. Enter your prefered scope and a directory, where the generated files should be stored
 1. Also tick the box `Open generated documentation in browser`
+
+
+## Authors <a name="authors"/>
+
+[Noah Schmid](https://github.com/noahschmid) and [Lorenz Caliezi](https://github.com/LorenzCaliezi) 
+
