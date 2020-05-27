@@ -76,5 +76,5 @@ If you want to create the newest documentation of our project, follow these step
 
 ## Authors <a name="authors"/>
 
-[Noah Schmid](https://github.com/noahschmid) (mainly backend communication and business logic) and [Lorenz Caliezi](https://github.com/LorenzCaliezi) (mainly design related stuff and business logic)
+[Noah Schmid](https://github.com/noahschmid) (mainly backend communication and business logic) <br /> [Lorenz Caliezi](https://github.com/LorenzCaliezi) (mainly design related stuff and business logic)
 
