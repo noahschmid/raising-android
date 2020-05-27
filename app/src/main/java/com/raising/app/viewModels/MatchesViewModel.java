@@ -45,6 +45,10 @@ public class MatchesViewModel extends AndroidViewModel {
 
     public LiveData<ViewState> getViewState() { return viewState; }
 
+    /**
+     * Remove match from view model
+     * @param id the id of the match
+     */
     public void removeMatch(Long id) {
         for(int i = 0; i < matches.getValue().size(); ++i) {
             if(id == matches.getValue().get(i).getId()) {
@@ -53,6 +57,9 @@ public class MatchesViewModel extends AndroidViewModel {
         }
     }
 
+    /**
+     * Run the matching algorithm on the backend
+     */
     public void runMatching() {
         ApiRequestHandler.performPostRequest("match/run",
                 response -> {
@@ -76,6 +83,9 @@ public class MatchesViewModel extends AndroidViewModel {
                 }, new JSONObject());
     }
 
+    /**
+     * Load matches from backend
+     */
     public void loadMatches() {
         ArrayList<Match> cachedMatchList = getCachedMatches();
         if(cachedMatchList != null) {
@@ -123,7 +133,7 @@ public class MatchesViewModel extends AndroidViewModel {
 
     /**
      * Load cached match list from internal storage
-     * @return
+     * @return list of cached matches
      */
     private ArrayList<Match> getCachedMatches() {
         try {

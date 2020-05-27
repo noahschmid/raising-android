@@ -21,6 +21,11 @@ import org.json.JSONObject;
 
 import java.util.function.Function;
 
+/**
+ * This class handles loading of accounts and contact data as well as saving new contact data
+ * from other accounts
+ */
+
 public class AccountService {
     private static ContactData contactData = new ContactData();
     private static Account account = new Account();

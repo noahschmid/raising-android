@@ -45,6 +45,9 @@ public class SettingsViewModel extends AndroidViewModel {
         return viewState;
     }
 
+    /**
+     * Load settings from backend
+     */
     public void loadSettings() {
         updateDeviceToken();
         viewState.setValue(ViewState.LOADING);
@@ -58,6 +61,9 @@ public class SettingsViewModel extends AndroidViewModel {
         getUserSettings();
     }
 
+    /**
+     * Update the device token using a patch request to the server
+     */
     private void updateDeviceToken() {
         Log.d(TAG, "updateDeviceToken: ");
         viewState.postValue(ViewState.LOADING);
@@ -94,6 +100,9 @@ public class SettingsViewModel extends AndroidViewModel {
                 }, object);
     }
 
+    /**
+     * Get currently saved user settings from backend
+     */
     private void getUserSettings() {
         ApiRequestHandler.performGetRequest("settings",
                 response -> {
@@ -124,7 +133,6 @@ public class SettingsViewModel extends AndroidViewModel {
 
     /**
      * Update all user settings locally, in cache and on the server
-     *
      * @param settings The new object of personal settings
      */
     public void updatePersonalSettings(PersonalSettings settings) {
@@ -168,7 +176,6 @@ public class SettingsViewModel extends AndroidViewModel {
 
     /**
      * Cache all the users personal settings in internal storage
-     *
      * @param settings The settings that are to be cached
      */
     private void cacheSettings(PersonalSettings settings) {
@@ -181,7 +188,10 @@ public class SettingsViewModel extends AndroidViewModel {
         }
     }
 
-
+    /**
+     * Get cached settings from internal storage
+     * @return PersonalSettings instance loaded from internal storage
+     */
     private PersonalSettings getCachedSettings() {
         try {
             if (InternalStorageHandler.exists("settings_" + AuthenticationHandler.getId())) {

@@ -26,6 +26,12 @@ import java.util.function.Function;
 
 import javax.net.ssl.HttpsURLConnection;
 
+/**
+ * This helper class uploads profile and gallery images in a background thread to the backend server and displays
+ * a progress bar.
+ */
+
+
 public class ImageUploader extends AsyncTask<Void, Integer, String> {
     private String boundary;
     private static final String LINE_FEED = "\r\n";
@@ -44,10 +50,10 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
 
     /**
      * Standard constructor to upload profile picture and/or gallery
-     * @param profileImage
-     * @param galleryImages
-     * @param callback
-     * @param errorCallback
+     * @param profileImage bitmap containing profile image
+     * @param galleryImages list of bitmaps containing gallery images
+     * @param callback callback function that get's called when upload was succesful
+     * @param errorCallback error callback that get's called when there was an error
      */
     public ImageUploader(Bitmap profileImage, List<Bitmap> galleryImages,
                          Function<JSONObject, Void> callback,
@@ -68,11 +74,11 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
     }
 
     /**
-     * Constructor to change profile picture
-     * @param profileImage
-     * @param id
-     * @param callback
-     * @param errorCallback
+     * Constructor to change profile picture (PATCH request instead of POST)
+     * @param profileImage bitmap containing new profile picture
+     * @param id id of the profile picture
+     * @param callback callback function that get's called when upload was succesful
+     * @param errorCallback error callback that get's called when there was an error
      */
     public ImageUploader(Bitmap profileImage, long id,
                          Function<JSONObject, Void> callback,
@@ -81,6 +87,11 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
         this.profilePictureId = id;
     }
 
+    /**
+     * Create a new connection to the backend server
+     * @param requestUrl backend endpoint
+     * @throws Exception gets thrown when connection could not be established
+     */
     private void prepareConnection(String requestUrl) throws Exception {
         // creates a unique boundary based on time stamp
         boundary = "===" + System.currentTimeMillis() + "===";
@@ -109,10 +120,10 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
     /**
      * Adds a upload file section to the request
      * @param fieldName name attribute in <input type="file" name="..." />
-     * @param uploadFile a File to be uploaded
-     * @throws IOException
+     * @param uploadFile a file to be uploaded
+     * @throws IOException gets thrown when there was an error in the input stream
      */
-    public void addFilePart(String fieldName, File uploadFile)
+    private void addFilePart(String fieldName, File uploadFile)
             throws IOException {
         String fileName = uploadFile.getName();
         writer.append("--" + boundary).append(LINE_FEED);
@@ -146,14 +157,17 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
 
     /**
      * Adds a header field to the request.
-     * @param name - name of the header field
-     * @param value - value of the header field
+     * @param name name of the header field
+     * @param value value of the header field
      */
     public void addHeaderField(String name, String value) {
         writer.append(name).append(": ").append(value).append(LINE_FEED);
         writer.flush();
     }
 
+    /**
+     * Set up and display progress dialog
+     */
     @Override
     protected void onPreExecute() {
         progressDialog = new ProgressDialog(InternalStorageHandler.getActivity());
@@ -171,6 +185,11 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
         progressDialog.show();
     }
 
+    /**
+     * Handle file upload
+     * @param v possible parameters that are not used
+     * @return string indicating whether task was successful
+     */
     @Override
     protected String doInBackground(Void... v) {
         try {
@@ -276,6 +295,10 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
         return "fail";
     }
 
+    /**
+     * Update progressbar
+     * @param progress current value of the progress bar
+     */
     @Override
     protected void onProgressUpdate(Integer... progress) {
         progressDialog.setProgress((int) (progress[0]));
@@ -295,6 +318,12 @@ public class ImageUploader extends AsyncTask<Void, Integer, String> {
         }
     }
 
+    /**
+     * Persist image to internal storage
+     * @param bitmap bitmap to save
+     * @param name name of the file
+     * @return reference to the saved file
+     */
     private File persistImage(Bitmap bitmap, String name) {
         File filesDir = InternalStorageHandler.getContext().getFilesDir();
         File imageFile = new File(filesDir, name + ".jpg");

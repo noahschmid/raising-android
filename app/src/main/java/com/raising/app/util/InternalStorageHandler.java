@@ -108,6 +108,10 @@ public class InternalStorageHandler {
         return result;
     }
 
+    /**
+     * Delete file from internal storage
+     * @param filename name of the file to delete
+     */
     public static void deleteFile(String filename) {
         if(!exists(filename))
             return;

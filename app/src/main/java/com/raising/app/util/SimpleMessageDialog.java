@@ -11,6 +11,9 @@ import androidx.fragment.app.DialogFragment;
 
 import com.raising.app.R;
 
+/**
+ * This class handles the display of a simple dialog containing a message
+ */
 
 public class SimpleMessageDialog extends DialogFragment {
     /**

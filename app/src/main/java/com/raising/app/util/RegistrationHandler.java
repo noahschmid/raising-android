@@ -14,6 +14,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * This helper class handles the whole registration process and saves already entered information
+ * to internal storage so it doesn't get lost when closing the app
+ */
+
 public class RegistrationHandler {
     private static final String registrationEndpoint = "account/register";
     private static final String freeEmailEndpoint = "account/valid";
@@ -31,8 +36,8 @@ public class RegistrationHandler {
 
     /**
      * Set the type of the account (startup or investor)
-     * @param type
-     * @throws IOException
+     * @param type string indicating type of account ('startup' or 'investor')
+     * @throws IOException gets thrown if writing to internal storage failed
      */
     public static void setAccountType(String type) throws IOException {
         accountType = type;
@@ -65,11 +70,11 @@ public class RegistrationHandler {
 
     /**
      * Save login information to internal storage until registration gets submitted
-     * @param firstName
-     * @param lastName
-     * @param email
-     * @param password
-     * @throws IOException
+     * @param firstName first name of user
+     * @param lastName last name of user
+     * @param email email of user
+     * @param password password of user
+     * @throws IOException gets thrown if writing to internal storage failed
      */
     public static void saveLoginInformation(String firstName, String lastName,
                                             String email, String password)  throws IOException {
@@ -152,7 +157,7 @@ public class RegistrationHandler {
 
     /**
      * Save account type
-     * @throws IOException
+     * @throws IOException gets thrown if writing to internal storage failed
      */
     private static void saveAccountType() throws IOException {
         String registrationInfo = accountType;
@@ -161,7 +166,7 @@ public class RegistrationHandler {
 
     /**
      * Load saved account details
-     * @return
+     * @return instance of Account
      */
     public static Account loadAccount() {
         if(!InternalStorageHandler.exists("rgstr_account")) {
@@ -176,7 +181,7 @@ public class RegistrationHandler {
 
     /**
      * Load saved investor specific details
-     * @return
+     * @return instance of Investor
      */
     public static Investor loadInvestor() {
         if(!InternalStorageHandler.exists("rgstr_investor")) {
@@ -192,7 +197,7 @@ public class RegistrationHandler {
 
     /**
      * Load saved investor specific details
-     * @return
+     * @return instance of Startup
      */
     public static Startup loadStartup() {
         if(!InternalStorageHandler.exists("rgstr_startup")) {
@@ -208,7 +213,7 @@ public class RegistrationHandler {
 
     /**
      * Load saved private profile
-     * @return
+     * @return instance of ContactData class containing the entered contact data
      */
     public static ContactData loadContactData() {
         if(!InternalStorageHandler.exists("rgstr_contact")) {
@@ -225,7 +230,7 @@ public class RegistrationHandler {
      * Save private profile in a file named with id of account and cancel delete registration info
      * @param id the id of the newly created account
      * @param token the login token
-     * @throws IOException
+     * @throws IOException gets thrown if writing to internal storage failed
      */
     public static void finish(long id, String token, boolean isStartup) throws Exception {
         AuthenticationHandler.login(account.getEmail(), token, id, isStartup);
@@ -233,18 +238,33 @@ public class RegistrationHandler {
         cancel();
     }
 
+    /**
+     * Save investor to internal storage
+     * @param investor instance of Investor class
+     * @throws IOException gets thrown if writing to internal storage failed
+     */
     public static void saveInvestor(Investor investor) throws IOException {
         RegistrationHandler.investor = investor;
         InternalStorageHandler.saveObject(RegistrationHandler.investor,
                 "rgstr_investor");
     }
 
+    /**
+     * Save startup to internal storage
+     * @param startup instance of Startup class
+     * @throws IOException gets thrown if writing to internal storage failed
+     */
     public static void saveStartup(Startup startup) throws IOException {
         RegistrationHandler.startup = startup;
         InternalStorageHandler.saveObject(RegistrationHandler.startup,
                 "rgstr_startup");
     }
 
+    /**
+     * Save contact data to internal storage
+     * @param contactData instance of ContactData class
+     * @throws IOException gets thrown if writing to internal storage failed
+     */
     public static void saveContactData(ContactData contactData) throws IOException {
         RegistrationHandler.contactData = contactData;
         InternalStorageHandler.saveObject(RegistrationHandler.contactData,

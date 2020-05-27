@@ -14,6 +14,10 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
+/**
+ * Drawable that transforms a bitmap to a rounded drawable
+ */
+
 public class CircleImageDrawable extends Drawable {
 
     private final RectF mBounds = new RectF();

@@ -15,6 +15,10 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * This class handles deserialization of matches when returned as json data from backend server
+ */
+
 public class MatchesDeserializer implements JsonDeserializer<Match> {
     @Override
     public Match deserialize(JsonElement json, Type typeOfT,

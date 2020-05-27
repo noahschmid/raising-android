@@ -74,7 +74,6 @@ public class LeadsOpenRequestsFragment extends RaisingFragment {
 
     @Override
     protected void onResourcesLoaded() {
-        Log.d(TAG, "onResourcesLoaded: ");
         leadsViewModel.getViewState().observe(getViewLifecycleOwner(), state -> {
             if(state == ViewState.RESULT || state == ViewState.CACHED) {
                 populateFragment();

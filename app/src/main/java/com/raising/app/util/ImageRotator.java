@@ -17,10 +17,25 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 
+/**
+ * Helper class that rotates images based on the exif data of the image itself. When images
+ * are taken in portrait mode, they normally end up rotated when importing. That's why
+ * this class is needed.
+ */
+
+
 public class ImageRotator {
     private static String TAG = "ImageRotator";
+
+    /**
+     * Rotates a bitmap by given orientation
+     * @param bitmap the bitmap to rotate
+     * @param orientation the orientation of the image (constant defined in ExifInterface)
+     * @return rotated bitmap
+     */
     public static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
         Matrix matrix = new Matrix();
+
         switch (orientation) {
             case ExifInterface.ORIENTATION_NORMAL:
                 return bitmap;
@@ -62,6 +77,12 @@ public class ImageRotator {
         }
     }
 
+    /**
+     * Check whether rotating the bitmap is needed and if so, rotate it
+     * @param path path to the image on the local storage
+     * @param bitmap the image itself
+     * @return rotated bitmap
+     */
     public static Bitmap checkRotation(String path, Bitmap bitmap) {
         ExifInterface exif = null;
         try {

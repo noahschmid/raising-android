@@ -34,13 +34,16 @@ import java.util.function.Function;
 
 import static com.android.volley.VolleyLog.TAG;
 
+/**
+ * This class handles all sending to / receiving from backend server
+ */
+
 public class ApiRequestHandler {
     // -- CHOOSE SERVER --
     private static final boolean CONNECT_TO_DEV_SERVER = false;
 
     private static ApiRequestHandler instance;
     private RequestQueue requestQueue;
-    private ImageLoader imageLoader;
     private static Context context;
     private static String domain = "https://33383.hostserv.eu:";
 
@@ -55,33 +58,30 @@ public class ApiRequestHandler {
         return domain + "8080/";
     }
 
+    /**
+     * Create new request queue
+     * @param context the application context
+     */
     private ApiRequestHandler(Context context) {
         this.context = context;
         requestQueue = getRequestQueue();
-
-        imageLoader = new ImageLoader(requestQueue,
-                new ImageLoader.ImageCache() {
-                    private final LruCache<String, Bitmap> cache
-                            = new LruCache<String, Bitmap>(20);
-
-                    @Override
-                    public Bitmap getBitmap(String url) {
-                        return cache.get(url);
-                    }
-
-                    @Override
-                    public void putBitmap(String url, Bitmap bitmap) {
-                        cache.put(url, bitmap);
-                    }
-                });
     }
 
+    /**
+     * Get instance of ApiRequestHandler (singleton)
+     * @param context
+     * @return
+     */
     public static synchronized ApiRequestHandler getInstance(Context context) {
         if (instance == null)
             instance = new ApiRequestHandler(context);
         return instance;
     }
 
+    /**
+     * Get request queue
+     * @return request queue
+     */
     public RequestQueue getRequestQueue() {
         if (requestQueue == null)
             requestQueue = Volley.newRequestQueue(context.getApplicationContext());
@@ -91,10 +91,10 @@ public class ApiRequestHandler {
     /**
      * Perform simple post request
      *
-     * @param endpoint
-     * @param callback
-     * @param errorCallback
-     * @param params
+     * @param endpoint the backend enpoint
+     * @param callback callback function that gets called when request was successful
+     * @param errorCallback error function that gets called when an error happened
+     * @param params JsonObject containing parameters for backend request
      */
     public static void performPostRequest(String endpoint, Function<JSONObject, Void> callback,
                                           Function<VolleyError, Void> errorCallback,
@@ -137,10 +137,10 @@ public class ApiRequestHandler {
     /**
      * Perform post request with array as params
      *
-     * @param endpoint
-     * @param callback
-     * @param errorCallback
-     * @param params
+     * @param endpoint the backend enpoint
+     * @param callback callback function that gets called when request was successful
+     * @param errorCallback error function that gets called when an error happened
+     * @param params JsonObject containing parameters for backend request
      */
     public static void performPostRequest(String endpoint, Function<JSONArray, Void> callback,
                                           Function<VolleyError, Void> errorCallback,
@@ -190,10 +190,10 @@ public class ApiRequestHandler {
     /**
      * Perform simple patch request
      *
-     * @param endpoint
-     * @param callback
-     * @param errorCallback
-     * @param params
+     * @param endpoint the backend enpoint
+     * @param callback callback function that gets called when request was successful
+     * @param errorCallback error function that gets called when an error happened
+     * @param params JsonObject containing parameters for backend request
      */
     public static void performPatchRequest(String endpoint, Function<JSONObject, Void> callback,
                                            Function<VolleyError, Void> errorCallback,
@@ -348,6 +348,11 @@ public class ApiRequestHandler {
                 .addToRequestQueue(jsonObjectRequest);
     }
 
+    /**
+     * Add new backend request to request queue
+     * @param req the request to add
+     * @param <T> type of request
+     */
     public <T> void addToRequestQueue(Request<T> req) {
         getRequestQueue().add(req);
     }
@@ -355,7 +360,7 @@ public class ApiRequestHandler {
     /**
      * Parse error returned by volley to a string
      *
-     * @param error
+     * @param error error returned from a backend request
      */
     public static String parseVolleyError(VolleyError error) {
         try {
@@ -367,37 +372,6 @@ public class ApiRequestHandler {
                     e.getMessage());
             return "failed to parse error";
         }
-    }
-
-    /**
-     * Wait for synchronous get request
-     * @param endpoint
-     * @return
-     * @throws Exception
-     */
-    public static JSONObject performSynchronousGetRequest(String endpoint) throws Exception {
-        RequestFuture<JSONObject> future = RequestFuture.newFuture();
-
-        GenericRequest request = new GenericRequest(getDomain() + endpoint, null, future, future) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                if (AuthenticationHandler.isLoggedIn()) {
-                    headers.put("Authorization", "Bearer " + AuthenticationHandler.getToken());
-                    return headers;
-                }
-                return super.getParams();
-            }
-
-        };
-
-        request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        getInstance(InternalStorageHandler.getContext()).addToRequestQueue(request);
-        return future.get(5, TimeUnit.SECONDS);
-    }
-
-    public ImageLoader getImageLoader() {
-        return imageLoader;
     }
 
     /**

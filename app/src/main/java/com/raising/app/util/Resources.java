@@ -19,6 +19,11 @@ import java.util.ArrayList;
 
 import lombok.Data;
 
+/**
+ * This class manages lists containing public resources (for example countries, investor types etc.)
+ * and tasks associated with it (for example formatting)
+ */
+
 @Data
 public class Resources implements Serializable {
     private ArrayList<Country> countries = new ArrayList<>();
@@ -49,6 +54,12 @@ public class Resources implements Serializable {
         return null;
     }
 
+    /**
+     * Transform a boring looking integer value to a pretty formatted string in the form of
+     * 1000 -> 1K, 1000000 -> 1M
+     * @param amount the number to "prettify"
+     * @return good looking string
+     */
     public String formatMoneyAmount(int amount) {
         int i = 0;
         String[] units = InternalStorageHandler.getContext().getResources()
@@ -64,6 +75,7 @@ public class Resources implements Serializable {
         return  currency + " " + amount + unit;
     }
 
+    // - STANDARD GETTERS FOR ALL LISTS -
     public TicketSize getTicketSize(long id) {
         return (TicketSize) findById(id, getTicketSizes());
     }
@@ -84,18 +96,41 @@ public class Resources implements Serializable {
         return (InvestmentPhase)findById(id, getInvestmentPhases());
     }
 
+    public Country getCountry(long id) { return (Country)findById(id, getCountries()); }
+
+    public Continent getContinent(long id) { return (Continent)findById(id, getContinents()); }
+
+    public InvestorType getInvestorType(long id) {
+        return (InvestorType)findById(id, getInvestorTypes());
+    }
+
+    /**
+     * Get formatted strings for all ticket sizes
+     * @param currency localized currency string
+     * @param units localized unit string (for example k, M, B for thousand, million, billion)
+     * @return Array of strings containing ticket sizes
+     */
     public String[] getTicketSizeStrings(String currency, String[] units) {
         ArrayList<String> result = new ArrayList();
         getTicketSizes().forEach(size -> result.add(size.toString(currency, units)));
         return result.toArray(new String[0]);
     }
 
+    /**
+     * Get values of ticket sizes instead of string
+     * @return Array of integers containing ticket sizes
+     */
     public int[] getTicketSizeValues() {
         ArrayList<Integer> result = new ArrayList();
         getTicketSizes().forEach(size -> result.add(size.getTicketSize()));
         return result.stream().mapToInt(Integer::valueOf).toArray();
     }
 
+    /**
+     * Get pretty printed string of revenue range
+     * @param minId the id of the minimum revenue
+     * @return string in the form of CHF 1k - 5k
+     */
     public String getRevenueString(int minId) {
         Revenue rev = getRevenue(minId);
         if(rev == null)
@@ -104,12 +139,11 @@ public class Resources implements Serializable {
                 InternalStorageHandler.getContext().getResources().getStringArray(R.array.revenue_units));
     }
 
-    public Country getCountry(long id) { return (Country)findById(id, getCountries()); }
-    public Continent getContinent(long id) { return (Continent)findById(id, getContinents()); }
-    public InvestorType getInvestorType(long id) {
-        return (InvestorType)findById(id, getInvestorTypes());
-    }
-
+    /**
+     * Get revenue range from the id of the lower end revenue
+     * @param minId id of lower end revenue
+     * @return Revenue instance
+     */
     public Revenue getRevenue(int minId) {
         for(Revenue rev : getRevenues()) {
             if(rev.getRevenueMinId() == minId)
@@ -118,6 +152,11 @@ public class Resources implements Serializable {
         return null;
     }
 
+    /**
+     * Get corporate body by id
+     * @param id id of corporate body
+     * @return CorporateBody instance
+     */
     public CorporateBody getCorporateBody(int id) {
         for(CorporateBody body : getCorporateBodies()) {
             if(body.getId() == id)

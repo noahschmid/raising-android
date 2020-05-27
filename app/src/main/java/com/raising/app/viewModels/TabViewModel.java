@@ -11,6 +11,12 @@ import com.raising.app.fragments.RaisingFragment;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * ViewModel which saves the navigation state of the individual tabs. If you switch from one tab
+ * to another and back, you should land on the same fragment you left of. That's what this ViewModel
+ * tries to manage. Thanks to lombok this ViewModel is rather small
+ */
+
 public class TabViewModel extends AndroidViewModel {
     @Getter
     @Setter

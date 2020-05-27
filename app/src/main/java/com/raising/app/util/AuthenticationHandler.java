@@ -12,6 +12,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 
+/**
+ * This class handles all authentication associated tasks for the current user. The access token and
+ * email of the logged in user are stored here as well.
+ */
 public class AuthenticationHandler {
     private static long accountId = -1;
     private static String token;
@@ -84,7 +88,6 @@ public class AuthenticationHandler {
 
     /**
      * Check if there's a token file and if so, read contents
-     * @return true if user is currently logged in, false otherwise
      */
     public static void init() {
         File file = InternalStorageHandler.getContext().getFileStreamPath("token");

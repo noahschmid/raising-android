@@ -50,10 +50,17 @@ public class AccountViewModel extends AndroidViewModel {
         viewState.setValue(ViewState.EMPTY);
     }
 
+    /**
+     * When an update was handled, set viewstate to result
+     */
     public void updateCompleted() {
         viewState.postValue(ViewState.RESULT);
     }
 
+    /**
+     * Set local account
+     * @param account instance of Account
+     */
     public void setAccount(Account account) {
         currentAccount.postValue(account);
     }
@@ -101,8 +108,7 @@ public class AccountViewModel extends AndroidViewModel {
 
     /**
      * Get the current view state
-     *
-     * @return
+     * @return the current view state as LiveData
      */
     public LiveData<ViewState> getViewState() {
         return viewState;
@@ -111,7 +117,6 @@ public class AccountViewModel extends AndroidViewModel {
 
     /**
      * Retrieve the currently stored account of the logged in user
-     *
      * @return The account currently stored
      */
     public LiveData<Account> getAccount() {
@@ -128,8 +133,7 @@ public class AccountViewModel extends AndroidViewModel {
 
     /**
      * Get account saved in internal storage
-     *
-     * @return
+     * @return Account instance of cached account
      */
     private Account getCachedAccount() {
         Account account = null;
@@ -182,7 +186,6 @@ public class AccountViewModel extends AndroidViewModel {
 
     /**
      * Send patch request to backend to update account
-     *
      * @param update the new account instance
      */
     public void update(Account update) {
@@ -251,8 +254,7 @@ public class AccountViewModel extends AndroidViewModel {
 
     /**
      * Update the profile picture for the current account
-     *
-     * @param image
+     * @param image the new profile picture
      */
     public void updateProfilePicture(Image image) {
         try {
@@ -300,7 +302,7 @@ public class AccountViewModel extends AndroidViewModel {
 
     /**
      * Update the gallery photos
-     * @param gallery
+     * @param gallery list of Image objects containing the new gallery pictures
      */
     public void updateGallery(List<Image> gallery) {
         List<Bitmap> pictures = new ArrayList<>();

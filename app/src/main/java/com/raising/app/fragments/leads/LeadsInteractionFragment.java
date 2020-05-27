@@ -86,7 +86,8 @@ public class LeadsInteractionFragment extends RaisingFragment {
     }
 
     /**
-     * Prepare the interaction fragments layout by inserting the interactions. If the interaction is not unlocked show a blur view and a information dialog.
+     * Prepare the interaction fragments layout by inserting the interactions. If the
+     * interaction is not unlocked show a blur view and a information dialog.
      */
     private void processLeads() {
         View view = getView();

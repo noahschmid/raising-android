@@ -13,6 +13,11 @@ import com.raising.app.models.Model;
 
 import java.util.ArrayList;
 
+/**
+ * This component gets used in the matching criteria fragments, where you can specify the
+ * matching information. It's a pretty variant of checkboxes/radiobuttons
+ */
+
 public class MatchingCriteriaComponent implements LifecycleObserver {
     private final String TAG = "MatchingCriteriaComponent";
     private RecyclerView recyclerView;
@@ -22,9 +27,9 @@ public class MatchingCriteriaComponent implements LifecycleObserver {
 
     /**
      * Create a new Matching Criteria Component
-     * @param recyclerView
-     * @param items
-     * @param singleSelect
+     * @param recyclerView the recycler view of the fragment
+     * @param items the items which should be displayed
+     * @param singleSelect whether or not you can only choose one of the items (radio button style)
      */
     public MatchingCriteriaComponent(RecyclerView recyclerView, ArrayList<? extends Model> items, boolean singleSelect,
                                      MatchingCriteriaAdapter.OnItemClickListener clickListener) {
@@ -47,10 +52,10 @@ public class MatchingCriteriaComponent implements LifecycleObserver {
 
     /**
      * Create a new Matching Criteria Component
-     * @param recyclerView
-     * @param items
-     * @param singleSelect
-     * @param isLabelsLayout 
+     * @param recyclerView the recycler view of the fragment
+     * @param items the items which should be displayed
+     * @param singleSelect whether or not you can only choose one of the items (radio button style)
+     * @param isLabelsLayout whether or not the items are labels
      */
     public MatchingCriteriaComponent(RecyclerView recyclerView, ArrayList<? extends Model> items, boolean singleSelect,
                                      MatchingCriteriaAdapter.OnItemClickListener clickListener, boolean isLabelsLayout) {

@@ -24,6 +24,10 @@ import com.raising.app.models.TicketSize;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+/**
+ * This class handles deserialization of resources when returned as json data from backend server
+ */
+
 public class ResourcesDeserializer implements JsonDeserializer<Resources> {
     @Override
     public Resources deserialize(JsonElement json, Type typeOfT,

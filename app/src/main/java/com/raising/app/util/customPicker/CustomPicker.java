@@ -42,6 +42,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * This component gets used for all the country/markets picker
+ */
+
 public class CustomPicker implements LifecycleObserver, BottomSheetInteractionListener {
     private final String TAG = "CustomPicker";
     public static final int SORT_BY_NONE = 0;
@@ -106,6 +110,9 @@ public class CustomPicker implements LifecycleObserver, BottomSheetInteractionLi
     }
     // endregion
 
+    /**
+     * Dismiss the custom picker dialog
+     */
     public void dismiss() {
         if (dialog != null)
             dialog.dismiss();
@@ -147,6 +154,10 @@ public class CustomPicker implements LifecycleObserver, BottomSheetInteractionLi
         });
     }
 
+    /**
+     * Show the custom picker dialog with empty dismiss listener
+     * @param activity reference to main activity
+     */
     public void showDialog(@NonNull FragmentActivity activity) {
         showDialog(activity, new DialogInterface.OnDismissListener() {
             @Override
@@ -156,7 +167,11 @@ public class CustomPicker implements LifecycleObserver, BottomSheetInteractionLi
         });
     }
 
-    // region Utility Methods
+    /**
+     * Show the custom picker dialog
+     * @param activity corresponding app activity
+     * @param dismissListener listener that gets called when dialog gets dismissed
+     */
     public void showDialog(@NonNull FragmentActivity activity, DialogInterface.OnDismissListener dismissListener) {
         activity.getLifecycle().addObserver(this);
         dialog = new Dialog(activity);
@@ -253,6 +268,9 @@ public class CustomPicker implements LifecycleObserver, BottomSheetInteractionLi
         countriesRecyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Set the needed listeners to implement the search for items
+     */
     @Override
     public void setSearchEditText() {
         if (canSearch) {
@@ -288,6 +306,10 @@ public class CustomPicker implements LifecycleObserver, BottomSheetInteractionLi
         }
     }
 
+    /**
+     * Search through item names by string
+     * @param searchQuery the string to search for
+     */
     private void search(String searchQuery) {
         searchResults.clear();
         for (PickerItem item : items) {

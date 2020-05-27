@@ -31,6 +31,10 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
+/**
+ * ViewModel handling the subscription of the logged in account
+ */
+
 public class SubscriptionViewModel extends AndroidViewModel {
     private static final String TAG = "SubscriptionViewModel";
 

@@ -9,6 +9,11 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.raising.app.util.AuthenticationHandler;
 
+/**
+ * This class catches notifications which are received while using the app but does nothing with
+ * it for now. It's more of a blueprint class for later.
+ */
+
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private final String TAG = "MyFirebaseMessagingService";
     public MyFirebaseMessagingService() {

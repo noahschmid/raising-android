@@ -15,6 +15,12 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
+/**
+ * Extended implementation of JsonArrayRequest which first checks whether the response from
+ * server was null. If so it just returns an empty JsonArray instead of crashing as JsonArrayRequest
+ * so elegantly does.
+ */
+
 public class GenericArrayRequest extends JsonArrayRequest {
 
     public GenericArrayRequest(int method, String url, @Nullable JSONArray jsonRequest, Response.Listener<JSONArray> listener, @Nullable Response.ErrorListener errorListener) {

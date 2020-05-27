@@ -13,6 +13,12 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
+/**
+ * Extended implementation of JsonObjectRequest which first checks whether the response from
+ * server was null. If so it just returns an empty JsonObject instead of crashing as JsonObjectRequest
+ * so elegantly does.
+ */
+
 public class GenericRequest extends JsonObjectRequest {
 
     public GenericRequest(int method, String url, @Nullable JSONObject jsonRequest, Response.Listener<JSONObject> listener, @Nullable Response.ErrorListener errorListener) {

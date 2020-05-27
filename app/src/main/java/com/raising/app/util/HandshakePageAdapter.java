@@ -10,6 +10,10 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.raising.app.fragments.leads.LeadsFragment;
 import com.raising.app.models.leads.LeadState;
 
+/**
+ * Adapter that handles the tabs on the LeadsFragment
+ */
+
 public class HandshakePageAdapter extends FragmentPagerAdapter {
     private int numberOfItems;
 

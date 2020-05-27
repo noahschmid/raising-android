@@ -19,6 +19,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * This class handles the serialization of Startup and Investor instances when sending those as Json
+ * Data to the backend server. Update and registration requests are handled differently, therefore we
+ * need different serialization methods for both of them.
+ */
 public class Serializer {
     public static JsonSerializer<Investor> InvestorUpdateSerializer = new JsonSerializer<Investor>() {
         @Override
@@ -242,7 +247,11 @@ public class Serializer {
         }
     };
 
-
+    /**
+     * Convert a list of longs into a JsonArray
+     * @param input list of longs
+     * @return JsonArray containing the longs
+     */
     private static JsonArray toJsonArray(List<Long> input) {
         if(input == null)
             return new JsonArray();
@@ -256,8 +265,8 @@ public class Serializer {
 
      /**
      * Parse Timestamp object from ISO string
-     * @param timestamp
-     * @return
+     * @param timestamp ISO String containing a timestamp
+     * @return Timestamp instance
      */
      public static Timestamp parseTimestamp(String timestamp) {
         try {

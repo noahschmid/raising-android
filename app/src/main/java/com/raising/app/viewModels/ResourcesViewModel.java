@@ -33,6 +33,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * View model managing all public resources
+ */
+
 public class ResourcesViewModel extends AndroidViewModel{
     private MutableLiveData<Resources> resources = new MutableLiveData<Resources>();
     private MutableLiveData<ViewState> viewState = new MutableLiveData<ViewState>();
@@ -44,6 +48,9 @@ public class ResourcesViewModel extends AndroidViewModel{
         viewState.setValue(ViewState.EMPTY);
     }
 
+    /**
+     * Load resources from backend
+     */
     public void loadResources() {
         Resources cachedResources = getCachedResources();
 
@@ -53,12 +60,7 @@ public class ResourcesViewModel extends AndroidViewModel{
         } else {
             viewState.postValue(ViewState.LOADING);
         }
-/*
-        try {
-            JSONObject result = ApiRequestHandler.performSynchronousGetRequest("public/");
-        } catch (Exception e) {
-            Log.e(TAG, "loadResources: " + e.getMessage());
-        }*/
+
         ApiRequestHandler.performGetRequest("public/", result -> {
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     gsonBuilder.registerTypeAdapter(Resources.class, new ResourcesDeserializer());

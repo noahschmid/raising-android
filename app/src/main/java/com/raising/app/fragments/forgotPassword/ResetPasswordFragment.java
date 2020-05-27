@@ -42,7 +42,6 @@ public class ResetPasswordFragment extends RaisingFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         hideBottomNavigation(true);
         customizeAppBar(getString(R.string.toolbar_title_reset_password), true);
 
@@ -116,33 +115,5 @@ public class ResetPasswordFragment extends RaisingFragment {
             Log.d("debugMessage", e.toString());
             return;
         }
-
-        /*
-                        try {
-                            if(AccountService.loadContactData(response.getLong("id"))) {
-                                AuthenticationHandler.login(email,
-                                        response.getString("token"),
-                                        response.getLong("id"), isStartup);
-                                accountViewModel.loadAccount();
-
-                                if(isFirstAppLaunch() && !isDisablePostOnboarding()) {
-                                    clearBackstackAndReplace(new OnboardingPost1Fragment());
-                                } else {
-                                    clearBackstackAndReplace(new MatchesFragment());
-                                }
-                            } else {
-                                Bundle bundle = new Bundle();
-                                bundle.putBoolean("isStartup", isStartup);
-                                bundle.putString("email", email);
-                                bundle.putString("token", response.getString("token"));
-                                bundle.putLong("id", response.getLong("id"));
-                                Fragment fragment = new ContactDataInput();
-                                fragment.setArguments(bundle);
-                                changeFragment(fragment);
-                            }
-                        } catch(Exception e) {
-                            dismissLoadingPanel();
-                        }
-                        */
     }
 }

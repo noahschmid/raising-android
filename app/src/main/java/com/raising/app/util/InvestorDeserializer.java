@@ -29,6 +29,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * This class handles the deserialization of investor objects when returned as json data from backend
+ * server.
+ */
+
 public class InvestorDeserializer implements JsonDeserializer<Investor> {
     @Override
     public Investor deserialize(JsonElement json, Type typeOfT,

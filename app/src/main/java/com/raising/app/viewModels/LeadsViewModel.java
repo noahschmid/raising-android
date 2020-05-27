@@ -42,6 +42,10 @@ public class LeadsViewModel extends AndroidViewModel {
         return leads;
     }
 
+    /**
+     * Get a list of leads that should be displayed in the open requests fragment
+     * @return list of leads
+     */
     public ArrayList<Lead> getOpenRequests() {
         ArrayList<Lead> openRequests = new ArrayList<>();
         leads.getValue().forEach(lead -> {
@@ -56,6 +60,9 @@ public class LeadsViewModel extends AndroidViewModel {
         return viewState;
     }
 
+    /**
+     * Load leads from backend
+     */
     public void loadLeads() {
         ArrayList<Lead> cachedLeads = getCachedLeads();
 

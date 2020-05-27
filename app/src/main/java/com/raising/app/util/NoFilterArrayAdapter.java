@@ -6,6 +6,11 @@ import android.widget.Filter;
 
 import java.util.List;
 
+/**
+ * Just an array adapter that disables filtering for MultiAutoCompleteTextView
+ * @param <T> generic for the type of the list
+ */
+
 public class NoFilterArrayAdapter<T>
         extends ArrayAdapter<T>
 {

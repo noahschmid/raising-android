@@ -13,10 +13,17 @@ import com.raising.app.util.Resources;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+/**
+ * Handles the contact data of accounts (including logged in account)
+ */
+
 public class ContactDataHandler {
     private static final String TAG = "ContactDataHandler";
     private static ArrayList<ContactData> contactData = new ArrayList<>();
 
+    /**
+     * Load stored data from internal storage
+     */
     public static void init() {
         contactData = loadContactData();
         if(contactData == null)

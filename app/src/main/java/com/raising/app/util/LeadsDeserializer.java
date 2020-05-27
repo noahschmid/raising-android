@@ -26,6 +26,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * This class handles the deserialization of leads when returned as json data from backend server.
+ * It converts a json element to a @Leads instance
+ */
 
 public class LeadsDeserializer implements JsonDeserializer<Lead> {
     private static String TAG = "LeadsDeserializer";

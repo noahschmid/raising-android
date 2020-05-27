@@ -28,6 +28,10 @@ import org.json.JSONObject;
 
 import java.util.Objects;
 
+/**
+ * This class handles a single interaction between two users (leads).
+ */
+
 public class LeadsInteraction {
     private static final String TAG = "LeadsInteraction";
 
@@ -65,6 +69,10 @@ public class LeadsInteraction {
     }
 
 
+    /**
+     * Enable or disable the interaction button
+     * @param enabled whether button shall be enabled
+     */
     public void enableButton(boolean enabled) {
         interactionButton.setEnabled(enabled);
     }
@@ -122,6 +130,9 @@ public class LeadsInteraction {
         }
     }
 
+    /**
+     * Set the correct icon for the interaction
+     */
     private void setInteractionIcon() {
         switch (interaction.getInteractionType()) {
             case COFFEE:
@@ -142,6 +153,10 @@ public class LeadsInteraction {
         }
     }
 
+    /**
+     * Send backend requests when an interaction gets accepted/declined
+     * @param accept whether the interaction was accepted or not
+     */
     private void updateRemoteInteraction(boolean accept) {
         Log.d(TAG, "updateRemoteInteraction: " + accept + " " + interaction.getId());
         try {

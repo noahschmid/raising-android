@@ -31,6 +31,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * This class handles deserialization of a startup when returned as json data from backend server
+ */
+
 public class StartupDeserializer implements JsonDeserializer<Startup> {
     @Override
     public Startup deserialize(JsonElement json, Type typeOfT,

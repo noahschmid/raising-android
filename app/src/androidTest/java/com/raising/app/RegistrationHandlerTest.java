@@ -19,6 +19,9 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+/**
+ * This tests whether or not saving to and reading from the internal storage works
+ */
 @RunWith(AndroidJUnit4.class)
 public class RegistrationHandlerTest {
     private Context context;

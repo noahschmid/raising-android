@@ -25,6 +25,12 @@ import com.raising.app.models.leads.Lead;
 import java.sql.Timestamp;
 import java.util.Date;
 
+/**
+ * This helper class makes the loading process of profile images a little bit easier. If an invalid
+ * it is supplied it doesn't start a request. Also the cache gets utilized.
+ */
+
+
 public class ImageHandler {
     private static Drawable placeholder = InternalStorageHandler.getContext().getDrawable(R.drawable.ic_placeholder_24dp);
 
@@ -46,7 +52,7 @@ public class ImageHandler {
                     .load(ApiRequestHandler.getDomain() + "media/profilepicture/" + id)
                     .centerCrop()
                     .placeholder(placeholder)
-                    .signature(new ObjectKey(timestamp.getTime()))
+                    .signature(new ObjectKey(timestamp.getTime())) // cache gets invalidated as soon as the timestamp changes
                     .apply(RequestOptions.circleCropTransform())
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                     .into(imageView);

@@ -394,17 +394,6 @@ public class InvestorPublicProfileFragment extends RaisingFragment {
         industryAdapter.notifyDataSetChanged();
         supportAdapter.notifyDataSetChanged();
 
-       /*
-       if(investor.getProfilePicture() != null) {
-           pictures.add(investor.getProfilePicture().getImage());
-       }
-
-       if(investor.getGallery() != null) {
-           investor.getGallery().forEach(image -> {
-               pictures.add(image.getImage());
-           });
-       }*/
-
         profileLayout.setVisibility(View.VISIBLE);
         scrollView.scrollTo(0, 0);
         scrollView.smoothScrollTo(0, 0);
