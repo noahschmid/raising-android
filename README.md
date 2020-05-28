@@ -78,9 +78,11 @@ If you want to create the newest documentation of our project, follow these step
 
 | Link | Content |
 |---|---|
-**<a href="/app/src/main/java/com/raising/app">app</a>** | **The source code written by us**
+**<a href="/app/src/main/java/com/raising/app">app</a>** | **The source code written by us***
 <a href="/app/src/androidTest/java/com/raising/app">app</a> | Instrumented Unit Tests
 <a href="/docs-resources">docs-resources</a> | The images used for this README
+
+*This folder contains another README with additional, more precise information about the folder.
 
 ## Authors <a name="authors"/>
 
