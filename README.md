@@ -16,6 +16,7 @@
 1. [Download from Play Store](#download)
 1. [Development](#development)
 1. [Documentation](#documentation)
+1. [Folder Structure](#folderstructure)
 1. [Authors](#authors)
 
 ## Local Installation <a name="local"/>
@@ -73,6 +74,13 @@ If you want to create the newest documentation of our project, follow these step
 1. Enter your prefered scope and a directory, where the generated files should be stored
 1. Also tick the box `Open generated documentation in browser`
 
+## 📁 Folder structure <a name = "folderstructure"></a>
+
+| Link | Content |
+|---|---|
+**<a href="/app/src/main/java/com/raising/app">app</a>** | **The source code written by us**
+<a href="/app/src/androidTest/java/com/raising/app">app</a> | Instrumented Unit Tests
+<a href="/docs-resources">docs-resources</a> | The images used for this README
 
 ## Authors <a name="authors"/>
 
