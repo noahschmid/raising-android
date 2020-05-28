@@ -7,7 +7,7 @@
 
 ---
 
-<p align="center"> This is the Android part of our app Rai$ing. 
+<p align="center"> This is the Android part of our app Rai$ing. You can find our project deliverables <a href="https://github.com/olistaehli/raising-deliverables">here!</a>
     <br> 
 </p>
 
@@ -76,5 +76,5 @@ If you want to create the newest documentation of our project, follow these step
 
 ## Authors <a name="authors"/>
 
-[Noah Schmid](https://github.com/noahschmid) and [Lorenz Caliezi](https://github.com/LorenzCaliezi) 
+[Noah Schmid](https://github.com/noahschmid) (mainly backend communication and business logic) <br /> [Lorenz Caliezi](https://github.com/LorenzCaliezi) (mainly layout/design and business logic)
 
