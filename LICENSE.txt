@@ -1,0 +1,4 @@
+* Copyright (C) 2020 SwissEF - All Rights Reserved
+* Unauthorized copying and modifying of this source code, via any medium is strictly prohibited
+* Proprietary and confidential
+*/
