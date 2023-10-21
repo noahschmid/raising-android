@@ -14,6 +14,8 @@ Raising is a mobile app developed by five students of the University of Bern in 
     <br> 
 </p>
 
+**NOTE: This project has been discontinued and is no longer maintained.**
+
 ## 📝 Table of Contents
 1. [Local Installation](#local)
 1. [Download from Play Store](#download)
