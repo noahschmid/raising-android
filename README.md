@@ -8,7 +8,7 @@
 ---
 
 ## 🏁 About the project
-Raising is a mobile app developed by five students of the University of Bern in collaboration with Ubique on behalf of SwissEF in the scope of a 4 month software engineering internship. The goal is to create an MVP of a matching platform for investors and startups.
+Raising is a mobile app developed by five students of the University of Bern in collaboration with Ubique on behalf of SwissEF in the scope of a 4 month software engineering internship. The aim was to create an MVP of an app that could bring together potential investors and startups.
 
 <p align="center"> This is the Android part of our app Rai$ing. You can find our project deliverables  (in German) <a href="https://github.com/olistaehli/raising-deliverables">here!</a>
     <br> 
